@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { saveAudioBlob, getDirectAudioUrl } from '../lib/audioStore';
 
 interface AdminPanelProps {
   dataStore: any;
@@ -26,7 +25,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     saveItem,
     saveSettings,
     deleteItem,
+    seedData,
   } = dataStore;
+
+  const [isSeeding, setIsSeeding] = useState<boolean>(false);
+
+  const handleSeedData = async () => {
+    if (confirm('Apakah Anda yakin ingin memuat/reset ulang seluruh Data Awal (Destinasi, Budaya, Kuliner, Event, Unduhan, Hot Info) ke Firestore? Data default Minangkabau akan di-restore.')) {
+      try {
+        setIsSeeding(true);
+        await seedData();
+        showSuccess('⚡ Berhasil! Seluruh Data Awal telah di-reset dan disinkronkan ke Firestore.');
+      } catch (e) {
+        setAdminError('Gagal melakukan reset/inisialisasi data');
+      } finally {
+        setIsSeeding(false);
+      }
+    }
+  };
 
   // Settings form state
   const [settingsFormData, setSettingsFormData] = useState({
@@ -37,9 +53,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     heroTextColor: appSettings?.heroTextColor || '#000000',
     heroTextTheme: appSettings?.heroTextTheme || 'black',
     heroTextShadow: appSettings?.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
-    bgAudioUrl: appSettings?.bgAudioUrl || '',
-    bgAudioTitle: appSettings?.bgAudioTitle || '',
-    bgAudioAutoPlay: appSettings?.bgAudioAutoPlay !== undefined ? appSettings.bgAudioAutoPlay : true,
   });
 
   useEffect(() => {
@@ -52,9 +65,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         heroTextColor: appSettings.heroTextColor || '#000000',
         heroTextTheme: appSettings.heroTextTheme || 'black',
         heroTextShadow: appSettings.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
-        bgAudioUrl: appSettings.bgAudioUrl || '',
-        bgAudioTitle: appSettings.bgAudioTitle || '',
-        bgAudioAutoPlay: appSettings.bgAudioAutoPlay !== undefined ? appSettings.bgAudioAutoPlay : true,
       });
     }
   }, [appSettings]);
@@ -160,9 +170,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const handleSaveSettings = async () => {
     try {
       await saveSettings(settingsFormData);
-      showSuccess('Pengaturan latar belakang & musik audio berhasil disimpan!');
+      showSuccess('Pengaturan gambar latar belakang berhasil disimpan!');
     } catch (e) {
-      setAdminError('Gagal menyimpan pengaturan latar belakang & musik');
+      setAdminError('Gagal menyimpan pengaturan latar belakang');
     }
   };
 
@@ -401,11 +411,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       {adminError && <div className="p-3 bg-red-50 text-red-700 text-xs font-jakarta rounded-md border border-red-200 mb-4">{adminError}</div>}
       {adminSuccess && <div className="p-3 bg-green-50 text-green-700 text-xs font-jakarta rounded-md border border-green-200 mb-4">{adminSuccess}</div>}
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <h3 className="font-bold text-sm uppercase tracking-wider font-jakarta">
-          {adminTab === 'download' ? 'Kelola Media Kit & Unduhan' : adminTab === 'hotinfo' ? 'Kelola Hot Info & Berita Terbaru' : adminTab === 'settings' ? 'Kelola Gambar Latar Belakang (Hero Canvas)' : `Kelola Data ${adminTab}`}
+          {adminTab === 'download' ? 'Kelola Media Kit & Unduhan' : adminTab === 'hotinfo' ? 'Kelola Hot Info & Berita Terbaru' : adminTab === 'settings' ? 'Kelola Pengaturan Latar & Admin' : `Kelola Data ${adminTab}`}
         </h3>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleSeedData}
+            disabled={isSeeding}
+            className="bg-amber-600 text-white px-3 py-1.5 rounded-md text-xs font-bold font-jakarta uppercase flex items-center gap-1.5 hover:bg-amber-700 transition-colors cursor-pointer shadow-xs"
+            title="Muat ulang & Reset semua data awal ke Firestore"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isSeeding ? 'animate-spin' : ''}`} />
+            <span>{isSeeding ? 'Memproses...' : 'Reset / Inisialisasi Data'}</span>
+          </button>
           <button onClick={handleLogout} className="bg-white border border-gray-300 text-gray-700 px-3 py-1.5 rounded-md text-xs font-bold font-jakarta uppercase flex items-center gap-1 hover:bg-gray-50 transition-colors">
             Keluar
           </button>
@@ -684,120 +704,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 </div>
               </div>
 
-              {/* Pengaturan Musik / Audio Latar Halaman Awal */}
-              <div className="pt-4 border-t border-gray-200 space-y-3">
-                <label className="block text-[11px] font-bold uppercase text-gray-800 mb-1">
-                  🎵 Pengaturan Musik & Audio Latar Halaman Awal (MP3, WAV, MPEG, OGG, M4A, AAC, FLAC)
-                </label>
-                <p className="text-[10px] text-gray-500 mb-3">
-                  Kelola lagu atau instrumen musik dalam berbagai format audio (MP3, WAV, MPEG, OGG, M4A, AAC, FLAC, WebM) yang diputar pada pemutar audio halaman awal website.
-                </p>
-
-                {/* Upload File Audio (Lokal) & URL Input */}
-                <div className="bg-white border border-gray-200 p-3 rounded-md space-y-3">
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase text-gray-700 mb-1">
-                      1. Upload File Audio Lokal (MP3, WAV, MPEG, OGG, M4A, AAC, FLAC, WebM)
-                    </label>
-                    <input
-                      type="file"
-                      accept="audio/*,.mp3,.wav,.mpeg,.ogg,.m4a,.aac,.flac,.webm"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          // Save blob to IndexedDB for reliable playback across page reloads
-                          saveAudioBlob('custom_bg_audio', file).catch(() => {});
-
-                          // Create object URL for instant preview
-                          const objectUrl = URL.createObjectURL(file);
-                          const autoTitle = file.name.replace(/\.[^/.]+$/, '');
-
-                          setSettingsFormData(prev => ({
-                            ...prev,
-                            bgAudioUrl: objectUrl,
-                            bgAudioTitle: prev.bgAudioTitle || autoTitle
-                          }));
-
-                          // Also convert to data URL for storage fallback
-                          const reader = new FileReader();
-                          reader.onload = (evt) => {
-                            const res = evt.target?.result as string;
-                            if (res) {
-                              setSettingsFormData(prev => ({
-                                ...prev,
-                                bgAudioUrl: res,
-                              }));
-                            }
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                      className="w-full text-xs text-gray-600 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700 cursor-pointer"
-                    />
-                    <p className="text-[10px] text-gray-500 mt-1">Pilih file audio (.mp3, .wav, .mpeg, .ogg, .m4a, .aac, .flac, .webm) langsung dari perangkat Anda.</p>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase text-gray-700 mb-1">
-                      2. Atau Input URL Audio Direct Link (MP3 / WAV / MPEG / OGG / M4A / AAC)
-                    </label>
-                    <input
-                      type="text"
-                      name="bgAudioUrl"
-                      value={settingsFormData.bgAudioUrl}
-                      onChange={(e) => setSettingsFormData(prev => ({ ...prev, bgAudioUrl: e.target.value }))}
-                      placeholder="https://example.com/musik_minang.wav (atau .mp3 / .mpeg / .ogg / .m4a)"
-                      className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold uppercase text-gray-700 mb-1">
-                      3. Judul / Nama Musik (Akan tampil pada Player)
-                    </label>
-                    <input
-                      type="text"
-                      name="bgAudioTitle"
-                      value={settingsFormData.bgAudioTitle}
-                      onChange={(e) => setSettingsFormData(prev => ({ ...prev, bgAudioTitle: e.target.value }))}
-                      placeholder="Misal: Instrumen Saluang & Talempong Syahdu Minang"
-                      className="w-full bg-white border border-gray-300 rounded p-2 text-xs"
-                    />
-                  </div>
-
-                  {settingsFormData.bgAudioUrl && (
-                    <div className="pt-2 border-t border-gray-100">
-                      <span className="block text-[10px] font-bold uppercase text-gray-500 mb-1.5">
-                        Preview Suara Audio:
-                      </span>
-                      <audio
-                        key={settingsFormData.bgAudioUrl}
-                        controls
-                        src={getDirectAudioUrl(settingsFormData.bgAudioUrl)}
-                        className="w-full h-10"
-                      />
-                    </div>
-                  )}
-
-                  <label className="flex items-center gap-2 cursor-pointer pt-1">
-                    <input
-                      type="checkbox"
-                      checked={settingsFormData.bgAudioAutoPlay}
-                      onChange={(e) => setSettingsFormData(prev => ({ ...prev, bgAudioAutoPlay: e.target.checked }))}
-                      className="w-4 h-4 text-red-600 rounded cursor-pointer"
-                    />
-                    <span className="text-xs font-bold text-gray-800">
-                      Putar Musik Otomatis Saat Halaman Dibuka (Autoplay)
-                    </span>
-                  </label>
-                </div>
-              </div>
-
               <button
                 onClick={handleSaveSettings}
                 className="w-full bg-black text-white py-2.5 rounded text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-1.5 hover:bg-gray-800 transition-colors cursor-pointer"
               >
-                <Check className="w-4 h-4" /> Simpan Pengaturan Hero, Warna Teks & Musik MP3
+                <Check className="w-4 h-4" /> Simpan Pengaturan Hero & Warna Teks
               </button>
             </div>
 
@@ -870,6 +781,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* Reset / Inisialisasi Database Section */}
+            <div className="bg-amber-100/70 border border-amber-300 p-4 rounded-md space-y-3 mt-4">
+              <div>
+                <label className="block text-[11px] font-bold uppercase text-amber-900 mb-1 flex items-center gap-1.5">
+                  <Database className="w-4 h-4 text-amber-700" />
+                  ⚡ Inisialisasi & Reset Data Awal Firestore
+                </label>
+                <p className="text-[10px] text-amber-800 mb-3 leading-relaxed">
+                  Gunakan tombol ini untuk mengunggah atau mereset ulang seluruh data awal (Destinasi Wisata, Kebudayaan, Kuliner, Event, Media Kit Unduhan, dan Hot Info) ke Firestore.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={handleSeedData}
+                  disabled={isSeeding}
+                  className="bg-amber-700 text-white px-4 py-2.5 rounded text-xs font-bold uppercase hover:bg-amber-800 transition-colors cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isSeeding ? 'animate-spin' : ''}`} />
+                  <span>{isSeeding ? 'Sedang Memproses Reset Data...' : '⚡ Jalankan Inisialisasi / Reset Data Awal'}</span>
+                </button>
               </div>
             </div>
           </div>

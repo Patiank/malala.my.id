@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle } from 'lucide-react';
-import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse } from '../types';
+import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
@@ -90,6 +90,7 @@ interface DrawersProps {
   lang?: Language;
   onMouseEnterDrawer?: () => void;
   onMouseLeaveDrawer?: () => void;
+  onSelectNews?: (item: HotInfoItem) => void;
 }
 
 export const Drawers: React.FC<DrawersProps> = ({
@@ -102,6 +103,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   lang = 'id',
   onMouseEnterDrawer,
   onMouseLeaveDrawer,
+  onSelectNews,
 }) => {
   const {
     destinations, updateDestinations,
@@ -122,6 +124,32 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Hot Info & Download state
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
+  const [dynamicHotInfo, setDynamicHotInfo] = useState<HotInfoItem[] | null>(null);
+  const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
+
+  const handleRefreshHotInfo = async () => {
+    setIsFetchingHotInfo(true);
+    try {
+      const res = await fetch('/api/ai/fetch-hot-info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: lang })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setDynamicHotInfo(data);
+        if (dataStore.updateHotInfoItems) {
+          dataStore.updateHotInfoItems(data);
+        }
+      } else {
+        alert(lang === 'en' ? 'Failed to fetch live updates.' : 'Gagal memperbarui berita wisata.');
+      }
+    } catch (e) {
+      alert(lang === 'en' ? 'Network error.' : 'Terjadi kesalahan jaringan.');
+    } finally {
+      setIsFetchingHotInfo(false);
+    }
+  };
 
   // FormAI state
   const [formAiTab, setFormAiTab] = useState<'generator' | 'chat'>('generator');
@@ -1144,12 +1172,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </label>
                       <div className="flex flex-wrap gap-1.5 text-xs">
                         {[
-                          { val: 'alam', label: lang === 'en' ? 'Nature' : 'Alam' },
-                          { val: 'budaya_sejarah', label: lang === 'en' ? 'Culture & History' : 'Budaya & Sejarah' },
-                          { val: 'religi', label: lang === 'en' ? 'Religious' : 'Religi' },
+                          { val: 'pantai', label: lang === 'en' ? 'Beaches' : 'Pantai' },
+                          { val: 'tempat_wisata', label: lang === 'en' ? 'Tourist Attractions' : 'Tempat Wisata' },
+                          { val: 'kuliner_mewah', label: lang === 'en' ? 'Luxury Culinary' : 'Kuliner Mewah' },
+                          { val: 'belanja', label: lang === 'en' ? 'Shopping' : 'Belanja' },
+                          { val: 'festival', label: lang === 'en' ? 'Festivals' : 'Festival' },
                           { val: 'kuliner', label: lang === 'en' ? 'Culinary' : 'Kuliner' },
-                          { val: 'petualangan', label: lang === 'en' ? 'Adventure' : 'Petualangan' },
-                          { val: 'edukasi', label: lang === 'en' ? 'Education' : 'Edukasi' }
+                          { val: 'tur_wisata', label: lang === 'en' ? 'Guided Tours' : 'Tur Wisata' },
+                          { val: 'petualangan_alam', label: lang === 'en' ? 'Nature & Adventure' : 'Petualangan Alam' },
+                          { val: 'hidden_gems', label: lang === 'en' ? 'Hidden Gems' : 'Hidden Gems' },
+                          { val: 'spa_relaksasi', label: lang === 'en' ? 'Spa & Relaxation' : 'Spa dan Relaksasi' },
+                          { val: 'seni_budaya', label: lang === 'en' ? 'Arts & Culture' : 'Seni dan Budaya' },
+                          { val: 'akses_difabel', label: lang === 'en' ? 'Disability Access' : 'Akses Difable' },
+                          { val: 'ramah_anak', label: lang === 'en' ? 'Kid-Friendly' : 'Ramah Anak' }
                         ].map((minat) => {
                           const isSelected = itineraryForm.preferensiMinat.kategoriWisata.includes(minat.val);
                           return (
@@ -1470,26 +1505,38 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* =================================================== */}
           {activeDrawer === 'hotinfo' && (
             <div className="space-y-6">
-              {/* Category Filter Pills */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-jakarta">
-                {['Semua', 'Berita Utama', 'Cuaca & Jalur', 'Event Mendatang', 'Himbauan Wisata'].map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setHotInfoCategory(cat)}
-                    className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                      hotInfoCategory === cat
-                        ? 'bg-red-600 text-white shadow-xs'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+              {/* Category Filter Pills & Refresh Button */}
+              <div className="flex items-center justify-between gap-2 pb-2">
+                <div className="flex items-center gap-2 overflow-x-auto scrollbar-none text-xs font-jakarta flex-1">
+                  {Array.from(new Set(['Semua', ...(dynamicHotInfo || (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
+                    <button
+                      key={cat}
+                      onClick={() => setHotInfoCategory(cat)}
+                      className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                        hotInfoCategory === cat
+                          ? 'bg-red-600 text-white shadow-xs'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={handleRefreshHotInfo}
+                  disabled={isFetchingHotInfo}
+                  className={`shrink-0 flex items-center justify-center p-2 rounded-full border border-gray-200 transition-colors ${
+                    isFetchingHotInfo ? 'bg-gray-100 cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-black cursor-pointer'
+                  }`}
+                  title={lang === 'en' ? 'Refresh Live News' : 'Perbarui Berita'}
+                >
+                  <RefreshCw className={`w-4 h-4 ${isFetchingHotInfo ? 'animate-spin text-gray-400' : ''}`} />
+                </button>
               </div>
 
               {/* Hot Info Items List */}
               <div className="space-y-4">
-                {(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
+                {(dynamicHotInfo || (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS))
                   .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory)
                   .map((item: any, idx: number) => {
                     const isEn = lang === 'en';
@@ -1497,7 +1544,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       <div
                         key={item.id}
                         style={{ animationDelay: `${idx * 75}ms` }}
-                        className={`border rounded-lg overflow-hidden bg-white shadow-xs transition-all animate-content-stagger ${
+                        onClick={() => onSelectNews && onSelectNews(item)}
+                        className={`border rounded-lg overflow-hidden bg-white shadow-xs transition-all animate-content-stagger cursor-pointer hover:shadow-md ${
                           item.tag === 'Penting' || item.isUrgent ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200 hover:border-black'
                         }`}
                       >
@@ -1530,9 +1578,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-sm leading-snug">
                             {isEn && item.titleEn ? item.titleEn : item.title}
                           </h3>
-                          <p className="font-jakarta text-gray-700 text-xs leading-relaxed">
-                            {isEn && item.descriptionEn ? item.descriptionEn : (item.description || item.content)}
-                          </p>
+                          <div className="font-jakarta text-gray-700 text-xs leading-relaxed space-y-2">
+                            {(isEn && item.descriptionEn ? item.descriptionEn : (item.description || item.content || ''))
+                              .split('\n\n')
+                              .map((paragraph: string, pIdx: number) => (
+                                <p key={pIdx}>{paragraph}</p>
+                              ))}
+                          </div>
 
                           <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
                             {(item.actionUrl || item.locationQuery) ? (
@@ -1683,9 +1735,13 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            <p className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100">
-              {lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description}
-            </p>
+            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+              {(lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description)
+                .split('\n\n')
+                .map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+            </div>
 
             <div className="space-y-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
               <h4 className="font-jakarta font-bold text-xs uppercase text-black tracking-wider">
@@ -1776,9 +1832,13 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            <p className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100">
-              {lang === 'en' && selectedCulture.descriptionEn ? selectedCulture.descriptionEn : selectedCulture.description}
-            </p>
+            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+              {(lang === 'en' && selectedCulture.descriptionEn ? selectedCulture.descriptionEn : selectedCulture.description)
+                .split('\n\n')
+                .map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+            </div>
 
             <div className="space-y-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
               <h4 className="font-jakarta font-bold text-xs uppercase text-black tracking-wider">
@@ -1859,9 +1919,13 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            <p className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100">
-              {lang === 'en' && selectedCulinary.descriptionEn ? selectedCulinary.descriptionEn : selectedCulinary.description}
-            </p>
+            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+              {(lang === 'en' && selectedCulinary.descriptionEn ? selectedCulinary.descriptionEn : selectedCulinary.description)
+                .split('\n\n')
+                .map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+            </div>
 
             <div className="space-y-2 bg-gray-50 p-3 rounded-lg border border-gray-100 flex justify-between items-center">
               <span className="font-jakarta font-bold text-xs uppercase text-black tracking-wider">
@@ -1941,9 +2005,13 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            <p className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100">
-              {lang === 'en' && selectedEvent.descriptionEn ? selectedEvent.descriptionEn : selectedEvent.description}
-            </p>
+            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+              {(lang === 'en' && selectedEvent.descriptionEn ? selectedEvent.descriptionEn : selectedEvent.description)
+                .split('\n\n')
+                .map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+            </div>
 
             {getGoogleMapsUrl(selectedEvent.mapUrl) && (
               <a

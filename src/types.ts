@@ -121,6 +121,12 @@ export interface HotInfoItem {
   tag?: string;
   tagEn?: string;
   actionUrl?: string;
+  highlights?: string[];
+  highlightsEn?: string[];
+  tips?: string;
+  tipsEn?: string;
+  locationName?: string;
+  locationNameEn?: string;
 }
 
 export interface AppSettings {
@@ -132,9 +138,6 @@ export interface AppSettings {
   heroTextColor?: string;
   heroTextTheme?: 'black' | 'white' | 'red' | 'gold' | 'custom';
   heroTextShadow?: boolean;
-  bgAudioUrl?: string;
-  bgAudioTitle?: string;
-  bgAudioAutoPlay?: boolean;
 }
 
 export interface FormAIItineraryActivity {

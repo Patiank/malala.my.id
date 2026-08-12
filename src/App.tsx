@@ -1,17 +1,19 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { Flame } from 'lucide-react';
+import { Flame, RefreshCw } from 'lucide-react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ImageRevealBackground } from './components/ImageRevealBackground';
 import { Drawers } from './components/Drawers';
 import { Toast } from './components/Toast';
+import { NewsModal } from './components/NewsModal';
 import { DrawerType, ToastNotice } from './types';
+import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
-import { AudioPlayer } from './components/AudioPlayer';
 
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
+  const [selectedNews, setSelectedNews] = useState<HotInfoItem | null>(null);
   const [lang, setLang] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('malala_lang');
@@ -32,7 +34,65 @@ export default function App() {
     return [];
   });
   const [toasts, setToasts] = useState<ToastNotice[]>([]);
+  const [isRefreshingTicker, setIsRefreshingTicker] = useState<boolean>(false);
   const dataStore = useData();
+
+  // Automatic daily refresh for Hot Info news ticker via Gemini AI
+  useEffect(() => {
+    const autoRefreshDaily = async () => {
+      try {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const lastAutoRefresh = localStorage.getItem('malala_hotinfo_last_auto_refresh');
+        if (lastAutoRefresh !== todayStr) {
+          setIsRefreshingTicker(true);
+          const res = await fetch('/api/ai/fetch-hot-info', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ language: lang })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
+              await dataStore.updateHotInfoItems(data);
+              localStorage.setItem('malala_hotinfo_last_auto_refresh', todayStr);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Daily auto-refresh hot info error:", e);
+      } finally {
+        setIsRefreshingTicker(false);
+      }
+    };
+
+    const timer = setTimeout(() => {
+      autoRefreshDaily();
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRefreshTicker = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsRefreshingTicker(true);
+    try {
+      const res = await fetch('/api/ai/fetch-hot-info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: lang })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (dataStore.updateHotInfoItems) {
+          await dataStore.updateHotInfoItems(data);
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to refresh ticker:', err);
+    } finally {
+      setIsRefreshingTicker(false);
+    }
+  };
 
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -126,12 +186,12 @@ export default function App() {
         baseVideo={dataStore.appSettings.baseVideo}
       />
 
-      {/* Fixed Vertical Hot Info Trigger (Far Left) */}
+      {/* Fixed Vertical Hot Info Trigger (Far Left - Hidden on mobile) */}
       <button
         onClick={() => handleOpenDrawer('hotinfo')}
         onMouseEnter={handleMouseEnterHotInfo}
         onMouseLeave={handleMouseLeaveHotInfo}
-        className={`fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-red-600 hover:bg-black text-white transition-all duration-300 py-4 px-2.5 rounded-r-xl flex flex-col items-center gap-3 shadow-2xl group border border-l-0 border-red-700 hover:border-gray-900 cursor-pointer focus:outline-none select-none ${
+        className={`hidden sm:flex fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-red-600 hover:bg-black text-white transition-all duration-300 py-4 px-2.5 rounded-r-xl flex-col items-center gap-3 shadow-2xl group border border-l-0 border-red-700 hover:border-gray-900 cursor-pointer focus:outline-none select-none ${
           activeDrawer === 'hotinfo' ? 'bg-black ring-2 ring-red-500' : ''
         }`}
         title={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
@@ -166,6 +226,64 @@ export default function App() {
       {/* Main Hero */}
       <Hero onOpenDrawer={handleOpenDrawer} lang={lang} appSettings={dataStore.appSettings} />
 
+      {/* Breaking News Ticker Bar (Placed at the very bottom) */}
+      <div 
+        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-colors shadow-2xl backdrop-blur-md"
+      >
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button 
+            onClick={() => handleOpenDrawer('hotinfo')}
+            className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
+          >
+            <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
+            <span>{lang === 'en' ? 'HOT INFO' : 'HOT INFO TERKINI'}</span>
+          </button>
+          
+          <button
+            onClick={handleRefreshTicker}
+            disabled={isRefreshingTicker}
+            title={lang === 'en' ? 'Refresh real-time news' : 'Perbarui berita real-time'}
+            className="bg-red-950/80 hover:bg-red-900 border border-red-600/50 text-red-300 p-1 rounded shrink-0 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingTicker ? 'animate-spin text-yellow-400' : ''}`} />
+          </button>
+        </div>
+
+        <div className="overflow-hidden whitespace-nowrap w-full relative">
+          <div className="inline-flex items-center gap-8 animate-marquee hover:[animation-play-state:paused] font-jakarta text-xs text-gray-200">
+            {[...dataStore.hotInfoItems, ...dataStore.hotInfoItems].map((news, idx) => {
+              const isEn = lang === 'en';
+              const cat = isEn && news.categoryEn ? news.categoryEn : news.category;
+              const titleText = isEn && news.titleEn ? news.titleEn : news.title;
+              const dateText = isEn && news.dateEn ? news.dateEn : news.date;
+              return (
+                <button
+                  key={`${news.id}-${idx}`}
+                  onClick={() => {
+                    setSelectedNews(news);
+                    handleOpenDrawer('hotinfo');
+                  }}
+                  className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group"
+                >
+                  <span className="font-bold text-red-400 group-hover:text-red-300">[{cat}]</span>
+                  <span className="underline-offset-2 group-hover:underline">{titleText}</span>
+                  <span className="text-gray-400 font-mono text-[10px]">({dateText})</span>
+                  <span className="text-gray-600 ml-4">•</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <button 
+          onClick={() => handleOpenDrawer('hotinfo')}
+          className="shrink-0 text-[10px] font-jakarta font-bold text-yellow-400 uppercase tracking-wider hidden sm:flex items-center gap-1 hover:underline cursor-pointer ml-1"
+        >
+          <span>{lang === 'en' ? 'View All' : 'Lihat Semua'}</span>
+          <span>→</span>
+        </button>
+      </div>
+
       {/* Drawers */}
       <Drawers
         activeDrawer={activeDrawer}
@@ -177,19 +295,20 @@ export default function App() {
         lang={lang}
         onMouseEnterDrawer={handleMouseEnterHotInfo}
         onMouseLeaveDrawer={handleMouseLeaveHotInfo}
+        onSelectNews={(news) => setSelectedNews(news)}
+      />
+
+      {/* Center News Detail Pop-up Modal */}
+      <NewsModal
+        item={selectedNews}
+        onClose={() => setSelectedNews(null)}
+        lang={lang}
       />
 
       {/* Toast Notifications */}
       <Toast
         toasts={toasts}
         onDismiss={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))}
-      />
-
-      {/* MP3 Audio Player */}
-      <AudioPlayer
-        lang={lang}
-        customAudioUrl={dataStore.appSettings.bgAudioUrl}
-        customAudioTitle={dataStore.appSettings.bgAudioTitle}
       />
     </div>
   );

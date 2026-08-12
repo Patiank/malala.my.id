@@ -5,12 +5,12 @@ import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_
 import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
 
 export function useData() {
-  const [destinations, setDestinations] = useState<Destination[]>([]);
-  const [cultureItems, setCultureItems] = useState<CultureItem[]>([]);
-  const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>([]);
-  const [eventItems, setEventItems] = useState<EventItem[]>([]);
-  const [downloadItems, setDownloadItems] = useState<DownloadItem[]>([]);
-  const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>([]);
+  const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
+  const [cultureItems, setCultureItems] = useState<CultureItem[]>(CULTURE_ITEMS);
+  const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>(CULINARY_ITEMS);
+  const [eventItems, setEventItems] = useState<EventItem[]>(EVENTS_SCHEDULE);
+  const [downloadItems, setDownloadItems] = useState<DownloadItem[]>(DOWNLOAD_ITEMS);
+  const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>(HOT_INFO_ITEMS);
   const [appSettings, setAppSettings] = useState<AppSettings>(() => {
     if (typeof window !== 'undefined') {
       try {
@@ -29,54 +29,173 @@ export function useData() {
   });
 
   useEffect(() => {
-    // We subscribe to all collections
+    // We subscribe to all collections and merge missing default items automatically
     const unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as Destination;
-        return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
-      });
-      if (data.length > 0) setDestinations(data);
-    }, (err) => console.warn("Firestore destinations error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as Destination;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+      
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = DESTINATIONS.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setDestinations(merged.length > 0 ? merged : DESTINATIONS);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'destinations', item.id), {
+            ...item,
+            titleEn: item.titleEn || item.title,
+            categoryEn: item.categoryEn || item.category,
+            tagEn: item.tagEn || item.tag,
+            descriptionEn: item.descriptionEn || item.description,
+            highlightsEn: item.highlightsEn || item.highlights,
+            bestTimeEn: item.bestTimeEn || item.bestTime,
+            locationDetailsEn: item.locationDetailsEn || item.locationDetails
+          }).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore destinations error:", err);
+      setDestinations(DESTINATIONS);
+    });
 
     const unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as CultureItem;
-        return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
-      });
-      if (data.length > 0) setCultureItems(data);
-    }, (err) => console.warn("Firestore cultures error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as CultureItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+      
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = CULTURE_ITEMS.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setCultureItems(merged.length > 0 ? merged : CULTURE_ITEMS);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'cultures', item.id), {
+            ...item,
+            titleEn: item.titleEn || item.title,
+            categoryEn: item.categoryEn || item.category,
+            descriptionEn: item.descriptionEn || item.description,
+            philosophyEn: item.philosophyEn || item.philosophy,
+            originEn: item.originEn || item.origin
+          }).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore cultures error:", err);
+      setCultureItems(CULTURE_ITEMS);
+    });
 
     const unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as CulinaryItem;
-        return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
-      });
-      if (data.length > 0) setCulinaryItems(data);
-    }, (err) => console.warn("Firestore culinaries error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as CulinaryItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = CULINARY_ITEMS.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setCulinaryItems(merged.length > 0 ? merged : CULINARY_ITEMS);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'culinaries', item.id), {
+            ...item,
+            titleEn: item.titleEn || item.title,
+            typeEn: item.typeEn || item.type,
+            originEn: item.originEn || item.origin,
+            descriptionEn: item.descriptionEn || item.description,
+            flavorProfileEn: item.flavorProfileEn || item.flavorProfile
+          }).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore culinaries error:", err);
+      setCulinaryItems(CULINARY_ITEMS);
+    });
 
     const unsubEvt = onSnapshot(collection(db, 'events'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as EventItem;
-        return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
-      });
-      if (data.length > 0) setEventItems(data);
-    }, (err) => console.warn("Firestore events error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as EventItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = EVENTS_SCHEDULE.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setEventItems(merged.length > 0 ? merged : EVENTS_SCHEDULE);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'events', item.id), {
+            ...item,
+            titleEn: item.titleEn || item.title,
+            scheduleEn: item.scheduleEn || item.schedule,
+            locationEn: item.locationEn || item.location,
+            descriptionEn: item.descriptionEn || item.description
+          }).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore events error:", err);
+      setEventItems(EVENTS_SCHEDULE);
+    });
 
     const unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as DownloadItem;
-        return { id: doc.id, ...item };
-      });
-      if (data.length > 0) setDownloadItems(data);
-    }, (err) => console.warn("Firestore downloads error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as DownloadItem;
+          return { id: doc.id, ...item };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = DOWNLOAD_ITEMS.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setDownloadItems(merged.length > 0 ? merged : DOWNLOAD_ITEMS);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'downloads', item.id), item).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore downloads error:", err);
+      setDownloadItems(DOWNLOAD_ITEMS);
+    });
 
     const unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
-      const data = snapshot.docs.map(doc => {
-        const item = doc.data() as HotInfoItem;
-        return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
-      });
-      if (data.length > 0) setHotInfoItems(data);
-    }, (err) => console.warn("Firestore hotinfo error:", err));
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as HotInfoItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+
+      const firestoreIds = new Set(data.map(i => i.id));
+      const missingDefaults = HOT_INFO_ITEMS.filter(item => !firestoreIds.has(item.id));
+      const merged = [...data, ...missingDefaults];
+      setHotInfoItems(merged.length > 0 ? merged : HOT_INFO_ITEMS);
+
+      if (missingDefaults.length > 0) {
+        missingDefaults.forEach(item => {
+          setDoc(doc(db, 'hotinfo', item.id), item).catch(() => {});
+        });
+      }
+    }, (err) => {
+      console.warn("Firestore hotinfo error:", err);
+      setHotInfoItems(HOT_INFO_ITEMS);
+    });
 
     const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
       if (docSnap.exists()) {
@@ -100,9 +219,6 @@ export function useData() {
         const effectiveHeroTextColor = localSettings?.heroTextColor || data.heroTextColor || '#000000';
         const effectiveHeroTextTheme = localSettings?.heroTextTheme || data.heroTextTheme || 'black';
         const effectiveHeroTextShadow = localSettings?.heroTextShadow !== undefined ? localSettings.heroTextShadow : (data.heroTextShadow !== undefined ? data.heroTextShadow : true);
-        const effectiveAudioUrl = localSettings?.bgAudioUrl || data.bgAudioUrl || '';
-        const effectiveAudioTitle = localSettings?.bgAudioTitle || data.bgAudioTitle || '';
-        const effectiveAudioAutoPlay = localSettings?.bgAudioAutoPlay !== undefined ? localSettings.bgAudioAutoPlay : (data.bgAudioAutoPlay !== undefined ? data.bgAudioAutoPlay : true);
 
         const mergedSettings: AppSettings = {
           bgMediaType: effectiveMediaType,
@@ -113,9 +229,6 @@ export function useData() {
           heroTextColor: effectiveHeroTextColor,
           heroTextTheme: effectiveHeroTextTheme,
           heroTextShadow: effectiveHeroTextShadow,
-          bgAudioUrl: effectiveAudioUrl,
-          bgAudioTitle: effectiveAudioTitle,
-          bgAudioAutoPlay: effectiveAudioAutoPlay,
         };
 
         setAppSettings(mergedSettings);
@@ -164,9 +277,6 @@ export function useData() {
         heroTextColor: newSettings.heroTextColor || '#000000',
         heroTextTheme: newSettings.heroTextTheme || 'black',
         heroTextShadow: newSettings.heroTextShadow !== undefined ? newSettings.heroTextShadow : true,
-        bgAudioUrl: newSettings.bgAudioUrl ? getDirectDriveUrl(newSettings.bgAudioUrl) : '',
-        bgAudioTitle: newSettings.bgAudioTitle || '',
-        bgAudioAutoPlay: newSettings.bgAudioAutoPlay !== undefined ? newSettings.bgAudioAutoPlay : true,
       };
       setAppSettings(formatted);
 
@@ -185,8 +295,6 @@ export function useData() {
         heroTextColor: formatted.heroTextColor,
         heroTextTheme: formatted.heroTextTheme,
         heroTextShadow: formatted.heroTextShadow,
-        bgAudioTitle: formatted.bgAudioTitle,
-        bgAudioAutoPlay: formatted.bgAudioAutoPlay,
       };
       if (formatted.baseImage && (!formatted.baseImage.startsWith('data:') || formatted.baseImage.length < 800000)) {
         firestorePayload.baseImage = formatted.baseImage;
@@ -196,9 +304,6 @@ export function useData() {
       }
       if (formatted.baseVideo && (!formatted.baseVideo.startsWith('data:') || formatted.baseVideo.length < 800000)) {
         firestorePayload.baseVideo = formatted.baseVideo;
-      }
-      if (formatted.bgAudioUrl && (!formatted.bgAudioUrl.startsWith('data:') || formatted.bgAudioUrl.length < 800000)) {
-        firestorePayload.bgAudioUrl = formatted.bgAudioUrl;
       }
 
       await setDoc(doc(db, 'settings', 'hero'), firestorePayload, { merge: true });
@@ -219,36 +324,36 @@ export function useData() {
     const batch = writeBatch(db);
     DESTINATIONS.forEach(item => batch.set(doc(db, 'destinations', item.id), {
       ...item,
-      titleEn: `[EN] ${item.title}`,
-      categoryEn: item.category,
-      tagEn: `[EN] ${item.tag}`,
-      descriptionEn: `[EN] ${item.description}`,
-      highlightsEn: item.highlights.map(h => `[EN] ${h}`),
-      bestTimeEn: `[EN] ${item.bestTime}`,
-      locationDetailsEn: `[EN] ${item.locationDetails}`
+      titleEn: item.titleEn || item.title,
+      categoryEn: item.categoryEn || item.category,
+      tagEn: item.tagEn || item.tag,
+      descriptionEn: item.descriptionEn || item.description,
+      highlightsEn: item.highlightsEn || item.highlights,
+      bestTimeEn: item.bestTimeEn || item.bestTime,
+      locationDetailsEn: item.locationDetailsEn || item.locationDetails
     }));
     CULTURE_ITEMS.forEach(item => batch.set(doc(db, 'cultures', item.id), {
       ...item,
-      titleEn: `[EN] ${item.title}`,
-      categoryEn: item.category,
-      descriptionEn: `[EN] ${item.description}`,
-      philosophyEn: `[EN] ${item.philosophy}`,
-      originEn: `[EN] ${item.origin}`
+      titleEn: item.titleEn || item.title,
+      categoryEn: item.categoryEn || item.category,
+      descriptionEn: item.descriptionEn || item.description,
+      philosophyEn: item.philosophyEn || item.philosophy,
+      originEn: item.originEn || item.origin
     }));
     CULINARY_ITEMS.forEach(item => batch.set(doc(db, 'culinaries', item.id), {
       ...item,
-      titleEn: `[EN] ${item.title}`,
-      typeEn: item.type,
-      originEn: `[EN] ${item.origin}`,
-      descriptionEn: `[EN] ${item.description}`,
-      flavorProfileEn: `[EN] ${item.flavorProfile}`
+      titleEn: item.titleEn || item.title,
+      typeEn: item.typeEn || item.type,
+      originEn: item.originEn || item.origin,
+      descriptionEn: item.descriptionEn || item.description,
+      flavorProfileEn: item.flavorProfileEn || item.flavorProfile
     }));
     EVENTS_SCHEDULE.forEach(item => batch.set(doc(db, 'events', item.id), {
       ...item,
-      titleEn: `[EN] ${item.title}`,
-      scheduleEn: `[EN] ${item.schedule}`,
-      locationEn: `[EN] ${item.location}`,
-      descriptionEn: `[EN] ${item.description}`
+      titleEn: item.titleEn || item.title,
+      scheduleEn: item.scheduleEn || item.schedule,
+      locationEn: item.locationEn || item.location,
+      descriptionEn: item.descriptionEn || item.description
     }));
     DOWNLOAD_ITEMS.forEach(item => batch.set(doc(db, 'downloads', item.id), item));
     HOT_INFO_ITEMS.forEach(item => batch.set(doc(db, 'hotinfo', item.id), item));
@@ -297,6 +402,21 @@ export function useData() {
     descriptionEn: item.descriptionEn || item.description
   }));
 
+  const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
+    setHotInfoItems(newItems);
+    try {
+      const batch = writeBatch(db);
+      newItems.forEach(item => {
+        if (item.id) {
+          batch.set(doc(db, 'hotinfo', item.id), item);
+        }
+      });
+      await batch.commit();
+    } catch (e) {
+      console.warn("Failed to sync hotinfo to firestore:", e);
+    }
+  };
+
   return {
     destinations: destinations.length > 0 ? destinations : getDestinationsWithEn(),
     cultureItems: cultureItems.length > 0 ? cultureItems : getCultureWithEn(),
@@ -308,7 +428,8 @@ export function useData() {
     saveItem,
     saveSettings,
     deleteItem,
-    seedData
+    seedData,
+    updateHotInfoItems
   };
 }
 

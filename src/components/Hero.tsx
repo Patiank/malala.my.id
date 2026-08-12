@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Sparkles, Compass, Download, Map, X } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
+import { WeatherWidget } from './WeatherWidget';
 import { DrawerType, AppSettings } from '../types';
 import { Language, translations } from '../lib/translations';
 
@@ -38,7 +39,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
       <main
         className="flex-1 flex flex-col lg:flex-row justify-between items-stretch lg:items-center z-10 relative px-[var(--pad-x)]"
         style={{
-          paddingBlock: 'var(--main-py)',
+          paddingTop: 'var(--main-py)',
+          paddingBottom: 'clamp(5rem, 8vh, 4rem)',
           gap: 'var(--section-gap)',
         }}
       >
@@ -135,28 +137,29 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
             <CornerBracket type="BR" />
           </div>
 
-          {/* Official Tourism Board Metadata */}
+          {/* Official Tourism Board Metadata & Real-time Weather Widget */}
           <div className="flex flex-col space-y-4">
-            <div className="flex items-center justify-between transition-colors duration-300">
-              <PemprovSumbarLogo size={48} />
-            </div>
+            <WeatherWidget lang={lang} textColor={heroTextColor} textShadow={heroTextShadow} />
 
-            <div
-              className="font-jakarta font-bold uppercase tracking-[0.16em] leading-tight transition-colors duration-300"
-              style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
-            >
-              <div>DINAS PARIWISATA</div>
+            <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
+              <PemprovSumbarLogo size={48} className="shrink-0" />
               <div
-                onClick={() => onOpenDrawer('admin')}
-                className="cursor-text"
-                title=" "
+                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300"
+                style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
               >
-                PROVINSI SUMATERA BARAT.
-              </div>
-              <div style={{ color: heroTextColor, opacity: 0.75 }} className="font-normal text-xs mt-1.5 tracking-normal normal-case transition-colors duration-300">
-                {lang === 'en'
-                  ? 'Official Tourism Portal for West Sumatra.'
-                  : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
+                <div>DINAS PARIWISATA</div>
+                <div
+                  onClick={() => onOpenDrawer('admin')}
+                  className="cursor-pointer hover:underline"
+                  title="Dinas Pariwisata Sumatera Barat"
+                >
+                  PROVINSI SUMATERA BARAT
+                </div>
+                <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-1 tracking-normal normal-case transition-colors duration-300">
+                  {lang === 'en'
+                    ? 'Official Tourism Portal for West Sumatra.'
+                    : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
+                </div>
               </div>
             </div>
           </div>

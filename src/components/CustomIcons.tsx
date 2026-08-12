@@ -91,13 +91,63 @@ export const CornerBracket: React.FC<CornerBracketProps> = ({ type, className = 
 };
 
 export const PemprovSumbarLogo: React.FC<{ className?: string; size?: number | string }> = ({ className = '', size = 56 }) => {
+  const [imgSrc, setImgSrc] = React.useState<string>('/logo_sumbar.svg');
+  const [hasError, setHasError] = React.useState<boolean>(false);
+
   const widthStyle = typeof size === 'number' ? `${size}px` : size;
+
+  const handleError = () => {
+    if (imgSrc === '/logo_sumbar.svg') {
+      setImgSrc('/logo_sumbar.png');
+    } else if (imgSrc === '/logo_sumbar.png') {
+      // Fallback to Wikipedia official high-res PNG for West Sumatra Coat of Arms (path 6/62)
+      setImgSrc('https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Coat_of_arms_of_West_Sumatra.svg/500px-Coat_of_arms_of_West_Sumatra.svg.png');
+    } else {
+      setHasError(true);
+    }
+  };
+
+  if (hasError) {
+    return (
+      <svg
+        style={{ width: widthStyle, height: 'auto' }}
+        viewBox="0 0 100 120"
+        className={`inline-block drop-shadow-md select-none ${className}`}
+        aria-label="Logo Pemprov Sumatera Barat"
+      >
+        <path
+          d="M 10,10 L 90,10 C 90,10 90,80 50,110 C 10,80 10,10 10,10 Z"
+          fill="#1e3a8a"
+          stroke="#eab308"
+          strokeWidth="3"
+        />
+        <path
+          d="M 15,15 L 85,15 C 85,15 85,75 50,102 C 15,75 15,15 15,15 Z"
+          fill="#0284c7"
+        />
+        <path
+          d="M 25,60 L 35,40 L 42,48 L 50,30 L 58,48 L 65,40 L 75,60 L 50,55 Z"
+          fill="#eab308"
+        />
+        <polygon
+          points="50,18 53,26 61,26 55,31 57,39 50,34 43,39 45,31 39,26 47,26"
+          fill="#ffffff"
+        />
+        <rect x="20" y="70" width="60" height="14" rx="3" fill="#dc2626" />
+        <text x="50" y="80" fill="#ffffff" fontSize="8" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">
+          SUMBAR
+        </text>
+      </svg>
+    );
+  }
+
   return (
     <img
-      src="/logo_sumbar.png"
+      src={imgSrc}
       alt="Logo Resmi Pemerintah Provinsi Sumatera Barat"
-      style={{ width: widthStyle, height: 'auto' }}
-      className={`inline-block filter drop-shadow-md object-contain select-none ${className}`}
+      onError={handleError}
+      style={{ width: widthStyle, height: 'auto', maxHeight: typeof size === 'number' ? `${size * 1.5}px` : 'auto' }}
+      className={`inline-block filter drop-shadow-md object-contain select-none transition-all duration-300 ${className}`}
     />
   );
 };
