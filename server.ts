@@ -8,6 +8,13 @@ async function startServer() {
   const PORT = Number(process.env.PORT) || 5000;
 
   app.use(express.json());
+  app.use((err: any, req: any, res: any, next: any) => {
+    if (err && err.status === 400 && 'body' in err) {
+      req.body = {};
+      return next();
+    }
+    next(err);
+  });
 
   // API Route: AI Travel Planner (UNI MALA AI Minangkabau)
   app.post("/api/ai/itinerary", async (req, res) => {
@@ -215,7 +222,7 @@ Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangata
         }
       ];
 
-      let rawText = '';
+      let parsedData: any[] = [];
 
       if (apiKey) {
         try {
@@ -268,23 +275,19 @@ Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;
               tools: [{ googleSearch: {} }],
             }
           });
-          rawText = response.text || '';
+          const rawText = response.text || '';
+          const jsonMatch = rawText.match(/\[\s*\{[\s\S]*\}\s*\]/);
+          if (jsonMatch) {
+            parsedData = JSON.parse(jsonMatch[0]);
+          }
         } catch (genError: any) {
-          console.log("AI Hot Info fetch falling back to default news items.");
-          rawText = JSON.stringify(fallbackData);
+          console.log("AI Hot Info fetch falling back to default news items:", genError?.message);
         }
-      } else {
-        rawText = JSON.stringify(fallbackData);
       }
 
-      const jsonMatch = rawText.match(/\[\s*\{[\s\S]*\}\s*\]/);
-
-      if (!jsonMatch) {
-        console.error("Raw AI response:", rawText);
-        throw new Error("Gagal mengekstrak data JSON dari respon AI.");
+      if (!Array.isArray(parsedData) || parsedData.length === 0) {
+        parsedData = fallbackData;
       }
-
-      const parsedData = JSON.parse(jsonMatch[0]);
 
       // Enrich each item with a high-definition topic-matched image URL
       const enrichedData = parsedData.map((item: any, idx: number) => {
