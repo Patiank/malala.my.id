@@ -124,7 +124,6 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Hot Info & Download state
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
-  const [dynamicHotInfo, setDynamicHotInfo] = useState<HotInfoItem[] | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
 
   const handleRefreshHotInfo = async () => {
@@ -137,9 +136,8 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
       if (res.ok) {
         const data = await res.json();
-        setDynamicHotInfo(data);
-        if (dataStore.updateHotInfoItems) {
-          dataStore.updateHotInfoItems(data);
+        if (dataStore.updateHotInfoItems && Array.isArray(data) && data.length > 0) {
+          await dataStore.updateHotInfoItems(data);
         }
       } else {
         alert(lang === 'en' ? 'Failed to fetch live updates.' : 'Gagal memperbarui berita wisata.');
@@ -1508,7 +1506,7 @@ export const Drawers: React.FC<DrawersProps> = ({
               {/* Category Filter Pills & Refresh Button */}
               <div className="flex items-center justify-between gap-2 pb-2">
                 <div className="flex items-center gap-2 overflow-x-auto scrollbar-none text-xs font-jakarta flex-1">
-                  {Array.from(new Set(['Semua', ...(dynamicHotInfo || (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
+                  {Array.from(new Set(['Semua', ...(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
                     <button
                       key={cat}
                       onClick={() => setHotInfoCategory(cat)}
@@ -1536,7 +1534,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
               {/* Hot Info Items List */}
               <div className="space-y-4">
-                {(dynamicHotInfo || (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS))
+                {(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                   .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory)
                   .map((item: any, idx: number) => {
                     const isEn = lang === 'en';

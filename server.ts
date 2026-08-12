@@ -149,26 +149,88 @@ Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangata
   app.post("/api/ai/fetch-hot-info", async (req, res) => {
     try {
       const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey) {
-        return res.status(401).json({ error: "API key tidak tersedia." });
-      }
-
       const { language = 'id' } = req.body;
       const isEnglish = language === 'en';
 
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
+      const fallbackData = [
+        {
+          "id": "news-fallback-1",
+          "title": "Festival Pesona Minangkabau 2026 Segera Digelar",
+          "titleEn": "Minangkabau Charm Festival 2026 to be Held Soon",
+          "date": "Oktober 2026",
+          "dateEn": "October 2026",
+          "category": "Event",
+          "categoryEn": "Event",
+          "description": "Pemerintah Provinsi Sumatera Barat bersiap menyelenggarakan Festival Pesona Minangkabau 2026 yang akan menampilkan ragam kebudayaan autentik dari seluruh penjuru Ranah Minang. Acara tahunan ini menjadi magnet bagi ribuan wisatawan nusantara dan mancanegara yang ingin menyaksikan langsung kemegahan budaya lokal.\n\nBerpusat di Istano Basa Pagaruyung, festival ini akan menghadirkan pawai budaya dengan ribuan peserta berpakaian adat, pameran kuliner tradisional yang menggugah selera, serta pertunjukan seni kolosal yang memukau. Selain itu, pengunjung juga bisa mengikuti berbagai lokakarya kerajinan tangan khas Minang.\n\nPara pelaku UMKM lokal pun turut dilibatkan secara maksimal untuk memperkenalkan produk unggulan mereka, mulai dari tenun songket, ukiran kayu, hingga variasi makanan ringan khas Sumatera Barat. Pastikan Anda merencanakan kunjungan ke Batusangkar untuk menjadi bagian dari perayaan budaya terbesar ini.",
+          "descriptionEn": "The West Sumatra Provincial Government is preparing to host the 2026 Minangkabau Charm Festival, which will showcase a variety of authentic cultures from across the Minang realm. This annual event attracts thousands of domestic and international tourists eager to witness the grandeur of local culture firsthand.\n\nCentered at the Istano Basa Pagaruyung, the festival will feature a cultural parade with thousands of participants in traditional attire, mouthwatering traditional culinary exhibitions, and mesmerizing colossal art performances. Additionally, visitors can participate in various traditional Minang handicraft workshops.\n\nLocal MSMEs are also maximally involved to introduce their premium products, ranging from songket weaving and wood carving to various West Sumatran snacks. Make sure to plan your visit to Batusangkar to be part of this grand cultural celebration.",
+          "tag": "Populer",
+          "tagEn": "Popular",
+          "actionUrl": "",
+          "highlights": ["Pawai Ribuan Baju Adat", "Kuliner Tradisional Terbesar", "Pertunjukan Seni Kolosal"],
+          "highlightsEn": ["Thousands in Traditional Attire Parade", "Largest Traditional Culinary Expo", "Colossal Art Performances"],
+          "tips": "Datanglah lebih awal untuk mendapatkan spot foto terbaik saat pawai.",
+          "tipsEn": "Arrive early to secure the best photo spots during the parade.",
+          "locationName": "Istano Basa Pagaruyung, Tanah Datar",
+          "locationNameEn": "Pagaruyung Palace, Tanah Datar"
         },
-      });
+        {
+          "id": "news-fallback-2",
+          "title": "Peresmian Kawasan Ekowisata Baru di Lembah Harau",
+          "titleEn": "Inauguration of New Ecotourism Area in Harau Valley",
+          "date": "Minggu Ini",
+          "dateEn": "This Week",
+          "category": "Berita",
+          "categoryEn": "News",
+          "description": "Lembah Harau kembali menambah daya tariknya dengan diresmikannya kawasan ekowisata baru yang mengusung konsep ramah lingkungan dan pelestarian alam. Langkah ini diambil untuk memberikan alternatif liburan yang menyatu dengan alam tanpa merusak ekosistem asli lembah granit tersebut.\n\nKawasan baru ini dilengkapi dengan fasilitas glamping premium, jalur trekking yang dirancang dengan memperhatikan kontur tanah alami, serta area konservasi burung endemik. Wisatawan kini memiliki kesempatan untuk bermalam di tengah pelukan tebing-tebing raksasa sambil mendengarkan harmoni suara alam yang menenangkan.\n\nSelain menikmati keindahan alam, pengunjung juga akan diedukasi mengenai pentingnya menjaga kelestarian lingkungan dan budaya lokal. Masyarakat setempat turut diberdayakan sebagai pemandu wisata ekologis yang siap berbagi cerita dan kearifan lokal kepada para tamu.",
+          "descriptionEn": "Harau Valley is adding to its appeal with the inauguration of a new ecotourism area that promotes eco-friendly concepts and nature conservation. This step was taken to provide vacation alternatives that blend with nature without harming the original ecosystem of the granite valley.\n\nThe new area is equipped with premium glamping facilities, trekking paths designed with respect for the natural terrain, and an endemic bird conservation area. Tourists now have the opportunity to spend the night embraced by giant cliffs while listening to the soothing harmony of nature's sounds.\n\nBesides enjoying the natural beauty, visitors will also be educated on the importance of preserving the environment and local culture. Local communities are empowered as ecological tour guides ready to share stories and local wisdom with guests.",
+          "tag": "Baru",
+          "tagEn": "New",
+          "actionUrl": "",
+          "highlights": ["Glamping Premium", "Jalur Trekking Ramah Lingkungan", "Edukasi Pelestarian Alam"],
+          "highlightsEn": ["Premium Glamping", "Eco-friendly Trekking Paths", "Nature Conservation Education"],
+          "tips": "Bawa pakaian hangat karena suhu malam hari di lembah cukup dingin.",
+          "tipsEn": "Bring warm clothing as night temperatures in the valley can be quite chilly.",
+          "locationName": "Lembah Harau, Kab. Limapuluh Kota",
+          "locationNameEn": "Harau Valley, Limapuluh Kota Regency"
+        },
+        {
+          "id": "news-fallback-3",
+          "title": "Jalur Kelok 44 Ditata Ulang dengan Gardu Pandang Baru",
+          "titleEn": "Kelok 44 Route Revamped with New Viewing Decks",
+          "date": "Bulan Ini",
+          "dateEn": "This Month",
+          "category": "Pengumuman",
+          "categoryEn": "Announcement",
+          "description": "Dinas Pariwisata Sumatera Barat bersama pemerintah daerah setempat merampungkan penataan ulang kawasan wisata Kelok 44 di Maninjau. Penataan ini mencakup pembuatan spot gardu pandang baru yang lebih aman serta tempat peristirahatan yang nyaman bagi para pengendara dan wisatawan.\n\nDengan hadirnya spot pendukung ini, wisatawan dapat menikmati keindahan panorama Danau Maninjau dari ketinggian dengan rasa aman dan nyaman. Gardu pandang dirancang dengan estetika Minang yang kental, menyajikan pemandangan lanskap alam yang memukau mata.",
+          "descriptionEn": "West Sumatra Tourism Board alongside local government has completed revamping the Kelok 44 tourism area in Maninjau. The project includes new safe viewing decks and comfortable rest stops for drivers and tourists.\n\nWith these new spots, visitors can admire the panoramic view of Lake Maninjau from heights with safety and comfort. Viewing decks are designed with rich Minang aesthetics.",
+          "tag": "Terkini",
+          "tagEn": "Latest",
+          "actionUrl": "",
+          "highlights": ["Gardu Pandang Baru", "Aman & Nyaman", "Panorama Danau Maninjau"],
+          "highlightsEn": ["New Viewing Decks", "Safe & Comfortable", "Lake Maninjau Panorama"],
+          "tips": "Hati-hati saat melintasi tikungan tajam Kelok 44 dan gunakan gigi rendah.",
+          "tipsEn": "Drive carefully on Kelok 44 sharp bends using low gear.",
+          "locationName": "Kelok 44, Kab. Agam",
+          "locationNameEn": "Kelok 44, Agam Regency"
+        }
+      ];
 
-      const currentDateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-      const currentYear = new Date().getFullYear();
+      let rawText = '';
 
-      const prompt = `Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita, event, atau informasi terkini mengenai pariwisata di provinsi Sumatera Barat.
+      if (apiKey) {
+        try {
+          const ai = new GoogleGenAI({
+            apiKey,
+            httpOptions: {
+              headers: {
+                'User-Agent': 'aistudio-build',
+              },
+            },
+          });
+
+          const currentDateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+          const prompt = `Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita, event, atau informasi terkini mengenai pariwisata di provinsi Sumatera Barat.
 
 SANGAT PENTING & KHUSUS:
 1. Cari HANYA informasi/berita yang DIPUBLIKASIKAN DALAM KURUN WAKTU 1 BULAN TERAKHIR dari hari ini (${currentDateStr}).
@@ -199,61 +261,19 @@ Formatkan output HANYA dalam format JSON valid sebagai Array of Objects dengan s
 
 Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;
 
-      let rawText = '';
-      try {
-        const response = await ai.models.generateContent({
-          model: 'gemini-3.6-flash',
-          contents: prompt,
-          config: {
-            tools: [{ googleSearch: {} }],
-          }
-        });
-        rawText = response.text || '';
-      } catch (genError: any) {
-        console.log("AI Hot Info fetch falling back to default news items.");
-        // Fallback data if API quota is exceeded
-        const fallbackData = [
-          {
-            "id": "news-fallback-1",
-            "title": "Festival Pesona Minangkabau 2026 Segera Digelar",
-            "titleEn": "Minangkabau Charm Festival 2026 to be Held Soon",
-            "date": "Oktober 2026",
-            "dateEn": "October 2026",
-            "category": "Event",
-            "categoryEn": "Event",
-            "description": "Pemerintah Provinsi Sumatera Barat bersiap menyelenggarakan Festival Pesona Minangkabau 2026 yang akan menampilkan ragam kebudayaan autentik dari seluruh penjuru Ranah Minang. Acara tahunan ini menjadi magnet bagi ribuan wisatawan nusantara dan mancanegara yang ingin menyaksikan langsung kemegahan budaya lokal.\n\nBerpusat di Istano Basa Pagaruyung, festival ini akan menghadirkan pawai budaya dengan ribuan peserta berpakaian adat, pameran kuliner tradisional yang menggugah selera, serta pertunjukan seni kolosal yang memukau. Selain itu, pengunjung juga bisa mengikuti berbagai lokakarya kerajinan tangan khas Minang.\n\nPara pelaku UMKM lokal pun turut dilibatkan secara maksimal untuk memperkenalkan produk unggulan mereka, mulai dari tenun songket, ukiran kayu, hingga variasi makanan ringan khas Sumatera Barat. Pastikan Anda merencanakan kunjungan ke Batusangkar untuk menjadi bagian dari perayaan budaya terbesar ini.",
-            "descriptionEn": "The West Sumatra Provincial Government is preparing to host the 2026 Minangkabau Charm Festival, which will showcase a variety of authentic cultures from across the Minang realm. This annual event attracts thousands of domestic and international tourists eager to witness the grandeur of local culture firsthand.\n\nCentered at the Istano Basa Pagaruyung, the festival will feature a cultural parade with thousands of participants in traditional attire, mouthwatering traditional culinary exhibitions, and mesmerizing colossal art performances. Additionally, visitors can participate in various traditional Minang handicraft workshops.\n\nLocal MSMEs are also maximally involved to introduce their premium products, ranging from songket weaving and wood carving to various West Sumatran snacks. Make sure to plan your visit to Batusangkar to be part of this grand cultural celebration.",
-            "tag": "Populer",
-            "tagEn": "Popular",
-            "actionUrl": "",
-            "highlights": ["Pawai Ribuan Baju Adat", "Kuliner Tradisional Terbesar", "Pertunjukan Seni Kolosal"],
-            "highlightsEn": ["Thousands in Traditional Attire Parade", "Largest Traditional Culinary Expo", "Colossal Art Performances"],
-            "tips": "Datanglah lebih awal untuk mendapatkan spot foto terbaik saat pawai.",
-            "tipsEn": "Arrive early to secure the best photo spots during the parade.",
-            "locationName": "Istano Basa Pagaruyung, Tanah Datar",
-            "locationNameEn": "Pagaruyung Palace, Tanah Datar"
-          },
-          {
-            "id": "news-fallback-2",
-            "title": "Peresmian Kawasan Ekowisata Baru di Lembah Harau",
-            "titleEn": "Inauguration of New Ecotourism Area in Harau Valley",
-            "date": "Minggu Ini",
-            "dateEn": "This Week",
-            "category": "Berita",
-            "categoryEn": "News",
-            "description": "Lembah Harau kembali menambah daya tariknya dengan diresmikannya kawasan ekowisata baru yang mengusung konsep ramah lingkungan dan pelestarian alam. Langkah ini diambil untuk memberikan alternatif liburan yang menyatu dengan alam tanpa merusak ekosistem asli lembah granit tersebut.\n\nKawasan baru ini dilengkapi dengan fasilitas glamping premium, jalur trekking yang dirancang dengan memperhatikan kontur tanah alami, serta area konservasi burung endemik. Wisatawan kini memiliki kesempatan untuk bermalam di tengah pelukan tebing-tebing raksasa sambil mendengarkan harmoni suara alam yang menenangkan.\n\nSelain menikmati keindahan alam, pengunjung juga akan diedukasi mengenai pentingnya menjaga kelestarian lingkungan dan budaya lokal. Masyarakat setempat turut diberdayakan sebagai pemandu wisata ekologis yang siap berbagi cerita dan kearifan lokal kepada para tamu.",
-            "descriptionEn": "Harau Valley is adding to its appeal with the inauguration of a new ecotourism area that promotes eco-friendly concepts and nature conservation. This step was taken to provide vacation alternatives that blend with nature without harming the original ecosystem of the granite valley.\n\nThe new area is equipped with premium glamping facilities, trekking paths designed with respect for the natural terrain, and an endemic bird conservation area. Tourists now have the opportunity to spend the night embraced by giant cliffs while listening to the soothing harmony of nature's sounds.\n\nBesides enjoying the natural beauty, visitors will also be educated on the importance of preserving the environment and local culture. Local communities are empowered as ecological tour guides ready to share stories and local wisdom with guests.",
-            "tag": "Baru",
-            "tagEn": "New",
-            "actionUrl": "",
-            "highlights": ["Glamping Premium", "Jalur Trekking Ramah Lingkungan", "Edukasi Pelestarian Alam"],
-            "highlightsEn": ["Premium Glamping", "Eco-friendly Trekking Paths", "Nature Conservation Education"],
-            "tips": "Bawa pakaian hangat karena suhu malam hari di lembah cukup dingin.",
-            "tipsEn": "Bring warm clothing as night temperatures in the valley can be quite chilly.",
-            "locationName": "Lembah Harau, Kab. Limapuluh Kota",
-            "locationNameEn": "Harau Valley, Limapuluh Kota Regency"
-          }
-        ];
+          const response = await ai.models.generateContent({
+            model: 'gemini-3.6-flash',
+            contents: prompt,
+            config: {
+              tools: [{ googleSearch: {} }],
+            }
+          });
+          rawText = response.text || '';
+        } catch (genError: any) {
+          console.log("AI Hot Info fetch falling back to default news items.");
+          rawText = JSON.stringify(fallbackData);
+        }
+      } else {
         rawText = JSON.stringify(fallbackData);
       }
 
