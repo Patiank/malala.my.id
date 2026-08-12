@@ -289,52 +289,11 @@ Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;
         parsedData = fallbackData;
       }
 
-      // Enrich each item with a high-definition topic-matched image URL
-      const enrichedData = parsedData.map((item: any, idx: number) => {
-        const title = item.title || item.titleEn || '';
-        const cat = item.category || item.categoryEn || '';
-        const loc = item.locationName || item.locationNameEn || '';
-        const desc = item.description || item.descriptionEn || '';
-        const combined = `${title} ${cat} ${loc} ${desc}`.toLowerCase();
-
-        let imageUrl = item.imageUrl;
-
-        if (!imageUrl || imageUrl.includes('placeholder') || imageUrl.includes('example.com')) {
-          if (combined.includes('kelok 9') || combined.includes('kelok sembilan') || combined.includes('jembatan') || combined.includes('jalur') || combined.includes('cuaca') || combined.includes('tol')) {
-            imageUrl = 'https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('rendang') || combined.includes('sate') || combined.includes('kuliner') || combined.includes('kapau') || combined.includes('makan')) {
-            imageUrl = 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('pagaruyung') || combined.includes('istana') || combined.includes('budaya') || combined.includes('adat') || combined.includes('rumah gadang') || combined.includes('matrilineal')) {
-            imageUrl = 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('lawang') || combined.includes('maninjau') || combined.includes('paralayang') || combined.includes('paragliding')) {
-            imageUrl = 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('harau') || combined.includes('tebing') || combined.includes('geopark') || combined.includes('lembah') || combined.includes('air terjun')) {
-            imageUrl = 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('jam gadang') || combined.includes('bukittinggi') || combined.includes('kota')) {
-            imageUrl = 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('mandeh') || combined.includes('pantai') || combined.includes('laut') || combined.includes('pesisir') || combined.includes('mentawai') || combined.includes('surfing') || combined.includes('pulau')) {
-            imageUrl = 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('singkarak') || combined.includes('danau') || combined.includes('tour de') || combined.includes('sepeda')) {
-            imageUrl = 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('pariangan') || combined.includes('desa') || combined.includes('ekowisata') || combined.includes('nagari')) {
-            imageUrl = 'https://images.unsplash.com/photo-1596422846543-75c6fc197f0a?auto=format&fit=crop&w=800&q=80';
-          } else if (combined.includes('tabuik') || combined.includes('festival') || combined.includes('pacu') || combined.includes('tari') || combined.includes('pesta')) {
-            imageUrl = 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80';
-          } else {
-            const fallbackImages = [
-              'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80'
-            ];
-            imageUrl = fallbackImages[idx % fallbackImages.length];
-          }
-        }
-
+      // Keep imageUrl as explicitly provided or empty (ready for manual upload)
+      const enrichedData = parsedData.map((item: any) => {
         return {
           ...item,
-          imageUrl
+          imageUrl: item.imageUrl || ''
         };
       });
 
