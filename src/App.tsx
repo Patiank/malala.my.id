@@ -261,7 +261,6 @@ export default function App() {
                   key={`${news.id}-${idx}`}
                   onClick={() => {
                     setSelectedNews(news);
-                    handleOpenDrawer('hotinfo');
                   }}
                   className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group"
                 >
