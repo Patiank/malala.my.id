@@ -78,24 +78,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   // Auth state & Admin Whitelist
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<string | null>(null);
+  const defaultAdmins = ['aldoaldiles@gmail.com', 'pemasarandisparsumbar@gmail.com'];
   const [allowedAdminEmails, setAllowedAdminEmails] = useState<string[]>(() => {
     if (appSettings?.allowedAdminEmails && appSettings.allowedAdminEmails.length > 0) {
-      return appSettings.allowedAdminEmails;
+      return Array.from(new Set([...defaultAdmins, ...appSettings.allowedAdminEmails]));
     }
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('malala_allowed_admin_emails');
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return Array.from(new Set([...defaultAdmins, ...parsed]));
+          }
         }
       } catch (e) {
         console.warn('Failed to parse allowed admin emails:', e);
       }
     }
-    return ['aldoaldiles@gmail.com'];
+    return defaultAdmins;
   });
   const [newAdminEmail, setNewAdminEmail] = useState<string>('');
+  const [inputEmail, setInputEmail] = useState<string>('');
 
   // Sync with Firestore appSettings when available
   useEffect(() => {
@@ -320,6 +324,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     setIsAuthenticated(false);
   };
 
+  const handleEmailLoginSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    let formatted = inputEmail.trim().toLowerCase();
+    if (!formatted) {
+      setLoginError('Silakan masukkan alamat email admin.');
+      return;
+    }
+    if (!formatted.includes('@')) {
+      formatted += '@gmail.com';
+    }
+    if (checkIsEmailAllowed(formatted)) {
+      setIsAuthenticated(true);
+      setLoginError(null);
+    } else {
+      setLoginError(`Akses Ditolak: Email '${formatted}' tidak terdaftar sebagai Admin MALALA. Email admin terdaftar: ${allowedAdminEmails.join(', ')}`);
+    }
+  };
+
   const [showPinInput, setShowPinInput] = useState<boolean>(false);
   const [pinCode, setPinCode] = useState<string>('');
 
@@ -345,7 +367,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               Otentikasi Admin Terlindungi
             </h3>
             <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
-              Masuk menggunakan Akun Google resmi yang terdaftar sebagai Admin.
+              Masuk menggunakan Email Admin terdaftar (<span className="font-semibold text-red-600">aldoaldiles@gmail.com</span>).
             </p>
           </div>
 
@@ -355,10 +377,37 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             </div>
           )}
 
+          {/* Form Login Langsung Menggunakan Email */}
+          <form onSubmit={handleEmailLoginSubmit} className="space-y-2.5 text-left pt-1">
+            <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-wider">
+              📧 Email Admin:
+            </label>
+            <input
+              type="email"
+              value={inputEmail}
+              onChange={(e) => setInputEmail(e.target.value)}
+              placeholder="Masukkan email (cth: aldoaldiles@gmail.com)..."
+              className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-xs text-gray-900 font-semibold focus:outline-none focus:border-red-600 focus:bg-white transition-all"
+              autoFocus
+            />
+            <button 
+              type="submit" 
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg font-jakarta font-bold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>🔑 Masuk Dengan Email</span>
+            </button>
+          </form>
+
+          <div className="flex items-center gap-2 my-2 text-gray-400 text-[10px] uppercase font-bold">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span>atau</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
           <button 
             type="button" 
             onClick={handleGoogleLogin}
-            className="w-full bg-black text-white py-3 px-4 rounded-lg font-jakarta font-bold text-xs uppercase tracking-wider hover:bg-gray-800 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full bg-black text-white py-2.5 px-4 rounded-lg font-jakarta font-bold text-xs uppercase tracking-wider hover:bg-gray-800 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>🔐 Masuk Dengan Akun Google</span>
           </button>
@@ -367,9 +416,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             <button
               type="button"
               onClick={() => setShowPinInput(true)}
-              className="text-[10px] text-gray-400 hover:text-black transition-colors underline uppercase tracking-wider block mx-auto cursor-pointer"
+              className="text-[10px] text-gray-400 hover:text-black transition-colors underline uppercase tracking-wider block mx-auto cursor-pointer pt-1"
             >
-              Pop-up diblokir? Gunakan Password Darurat Admin
+              Gunakan Password Darurat Admin
             </button>
           ) : (
             <form onSubmit={handlePinSubmit} className="pt-2 border-t border-gray-100 space-y-2">
@@ -379,7 +428,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 onChange={(e) => setPinCode(e.target.value)}
                 placeholder="Masukkan Password Darurat Admin..."
                 className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-xs text-center font-mono font-bold focus:outline-none focus:border-black"
-                autoFocus
               />
               <button
                 type="submit"

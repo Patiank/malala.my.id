@@ -25,6 +25,24 @@ export const Hero: React.FC<HeroProps> = ({
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
+  // Secret Admin Trigger: Clicking Pemprov Sumbar logo 6 times in rapid sequence opens Admin Panel
+  const logoClickCountRef = useRef(0);
+  const logoClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handlePemprovLogoClick = () => {
+    logoClickCountRef.current += 1;
+    if (logoClickTimerRef.current) clearTimeout(logoClickTimerRef.current);
+
+    if (logoClickCountRef.current >= 6) {
+      logoClickCountRef.current = 0;
+      onOpenDrawer('admin');
+    } else {
+      logoClickTimerRef.current = setTimeout(() => {
+        logoClickCountRef.current = 0;
+      }, 2000);
+    }
+  };
+
   // Close search dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -377,17 +395,21 @@ export const Hero: React.FC<HeroProps> = ({
             <WeatherWidget lang={lang} textColor={heroTextColor} textShadow={heroTextShadow} />
 
             <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
-              <PemprovSumbarLogo size={48} className="shrink-0" />
               <div
-                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300"
+                onClick={handlePemprovLogoClick}
+                className="cursor-pointer shrink-0 select-none active:scale-95 transition-transform"
+                title="Pemerintah Provinsi Sumatera Barat (Klik 6 kali untuk Akses Admin)"
+                role="button"
+                aria-label="Logo Pemprov Sumbar"
+              >
+                <PemprovSumbarLogo size={48} />
+              </div>
+              <div
+                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none"
                 style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
               >
                 <div>DINAS PARIWISATA</div>
-                <div
-                  onClick={() => onOpenDrawer('admin')}
-                  className="cursor-pointer hover:underline"
-                  title="Dinas Pariwisata Sumatera Barat"
-                >
+                <div title="Dinas Pariwisata Sumatera Barat">
                   PROVINSI SUMATERA BARAT
                 </div>
                 <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-1 tracking-normal normal-case transition-colors duration-300">
