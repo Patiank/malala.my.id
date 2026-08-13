@@ -228,12 +228,24 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
             </button>
           </div>
 
-          {/* Quick Search Bar directly under CTA Buttons */}
-          <div ref={searchContainerRef} className="w-full max-w-xl relative pt-3 z-30 font-jakarta">
-            <div className="relative flex items-center">
-              <div className="absolute left-3.5 pointer-events-none text-gray-400">
-                <Search className="w-4 h-4 text-red-600 animate-pulse" />
+          {/* Premium Search Bar Panel - Width aligned with Action Buttons Block */}
+          <div ref={searchContainerRef} className="w-full max-w-2xl relative pt-3 z-30 font-jakarta">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchResults.length > 0) {
+                  onOpenDrawer(searchResults[0].drawerType);
+                  setIsSearchFocused(false);
+                }
+              }}
+              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl shadow-xl transition-all p-1"
+            >
+              {/* Kaca Pembesar Icon Badge */}
+              <div className="pl-3 pr-2 text-red-600 flex items-center justify-center">
+                <Search className="w-5 h-5 animate-pulse" />
               </div>
+
+              {/* Input Field */}
               <input
                 type="text"
                 value={searchQuery}
@@ -244,59 +256,70 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
                 onFocus={() => setIsSearchFocused(true)}
                 placeholder={
                   lang === 'en'
-                    ? "Cari Harau, Jam Gadang, Rendang, Sate, Pariangan..."
+                    ? "Search Harau, Jam Gadang, Rendang, Sate, Pariangan..."
                     : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang, Sate, Pariangan)..."
                 }
-                className="w-full pl-10 pr-10 py-2.5 bg-white/95 backdrop-blur-md border border-gray-300 hover:border-red-500 focus:border-red-600 rounded-lg text-xs sm:text-sm text-gray-900 placeholder-gray-400 font-medium shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20"
+                className="w-full py-2 px-1 bg-transparent text-xs sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
               />
+
+              {/* Clear Input Button if query exists */}
               {searchQuery && (
                 <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 p-1 rounded-full text-gray-400 hover:text-black cursor-pointer"
-                  title="Bersihkan"
+                  className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer"
+                  title="Clear"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               )}
-            </div>
+
+              {/* Tombol CARI Dedicated Button */}
+              <button
+                type="submit"
+                onClick={() => setIsSearchFocused(true)}
+                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-lg flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
+              >
+                <Search className="w-3.5 h-3.5" />
+                <span>{lang === 'en' ? 'SEARCH' : 'CARI'}</span>
+              </button>
+            </form>
 
             {/* Real-time Search Results Dropdown Panel */}
             {isSearchFocused && searchQuery.trim().length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-md rounded-xl shadow-2xl border border-gray-200 overflow-hidden max-h-[360px] overflow-y-auto z-50 animate-fade-in">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-md rounded-xl shadow-2xl border border-gray-200 overflow-hidden max-h-[380px] overflow-y-auto z-50 animate-fade-in divide-y divide-gray-100">
                 {searchResults.length > 0 ? (
-                  <div className="divide-y divide-gray-100">
-                    {searchResults.map((item, idx) => (
-                      <div
-                        key={idx}
-                        onClick={() => {
-                          setSearchQuery('');
-                          setIsSearchFocused(false);
-                          onOpenDrawer(item.drawerType);
-                        }}
-                        className="p-3 hover:bg-red-50/80 transition-colors cursor-pointer flex items-center justify-between group"
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="text-lg bg-gray-100 p-1.5 rounded-md group-hover:scale-110 transition-transform">
-                            {item.icon}
-                          </span>
-                          <div>
-                            <h4 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-red-600 transition-colors">
-                              {lang === 'en' && item.titleEn ? item.titleEn : item.title}
-                            </h4>
-                            <p className="text-[11px] text-gray-500 line-clamp-1">
-                              {lang === 'en' && item.descEn ? item.descEn : item.desc}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
-                            {lang === 'en' ? item.categoryLabelEn : item.categoryLabel}
-                          </span>
-                          <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition-all" />
+                  searchResults.map((item, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        setSearchQuery('');
+                        setIsSearchFocused(false);
+                        onOpenDrawer(item.drawerType);
+                      }}
+                      className="p-3.5 hover:bg-red-50/80 transition-colors cursor-pointer flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-xl bg-gray-100 p-2 rounded-lg group-hover:scale-110 transition-transform shrink-0">
+                          {item.icon}
+                        </span>
+                        <div>
+                          <h4 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-red-600 transition-colors">
+                            {lang === 'en' && item.titleEn ? item.titleEn : item.title}
+                          </h4>
+                          <p className="text-[11px] text-gray-500 line-clamp-1">
+                            {lang === 'en' && item.descEn ? item.descEn : item.desc}
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                          {lang === 'en' ? item.categoryLabelEn : item.categoryLabel}
+                        </span>
+                        <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                    </div>
+                  ))
                 ) : (
                   <div className="p-4 text-center text-xs text-gray-500 font-medium">
                     {lang === 'en'
