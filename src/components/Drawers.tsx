@@ -5,6 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -129,18 +130,9 @@ export const Drawers: React.FC<DrawersProps> = ({
   const handleRefreshHotInfo = async () => {
     setIsFetchingHotInfo(true);
     try {
-      const res = await fetch('/api/ai/fetch-hot-info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ language: lang })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (dataStore.updateHotInfoItems && Array.isArray(data) && data.length > 0) {
-          await dataStore.updateHotInfoItems(data);
-        }
-      } else {
-        alert(lang === 'en' ? 'Failed to fetch live updates.' : 'Gagal memperbarui berita wisata.');
+      const data = await fetchAiHotInfo(lang);
+      if (dataStore.updateHotInfoItems && Array.isArray(data) && data.length > 0) {
+        await dataStore.updateHotInfoItems(data);
       }
     } catch (e) {
       alert(lang === 'en' ? 'Network error.' : 'Terjadi kesalahan jaringan.');
@@ -555,21 +547,10 @@ export const Drawers: React.FC<DrawersProps> = ({
     setAiError(null);
 
     try {
-      const res = await fetch('/api/ai/itinerary', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...itineraryForm,
-          language: lang,
-        }),
+      const data: FormAIResponse = await fetchAiItinerary({
+        ...itineraryForm,
+        language: lang,
       });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Gagal memproses AI itinerary.');
-      }
-
-      const data: FormAIResponse = await res.json();
       setAiResponse(data);
     } catch (err: any) {
       setAiError(err.message || 'Terjadi kesalahan saat memanggil UNI MALA AI.');
@@ -589,18 +570,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     setIsChatLoading(true);
 
     try {
-      const res = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText }),
-      });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Gagal merespon.');
-      }
-
-      const data = await res.json();
+      const data = await fetchAiChat(userText);
       setChatHistory(prev => [...prev, { sender: 'ai', text: data.reply }]);
     } catch (err: any) {
       setChatHistory(prev => [

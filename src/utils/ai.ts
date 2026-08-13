@@ -1,0 +1,224 @@
+import { GoogleGenAI } from "@google/genai";
+
+// Fallback data when API or Gemini API key is unavailable
+export const HOT_INFO_FALLBACK = [
+  {
+    "id": "news-fallback-1",
+    "title": "Festival Pesona Minangkabau 2026 Segera Digelar",
+    "titleEn": "Minangkabau Charm Festival 2026 to be Held Soon",
+    "date": "Oktober 2026",
+    "dateEn": "October 2026",
+    "category": "Event",
+    "categoryEn": "Event",
+    "description": "Pemerintah Provinsi Sumatera Barat bersiap menyelenggarakan Festival Pesona Minangkabau 2026 yang akan menampilkan ragam kebudayaan autentik dari seluruh penjuru Ranah Minang. Acara tahunan ini menjadi magnet bagi ribuan wisatawan nusantara dan mancanegara yang ingin menyaksikan langsung kemegahan budaya lokal.\n\nBerpusat di Istano Basa Pagaruyung, festival ini akan menghadirkan pawai budaya dengan ribuan peserta berpakaian adat, pameran kuliner tradisional yang menggugah selera, serta pertunjukan seni kolosal yang memukau. Selain itu, pengunjung juga bisa mengikuti berbagai lokakarya kerajinan tangan khas Minang.\n\nPara pelaku UMKM lokal pun turut dilibatkan secara maksimal untuk memperkenalkan produk unggulan mereka, mulai dari tenun songket, ukiran kayu, hingga variasi makanan ringan khas Sumatera Barat. Pastikan Anda merencanakan kunjungan ke Batusangkar untuk menjadi bagian dari perayaan budaya terbesar ini.",
+    "descriptionEn": "The West Sumatra Provincial Government is preparing to host the 2026 Minangkabau Charm Festival, which will showcase a variety of authentic cultures from across the Minang realm. This annual event attracts thousands of domestic and international tourists eager to witness the grandeur of local culture firsthand.\n\nCentered at the Istano Basa Pagaruyung, the festival will feature a cultural parade with thousands of participants in traditional attire, mouthwatering traditional culinary exhibitions, and mesmerizing colossal art performances. Additionally, visitors can participate in various traditional Minang handicraft workshops.\n\nLocal MSMEs are also maximally involved to introduce their premium products, ranging from songket weaving and wood carving to various West Sumatran snacks. Make sure to plan your visit to Batusangkar to be part of this grand cultural celebration.",
+    "tag": "Populer",
+    "tagEn": "Popular",
+    "actionUrl": "",
+    "imageUrl": "",
+    "highlights": ["Pawai Ribuan Baju Adat", "Kuliner Tradisional Terbesar", "Pertunjukan Seni Kolosal"],
+    "highlightsEn": ["Thousands in Traditional Attire Parade", "Largest Traditional Culinary Expo", "Colossal Art Performances"],
+    "tips": "Datanglah lebih awal untuk mendapatkan spot foto terbaik saat pawai.",
+    "tipsEn": "Arrive early to secure the best photo spots during the parade.",
+    "locationName": "Istano Basa Pagaruyung, Tanah Datar",
+    "locationNameEn": "Pagaruyung Palace, Tanah Datar"
+  },
+  {
+    "id": "news-fallback-2",
+    "title": "Peresmian Kawasan Ekowisata Baru di Lembah Harau",
+    "titleEn": "Inauguration of New Ecotourism Area in Harau Valley",
+    "date": "Minggu Ini",
+    "dateEn": "This Week",
+    "category": "Berita",
+    "categoryEn": "News",
+    "description": "Lembah Harau kembali menambah daya tariknya dengan diresmikannya kawasan ekowisata baru yang mengusung konsep ramah lingkungan dan pelestarian alam. Langkah ini diambil untuk memberikan alternatif liburan yang menyatu dengan alam tanpa merusak ekosistem asli lembah granit tersebut.\n\nKawasan baru ini dilengkapi dengan fasilitas glamping premium, jalur trekking yang dirancang dengan memperhatikan kontur tanah alami, serta area konservasi burung endemik. Wisatawan kini memiliki kesempatan untuk bermalam di tengah pelukan tebing-tebing raksasa sambil mendengarkan harmoni suara alam yang menenangkan.\n\nSelain menikmati keindahan alam, pengunjung juga akan diedukasi mengenai pentingnya menjaga kelestarian lingkungan dan budaya lokal. Masyarakat setempat turut diberdayakan sebagai pemandu wisata ekologis yang siap berbagi cerita dan kearifan lokal kepada para tamu.",
+    "descriptionEn": "Harau Valley is adding to its appeal with the inauguration of a new ecotourism area that promotes eco-friendly concepts and nature conservation. This step was taken to provide vacation alternatives that blend with nature without harming the original ecosystem of the granite valley.\n\nThe new area is equipped with premium glamping facilities, trekking paths designed with respect for the natural terrain, and an endemic bird conservation area. Tourists now have the opportunity to spend the night embraced by giant cliffs while listening to the soothing harmony of nature's sounds.\n\nBesides enjoying the natural beauty, visitors will also be educated on the importance of preserving the environment and local culture. Local communities are empowered as ecological tour guides ready to share stories and local wisdom with guests.",
+    "tag": "Baru",
+    "tagEn": "New",
+    "actionUrl": "",
+    "imageUrl": "",
+    "highlights": ["Glamping Premium", "Jalur Trekking Ramah Lingkungan", "Edukasi Pelestarian Alam"],
+    "highlightsEn": ["Premium Glamping", "Eco-friendly Trekking Paths", "Nature Conservation Education"],
+    "tips": "Bawa pakaian hangat karena suhu malam hari di lembah cukup dingin.",
+    "tipsEn": "Bring warm clothing as night temperatures in the valley can be quite chilly.",
+    "locationName": "Lembah Harau, Kab. Limapuluh Kota",
+    "locationNameEn": "Harau Valley, Limapuluh Kota Regency"
+  },
+  {
+    "id": "news-fallback-3",
+    "title": "Jalur Kelok 44 Ditata Ulang dengan Gardu Pandang Baru",
+    "titleEn": "Kelok 44 Route Revamped with New Viewing Decks",
+    "date": "Bulan Ini",
+    "dateEn": "This Month",
+    "category": "Pengumuman",
+    "categoryEn": "Announcement",
+    "description": "Dinas Pariwisata Sumatera Barat bersama pemerintah daerah setempat merampungkan penataan ulang kawasan wisata Kelok 44 di Maninjau. Penataan ini mencakup pembuatan spot gardu pandang baru yang lebih aman serta tempat peristirahatan yang nyaman bagi para pengendara dan wisatawan.\n\nDengan hadirnya spot pendukung ini, wisatawan dapat menikmati keindahan panorama Danau Maninjau dari ketinggian dengan rasa aman dan nyaman. Gardu pandang dirancang dengan estetika Minang yang kental, menyajikan pemandangan lanskap alam yang memukau mata.",
+    "descriptionEn": "West Sumatra Tourism Board alongside local government has completed revamping the Kelok 44 tourism area in Maninjau. The project includes new safe viewing decks and comfortable rest stops for drivers and tourists.\n\nWith these new spots, visitors can admire the panoramic view of Lake Maninjau from heights with safety and comfort. Viewing decks are designed with rich Minang aesthetics.",
+    "tag": "Terkini",
+    "tagEn": "Latest",
+    "actionUrl": "",
+    "imageUrl": "",
+    "highlights": ["Gardu Pandang Baru", "Aman & Nyaman", "Panorama Danau Maninjau"],
+    "highlightsEn": ["New Viewing Decks", "Safe & Comfortable", "Lake Maninjau Panorama"],
+    "tips": "Hati-hati saat melintasi tikungan tajam Kelok 44 dan gunakan gigi rendah.",
+    "tipsEn": "Drive carefully on Kelok 44 sharp bends using low gear.",
+    "locationName": "Kelok 44, Kab. Agam",
+    "locationNameEn": "Kelok 44, Agam Regency"
+  }
+];
+
+export function getItineraryFallback(params: any) {
+  const { durasiHari = 3, profilWisatawan, language = 'id' } = params || {};
+  const isEnglish = language === 'en';
+  const daysCount = Number(durasiHari) || 3;
+
+  return {
+    title: isEnglish
+      ? `West Sumatra Exploration (${daysCount} Days - ${profilWisatawan?.kategori || 'Nature & Culinary'})`
+      : `Eksplorasi Ranah Minang (${daysCount} Hari - ${profilWisatawan?.kategori || 'Wisata Alam & Kuliner'})`,
+    summary: isEnglish
+      ? `UNI MALA AI recommended travel plan combining geopark landscapes, authentic Rendang gastronomy, and rich Minangkabau Rumah Gadang heritage.`
+      : `Rencana wisata rekomendasi UNI MALA AI mencakup perpaduan keindahan geowisata, kuliner Rendang autentik, serta warisan budaya Rumah Gadang.`,
+    itinerary: Array.from({ length: daysCount }).map((_, idx) => ({
+      day: idx + 1,
+      title: isEnglish
+        ? (idx === 0 ? "Arrival & Bukittinggi Clock Tower Charm" : idx === 1 ? "Lembah Harau Canyon Adventure & Payakumbuh Food" : "Lake Maninjau & Nagari Pariangan Heritage Village")
+        : (idx === 0 ? "Kedatangan & Pesona Kota Jam Gadang Bukittinggi" : idx === 1 ? "Petualangan Geopark Lembah Harau & Kuliner Payakumbuh" : "Wisata Danau Maninjau & Desa Terindah Nagari Pariangan"),
+      activities: [
+        {
+          time: "08:30 - 11:30",
+          location: idx === 0 ? "Jam Gadang & Ngarai Sianok" : idx === 1 ? "Lembah Harau Canyon" : "Nagari Pariangan",
+          activity: isEnglish
+            ? (idx === 0 ? "Photo session at Bukittinggi Clock Tower, followed by exploring Sianok Canyon and Japanese Tunnel." : idx === 1 ? "Enjoying spectacular granite cliffs and Sarasah Bunta Waterfall." : "Explore Minangkabau's oldest village featuring traditional wooden architecture and Mount Marapi views.")
+            : (idx === 0 ? "Sesi foto di Ikon Jam Gadang, dilanjutkan menyusuri panorama Ngarai Sianok dan Lubang Jepang." : idx === 1 ? "Menikmati tebing tebing granit spektakuler dan air terjun Sarasah Bunta." : "Jelajah desa tertua Minangkabau dengan arsitektur kayu tradisional dan pemandangan Gunung Marapi."),
+          tips: isEnglish ? "Wear warm layers and comfortable walking shoes." : "Gunakan pakaian hangat dan sepatu jalan yang nyaman."
+        },
+        {
+          time: "12:30 - 14:00",
+          location: isEnglish ? "Authentic Padang Cuisine Restaurant" : "Restoran Rumah Makan Padang Autentik",
+          activity: isEnglish ? "Lunch featuring Beef Rendang, Pop Chicken, and Bukittinggi Kapau Curry." : "Makan siang dengan hidangan Rendang Daging, Ayam Pop, dan Gulai Kapau khas Bukittinggi.",
+          tips: isEnglish ? "Try pairing Green Sambal with Tunjang Curry." : "Coba padukan Sambal Lado Mudo dengan Gulai Tunjang."
+        },
+        {
+          time: "15:30 - 18:00",
+          location: idx === 0 ? "Puncak Lawang & Kelok 44" : idx === 1 ? "Istano Basa Pagaruyung" : "Padang Beach & Grand Mosque of West Sumatra",
+          activity: isEnglish
+            ? (idx === 0 ? "Enjoying Lake Maninjau panoramic view from Puncak Lawang height." : idx === 1 ? "Exploring Minangkabau Royal Palace wearing traditional costume." : "Sunset at Padang Beach and admiring the unique dome-less Minangkabau architecture of West Sumatra Grand Mosque.")
+            : (idx === 0 ? "Menikmati pemandangan Danau Maninjau dari ketinggian Puncak Lawang." : idx === 1 ? "Eksplorasi Istana Kerajaan Minangkabau dengan pakaian adat tradisional." : "Sunset di Pantai Padang dan menikmati keindahan arsitektur Rumah Gadang tanpa kubah Masjid Raya Sumbar."),
+          tips: isEnglish ? "Capture the sunset moments." : "Abadikan momen matahari terbenam."
+        }
+      ],
+      culinaryRecommendation: isEnglish
+        ? (idx === 0 ? "Pasar Atas Nasi Kapau & Teh Talua (Egg Tea)" : idx === 1 ? "Payakumbuh Satay & Tapai Sticky Rice" : "Padang Satay & Durian Ice")
+        : (idx === 0 ? "Nasi Kapau Pasar Atas & Teh Talua" : idx === 1 ? "Sate Payakumbuh & Lemang Tapai" : "Sate Padang & Es Durian")
+    })),
+    localTips: isEnglish
+      ? [
+          "Minangkabau culture deeply values 'Adat Basandi Syarak, Syarak Basandi Kitabullah'. Please respect local wisdom and dress modestly.",
+          "Must-buy souvenirs: Sanjai Balado Chips, Local Coffee, and Packaged Rendang."
+        ]
+      : [
+          "Masyarakat Minangkabau memegang teguh falsafah 'Adat Basandi Syarak, Syarak Basandi Kitabullah'. Hargai kearifan lokal.",
+          "Oleh-oleh wajib: Keripik Balado Sanjai, Kopi Bawaan, dan Rendang Kemasan."
+        ]
+  };
+}
+
+export async function fetchAiItinerary(params: any) {
+  try {
+    const res = await fetch('/api/ai/itinerary', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && contentType.includes('application/json')) {
+      return await res.json();
+    }
+  } catch (e) {
+    console.warn("Server API itinerary endpoint unavailable, using fallback AI response", e);
+  }
+
+  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
+  const viteApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+  if (viteApiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+      const isEnglish = params?.language === 'en';
+      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi. Formatkan output HANYA JSON:\n${JSON.stringify(params)}`;
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+      });
+      const rawText = response.text || '';
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+    } catch (err) {
+      console.warn("Client Gemini API failed, using structured fallback", err);
+    }
+  }
+
+  return getItineraryFallback(params);
+}
+
+export async function fetchAiChat(message: string) {
+  try {
+    const res = await fetch('/api/ai/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message }),
+    });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && contentType.includes('application/json')) {
+      return await res.json();
+    }
+  } catch (e) {
+    console.warn("Server API chat endpoint unavailable, using fallback response", e);
+  }
+
+  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
+  const viteApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+  if (viteApiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+      const prompt = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu AI Resmi Pariwisata & Kebudayaan Minangkabau. Pertanyaan Wisatawan: ${message}`;
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+      });
+      return { reply: response.text };
+    } catch (err) {
+      console.warn("Client Gemini API failed", err);
+    }
+  }
+
+  return {
+    reply: `Rancak bana! Saya UNI MALA AI Sumbar. Terkait "${message}", Sumatera Barat menawarkan destinasi luar biasa seperti Lembah Harau, Jam Gadang Bukittinggi, Danau Maninjau, serta sajian Rendang autentik dan Sate Padang. Ada tempat spesifik yang ingin Anda ketahui lebih dalam?`
+  };
+}
+
+export async function fetchAiHotInfo(language: string = 'id') {
+  try {
+    const res = await fetch('/api/ai/fetch-hot-info', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language }),
+    });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && contentType.includes('application/json')) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+    }
+  } catch (e) {
+    console.warn("Server API fetch-hot-info endpoint unavailable, using fallback news items", e);
+  }
+
+  return HOT_INFO_FALLBACK;
+}

@@ -11,6 +11,8 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
+import { fetchAiHotInfo } from './utils/ai';
+
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
   const [selectedNews, setSelectedNews] = useState<HotInfoItem | null>(null);
@@ -45,17 +47,10 @@ export default function App() {
         const lastAutoRefresh = localStorage.getItem('malala_hotinfo_last_auto_refresh');
         if (lastAutoRefresh !== todayStr) {
           setIsRefreshingTicker(true);
-          const res = await fetch('/api/ai/fetch-hot-info', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ language: lang })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
-              await dataStore.updateHotInfoItems(data);
-              localStorage.setItem('malala_hotinfo_last_auto_refresh', todayStr);
-            }
+          const data = await fetchAiHotInfo(lang);
+          if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
+            await dataStore.updateHotInfoItems(data);
+            localStorage.setItem('malala_hotinfo_last_auto_refresh', todayStr);
           }
         }
       } catch (e) {
@@ -76,16 +71,9 @@ export default function App() {
     e.stopPropagation();
     setIsRefreshingTicker(true);
     try {
-      const res = await fetch('/api/ai/fetch-hot-info', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ language: lang })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (dataStore.updateHotInfoItems) {
-          await dataStore.updateHotInfoItems(data);
-        }
+      const data = await fetchAiHotInfo(lang);
+      if (dataStore.updateHotInfoItems) {
+        await dataStore.updateHotInfoItems(data);
       }
     } catch (err) {
       console.warn('Failed to refresh ticker:', err);
