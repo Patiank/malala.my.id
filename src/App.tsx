@@ -37,6 +37,7 @@ export default function App() {
   });
   const [toasts, setToasts] = useState<ToastNotice[]>([]);
   const [isRefreshingTicker, setIsRefreshingTicker] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
 
   // Automatic daily refresh for Hot Info news ticker via Gemini AI
@@ -212,7 +213,13 @@ export default function App() {
       />
 
       {/* Main Hero */}
-      <Hero onOpenDrawer={handleOpenDrawer} lang={lang} appSettings={dataStore.appSettings} />
+      <Hero
+        onOpenDrawer={handleOpenDrawer}
+        lang={lang}
+        appSettings={dataStore.appSettings}
+        searchQuery={searchQuery}
+        onSearchQueryChange={setSearchQuery}
+      />
 
       {/* Breaking News Ticker Bar (Placed at the very bottom) */}
       <div 
@@ -283,6 +290,8 @@ export default function App() {
         onMouseEnterDrawer={handleMouseEnterHotInfo}
         onMouseLeaveDrawer={handleMouseLeaveHotInfo}
         onSelectNews={(news) => setSelectedNews(news)}
+        searchQuery={searchQuery}
+        onSearchQueryChange={setSearchQuery}
       />
 
       {/* Center News Detail Pop-up Modal */}

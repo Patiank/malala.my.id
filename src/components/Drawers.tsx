@@ -92,6 +92,8 @@ interface DrawersProps {
   onMouseEnterDrawer?: () => void;
   onMouseLeaveDrawer?: () => void;
   onSelectNews?: (item: HotInfoItem) => void;
+  searchQuery?: string;
+  onSearchQueryChange?: (q: string) => void;
 }
 
 export const Drawers: React.FC<DrawersProps> = ({
@@ -105,6 +107,8 @@ export const Drawers: React.FC<DrawersProps> = ({
   onMouseEnterDrawer,
   onMouseLeaveDrawer,
   onSelectNews,
+  searchQuery = '',
+  onSearchQueryChange,
 }) => {
   const {
     destinations, updateDestinations,
@@ -483,6 +487,131 @@ export const Drawers: React.FC<DrawersProps> = ({
   ]);
   const [isChatLoading, setIsChatLoading] = useState<boolean>(false);
 
+  // Search drawer state and multi-category searchable index
+  const [searchCategory, setSearchCategory] = useState<string>('Semua');
+
+  const searchableIndex = useMemo(() => {
+    const items: Array<{
+      id: string;
+      title: string;
+      titleEn?: string;
+      desc: string;
+      descEn?: string;
+      icon: string;
+      categoryLabel: string;
+      categoryLabelEn: string;
+      drawerType: DrawerType;
+      imageUrl?: string;
+      locationName?: string;
+      subTag?: string;
+      keywords: string;
+    }> = [];
+
+    (destinations || []).forEach((d: Destination) => {
+      items.push({
+        id: d.id,
+        title: d.title,
+        titleEn: d.titleEn || d.title,
+        desc: d.description,
+        descEn: d.descriptionEn || d.description,
+        icon: '🏔️',
+        categoryLabel: 'Destinasi',
+        categoryLabelEn: 'Destination',
+        drawerType: 'destinations',
+        imageUrl: d.imageUrl,
+        locationName: d.regency,
+        subTag: d.category,
+        keywords: `${d.title} ${d.titleEn || ''} ${d.regency} ${d.category} ${d.description}`.toLowerCase(),
+      });
+    });
+
+    (cultureItems || []).forEach((c: CultureItem) => {
+      items.push({
+        id: c.id,
+        title: c.title,
+        titleEn: c.titleEn || c.title,
+        desc: c.description,
+        descEn: c.descriptionEn || c.description,
+        icon: '🏛️',
+        categoryLabel: 'Kebudayaan',
+        categoryLabelEn: 'Culture',
+        drawerType: 'culture',
+        imageUrl: c.imageUrl,
+        locationName: c.origin,
+        subTag: c.category,
+        keywords: `${c.title} ${c.titleEn || ''} ${c.origin} ${c.category} ${c.description}`.toLowerCase(),
+      });
+    });
+
+    (culinaryItems || []).forEach((c: CulinaryItem) => {
+      items.push({
+        id: c.id,
+        title: c.title,
+        titleEn: c.titleEn || c.title,
+        desc: c.description,
+        descEn: c.descriptionEn || c.description,
+        icon: '🍲',
+        categoryLabel: 'Kuliner',
+        categoryLabelEn: 'Culinary',
+        drawerType: 'culinary',
+        imageUrl: c.imageUrl,
+        locationName: c.origin,
+        subTag: c.type,
+        keywords: `${c.title} ${c.titleEn || ''} ${c.origin} ${c.type} ${c.description}`.toLowerCase(),
+      });
+    });
+
+    (eventsSchedule || []).forEach((e: EventItem) => {
+      items.push({
+        id: e.id,
+        title: e.title,
+        titleEn: e.titleEn || e.title,
+        desc: e.description,
+        descEn: e.descriptionEn || e.description,
+        icon: '📅',
+        categoryLabel: 'Event',
+        categoryLabelEn: 'Event',
+        drawerType: 'events',
+        imageUrl: e.imageUrl,
+        locationName: e.location,
+        subTag: e.schedule,
+        keywords: `${e.title} ${e.titleEn || ''} ${e.location} ${e.description}`.toLowerCase(),
+      });
+    });
+
+    (hotInfoItems || []).forEach((h: HotInfoItem) => {
+      items.push({
+        id: h.id,
+        title: h.title,
+        titleEn: h.titleEn || h.title,
+        desc: h.description,
+        descEn: h.descriptionEn || h.description,
+        icon: '🔥',
+        categoryLabel: 'Berita',
+        categoryLabelEn: 'News',
+        drawerType: 'hotinfo',
+        imageUrl: h.imageUrl,
+        locationName: h.locationName || h.category,
+        subTag: h.date,
+        keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description}`.toLowerCase(),
+      });
+    });
+
+    return items;
+  }, [destinations, cultureItems, culinaryItems, eventsSchedule, hotInfoItems]);
+
+  const filteredSearchItems = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    let result = searchableIndex;
+    if (q) {
+      result = result.filter(item => item.keywords.includes(q));
+    }
+    if (searchCategory !== 'Semua') {
+      result = result.filter(item => item.categoryLabel === searchCategory);
+    }
+    return result;
+  }, [searchQuery, searchCategory, searchableIndex]);
+
   const getDrawerTitle = () => {
     const isEn = lang === 'en';
     switch (activeDrawer) {
@@ -504,6 +633,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         return isEn ? 'Hot Info & Travel Updates' : 'Hot Info & Berita Wisata';
       case 'download':
         return isEn ? 'Media Kit & Download Center' : 'Pusat Unduhan & Asset';
+      case 'search':
+        return isEn ? 'Search Results & Information' : 'Pencarian Informasi Wisata';
       default:
         return '';
     }
@@ -530,6 +661,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         return isEn ? 'Live updates, weather, traffic routes & tourism notices' : 'Update Terkini, Cuaca, Jalur & Pengumuman Pariwisata Sumbar';
       case 'download':
         return isEn ? 'Download official logos, travel guide booklets & flyers' : 'Unduh Logo Resmi, Booklet, Leaflet & Flyer Wisata Sumbar';
+      case 'search':
+        return isEn ? 'Real-time search results across all West Sumatra tourism categories' : 'Hasil pencarian waktu-nyata ke seluruh data pariwisata Sumatera Barat';
       default:
         return '';
     }
@@ -759,6 +892,182 @@ export const Drawers: React.FC<DrawersProps> = ({
                   <span className="truncate">{translations[lang].navMap}</span>
                 </button>
               </div>
+            </div>
+          )}
+
+          {/* =================================================== */}
+          {/* 0. HASIL PENCARIAN DRAWER (SLIDING FROM RIGHT)      */}
+          {/* =================================================== */}
+          {activeDrawer === 'search' && (
+            <div className="space-y-6 font-jakarta animate-fade-in">
+              {/* Search Bar Input inside the Right-side Sliding Drawer Header */}
+              <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-md pt-1 pb-4 border-b border-gray-200">
+                <div className="relative flex items-center bg-gray-50 border-2 border-gray-300 focus-within:border-red-600 rounded-xl p-1 shadow-sm transition-all">
+                  <div className="pl-3 pr-2 text-red-600">
+                    <Search className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => onSearchQueryChange && onSearchQueryChange(e.target.value)}
+                    placeholder={
+                      lang === 'en'
+                        ? "Type search (e.g. Harau, Jam Gadang, Rendang, Sate)..."
+                        : "Ketik kata kunci pencarian (cth: Harau, Jam Gadang, Rendang)..."
+                    }
+                    className="w-full py-2 px-1 bg-transparent text-sm font-semibold text-gray-900 placeholder-gray-400 focus:outline-none"
+                    autoFocus
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => onSearchQueryChange && onSearchQueryChange('')}
+                      className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-200 transition-colors mr-1 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Category Filter Pills for Search Results */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pt-3 no-scrollbar text-xs">
+                  <button
+                    onClick={() => setSearchCategory('Semua')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Semua'
+                        ? 'bg-red-600 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    {lang === 'en' ? 'All' : 'Semua'} ({filteredSearchItems.length})
+                  </button>
+                  <button
+                    onClick={() => setSearchCategory('Destinasi')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Destinasi'
+                        ? 'bg-red-600 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    🏔️ Destinasi
+                  </button>
+                  <button
+                    onClick={() => setSearchCategory('Kebudayaan')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Kebudayaan'
+                        ? 'bg-purple-600 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    🏛️ Kebudayaan
+                  </button>
+                  <button
+                    onClick={() => setSearchCategory('Kuliner')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Kuliner'
+                        ? 'bg-amber-600 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    🍲 Kuliner
+                  </button>
+                  <button
+                    onClick={() => setSearchCategory('Event')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Event'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    📅 Event
+                  </button>
+                  <button
+                    onClick={() => setSearchCategory('Berita')}
+                    className={`px-3 py-1 rounded-full font-bold uppercase tracking-wider text-[10px] transition-all cursor-pointer ${
+                      searchCategory === 'Berita'
+                        ? 'bg-red-700 text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
+                  >
+                    🔥 Berita
+                  </button>
+                </div>
+              </div>
+
+              {/* Search Results List */}
+              {filteredSearchItems.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4">
+                  {filteredSearchItems.map((item, idx) => (
+                    <div
+                      key={`${item.id}-${idx}`}
+                      className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-3 font-jakarta"
+                    >
+                      <div className="flex gap-3">
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={item.title}
+                            className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover shrink-0 border border-gray-100 group-hover:scale-105 transition-transform"
+                          />
+                        ) : (
+                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-100 flex items-center justify-center text-3xl shrink-0">
+                            {item.icon}
+                          </div>
+                        )}
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                              {item.categoryLabel}
+                            </span>
+                            {item.subTag && (
+                              <span className="text-[10px] font-semibold text-gray-500">
+                                • {item.subTag}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-600 transition-colors">
+                            {lang === 'en' && item.titleEn ? item.titleEn : item.title}
+                          </h3>
+                          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                            {lang === 'en' && item.descEn ? item.descEn : item.desc}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
+                        <span className="text-gray-500 font-medium flex items-center gap-1 text-[11px]">
+                          {item.locationName && (
+                            <>
+                              <MapPin className="w-3.5 h-3.5 text-red-500" />
+                              <span>{item.locationName}</span>
+                            </>
+                          )}
+                        </span>
+                        <button
+                          onClick={() => onOpenDrawer?.(item.drawerType)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-black transition-colors cursor-pointer"
+                        >
+                          <span>{lang === 'en' ? 'View Category' : 'Lihat Kategori'}</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 px-4 space-y-3">
+                  <div className="text-4xl">🔍</div>
+                  <h3 className="font-bold text-gray-800 text-base">
+                    {searchQuery
+                      ? (lang === 'en' ? `No matching information found for "${searchQuery}"` : `Tidak ada informasi ditemukan untuk "${searchQuery}"`)
+                      : (lang === 'en' ? 'Type keywords above to search all West Sumatra tourism info' : 'Ketik kata kunci di atas untuk mencari seluruh info pariwisata Sumbar')}
+                  </h3>
+                  <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                    {lang === 'en'
+                      ? 'Try searching for Bukittinggi, Harau Valley, Rendang, Jam Gadang, Pariangan, or Pacu Jawi.'
+                      : 'Coba cari kata kunci seperti Lembah Harau, Jam Gadang, Rendang, Sate, Nagari Pariangan, atau Pacu Jawi.'}
+                  </p>
+                </div>
+              )}
             </div>
           )}
 

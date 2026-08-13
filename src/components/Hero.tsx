@@ -10,13 +10,19 @@ interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
   lang: Language;
   appSettings?: AppSettings;
+  searchQuery?: string;
+  onSearchQueryChange?: (q: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) => {
+export const Hero: React.FC<HeroProps> = ({
+  onOpenDrawer,
+  lang,
+  appSettings,
+  searchQuery = '',
+  onSearchQueryChange,
+}) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Close search dropdown on click outside
@@ -235,15 +241,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                if (searchResults.length > 0) {
-                  onOpenDrawer(searchResults[0].drawerType);
-                  setIsSearchFocused(false);
-                }
+                onOpenDrawer('search');
               }}
-              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl shadow-xl transition-all p-1"
+              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl shadow-xl transition-all p-1 cursor-pointer"
             >
               {/* Kaca Pembesar Icon Badge */}
-              <div className="pl-3 pr-2 text-red-600 flex items-center justify-center">
+              <div 
+                onClick={() => onOpenDrawer('search')}
+                className="pl-3 pr-2 text-red-600 flex items-center justify-center cursor-pointer"
+              >
                 <Search className="w-5 h-5 animate-pulse" />
               </div>
 
@@ -252,13 +258,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
                 type="text"
                 value={searchQuery}
                 onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setIsSearchFocused(true);
+                  const val = e.target.value;
+                  if (onSearchQueryChange) onSearchQueryChange(val);
+                  onOpenDrawer('search');
                 }}
-                onFocus={() => setIsSearchFocused(true)}
+                onFocus={() => {
+                  onOpenDrawer('search');
+                }}
+                onClick={() => {
+                  onOpenDrawer('search');
+                }}
                 placeholder={
                   lang === 'en'
-                    ? "Search Harau, Jam Gadang, Rendang, Sate, Pariangan..."
+                    ? "Cari Harau, Jam Gadang, Rendang, Sate, Pariangan..."
                     : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang, Sate, Pariangan)..."
                 }
                 className="w-full py-2 px-1 bg-transparent text-xs sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
@@ -268,7 +280,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
               {searchQuery && (
                 <button
                   type="button"
-                  onClick={() => setSearchQuery('')}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onSearchQueryChange) onSearchQueryChange('');
+                  }}
                   className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer"
                   title="Clear"
                 >
@@ -279,7 +294,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
               {/* Tombol CARI Dedicated Button */}
               <button
                 type="submit"
-                onClick={() => setIsSearchFocused(true)}
+                onClick={() => onOpenDrawer('search')}
                 className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-lg flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
               >
                 <Search className="w-3.5 h-3.5" />

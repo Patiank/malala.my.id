@@ -9,6 +9,7 @@ export type DrawerType =
   | 'hotinfo'       // Hot Info / Update Berita Wisata
   | 'download'      // Unduh Asset, Booklet, Leaflet, Flyer
   | 'map'           // Peta Interaktif Sumatera Barat
+  | 'search'        // Panel Pencarian Interaktif dari Samping Kanan
   | null;
 
 export interface Destination {
