@@ -333,6 +333,48 @@ export const DESTINATIONS: Destination[] = [
     imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
     lat: -0.990000,
     lng: 100.360000
+  },
+  {
+    id: 'd13',
+    title: 'Geopark Silokek & Batang Kuantan',
+    titleEn: 'Geopark Silokek & Batang Kuantan River',
+    category: 'Lembah & Geopark',
+    categoryEn: 'Geopark & River Adventure',
+    regency: 'Kabupaten Sijunjung',
+    tag: 'Hidden Gem',
+    tagEn: 'Hidden Gem',
+    description: "Geopark Silokek di Kabupaten Sijunjung adalah kawasan warisan geologi purba yang telah diakui sebagai Geopark Nasional Indonesia. Kawasan ini menyajikan bentang alam memukau berupa gugusan batuan karst purba berusia lebih dari 350 juta tahun yang menjulang tegak mengapit aliran sungai Batang Kuantan berair deras.\n\nDi Geopark Silokek, wisatawan dapat menikmati petualangan arung jeram (white water rafting) di sungai Batang Kuantan, menjelajahi terowongan goa alam ber-stalaktit antik seperti Goa Ngalau Bijo, serta menyaksikan keaslian hutan hujan tropis yang menjadi habitat satwa dilindungi.\n\nKawasan ini juga kaya akan peninggalan sejarah dan kebudayaan, seperti situs perkampungan adat kuno dan jalur kereta api tua peninggalan zaman kolonial. Geopark Silokek adalah surga tersembunyi (hidden gem) yang sangat sempurna bagi pecinta ekowisata dan petualangan alam.",
+    descriptionEn: "Silokek Geopark in Sijunjung Regency is an ancient geological heritage area recognized as an Indonesian National Geopark. The site showcases a mesmerizing landscape of ancient karst rock formations dating back over 350 million years, towering over the rushing Batang Kuantan River.\n\nAt Silokek Geopark, visitors can enjoy white water rafting down the Batang Kuantan River, explore subterranean caves filled with ancient stalactites like Ngalau Bijo Cave, and experience virgin tropical rainforests harboring protected wildlife.\n\nThe area is enriched with historical and cultural heritage, including ancient traditional villages and colonial-era railway tracks. Silokek Geopark stands as a premier hidden gem for ecotourism and natural adventure.",
+    highlights: ['Tebing Karst Purba 350 Juta Tahun', 'Arung Jeram Sungai Batang Kuantan', 'Goa Alam Ngalau Bijo & Hutan Tropis'],
+    highlightsEn: ['350 Million Year Old Karst Cliffs', 'Batang Kuantan White Water Rafting', 'Ngalau Bijo Cave & Rainforest Trails'],
+    bestTime: 'Pagi dan Siang Hari',
+    bestTimeEn: 'Morning and Midday',
+    locationDetails: 'Kecamatan Sijunjung, Kabupaten Sijunjung',
+    locationDetailsEn: 'Sijunjung District, Sijunjung Regency',
+    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    lat: -0.680000,
+    lng: 100.980000
+  },
+  {
+    id: 'd14',
+    title: 'Kawasan Seribu Rumah Gadang Solok Selatan',
+    titleEn: 'Thousand Rumah Gadang Village Solok Selatan',
+    category: 'Desa Wisata',
+    categoryEn: 'Heritage & Culture Village',
+    regency: 'Kabupaten Solok Selatan',
+    tag: 'Hidden Gem',
+    tagEn: 'Hidden Gem',
+    description: "Kawasan Seribu Rumah Gadang di Nagari Koto Baru, Kabupaten Solok Selatan, adalah cagar budaya pemukiman tradisional khas Minangkabau yang menyajikan pemandangan ratusan Rumah Gadang kuno yang berdiri berdampingan secara utuh. Kawasan ini dinobatkan sebagai Kampung Adat Terpopuler di Indonesia oleh Kementerian Pariwisata RI.\n\nRumah-rumah adat kuno di kawasan ini berasal dari berbagai suku khas Minangkabau (seperti suku Malayu, Bariang, Durian, dan Tigo Lareh) dengan ragam arsitektur gonjong yang khas, mulai dari gonjong empat hingga gajah maharam. Yang mengagumkan, sebagian besar Rumah Gadang ini masih dihuni aktif secara turun-temurun oleh masyarakat adat.\n\nWisatawan dapat merasakan pengalaman imersif menginap di homestay Rumah Gadang kuno, menikmati sajian makan bajamba bersama pemangku adat, serta mempelajari kesenian Randai dan ukiran kayu tradisional Minangkabau di tengah keasrian desa.",
+    descriptionEn: "Thousand Rumah Gadang Village in Nagari Koto Baru, South Solok Regency, is a traditional Minangkabau cultural settlement featuring hundreds of centuries-old Rumah Gadang standing side-by-side. The area was awarded Most Popular Traditional Village in Indonesia by the Ministry of Tourism.\n\nThese ancient homes belong to various Minangkabau clans (including Malayu, Bariang, Durian, and Tigo Lareh) with distinct gonjong roof styles ranging from four-horned to gajah maharam designs. Remarkably, most of these historic homes remain actively inhabited by local families.\n\nVisitors can experience immersive stays in ancient Rumah Gadang homestays, participate in communal makan bajamba dining with tribal elders, and learn Randai folk arts amidst authentic village life.",
+    highlights: ['Ratusan Rumah Gadang Kuno Berdampingan', 'Kampung Adat Terpopuler di Indonesia', 'Menginap di Homestay Rumah Gadang Kuno'],
+    highlightsEn: ['Hundreds of Ancient Adjacent Rumah Gadang', 'Most Popular Traditional Village in Indonesia', 'Authentic Ancient Rumah Gadang Homestays'],
+    bestTime: 'Pagi dan Sore Hari',
+    bestTimeEn: 'Morning and Late Afternoon',
+    locationDetails: 'Nagari Koto Baru, Kabupaten Solok Selatan',
+    locationDetailsEn: 'Koto Baru Village, South Solok Regency',
+    imageUrl: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+    lat: -1.480000,
+    lng: 101.080000
   }
 ];
 
