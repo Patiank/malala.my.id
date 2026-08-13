@@ -78,35 +78,6 @@ export const HOT_INFO_ITEMS: HotInfoItem[] = [
     tipsEn: 'Arrive before 10 AM to avoid long lines for the free tasting sessions.',
     locationName: 'Pelataran Jam Gadang, Bukittinggi',
     locationNameEn: 'Jam Gadang Plaza, Bukittinggi'
-  },
-  {
-    id: 'hi3',
-    title: 'Restorasi Istano Basa Pagaruyung Selesai',
-    titleEn: 'Istano Basa Pagaruyung Restoration Completed',
-    category: 'Destinasi Baru',
-    categoryEn: 'New Destination',
-    date: '08 Agustus 2026',
-    dateEn: 'August 08, 2026',
-    imageUrl: '',
-    description: "Pemerintah Provinsi Sumatera Barat secara resmi telah menyelesaikan program restorasi dan pemolesan menyeluruh di kawasan Istano Basa Pagaruyung. Istana kebanggaan masyarakat Minangkabau ini kini tampil semakin megah, bersih, dan memancarkan pesona kejayaan kerajaan masa lalu. Wisatawan akan disambut dengan taman-taman yang tertata asri, fasilitas umum yang jauh lebih nyaman, serta ukiran-ukiran dinding (ukia) yang warnanya kembali dihidupkan.\n\nDalam upaya memberikan pengalaman wisata yang tak terlupakan, pengelola kini menyediakan lebih banyak koleksi pakaian adat Minangkabau yang mewah untuk disewa. Pengunjung dapat berdandan bak raja dan ratu, lengkap dengan suntiang emas bagi perempuan dan saluak bagi laki-laki, lalu berfoto di berbagai sudut istana yang sangat instagenic, dari singgasana utama hingga lumbung padi (rangkiang) di halaman depan.\n\nPemandu wisata lokal yang ramah dan berpengetahuan luas siap mendampingi setiap pengunjung, membagikan kisah-kisah heroik, sejarah sistem matrilineal, dan filosofi mendalam di balik arsitektur Rumah Gadang. Kunjungan ke Istano Basa Pagaruyung kini bukan sekadar wisata sejarah, melainkan sebuah perjalanan imersif ke jantung kebudayaan Minangkabau.",
-    descriptionEn: "The West Sumatra Provincial Government has officially completed a comprehensive restoration program at the Istano Basa Pagaruyung. This palace, the pride of the Minangkabau people, now appears more majestic and pristine, radiating the charm of its past royal glory. Tourists will be welcomed by beautifully manicured gardens, significantly upgraded public facilities, and vibrant, meticulously restored traditional wall carvings.\n\nTo provide an unforgettable tourism experience, the management now offers an expanded collection of luxurious Minangkabau traditional attire for rent. Visitors can dress up like kings and queens, complete with golden headdresses (suntiang) for women and traditional headgear (saluak) for men. They can capture stunning photos in highly instagenic corners of the palace, from the main throne room to the iconic rice barns (rangkiang) in the front courtyard.\n\nFriendly and knowledgeable local guides are ready to accompany visitors, sharing heroic tales, insights into the matrilineal system, and the profound philosophy behind the Rumah Gadang architecture. A visit to Istano Basa Pagaruyung is now not just a historical tour, but an immersive journey into the very heart of Minangkabau culture.",
-    tag: 'Budaya',
-    tagEn: 'Culture',
-    actionUrl: 'https://maps.google.com/?q=Istana+Pagaruyung+Batusangkar',
-    highlights: [
-      'Taman dan interior istana tampil lebih memukau',
-      'Penyewaan pakaian adat Minang lebih lengkap',
-      'Tur panduan sejarah kerajaan gratis'
-    ],
-    highlightsEn: [
-      'Stunningly restored palace interiors and gardens',
-      'Expanded collection of traditional attire rentals',
-      'Free guided historical tours of the royal legacy'
-    ],
-    tips: 'Sewalah pakaian adat berwarna merah atau hitam emas untuk hasil foto paling dramatis.',
-    tipsEn: 'Rent traditional attire in red or black-and-gold for the most striking and dramatic photos.',
-    locationName: 'Batusangkar, Tanah Datar',
-    locationNameEn: 'Batusangkar, Tanah Datar'
   }
 ];
 
@@ -278,6 +249,48 @@ export const DESTINATIONS: Destination[] = [
     imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
     lat: -0.308000,
     lng: 100.364000
+  },
+  {
+    id: 'd9',
+    title: 'Danau Kembar (Danau Diatas & Danau Dibawah)',
+    titleEn: 'Twin Lakes (Danau Diatas & Danau Dibawah)',
+    category: 'Danau & Gunung',
+    categoryEn: 'Lake & Mountain',
+    regency: 'Kabupaten Solok',
+    tag: 'Alam',
+    tagEn: 'Nature',
+    description: "Danau Kembar adalah sebutan ikonik untuk dua danau vulkanik memukau yang berdampingan di Kecamatan Lembah Gumanti, Kabupaten Solok, yaitu Danau Diatas dan Danau Dibawah. Terletak di dataran tinggi dingin Alahan Panjang pada ketinggian 1.531 mdpl, kawasan ini dikelilingi oleh hamparan kebun teh yang hijau dan perkebunan sayur-mayur subur.\n\nKeunikan nama Danau Kembar ini terletak pada letak geografisnya yang kontradiktif: Danau Diatas justru berada di tempat yang lebih rendah dari jalan raya, sedangkan Danau Dibawah berada di posisi bukit yang lebih tinggi. Lanskap air danau yang sangat jernih dan berudara dingin menciptakan atmosfer udara sejuk layaknya iklim pegunungan Eropa.\n\nWisatawan dapat menyewa perahu kayu untuk menjelajahi perairan Danau Diatas, mengunjungi dermaga spot foto Instagramable, atau memetik buah markisa dan stroberi segar langsung di kebun petani lokal. Kawasan ini merupakan tempat favorit untuk tempat beristirahat dan rekreasi keluarga.",
+    descriptionEn: "Twin Lakes (Danau Kembar) is the iconic name for two breathtaking volcanic lakes located side-by-side in Lembah Gumanti District, Solok Regency: Danau Diatas and Danau Dibawah. Situated on the chilly highlands of Alahan Panjang at 1,531 meters above sea level, the area is enclosed by green tea estates and fertile vegetable farms.\n\nThe unique naming of the Twin Lakes stems from a geographical irony: Danau Diatas ('Upper Lake') actually sits lower than the main road, while Danau Dibawah ('Lower Lake') rests higher on the hills. Pristine waters paired with chilly air create a cool mountain atmosphere resembling European climates.\n\nVisitors can rent wooden boats to navigate Danau Diatas, pose on picturesque wooden photo piers, or pick fresh passionfruit and strawberries at local farms. It serves as a top retreat for family relaxation and mountain photography.",
+    highlights: ['Dua Danau Vulkanik Berdampingan', 'Udara Dingin Alahan Panjang 1.531 mdpl', 'Kebun Teh & Agrowisata Petik Buah'],
+    highlightsEn: ['Side-by-Side Twin Volcanic Lakes', 'Chilly Alahan Panjang Air (1,531m)', 'Tea Plantations & Fresh Fruit Picking'],
+    bestTime: 'Pagi dan Siang Hari',
+    bestTimeEn: 'Morning and Midday',
+    locationDetails: 'Kecamatan Lembah Gumanti, Kabupaten Solok',
+    locationDetailsEn: 'Lembah Gumanti District, Solok Regency',
+    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    lat: -1.066667,
+    lng: 100.750000
+  },
+  {
+    id: 'd10',
+    title: 'Masjid Raya Sumatera Barat',
+    titleEn: 'Grand Mosque of West Sumatra',
+    category: 'Alam',
+    categoryEn: 'Architecture & Religious Landmark',
+    regency: 'Kota Padang',
+    tag: 'Populer',
+    tagEn: 'Popular',
+    description: "Masjid Raya Sumatera Barat adalah masjid megah ikonik di Kota Padang yang diakui secara internasional atas keunikan arsitekturnya yang memenangi penghargaan Internasional Abdullatif Al Fozan Award. Masjid ini dirancang tanpa kubah bulat konvensional, melainkan mengadopsi bentukan atap bentanggonjong khas Rumah Gadang Minangkabau yang berpadu dengan motif kain bentangan serban Nabi Muhammad SAW.\n\nDinding luar masjid dihiasi oleh ukiran keramik kaligrafi Arab bernuansa motif tenun Songket Minang yang sangat detail dan megah. Struktur bangunan masjid dirancang khusus dengan teknologi tahan gempa bumi hingga 10 Skala Richter serta dapat difungsikan sebagai lokasi evakuasi tsunami masyarakat pesisir Padang.\n\nInterior lantai dua masjid menyajikan ruang shalat tanpa tiang tengah yang sangat luas dan sejuk, dinaungi ukiran kayu emas di langit-langit atap. Pada malam hari, tata lampu arsitektural masjid memancarkan keindahan cahaya yang sangat romantis dan menjadi monumen kebanggaan keagamaan masyarakat Minangkabau.",
+    descriptionEn: "The Grand Mosque of West Sumatra is a majestic architectural masterpiece in Padang City, recognized globally with the prestigious Abdullatif Al Fozan Award for Islamic Architecture. Designed without a traditional dome, its roof features a sweeping four-cornered Minangkabau gonjong roof combined with the motif of Prophet Muhammad's historical turban cloth.\n\nThe exterior walls are wrapped in intricate Arabic calligraphy ceramic tiles mimicking traditional Minang Songket textile weaves. The entire structure was engineered to withstand earthquakes up to magnitude 10.0 and serves as a designated tsunami evacuation sanctuary.\n\nThe upper prayer hall provides a pillarless, cool sanctuary covered by golden wood ceiling carvings. At night, architectural illumination highlights the building, making it a proud religious landmark for West Sumatra.",
+    highlights: ['Pemenang Penghargaan Arsitektur Internasional', 'Atap Gonjong Minang Tahan Gempa & Tsunami', 'Tata Lampu Arsitektural Malam Hari'],
+    highlightsEn: ['International Architectural Award Winner', 'Earthquake & Tsunami Resilient Gonjong Architecture', 'Stunning Architectural Night Illumination'],
+    bestTime: 'Sore dan Malam Hari',
+    bestTimeEn: 'Late Afternoon and Evening',
+    locationDetails: 'Jalan Khatib Sulaiman, Kota Padang',
+    locationDetailsEn: 'Khatib Sulaiman Street, Padang City',
+    imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+    lat: -0.924167,
+    lng: 100.362222
   }
 ];
 
@@ -345,6 +358,22 @@ export const CULTURE_ITEMS: CultureItem[] = [
     imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
     lat: -0.950000,
     lng: 100.350000
+  },
+  {
+    id: 'c5',
+    title: 'Upacara Adat Makan Bajamba',
+    titleEn: 'Makan Bajamba Mass Dining Tradition',
+    category: 'Tradisi Adat',
+    categoryEn: 'Customary Ritual',
+    description: "Makan Bajamba (disebut juga Makan Barapak) adalah tradisi ritual makan bersama secara lesehan dalam adat Minangkabau yang dilakukan dengan duduk melingkar mengelilingi satu nampan besar berisi makanan. Tradisi ini telah berlangsung sejak abad ke-7 dan digelar pada perayaan hari besar keagamaan, upacara adat, serta penyambutan tamu kehormatan.\n\nSatu jamba (nampan makanan) biasanya diperuntukkan untuk 3 hingga 6 orang yang duduk bersila bagi laki-laki dan bersimpuh bagi perempuan. Di tengah nampan disajikan aneka masakan khas seperti Rendang, Gulai Ayam, Sambal Lado Tanak, dan Nasi Padeh, ditutup dengan kudapan manis Lamang Tapai.\n\nNilai filosofis utama dari Makan Bajamba adalah mengajarkan kesetaraan tanpa memandang status sosial, memupuk kebersamaan dan persaudaraan yang erat, serta melatih kedisiplinan tatakrama adat saat mengambil hidangan makanan secara sopan.",
+    descriptionEn: "Makan Bajamba (also known as Makan Barapak) is a traditional Minangkabau communal dining ritual where participants sit on the floor in circles sharing a large tray laden with food. Originating in the 7th century, it takes place during major religious festivals, tribal ceremonies, and state receptions.\n\nEach jamba tray serves 3 to 6 people, with men sitting cross-legged and women kneeling gracefully. The tray offers a feast of Rendang, Chicken Gulai, Sambal Lado, and rice, finished with sweet Lamang Tapai dessert.\n\nThe core philosophy of Makan Bajamba promotes social equality regardless of background, fosters deep brotherhood, and instills refined dining etiquette when partaking in shared meals.",
+    philosophy: 'Duduk Sama Rendah, Berdiri Sama Tinggi (Simbol kebersamaan & kesetaraan derajat manusia)',
+    philosophyEn: 'Sit at Equal Levels, Stand at Equal Heights (Symbol of unity and social equality)',
+    origin: 'Nagari Minangkabau (Batusangkar, Solok, Bukittinggi)',
+    originEn: 'Minangkabau Regions (Batusangkar, Solok, Bukittinggi)',
+    imageUrl: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+    lat: -0.471111,
+    lng: 100.621111
   }
 ];
 
@@ -404,6 +433,20 @@ export const CULINARY_ITEMS: CulinaryItem[] = [
     flavorProfile: 'Gurih santan beraroma bambu dipadu manis-asam segar ketan hitam',
     flavorProfileEn: 'Savory coconut bamboo scent fused with sweet-tangy fermented rice',
     imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'cu5',
+    title: 'Dendeng Balado & Dendeng Batokok',
+    titleEn: 'Dendeng Balado & Dendeng Batokok',
+    type: 'Makanan Utama',
+    typeEn: 'Main Course',
+    origin: 'Bukittinggi & Solok',
+    originEn: 'Bukittinggi & Solok',
+    description: "Dendeng Balado dan Dendeng Batokok adalah hidangan daging sapi khas Minangkabau yang sangat populer karena kerenyahan dan tekstur dagingnya yang empuk bersambal segar. Dendeng Balado dibuat dari irisan tipis daging sapi yang digoreng kering renyah lalu disiram sambal cabai merah giling kasar dengan aroma minyak kelapa yang menggugah selera.\n\nSementara Dendeng Batokok memiliki teknik pengolahan unik di mana daging sapi yang telah direbus dengan bumbu rempah dipukul-pukul (batokok) menggunakan batu gilingan hingga serat dagingnya memar lembut, lalu dipanggang di atas bara api dan disiram sambal lado mudo (cabai hijau) tumis bawang merah yang gurih pedas.\n\nKedua variasi dendeng ini merupakan lauk utama favorit di Rumah Makan Padang di seluruh Indonesia. Perpaduan gurih gurihnya daging sapi dengan rasa pedas pedas manis asam sambal balado menghadirkan kenikmatan menyantap nasi hangat yang tiada tara.",
+    descriptionEn: "Dendeng Balado and Dendeng Batokok are iconic Minangkabau beef specialties celebrated for their crispy or tender textures paired with vibrant chili sambal. Dendeng Balado features paper-thin slices of beef fried crisp and generously coated in coarse red chili sambal infused with coconut oil aromas.\n\nIn contrast, Dendeng Batokok uses boiled spiced beef that is tenderly pounded (batokok) with a stone pestle to loosen the meat fibers, then flame-grilled and topped with tangy green chili (lado mudo) sambal and fried shallots.\n\nBoth dendeng varieties stand as flagship dishes in Padang restaurants nationwide. The marriage of savory beef with vibrant chili sambal provides an unforgettable dining experience over warm steamed rice.",
+    flavorProfile: 'Krispy daging gurih dipadu pedas manis asam sambal balado & lado mudo',
+    flavorProfileEn: 'Crispy savory beef paired with vibrant red and green chili sambal',
+    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
