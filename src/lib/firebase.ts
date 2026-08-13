@@ -3,11 +3,11 @@ import { initializeFirestore, persistentLocalCache, persistentSingleTabManager }
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  projectId: "still-dimension-p8gvj",
+  projectId: "malala-my-id",
   appId: "1:150503186564:web:64af24b2edc852fb23a2d1",
   apiKey: "AIzaSyBAizWQnaNb-EX-BcjoZt9BSRctFGyMEnE",
-  authDomain: "still-dimension-p8gvj.firebaseapp.com",
-  storageBucket: "still-dimension-p8gvj.firebasestorage.app",
+  authDomain: "malala-my-id.firebaseapp.com",
+  storageBucket: "malala-my-id.firebasestorage.app",
   messagingSenderId: "150503186564",
 };
 
