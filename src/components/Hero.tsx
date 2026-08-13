@@ -260,13 +260,15 @@ export const Hero: React.FC<HeroProps> = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                onOpenDrawer('search');
+                if (onOpenDrawer) onOpenDrawer('search');
               }}
-              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl shadow-xl transition-all p-1 cursor-pointer"
+              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-xl shadow-xl transition-all p-1"
             >
               {/* Kaca Pembesar Icon Badge */}
               <div 
-                onClick={() => onOpenDrawer('search')}
+                onClick={() => {
+                  if (onOpenDrawer) onOpenDrawer('search');
+                }}
                 className="pl-3 pr-2 text-red-600 flex items-center justify-center cursor-pointer"
               >
                 <Search className="w-5 h-5 animate-pulse" />
@@ -277,15 +279,13 @@ export const Hero: React.FC<HeroProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => {
-                  const val = e.target.value;
-                  if (onSearchQueryChange) onSearchQueryChange(val);
-                  onOpenDrawer('search');
+                  if (onSearchQueryChange) onSearchQueryChange(e.target.value);
                 }}
-                onFocus={() => {
-                  onOpenDrawer('search');
-                }}
-                onClick={() => {
-                  onOpenDrawer('search');
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (onOpenDrawer) onOpenDrawer('search');
+                  }
                 }}
                 placeholder={
                   lang === 'en'

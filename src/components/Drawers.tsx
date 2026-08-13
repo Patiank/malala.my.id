@@ -993,61 +993,61 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Search Results List */}
+              {/* Search Results List (2 Columns Grid) */}
               {filteredSearchItems.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   {filteredSearchItems.map((item, idx) => (
                     <div
                       key={`${item.id}-${idx}`}
-                      className="border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-3 font-jakarta"
+                      className="border border-gray-200 rounded-xl p-3.5 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-2.5 font-jakarta"
                     >
-                      <div className="flex gap-3">
+                      <div className="space-y-2">
                         {item.imageUrl ? (
                           <img
                             src={item.imageUrl}
                             alt={item.title}
-                            className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover shrink-0 border border-gray-100 group-hover:scale-105 transition-transform"
+                            className="w-full h-32 rounded-lg object-cover border border-gray-100 group-hover:scale-102 transition-transform"
                           />
                         ) : (
-                          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-gray-100 flex items-center justify-center text-3xl shrink-0">
+                          <div className="w-full h-32 rounded-lg bg-gray-100 flex items-center justify-center text-4xl">
                             {item.icon}
                           </div>
                         )}
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
                               {item.categoryLabel}
                             </span>
                             {item.subTag && (
-                              <span className="text-[10px] font-semibold text-gray-500">
+                              <span className="text-[9.5px] font-semibold text-gray-500 truncate max-w-[120px]">
                                 • {item.subTag}
                               </span>
                             )}
                           </div>
-                          <h3 className="font-bold text-sm sm:text-base text-gray-900 group-hover:text-red-600 transition-colors">
+                          <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1">
                             {lang === 'en' && item.titleEn ? item.titleEn : item.title}
                           </h3>
-                          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+                          <p className="text-[11px] text-gray-600 line-clamp-2 leading-relaxed">
                             {lang === 'en' && item.descEn ? item.descEn : item.desc}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
-                        <span className="text-gray-500 font-medium flex items-center gap-1 text-[11px]">
+                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px]">
+                        <span className="text-gray-500 font-medium flex items-center gap-1 truncate max-w-[110px]">
                           {item.locationName && (
                             <>
-                              <MapPin className="w-3.5 h-3.5 text-red-500" />
-                              <span>{item.locationName}</span>
+                              <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                              <span className="truncate">{item.locationName}</span>
                             </>
                           )}
                         </span>
                         <button
                           onClick={() => onOpenDrawer?.(item.drawerType)}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-red-600 hover:text-black transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-0.5 font-bold text-red-600 hover:text-black transition-colors cursor-pointer shrink-0"
                         >
-                          <span>{lang === 'en' ? 'View Category' : 'Lihat Kategori'}</span>
-                          <ChevronRight className="w-4 h-4" />
+                          <span>{lang === 'en' ? 'View' : 'Detail'}</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
