@@ -23,6 +23,7 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
   // Secret Admin Trigger: Clicking Pemprov Sumbar logo 6 times in rapid sequence opens Admin Panel
