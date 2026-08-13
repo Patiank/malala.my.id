@@ -291,6 +291,48 @@ export const DESTINATIONS: Destination[] = [
     imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
     lat: -0.924167,
     lng: 100.362222
+  },
+  {
+    id: 'd11',
+    title: 'Kepulauan Mentawai (Surga Surfing World Class)',
+    titleEn: 'Mentawai Islands (World Class Surfing Paradise)',
+    category: 'Pantai & Bahari',
+    categoryEn: 'Marine & Surfing Paradise',
+    regency: 'Kabupaten Kepulauan Mentawai',
+    tag: 'Internasional',
+    tagEn: 'International',
+    description: "Kepulauan Mentawai adalah gugusan pulau eksotis di Samudra Hindia yang diakui secara global sebagai salah satu destinasi selancar tropis terbaik di planet bumi. Terdiri dari empat pulau utama yaitu Siberut, Sipora, Pagai Utara, dan Pagai Selatan, Mentawai menawarkan lebih dari 40 spot gulungan ombak tabung sempurna berkelas dunia seperti HTs (Hollow Trees), Macaronis, dan Lance's Left.\n\nSelain pesona ombak kelas dunia yang menarik ribuan peselancar profesional internasional, Mentawai menyimpan kekayaan budaya suku asli Suku Mentawai yang merupakan salah satu peradaban tertua di Nusantara. Wisatawan dapat menjelajahi keaslian hutan hujan tropis Siberut, menginap di Uma (rumah adat kayu), serta mempelajari tradisi seni tato tubuh tertua (Titi Mentawai) dan tarian Turuk Laggai.\n\nPerairan Mentawai sangat bening berair toska, menjadi surga snorkeling dan diving dengan terumbu karang alami yang kaya akan biota laut tropis. Mentawai menyajikan perpaduan sempurna antara petualangan olahraga ekstrem dan petualangan antropologi budaya yang tiada duanya.",
+    descriptionEn: "The Mentawai Islands are an exotic archipelago in the Indian Ocean universally celebrated as one of the finest tropical surfing wonderlands on Earth. Comprising four main islands—Siberut, Sipora, North Pagai, and South Pagai—Mentawai boasts over 40 world-class wave breaks including HTs (Hollow Trees), Macaronis, and Lance's Left.\n\nBeyond world-class surfing attracting international pros, Mentawai preserves the indigenous heritage of the Mentawai Tribe, one of Indonesia's oldest civilizations. Travelers can trek through Siberut's virgin rainforests, stay in traditional Uma longhouses, and observe ancient body tattoo art (Titi Mentawai) and Turuk Laggai dances.\n\nMentawai's turquoise ocean waters offer pristine snorkeling and scuba diving over healthy coral reefs teeming with marine life. Mentawai presents an unmatched fusion of extreme sport thrills and authentic anthropological exploration.",
+    highlights: ['40+ Spot Ombak Tabung Kelas Dunia (HTs, Macaronis)', 'Kebudayaan Asli Suku Mentawai & Rumah Uma', 'Trek Hutan Hujan Tropis Taman Nasional Siberut'],
+    highlightsEn: ['40+ World-Class Wave Breaks (HTs, Macaronis)', 'Indigenous Mentawai Culture & Uma Longhouses', 'Siberut National Park Rainforest Trekking'],
+    bestTime: 'April hingga Oktober (Musim Ombak Terbaik)',
+    bestTimeEn: 'April to October (Peak Wave Season)',
+    locationDetails: 'Kepulauan Mentawai, Sumatera Barat',
+    locationDetailsEn: 'Mentawai Archipelago, West Sumatra',
+    imageUrl: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80',
+    lat: -2.133333,
+    lng: 99.550000
+  },
+  {
+    id: 'd12',
+    title: 'Pantai Air Manis & Batu Malin Kundang',
+    titleEn: 'Air Manis Beach & Malin Kundang Legend Rock',
+    category: 'Pantai & Bahari',
+    categoryEn: 'Beach & Legend',
+    regency: 'Kota Padang',
+    tag: 'Populer',
+    tagEn: 'Popular',
+    description: "Pantai Air Manis adalah destinasi pantai legenda paling terkenal di Sumatera Barat yang terletak di selatan Kota Padang. Pantai ini tersohor di seluruh Nusantara karena menjadi tempat beradanya situs batu relief 'Batu Malin Kundang', yaitu batu berbentuk serpihan kapal dan tubuh manusia bersujud yang dipercayai sebagai perwujudan tokoh Malin Kundang yang dikutuk menjadi batu oleh ibunya karena durhaka.\n\nSitus Batu Malin Kundang yang terletak di tepi pantai menjadi magnet utama wisatawan untuk berfoto dan merenungkan pesan moral mendalam mengenai pentingnya rasa hormat dan kasih sayang anak kepada orang tua dalam filosofi kebudayaan Minangkabau.\n\nPantai Air Manis memiliki hamparan pasir landai yang luas berlatar pemandangan Gunung Padang dan Pulau Pisang Kecil. Wisatawan dapat berjalan kaki menyusuri laut saat air surut menuju Pulau Pisang Kecil atau menyewa wahana motor ATV untuk menjelajahi keindahan garis pantai di sore hari.",
+    descriptionEn: "Air Manis Beach is West Sumatra's most famous legendary beach destination located south of Padang City. The beach is renowned nationwide as the site of the 'Malin Kundang Rock' relief, featuring rock formations resembling ship fragments and a prostrate human figure believed to be Malin Kundang turned to stone by his mother's curse for his disobedience.\n\nThe Malin Kundang rock site on the shoreline serves as a focal point for visitors to capture photos and reflect upon the profound cultural moral of filial piety and respect toward parents in Minangkabau heritage.\n\nAir Manis Beach features wide sloping sands framed by Mount Padang and Little Pisang Island. Visitors can walk across exposed sandbars at low tide to Little Pisang Island or rent ATV quad bikes to explore the scenic coastline at sunset.",
+    highlights: ['Situs Bersejarah Legenda Batu Malin Kundang', 'Jalan Kaki Saat Surut ke Pulau Pisang Kecil', 'Wahana Motor ATV & Sunset Pantai Padang'],
+    highlightsEn: ['Historic Malin Kundang Legend Rock Site', 'Low Tide Sandbar Walk to Little Pisang Island', 'ATV Beach Riding & Sunset Panorama'],
+    bestTime: 'Sore Hari (15:30 - 18:30 WIB)',
+    bestTimeEn: 'Late Afternoon (03:30 - 06:30 PM)',
+    locationDetails: 'Kecamatan Padang Selatan, Kota Padang',
+    locationDetailsEn: 'South Padang District, Padang City',
+    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    lat: -0.990000,
+    lng: 100.360000
   }
 ];
 
