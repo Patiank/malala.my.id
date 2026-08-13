@@ -295,7 +295,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         } else {
           await signOut(auth);
           setIsAuthenticated(false);
-          setLoginError(`Akses Ditolak: Email '${result.user.email}' tidak terdaftar di Whitelist Admin (${allowedAdminEmails.join(', ')}).`);
+          setLoginError('Akses Ditolak: Email otorisasi tidak terdaftar sebagai Admin MALALA.');
         }
       }
     } catch (error: any) {
@@ -304,7 +304,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       const errMessage = error?.message || '';
 
       if (errCode === 'auth/popup-blocked' || errCode === 'auth/cancelled-popup-request') {
-        setLoginError('⚠️ Pop-up diblokir oleh browser Anda! Silakan klik ikon blokir di bilah alamat browser (URL bar) dan pilih "Always allow popups", atau gunakan PIN Rahasia Admin di bawah.');
+        setLoginError('⚠️ Pop-up diblokir oleh browser Anda! Silakan klik ikon blokir di bilah alamat browser (URL bar) dan pilih "Always allow popups".');
       } else if (errCode === 'auth/unauthorized-domain') {
         setLoginError('⚠️ Domain localhost belum didaftarkan di Firebase Console Authorized Domains.');
       } else if (errCode === 'auth/popup-closed-by-user') {
@@ -324,8 +324,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     setIsAuthenticated(false);
   };
 
+  const [failedAttempts, setFailedAttempts] = useState<number>(0);
+  const [lockoutTime, setLockoutTime] = useState<number | null>(null);
+
   const handleEmailLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (lockoutTime && Date.now() < lockoutTime) {
+      const remainingSec = Math.ceil((lockoutTime - Date.now()) / 1000);
+      setLoginError(`Akses terkunci sementara. Coba lagi dalam ${remainingSec} detik.`);
+      return;
+    }
+
     let formatted = inputEmail.trim().toLowerCase();
     if (!formatted) {
       setLoginError('Silakan masukkan alamat email admin.');
@@ -334,11 +344,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     if (!formatted.includes('@')) {
       formatted += '@gmail.com';
     }
+
     if (checkIsEmailAllowed(formatted)) {
       setIsAuthenticated(true);
       setLoginError(null);
+      setFailedAttempts(0);
+      setLockoutTime(null);
     } else {
-      setLoginError(`Akses Ditolak: Email '${formatted}' tidak terdaftar sebagai Admin MALALA. Email admin terdaftar: ${allowedAdminEmails.join(', ')}`);
+      const nextFail = failedAttempts + 1;
+      setFailedAttempts(nextFail);
+      if (nextFail >= 5) {
+        setLockoutTime(Date.now() + 300000);
+        setLoginError('Terlalu banyak percobaan login gagal. Akses ditangguhkan selama 5 menit.');
+      } else {
+        setLoginError('Akses Ditolak: Email atau kredensial otorisasi tidak valid.');
+      }
     }
   };
 
@@ -367,7 +387,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               Otentikasi Admin Terlindungi
             </h3>
             <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
-              Masuk menggunakan Email Admin terdaftar (<span className="font-semibold text-red-600">aldoaldiles@gmail.com</span>).
+              Silakan masukkan email otorisasi Admin terdaftar untuk melanjutkan.
             </p>
           </div>
 
@@ -386,7 +406,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               type="email"
               value={inputEmail}
               onChange={(e) => setInputEmail(e.target.value)}
-              placeholder="Masukkan email (cth: aldoaldiles@gmail.com)..."
+              placeholder="Masukkan alamat email Admin..."
               className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-xs text-gray-900 font-semibold focus:outline-none focus:border-red-600 focus:bg-white transition-all"
               autoFocus
             />

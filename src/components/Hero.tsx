@@ -398,10 +398,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
               <div
                 onClick={handlePemprovLogoClick}
-                className="cursor-pointer shrink-0 select-none active:scale-95 transition-transform"
-                title="Pemerintah Provinsi Sumatera Barat (Klik 6 kali untuk Akses Admin)"
-                role="button"
-                aria-label="Logo Pemprov Sumbar"
+                className="cursor-default shrink-0 select-none"
               >
                 <PemprovSumbarLogo size={48} />
               </div>
