@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X } from 'lucide-react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 import { WeatherWidget } from './WeatherWidget';
 import { DrawerType, AppSettings } from '../types';
 import { Language, translations } from '../lib/translations';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
@@ -14,6 +15,119 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Close search dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Combined searchable index across all Sumbar tourism items
+  const allSearchableItems = useMemo(() => {
+    const items: Array<{
+      id: string;
+      title: string;
+      titleEn?: string;
+      desc: string;
+      descEn?: string;
+      icon: string;
+      categoryLabel: string;
+      categoryLabelEn: string;
+      drawerType: DrawerType;
+      keywords: string;
+    }> = [];
+
+    DESTINATIONS.forEach(d => {
+      items.push({
+        id: d.id,
+        title: d.name,
+        titleEn: d.nameEn || d.name,
+        desc: d.description,
+        descEn: d.descriptionEn || d.description,
+        icon: '🏔️',
+        categoryLabel: 'Destinasi',
+        categoryLabelEn: 'Destination',
+        drawerType: 'destinations',
+        keywords: `${d.name} ${d.nameEn || ''} ${d.location} ${d.category} ${d.description}`.toLowerCase()
+      });
+    });
+
+    CULTURE_ITEMS.forEach(c => {
+      items.push({
+        id: c.id,
+        title: c.name,
+        titleEn: c.nameEn || c.name,
+        desc: c.description,
+        descEn: c.descriptionEn || c.description,
+        icon: '🏛️',
+        categoryLabel: 'Kebudayaan',
+        categoryLabelEn: 'Culture',
+        drawerType: 'culture',
+        keywords: `${c.name} ${c.nameEn || ''} ${c.category} ${c.description}`.toLowerCase()
+      });
+    });
+
+    CULINARY_ITEMS.forEach(c => {
+      items.push({
+        id: c.id,
+        title: c.name,
+        titleEn: c.nameEn || c.name,
+        desc: c.description,
+        descEn: c.descriptionEn || c.description,
+        icon: '🍲',
+        categoryLabel: 'Kuliner',
+        categoryLabelEn: 'Culinary',
+        drawerType: 'culinary',
+        keywords: `${c.name} ${c.nameEn || ''} ${c.category} ${c.description}`.toLowerCase()
+      });
+    });
+
+    EVENTS_SCHEDULE.forEach(e => {
+      items.push({
+        id: e.id,
+        title: e.name,
+        titleEn: e.nameEn || e.name,
+        desc: e.description,
+        descEn: e.descriptionEn || e.description,
+        icon: '📅',
+        categoryLabel: 'Event',
+        categoryLabelEn: 'Event',
+        drawerType: 'events',
+        keywords: `${e.name} ${e.nameEn || ''} ${e.location} ${e.description}`.toLowerCase()
+      });
+    });
+
+    HOT_INFO_ITEMS.forEach(h => {
+      items.push({
+        id: h.id,
+        title: h.title,
+        titleEn: h.titleEn || h.title,
+        desc: h.description,
+        descEn: h.descriptionEn || h.description,
+        icon: '🔥',
+        categoryLabel: 'Berita',
+        categoryLabelEn: 'News',
+        drawerType: 'hotinfo',
+        keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description}`.toLowerCase()
+      });
+    });
+
+    return items;
+  }, []);
+
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return allSearchableItems.filter(item => item.keywords.includes(q)).slice(0, 7);
+  }, [searchQuery, allSearchableItems]);
 
   const heroTextColor = appSettings?.heroTextColor || '#000000';
   const heroTextShadow = appSettings?.heroTextShadow !== false;
@@ -112,6 +226,86 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
               <Compass className="w-4.5 h-4.5 text-red-600 group-hover:text-white transition-colors animate-pulse" />
               <span>{t.heroBtnExplore}</span>
             </button>
+          </div>
+
+          {/* Quick Search Bar directly under CTA Buttons */}
+          <div ref={searchContainerRef} className="w-full max-w-xl relative pt-3 z-30 font-jakarta">
+            <div className="relative flex items-center">
+              <div className="absolute left-3.5 pointer-events-none text-gray-400">
+                <Search className="w-4 h-4 text-red-600 animate-pulse" />
+              </div>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchFocused(true);
+                }}
+                onFocus={() => setIsSearchFocused(true)}
+                placeholder={
+                  lang === 'en'
+                    ? "Cari Harau, Jam Gadang, Rendang, Sate, Pariangan..."
+                    : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang, Sate, Pariangan)..."
+                }
+                className="w-full pl-10 pr-10 py-2.5 bg-white/95 backdrop-blur-md border border-gray-300 hover:border-red-500 focus:border-red-600 rounded-lg text-xs sm:text-sm text-gray-900 placeholder-gray-400 font-medium shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 p-1 rounded-full text-gray-400 hover:text-black cursor-pointer"
+                  title="Bersihkan"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Real-time Search Results Dropdown Panel */}
+            {isSearchFocused && searchQuery.trim().length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-md rounded-xl shadow-2xl border border-gray-200 overflow-hidden max-h-[360px] overflow-y-auto z-50 animate-fade-in">
+                {searchResults.length > 0 ? (
+                  <div className="divide-y divide-gray-100">
+                    {searchResults.map((item, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => {
+                          setSearchQuery('');
+                          setIsSearchFocused(false);
+                          onOpenDrawer(item.drawerType);
+                        }}
+                        className="p-3 hover:bg-red-50/80 transition-colors cursor-pointer flex items-center justify-between group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-lg bg-gray-100 p-1.5 rounded-md group-hover:scale-110 transition-transform">
+                            {item.icon}
+                          </span>
+                          <div>
+                            <h4 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-red-600 transition-colors">
+                              {lang === 'en' && item.titleEn ? item.titleEn : item.title}
+                            </h4>
+                            <p className="text-[11px] text-gray-500 line-clamp-1">
+                              {lang === 'en' && item.descEn ? item.descEn : item.desc}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            {lang === 'en' ? item.categoryLabelEn : item.categoryLabel}
+                          </span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-0.5 transition-all" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-4 text-center text-xs text-gray-500 font-medium">
+                    {lang === 'en'
+                      ? `Tidak ada informasi ditemukan untuk "${searchQuery}"`
+                      : `Tidak ada informasi ditemukan untuk "${searchQuery}"`}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
