@@ -39,7 +39,11 @@ class ErrorBoundary extends Component<Props, State> {
             </p>
             <button
               onClick={() => {
-                window.location.reload();
+                try {
+                  localStorage.clear();
+                  sessionStorage.clear();
+                } catch (e) {}
+                window.location.href = window.location.origin + window.location.pathname + '?refresh=' + Date.now();
               }}
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
             >
