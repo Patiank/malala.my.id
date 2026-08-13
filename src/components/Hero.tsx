@@ -329,7 +329,7 @@ export const Hero: React.FC<HeroProps> = ({
                     <div
                       key={idx}
                       onClick={() => {
-                        setSearchQuery('');
+                        if (onSearchQueryChange) onSearchQueryChange('');
                         setIsSearchFocused(false);
                         onOpenDrawer(item.drawerType);
                       }}
