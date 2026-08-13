@@ -73,60 +73,60 @@ export const Hero: React.FC<HeroProps> = ({
     DESTINATIONS.forEach(d => {
       items.push({
         id: d.id,
-        title: d.name,
-        titleEn: d.nameEn || d.name,
+        title: d.title,
+        titleEn: d.titleEn || d.title,
         desc: d.description,
         descEn: d.descriptionEn || d.description,
         icon: '🏔️',
         categoryLabel: 'Destinasi',
         categoryLabelEn: 'Destination',
         drawerType: 'destinations',
-        keywords: `${d.name} ${d.nameEn || ''} ${d.location} ${d.category} ${d.description}`.toLowerCase()
+        keywords: `${d.title} ${d.titleEn || ''} ${d.regency} ${d.category} ${d.description}`.toLowerCase()
       });
     });
 
     CULTURE_ITEMS.forEach(c => {
       items.push({
         id: c.id,
-        title: c.name,
-        titleEn: c.nameEn || c.name,
+        title: c.title,
+        titleEn: c.titleEn || c.title,
         desc: c.description,
         descEn: c.descriptionEn || c.description,
         icon: '🏛️',
         categoryLabel: 'Kebudayaan',
         categoryLabelEn: 'Culture',
         drawerType: 'culture',
-        keywords: `${c.name} ${c.nameEn || ''} ${c.category} ${c.description}`.toLowerCase()
+        keywords: `${c.title} ${c.titleEn || ''} ${c.category} ${c.description}`.toLowerCase()
       });
     });
 
     CULINARY_ITEMS.forEach(c => {
       items.push({
         id: c.id,
-        title: c.name,
-        titleEn: c.nameEn || c.name,
+        title: c.title,
+        titleEn: c.titleEn || c.title,
         desc: c.description,
         descEn: c.descriptionEn || c.description,
         icon: '🍲',
         categoryLabel: 'Kuliner',
         categoryLabelEn: 'Culinary',
         drawerType: 'culinary',
-        keywords: `${c.name} ${c.nameEn || ''} ${c.category} ${c.description}`.toLowerCase()
+        keywords: `${c.title} ${c.titleEn || ''} ${c.type} ${c.description}`.toLowerCase()
       });
     });
 
     EVENTS_SCHEDULE.forEach(e => {
       items.push({
         id: e.id,
-        title: e.name,
-        titleEn: e.nameEn || e.name,
+        title: e.title,
+        titleEn: e.titleEn || e.title,
         desc: e.description,
         descEn: e.descriptionEn || e.description,
         icon: '📅',
         categoryLabel: 'Event',
         categoryLabelEn: 'Event',
         drawerType: 'events',
-        keywords: `${e.name} ${e.nameEn || ''} ${e.location} ${e.description}`.toLowerCase()
+        keywords: `${e.title} ${e.titleEn || ''} ${e.location} ${e.description}`.toLowerCase()
       });
     });
 

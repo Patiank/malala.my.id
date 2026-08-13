@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
@@ -561,7 +561,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    (eventsSchedule || []).forEach((e: EventItem) => {
+    (eventItems || []).forEach((e: EventItem) => {
       items.push({
         id: e.id,
         title: e.title,
@@ -579,7 +579,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    (hotInfoItems || []).forEach((h: HotInfoItem) => {
+    (dataStore?.hotInfoItems || []).forEach((h: HotInfoItem) => {
       items.push({
         id: h.id,
         title: h.title,
@@ -598,7 +598,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     });
 
     return items;
-  }, [destinations, cultureItems, culinaryItems, eventsSchedule, hotInfoItems]);
+  }, [destinations, cultureItems, culinaryItems, eventItems, dataStore?.hotInfoItems]);
 
   const filteredSearchItems = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();

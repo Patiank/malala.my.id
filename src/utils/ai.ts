@@ -141,7 +141,7 @@ export async function fetchAiItinerary(params: any) {
   }
 
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
-  const viteApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -181,7 +181,7 @@ export async function fetchAiChat(message: string) {
   }
 
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
-  const viteApiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });

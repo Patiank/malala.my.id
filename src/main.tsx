@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, ReactNode, StrictMode } from 'react';
+import React, { ErrorInfo, ReactNode, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
@@ -9,23 +9,22 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  error?: Error;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
+class ErrorBoundary extends React.Component<Props, State> {
+  state: State = {
+    hasError: false
   };
 
-  public static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(_: Error): State {
+    return { hasError: true };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught Error in Malala App:', error, errorInfo);
   }
 
-  public render() {
+  render() {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-6 text-center font-jakarta">
@@ -53,7 +52,8 @@ class ErrorBoundary extends Component<Props, State> {
         </div>
       );
     }
-    return this.props.children;
+
+    return (this as any).props.children;
   }
 }
 
