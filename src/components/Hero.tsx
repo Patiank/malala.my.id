@@ -191,45 +191,47 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
             <CornerBracket type="BL" />
           </div>
 
-          {/* Action Buttons Row */}
-          <div className="flex items-center gap-3 flex-wrap pt-2">
-            {/* UNI MALA AI Assistant Primary CTA */}
-            <button
-              onClick={() => onOpenDrawer('formai')}
-              className="group inline-flex items-center justify-center bg-black text-white border border-black rounded-md font-jakarta font-bold uppercase tracking-[0.16em] hover:bg-gray-800 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
-              style={{
-                fontSize: 'var(--body)',
-                paddingInline: 'var(--btn-px)',
-                paddingBlock: 'var(--btn-py)',
-                gap: 'var(--btn-gap)',
-              }}
-            >
-              <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-              <span>{t.heroBtnAiPlanner}</span>
-              <ArrowUpRight
-                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                style={{ width: 'var(--icon)', height: 'var(--icon)' }}
-              />
-            </button>
+          {/* Combined Action Buttons & Search Panel Container (Matched Exact Width) */}
+          <div className="inline-flex flex-col items-stretch gap-2.5 pt-2 max-w-full">
+            {/* Action Buttons Row */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* UNI MALA AI Assistant Primary CTA */}
+              <button
+                onClick={() => onOpenDrawer('formai')}
+                className="group inline-flex items-center justify-center bg-black text-white border border-black rounded-md font-jakarta font-bold uppercase tracking-[0.16em] hover:bg-gray-800 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
+                style={{
+                  fontSize: 'var(--body)',
+                  paddingInline: 'var(--btn-px)',
+                  paddingBlock: 'var(--btn-py)',
+                  gap: 'var(--btn-gap)',
+                }}
+              >
+                <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                <span>{t.heroBtnAiPlanner}</span>
+                <ArrowUpRight
+                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  style={{ width: 'var(--icon)', height: 'var(--icon)' }}
+                />
+              </button>
 
-            {/* Mulai Jelajah Main Button - Opens Destinations Sub-menu directly */}
-            <button
-              onClick={() => onOpenDrawer('destinations')}
-              className="group inline-flex items-center justify-center border border-gray-400 bg-white/90 backdrop-blur-xs rounded-md font-jakarta font-bold uppercase tracking-[0.16em] text-black hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
-              style={{
-                fontSize: 'var(--body)',
-                paddingInline: 'var(--btn-px)',
-                paddingBlock: 'var(--btn-py)',
-                gap: 'var(--btn-gap)',
-              }}
-            >
-              <Compass className="w-4.5 h-4.5 text-red-600 group-hover:text-white transition-colors animate-pulse" />
-              <span>{t.heroBtnExplore}</span>
-            </button>
-          </div>
+              {/* Mulai Jelajah Main Button - Opens Destinations Sub-menu directly */}
+              <button
+                onClick={() => onOpenDrawer('destinations')}
+                className="group inline-flex items-center justify-center border border-gray-400 bg-white/90 backdrop-blur-xs rounded-md font-jakarta font-bold uppercase tracking-[0.16em] text-black hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
+                style={{
+                  fontSize: 'var(--body)',
+                  paddingInline: 'var(--btn-px)',
+                  paddingBlock: 'var(--btn-py)',
+                  gap: 'var(--btn-gap)',
+                }}
+              >
+                <Compass className="w-4.5 h-4.5 text-red-600 group-hover:text-white transition-colors animate-pulse" />
+                <span>{t.heroBtnExplore}</span>
+              </button>
+            </div>
 
-          {/* Premium Search Bar Panel - Width aligned with Action Buttons Block */}
-          <div ref={searchContainerRef} className="w-full max-w-2xl relative pt-3 z-30 font-jakarta">
+            {/* Premium Search Bar Panel - Width stretches 100% to match exact length of Buttons Row */}
+            <div ref={searchContainerRef} className="w-full relative z-30 font-jakarta">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -331,6 +333,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDrawer, lang, appSettings }) =
             )}
           </div>
         </div>
+      </div>
 
         {/* Right Lower Feature Block */}
         <div
