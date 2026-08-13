@@ -202,7 +202,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rencana Wisata Sumatera Barat - MALALA.travel</title>
+        <title>Rencana Wisata Sumatera Barat - MALALA.my.id</title>
         <style>
           @page {
             size: A4 portrait;
@@ -397,7 +397,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div class="container">
           <div class="header">
             <div>
-              <div class="brand">MALALA<span>.travel</span></div>
+              <div class="brand">MALALA<span>.my.id</span></div>
               <div class="tagline">Panduan Wisata Sumatera Barat Berbasis AI</div>
             </div>
             <div class="official-badge">UNI MALA AI ITINERARY</div>
@@ -441,7 +441,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           ` : ''}
 
           <div class="footer">
-            Dibuat secara otomatis oleh UNI MALA AI pada ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} &bull; MALALA.travel &bull; Ukuran Standar Cetak Kertas A4
+            Dibuat secara otomatis oleh UNI MALA AI pada ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} &bull; MALALA.my.id &bull; Ukuran Standar Cetak Kertas A4
           </div>
 
           <button class="no-print-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF A4</button>

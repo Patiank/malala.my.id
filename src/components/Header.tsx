@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <div className="flex items-baseline gap-0.5">
             <span style={headerTextStyle} className="transition-colors duration-300">MALALA</span>
-            <span className="text-red-600 font-extrabold lowercase tracking-tight">.travel</span>
+            <span className="text-red-600 font-extrabold lowercase tracking-tight">.my.id</span>
             <span
               className="font-normal leading-none inline-block -mt-0.5 ml-0.5"
               style={{ fontSize: 'var(--logo-deg)', color: heroTextColor, opacity: 0.7 }}
