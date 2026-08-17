@@ -243,6 +243,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       tanggalSelesai: '',
     },
     kebutuhanKhusus: {
+      catatanKhusus: '',
       preferensiMakanan: [],
       alergiMakanan: [],
       aksesibilitasFisik: false,
@@ -1869,15 +1870,37 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
                     </div>
 
+                    {/* Titik Jemput / Lokasi Keberangkatan */}
                     <div>
                       <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                        Kebutuhan Khusus / Alergi Makanan
+                        📍 {lang === 'en' ? 'Starting Point / Pickup Location' : 'Lokasi Awal / Titik Jemput'}
                       </label>
                       <input
                         type="text"
-                        placeholder="Contoh: alergi udang, butuh akses kursi roda..."
-                        value={itineraryForm.kebutuhanKhusus.alergiMakanan.join(', ')}
-                        onChange={(e) => updateForm(['kebutuhanKhusus', 'alergiMakanan'], e.target.value.split(',').map(s => s.trim()))}
+                        placeholder={lang === 'en' ? 'e.g. Minangkabau Airport (BIM), Hotel in Padang, Bukittinggi...' : 'Contoh: Bandara BIM, Hotel di Padang, Hotel di Bukittinggi...'}
+                        value={itineraryForm.logistik?.titikKeberangkatan || ''}
+                        onChange={(e) => updateForm(['logistik', 'titikKeberangkatan'], e.target.value)}
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                      />
+                    </div>
+
+                    {/* Kebutuhan Khusus / Alergi Makanan / Catatan Tambahan */}
+                    <div>
+                      <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                        {lang === 'en' ? 'Special Needs / Food Allergies / Notes' : 'Kebutuhan Khusus / Alergi Makanan / Catatan'}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={lang === 'en' ? 'e.g. Shellfish allergy, wheelchair access, prefer non-spicy food...' : 'Contoh: alergi udang, butuh akses kursi roda, tidak suka pedas...'}
+                        value={itineraryForm.kebutuhanKhusus?.catatanKhusus ?? (itineraryForm.kebutuhanKhusus?.alergiMakanan?.join(', ') || '')}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          updateForm(['kebutuhanKhusus'], {
+                            ...itineraryForm.kebutuhanKhusus,
+                            catatanKhusus: val,
+                            alergiMakanan: val.split(',').map((s: string) => s.trim()).filter(Boolean)
+                          });
+                        }}
                         className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
                       />
                     </div>
