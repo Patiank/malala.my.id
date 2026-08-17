@@ -130,10 +130,12 @@ body {
 
 .animate-marquee {
   display: inline-flex;
-  animation: marqueeScroll 85s linear infinite;
+  animation: marqueeScroll 180s linear infinite;
+  will-change: transform;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+.animate-marquee:hover,
+.animate-marquee:focus-within {
+  animation-play-state: paused !important;
 }
 
