@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
+import { X, MapPin, Check } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1, BG_IMAGE_2 } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2 } from '../data/content';
 
 interface EBookletModalProps {
   isOpen: boolean;
@@ -26,7 +26,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   const culinaryItems: CulinaryItem[] = (dataStore.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems : CULINARY_ITEMS;
   const eventItems: EventItem[] = (dataStore.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems : EVENTS_SCHEDULE;
 
-  // Compress Unsplash images to tiny WebP thumbnails for fast loading & print
+  // Compress Unsplash images to tiny WebP thumbnails for fast loading
   const imgSrc = (url: string, w = 400) => {
     if (!url) return url;
     if (url.includes('unsplash.com')) {
@@ -36,77 +36,43 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     return url;
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-
-
   return (
     <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
-      {/* Top Controls Bar (Hidden during Print) */}
-      <header className="sticky top-0 z-50 w-full max-w-[420px] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-b-xl px-3 py-2 mb-4 flex flex-wrap items-center justify-between gap-2 text-white shadow-2xl print:hidden">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-md">
-            <BookOpen className="w-4 h-4" />
-          </div>
-          <div>
-            <h2 className="font-orbitron font-extrabold text-[11px] uppercase tracking-wider text-white leading-tight">
-              {isEn ? 'E-Booklet Digital' : 'E-Booklet Digital Resmi'}
-            </h2>
-            <p className="font-jakarta text-[9px] text-gray-400">
-              {isEn ? 'West Sumatra Tourism Guide' : 'Panduan Pariwisata Sumatera Barat'}
-            </p>
-          </div>
-        </div>
+      {/* Floating Minimalist Close Button */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[220] w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
+        title={isEn ? 'Close' : 'Tutup'}
+        aria-label="Close"
+      >
+        <X className="w-5 h-5" />
+      </button>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2 flex-wrap">
+      {/* Floating Bottom Minimalist Chapter Pill */}
+      <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[220] bg-slate-950/85 hover:bg-slate-950/95 backdrop-blur-md border border-white/15 rounded-full p-1.5 shadow-2xl flex items-center gap-1 max-w-[92vw] overflow-x-auto print:hidden transition-all">
+        {[
+          { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
+          { key: 'destinations', label: isEn ? `🏔️ Destinasi` : `🏔️ Destinasi` },
+          { key: 'culture', label: isEn ? `🏛️ Budaya` : `🏛️ Budaya` },
+          { key: 'culinary', label: isEn ? `🍲 Kuliner` : `🍲 Kuliner` },
+          { key: 'events', label: isEn ? `📅 Event` : `📅 Event` },
+        ].map((tab) => (
           <button
-            onClick={handlePrint}
-            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-jakarta font-bold text-[10px] uppercase transition-all flex items-center gap-1 cursor-pointer shadow-md"
-            title={isEn ? 'Print or Save as PDF' : 'Cetak atau Simpan ke PDF'}
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key as any)}
+            className={`px-3 py-1.5 rounded-full font-jakarta font-bold text-[10px] uppercase transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === tab.key
+                ? 'bg-red-600 text-white shadow-md'
+                : 'text-gray-400 hover:text-white hover:bg-white/10'
+            }`}
           >
-            <Printer className="w-3.5 h-3.5" />
-            <span>{isEn ? 'Print PDF' : 'Cetak PDF'}</span>
+            {tab.label}
           </button>
-
-
-
-          <button
-            onClick={onClose}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-gray-300 hover:text-white rounded-lg transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Filter Navigation Tabs */}
-        <div className="w-full pt-2 border-t border-slate-700 flex items-center gap-1 overflow-x-auto text-[10px] font-jakarta">
-          {[
-            { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
-            { key: 'destinations', label: isEn ? `🏔️ ${destinations.length} Destinasi` : `🏔️ ${destinations.length} Destinasi` },
-            { key: 'culture', label: isEn ? `🏛️ ${cultureItems.length} Budaya` : `🏛️ ${cultureItems.length} Budaya` },
-            { key: 'culinary', label: isEn ? `🍲 ${culinaryItems.length} Kuliner` : `🍲 ${culinaryItems.length} Kuliner` },
-            { key: 'events', label: isEn ? `📅 ${eventItems.length} Event` : `📅 ${eventItems.length} Event` },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key as any)}
-              className={`px-2.5 py-1 rounded-full font-bold uppercase transition-all cursor-pointer whitespace-nowrap text-[10px] ${
-                activeTab === tab.key
-                  ? 'bg-red-600 text-white shadow-sm'
-                  : 'bg-slate-800 text-gray-400 hover:bg-slate-700'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-      </header>
+        ))}
+      </nav>
 
       {/* Book Content Pages Container — Portrait phone-screen scroll */}
-      <main className="w-full max-w-[390px] mx-auto px-3 pb-8 space-y-4 print:space-y-0 print:max-w-full print:px-0">
+      <main className="w-full max-w-[390px] mx-auto px-3 pt-6 pb-24 space-y-5 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
         
         {/* ============================================================== */}
         {/* COVER PAGE (PAGE 1) - HERO IMAGE BACKGROUND & MINIMALIST CLEAN */}

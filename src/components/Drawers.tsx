@@ -2332,21 +2332,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                <div className="pt-1">
                   <button
                     onClick={() => setIsBookletModalOpen(true)}
-                    className="flex-1 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01]"
                   >
                     <BookOpen className="w-4 h-4 text-white" />
                     <span>{lang === 'en' ? '📖 Open Digital E-Booklet' : '📖 Buka E-Booklet Digital'}</span>
-                  </button>
-
-                  <button
-                    onClick={() => { setIsBookletModalOpen(true); setTimeout(() => window.print(), 600); }}
-                    className="py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 hover:text-white border border-slate-700 font-jakarta font-bold text-xs uppercase transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <Printer className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '🖨️ Print / Save PDF' : '🖨️ Cetak / Simpan PDF'}</span>
                   </button>
                 </div>
               </div>
