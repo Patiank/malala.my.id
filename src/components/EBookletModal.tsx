@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1 } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1, BG_IMAGE_2 } from '../data/content';
 
 interface EBookletModalProps {
   isOpen: boolean;
@@ -33,19 +33,19 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
 
   return (
-    <div className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto p-2 sm:p-4 print:p-0 print:bg-white print:static">
+    <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Top Controls Bar (Hidden during Print) */}
-      <header className="sticky top-0 z-50 w-full max-w-5xl bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-3 sm:p-4 mb-4 flex flex-wrap items-center justify-between gap-3 text-white shadow-2xl print:hidden">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-md">
-            <BookOpen className="w-5 h-5" />
+      <header className="sticky top-0 z-50 w-full max-w-[420px] bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-b-xl px-3 py-2 mb-4 flex flex-wrap items-center justify-between gap-2 text-white shadow-2xl print:hidden">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white shadow-md">
+            <BookOpen className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="font-orbitron font-extrabold text-sm sm:text-base uppercase tracking-wider text-white">
-              {isEn ? 'Official E-Booklet & Digital Guide' : 'Buku Panduan & E-Booklet Digital Resmi'}
+            <h2 className="font-orbitron font-extrabold text-[11px] uppercase tracking-wider text-white leading-tight">
+              {isEn ? 'E-Booklet Digital' : 'E-Booklet Digital Resmi'}
             </h2>
-            <p className="font-jakarta text-[11px] text-gray-300">
-              {isEn ? 'Complete Master Compilation of West Sumatra Tourism & Culture' : 'Kompilasi Lengkap Preview Katalog Pariwisata & Kebudayaan Sumbar'}
+            <p className="font-jakarta text-[9px] text-gray-400">
+              {isEn ? 'West Sumatra Tourism Guide' : 'Panduan Pariwisata Sumatera Barat'}
             </p>
           </div>
         </div>
@@ -54,11 +54,11 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handlePrint}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-jakarta font-bold text-[10px] uppercase transition-all flex items-center gap-1 cursor-pointer shadow-md"
             title={isEn ? 'Print or Save as PDF' : 'Cetak atau Simpan ke PDF'}
           >
-            <Printer className="w-4 h-4" />
-            <span>{isEn ? 'Print / Save PDF' : 'Cetak / Simpan PDF'}</span>
+            <Printer className="w-3.5 h-3.5" />
+            <span>{isEn ? 'Print PDF' : 'Cetak PDF'}</span>
           </button>
 
 
@@ -72,21 +72,21 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         </div>
 
         {/* Filter Navigation Tabs */}
-        <div className="w-full pt-2 border-t border-slate-700 flex items-center gap-1.5 overflow-x-auto text-xs font-jakarta">
+        <div className="w-full pt-2 border-t border-slate-700 flex items-center gap-1 overflow-x-auto text-[10px] font-jakarta">
           {[
-            { key: 'all', label: isEn ? '📖 All Information' : '📖 Semua Informasi' },
-            { key: 'destinations', label: isEn ? `🏔️ Destinations (${destinations.length})` : `🏔️ Destinasi (${destinations.length})` },
-            { key: 'culture', label: isEn ? `🏛️ Culture (${cultureItems.length})` : `🏛️ Kebudayaan (${cultureItems.length})` },
-            { key: 'culinary', label: isEn ? `🍲 Culinary (${culinaryItems.length})` : `🍲 Kuliner (${culinaryItems.length})` },
-            { key: 'events', label: isEn ? `📅 Events (${eventItems.length})` : `📅 Kalender Event (${eventItems.length})` },
+            { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
+            { key: 'destinations', label: isEn ? `🏔️ ${destinations.length} Destinasi` : `🏔️ ${destinations.length} Destinasi` },
+            { key: 'culture', label: isEn ? `🏛️ ${cultureItems.length} Budaya` : `🏛️ ${cultureItems.length} Budaya` },
+            { key: 'culinary', label: isEn ? `🍲 ${culinaryItems.length} Kuliner` : `🍲 ${culinaryItems.length} Kuliner` },
+            { key: 'events', label: isEn ? `📅 ${eventItems.length} Event` : `📅 ${eventItems.length} Event` },
           ].map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
-              className={`px-3 py-1 rounded-full font-bold uppercase transition-all cursor-pointer whitespace-nowrap text-[11px] ${
+              className={`px-2.5 py-1 rounded-full font-bold uppercase transition-all cursor-pointer whitespace-nowrap text-[10px] ${
                 activeTab === tab.key
                   ? 'bg-red-600 text-white shadow-sm'
-                  : 'bg-slate-800 text-gray-300 hover:bg-slate-700'
+                  : 'bg-slate-800 text-gray-400 hover:bg-slate-700'
               }`}
             >
               {tab.label}
@@ -95,71 +95,50 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         </div>
       </header>
 
-      {/* Book Content Pages Container */}
-      <main className="w-full max-w-4xl space-y-8 print:space-y-6">
+      {/* Book Content Pages Container — Portrait phone-screen scroll */}
+      <main className="w-full max-w-[390px] mx-auto px-3 pb-8 space-y-4 print:space-y-0 print:max-w-full print:px-0">
         
         {/* ============================================================== */}
         {/* COVER PAGE (PAGE 1) - HERO IMAGE BACKGROUND & MINIMALIST CLEAN */}
         {/* ============================================================== */}
         {(activeTab === 'all') && (
           <article 
-            className="w-full text-white rounded-2xl p-8 sm:p-12 shadow-2xl border border-gray-700 flex flex-col justify-between relative overflow-hidden print:rounded-none print:shadow-none print:break-after-page print:border-0 print:p-6 bg-cover bg-center min-h-[580px]"
+            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative bg-cover bg-center flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
             style={{
-              backgroundImage: `url(${BG_IMAGE_1})`
+              backgroundImage: `url(${BG_IMAGE_2})`,
+              minHeight: '600px',
             }}
           >
-            <div className="space-y-4 relative z-10">
-              <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-xs uppercase px-3 py-1 rounded tracking-wider shadow-sm">
-                {isEn ? 'OFFICIAL TOURISM PUBLICATION 2026' : 'PUBLIKASI RESMI DINAS PARIWISATA PROVINSI SUMATERA BARAT'}
+            {/* Subtle bottom gradient only for footer text legibility */}
+            <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
+
+            {/* Top badge row */}
+            <div className="relative z-10 p-5 pt-6">
+              <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
+                {isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI 2026'}
               </span>
-              <h1 className="font-orbitron font-extrabold text-4xl sm:text-5xl text-white tracking-wide drop-shadow-md">
-                MALALA 2026
+            </div>
+
+            {/* Center: Title block — floated to bottom third like hero section */}
+            <div className="relative z-10 px-5 pb-6 mt-auto space-y-2">
+              <h1 className="font-orbitron font-extrabold text-3xl text-white tracking-wide drop-shadow-lg leading-tight">
+                MALALA<br/>2026
               </h1>
-              <p className="font-orbitron font-bold text-xl sm:text-2xl text-red-400 drop-shadow-sm">
-                {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP WISATA & BUDAYA RANAH MINANG'}
+              <p className="font-orbitron font-semibold text-sm text-red-300 drop-shadow-md tracking-wide">
+                {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN WISATA & BUDAYA RANAH MINANG'}
               </p>
-              <p className="font-jakarta text-gray-200 text-sm sm:text-base max-w-2xl leading-relaxed">
-                {isEn 
-                  ? 'Official master compilation of 26 curated destinations, 14 living cultural traditions, 16 authentic gastronomic dishes, and 20 major events & Karisma Event Nusantara (KEN) 2026.'
-                  : 'Kompilasi master resmi 26 destinasi wisata unggulan, 14 warisan adat luhur, 16 kuliner gastronomi otentik, dan 20 kalender festival KEN 2026.'}
+              <p className="font-jakarta text-white/80 text-[11px] leading-relaxed max-w-[280px]">
+                {isEn
+                  ? `${destinations.length} Destinations · ${cultureItems.length} Culture · ${culinaryItems.length} Culinary · ${eventItems.length} Events`
+                  : `${destinations.length} Destinasi · ${cultureItems.length} Budaya · ${culinaryItems.length} Kuliner · ${eventItems.length} Event`}
               </p>
-            </div>
 
-            {/* Stats Summary Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-8 bg-black/50 backdrop-blur-md p-5 rounded-xl border border-white/10 font-jakarta relative z-10">
-              <div>
-                <span className="text-gray-300 text-xs block">{isEn ? 'Destinations' : 'Destinasi Wisata'}</span>
-                <span className="text-2xl font-bold text-white">26 Objek</span>
-              </div>
-              <div>
-                <span className="text-gray-300 text-xs block">{isEn ? 'Culture & Custom' : 'Tradisi Adat'}</span>
-                <span className="text-2xl font-bold text-amber-400">14 Tradisi</span>
-              </div>
-              <div>
-                <span className="text-gray-300 text-xs block">{isEn ? 'Authentic Culinary' : 'Kuliner Otentik'}</span>
-                <span className="text-2xl font-bold text-rose-400">16 Makanan</span>
-              </div>
-              <div>
-                <span className="text-gray-300 text-xs block">{isEn ? 'KEN & Events' : 'Festival & KEN'}</span>
-                <span className="text-2xl font-bold text-red-400">20 Event</span>
+              {/* Divider + Footer */}
+              <div className="pt-3 border-t border-white/20 flex items-center justify-between text-[10px] text-white/60 font-jakarta">
+                <span>Dinas Pariwisata Sumatera Barat</span>
+                <span className="font-bold text-white/80">malala.my.id</span>
               </div>
             </div>
-
-            {/* Philosophy Box */}
-            <div className="border-l-4 border-red-600 pl-4 py-2 bg-black/40 backdrop-blur-md rounded-r-lg font-jakarta relative z-10">
-              <p className="italic font-bold text-amber-300 text-sm">
-                "Adat Basandi Syarak, Syarak Basandi Kitabullah" • "Alam Takambang Jadi Guru"
-              </p>
-              <p className="text-gray-300 text-xs pt-1">
-                {isEn ? 'Fostering cultural integrity and natural harmony in West Sumatra.' : 'Falsafah keluhuran kearifan lokal dan harmoni alam semesta Ranah Minang.'}
-              </p>
-            </div>
-
-            {/* Footer Cover */}
-            <footer className="pt-8 border-t border-white/20 flex items-center justify-between text-xs text-gray-300 font-jakarta relative z-10">
-              <span>Dinas Pariwisata Provinsi Sumatera Barat • 2026</span>
-              <span className="font-bold text-white">https://malala.my.id</span>
-            </footer>
           </article>
         )}
 
@@ -175,7 +154,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
           return (
-            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 {/* Header info */}
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
@@ -184,7 +163,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                 </div>
 
                 {/* Hero Image */}
-                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
+                <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
                     src={dest.imageUrl}
                     alt={title}
@@ -255,14 +234,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
           return (
-            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • WARISAN BUDAYA & TRADISI ADAT</span>
                   <span className="text-amber-700 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950">
+                <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950">
                   <img
                     src={cult.imageUrl}
                     alt={title}
@@ -324,14 +303,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
 
           return (
-            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • GASTRONOMI & KULINER OTENTIK</span>
                   <span className="text-rose-600 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950">
+                <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950">
                   <img
                     src={cul.imageUrl}
                     alt={title}
@@ -394,7 +373,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
 
           return (
-            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • CALENDAR OF EVENTS</span>
@@ -403,7 +382,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                   </span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
+                <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
                     src={ev.imageUrl}
                     alt={title}
