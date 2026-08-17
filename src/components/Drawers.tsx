@@ -1393,8 +1393,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
               // Category Filter
               if (eventCategoryFilter === 'ken') {
-                const titleMatch = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
-                return titleMatch.includes('ken') || titleMatch.includes('karisma event nusantara');
+                return Boolean(ev.isKen);
               } else if (eventCategoryFilter === 'budaya') {
                 const text = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
                 return text.includes('budaya') || text.includes('tradisi') || text.includes('alek') || text.includes('suku');
@@ -1409,6 +1408,8 @@ export const Drawers: React.FC<DrawersProps> = ({
               return true;
             });
 
+            const totalKenCount = eventItems.filter((e: any) => Boolean(e.isKen)).length;
+
             // Sort all filtered events by Chronological Proximity (Upcoming First relative to today)
             const sortedEvents = [...filteredEvents].sort((a, b) => {
               return getEventProximity(a.schedule).diff - getEventProximity(b.schedule).diff;
@@ -1416,7 +1417,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
             const renderEventCard = (ev: EventItem) => {
               const titleText = isEn && ev.titleEn ? ev.titleEn : ev.title;
-              const isKEN = titleText.toUpperCase().includes('KEN') || ev.description.includes('Karisma Event Nusantara');
+              const isKEN = Boolean(ev.isKen);
               const prox = getEventProximity(ev.schedule);
 
               return (
@@ -1563,7 +1564,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Total Festivals' : 'Total Festival'}</div>
                       </div>
                       <div className="bg-white/5 p-2 rounded-lg border border-white/10">
-                        <div className="font-orbitron font-bold text-base text-yellow-300">12 KEN</div>
+                        <div className="font-orbitron font-bold text-base text-yellow-300">{totalKenCount} KEN</div>
                         <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'National KEN Events' : 'Karisma Nusantara'}</div>
                       </div>
                       <div className="bg-white/5 p-2 rounded-lg border border-white/10">
@@ -1580,8 +1581,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       {[
-                        { key: 'all', label: isEn ? 'All Festivals (20)' : 'Semua Festival (20)' },
-                        { key: 'ken', label: isEn ? '⭐ KEN Kemenparekraf (12)' : '⭐ Karisma Event Nusantara (KEN)' },
+                        { key: 'all', label: isEn ? `All Festivals (${eventItems.length})` : `Semua Festival (${eventItems.length})` },
+                        { key: 'ken', label: isEn ? `⭐ KEN Official (${totalKenCount})` : `⭐ KEN Kemenparekraf (${totalKenCount})` },
                         { key: 'budaya', label: isEn ? '🏛️ Culture & Custom' : '🏛️ Tradisi & Budaya' },
                         { key: 'sport', label: isEn ? '🏇 Sport & Equestrian' : '🏇 Sport & Pacuan' },
                         { key: 'bahari', label: isEn ? '🌊 Marine & Nature' : '🌊 Bahari & Danau' },

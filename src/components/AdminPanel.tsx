@@ -331,7 +331,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         emptyItem = { id: '', title: '', type: 'Makanan Utama', origin: '', description: '', flavorProfile: '', imageUrl: '', videoUrl: '', mapUrl: '' };
         break;
       case 'events':
-        emptyItem = { id: '', title: '', schedule: '', location: '', description: '', imageUrl: '', videoUrl: '', mapUrl: '' };
+        emptyItem = { id: '', title: '', schedule: '', location: '', description: '', imageUrl: '', videoUrl: '', mapUrl: '', isKen: false };
         break;
       case 'download':
         emptyItem = { id: '', title: '', category: 'E-Booklet PDF', type: 'Document PDF', size: '2.5 MB', description: '', filename: 'Buku_Panduan.pdf', content: 'Isi Dokumen Resmi Pariwisata Sumbar...', mimeType: 'application/pdf' };
@@ -1407,6 +1407,44 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               {/* Events Tab Fields */}
               {adminTab === 'events' && (
                 <>
+                  {/* KEN Status Toggle Card */}
+                  <div className="bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-yellow-500/10 p-3.5 rounded-lg border border-amber-300 flex items-center justify-between gap-3 shadow-2xs">
+                    <div className="space-y-0.5 min-w-0">
+                      <div className="flex items-center gap-1.5 font-bold text-xs text-amber-900 uppercase">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span>Status Karisma Event Nusantara (KEN)</span>
+                        {Boolean(formData.isKen) ? (
+                          <span className="bg-amber-600 text-white text-[9px] px-1.5 py-0.5 rounded font-black tracking-wider shadow-2xs">
+                            RESMI KEN
+                          </span>
+                        ) : (
+                          <span className="bg-gray-200 text-gray-700 text-[9px] px-1.5 py-0.5 rounded font-semibold">
+                            EVENT REGULER
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-amber-800/80 leading-tight">
+                        Tandai &quot;RESMI KEN&quot; jika festival ini secara resmi terdaftar dalam kalender Karisma Event Nusantara (KEN) Kemenparekraf RI.
+                      </p>
+                    </div>
+
+                    <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                      <input
+                        type="checkbox"
+                        name="isKen"
+                        checked={Boolean(formData.isKen)}
+                        onChange={(e) => {
+                          setFormData((prev: any) => ({
+                            ...prev,
+                            isKen: e.target.checked
+                          }));
+                        }}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                    </label>
+                  </div>
+
                   <div className="bg-amber-50/50 p-3 rounded-lg border border-amber-200 space-y-2">
                     <div className="flex items-center justify-between flex-wrap gap-1">
                       <span className="text-[11px] font-bold uppercase text-amber-900 flex items-center gap-1.5">
@@ -1513,7 +1551,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             {activeData.map((item: any) => (
               <div key={item.id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-start bg-white shadow-xs hover:border-gray-400 transition-colors">
                 <div className="flex-1 min-w-0 pr-4">
-                  <h4 className="font-bold text-sm truncate">{item.title}</h4>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-bold text-sm truncate">{item.title}</h4>
+                    {adminTab === 'events' && (
+                      item.isKen ? (
+                        <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black px-1.5 py-0.5 rounded flex items-center gap-1 shrink-0">
+                          <Sparkles className="w-2.5 h-2.5 text-amber-600" /> KEN
+                        </span>
+                      ) : (
+                        <span className="bg-gray-100 text-gray-500 border border-gray-200 text-[10px] font-medium px-1.5 py-0.5 rounded shrink-0">
+                          Biasa
+                        </span>
+                      )
+                    )}
+                  </div>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2">{item.description}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">

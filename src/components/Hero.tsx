@@ -447,7 +447,7 @@ export const Hero: React.FC<HeroProps> = ({
               const title = isEn && closestUpcomingEvent.titleEn ? closestUpcomingEvent.titleEn : closestUpcomingEvent.title;
               const schedule = isEn && closestUpcomingEvent.scheduleEn ? closestUpcomingEvent.scheduleEn : closestUpcomingEvent.schedule;
               const location = isEn && closestUpcomingEvent.locationEn ? closestUpcomingEvent.locationEn : closestUpcomingEvent.location;
-              const isKEN = title.toUpperCase().includes('KEN') || closestUpcomingEvent.description.includes('Karisma Event Nusantara');
+              const isKEN = Boolean(closestUpcomingEvent.isKen);
               const prox = getEventProximity(closestUpcomingEvent.schedule);
 
               const getGoogleCalUrl = () => {

@@ -88,6 +88,7 @@ export interface EventItem {
   imageUrl: string;
   videoUrl?: string;
   mapUrl?: string;
+  isKen?: boolean;
   lat?: number;
   lng?: number;
 }
