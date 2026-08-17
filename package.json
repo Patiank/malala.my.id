@@ -12,7 +12,8 @@
     "lint": "tsc --noEmit",
     "push:github": "git add . && git commit -m \"Update Malala app\" && git push origin main",
     "push:firebase": "npm run build && npx firebase-tools deploy",
-    "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && npx firebase-tools deploy"
+    "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && npx firebase-tools deploy",
+    "sync-to-github": "tsx scripts/sync_to_github.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
