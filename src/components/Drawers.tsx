@@ -2095,6 +2095,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                       ...dynamicCats
                     ]));
 
+                    const getCategoryLabel = (cat: string) => {
+                      if (lang !== 'en') return cat;
+                      if (cat === 'Semua') return 'All Updates';
+                      if (cat === 'Pariwisata Sumatera Barat') return 'West Sumatra Tourism';
+                      if (cat === 'Pariwisata Indonesia') return 'Indonesian Tourism';
+                      if (cat === 'Pariwisata Nasional') return 'National Tourism';
+                      return cat;
+                    };
+
                     return uniqueCategories.map((cat: string) => {
                       const isSelected = hotInfoCategory === cat;
                       const isSumbar = cat === 'Pariwisata Sumatera Barat';
@@ -2111,7 +2120,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         >
                           {isSumbar && <span>🏔️</span>}
                           {isIndo && <span>🇮🇩</span>}
-                          <span>{cat}</span>
+                          <span>{getCategoryLabel(cat)}</span>
                         </button>
                       );
                     });
@@ -2136,8 +2145,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                       return item.category === hotInfoCategory;
                     });
 
+                  if (dedupedList.length === 0) {
+                    return (
+                      <div className="text-center py-10 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                        {lang === 'en' ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
+                      </div>
+                    );
+                  }
+
                   return dedupedList.map((item: any, idx: number) => {
                     const isEn = lang === 'en';
+                    const categoryDisplay = isEn ? (item.categoryEn || (item.category === 'Pariwisata Sumatera Barat' ? 'West Sumatra Tourism' : 'Indonesian Tourism')) : (item.category || 'Pariwisata Indonesia');
+                    const tagDisplay = isEn && item.tagEn ? item.tagEn : (item.tag === 'Penting' ? (isEn ? 'Important' : 'Penting') : (item.tag || (isEn ? 'Latest' : 'Terkini')));
+
                     return (
                       <div
                         key={item.id}
@@ -2156,12 +2176,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                               loading="lazy"
                             />
                             <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/85 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md backdrop-blur-xs shrink-0 whitespace-nowrap z-10 shadow-xs">
-                              {isEn && item.categoryEn ? item.categoryEn : (item.category || 'Pariwisata Indonesia')}
+                              {categoryDisplay}
                             </div>
                             {(item.tag === 'Penting' || item.isUrgent) && (
                               <div className="absolute top-2 right-2 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 animate-pulse shadow-xs z-10">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-current" />
-                                {isEn && item.tagEn ? item.tagEn : (item.tag || 'Urgent')}
+                                {tagDisplay}
                               </div>
                             )}
                             {item.date && (
@@ -2174,12 +2194,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <div className="px-4 pt-3.5 pb-2 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80">
                             <div className="flex items-center gap-1.5 flex-wrap">
                               <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md shrink-0 whitespace-nowrap">
-                                {isEn && item.categoryEn ? item.categoryEn : (item.category || 'Pariwisata Indonesia')}
+                                {categoryDisplay}
                               </span>
                               {(item.tag === 'Penting' || item.isUrgent) && (
                                 <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1">
                                   <Flame className="w-3 h-3 text-yellow-300 fill-current" />
-                                  {isEn && item.tagEn ? item.tagEn : (item.tag || 'Urgent')}
+                                  {tagDisplay}
                                 </span>
                               )}
                             </div>
@@ -2220,16 +2240,16 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                             <button
                               onClick={() => {
-                                const textToShare = `${isEn && item.titleEn ? item.titleEn : item.title}\n${isEn && item.descriptionEn ? item.descriptionEn : (item.description || item.content)}`;
+                                const textToShare = `${getNewsDisplayTitle(item, lang)}\n${getNewsDisplayDescription(item, lang)}`;
                                 if (navigator.share) {
-                                  navigator.share({ title: isEn && item.titleEn ? item.titleEn : item.title, text: textToShare, url: window.location.href });
+                                  navigator.share({ title: getNewsDisplayTitle(item, lang), text: textToShare, url: window.location.href });
                                 } else {
                                   navigator.clipboard.writeText(textToShare);
-                                  alert('Tautan informasi berhasil disalin!');
+                                  alert(isEn ? 'News link copied to clipboard!' : 'Tautan informasi berhasil disalin!');
                                 }
                               }}
                               className="p-1.5 text-gray-500 hover:text-black hover:bg-gray-100 rounded transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-medium"
-                              title="Bagikan Info Ini"
+                              title={isEn ? 'Share this update' : 'Bagikan Info Ini'}
                             >
                               <Share2 className="w-3.5 h-3.5" />
                               <span>{isEn ? 'Share' : 'Bagikan'}</span>

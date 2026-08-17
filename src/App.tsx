@@ -186,7 +186,7 @@ export default function App() {
           activeDrawer === 'hotinfo' ? 'bg-black ring-2 ring-red-500' : ''
         }`}
         title={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
-        aria-label="Hot Info & Berita Terbaru"
+        aria-label={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
       >
         <span className="relative flex items-center justify-center">
           <Flame className="w-4.5 h-4.5 text-yellow-300 group-hover:scale-125 transition-transform duration-200" />
@@ -197,7 +197,7 @@ export default function App() {
           className="font-orbitron font-extrabold text-[10px] sm:text-[11px] tracking-[0.2em] text-white uppercase select-none"
           style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
         >
-          Hot Info & Berita Terbaru
+          {lang === 'en' ? 'HOT INFO & LATEST NEWS' : 'Hot Info & Berita Terbaru'}
         </span>
       </button>
 
@@ -232,7 +232,7 @@ export default function App() {
             className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
           >
             <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
-            <span>{lang === 'en' ? 'HOT INFO' : 'HOT INFO TERKINI'}</span>
+            <span>{lang === 'en' ? 'HOT INFO & NEWS' : 'HOT INFO TERKINI'}</span>
           </button>
           
           <button
