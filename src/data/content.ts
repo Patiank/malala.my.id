@@ -99,7 +99,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Late Afternoon',
     locationDetails: 'Jalan Lintas Sumatera, Solok - Tanah Datar',
     locationDetailsEn: 'Trans-Sumatra Highway, Solok - Tanah Datar',
-    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786885123/ea0650d0-224f-4a82-bc7b-4211cbd31df4_oa7jnw.png',
     lat: -0.616667,
     lng: 100.533333
   },
@@ -120,7 +120,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning (07:00 - 11:00 AM)',
     locationDetails: 'Kecamatan Harau, Kab. Limapuluh Kota',
     locationDetailsEn: 'Harau District, Limapuluh Kota Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952592/423cab29-a4a6-4929-9bc5-ae620daea75f_simep9.png',
     lat: -0.100000,
     lng: 100.670000
   },
@@ -141,7 +141,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Late Afternoon to Evening',
     locationDetails: 'Pusat Kota Bukittinggi',
     locationDetailsEn: 'City Center, Bukittinggi',
-    imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954185/219bada8-8fc7-4262-b70f-c0b90f3c4e1e_e2mvxy.png',
     lat: -0.304987,
     lng: 100.369434
   },
@@ -162,7 +162,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Batusangkar, Kabupaten Tanah Datar',
     locationDetailsEn: 'Batusangkar, Tanah Datar Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786863366/1786854207390_neg2ys.png',
     lat: -0.471111,
     lng: 100.621111
   },
@@ -183,7 +183,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning (08:00 AM - 12:00 PM)',
     locationDetails: 'Kecamatan Matur, Kabupaten Agam',
     locationDetailsEn: 'Matur District, Agam Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954350/ChatGPT_Image_Aug_17_2026_03_12_00_PM_t8tir0.png',
     lat: -0.280000,
     lng: 100.230000
   },
@@ -204,7 +204,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning (07:00 - 11:00 AM)',
     locationDetails: 'Lereng Gunung Marapi, Kabupaten Tanah Datar',
     locationDetailsEn: 'Slopes of Mount Marapi, Tanah Datar Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1596422846543-75c6fc197f0a?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954767/ChatGPT_Image_Aug_17_2026_03_18_33_PM_gzgijk.png',
     lat: -0.450000,
     lng: 100.510000
   },
@@ -225,7 +225,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning to Late Afternoon',
     locationDetails: 'Kecamatan Koto XI Tarusan, Pesisir Selatan',
     locationDetailsEn: 'Koto XI Tarusan District, Pesisir Selatan',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954765/ChatGPT_Image_Aug_17_2026_03_19_21_PM_t7mphj.png',
     lat: -1.133333,
     lng: 100.416667
   },
@@ -246,7 +246,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Late Afternoon',
     locationDetails: 'Taman Panorama, Kota Bukittinggi',
     locationDetailsEn: 'Panorama Park, Bukittinggi City',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786863367/d36f09a6-a14e-473c-85b9-e764b7586e35_mtc6j6.png',
     lat: -0.308000,
     lng: 100.364000
   },
@@ -267,7 +267,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Kecamatan Lembah Gumanti, Kabupaten Solok',
     locationDetailsEn: 'Lembah Gumanti District, Solok Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786955428/ChatGPT_Image_Aug_17_2026_03_30_24_PM_mgwj4j.png',
     lat: -1.066667,
     lng: 100.750000
   },
@@ -288,7 +288,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Late Afternoon and Evening',
     locationDetails: 'Jalan Khatib Sulaiman, Kota Padang',
     locationDetailsEn: 'Khatib Sulaiman Street, Padang City',
-    imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786937939/da8f94a0-0e0e-40ec-ba48-748a269912f4_f9ls7y.png',
     lat: -0.924167,
     lng: 100.362222
   },
@@ -330,7 +330,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Late Afternoon (03:30 - 06:30 PM)',
     locationDetails: 'Kecamatan Padang Selatan, Kota Padang',
     locationDetailsEn: 'South Padang District, Padang City',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786885530/38964000-98a6-4e10-9be8-4f70127fd93d_yxfjao.png',
     lat: -0.990000,
     lng: 100.360000
   },
@@ -351,7 +351,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Kecamatan Sijunjung, Kabupaten Sijunjung',
     locationDetailsEn: 'Sijunjung District, Sijunjung Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786863365/1786854315758_lnkxup.png',
     lat: -0.680000,
     lng: 100.980000
   },
@@ -372,7 +372,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Late Afternoon',
     locationDetails: 'Nagari Koto Baru, Kabupaten Solok Selatan',
     locationDetailsEn: 'Koto Baru Village, South Solok Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786863367/7c0f5b8e-ccd6-45e8-88ae-74a25159cc61_wjdd3k.png',
     lat: -1.480000,
     lng: 101.080000
   },
@@ -393,7 +393,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Jalan Lintas Padang - Bukittinggi, Kab. Tanah Datar',
     locationDetailsEn: 'Padang - Bukittinggi Highway, Tanah Datar',
-    imageUrl: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786878321/3146b28d-2fcb-4b81-a46d-178086a4bcb3_hnlr6j.png',
     lat: -0.478889,
     lng: 100.347500
   },
@@ -414,7 +414,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning to Late Afternoon',
     locationDetails: 'Bungus Teluk Kabung, Kota Padang',
     locationDetailsEn: 'Bungus Teluk Kabung, Padang City',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954186/5c83cd2f-929c-4ade-a6d7-cd889b4e571d_gn8rko.png',
     lat: -1.116667,
     lng: 100.383333
   },
@@ -435,7 +435,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Early Morning (06:00 - 10:00 AM)',
     locationDetails: 'Alahan Panjang, Kabupaten Solok',
     locationDetailsEn: 'Alahan Panjang, Solok Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952592/599d9684-b0eb-43b4-9c8b-accd61632a2c_yer1fu.png',
     lat: -1.065000,
     lng: 100.755000
   },
@@ -456,7 +456,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Late Afternoon',
     locationDetails: 'Kec. Kamang Magek, Kabupaten Agam',
     locationDetailsEn: 'Kamang Magek, Agam Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786885763/9d00e90a-28fb-48b8-9970-2a729f7067aa_odcty5.png',
     lat: -0.231111,
     lng: 100.418056
   },
@@ -477,7 +477,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning (07:00 AM - 12:00 PM)',
     locationDetails: 'Hutan Lindung Gamaran, Kab. Padang Pariaman',
     locationDetailsEn: 'Gamaran Protected Forest, Padang Pariaman',
-    imageUrl: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954349/800_63f991fa6eff6_ql1usn.jpg',
     lat: -0.505000,
     lng: 100.245000
   },
@@ -498,7 +498,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Nagari Puluik-Puluik, Kab. Pesisir Selatan',
     locationDetailsEn: 'Nagari Puluik-Puluik, Pesisir Selatan',
-    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952597/3d637d4a-3ca4-4883-a3a8-b4b7986e74f0_vpches.png',
     lat: -1.340000,
     lng: 100.680000
   },
@@ -519,7 +519,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Jorong Sungai Langsek, Kab. Dharmasraya',
     locationDetailsEn: 'Sungai Langsek, Dharmasraya Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952592/3ed3dbb8-7fb3-4f1d-be2a-f046f7c8f080_tpxnxg.png',
     lat: -1.604167,
     lng: 101.476944
   },
@@ -540,7 +540,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Midday (11:00 AM - 1:00 PM for Light of Heaven)',
     locationDetails: 'Nagari Sungai Kunyit Barat, Kab. Solok Selatan',
     locationDetailsEn: 'Sungai Kunyit Barat, South Solok Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952592/93b1d7a7-b40d-408c-93a7-37270f508844_qunslm.png',
     lat: -1.520000,
     lng: 101.200000
   },
@@ -561,7 +561,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Kota Sawahlunto, Sumatera Barat',
     locationDetailsEn: 'Sawahlunto City, West Sumatra',
-    imageUrl: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786952592/dcaf6441-e1d3-4cab-9c33-9ee92d76b7a0_g02pgn.png',
     lat: -0.683333,
     lng: 100.783333
   },
@@ -582,7 +582,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'June to August (Dry Season)',
     locationDetails: 'Kecamatan Talamau, Kab. Pasaman Barat',
     locationDetailsEn: 'Talamau District, West Pasaman Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954186/5c83cd2f-929c-4ade-a6d7-cd889b4e571d_gn8rko.png',
     lat: 0.079167,
     lng: 99.980556
   },
@@ -603,7 +603,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'April to October',
     locationDetails: 'Bungus Teluk Kabung, Kota Padang',
     locationDetailsEn: 'Bungus Teluk Kabung, Padang City',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954519/ChatGPT_Image_Aug_17_2026_03_15_12_PM_rj68ug.png',
     lat: -1.130000,
     lng: 100.370000
   },
@@ -624,7 +624,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Early Morning (Start Trek 04:00 AM)',
     locationDetails: 'Kecamatan Lembang Jaya, Kabupaten Solok',
     locationDetailsEn: 'Lembang Jaya District, Solok Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786954186/8d76425d-e0f3-43f7-ae13-e4b0afca0e86_cgjvsd.png',
     lat: -1.010000,
     lng: 100.680000
   },
@@ -645,7 +645,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning (06:30 - 10:00 AM)',
     locationDetails: 'Jalan Lintas Riau - Sumbar, Kab. Lima Puluh Kota',
     locationDetailsEn: 'Riau - West Sumatra Highway, Lima Puluh Kota Regency',
-    imageUrl: 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786963246/ChatGPT_Image_Aug_17_2026_05_40_42_PM_moyxhz.png',
     lat: -0.076389,
     lng: 100.697222
   },
@@ -687,7 +687,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'Morning and Midday',
     locationDetails: 'Kecamatan Payakumbuh Barat, Kota Payakumbuh',
     locationDetailsEn: 'West Payakumbuh District, Payakumbuh City',
-    imageUrl: 'https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786962584/ChatGPT_Image_Aug_17_2026_05_29_43_PM_rlyh30.png',
     lat: -0.252778,
     lng: 100.612500
   },
@@ -708,7 +708,7 @@ export const DESTINATIONS: Destination[] = [
     bestTimeEn: 'June to September (Dry Season)',
     locationDetails: 'Perbatasan Kab. Agam & Tanah Datar',
     locationDetailsEn: 'Border of Agam & Tanah Datar Regencies',
-    imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786964223/ChatGPT_Image_Aug_17_2026_05_57_03_PM_iqmks6.png',
     lat: -0.380556,
     lng: 100.473056
   },
@@ -853,7 +853,7 @@ export const CULTURE_ITEMS: CultureItem[] = [
     philosophyEn: 'Pillar of Custom & Honor of Women (Symbolizing matriarchal dignity and resilient heritage)',
     origin: 'Pagaruyung & Seluruh Nagari Minangkabau',
     originEn: 'Pagaruyung & Minangkabau Regions',
-    imageUrl: 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80',
+    imageUrl: 'https://res.cloudinary.com/uupbxcw5/image/upload/v1786863366/1786854207390_neg2ys.png',
     lat: -0.471111,
     lng: 100.621111
   },
