@@ -22,7 +22,7 @@ function getYoutubeEmbedUrl(url?: string): string | null {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
     const match = trimmed.match(regExp);
     if (match && match[2].length === 11) {
-      return `https://www.youtube.com/embed/${match[2]}?autoplay=0&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0`;
+      return `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1`;
     }
   } catch (e) {
     console.warn('Failed to parse YouTube embed URL:', e);
@@ -795,7 +795,7 @@ export const Hero: React.FC<HeroProps> = ({
               );
             })()}
 
-            <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
+            <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2.5 border-t border-gray-200/40 w-full">
               <div
                 onClick={handlePemprovLogoClick}
                 className="cursor-default shrink-0 select-none"
@@ -803,11 +803,11 @@ export const Hero: React.FC<HeroProps> = ({
                 <PemprovSumbarLogo size={48} />
               </div>
               <div
-                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none"
+                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none flex-1 min-w-0"
                 style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
               >
                 <div>DINAS PARIWISATA</div>
-                <div title="Dinas Pariwisata Sumatera Barat">
+                <div title="Dinas Pariwisata Sumatera Barat" className="truncate">
                   PROVINSI SUMATERA BARAT
                 </div>
                 <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-1 tracking-normal normal-case transition-colors duration-300">
