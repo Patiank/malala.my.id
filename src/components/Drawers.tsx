@@ -121,9 +121,8 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [destCategory, setDestCategory] = useState<string>('Semua');
 
   // Calendar of Events (CoE) state
-  const [eventViewMode, setEventViewMode] = useState<'timeline' | 'grid'>('timeline');
   const [eventCategoryFilter, setEventCategoryFilter] = useState<string>('all');
-  const [eventQuarterFilter, setEventQuarterFilter] = useState<string>('all');
+  const [eventMonthFilter, setEventMonthFilter] = useState<string | number>('all');
 
   // Selected item modal/detail view
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
@@ -132,6 +131,39 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
 
   // Calendar of Events helpers
+  const parseEventMonth = (scheduleStr: string): number => {
+    if (!scheduleStr) return 0;
+    const s = scheduleStr.toLowerCase();
+    const idMonths = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
+    const enMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    
+    for (let i = 0; i < 12; i++) {
+      if (s.includes(idMonths[i]) || s.includes(enMonths[i])) {
+        return i;
+      }
+    }
+    if (s.includes('rajab')) return 0;
+    if (s.includes('syawal') || s.includes('lebaran')) return 3;
+    if (s.includes('muharram')) return 6;
+    if (s.includes('mingguan') || s.includes('akhir pekan') || s.includes('weekend')) return new Date().getMonth();
+    return 7;
+  };
+
+  const getEventProximity = (scheduleStr: string) => {
+    const currentMonth = new Date().getMonth();
+    const eventMonth = parseEventMonth(scheduleStr);
+    let diff = eventMonth - currentMonth;
+    if (diff < 0) {
+      diff += 12;
+    }
+    return {
+      diff,
+      eventMonth,
+      isCurrentMonth: diff === 0,
+      isNextMonth: diff === 1
+    };
+  };
+
   const getGoogleCalendarUrl = (ev: EventItem) => {
     const isEn = lang === 'en';
     const title = encodeURIComponent(`${isEn && ev.titleEn ? ev.titleEn : ev.title} - Wonderful West Sumatra`);
@@ -1335,6 +1367,9 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* =================================================== */}
           {activeDrawer === 'events' && (() => {
             const isEn = lang === 'en';
+            const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const currentMonthIdx = new Date().getMonth();
 
             // Filter logic
             const filteredEvents = eventItems.filter((ev: EventItem) => {
@@ -1347,6 +1382,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                 if (!matchText.includes(q)) return false;
               }
 
+              // Month Filter
+              if (eventMonthFilter === 'current') {
+                const prox = getEventProximity(ev.schedule);
+                if (!prox.isCurrentMonth) return false;
+              } else if (typeof eventMonthFilter === 'number') {
+                const evMonth = parseEventMonth(ev.schedule);
+                if (evMonth !== eventMonthFilter) return false;
+              }
+
+              // Category Filter
               if (eventCategoryFilter === 'ken') {
                 const titleMatch = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
                 return titleMatch.includes('ken') || titleMatch.includes('karisma event nusantara');
@@ -1364,51 +1409,25 @@ export const Drawers: React.FC<DrawersProps> = ({
               return true;
             });
 
-            // Quarterly Seasons definition
-            const quarters = [
-              {
-                id: 'Q1',
-                title: isEn ? 'Quarter I (Jan - Mar): Sacred Traditions & Early Year Heritage' : 'Triwulan I (Januari - Maret): Kearifan Religi & Tradisi Awal Tahun',
-                desc: isEn ? 'Post-harvest agrarian celebrations and Islamic sacred cultural commemorations.' : 'Perayaan pascapanen anak nagari dan peringatan sakral kebudayaan Islam.',
-                color: 'border-amber-400 bg-amber-50/60 text-amber-900',
-                badgeColor: 'bg-amber-600 text-white',
-                events: filteredEvents.filter(ev => ['ev15', 'ev19', 'ev1'].includes(ev.id))
-              },
-              {
-                id: 'Q2',
-                title: isEn ? 'Quarter II (Apr - Jun): Coastal Flotillas & Festive Holidays' : 'Triwulan II (April - Juni): Pesta Pesisir, Bahari & Libur Idul Fitri',
-                desc: isEn ? 'Spectacular river flotillas, coastal paragliding championships, and historical waterfront festivals.' : 'Parade kapal hias megah sungai, kejuaraan paralayang pesisir, dan festival kota tua.',
-                color: 'border-blue-400 bg-blue-50/60 text-blue-900',
-                badgeColor: 'bg-blue-600 text-white',
-                events: filteredEvents.filter(ev => ['ev13', 'ev14', 'ev17', 'ev11'].includes(ev.id))
-              },
-              {
-                id: 'Q3',
-                title: isEn ? 'Quarter III (Jul - Sep): Peak KEN Festivals & Geopark Arts' : 'Triwulan III (Juli - September): Puncak Karisma Event Nusantara (KEN) & Seni Geopark',
-                desc: isEn ? 'UNESCO geopark canyon festivals, tribal tattooing arts, Tabuik sea processions, and harvest theater.' : 'Festival ngarai geopark, tato purba Mentawai, prosesi laut Tabuik, dan teater sawah.',
-                color: 'border-emerald-400 bg-emerald-50/60 text-emerald-900',
-                badgeColor: 'bg-emerald-600 text-white',
-                events: filteredEvents.filter(ev => ['ev6', 'ev12', 'ev16', 'ev3', 'ev4', 'ev8', 'ev20'].includes(ev.id))
-              },
-              {
-                id: 'Q4',
-                title: isEn ? 'Quarter IV (Oct - Dec): Historical Heritage, Sport Tourism & Year-End Galas' : 'Triwulan IV (Oktober - Desember): Warisan Sejarah, Sport Tourism & Pesta Akhir Tahun',
-                desc: isEn ? 'Royal palace Minangkabau festivals, international cycling races, and 13th-century Pamalayu expeditions.' : 'Festival istana Pagaruyung, balap sepeda internasional, dan napak tilas Pamalayu abad ke-13.',
-                color: 'border-purple-400 bg-purple-50/60 text-purple-900',
-                badgeColor: 'bg-purple-600 text-white',
-                events: filteredEvents.filter(ev => ['ev7', 'ev10', 'ev5', 'ev2', 'ev18', 'ev9'].includes(ev.id))
-              }
-            ];
+            // Sort all filtered events by Chronological Proximity (Upcoming First relative to today)
+            const sortedEvents = [...filteredEvents].sort((a, b) => {
+              return getEventProximity(a.schedule).diff - getEventProximity(b.schedule).diff;
+            });
 
             const renderEventCard = (ev: EventItem) => {
               const titleText = isEn && ev.titleEn ? ev.titleEn : ev.title;
               const isKEN = titleText.toUpperCase().includes('KEN') || ev.description.includes('Karisma Event Nusantara');
+              const prox = getEventProximity(ev.schedule);
 
               return (
                 <div
                   key={ev.id}
                   className={`border rounded-xl overflow-hidden bg-white flex flex-col justify-between shadow-xs transition-all duration-300 group hover:shadow-md ${
-                    isKEN ? 'border-amber-300 ring-1 ring-amber-200' : 'border-gray-200 hover:border-black'
+                    prox.isCurrentMonth
+                      ? 'border-red-400 ring-2 ring-red-200'
+                      : isKEN
+                      ? 'border-amber-300 ring-1 ring-amber-200'
+                      : 'border-gray-200 hover:border-black'
                   }`}
                 >
                   <div>
@@ -1420,13 +1439,28 @@ export const Drawers: React.FC<DrawersProps> = ({
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
                       {/* Top Badges */}
                       <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5 flex-wrap">
-                        <div className="bg-black/80 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 backdrop-blur-md shadow-xs">
-                          <Calendar className="w-3 h-3 text-amber-400" />
-                          <span>{isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}</span>
+                        {/* Timing Status Badge */}
+                        <div
+                          className={`font-jakarta font-black text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 backdrop-blur-md shadow-xs ${
+                            prox.isCurrentMonth
+                              ? 'bg-red-600 text-white animate-pulse'
+                              : prox.isNextMonth
+                              ? 'bg-amber-500 text-black'
+                              : 'bg-black/80 text-white'
+                          }`}
+                        >
+                          <Calendar className="w-3 h-3 text-amber-300" />
+                          <span>
+                            {prox.isCurrentMonth
+                              ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
+                              : prox.isNextMonth
+                              ? (isEn ? '⏳ Next Month' : '⏳ Segera Hadir Bulan Depan')
+                              : (isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule)}
+                          </span>
                         </div>
 
                         {isKEN && (
@@ -1446,6 +1480,12 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                     {/* Content Section */}
                     <div className="p-4 space-y-2.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-jakarta text-[10px] font-bold uppercase text-gray-500 flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-amber-600" />
+                          {isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}
+                        </span>
+                      </div>
                       <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm line-clamp-2 group-hover:text-amber-600 transition-colors">
                         {titleText}
                       </h3>
@@ -1512,8 +1552,8 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                     <p className="text-xs text-gray-300 leading-relaxed max-w-2xl">
                       {isEn
-                        ? 'Explore 20 certified tourism festivals across West Sumatra, featuring 12 national events recognized in Karisma Event Nusantara (KEN) by the Ministry of Tourism.'
-                        : 'Jadwal resmi 20 festival dan perhelatan kepariwisataan unggulan di 19 Kabupaten/Kota Sumatera Barat, termasuk 12 event nasional terkurasi dalam Karisma Event Nusantara (KEN) Kemenparekraf.'}
+                        ? 'Official chronological schedule of 20 certified tourism festivals in West Sumatra. Sorted automatically by upcoming proximity to your current date.'
+                        : 'Jadwal resmi 20 festival kepariwisataan unggulan Sumatera Barat, diurutkan secara otomatis dari festival yang paling mendekati waktu hari ini.'}
                     </p>
 
                     {/* Quick Stats Badges */}
@@ -1527,113 +1567,88 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'National KEN Events' : 'Karisma Nusantara'}</div>
                       </div>
                       <div className="bg-white/5 p-2 rounded-lg border border-white/10">
-                        <div className="font-orbitron font-bold text-base text-emerald-400">4 {isEn ? 'Seasons' : 'Musim'}</div>
-                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Quarterly Themes' : 'Triwulan Wisata'}</div>
+                        <div className="font-orbitron font-bold text-base text-emerald-400">19 Kota/Kab</div>
+                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Regencies Coverage' : 'Cakupan Daerah'}</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* View Switcher & Category Filter Controls */}
+                {/* Filter Controls Bar */}
                 <div className="space-y-3 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
-                  {/* View Mode Toggle */}
+                  {/* Category Filter Pills */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-2xs">
-                      <button
-                        onClick={() => setEventViewMode('timeline')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
-                          eventViewMode === 'timeline'
-                            ? 'bg-black text-white shadow-xs'
-                            : 'text-gray-600 hover:text-black'
-                        }`}
-                      >
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span>{isEn ? 'Quarterly Timeline (Q1-Q4)' : 'Timeline Musim (Q1-Q4)'}</span>
-                      </button>
-                      <button
-                        onClick={() => setEventViewMode('grid')}
-                        className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
-                          eventViewMode === 'grid'
-                            ? 'bg-black text-white shadow-xs'
-                            : 'text-gray-600 hover:text-black'
-                        }`}
-                      >
-                        <span>{isEn ? 'All Events (Grid View)' : 'Semua Event (Grid)'}</span>
-                      </button>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {[
+                        { key: 'all', label: isEn ? 'All Festivals (20)' : 'Semua Festival (20)' },
+                        { key: 'ken', label: isEn ? '⭐ KEN Kemenparekraf (12)' : '⭐ Karisma Event Nusantara (KEN)' },
+                        { key: 'budaya', label: isEn ? '🏛️ Culture & Custom' : '🏛️ Tradisi & Budaya' },
+                        { key: 'sport', label: isEn ? '🏇 Sport & Equestrian' : '🏇 Sport & Pacuan' },
+                        { key: 'bahari', label: isEn ? '🌊 Marine & Nature' : '🌊 Bahari & Danau' },
+                      ].map((f) => (
+                        <button
+                          key={f.key}
+                          onClick={() => setEventCategoryFilter(f.key)}
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                            eventCategoryFilter === f.key
+                              ? 'bg-black text-white shadow-xs'
+                              : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
                     </div>
 
                     <span className="text-[11px] font-bold text-gray-500">
-                      {filteredEvents.length} {isEn ? 'events found' : 'event ditemukan'}
+                      {sortedEvents.length} {isEn ? 'events found' : 'event ditemukan'}
                     </span>
                   </div>
 
-                  {/* Filter Pills */}
-                  <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-gray-200/60">
-                    {[
-                      { key: 'all', label: isEn ? 'All Events (20)' : 'Semua Event (20)' },
-                      { key: 'ken', label: isEn ? '⭐ KEN Kemenparekraf (12)' : '⭐ Karisma Event Nusantara (KEN)' },
-                      { key: 'budaya', label: isEn ? '🏛️ Culture & Custom' : '🏛️ Tradisi & Budaya' },
-                      { key: 'sport', label: isEn ? '🏇 Sport & Equestrian' : '🏇 Sport & Pacuan' },
-                      { key: 'bahari', label: isEn ? '🌊 Marine & Nature' : '🌊 Bahari & Danau' },
-                    ].map((f) => (
+                  {/* Month Filter Tabs (Januari - Desember) */}
+                  <div className="flex items-center gap-1 flex-wrap pt-2 border-t border-gray-200/60 overflow-x-auto pb-1">
+                    <button
+                      onClick={() => setEventMonthFilter('all')}
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                        eventMonthFilter === 'all'
+                          ? 'bg-black text-white shadow-xs'
+                          : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                      }`}
+                    >
+                      {isEn ? 'All Months' : 'Semua Bulan'}
+                    </button>
+
+                    <button
+                      onClick={() => setEventMonthFilter('current')}
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                        eventMonthFilter === 'current'
+                          ? 'bg-red-600 text-white shadow-xs'
+                          : 'bg-red-50 text-red-700 border border-red-200 hover:border-red-400'
+                      }`}
+                    >
+                      {isEn ? '🔥 This Month' : '🔥 Bulan Ini'}
+                    </button>
+
+                    {(isEn ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']).map((mShort, idx) => (
                       <button
-                        key={f.key}
-                        onClick={() => setEventCategoryFilter(f.key)}
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase transition-all cursor-pointer ${
-                          eventCategoryFilter === f.key
+                        key={idx}
+                        onClick={() => setEventMonthFilter(idx)}
+                        className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                          eventMonthFilter === idx
                             ? 'bg-black text-white shadow-xs'
                             : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
                         }`}
                       >
-                        {f.label}
+                        {mShort}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* VIEW MODE 1: TIMELINE MUSIM (Q1 - Q4) */}
-                {eventViewMode === 'timeline' && (
-                  <div className="space-y-8">
-                    {quarters.map((q) => {
-                      if (q.events.length === 0) return null;
-                      return (
-                        <div key={q.id} className="space-y-4">
-                          {/* Quarter Header */}
-                          <div className={`p-4 rounded-xl border-l-4 ${q.color} flex items-start justify-between gap-3 shadow-2xs`}>
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <span className={`font-orbitron font-bold text-[10px] uppercase px-2 py-0.5 rounded ${q.badgeColor}`}>
-                                  {q.id}
-                                </span>
-                                <h3 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide">
-                                  {q.title}
-                                </h3>
-                              </div>
-                              <p className="text-[11px] text-gray-600 leading-relaxed">
-                                {q.desc}
-                              </p>
-                            </div>
-                            <span className="font-orbitron font-bold text-xs shrink-0 px-2 py-1 bg-white rounded-md border border-gray-200">
-                              {q.events.length} {isEn ? 'Events' : 'Event'}
-                            </span>
-                          </div>
-
-                          {/* Quarter Event Grid */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pl-2">
-                            {q.events.map(renderEventCard)}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* VIEW MODE 2: ALL EVENTS GRID */}
-                {eventViewMode === 'grid' && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {filteredEvents.map(renderEventCard)}
-                  </div>
-                )}
+                {/* ALL EVENTS LIST (Chronologically Sorted - Upcoming First) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {sortedEvents.map(renderEventCard)}
+                </div>
               </div>
             );
           })()}

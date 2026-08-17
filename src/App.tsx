@@ -232,6 +232,7 @@ export default function App() {
         appSettings={dataStore.appSettings}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
+        eventItems={dataStore.eventItems}
       />
 
       {/* Breaking News Ticker Bar (Placed at the very bottom) */}

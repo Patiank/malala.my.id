@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
-import { DrawerType, AppSettings } from '../types';
+import { DrawerType, AppSettings, EventItem } from '../types';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
 
@@ -12,6 +12,7 @@ interface HeroProps {
   appSettings?: AppSettings;
   searchQuery?: string;
   onSearchQueryChange?: (q: string) => void;
+  eventItems?: EventItem[];
 }
 
 export const Hero: React.FC<HeroProps> = ({
@@ -20,6 +21,7 @@ export const Hero: React.FC<HeroProps> = ({
   appSettings,
   searchQuery = '',
   onSearchQueryChange,
+  eventItems,
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
@@ -54,6 +56,52 @@ export const Hero: React.FC<HeroProps> = ({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Helper: Parse event month index and calculate relative proximity to current date
+  const parseEventMonth = (scheduleStr: string): number => {
+    if (!scheduleStr) return 0;
+    const s = scheduleStr.toLowerCase();
+    const idMonths = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
+    const enMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+    
+    for (let i = 0; i < 12; i++) {
+      if (s.includes(idMonths[i]) || s.includes(enMonths[i])) {
+        return i;
+      }
+    }
+    if (s.includes('rajab')) return 0; // ~ Jan/Feb
+    if (s.includes('syawal') || s.includes('lebaran')) return 3; // ~ April
+    if (s.includes('muharram')) return 6; // ~ July
+    if (s.includes('mingguan') || s.includes('akhir pekan') || s.includes('weekend')) return new Date().getMonth();
+    return 7;
+  };
+
+  const getEventProximity = (scheduleStr: string) => {
+    const currentMonth = new Date().getMonth();
+    const eventMonth = parseEventMonth(scheduleStr);
+    let diff = eventMonth - currentMonth;
+    if (diff < 0) {
+      diff += 12;
+    }
+    return {
+      diff,
+      eventMonth,
+      isCurrentMonth: diff === 0,
+      isNextMonth: diff === 1
+    };
+  };
+
+  const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const eventsList = eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE;
+  const closestUpcomingEvent = useMemo(() => {
+    if (!eventsList || eventsList.length === 0) return null;
+    const sorted = [...eventsList].sort((a, b) => {
+      return getEventProximity(a.schedule).diff - getEventProximity(b.schedule).diff;
+    });
+    return sorted[0];
+  }, [eventsList]);
 
   // Combined searchable index across all Sumbar tourism items
   const allSearchableItems = useMemo(() => {
@@ -391,8 +439,92 @@ export const Hero: React.FC<HeroProps> = ({
             <CornerBracket type="BR" />
           </div>
 
-          {/* Official Tourism Board Metadata */}
-          <div className="flex flex-col space-y-4">
+          {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
+          <div className="flex flex-col space-y-3">
+            {/* Spotlight: Event Terdekat Mendatang */}
+            {closestUpcomingEvent && (() => {
+              const isEn = lang === 'en';
+              const title = isEn && closestUpcomingEvent.titleEn ? closestUpcomingEvent.titleEn : closestUpcomingEvent.title;
+              const schedule = isEn && closestUpcomingEvent.scheduleEn ? closestUpcomingEvent.scheduleEn : closestUpcomingEvent.schedule;
+              const location = isEn && closestUpcomingEvent.locationEn ? closestUpcomingEvent.locationEn : closestUpcomingEvent.location;
+              const isKEN = title.toUpperCase().includes('KEN') || closestUpcomingEvent.description.includes('Karisma Event Nusantara');
+              const prox = getEventProximity(closestUpcomingEvent.schedule);
+
+              const getGoogleCalUrl = () => {
+                const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
+                const d = encodeURIComponent(`${isEn && closestUpcomingEvent.descriptionEn ? closestUpcomingEvent.descriptionEn : closestUpcomingEvent.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
+                const l = encodeURIComponent(`${location}, Sumatera Barat`);
+                return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${d}&location=${l}`;
+              };
+
+              return (
+                <div className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
+                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Header Badge */}
+                  <div className="flex items-center justify-between gap-1 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      </span>
+                      <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
+                        {prox.isCurrentMonth
+                          ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
+                          : prox.isNextMonth
+                          ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir Bulan Depan')
+                          : (isEn ? `🗓️ Next: ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat: ${monthNamesId[prox.eventMonth]}`)}
+                      </span>
+                    </div>
+
+                    {isKEN && (
+                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
+                        KEN Kemenparekraf
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title & Info */}
+                  <div className="space-y-0.5">
+                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
+                      {title}
+                    </h4>
+                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
+                      <span className="flex items-center gap-1 shrink-0">
+                        <Calendar className="w-3 h-3 text-amber-600" />
+                        <span>{schedule}</span>
+                      </span>
+                      <span className="flex items-center gap-1 truncate">
+                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
+                        <span className="truncate">{location}</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onOpenDrawer('events')}
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+                    >
+                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </button>
+
+                    <a
+                      href={getGoogleCalUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                    >
+                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <span>+ Kalender</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
 
             <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
               <div
