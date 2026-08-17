@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, MapPin, Check, BookOpen, Download } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2 } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2, getDirectDriveUrl } from '../data/content';
 
 interface EBookletModalProps {
   isOpen: boolean;
@@ -25,6 +25,12 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   const cultureItems: CultureItem[] = (dataStore.cultureItems && dataStore.cultureItems.length > 0) ? dataStore.cultureItems : CULTURE_ITEMS;
   const culinaryItems: CulinaryItem[] = (dataStore.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems : CULINARY_ITEMS;
   const eventItems: EventItem[] = (dataStore.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems : EVENTS_SCHEDULE;
+
+  const coverImage = (dataStore?.appSettings?.revealImage && dataStore.appSettings.revealImage.trim())
+    ? getDirectDriveUrl(dataStore.appSettings.revealImage)
+    : (dataStore?.appSettings?.baseImage && dataStore.appSettings.baseImage.trim())
+      ? getDirectDriveUrl(dataStore.appSettings.baseImage)
+      : BG_IMAGE_2;
 
   // Compress Unsplash images to WebP for fast performance
   const imgSrc = (url: string, w = 600) => {
@@ -106,7 +112,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           >
             {/* Pure Hero Background image without gradient overlay */}
             <img
-              src={BG_IMAGE_2}
+              src={imgSrc(coverImage)}
               alt="Cover E-Booklet Sumatera Barat"
               className="absolute inset-0 w-full h-full object-cover"
               loading="eager"

@@ -18,7 +18,13 @@ function generateFullHTML(): string {
       if (raw.cultureItems && raw.cultureItems.length > 0) cultureItems = raw.cultureItems;
       if (raw.culinaryItems && raw.culinaryItems.length > 0) culinaryItems = raw.culinaryItems;
       if (raw.eventItems && raw.eventItems.length > 0) eventItems = raw.eventItems;
-      if (raw.appSettings && raw.appSettings.revealImage) bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
+      if (raw.appSettings) {
+        if (raw.appSettings.revealImage && raw.appSettings.revealImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
+        } else if (raw.appSettings.baseImage && raw.appSettings.baseImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.baseImage);
+        }
+      }
     }
   } catch (e) {
     console.warn('Backup parse error:', e);
