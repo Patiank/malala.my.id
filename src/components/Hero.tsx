@@ -15,6 +15,21 @@ interface HeroProps {
   eventItems?: EventItem[];
 }
 
+function getYoutubeEmbedUrl(url?: string): string | null {
+  if (!url) return null;
+  try {
+    const trimmed = url.trim();
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+    const match = trimmed.match(regExp);
+    if (match && match[2].length === 11) {
+      return `https://www.youtube.com/embed/${match[2]}?autoplay=0&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0`;
+    }
+  } catch (e) {
+    console.warn('Failed to parse YouTube embed URL:', e);
+  }
+  return null;
+}
+
 export const Hero: React.FC<HeroProps> = ({
   onOpenDrawer,
   lang,
@@ -449,6 +464,7 @@ export const Hero: React.FC<HeroProps> = ({
               const location = isEn && closestUpcomingEvent.locationEn ? closestUpcomingEvent.locationEn : closestUpcomingEvent.location;
               const isKEN = Boolean(closestUpcomingEvent.isKen);
               const prox = getEventProximity(closestUpcomingEvent.schedule);
+              const ytEmbedUrl = getYoutubeEmbedUrl(closestUpcomingEvent.videoUrl || (closestUpcomingEvent as any).youtubeUrl);
 
               const getGoogleCalUrl = () => {
                 const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
@@ -461,8 +477,38 @@ export const Hero: React.FC<HeroProps> = ({
                 <div className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
                   <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
-                  {/* Event Photo Banner */}
-                  {closestUpcomingEvent.imageUrl && (
+                  {/* 1. YouTube Video Preview (If videoUrl is provided) */}
+                  {ytEmbedUrl ? (
+                    <div className="relative h-36 -mx-3.5 -mt-3.5 mb-2 overflow-hidden rounded-t-lg bg-black">
+                      <iframe
+                        src={ytEmbedUrl}
+                        title={title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="w-full h-full border-0"
+                      />
+                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/75 backdrop-blur-xs px-2 py-0.5 rounded-full pointer-events-none z-10 shadow-xs">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
+                          {prox.isCurrentMonth
+                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung')
+                            : prox.isNextMonth
+                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir')
+                            : (isEn ? `🗓️ ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat`)}
+                        </span>
+                      </div>
+
+                      {isKEN && (
+                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm pointer-events-none z-10">
+                          KEN Kemenparekraf
+                        </span>
+                      )}
+                    </div>
+                  ) : closestUpcomingEvent.imageUrl ? (
+                    /* 2. Photo Banner Image (If imageUrl is provided without video) */
                     <div className="relative h-28 -mx-3.5 -mt-3.5 mb-2 overflow-hidden rounded-t-lg bg-gray-900">
                       <img
                         src={closestUpcomingEvent.imageUrl}
@@ -492,10 +538,8 @@ export const Hero: React.FC<HeroProps> = ({
                         </span>
                       )}
                     </div>
-                  )}
-
-                  {/* Header Badge (Shown if no image banner) */}
-                  {!closestUpcomingEvent.imageUrl && (
+                  ) : (
+                    /* 3. Header Badge (If no media provided) */
                     <div className="flex items-center justify-between gap-1 flex-wrap">
                       <div className="flex items-center gap-1.5">
                         <span className="relative flex h-2 w-2">
