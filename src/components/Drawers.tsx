@@ -203,7 +203,9 @@ export const Drawers: React.FC<DrawersProps> = ({
       }
     }));
     
-    setActiveDrawer('formai');
+    setSelectedEvent(null);
+    setFormAiTab('generator');
+    onOpenDrawer?.('formai');
   };
 
   const getEventProximity = (scheduleStr: string) => {
@@ -1563,6 +1565,15 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                     <div className="flex items-center gap-1.5">
                       <button
+                        onClick={() => handlePlanEventWithAi(ev)}
+                        className="bg-amber-500 hover:bg-amber-400 text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                        title={isEn ? 'Plan with AI' : 'Rencanakan dengan AI'}
+                      >
+                        <Sparkles className="w-3 h-3" />
+                        <span>{isEn ? 'AI Plan' : 'AI Plan'}</span>
+                      </button>
+
+                      <button
                         onClick={() => handleShareEvent(ev)}
                         className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white"
                         title={isEn ? 'Share Event' : 'Bagikan Event'}
@@ -1572,7 +1583,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                       <button
                         onClick={() => setSelectedEvent(ev)}
-                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-3 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-xs"
+                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                       >
                         <span>{translations[lang].btnDetail}</span>
                         <ChevronRight className="w-3 h-3" />
@@ -3169,26 +3180,37 @@ export const Drawers: React.FC<DrawersProps> = ({
                 ))}
             </div>
 
-            {/* Action Buttons: Add to Calendar & Share */}
-            <div className="grid grid-cols-2 gap-2 pt-2">
-              <a
-                href={getGoogleCalendarUrl(selectedEvent)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
-              >
-                <Calendar className="w-4 h-4" />
-                <span>{lang === 'en' ? 'Add to Calendar' : 'Simpan ke Kalender'}</span>
-              </a>
-
+            {/* Action Buttons: AI Plan, Add to Calendar & Share */}
+            <div className="space-y-2 pt-2">
               <button
                 type="button"
-                onClick={() => handleShareEvent(selectedEvent)}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 border border-gray-200"
+                onClick={() => handlePlanEventWithAi(selectedEvent)}
+                className="w-full bg-black hover:bg-neutral-800 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-all cursor-pointer flex justify-center items-center gap-2 shadow-xs"
               >
-                <Share2 className="w-4 h-4" />
-                <span>{lang === 'en' ? 'Share Event' : 'Bagikan Event'}</span>
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>{lang === 'en' ? 'Plan Trip to This Event with AI' : '✨ Susun Rencana Liburan ke Event Ini dengan AI'}</span>
               </button>
+
+              <div className="grid grid-cols-2 gap-2">
+                <a
+                  href={getGoogleCalendarUrl(selectedEvent)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>{lang === 'en' ? 'Add to Calendar' : 'Simpan ke Kalender'}</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => handleShareEvent(selectedEvent)}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 border border-gray-200"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>{lang === 'en' ? 'Share Event' : 'Bagikan Event'}</span>
+                </button>
+              </div>
             </div>
 
             {getGoogleMapsUrl(selectedEvent.mapUrl) && (
