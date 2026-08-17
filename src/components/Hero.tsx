@@ -461,28 +461,63 @@ export const Hero: React.FC<HeroProps> = ({
                 <div className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
                   <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
-                  {/* Header Badge */}
-                  <div className="flex items-center justify-between gap-1 flex-wrap">
-                    <div className="flex items-center gap-1.5">
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                      </span>
-                      <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
-                        {prox.isCurrentMonth
-                          ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
-                          : prox.isNextMonth
-                          ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir Bulan Depan')
-                          : (isEn ? `🗓️ Next: ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat: ${monthNamesId[prox.eventMonth]}`)}
-                      </span>
-                    </div>
+                  {/* Event Photo Banner */}
+                  {closestUpcomingEvent.imageUrl && (
+                    <div className="relative h-28 -mx-3.5 -mt-3.5 mb-2 overflow-hidden rounded-t-lg bg-gray-900">
+                      <img
+                        src={closestUpcomingEvent.imageUrl}
+                        alt={title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                      
+                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
+                          {prox.isCurrentMonth
+                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung')
+                            : prox.isNextMonth
+                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir')
+                            : (isEn ? `🗓️ ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat`)}
+                        </span>
+                      </div>
 
-                    {isKEN && (
-                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
-                        KEN Kemenparekraf
-                      </span>
-                    )}
-                  </div>
+                      {isKEN && (
+                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                          KEN Kemenparekraf
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Header Badge (Shown if no image banner) */}
+                  {!closestUpcomingEvent.imageUrl && (
+                    <div className="flex items-center justify-between gap-1 flex-wrap">
+                      <div className="flex items-center gap-1.5">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
+                          {prox.isCurrentMonth
+                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
+                            : prox.isNextMonth
+                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir Bulan Depan')
+                            : (isEn ? `🗓️ Next: ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat: ${monthNamesId[prox.eventMonth]}`)}
+                        </span>
+                      </div>
+
+                      {isKEN && (
+                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
+                          KEN Kemenparekraf
+                        </span>
+                      )}
+                    </div>
+                  )}
 
                   {/* Title & Info */}
                   <div className="space-y-0.5">

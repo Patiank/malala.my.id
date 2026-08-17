@@ -359,7 +359,7 @@ const DEDUP_STOP_WORDS = new Set([
   'adalah', 'sebagai', 'akan', 'telah', 'sudah', 'sedang', 'bisa', 'dapat', 'resmi', 'digelar', 'gelar',
   'dibuka', 'buka', 'tinjau', 'kunjungi', 'kunjungan', 'soal', 'terkait', 'tentang', 'kata', 'ungkap',
   'siap', 'jadi', 'ada', 'menjadi', 'sebut', 'beberkan', 'hingga', 'juga', 'tak', 'tidak', 'lebih',
-  'kemenparekraf', 'menteri', 'menparekraf', 'dinas', 'pariwisata',
+  'ajak', 'mengajak', 'dorong', 'mendorong', 'minta', 'meminta', 'dukung', 'mendukung',
   'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'will'
 ]);
 
@@ -368,20 +368,23 @@ function extractKeywords(title: string): string[] {
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
-    .filter(word => word.length > 2 && !DEDUP_STOP_WORDS.has(word));
+    .filter(word => word.length >= 3 && !DEDUP_STOP_WORDS.has(word));
 }
 
 function calculateTitleSimilarity(titleA: string, titleB: string): number {
-  const wordsA = new Set(extractKeywords(titleA));
-  const wordsB = new Set(extractKeywords(titleB));
-  if (wordsA.size === 0 || wordsB.size === 0) return 0;
+  const wordsA = extractKeywords(titleA);
+  const wordsB = extractKeywords(titleB);
+  if (wordsA.length === 0 || wordsB.length === 0) return 0;
+
+  const setA = new Set(wordsA);
+  const setB = new Set(wordsB);
 
   let matches = 0;
-  for (const wa of wordsA) {
-    if (wordsB.has(wa)) {
+  for (const wa of setA) {
+    if (setB.has(wa)) {
       matches += 1;
     } else {
-      for (const wb of wordsB) {
+      for (const wb of setB) {
         if ((wa.length >= 4 && wb.startsWith(wa)) || (wb.length >= 4 && wa.startsWith(wb))) {
           matches += 0.8;
           break;
@@ -390,13 +393,18 @@ function calculateTitleSimilarity(titleA: string, titleB: string): number {
     }
   }
 
+  // If 2 or more distinct keywords match, it is definitely about the same topic/event
+  if (matches >= 2) {
+    return 1.0;
+  }
+
   // Sorensen-Dice coefficient
-  return (2 * matches) / (wordsA.size + wordsB.size);
+  return (2 * matches) / (setA.size + setB.size);
 }
 
 /**
  * Intelligent News Deduplication Engine
- * Removes redundant news items covering the same topic/event from different media outlets.
+ * Strictly guarantees that no story, topic, organization (e.g. GenPI), or event is published more than ONCE.
  */
 export function deduplicateNewsItems<T extends { title: string; titleEn?: string }>(items: T[]): T[] {
   const uniqueItems: T[] = [];
@@ -411,14 +419,26 @@ export function deduplicateNewsItems<T extends { title: string; titleEn?: string
       // 1. Exact title match
       if (cleanA === cleanB) return true;
 
-      // 2. High keyword similarity (threshold 0.38 - catches same news reported by different outlets)
-      const simId = calculateTitleSimilarity(item.title, existing.title);
-      if (simId >= 0.38) return true;
+      // 2. Distinctive core subject check (if both mention the same specific entity/campaign)
+      const wordsA = extractKeywords(item.title);
+      const wordsB = extractKeywords(existing.title);
+      const commonWords = wordsA.filter(w => wordsB.some(wb => w === wb || (w.length >= 4 && (wb.startsWith(w) || w.startsWith(wb)))));
+      
+      // Specifically catch repeated single distinctive proper nouns (like genpi, rangkul, kelok, etc.)
+      const isDistinctiveShared = commonWords.some(w => ['genpi', 'kelok', 'pagaruyung', 'mentawai', 'singkarak', 'harau', 'tabuik', 'songket', 'rendang', 'maninjau', 'mandeh', 'silek', 'geopark'].includes(w));
+      if (isDistinctiveShared) return true;
 
-      // 3. English title similarity check if available
+      // If 2 or more significant content words are shared
+      if (commonWords.length >= 2) return true;
+
+      // 3. Keyword similarity threshold (0.24 threshold catches syndicated variations)
+      const simId = calculateTitleSimilarity(item.title, existing.title);
+      if (simId >= 0.24) return true;
+
+      // 4. English title check if available
       if (item.titleEn && existing.titleEn) {
         const simEn = calculateTitleSimilarity(item.titleEn, existing.titleEn);
-        if (simEn >= 0.38) return true;
+        if (simEn >= 0.24) return true;
       }
 
       return false;
