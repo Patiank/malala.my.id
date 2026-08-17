@@ -11,7 +11,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle } from './utils/ai';
 
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
@@ -257,7 +257,7 @@ export default function App() {
                 {[...displayItems, ...displayItems].map((news, idx) => {
                   const isEn = lang === 'en';
                   const cat = isEn && news.categoryEn ? news.categoryEn : news.category;
-                  const titleText = isEn && news.titleEn ? news.titleEn : news.title;
+                  const titleText = getNewsDisplayTitle(news, lang);
                   const dateText = isEn && news.dateEn ? news.dateEn : news.date;
                   return (
                     <button

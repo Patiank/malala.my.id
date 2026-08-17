@@ -2,6 +2,7 @@ import React from 'react';
 import { X, MapPin, Share2, Calendar, Check, Info, Flame, ExternalLink } from 'lucide-react';
 import { HotInfoItem } from '../types';
 import { Language } from '../lib/translations';
+import { getNewsDisplayTitle } from '../utils/ai';
 
 interface NewsModalProps {
   item: HotInfoItem | null;
@@ -13,7 +14,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   if (!item) return null;
 
   const isEn = lang === 'en';
-  const title = isEn && item.titleEn ? item.titleEn : item.title;
+  const title = getNewsDisplayTitle(item, lang);
   const description = isEn && item.descriptionEn ? item.descriptionEn : item.description;
   const category = isEn && item.categoryEn ? item.categoryEn : item.category;
   const tag = isEn && item.tagEn ? item.tagEn : item.tag;

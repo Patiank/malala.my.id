@@ -464,6 +464,207 @@ export function isSumbarTopic(text: string): boolean {
 }
 
 /**
+ * Automatically translates Indonesian tourism headlines into fluent English
+ */
+export function translateHeadlineIndoToEn(titleId: string): string {
+  if (!titleId || typeof titleId !== 'string') return '';
+  let str = titleId.trim();
+
+  // Dictionary of multi-word phrases and entities
+  const phraseMappings: Array<[RegExp, string]> = [
+    [/\bKemenparekraf\b/gi, 'Ministry of Tourism & Creative Economy'],
+    [/\bKementerian Pariwisata\b/gi, 'Ministry of Tourism'],
+    [/\bDinas Pariwisata Provinsi Sumatera Barat\b/gi, 'West Sumatra Tourism Board'],
+    [/\bDinas Pariwisata Sumbar\b/gi, 'West Sumatra Tourism Board'],
+    [/\bDispar Sumbar\b/gi, 'West Sumatra Tourism Board'],
+    [/\bDispar\b/gi, 'Tourism Board'],
+    [/\bPemprov Sumbar\b/gi, 'West Sumatra Provincial Government'],
+    [/\bPemerintah Provinsi Sumatera Barat\b/gi, 'West Sumatra Provincial Government'],
+    [/\bPemda\b/gi, 'Local Government'],
+    [/\bPemerintah\b/gi, 'Government'],
+    [/\bGenpi\b/gi, 'GenPI (Tourism Generation)'],
+    [/\bKarisma Event Nusantara\b/gi, 'Karisma Event Nusantara (KEN)'],
+    [/\bDesa Wisata\b/gi, 'Tourist Village'],
+    [/\bNagari Wisata\b/gi, 'Tourist Nagari'],
+    [/\bPariwisata Sumatera Barat\b/gi, 'West Sumatra Tourism'],
+    [/\bPariwisata Sumbar\b/gi, 'West Sumatra Tourism'],
+    [/\bPariwisata Indonesia\b/gi, 'Indonesian Tourism'],
+    [/\bPariwisata Nasional\b/gi, 'National Tourism'],
+    [/\bWisatawan Mancanegara\b/gi, 'International Tourists'],
+    [/\bWisatawan Nusantara\b/gi, 'Domestic Tourists'],
+    [/\bWisatawan Asing\b/gi, 'Foreign Tourists'],
+    [/\bWisatawan Domestik\b/gi, 'Domestic Travelers'],
+    [/\bWisatawan\b/gi, 'Tourists'],
+    [/\bKunjungan Wisata\b/gi, 'Tourist Visits'],
+    [/\bKunjungan Wisatawan\b/gi, 'Tourist Arrivals'],
+    [/\bEkonomi Kreatif\b/gi, 'Creative Economy'],
+    [/\bDestinasi Wisata\b/gi, 'Tourist Destinations'],
+    [/\bObjek Wisata\b/gi, 'Tourist Attractions'],
+    [/\bDaya Tarik Wisata\b/gi, 'Tourist Attractions'],
+    [/\bDanau Singkarak\b/gi, 'Lake Singkarak'],
+    [/\bDanau Maninjau\b/gi, 'Lake Maninjau'],
+    [/\bDanau Kembar\b/gi, 'Twin Lakes'],
+    [/\bLembah Harau\b/gi, 'Harau Valley'],
+    [/\bNgarai Sianok\b/gi, 'Sianok Canyon'],
+    [/\bJam Gadang\b/gi, 'Jam Gadang Clock Tower'],
+    [/\bIstano Basa Pagaruyung\b/gi, 'Pagaruyung Grand Palace'],
+    [/\bKepulauan Mentawai\b/gi, 'Mentawai Islands'],
+    [/\bKawasan Bahari Mandeh\b/gi, 'Mandeh Marine Resort Area'],
+    [/\bKawasan Mandeh\b/gi, 'Mandeh Coastal Area'],
+    [/\bGeopark Silokek\b/gi, 'Silokek Geopark'],
+    [/\bGeopark Ranah Minang\b/gi, 'Ranah Minang Geopark'],
+    [/\bKelok 9\b/gi, 'Kelok 9 Flyover'],
+    [/\bKelok 44\b/gi, 'Kelok 44 Scenic Pass'],
+    [/\bAir Terjun Lembah Anai\b/gi, 'Lembah Anai Waterfall'],
+    [/\bRumah Gadang\b/gi, 'Rumah Gadang Traditional House'],
+    [/\bSumatera Barat\b/gi, 'West Sumatra'],
+    [/\bRanah Minang\b/gi, 'Minangkabau Land'],
+    [/\bSumbar\b/gi, 'West Sumatra'],
+    [/\bKota Padang\b/gi, 'Padang City'],
+    [/\bKota Bukittinggi\b/gi, 'Bukittinggi City'],
+    [/\bKota Pariaman\b/gi, 'Pariaman City'],
+    [/\bKota Payakumbuh\b/gi, 'Payakumbuh City'],
+    [/\bKota Sawahlunto\b/gi, 'Sawahlunto City'],
+    [/\bKabupaten Tanah Datar\b/gi, 'Tanah Datar Regency'],
+    [/\bKabupaten Pesisir Selatan\b/gi, 'Pesisir Selatan Regency'],
+    [/\bKabupaten Lima Puluh Kota\b/gi, 'Limapuluh Kota Regency'],
+    [/\bKabupaten Agam\b/gi, 'Agam Regency'],
+    [/\bKabupaten Solok\b/gi, 'Solok Regency'],
+    [/\bKabupaten Pasaman\b/gi, 'Pasaman Regency'],
+    [/\bKabupaten Dharmasraya\b/gi, 'Dharmasraya Regency'],
+    [/\bKabupaten Sijunjung\b/gi, 'Sijunjung Regency'],
+    [/\bKabupaten Mentawai\b/gi, 'Mentawai Regency'],
+    [/\bBandara Internasional Minangkabau\b/gi, 'Minangkabau International Airport'],
+    [/\bBandara Minangkabau\b/gi, 'Minangkabau Airport'],
+    [/\bBulan Depan\b/gi, 'Next Month'],
+    [/\bMinggu Ini\b/gi, 'This Week'],
+    [/\bPekan Ini\b/gi, 'This Week'],
+    [/\bTahun Ini\b/gi, 'This Year'],
+    [/\bTahun 2026\b/gi, 'in 2026'],
+    [/\bLibur Panjang\b/gi, 'Long Holiday'],
+    [/\bLibur Lebaran\b/gi, 'Eid Holiday'],
+    [/\bLibur Akhir Tahun\b/gi, 'Year-End Holiday'],
+    [/\bLonjakan Wisatawan\b/gi, 'Surge in Tourists'],
+    [/\bLonjakan Pengunjung\b/gi, 'Surge in Visitors'],
+    [/\bJalur Wisata\b/gi, 'Tourism Route'],
+    [/\bSektor Pariwisata\b/gi, 'Tourism Sector'],
+    [/\bSiap Digelar\b/gi, 'Ready to be Held'],
+    [/\bSukses Digelar\b/gi, 'Successfully Held'],
+    [/\bResmi Dibuka\b/gi, 'Officially Opened'],
+    [/\bResmi Diluncurkan\b/gi, 'Officially Launched'],
+    [/\bTerus Digenjot\b/gi, 'Continuously Boosted'],
+    [/\bTingkatkan Kualitas\b/gi, 'Enhance Quality'],
+    [/\bRangkul Komunitas\b/gi, 'Engage Communities'],
+    [/\bAjak Wisatawan\b/gi, 'Invites Travelers'],
+    [/\bAjak\b/gi, 'Encourages'],
+    [/\bMengajak\b/gi, 'Encourages'],
+    [/\bRangkul\b/gi, 'to Embrace'],
+    [/\bMerangkul\b/gi, 'Embraces'],
+    [/\bDorong\b/gi, 'Drives'],
+    [/\bMendorong\b/gi, 'Boosts'],
+    [/\bPercepat\b/gi, 'Accelerates'],
+    [/\bMempercepat\b/gi, 'Accelerates'],
+    [/\bPerkuat\b/gi, 'Strengthens'],
+    [/\bMemperkuat\b/gi, 'Strengthens'],
+    [/\bGencarkan\b/gi, 'Intensifies'],
+    [/\bMenggencarkan\b/gi, 'Intensifies'],
+    [/\bLuncurkan\b/gi, 'Launches'],
+    [/\bMeluncurkan\b/gi, 'Launches'],
+    [/\bDiluncurkan\b/gi, 'Launched'],
+    [/\bGelar\b/gi, 'Hosts'],
+    [/\bMenggelar\b/gi, 'Holds'],
+    [/\bDigelar\b/gi, 'Held'],
+    [/\bTinjau\b/gi, 'Inspects'],
+    [/\bMeninjau\b/gi, 'Inspects'],
+    [/\bSambut\b/gi, 'Welcomes'],
+    [/\bMenyambut\b/gi, 'Welcomes'],
+    [/\bTargetkan\b/gi, 'Targets'],
+    [/\bMenargetkan\b/gi, 'Targets'],
+    [/\bKembangkan\b/gi, 'Develops'],
+    [/\bMengembangkan\b/gi, 'Develops'],
+    [/\bPengembangan\b/gi, 'Development of'],
+    [/\bPeningkatan\b/gi, 'Increase in'],
+    [/\bPromosi\b/gi, 'Promotion of'],
+    [/\bPromosikan\b/gi, 'Promotes'],
+    [/\bMempromosikan\b/gi, 'Promotes'],
+    [/\bKesiapan\b/gi, 'Readiness of'],
+    [/\bKonektivitas\b/gi, 'Connectivity of'],
+    [/\bAksesibilitas\b/gi, 'Accessibility of'],
+    [/\bFasilitas\b/gi, 'Facilities'],
+    [/\bAmenitas\b/gi, 'Amenities'],
+    [/\bAkomodasi\b/gi, 'Accommodation'],
+    [/\bPenerbangan\b/gi, 'Flights'],
+    [/\bPenginapan\b/gi, 'Lodging'],
+    [/\bHotel\b/gi, 'Hotels'],
+    [/\bKuliner\b/gi, 'Culinary'],
+    [/\bKoleksi\b/gi, 'Collection'],
+    [/\bPameran\b/gi, 'Exhibition'],
+    [/\bAtraksi\b/gi, 'Attractions'],
+    [/\bKebudayaan\b/gi, 'Culture'],
+    [/\bBudaya\b/gi, 'Culture'],
+    [/\bTradisi\b/gi, 'Traditions'],
+    [/\bFestival\b/gi, 'Festival'],
+    [/\bPesta\b/gi, 'Festivity'],
+    [/\bPerayaan\b/gi, 'Celebration'],
+    [/\bMeriah\b/gi, 'Spectacular'],
+    [/\bTerpilih\b/gi, 'Selected'],
+    [/\bTerbaik\b/gi, 'Best'],
+    [/\bUnggulan\b/gi, 'Flagship'],
+    [/\bPrioritas\b/gi, 'Priority'],
+    [/\bInternasional\b/gi, 'International'],
+    [/\bNasional\b/gi, 'National'],
+    [/\bLokal\b/gi, 'Local'],
+    [/\bKomunitas\b/gi, 'Communities'],
+    [/\bMasyarakat\b/gi, 'Community'],
+    [/\bPelaku Wisata\b/gi, 'Tourism Operators'],
+    [/\bPelaku Usaha\b/gi, 'Business Operators'],
+    [/\bUMKM\b/gi, 'Local SMEs'],
+    [/\bPotensi\b/gi, 'Potential'],
+    [/\bWisata\b/gi, 'Tourism'],
+    [/\bJelang\b/gi, 'Ahead of'],
+    [/\bMenjelang\b/gi, 'Ahead of'],
+    [/\bPasca\b/gi, 'Post-'],
+    [/\bSetelah\b/gi, 'After'],
+    [/\bSaat\b/gi, 'During'],
+    [/\bHingga\b/gi, 'Up to'],
+    [/\bSampai\b/gi, 'Until'],
+    [/\bMulai\b/gi, 'Starts'],
+    [/\bResmi\b/gi, 'Officially'],
+    [/\bUntuk\b/gi, 'for'],
+    [/\bDengan\b/gi, 'with'],
+    [/\bDan\b/gi, 'and'],
+    [/\bDi\b/gi, 'in'],
+    [/\bKe\b/gi, 'to'],
+    [/\bDari\b/gi, 'from'],
+    [/\bPada\b/gi, 'at'],
+    [/\bOleh\b/gi, 'by']
+  ];
+
+  for (const [regex, replacement] of phraseMappings) {
+    str = str.replace(regex, replacement);
+  }
+
+  // Clean double spaces and normalize capitalization
+  str = str.replace(/\s+/g, ' ').trim();
+  if (str.length > 0) {
+    str = str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  return str;
+}
+
+export function getNewsDisplayTitle(item: any, lang: string): string {
+  if (!item) return '';
+  const isEn = lang === 'en';
+  if (!isEn) return item.title || '';
+
+  if (item.titleEn && item.titleEn.trim() && item.titleEn !== item.title) {
+    return item.titleEn;
+  }
+
+  return translateHeadlineIndoToEn(item.title || item.titleEn || '');
+}
+
+/**
  * Fetch live Real-Time National Indonesia Tourism News strictly within the last 30 days (1 month)
  * Note: imageUrl is left empty ('') so the admin can manually upload/set banner images.
  */
@@ -500,7 +701,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
           candidateList.push({
             id: `news-live-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
             title: cleanTitle,
-            titleEn: cleanTitle,
+            titleEn: translateHeadlineIndoToEn(cleanTitle),
             category: isSumbar ? 'Pariwisata Sumatera Barat' : 'Pariwisata Indonesia',
             categoryEn: isSumbar ? 'West Sumatra Tourism' : 'Indonesian Tourism',
             date: dateId,
@@ -556,7 +757,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             candidateList.push({
               id: `news-proxy-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
               title: cleanTitle,
-              titleEn: cleanTitle,
+              titleEn: translateHeadlineIndoToEn(cleanTitle),
               category: isSumbar ? 'Pariwisata Sumatera Barat' : 'Pariwisata Indonesia',
               categoryEn: isSumbar ? 'West Sumatra Tourism' : 'Indonesian Tourism',
               date: dateId,

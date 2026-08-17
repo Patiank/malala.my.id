@@ -5,7 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2151,7 +2151,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <div className="relative h-40 w-full overflow-hidden bg-gray-100">
                             <img
                               src={item.imageUrl}
-                              alt={isEn && item.titleEn ? item.titleEn : item.title}
+                              alt={getNewsDisplayTitle(item, lang)}
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />
@@ -2193,7 +2193,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                         <div className="p-4 space-y-2">
                           <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-sm leading-snug">
-                            {isEn && item.titleEn ? item.titleEn : item.title}
+                            {getNewsDisplayTitle(item, lang)}
                           </h3>
                           <div className="font-jakarta text-gray-700 text-xs leading-relaxed space-y-2">
                             {(isEn && item.descriptionEn ? item.descriptionEn : (item.description || item.content || ''))
