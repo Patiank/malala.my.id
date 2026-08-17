@@ -1562,40 +1562,38 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
 
                 {/* Filter Controls Bar */}
-                <div className="space-y-3 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
-                  {/* Category Filter Pills */}
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      {[
-                        { key: 'all', label: isEn ? `All Festivals (${eventItems.length})` : `Semua Festival (${eventItems.length})` },
-                        { key: 'ken', label: isEn ? `⭐ KEN Official (${totalKenCount})` : `⭐ KEN Kemenparekraf (${totalKenCount})` },
-                        { key: 'budaya', label: isEn ? '🏛️ Culture & Custom' : '🏛️ Tradisi & Budaya' },
-                        { key: 'sport', label: isEn ? '🏇 Sport & Equestrian' : '🏇 Sport & Pacuan' },
-                        { key: 'bahari', label: isEn ? '🌊 Marine & Nature' : '🌊 Bahari & Danau' },
-                      ].map((f) => (
-                        <button
-                          key={f.key}
-                          onClick={() => setEventCategoryFilter(f.key)}
-                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase transition-all cursor-pointer ${
-                            eventCategoryFilter === f.key
-                              ? 'bg-black text-white shadow-xs'
-                              : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
-                          }`}
-                        >
-                          {f.label}
-                        </button>
-                      ))}
-                    </div>
+                <div className="space-y-2.5 bg-gray-50 p-3 rounded-xl border border-gray-200">
+                  {/* Category Filter Pills (1 Baris Bersih & Minimalis) */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto flex-nowrap pb-0.5 no-scrollbar">
+                    {[
+                      { key: 'all', label: isEn ? `All Festivals (${eventItems.length})` : `Semua Festival (${eventItems.length})` },
+                      { key: 'ken', label: isEn ? `⭐ KEN Official (${totalKenCount})` : `⭐ KEN Kemenparekraf (${totalKenCount})` },
+                      { key: 'budaya', label: isEn ? '🏛️ Tradisi & Budaya' : '🏛️ Tradisi & Budaya' },
+                      { key: 'sport', label: isEn ? '🏇 Sport & Pacuan' : '🏇 Sport & Pacuan' },
+                      { key: 'bahari', label: isEn ? '🌊 Bahari & Danau' : '🌊 Bahari & Danau' },
+                    ].map((f) => (
+                      <button
+                        key={f.key}
+                        onClick={() => setEventCategoryFilter(f.key)}
+                        className={`px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+                          eventCategoryFilter === f.key
+                            ? 'bg-black text-white shadow-xs'
+                            : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
                   </div>
 
-                  {/* Month Filter Tabs (Januari - Desember) */}
-                  <div className="flex items-center gap-1 flex-wrap pt-2 border-t border-gray-200/60 overflow-x-auto pb-1">
+                  {/* Month Filter Tabs (1 Baris Bersih) */}
+                  <div className="flex items-center gap-1 overflow-x-auto flex-nowrap pt-2 border-t border-gray-200/60 pb-0.5 no-scrollbar">
                     <button
                       onClick={() => setEventMonthFilter('all')}
-                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                         eventMonthFilter === 'all'
                           ? 'bg-black text-white shadow-xs'
-                          : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                          : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
                       }`}
                     >
                       {isEn ? 'All Months' : 'Semua Bulan'}
@@ -1603,7 +1601,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                     <button
                       onClick={() => setEventMonthFilter('current')}
-                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                         eventMonthFilter === 'current'
                           ? 'bg-red-600 text-white shadow-xs'
                           : 'bg-red-50 text-red-700 border border-red-200 hover:border-red-400'
@@ -1616,10 +1614,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                       <button
                         key={idx}
                         onClick={() => setEventMonthFilter(idx)}
-                        className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                        className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                           eventMonthFilter === idx
                             ? 'bg-black text-white shadow-xs'
-                            : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                            : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
                         }`}
                       >
                         {mShort}
