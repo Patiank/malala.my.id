@@ -10,7 +10,36 @@ interface BookletData {
 }
 
 /**
- * Generates an official, beautifully structured PDF booklet of West Sumatra Tourism & Culture
+ * Converts image URL to base64 Data URL for embedding into jsPDF
+ */
+async function getBase64ImageFromUrl(imageUrl: string): Promise<string | null> {
+  if (!imageUrl) return null;
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || 800;
+        canvas.height = img.naturalHeight || 500;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL('image/jpeg', 0.85));
+        } else {
+          resolve(null);
+        }
+      } catch (e) {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = imageUrl;
+  });
+}
+
+/**
+ * Generates an official A4 Master E-Booklet where EACH catalog item has its own FULL PAGE (modal-exact layout)
  */
 export async function generateSumbarBookletPDF(data: BookletData): Promise<void> {
   const isEn = data.lang === 'en';
@@ -22,420 +51,523 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
 
   const pageWidth = 210;
   const pageHeight = 297;
-  const margin = 15;
-  const contentWidth = pageWidth - margin * 2;
-  let currentPage = 1;
+  const margin = 14;
+  const contentWidth = pageWidth - margin * 2; // 182mm
+  let pageNumber = 1;
 
-  const addHeaderFooter = (pageTitle: string) => {
-    // Header line
-    doc.setDrawColor(220, 38, 38); // red-600
-    doc.setLineWidth(0.5);
-    doc.line(margin, 12, pageWidth - margin, 12);
+  const addHeaderFooter = (categoryLabel: string, subCategory: string) => {
+    // Header Bar
+    doc.setFillColor(15, 23, 42); // slate-900
+    doc.rect(0, 0, pageWidth, 11, 'F');
+
+    doc.setFillColor(220, 38, 38); // red-600
+    doc.rect(0, 11, pageWidth, 1, 'F');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(150, 150, 150);
-    doc.text(isEn ? 'OFFICIAL WEST SUMATRA TOURISM & CULTURE GUIDE 2026' : 'PANDUAN RESMI PARIWISATA & BUDAYA SUMATERA BARAT 2026', margin, 9);
-    doc.text(pageTitle.toUpperCase(), pageWidth - margin, 9, { align: 'right' });
+    doc.setFontSize(7.5);
+    doc.setTextColor(251, 191, 36); // amber-400
+    doc.text('MALALA 2026 • DINAS PARIWISATA PROVINSI SUMATERA BARAT', margin, 7.5);
 
-    // Footer line
-    doc.setDrawColor(220, 220, 220);
-    doc.setLineWidth(0.3);
-    doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`${categoryLabel.toUpperCase()} — ${subCategory.toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
+
+    // Footer Bar
+    doc.setFillColor(248, 250, 252);
+    doc.rect(0, pageHeight - 10, pageWidth, 10, 'F');
+    doc.setDrawColor(226, 232, 240);
+    doc.line(0, pageHeight - 10, pageWidth, pageHeight - 10);
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(160, 160, 160);
-    doc.text('Dinas Pariwisata Provinsi Sumatera Barat • malala.my.id', margin, pageHeight - 8);
-    doc.text(`${currentPage}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
+    doc.setFontSize(7.5);
+    doc.setTextColor(100, 116, 139);
+    doc.text('Katalog Resmi Panduan Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
   };
 
-  const checkPageBreak = (neededHeight: number, currentY: number, pageTitle: string): number => {
-    if (currentY + neededHeight > pageHeight - 18) {
-      doc.addPage();
-      currentPage++;
-      addHeaderFooter(pageTitle);
-      return 20; // New Y start after header
-    }
-    return currentY;
-  };
-
-  // ==========================================
-  // 1. COVER PAGE
-  // ==========================================
-  // Dark Background cover accent
+  // ==============================================================
+  // 1. COVER PAGE (Halaman Judul Eksklusif)
+  // ==============================================================
   doc.setFillColor(15, 23, 42); // slate-900
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Red accent decorative bar
-  doc.setFillColor(220, 38, 38);
+  // Side decorative stripes
+  doc.setFillColor(220, 38, 38); // Red
   doc.rect(0, 0, 12, pageHeight, 'F');
-
-  // Gold accent bar
-  doc.setFillColor(217, 119, 6); // amber-600
+  doc.setFillColor(217, 119, 6); // Gold
   doc.rect(12, 0, 3, pageHeight, 'F');
 
-  // Government & Branding text
+  // Header tag
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(10);
-  doc.setTextColor(251, 191, 36); // amber-400
-  doc.text(isEn ? 'OFFICIAL GOVERNMENT & TOURISM PUBLICATION' : 'PUBLIKASI RESMI DINAS PARIWISATA PROVINSI SUMATERA BARAT', 25, 40);
+  doc.setTextColor(251, 191, 36);
+  doc.text(isEn ? 'OFFICIAL TOURISM & CULTURAL MASTER CATALOG 2026' : 'MASTER KATALOG RESMI PARIWISATA & KEBUDAYAAN 2026', 25, 38);
 
-  // Main Title
-  doc.setFontSize(28);
+  // Main Titles
+  doc.setFontSize(30);
   doc.setTextColor(255, 255, 255);
-  doc.text('MALALA 2026', 25, 55);
+  doc.text('MALALA 2026', 25, 52);
 
-  doc.setFontSize(20);
-  doc.setTextColor(220, 38, 38); // Red
-  doc.text(isEn ? 'WEST SUMATRA TRAVEL GUIDE' : 'PANDUAN WISATA SUMBAR', 25, 66);
+  doc.setFontSize(18);
+  doc.setTextColor(220, 38, 38);
+  doc.text(isEn ? 'WEST SUMATRA TRAVEL GUIDE' : 'PANDUAN LENGKAP WISATA RANAH MINANG', 25, 62);
 
-  // Subtitle
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  doc.setTextColor(203, 213, 225); // slate-300
-  const subText = isEn 
-    ? 'Comprehensive E-Booklet of 26 Iconic Destinations, 14 Cultural Traditions, 16 Authentic Minangkabau Culinaries & 20 Major Festivals.'
-    : 'Kompilasi Master Katalog 26 Destinasi Unggulan, 14 Tradisi Budaya Luhur, 16 Kuliner Gastronomi Otentik & 20 Kalender Event Resmi (CoE & KEN).';
-  doc.text(doc.splitTextToSize(subText, 160), 25, 80);
+  doc.setFontSize(10);
+  doc.setTextColor(203, 213, 225);
+  const coverSubtitle = isEn 
+    ? 'Comprehensive collection of 26 Iconic Destinations, 14 Living Cultural Traditions, 16 Authentic Culinaries, and 20 Official Events & KEN 2026.'
+    : 'Kompilasi komprehensif master data 26 destinasi wisata, 14 tradisi adat luhur, 16 kuliner gastronomi otentik, dan 20 kalender festival KEN 2026.';
+  doc.text(doc.splitTextToSize(coverSubtitle, 160), 25, 74);
 
-  // Summary Stat Badges Box
-  doc.setFillColor(30, 41, 59); // slate-800
-  doc.roundedRect(25, 110, 165, 45, 3, 3, 'F');
-
+  // Summary Stat Cards Box
+  doc.setFillColor(30, 41, 59);
+  doc.roundedRect(25, 100, 165, 50, 3, 3, 'F');
   doc.setDrawColor(217, 119, 6);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(25, 110, 165, 45, 3, 3, 'S');
+  doc.roundedRect(25, 100, 165, 50, 3, 3, 'S');
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(11);
   doc.setTextColor(251, 191, 36);
-  doc.text(isEn ? 'MASTER CATALOG OVERVIEW' : 'RINGKASAN MASTER KATALOG', 32, 120);
+  doc.text(isEn ? 'CATALOG OVERVIEW (1 PAGE PER ITEM)' : 'DAFTAR MASTER KATALOG (1 HALAMAN PER OBJEK)', 32, 112);
 
+  doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  doc.text(`• 26 ${isEn ? 'Curated Tourism Destinations (Geoparks, Lakes & UNESCO Sites)' : 'Destinasi Wisata Pilihan (Alam, Geopark & UNESCO)'}`, 32, 128);
-  doc.text(`• 14 ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 135);
-  doc.text(`• 16 ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 142);
-  doc.text(`• 20 ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 149);
+  doc.text(`• Bab I   : 26 ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 122);
+  doc.text(`• Bab II  : 14 ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 129);
+  doc.text(`• Bab III : 16 ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 136);
+  doc.text(`• Bab IV  : 20 ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 143);
 
-  // Philosophy quote box
+  // Philosophy Box
   doc.setFillColor(220, 38, 38);
-  doc.rect(25, 175, 4, 30, 'F');
+  doc.rect(25, 175, 4, 32, 'F');
 
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(11);
   doc.setTextColor(226, 232, 240);
-  doc.text('"Adat Basandi Syarak, Syarak Basandi Kitabullah"', 35, 185);
-  doc.text('"Alam Takambang Jadi Guru"', 35, 193);
+  doc.text('"Adat Basandi Syarak, Syarak Basandi Kitabullah"', 35, 186);
+  doc.text('"Alam Takambang Jadi Guru"', 35, 194);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setTextColor(148, 163, 184);
-  doc.text(isEn ? 'The timeless wisdom and cultural philosophy of Minangkabau.' : 'Falsafah abadi kearifan lokal dan keluhuran alam Minangkabau.', 35, 201);
+  doc.text(isEn ? 'Fostering cultural integrity and natural conservation in West Sumatra.' : 'Falsafah keluhuran kearifan lokal dan harmoni alam semesta Ranah Minang.', 35, 202);
 
   // Bottom Metadata
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  doc.text(isEn ? 'PUBLISHED BY:' : 'DITERBITKAN OLEH:', 25, 250);
+  doc.text(isEn ? 'PUBLISHED BY:' : 'DITERBITKAN OLEH:', 25, 255);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(203, 213, 225);
-  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', 25, 256);
-  doc.text('Padang, Sumatera Barat, Indonesia • 2026', 25, 262);
-  doc.text('Aplikasi Resmi: https://malala.my.id', 25, 268);
+  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', 25, 261);
+  doc.text('Padang, Sumatera Barat, Indonesia • 2026', 25, 267);
+  doc.text('Platform Resmi: https://malala.my.id', 25, 273);
 
-  // ==========================================
-  // 2. BAB I: DESTINASI WISATA (26 ITEMS)
-  // ==========================================
-  doc.addPage();
-  currentPage++;
-  addHeaderFooter(isEn ? 'Chapter 1: Tourism Destinations' : 'Bab 1: Destinasi Wisata Pilihan');
-
-  let y = 22;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor(220, 38, 38);
-  doc.text(isEn ? 'CHAPTER I: 26 ICONIC DESTINATIONS' : 'BAB I: 26 DESTINASI WISATA PILIHAN', margin, y);
-  y += 7;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(100, 100, 100);
-  doc.text(isEn ? 'Exploration of natural wonders, UNESCO world heritage sites, serene volcanic lakes, and living cultural nagari.' : 'Eksplorasi bentang alam menakjubkan, situs Warisan Dunia UNESCO, danau vulkanik, hingga nagari terindah.', margin, y);
-  y += 8;
-
+  // ==============================================================
+  // 2. BAB I: DESTINASI WISATA (1 HALAMAN PENUH PER DESTINASI)
+  // ==============================================================
   const destinations = data.destinations || [];
-  destinations.forEach((dest, idx) => {
-    y = checkPageBreak(50, y, isEn ? 'Chapter 1: Tourism Destinations' : 'Bab 1: Destinasi Wisata Pilihan');
+  for (let i = 0; i < destinations.length; i++) {
+    const dest = destinations[i];
+    doc.addPage();
+    pageNumber++;
+    addHeaderFooter(isEn ? 'Destinations' : 'Destinasi Wisata', dest.regency || 'Sumatera Barat');
 
-    // Container box
-    doc.setFillColor(248, 250, 252); // slate-50
-    doc.roundedRect(margin, y, contentWidth, 42, 2, 2, 'F');
-    doc.setDrawColor(226, 232, 240);
-    doc.roundedRect(margin, y, contentWidth, 42, 2, 2, 'S');
-
-    // Number & Category Badge
-    doc.setFillColor(15, 23, 42);
-    doc.rect(margin, y, 7, 42, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    doc.text(`${idx + 1}`, margin + 3.5, y + 22, { align: 'center' });
-
-    // Destination Name & Regency
-    const title = isEn && dest.titleEn ? dest.titleEn : dest.title;
+    const title = (isEn && dest.titleEn ? dest.titleEn : dest.title).toUpperCase();
     const category = isEn && dest.categoryEn ? dest.categoryEn : dest.category;
-    const regency = dest.regency || (isEn ? 'West Sumatra' : 'Sumatera Barat');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(15, 23, 42);
-    doc.text(title.toUpperCase(), margin + 10, y + 6);
-
-    doc.setFontSize(8);
-    doc.setTextColor(220, 38, 38);
-    doc.text(`[${category}] • ${regency}`, margin + 10, y + 10.5);
-
-    // Description text
+    const location = isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency);
     const desc = isEn && dest.descriptionEn ? dest.descriptionEn : dest.description;
-    const cleanDesc = desc.replace(/\n+/g, ' ').slice(0, 260) + '...';
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(71, 85, 105);
-    const splitDesc = doc.splitTextToSize(cleanDesc, contentWidth - 14);
-    doc.text(splitDesc, margin + 10, y + 15.5);
-
-    // Highlights & Best Time
     const highlights = (isEn && dest.highlightsEn ? dest.highlightsEn : dest.highlights) || [];
     const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(217, 119, 6);
-    doc.text(`★ ${isEn ? 'Highlights:' : 'Keunggulan:'} ${highlights.slice(0, 2).join(' • ')}`, margin + 10, y + 36);
+    let y = 16;
 
-    if (bestTime) {
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(100, 116, 139);
-      doc.text(`⏰ ${isEn ? 'Best Time:' : 'Waktu Terbaik:'} ${bestTime}`, contentWidth - 5, y + 36, { align: 'right' });
+    // 1. Image Header Banner (Width: 182mm, Height: 70mm)
+    const imgData = await getBase64ImageFromUrl(dest.imageUrl);
+    if (imgData) {
+      try {
+        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+      } catch {
+        doc.setFillColor(30, 41, 59);
+        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      }
+    } else {
+      doc.setFillColor(30, 41, 59);
+      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
     }
 
-    y += 46;
-  });
-
-  // ==========================================
-  // 3. BAB II: WARISAN BUDAYA (14 ITEMS)
-  // ==========================================
-  doc.addPage();
-  currentPage++;
-  addHeaderFooter(isEn ? 'Chapter 2: Cultural Heritage' : 'Bab 2: Warisan Budaya & Tradisi Adat');
-
-  y = 22;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor(217, 119, 6); // amber-600
-  doc.text(isEn ? 'CHAPTER II: 14 SACRED CULTURAL TRADITIONS' : 'BAB II: 14 WARISAN BUDAYA & TRADISI ADAT', margin, y);
-  y += 7;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(100, 100, 100);
-  doc.text(isEn ? 'Values, matrilineal social structures, sacred architecture, and customary ceremonies of Minangkabau.' : 'Nilai luhur, sistem matrilineal, arsitektur Rumah Gadang, dan upacara adat sakral Minangkabau.', margin, y);
-  y += 8;
-
-  const cultures = data.cultureItems || [];
-  cultures.forEach((cult, idx) => {
-    y = checkPageBreak(48, y, isEn ? 'Chapter 2: Cultural Heritage' : 'Bab 2: Warisan Budaya & Tradisi Adat');
-
-    doc.setFillColor(254, 252, 232); // amber-50
-    doc.roundedRect(margin, y, contentWidth, 40, 2, 2, 'F');
-    doc.setDrawColor(253, 230, 138);
-    doc.roundedRect(margin, y, contentWidth, 40, 2, 2, 'S');
-
-    doc.setFillColor(217, 119, 6);
-    doc.rect(margin, y, 7, 40, 'F');
-
+    // Image overlay tag
+    doc.setFillColor(0, 0, 0);
+    doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
+    doc.setFontSize(7.5);
     doc.setTextColor(255, 255, 255);
-    doc.text(`${idx + 1}`, margin + 3.5, y + 21, { align: 'center' });
+    doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
 
-    const title = isEn && cult.titleEn ? cult.titleEn : cult.title;
+    y += 75;
+
+    // 2. Title & Regency
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(15, 23, 42); // slate-900
+    doc.text(title, margin, y);
+
+    y += 5.5;
+    doc.setFontSize(9);
+    doc.setTextColor(220, 38, 38);
+    doc.text(`📍 ${location}`, margin, y);
+
+    y += 4;
+    doc.setDrawColor(226, 232, 240);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
+
+    // 3. Full Detailed Narrative Paragraphs (Split by \n\n)
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(51, 65, 85); // slate-700
+    const paragraphs = desc.split('\n\n').filter(Boolean);
+    paragraphs.forEach((p) => {
+      const cleanP = p.replace(/\n/g, ' ').trim();
+      const splitP = doc.splitTextToSize(cleanP, contentWidth);
+      doc.text(splitP, margin, y);
+      y += (splitP.length * 3.8) + 3;
+    });
+
+    // 4. Highlights Box (Modal exact style)
+    if (highlights.length > 0) {
+      y += 1;
+      const boxHeight = 10 + (highlights.length * 5);
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'F');
+      doc.setDrawColor(226, 232, 240);
+      doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'S');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(15, 23, 42);
+      doc.text(isEn ? 'KEY HIGHLIGHTS & ATTRACTIONS' : 'DAYA TARIK UTAMA (HIGHLIGHTS)', margin + 4, y + 6);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(51, 65, 85);
+      let hlY = y + 11;
+      highlights.forEach((hl) => {
+        doc.text(`✓  ${hl}`, margin + 5, hlY);
+        hlY += 5;
+      });
+
+      y += boxHeight + 4;
+    }
+
+    // 5. Best Time to Visit Footer Row
+    if (bestTime) {
+      doc.setFillColor(254, 243, 199); // amber-100
+      doc.roundedRect(margin, y, contentWidth, 9, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(180, 83, 9); // amber-700
+      doc.text(`⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${bestTime}`, margin + 4, y + 6);
+    }
+  }
+
+  // ==============================================================
+  // 3. BAB II: WARISAN BUDAYA (1 HALAMAN PENUH PER BUDAYA)
+  // ==============================================================
+  const cultures = data.cultureItems || [];
+  for (let i = 0; i < cultures.length; i++) {
+    const cult = cultures[i];
+    doc.addPage();
+    pageNumber++;
+    addHeaderFooter(isEn ? 'Culture & Heritage' : 'Warisan Budaya', cult.category || 'Adat Minang');
+
+    const title = (isEn && cult.titleEn ? cult.titleEn : cult.title).toUpperCase();
     const category = isEn && cult.categoryEn ? cult.categoryEn : cult.category;
     const origin = isEn && cult.originEn ? cult.originEn : cult.origin;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(120, 53, 15); // amber-900
-    doc.text(title.toUpperCase(), margin + 10, y + 6);
-
-    doc.setFontSize(8);
-    doc.setTextColor(180, 83, 9);
-    doc.text(`[${category}] • ${origin}`, margin + 10, y + 10.5);
-
     const desc = isEn && cult.descriptionEn ? cult.descriptionEn : cult.description;
-    const cleanDesc = desc.replace(/\n+/g, ' ').slice(0, 240) + '...';
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(68, 64, 60);
-    const splitDesc = doc.splitTextToSize(cleanDesc, contentWidth - 14);
-    doc.text(splitDesc, margin + 10, y + 15.5);
-
     const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
-    if (philosophy) {
-      doc.setFont('helvetica', 'bolditalic');
-      doc.setFontSize(7.5);
-      doc.setTextColor(180, 83, 9);
-      doc.text(`📜 ${isEn ? 'Customary Philosophy:' : 'Falsafah Adat:'} "${philosophy}"`, margin + 10, y + 35);
+
+    let y = 16;
+
+    // 1. Image Header Banner
+    const imgData = await getBase64ImageFromUrl(cult.imageUrl);
+    if (imgData) {
+      try {
+        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+      } catch {
+        doc.setFillColor(69, 26, 3);
+        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      }
+    } else {
+      doc.setFillColor(69, 26, 3);
+      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
     }
 
-    y += 44;
-  });
-
-  // ==========================================
-  // 4. BAB III: KULINER OTENTIK (16 ITEMS)
-  // ==========================================
-  doc.addPage();
-  currentPage++;
-  addHeaderFooter(isEn ? 'Chapter 3: Culinary & Gastronomy' : 'Bab 3: Kuliner Otentik Minangkabau');
-
-  y = 22;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor(220, 38, 38);
-  doc.text(isEn ? 'CHAPTER III: 16 AUTHENTIC GASTRONOMIC DELIGHTS' : 'BAB III: 16 KULINER OTENTIK RANAH MINANG', margin, y);
-  y += 7;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(100, 100, 100);
-  doc.text(isEn ? 'UNESCO Intangible Cultural Heritage culinary wonders, world-famous Rendang, rare local delicacies & traditional spices.' : 'Warisan kuliner dunia, Rendang pusaka leluhur, sajian eksklusif danau, dan racikan rempah istimewa.', margin, y);
-  y += 8;
-
-  const culinaries = data.culinaryItems || [];
-  culinaries.forEach((cul, idx) => {
-    y = checkPageBreak(46, y, isEn ? 'Chapter 3: Culinary & Gastronomy' : 'Bab 3: Kuliner Otentik Minangkabau');
-
-    doc.setFillColor(255, 241, 242); // rose-50
-    doc.roundedRect(margin, y, contentWidth, 38, 2, 2, 'F');
-    doc.setDrawColor(254, 205, 211);
-    doc.roundedRect(margin, y, contentWidth, 38, 2, 2, 'S');
-
-    doc.setFillColor(220, 38, 38);
-    doc.rect(margin, y, 7, 38, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    doc.text(`${idx + 1}`, margin + 3.5, y + 20, { align: 'center' });
-
-    const title = isEn && cul.titleEn ? cul.titleEn : cul.title;
-    const category = isEn && cul.categoryEn ? cul.categoryEn : cul.category;
-    const origin = isEn && cul.originEn ? cul.originEn : cul.origin;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(159, 18, 57); // rose-900
-    doc.text(title.toUpperCase(), margin + 10, y + 6);
-
-    doc.setFontSize(8);
-    doc.setTextColor(225, 29, 72);
-    doc.text(`[${category}] • ${origin}`, margin + 10, y + 10.5);
-
-    const desc = isEn && cul.descriptionEn ? cul.descriptionEn : cul.description;
-    const cleanDesc = desc.replace(/\n+/g, ' ').slice(0, 230) + '...';
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(76, 29, 44);
-    const splitDesc = doc.splitTextToSize(cleanDesc, contentWidth - 14);
-    doc.text(splitDesc, margin + 10, y + 15.5);
-
-    const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
-    const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
-
+    // Category badge
+    doc.setFillColor(217, 119, 6);
+    doc.roundedRect(margin + 4, y + 4, 40, 7, 1.5, 1.5, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
-    doc.setTextColor(190, 18, 60);
-    doc.text(`🍲 ${isEn ? 'Spices & Ingredients:' : 'Rempah & Bahan:'} ${ingredients.slice(0, 3).join(', ')}`, margin + 10, y + 33.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(category.toUpperCase(), margin + 24, y + 8.8, { align: 'center' });
 
-    if (taste) {
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(159, 18, 57);
-      doc.text(`👅 ${taste}`, contentWidth - 5, y + 33.5, { align: 'right' });
+    y += 75;
+
+    // 2. Title & Origin
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(120, 53, 15); // amber-900
+    doc.text(title, margin, y);
+
+    y += 5.5;
+    doc.setFontSize(9);
+    doc.setTextColor(180, 83, 9);
+    doc.text(`🏛️ ${isEn ? 'Origin:' : 'Asal Nagari:'} ${origin}`, margin, y);
+
+    y += 4;
+    doc.setDrawColor(253, 230, 138);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
+
+    // 3. Narrative Description
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(68, 64, 60);
+    const paragraphs = desc.split('\n\n').filter(Boolean);
+    paragraphs.forEach((p) => {
+      const cleanP = p.replace(/\n/g, ' ').trim();
+      const splitP = doc.splitTextToSize(cleanP, contentWidth);
+      doc.text(splitP, margin, y);
+      y += (splitP.length * 3.8) + 3;
+    });
+
+    // 4. Customary Philosophy Box
+    if (philosophy) {
+      y += 2;
+      doc.setFillColor(254, 252, 232); // amber-50
+      doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'F');
+      doc.setDrawColor(253, 230, 138);
+      doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'S');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(146, 64, 14);
+      doc.text(isEn ? 'MINANGKABAU CUSTOMARY PHILOSOPHY' : 'FALSAFAH & MAKNA ADAT MINANGKABAU', margin + 4, y + 6.5);
+
+      doc.setFont('helvetica', 'bolditalic');
+      doc.setFontSize(8.5);
+      doc.setTextColor(120, 53, 15);
+      const splitPhil = doc.splitTextToSize(`"${philosophy}"`, contentWidth - 8);
+      doc.text(splitPhil, margin + 4, y + 13.5);
+    }
+  }
+
+  // ==============================================================
+  // 4. BAB III: KULINER OTENTIK (1 HALAMAN PENUH PER KULINER)
+  // ==============================================================
+  const culinaries = data.culinaryItems || [];
+  for (let i = 0; i < culinaries.length; i++) {
+    const cul = culinaries[i];
+    doc.addPage();
+    pageNumber++;
+    addHeaderFooter(isEn ? 'Authentic Gastronomy' : 'Kuliner Otentik Minang', cul.category || 'Kuliner Tradisional');
+
+    const title = (isEn && cul.titleEn ? cul.titleEn : cul.title).toUpperCase();
+    const category = isEn && cul.categoryEn ? cul.categoryEn : cul.category;
+    const origin = isEn && cul.originEn ? cul.originEn : cul.origin;
+    const desc = isEn && cul.descriptionEn ? cul.descriptionEn : cul.description;
+    const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
+    const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
+    const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
+
+    let y = 16;
+
+    // 1. Image Header Banner
+    const imgData = await getBase64ImageFromUrl(cul.imageUrl);
+    if (imgData) {
+      try {
+        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+      } catch {
+        doc.setFillColor(76, 29, 44);
+        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      }
+    } else {
+      doc.setFillColor(76, 29, 44);
+      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
     }
 
-    y += 42;
-  });
+    // Category badge
+    doc.setFillColor(220, 38, 38);
+    doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
 
-  // ==========================================
-  // 5. BAB IV: CALENDAR OF EVENTS 2026 (20 FESTIVALS)
-  // ==========================================
-  doc.addPage();
-  currentPage++;
-  addHeaderFooter(isEn ? 'Chapter 4: Calendar of Events 2026' : 'Bab 4: Kalender Event Resmi (CoE) 2026');
+    y += 75;
 
-  y = 22;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.setTextColor(15, 23, 42);
-  doc.text(isEn ? 'CHAPTER IV: OFFICIAL CALENDAR OF EVENTS 2026' : 'BAB IV: KALENDER EVENT RESMI (CoE) 2026', margin, y);
-  y += 7;
+    // 2. Title & Origin
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(159, 18, 57); // rose-900
+    doc.text(title, margin, y);
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(100, 100, 100);
-  doc.text(isEn ? 'Official Karisma Event Nusantara (KEN) highlights, cultural festivals & sports tourism events.' : 'Agenda resmi Karisma Event Nusantara (KEN) Kemenparekraf, festival budaya, dan pesta anak nagari se-Sumbar.', margin, y);
-  y += 8;
+    y += 5.5;
+    doc.setFontSize(9);
+    doc.setTextColor(225, 29, 72);
+    doc.text(`🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}`, margin, y);
 
-  const events = data.eventItems || [];
-  events.forEach((ev, idx) => {
-    y = checkPageBreak(46, y, isEn ? 'Chapter 4: Calendar of Events 2026' : 'Bab 4: Kalender Event Resmi (CoE) 2026');
+    y += 4;
+    doc.setDrawColor(254, 205, 211);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
 
-    doc.setFillColor(241, 245, 249); // slate-100
-    doc.roundedRect(margin, y, contentWidth, 38, 2, 2, 'F');
-    doc.setDrawColor(203, 213, 225);
-    doc.roundedRect(margin, y, contentWidth, 38, 2, 2, 'S');
+    // 3. Narrative Description
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.setTextColor(76, 29, 44);
+    const paragraphs = desc.split('\n\n').filter(Boolean);
+    paragraphs.forEach((p) => {
+      const cleanP = p.replace(/\n/g, ' ').trim();
+      const splitP = doc.splitTextToSize(cleanP, contentWidth);
+      doc.text(splitP, margin, y);
+      y += (splitP.length * 3.8) + 3;
+    });
 
-    doc.setFillColor(ev.isKen ? 220 : 15, ev.isKen ? 38 : 23, ev.isKen ? 38 : 42);
-    doc.rect(margin, y, 7, 38, 'F');
+    // 4. Ingredients & Flavor Box
+    y += 2;
+    doc.setFillColor(255, 241, 242); // rose-50
+    doc.roundedRect(margin, y, contentWidth, 22, 2, 2, 'F');
+    doc.setDrawColor(254, 205, 211);
+    doc.roundedRect(margin, y, contentWidth, 22, 2, 2, 'S');
 
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    doc.text(`${idx + 1}`, margin + 3.5, y + 20, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setTextColor(159, 18, 57);
+    doc.text(`🥘 ${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 6);
+    doc.setFont('helvetica', 'normal');
+    doc.text(ingredients.join(', '), margin + 4, y + 11);
 
-    const title = isEn && ev.titleEn ? ev.titleEn : ev.title;
+    if (taste) {
+      doc.setFont('helvetica', 'bold');
+      doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 17);
+    }
+
+    // 5. Gastronomic Philosophy (if present)
+    if (philosophy) {
+      y += 26;
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(margin, y, contentWidth, 12, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(7.5);
+      doc.setTextColor(71, 85, 105);
+      doc.text(`📜 "${philosophy}"`, margin + 4, y + 7);
+    }
+  }
+
+  // ==============================================================
+  // 5. BAB IV: KALENDER EVENT & KEN 2026 (1 HALAMAN PENUH PER EVENT)
+  // ==============================================================
+  const events = data.eventItems || [];
+  for (let i = 0; i < events.length; i++) {
+    const ev = events[i];
+    doc.addPage();
+    pageNumber++;
+    addHeaderFooter(isEn ? 'Calendar of Events' : 'Kalender Event 2026', ev.isKen ? 'Karisma Event Nusantara' : 'Festival Sumbar');
+
+    const title = (isEn && ev.titleEn ? ev.titleEn : ev.title).toUpperCase();
     const schedule = isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule;
     const location = isEn && ev.locationEn ? ev.locationEn : ev.location;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10.5);
-    doc.setTextColor(15, 23, 42);
-    doc.text(title.toUpperCase(), margin + 10, y + 6);
-
-    doc.setFontSize(8);
-    doc.setTextColor(ev.isKen ? 220 : 100, ev.isKen ? 38 : 116, ev.isKen ? 38 : 139);
-    doc.text(`${ev.isKen ? '⭐ KARISMA EVENT NUSANTARA (KEN) • ' : ''}📅 ${schedule} • 📍 ${location}`, margin + 10, y + 10.5);
-
     const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
-    const cleanDesc = desc.replace(/\n+/g, ' ').slice(0, 240) + '...';
+
+    let y = 16;
+
+    // 1. Image Header Banner
+    const imgData = await getBase64ImageFromUrl(ev.imageUrl);
+    if (imgData) {
+      try {
+        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+      } catch {
+        doc.setFillColor(15, 23, 42);
+        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      }
+    } else {
+      doc.setFillColor(15, 23, 42);
+      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+    }
+
+    // Status Badge (KEN vs Regular)
+    doc.setFillColor(ev.isKen ? 220 : 15, ev.isKen ? 38 : 23, ev.isKen ? 38 : 42);
+    doc.roundedRect(margin + 4, y + 4, ev.isKen ? 52 : 36, 7, 1.5, 1.5, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text(ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 30 : 22), y + 8.8, { align: 'center' });
+
+    y += 75;
+
+    // 2. Title & Schedule
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(15, 23, 42);
+    doc.text(title, margin, y);
+
+    y += 5.5;
+    doc.setFontSize(9);
+    doc.setTextColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+    doc.text(`📅 ${schedule}  •  📍 ${location}`, margin, y);
+
+    y += 4;
+    doc.setDrawColor(203, 213, 225);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 5;
+
+    // 3. Narrative Description
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(71, 85, 105);
-    const splitDesc = doc.splitTextToSize(cleanDesc, contentWidth - 14);
-    doc.text(splitDesc, margin + 10, y + 15.5);
+    doc.setFontSize(8.5);
+    doc.setTextColor(51, 65, 85);
+    const paragraphs = desc.split('\n\n').filter(Boolean);
+    paragraphs.forEach((p) => {
+      const cleanP = p.replace(/\n/g, ' ').trim();
+      const splitP = doc.splitTextToSize(cleanP, contentWidth);
+      doc.text(splitP, margin, y);
+      y += (splitP.length * 3.8) + 3;
+    });
 
-    y += 42;
-  });
+    // 4. KEN Special Notice Box
+    if (ev.isKen) {
+      y += 2;
+      doc.setFillColor(254, 242, 242); // red-50
+      doc.roundedRect(margin, y, contentWidth, 18, 2, 2, 'F');
+      doc.setDrawColor(254, 202, 202);
+      doc.roundedRect(margin, y, contentWidth, 18, 2, 2, 'S');
 
-  // ==========================================
-  // 6. BACK COVER / PENUTUP
-  // ==========================================
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8.5);
+      doc.setTextColor(185, 28, 28);
+      doc.text(isEn ? '⭐ OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : '⭐ EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 6.5);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(153, 27, 27);
+      doc.text(isEn ? 'Curated and recognized by the Ministry of Tourism and Creative Economy.' : 'Terkurasi resmi oleh Kementerian Pariwisata dan Ekonomi Kreatif RI.', margin + 4, y + 12);
+    }
+  }
+
+  // ==============================================================
+  // 6. BACK COVER (Halaman Penutup & Kontak)
+  // ==============================================================
   doc.addPage();
-  currentPage++;
+  pageNumber++;
 
   doc.setFillColor(15, 23, 42);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
@@ -476,6 +608,6 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   doc.text(isEn ? '© 2026 Malala Official. All rights reserved.' : '© 2026 Malala Official. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
 
   // Save the generated PDF
-  const filename = isEn ? 'West-Sumatra-Official-Guide-Booklet-2026.pdf' : 'E-Booklet-Resmi-Panduan-Wisata-Sumbar-2026.pdf';
+  const filename = isEn ? 'Master-Booklet-West-Sumatra-Guide-2026.pdf' : 'Master-E-Booklet-Pariwisata-Budaya-Sumbar-2026.pdf';
   doc.save(filename);
 }
