@@ -808,11 +808,11 @@ export const Drawers: React.FC<DrawersProps> = ({
             aria-hidden="true"
           />
 
-      {/* Drawer Outer Wrapper - HOT INFO IS 1/4 SCREEN WIDTH (w-1/4), OTHER DRAWERS ARE HALF SCREEN WIDTH (w-1/2) */}
+      {/* Drawer Outer Wrapper */}
       <div
         className={`fixed top-0 bottom-0 z-[70] ${
           activeDrawer === 'hotinfo'
-            ? 'w-full sm:w-1/3 md:w-1/4 lg:w-1/4 xl:w-1/4 left-0 border-r border-gray-200 animate-drawer-slide-left'
+            ? 'w-full sm:w-[380px] md:w-[420px] lg:w-[440px] max-w-full left-0 border-r border-gray-200 animate-drawer-slide-left'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
         } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
       >
@@ -2064,8 +2064,25 @@ export const Drawers: React.FC<DrawersProps> = ({
           {activeDrawer === 'hotinfo' && (
             <div className="space-y-6">
               {/* Category Filter Pills & Refresh Button */}
-              <div className="flex items-center justify-between gap-2 pb-2">
-                <div className="flex items-center gap-2 overflow-x-auto scrollbar-none text-xs font-jakarta flex-1">
+              <div className="space-y-2 pb-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider font-jakarta">
+                    {lang === 'en' ? 'News Category' : 'Kategori Berita'}
+                  </span>
+                  <button
+                    onClick={handleRefreshHotInfo}
+                    disabled={isFetchingHotInfo}
+                    className={`shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-gray-200 text-[11px] font-bold font-jakarta transition-colors ${
+                      isFetchingHotInfo ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'bg-white hover:bg-gray-100 text-black cursor-pointer shadow-2xs'
+                    }`}
+                    title={lang === 'en' ? 'Refresh Live News' : 'Perbarui Berita'}
+                  >
+                    <RefreshCw className={`w-3 h-3 ${isFetchingHotInfo ? 'animate-spin text-gray-400' : ''}`} />
+                    <span>{lang === 'en' ? 'Refresh' : 'Muat Ulang'}</span>
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs font-jakarta w-full">
                   {(() => {
                     const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                       .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
@@ -2086,7 +2103,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <button
                           key={cat}
                           onClick={() => setHotInfoCategory(cat)}
-                          className={`px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-1.5 text-xs ${
+                          className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer flex items-center gap-1.5 text-xs ${
                             isSelected
                               ? isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
                               : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -2094,22 +2111,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                         >
                           {isSumbar && <span>🏔️</span>}
                           {isIndo && <span>🇮🇩</span>}
-                          <span className="whitespace-nowrap">{cat}</span>
+                          <span>{cat}</span>
                         </button>
                       );
                     });
                   })()}
                 </div>
-                <button
-                  onClick={handleRefreshHotInfo}
-                  disabled={isFetchingHotInfo}
-                  className={`shrink-0 flex items-center justify-center p-2 rounded-full border border-gray-200 transition-colors ${
-                    isFetchingHotInfo ? 'bg-gray-100 cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-black cursor-pointer'
-                  }`}
-                  title={lang === 'en' ? 'Refresh Live News' : 'Perbarui Berita'}
-                >
-                  <RefreshCw className={`w-4 h-4 ${isFetchingHotInfo ? 'animate-spin text-gray-400' : ''}`} />
-                </button>
               </div>
 
               {/* Hot Info Items List (Strictly last 30 days & deduplicated by topic/event) */}
