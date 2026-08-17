@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Download, Printer, ChevronLeft, ChevronRight, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
+import { X, Download, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator';
@@ -44,14 +44,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
       });
     } catch (e) {
       console.error(e);
-      alert(isEn ? 'Please use the "Print to PDF" option above.' : 'Silakan gunakan tombol "Cetak ke PDF" di atas.');
+      alert(isEn ? 'Please use the "Print / Save PDF" option above.' : 'Silakan gunakan tombol "Cetak / Simpan PDF" di atas.');
     } finally {
       setIsDownloading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto p-2 sm:p-4 print:p-0 print:bg-white print:static">
+    <div className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto p-2 sm:p-4 print:p-0 print:bg-white print:static">
       {/* Top Controls Bar (Hidden during Print) */}
       <header className="sticky top-0 z-50 w-full max-w-5xl bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-3 sm:p-4 mb-4 flex flex-wrap items-center justify-between gap-3 text-white shadow-2xl print:hidden">
         <div className="flex items-center gap-3">
@@ -60,10 +60,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           </div>
           <div>
             <h2 className="font-orbitron font-extrabold text-sm sm:text-base uppercase tracking-wider text-white">
-              {isEn ? 'Official E-Booklet & Magazine Reader' : 'Buku Panduan & E-Booklet Resmi 2026'}
+              {isEn ? 'Official E-Booklet & Digital Guide' : 'Buku Panduan & E-Booklet Digital Resmi'}
             </h2>
             <p className="font-jakarta text-[11px] text-gray-300">
-              {isEn ? 'Complete 76-Page A4 Travel Guide • Dinas Pariwisata Sumbar' : 'Kompilasi 76 Halaman Preview A4 Lengkap • Dinas Pariwisata Sumbar'}
+              {isEn ? 'Complete Master Compilation of West Sumatra Tourism & Culture' : 'Kompilasi Lengkap Preview Katalog Pariwisata & Kebudayaan Sumbar'}
             </p>
           </div>
         </div>
@@ -72,7 +72,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
             title={isEn ? 'Print or Save as PDF' : 'Cetak atau Simpan ke PDF'}
           >
             <Printer className="w-4 h-4" />
@@ -82,10 +82,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           <button
             onClick={handleDownloadPdf}
             disabled={isDownloading}
-            className="px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
           >
             <Download className={`w-4 h-4 ${isDownloading ? 'animate-bounce' : ''}`} />
-            <span>{isDownloading ? (isEn ? 'Generating...' : 'Menyusun...') : (isEn ? 'Download .PDF' : 'Unduh File .PDF')}</span>
+            <span>{isDownloading ? (isEn ? 'Generating...' : 'Menyusun...') : (isEn ? 'Download .PDF' : 'Unduh .PDF')}</span>
           </button>
 
           <button
@@ -99,7 +99,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         {/* Filter Navigation Tabs */}
         <div className="w-full pt-2 border-t border-slate-700 flex items-center gap-1.5 overflow-x-auto text-xs font-jakarta">
           {[
-            { key: 'all', label: isEn ? '📖 All Pages (76)' : '📖 Semua Halaman (76)' },
+            { key: 'all', label: isEn ? '📖 All Information' : '📖 Semua Informasi' },
             { key: 'destinations', label: isEn ? `🏔️ Destinations (${destinations.length})` : `🏔️ Destinasi (${destinations.length})` },
             { key: 'culture', label: isEn ? `🏛️ Culture (${cultureItems.length})` : `🏛️ Kebudayaan (${cultureItems.length})` },
             { key: 'culinary', label: isEn ? `🍲 Culinary (${culinaryItems.length})` : `🍲 Kuliner (${culinaryItems.length})` },
@@ -110,7 +110,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
               onClick={() => setActiveTab(tab.key as any)}
               className={`px-3 py-1 rounded-full font-bold uppercase transition-all cursor-pointer whitespace-nowrap text-[11px] ${
                 activeTab === tab.key
-                  ? 'bg-red-600 text-white'
+                  ? 'bg-red-600 text-white shadow-sm'
                   : 'bg-slate-800 text-gray-300 hover:bg-slate-700'
               }`}
             >
@@ -120,14 +120,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         </div>
       </header>
 
-      {/* Printable A4 Book Pages Container */}
-      <main className="w-full max-w-4xl space-y-8 print:space-y-0">
+      {/* Book Content Pages Container */}
+      <main className="w-full max-w-4xl space-y-8 print:space-y-6">
         
         {/* ============================================================== */}
         {/* COVER PAGE (PAGE 1)                                            */}
         {/* ============================================================== */}
         {(activeTab === 'all') && (
-          <article className="w-full bg-slate-900 text-white rounded-2xl p-8 sm:p-12 shadow-2xl border-4 border-slate-800 min-h-[700px] flex flex-col justify-between relative overflow-hidden print:min-h-screen print:rounded-none print:shadow-none print:break-after-page">
+          <article className="w-full bg-slate-900 text-white rounded-2xl p-8 sm:p-12 shadow-2xl border-4 border-slate-800 flex flex-col justify-between relative overflow-hidden print:rounded-none print:shadow-none print:break-after-page print:border-0 print:p-6">
             <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
             <div className="space-y-4">
               <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-xs uppercase px-3 py-1 rounded tracking-wider shadow-sm">
@@ -196,7 +196,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
           return (
-            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page min-h-[750px] flex flex-col justify-between">
+            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 {/* Header info */}
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
@@ -205,7 +205,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                 </div>
 
                 {/* Hero Image */}
-                <div className="h-64 sm:h-72 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
+                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
                     src={dest.imageUrl}
                     alt={title}
@@ -258,7 +258,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
               {bestTime && (
                 <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
                   <span>{isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} <strong className="text-black">{bestTime}</strong></span>
-                  <span className="text-gray-400">Hal. {idx + 2}</span>
+                  <span className="text-gray-400"># {idx + 1}</span>
                 </div>
               )}
             </article>
@@ -276,14 +276,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
           return (
-            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-amber-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page min-h-[750px] flex flex-col justify-between">
+            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • WARISAN BUDAYA & TRADISI ADAT</span>
                   <span className="text-amber-700 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-72 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950">
+                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950">
                   <img
                     src={cult.imageUrl}
                     alt={title}
@@ -326,7 +326,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
                 <span>Dinas Pariwisata & Kebudayaan Sumatera Barat</span>
-                <span className="text-gray-400">Hal. {destinations.length + idx + 2}</span>
+                <span className="text-gray-400"># {destinations.length + idx + 1}</span>
               </div>
             </article>
           );
@@ -345,14 +345,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
 
           return (
-            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-rose-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page min-h-[750px] flex flex-col justify-between">
+            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • GASTRONOMI & KULINER OTENTIK</span>
                   <span className="text-rose-600 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-72 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950">
+                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950">
                   <img
                     src={cul.imageUrl}
                     alt={title}
@@ -399,7 +399,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
                 <span>Warisan Kuliner Takbenda UNESCO & Nusantara</span>
-                <span className="text-gray-400">Hal. {destinations.length + cultureItems.length + idx + 2}</span>
+                <span className="text-gray-400"># {destinations.length + cultureItems.length + idx + 1}</span>
               </div>
             </article>
           );
@@ -415,7 +415,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
 
           return (
-            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page min-h-[750px] flex flex-col justify-between">
+            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • CALENDAR OF EVENTS</span>
@@ -424,7 +424,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                   </span>
                 </div>
 
-                <div className="h-64 sm:h-72 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
+                <div className="h-64 sm:h-80 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
                     src={ev.imageUrl}
                     alt={title}
@@ -467,7 +467,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
                 <span>Dinas Pariwisata Provinsi Sumatera Barat</span>
-                <span className="text-gray-400">Hal. {destinations.length + cultureItems.length + culinaryItems.length + idx + 2}</span>
+                <span className="text-gray-400"># {destinations.length + cultureItems.length + culinaryItems.length + idx + 1}</span>
               </div>
             </article>
           );
