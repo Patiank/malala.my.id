@@ -2332,7 +2332,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                <div className="pt-1">
+                <div className="pt-1 space-y-2">
                   <button
                     onClick={() => setIsBookletModalOpen(true)}
                     className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01]"
@@ -2340,6 +2340,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <BookOpen className="w-4 h-4 text-white" />
                     <span>{lang === 'en' ? '📖 Open Digital E-Booklet' : '📖 Buka E-Booklet Digital'}</span>
                   </button>
+
+                  <a
+                    href="/downloads/malala-panduan-wisata-sumbar-2026.pdf"
+                    download="MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf"
+                    className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-jakarta font-bold text-xs uppercase transition-all border border-slate-700 flex items-center justify-center gap-2 cursor-pointer text-center"
+                  >
+                    <Download className="w-4 h-4 text-red-400" />
+                    <span>{lang === 'en' ? '⬇️ Direct Download PDF (6 MB)' : '⬇️ Unduh PDF Resmi (6 MB)'}</span>
+                  </a>
                 </div>
               </div>
 

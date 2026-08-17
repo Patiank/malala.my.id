@@ -37,7 +37,13 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   };
 
   const handleDownload = () => {
-    window.print();
+    const link = document.createElement('a');
+    link.href = '/downloads/malala-panduan-wisata-sumbar-2026.pdf';
+    link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
