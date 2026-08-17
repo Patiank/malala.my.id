@@ -139,3 +139,33 @@ body {
   animation-play-state: paused !important;
 }
 
+/* ================================================================ */
+/* PRINT STYLES — E-BOOKLET SAVE AS PDF                              */
+/* ================================================================ */
+@media print {
+  /* Force background colors & images to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Images must be visible */
+  img {
+    display: block !important;
+    visibility: visible !important;
+    max-width: 100% !important;
+  }
+
+  /* No box shadows on print paper */
+  article, div {
+    box-shadow: none !important;
+  }
+
+  /* Each article = one printed page */
+  article {
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: visible !important;
+  }
+}

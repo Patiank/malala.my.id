@@ -26,6 +26,16 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   const culinaryItems: CulinaryItem[] = (dataStore.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems : CULINARY_ITEMS;
   const eventItems: EventItem[] = (dataStore.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems : EVENTS_SCHEDULE;
 
+  // Compress Unsplash images to tiny WebP thumbnails for fast loading & print
+  const imgSrc = (url: string, w = 400) => {
+    if (!url) return url;
+    if (url.includes('unsplash.com')) {
+      const base = url.split('?')[0];
+      return `${base}?auto=format&fit=crop&w=${w}&q=60&fm=webp`;
+    }
+    return url;
+  };
+
   const handlePrint = () => {
     window.print();
   };
@@ -103,12 +113,16 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         {/* ============================================================== */}
         {(activeTab === 'all') && (
           <article 
-            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative bg-cover bg-center flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
-            style={{
-              backgroundImage: `url(${BG_IMAGE_2})`,
-              minHeight: '600px',
-            }}
+            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
+            style={{ minHeight: '600px' }}
           >
+            {/* Background image as real <img> tag so it prints correctly */}
+            <img
+              src={BG_IMAGE_2}
+              alt="Cover E-Booklet Sumatera Barat"
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+            />
             {/* Subtle bottom gradient only for footer text legibility */}
             <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/70 to-transparent pointer-events-none" />
 
@@ -165,10 +179,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                 {/* Hero Image */}
                 <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
-                    src={dest.imageUrl}
+                    src={imgSrc(dest.imageUrl)}
                     alt={title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">
@@ -243,10 +257,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
                 <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950">
                   <img
-                    src={cult.imageUrl}
+                    src={imgSrc(cult.imageUrl)}
                     alt={title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">
@@ -312,10 +326,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
                 <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950">
                   <img
-                    src={cul.imageUrl}
+                    src={imgSrc(cul.imageUrl)}
                     alt={title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">
@@ -384,10 +398,10 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
                 <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
                   <img
-                    src={ev.imageUrl}
+                    src={imgSrc(ev.imageUrl)}
                     alt={title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">
