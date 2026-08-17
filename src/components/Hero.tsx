@@ -580,9 +580,8 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Right Lower Feature Block */}
         <div
-          className="self-start lg:self-end mt-8 lg:mt-0 relative flex flex-col justify-between"
+          className="self-start lg:self-end mt-8 lg:mt-0 relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full"
           style={{
-            minWidth: 'var(--feature-min)',
             padding: 'var(--feature-pad)',
           }}
         >
@@ -601,7 +600,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
-          <div className="flex flex-col space-y-3">
+          <div className="flex flex-col space-y-3 w-full">
             {/* Spotlight: Event Sedang Berlangsung & 2 Minggu Mendatang (Multi-Event Carousel) */}
             {activeSpotlightEvents.length > 0 && (() => {
               const activeItemObj = activeSpotlightEvents[activeEventIndex] || activeSpotlightEvents[0];
@@ -625,7 +624,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <div
                   onMouseEnter={() => setIsCarouselPaused(true)}
                   onMouseLeave={() => setIsCarouselPaused(false)}
-                  className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all"
+                  className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all"
                 >
                   <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
