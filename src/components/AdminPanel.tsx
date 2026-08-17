@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
@@ -75,6 +75,85 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminError, setAdminError] = useState<string | null>(null);
   const [adminSuccess, setAdminSuccess] = useState<string | null>(null);
   const [adminSearchQuery, setAdminSearchQuery] = useState<string>('');
+
+  // Date Range Calendar Picker state
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [pickerYear, setPickerYear] = useState<number>(() => new Date().getFullYear());
+  const [pickerMonth, setPickerMonth] = useState<number>(() => new Date().getMonth());
+  const [rangeStart, setRangeStart] = useState<Date | null>(null);
+  const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
+
+  const monthsId = [
+    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  ];
+
+  const monthsEn = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const formatScheduleRange = (start: Date, end: Date | null) => {
+    const sDay = start.getDate();
+    const sMonthId = monthsId[start.getMonth()];
+    const sMonthEn = monthsEn[start.getMonth()];
+    const sYear = start.getFullYear();
+
+    if (!end || (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth() && start.getDate() === end.getDate())) {
+      return {
+        id: `${sDay} ${sMonthId} ${sYear}`,
+        en: `${sMonthEn} ${sDay}, ${sYear}`
+      };
+    }
+
+    const eDay = end.getDate();
+    const eMonthId = monthsId[end.getMonth()];
+    const eMonthEn = monthsEn[end.getMonth()];
+    const eYear = end.getFullYear();
+
+    if (sYear === eYear && start.getMonth() === end.getMonth()) {
+      return {
+        id: `${sDay} - ${eDay} ${sMonthId} ${sYear}`,
+        en: `${sMonthEn} ${sDay} - ${eDay}, ${sYear}`
+      };
+    } else if (sYear === eYear) {
+      return {
+        id: `${sDay} ${sMonthId} - ${eDay} ${eMonthId} ${sYear}`,
+        en: `${sMonthEn} ${sDay} - ${eMonthEn} ${eDay}, ${sYear}`
+      };
+    } else {
+      return {
+        id: `${sDay} ${sMonthId} ${sYear} - ${eDay} ${eMonthId} ${eYear}`,
+        en: `${sMonthEn} ${sDay}, ${sYear} - ${eMonthEn} ${eDay}, ${eYear}`
+      };
+    }
+  };
+
+  const handleDateClick = (clickedDate: Date) => {
+    if (!rangeStart || (rangeStart && rangeEnd)) {
+      setRangeStart(clickedDate);
+      setRangeEnd(null);
+    } else {
+      if (clickedDate < rangeStart) {
+        setRangeEnd(rangeStart);
+        setRangeStart(clickedDate);
+      } else {
+        setRangeEnd(clickedDate);
+      }
+    }
+  };
+
+  const handleApplyDateRange = () => {
+    if (rangeStart) {
+      const formatted = formatScheduleRange(rangeStart, rangeEnd);
+      setFormData((prev: any) => ({
+        ...prev,
+        schedule: formatted.id,
+        scheduleEn: formatted.en
+      }));
+      setShowDatePicker(false);
+    }
+  };
   
   // Auth state & Admin Whitelist
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -1328,14 +1407,49 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               {/* Events Tab Fields */}
               {adminTab === 'events' && (
                 <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Jadwal (Indonesian)</label>
-                      <input type="text" name="schedule" value={formData.schedule} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                  <div className="bg-amber-50/50 p-3 rounded-lg border border-amber-200 space-y-2">
+                    <div className="flex items-center justify-between flex-wrap gap-1">
+                      <span className="text-[11px] font-bold uppercase text-amber-900 flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-amber-700" />
+                        2. Pengaturan Tanggal & Jadwal Event
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowDatePicker(true);
+                          setRangeStart(null);
+                          setRangeEnd(null);
+                        }}
+                        className="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded text-[10px] font-bold uppercase flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                      >
+                        <Calendar className="w-3 h-3" />
+                        <span>Buka Kalender Rentang Tanggal</span>
+                      </button>
                     </div>
-                    <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Schedule (English Translation)</label>
-                      <input type="text" name="scheduleEn" value={formData.scheduleEn || ''} onChange={handleChange} placeholder="e.g. Every Weekend (Rotational)" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-gray-700 mb-1">Jadwal (Versi Bahasa Indonesia)</label>
+                        <input
+                          type="text"
+                          name="schedule"
+                          value={formData.schedule}
+                          onChange={handleChange}
+                          placeholder="Cth: 15 - 20 Agustus 2026 atau 1-10 Muharram"
+                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase text-blue-700 mb-1">Schedule (English Translation)</label>
+                        <input
+                          type="text"
+                          name="scheduleEn"
+                          value={formData.scheduleEn || ''}
+                          onChange={handleChange}
+                          placeholder="e.g. August 15 - 20, 2026"
+                          className="w-full bg-white border border-blue-200 rounded p-2 text-xs font-jakarta"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -1415,6 +1529,243 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           </div>
         )}
       </div>
+
+      {/* ======================================================== */}
+      {/* MODAL INTERACTIVE DATE-RANGE CALENDAR PICKER (1 KALENDER)*/}
+      {/* ======================================================== */}
+      {showDatePicker && (() => {
+        const firstDayIndex = new Date(pickerYear, pickerMonth, 1).getDay();
+        const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+        const daysInPrevMonth = new Date(pickerYear, pickerMonth, 0).getDate();
+        const today = new Date();
+
+        const handlePrevMonth = () => {
+          if (pickerMonth === 0) {
+            setPickerMonth(11);
+            setPickerYear(prev => prev - 1);
+          } else {
+            setPickerMonth(prev => prev - 1);
+          }
+        };
+
+        const handleNextMonth = () => {
+          if (pickerMonth === 11) {
+            setPickerMonth(0);
+            setPickerYear(prev => prev + 1);
+          } else {
+            setPickerMonth(prev => prev + 1);
+          }
+        };
+
+        // Preview formatted result
+        const previewFormatted = rangeStart ? formatScheduleRange(rangeStart, rangeEnd) : null;
+
+        return (
+          <div className="fixed inset-0 z-[200] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 font-jakarta">
+            <div className="bg-white max-w-md w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-5 relative">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 bg-amber-100 text-amber-800 rounded-lg">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900 uppercase tracking-wide">
+                      Pilih Rentang Tanggal Event
+                    </h3>
+                    <p className="text-[10px] text-gray-500">
+                      Klik tanggal mulai & tanggal selesai dalam 1 kalender
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDatePicker(false)}
+                  className="p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Month Navigation & Fast Select */}
+              <div className="flex items-center justify-between bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+                <button
+                  type="button"
+                  onClick={handlePrevMonth}
+                  className="p-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 text-gray-700 cursor-pointer shadow-2xs"
+                  title="Bulan Sebelumnya"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center gap-1.5">
+                  <select
+                    value={pickerMonth}
+                    onChange={(e) => setPickerMonth(parseInt(e.target.value, 10))}
+                    className="font-bold text-xs bg-white border border-gray-200 rounded-md py-1 px-2 text-gray-900 cursor-pointer focus:ring-1 focus:ring-black"
+                  >
+                    {monthsId.map((m, idx) => (
+                      <option key={m} value={idx}>{m}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={pickerYear}
+                    onChange={(e) => setPickerYear(parseInt(e.target.value, 10))}
+                    className="font-bold text-xs bg-white border border-gray-200 rounded-md py-1 px-2 text-gray-900 cursor-pointer focus:ring-1 focus:ring-black"
+                  >
+                    {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map((y) => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleNextMonth}
+                  className="p-1.5 rounded-lg bg-white border border-gray-200 hover:bg-gray-100 text-gray-700 cursor-pointer shadow-2xs"
+                  title="Bulan Berikutnya"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="space-y-1">
+                {/* Day Names */}
+                <div className="grid grid-cols-7 gap-1 text-center font-bold text-[10px] text-gray-400 uppercase py-1">
+                  <span className="text-red-500">Min</span>
+                  <span>Sen</span>
+                  <span>Sel</span>
+                  <span>Rab</span>
+                  <span>Kam</span>
+                  <span>Jum</span>
+                  <span className="text-blue-500">Sab</span>
+                </div>
+
+                {/* Days Matrix */}
+                <div className="grid grid-cols-7 gap-1 text-xs">
+                  {/* Previous Month Inactive Days */}
+                  {Array.from({ length: firstDayIndex }).map((_, i) => {
+                    const dayNum = daysInPrevMonth - firstDayIndex + 1 + i;
+                    return (
+                      <div
+                        key={`prev-${i}`}
+                        className="h-8 flex items-center justify-center text-gray-300 font-medium text-[11px]"
+                      >
+                        {dayNum}
+                      </div>
+                    );
+                  })}
+
+                  {/* Current Month Days */}
+                  {Array.from({ length: daysInMonth }).map((_, i) => {
+                    const dayNum = i + 1;
+                    const thisDate = new Date(pickerYear, pickerMonth, dayNum);
+                    const isToday =
+                      today.getFullYear() === pickerYear &&
+                      today.getMonth() === pickerMonth &&
+                      today.getDate() === dayNum;
+
+                    const isStart =
+                      rangeStart &&
+                      rangeStart.getFullYear() === pickerYear &&
+                      rangeStart.getMonth() === pickerMonth &&
+                      rangeStart.getDate() === dayNum;
+
+                    const isEnd =
+                      rangeEnd &&
+                      rangeEnd.getFullYear() === pickerYear &&
+                      rangeEnd.getMonth() === pickerMonth &&
+                      rangeEnd.getDate() === dayNum;
+
+                    const isInRange =
+                      rangeStart &&
+                      rangeEnd &&
+                      thisDate > rangeStart &&
+                      thisDate < rangeEnd;
+
+                    let bgStyle = 'hover:bg-amber-50 text-gray-800';
+                    if (isStart && isEnd) {
+                      bgStyle = 'bg-black text-white font-bold rounded-lg shadow-xs';
+                    } else if (isStart) {
+                      bgStyle = 'bg-black text-white font-bold rounded-l-lg shadow-xs';
+                    } else if (isEnd) {
+                      bgStyle = 'bg-amber-600 text-white font-bold rounded-r-lg shadow-xs';
+                    } else if (isInRange) {
+                      bgStyle = 'bg-amber-100/90 text-amber-900 font-semibold rounded-none';
+                    }
+
+                    return (
+                      <button
+                        key={`day-${dayNum}`}
+                        type="button"
+                        onClick={() => handleDateClick(thisDate)}
+                        className={`h-8 flex items-center justify-center transition-all cursor-pointer relative text-[11px] ${bgStyle}`}
+                      >
+                        <span>{dayNum}</span>
+                        {isToday && !isStart && !isEnd && (
+                          <span className="absolute bottom-0.5 w-1 h-1 bg-amber-500 rounded-full" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Status / Live Preview Bar */}
+              <div className="bg-amber-50/70 border border-amber-200 p-3 rounded-xl space-y-1.5">
+                <div className="text-[10px] font-bold text-amber-900 uppercase flex items-center gap-1">
+                  <Sparkles className="w-3 h-3 text-amber-600" />
+                  <span>Hasil Format Otomatis:</span>
+                </div>
+                {previewFormatted ? (
+                  <div className="space-y-0.5 text-xs">
+                    <div className="font-bold text-gray-900">
+                      🇮🇩 ID: <span className="text-amber-900 font-semibold">{previewFormatted.id}</span>
+                    </div>
+                    <div className="font-bold text-gray-900">
+                      🇬🇧 EN: <span className="text-blue-900 font-semibold">{previewFormatted.en}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-gray-500 italic">
+                    Silakan klik tanggal pada kalender di atas (Klik 1: Mulai, Klik 2: Selesai).
+                  </p>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRangeStart(null);
+                    setRangeEnd(null);
+                  }}
+                  className="px-3 py-2 text-xs font-bold uppercase text-gray-600 hover:text-red-600 transition-colors border border-gray-200 rounded-lg cursor-pointer bg-white"
+                >
+                  Reset
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleApplyDateRange}
+                  disabled={!rangeStart}
+                  className={`flex-1 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs ${
+                    rangeStart
+                      ? 'bg-black text-white hover:bg-gray-800 cursor-pointer'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  <Check className="w-4 h-4" />
+                  <span>Terapkan Tanggal ke Event</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };
