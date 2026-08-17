@@ -417,12 +417,11 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-        {/* Right Lower Feature Block */}
+        {/* Right Lower Feature Block (Clean & Minimalist) */}
         <div
-          className="self-start lg:self-end mt-8 lg:mt-0 relative flex flex-col justify-between"
+          className="self-start lg:self-end mt-6 lg:mt-0 relative flex flex-col justify-between max-w-[290px] w-full"
           style={{
-            minWidth: 'var(--feature-min)',
-            padding: 'var(--feature-pad)',
+            padding: '12px 14px',
           }}
         >
           {/* Absolute Corner Brackets framing the box */}
@@ -440,8 +439,8 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
-          <div className="flex flex-col space-y-3">
-            {/* Spotlight: Event Terdekat Mendatang */}
+          <div className="flex flex-col space-y-2.5">
+            {/* Spotlight: Event Terdekat Mendatang (Compact & Minimalist) */}
             {closestUpcomingEvent && (() => {
               const isEn = lang === 'en';
               const title = isEn && closestUpcomingEvent.titleEn ? closestUpcomingEvent.titleEn : closestUpcomingEvent.title;
@@ -450,101 +449,74 @@ export const Hero: React.FC<HeroProps> = ({
               const isKEN = Boolean(closestUpcomingEvent.isKen);
               const prox = getEventProximity(closestUpcomingEvent.schedule);
 
-              const getGoogleCalUrl = () => {
-                const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
-                const d = encodeURIComponent(`${isEn && closestUpcomingEvent.descriptionEn ? closestUpcomingEvent.descriptionEn : closestUpcomingEvent.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
-                const l = encodeURIComponent(`${location}, Sumatera Barat`);
-                return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${d}&location=${l}`;
-              };
-
               return (
-                <div className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
-                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
-
+                <div 
+                  onClick={() => onOpenDrawer('events')}
+                  className="bg-white/90 hover:bg-white backdrop-blur-md border border-amber-200/80 hover:border-amber-400 rounded-lg p-2.5 shadow-sm hover:shadow-md space-y-1.5 transition-all cursor-pointer group"
+                >
                   {/* Header Badge */}
-                  <div className="flex items-center justify-between gap-1 flex-wrap">
+                  <div className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="relative flex h-2 w-2">
+                      <span className="relative flex h-1.5 w-1.5">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
                       </span>
-                      <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
+                      <span className="font-jakarta font-bold text-[8.5px] uppercase tracking-wider text-red-600">
                         {prox.isCurrentMonth
-                          ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
+                          ? (isEn ? '🔥 Bulan Ini' : '🔥 Sedang Berlangsung')
                           : prox.isNextMonth
-                          ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir Bulan Depan')
-                          : (isEn ? `🗓️ Next: ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat: ${monthNamesId[prox.eventMonth]}`)}
+                          ? (isEn ? '⏳ Bulan Depan' : '⏳ Segera Hadir')
+                          : (isEn ? `🗓️ ${monthNamesEn[prox.eventMonth]}` : `🗓️ ${monthNamesId[prox.eventMonth]}`)}
                       </span>
                     </div>
 
-                    {isKEN && (
-                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
-                        KEN Kemenparekraf
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Title & Info */}
-                  <div className="space-y-0.5">
-                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
-                      {title}
-                    </h4>
-                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
-                      <span className="flex items-center gap-1 shrink-0">
-                        <Calendar className="w-3 h-3 text-amber-600" />
-                        <span>{schedule}</span>
-                      </span>
-                      <span className="flex items-center gap-1 truncate">
-                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
-                        <span className="truncate">{location}</span>
-                      </span>
+                    <div className="flex items-center gap-1">
+                      {isKEN && (
+                        <span className="bg-amber-500 text-white font-jakarta font-extrabold text-[7.5px] uppercase px-1.5 py-0.5 rounded shadow-2xs">
+                          ⭐ KEN
+                        </span>
+                      )}
+                      <ArrowUpRight className="w-3 h-3 text-gray-400 group-hover:text-black group-hover:translate-x-0.5 transition-all" />
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
-                    <button
-                      onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
-                    >
-                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-3 h-3" />
-                    </button>
+                  {/* Title */}
+                  <h4 className="font-orbitron font-bold text-[11px] uppercase text-gray-900 truncate group-hover:text-amber-600 transition-colors">
+                    {title}
+                  </h4>
 
-                    <a
-                      href={getGoogleCalUrl()}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
-                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
-                    >
-                      <Calendar className="w-3 h-3 text-blue-600" />
-                      <span>+ Kalender</span>
-                    </a>
+                  {/* Schedule & Location */}
+                  <div className="flex items-center justify-between gap-2 text-[9.5px] text-gray-500 font-medium pt-0.5 border-t border-gray-100/80">
+                    <span className="flex items-center gap-1 truncate">
+                      <Calendar className="w-2.5 h-2.5 text-amber-600 shrink-0" />
+                      <span className="truncate">{schedule}</span>
+                    </span>
+                    <span className="flex items-center gap-1 shrink-0">
+                      <MapPin className="w-2.5 h-2.5 text-red-600 shrink-0" />
+                      <span>{location.split(',')[0]}</span>
+                    </span>
                   </div>
                 </div>
               );
             })()}
 
-            <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
+            {/* Dinas Pariwisata Seal (Sleek, Compact & Minimalist) */}
+            <div className="flex items-center gap-2.5 transition-colors duration-300 pt-1.5 border-t border-gray-200/30 select-none">
               <div
                 onClick={handlePemprovLogoClick}
                 className="cursor-default shrink-0 select-none"
               >
-                <PemprovSumbarLogo size={48} />
+                <PemprovSumbarLogo size={32} />
               </div>
               <div
-                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none"
-                style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
+                className="font-jakarta font-bold uppercase tracking-wider leading-tight transition-colors duration-300 select-none"
+                style={{ ...heroTextStyle, fontSize: '10px' }}
               >
-                <div>DINAS PARIWISATA</div>
-                <div title="Dinas Pariwisata Sumatera Barat">
-                  PROVINSI SUMATERA BARAT
-                </div>
-                <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-1 tracking-normal normal-case transition-colors duration-300">
+                <div>DINAS PARIWISATA SUMBAR</div>
+                <div style={{ color: heroTextColor, opacity: 0.75 }} className="font-normal text-[9px] tracking-normal normal-case transition-colors duration-300">
                   {lang === 'en'
-                    ? 'Official Tourism Portal for West Sumatra.'
-                    : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
+                    ? 'Official Tourism Portal'
+                    : 'Portal Resmi Pariwisata'}
                 </div>
               </div>
             </div>
