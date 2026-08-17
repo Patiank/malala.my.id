@@ -6,6 +6,7 @@ import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { generateSumbarBookletPDF } from '../utils/pdfGenerator';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -192,6 +193,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
 
   const handleRefreshHotInfo = async () => {
     setIsFetchingHotInfo(true);
@@ -2273,8 +2275,79 @@ export const Drawers: React.FC<DrawersProps> = ({
               )}
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 font-jakarta text-xs text-gray-600 space-y-1">
-                <p className="font-bold text-black uppercase tracking-wider">{lang === 'en' ? 'Official Media Kit & Assets' : 'Materi Promosi Resmi'}</p>
-                <p>{lang === 'en' ? 'Download West Sumatra tourism promotional assets, media kits, booklets, and travel guides.' : 'Unduh materi promosi pariwisata Sumatera Barat untuk kebutuhan publikasi, media kit, pemandu wisata, atau informasi perjalanan Anda.'}</p>
+                <p className="font-bold text-black uppercase tracking-wider">{lang === 'en' ? 'Official Media Kit & Travel Guides' : 'Materi Promosi & E-Booklet Resmi'}</p>
+                <p>{lang === 'en' ? 'Download West Sumatra tourism promotional assets, master e-booklets, and travel guides.' : 'Unduh materi promosi pariwisata Sumatera Barat, e-booklet master komprehensif, dan panduan perjalanan Anda.'}</p>
+              </div>
+
+              {/* FEATURED MASTER E-BOOKLET COMPREHENSIVE PDF CARD */}
+              <div className="border-2 border-red-600/40 rounded-xl p-5 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white shadow-xl space-y-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
+                <div className="flex items-center justify-between">
+                  <span className="bg-red-600 text-white font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                    {lang === 'en' ? 'OFFICIAL MASTER E-BOOKLET 2026' : 'E-BOOKLET MASTER RESMI 2026'}
+                  </span>
+                  <span className="text-yellow-400 font-jakarta text-xs font-bold">
+                    PDF E-Book
+                  </span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="font-orbitron font-extrabold text-white text-base tracking-wide">
+                    {lang === 'en' ? 'Complete West Sumatra Tourism & Culture Guide 2026' : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026'}
+                  </h3>
+                  <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
+                    {lang === 'en' 
+                      ? 'Comprehensive compilation of 26 curated destinations, 14 sacred Minang cultural heritage traditions, 16 authentic gastronomic dishes, and 20 major 2026 events & KEN calendar.' 
+                      : 'Kompilasi komprehensif seluruh data 26 destinasi wisata, 14 warisan budaya & adat Minangkabau, 16 kuliner gastronomi otentik, serta 20 kalender event & KEN resmi 2026.'}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-700/60 font-jakarta text-[11px]">
+                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
+                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Destinations' : 'Destinasi'}</span>
+                    <span className="font-bold text-white">26 Objek</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
+                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Culture' : 'Kebudayaan'}</span>
+                    <span className="font-bold text-amber-400">14 Tradisi</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
+                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Culinary' : 'Kuliner'}</span>
+                    <span className="font-bold text-rose-400">16 Makanan</span>
+                  </div>
+                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
+                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Events' : 'Kalender Event'}</span>
+                    <span className="font-bold text-red-400">20 Festival</span>
+                  </div>
+                </div>
+
+                <button
+                  onClick={async () => {
+                    try {
+                      setIsGeneratingPdf(true);
+                      await generateSumbarBookletPDF({
+                        destinations: dataStore.destinations && dataStore.destinations.length > 0 ? dataStore.destinations : destinations,
+                        cultureItems: dataStore.cultureItems && dataStore.cultureItems.length > 0 ? dataStore.cultureItems : cultureItems,
+                        culinaryItems: dataStore.culinaryItems && dataStore.culinaryItems.length > 0 ? dataStore.culinaryItems : culinaryItems,
+                        eventItems: dataStore.eventItems && dataStore.eventItems.length > 0 ? dataStore.eventItems : eventItems,
+                        lang
+                      });
+                      setDownloadSuccessMessage(lang === 'en' ? 'Successfully generated and downloaded Master E-Booklet PDF!' : 'Berhasil menyusun dan mengunduh E-Booklet Master PDF!');
+                      setTimeout(() => setDownloadSuccessMessage(null), 4000);
+                    } catch (err) {
+                      console.error("PDF generation error:", err);
+                      alert(lang === 'en' ? 'Failed to generate PDF. Please try again.' : 'Gagal menyusun PDF. Silakan coba kembali.');
+                    } finally {
+                      setIsGeneratingPdf(false);
+                    }
+                  }}
+                  disabled={isGeneratingPdf}
+                  className="w-full py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  <Download className={`w-4 h-4 text-white ${isGeneratingPdf ? 'animate-bounce' : ''}`} />
+                  <span>{isGeneratingPdf ? (lang === 'en' ? 'Compiling PDF Booklet...' : 'Menyusun E-Booklet PDF...') : (lang === 'en' ? 'Download Full PDF Booklet' : 'Unduh E-Booklet PDF Lengkap')}</span>
+                </button>
               </div>
 
               <div className="space-y-4">
