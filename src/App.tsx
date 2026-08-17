@@ -49,12 +49,8 @@ export default function App() {
         const lastRefreshStr = localStorage.getItem('malala_hotinfo_last_auto_refresh');
         const lastRefreshTime = lastRefreshStr ? parseInt(lastRefreshStr, 10) : 0;
         const now = Date.now();
-        const hasOldStaticData = dataStore.hotInfoItems.some((it: any) => 
-          it.id?.startsWith('hi') || it.id?.startsWith('news-fallback')
-        );
 
-        // Refresh if 2 hours elapsed OR if currently holding old static data
-        if (now - lastRefreshTime > TWO_HOURS_MS || hasOldStaticData) {
+        if (now - lastRefreshTime > TWO_HOURS_MS) {
           setIsRefreshingTicker(true);
           const data = await fetchAiHotInfo(lang);
           if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
@@ -69,10 +65,10 @@ export default function App() {
       }
     };
 
-    // Quick initial refresh after 1.5s delay
+    // Initial check on load after 2s
     const initialTimer = setTimeout(() => {
       autoRefresh();
-    }, 1500);
+    }, 2000);
 
     // Re-check every 2 hours while the app is open
     const intervalTimer = setInterval(() => {
@@ -83,7 +79,7 @@ export default function App() {
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
-  }, [dataStore.hotInfoItems]);
+  }, []);
 
   const handleRefreshTicker = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -110,33 +106,6 @@ export default function App() {
       setIsRefreshingTicker(false);
     }
   };
-
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleMouseEnterHotInfo = useCallback(() => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    setActiveDrawer('hotinfo');
-  }, []);
-
-  const handleMouseLeaveHotInfo = useCallback(() => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      setActiveDrawer((prev) => (prev === 'hotinfo' ? null : prev));
-    }, 300);
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
-    };
-  }, []);
 
   // Sync lang to localStorage
   const handleToggleLang = useCallback(() => {
@@ -206,8 +175,6 @@ export default function App() {
       {/* Fixed Vertical Hot Info Trigger (Far Left - Hidden on mobile) */}
       <button
         onClick={() => handleOpenDrawer('hotinfo')}
-        onMouseEnter={handleMouseEnterHotInfo}
-        onMouseLeave={handleMouseLeaveHotInfo}
         className={`hidden sm:flex fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-red-600 hover:bg-black text-white transition-all duration-300 py-4 px-2.5 rounded-r-xl flex-col items-center gap-3 shadow-2xl group border border-l-0 border-red-700 hover:border-gray-900 cursor-pointer focus:outline-none select-none ${
           activeDrawer === 'hotinfo' ? 'bg-black ring-2 ring-red-500' : ''
         }`}
@@ -235,8 +202,6 @@ export default function App() {
         savedCount={savedIds.length}
         lang={lang}
         onToggleLang={handleToggleLang}
-        onMouseEnterHotInfo={handleMouseEnterHotInfo}
-        onMouseLeaveHotInfo={handleMouseLeaveHotInfo}
         appSettings={dataStore.appSettings}
       />
 
@@ -331,8 +296,6 @@ export default function App() {
         onToggleSave={handleToggleSave}
         dataStore={dataStore}
         lang={lang}
-        onMouseEnterDrawer={handleMouseEnterHotInfo}
-        onMouseLeaveDrawer={handleMouseLeaveHotInfo}
         onSelectNews={(news) => setSelectedNews(news)}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}

@@ -810,16 +810,6 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* Drawer Outer Wrapper - HOT INFO IS 1/4 SCREEN WIDTH (w-1/4), OTHER DRAWERS ARE HALF SCREEN WIDTH (w-1/2) */}
       <div
-        onMouseEnter={() => {
-          if (activeDrawer === 'hotinfo' && onMouseEnterDrawer) {
-            onMouseEnterDrawer();
-          }
-        }}
-        onMouseLeave={() => {
-          if (activeDrawer === 'hotinfo' && onMouseLeaveDrawer) {
-            onMouseLeaveDrawer();
-          }
-        }}
         className={`fixed top-0 bottom-0 z-[70] ${
           activeDrawer === 'hotinfo'
             ? 'w-full sm:w-1/3 md:w-1/4 lg:w-1/4 xl:w-1/4 left-0 border-r border-gray-200 animate-drawer-slide-left'
@@ -867,8 +857,8 @@ export const Drawers: React.FC<DrawersProps> = ({
           </button>
         </div>
 
-        {/* Scrollable Main Content */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-6">
+        {/* Scrollable Main Content (Smooth, isolated scrolling) */}
+        <div className="p-6 overflow-y-auto flex-1 space-y-6 overscroll-contain scroll-smooth focus:outline-none" tabIndex={0}>
 
           {/* Sub-Menu Navigation Bar across main categories */}
           {['destinations', 'culture', 'culinary', 'events', 'download'].includes(activeDrawer) && (
