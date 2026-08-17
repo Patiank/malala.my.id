@@ -1561,64 +1561,68 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                {/* Filter Controls Bar */}
-                <div className="space-y-2.5 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                  {/* Category Filter Pills (1 Baris Bersih & Minimalis) */}
-                  <div className="flex items-center gap-1.5 overflow-x-auto flex-nowrap pb-0.5 no-scrollbar">
+                {/* Filter Controls Bar (100% 1 Baris Pas Tanpa Slider) */}
+                <div className="space-y-2.5 bg-gray-50 p-2.5 sm:p-3 rounded-xl border border-gray-200">
+                  {/* Category Filter Pills (5 Grid Columns - 1 Baris Pas) */}
+                  <div className="grid grid-cols-5 gap-1 text-center">
                     {[
-                      { key: 'all', label: isEn ? `All Festivals (${eventItems.length})` : `Semua Festival (${eventItems.length})` },
-                      { key: 'ken', label: isEn ? `⭐ KEN Official (${totalKenCount})` : `⭐ KEN Kemenparekraf (${totalKenCount})` },
-                      { key: 'budaya', label: isEn ? '🏛️ Tradisi & Budaya' : '🏛️ Tradisi & Budaya' },
-                      { key: 'sport', label: isEn ? '🏇 Sport & Pacuan' : '🏇 Sport & Pacuan' },
-                      { key: 'bahari', label: isEn ? '🌊 Bahari & Danau' : '🌊 Bahari & Danau' },
+                      { key: 'all', label: isEn ? `Semua (${eventItems.length})` : `Semua (${eventItems.length})` },
+                      { key: 'ken', label: isEn ? `⭐ KEN (${totalKenCount})` : `⭐ KEN (${totalKenCount})` },
+                      { key: 'budaya', label: isEn ? '🏛️ Budaya' : '🏛️ Budaya' },
+                      { key: 'sport', label: isEn ? '🏇 Sport' : '🏇 Sport' },
+                      { key: 'bahari', label: isEn ? '🌊 Bahari' : '🌊 Bahari' },
                     ].map((f) => (
                       <button
                         key={f.key}
                         onClick={() => setEventCategoryFilter(f.key)}
-                        className={`px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+                        className={`w-full py-1.5 px-0.5 rounded-lg text-[9.5px] sm:text-[10.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
                           eventCategoryFilter === f.key
                             ? 'bg-black text-white shadow-xs'
                             : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
                         }`}
+                        title={f.label}
                       >
                         {f.label}
                       </button>
                     ))}
                   </div>
 
-                  {/* Month Filter Tabs (1 Baris Bersih) */}
-                  <div className="flex items-center gap-1 overflow-x-auto flex-nowrap pt-2 border-t border-gray-200/60 pb-0.5 no-scrollbar">
+                  {/* Month Filter Tabs (1 Baris Pas Tanpa Slider) */}
+                  <div className="flex items-center gap-0.5 w-full pt-2 border-t border-gray-200/60">
                     <button
                       onClick={() => setEventMonthFilter('all')}
-                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+                      className={`flex-1 py-1 px-0.5 rounded text-[9px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
                         eventMonthFilter === 'all'
                           ? 'bg-black text-white shadow-xs'
                           : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
                       }`}
+                      title={isEn ? 'All Months' : 'Semua Bulan'}
                     >
-                      {isEn ? 'All Months' : 'Semua Bulan'}
+                      {isEn ? 'All' : 'Semua'}
                     </button>
 
                     <button
                       onClick={() => setEventMonthFilter('current')}
-                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+                      className={`flex-1 py-1 px-0.5 rounded text-[9px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
                         eventMonthFilter === 'current'
                           ? 'bg-red-600 text-white shadow-xs'
                           : 'bg-red-50 text-red-700 border border-red-200 hover:border-red-400'
                       }`}
+                      title={isEn ? 'This Month' : 'Bulan Ini'}
                     >
-                      {isEn ? '🔥 This Month' : '🔥 Bulan Ini'}
+                      {isEn ? 'Now' : 'Ini'}
                     </button>
 
                     {(isEn ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']).map((mShort, idx) => (
                       <button
                         key={idx}
                         onClick={() => setEventMonthFilter(idx)}
-                        className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase transition-all cursor-pointer shrink-0 whitespace-nowrap ${
+                        className={`flex-1 py-1 px-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
                           eventMonthFilter === idx
                             ? 'bg-black text-white shadow-xs'
                             : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
                         }`}
+                        title={mShort}
                       >
                         {mShort}
                       </button>

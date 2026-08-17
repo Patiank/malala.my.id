@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer-core';
 import * as fs from 'fs';
 import * as path from 'path';
+import { jsPDF } from 'jspdf';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../src/data/content';
 import { execSync } from 'child_process';
 
@@ -28,7 +29,7 @@ if (!browserExe) {
 console.log('🔄 Menyiapkan HTML template...');
 execSync('cmd /c npx tsx scripts/generate_html_pdf.ts', { stdio: 'inherit' });
 
-async function exportPagesAndPDF() {
+async function exportPagesAndDynamicPDF() {
   console.log(`🚀 Menjalankan browser engine (${browserExe})...`);
   
   const browser = await puppeteer.launch({
@@ -49,29 +50,13 @@ async function exportPagesAndPDF() {
   // Wait extra 2s for images and fonts to render
   await new Promise(r => setTimeout(r, 2000));
 
-  // 2. Render CLEAN PDF without header/footer (NO date, NO time, NO URL)
-  console.log('📕 Membuat File PDF Bersih (Tanpa Teks Tanggal & Waktu)...');
-  const pdfOutDir = path.join(process.cwd(), 'public', 'downloads');
-  if (!fs.existsSync(pdfOutDir)) fs.mkdirSync(pdfOutDir, { recursive: true });
-  const outPdfPath = path.join(pdfOutDir, 'malala-panduan-wisata-sumbar-2026.pdf');
-
-  await page.pdf({
-    path: outPdfPath,
-    format: 'A4',
-    printBackground: true,
-    displayHeaderFooter: false, // NO header/footer timestamps
-    margin: { top: '0mm', bottom: '0mm', left: '0mm', right: '0mm' }
-  });
-  console.log(`✅ PDF Bersih Tersimpan: ${outPdfPath}`);
-
-  // 3. Export all 77 pages as separate high-res JPG files
   const jpgDir = path.join(process.cwd(), 'ebooklet_pages_jpg');
   if (!fs.existsSync(jpgDir)) fs.mkdirSync(jpgDir, { recursive: true });
 
   const publicJpgDir = path.join(process.cwd(), 'public', 'ebooklet_pages_jpg');
   if (!fs.existsSync(publicJpgDir)) fs.mkdirSync(publicJpgDir, { recursive: true });
 
-  console.log(`📸 Mengekspor 77 Halaman menjadi File JPG ke folder: ${jpgDir}...`);
+  console.log(`📸 Mengekspor Halaman menjadi File JPG ke folder: ${jpgDir}...`);
 
   const articles = await page.$$('article.page-card');
   console.log(`Ditemukan ${articles.length} halaman kartu.`);
@@ -103,30 +88,83 @@ async function exportPagesAndPDF() {
     fileNames.push(`${num}_event_${slug}.jpg`);
   });
 
+  interface PageData {
+    buffer: Buffer;
+    width: number;
+    height: number;
+  }
+
+  const pagesData: PageData[] = [];
+
   for (let i = 0; i < articles.length; i++) {
     const art = articles[i];
     const filename = fileNames[i] || `page_${String(i + 1).padStart(2, '0')}.jpg`;
     const targetPath = path.join(jpgDir, filename);
     const publicTargetPath = path.join(publicJpgDir, filename);
 
-    await art.screenshot({
-      path: targetPath,
-      type: 'jpeg',
-      quality: 90
-    });
+    const box = await art.boundingBox();
+    const width = box ? Math.round(box.width) : 480;
+    const height = box ? Math.round(box.height) : 720;
 
-    // Also copy to public directory
+    const imgBuffer = await art.screenshot({
+      type: 'jpeg',
+      quality: 92
+    }) as Buffer;
+
+    fs.writeFileSync(targetPath, imgBuffer);
     fs.copyFileSync(targetPath, publicTargetPath);
 
-    if ((i + 1) % 10 === 0 || i === articles.length - 1) {
-      console.log(`   [${i + 1}/${articles.length}] Berhasil diekspor: ${filename}`);
+    pagesData.push({
+      buffer: imgBuffer,
+      width,
+      height
+    });
+
+    if ((i + 1) % 15 === 0 || i === articles.length - 1) {
+      console.log(`   [${i + 1}/${articles.length}] Halaman tersimpan: ${filename} (${width}x${height}px)`);
     }
   }
 
   await browser.close();
+
+  // =========================================================================
+  // COMPILE SEAMLESS DYNAMIC PDF (ZERO BLANK PAPER MARGINS - EXACT CARD SIZES)
+  // =========================================================================
+  console.log('\n📕 Menyusun PDF Seamless Dinamis (Tanpa Margin Kertas Tertentu / Pas Sesuai Bentuk Kartu)...');
+  
+  if (pagesData.length > 0) {
+    const first = pagesData[0];
+    const doc = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [first.width, first.height],
+      hotfixes: ['px_scaling']
+    });
+
+    // Add first page
+    doc.addImage(first.buffer.toString('base64'), 'JPEG', 0, 0, first.width, first.height);
+
+    // Add remaining pages with their own exact natural dimensions
+    for (let i = 1; i < pagesData.length; i++) {
+      const p = pagesData[i];
+      doc.addPage([p.width, p.height], 'portrait');
+      doc.addImage(p.buffer.toString('base64'), 'JPEG', 0, 0, p.width, p.height);
+    }
+
+    const pdfOutDir = path.join(process.cwd(), 'public', 'downloads');
+    if (!fs.existsSync(pdfOutDir)) fs.mkdirSync(pdfOutDir, { recursive: true });
+    const outPdfPath = path.join(pdfOutDir, 'malala-panduan-wisata-sumbar-2026.pdf');
+
+    const pdfArrayBuffer = Buffer.from(doc.output('arraybuffer'));
+    fs.writeFileSync(outPdfPath, pdfArrayBuffer);
+
+    console.log(`🎉 PDF Seamless Berhasil Dibuat: ${outPdfPath}`);
+    console.log(`⚖️ Ukuran File: ${(pdfArrayBuffer.length / (1024 * 1024)).toFixed(2)} MB`);
+    console.log(`📄 Total Halaman: ${pagesData.length} halaman pas kartu 100% tanpa sisa kertas!`);
+  }
+
   console.log(`\n🎉 SELESAI SEMPURNA!`);
-  console.log(`📁 Seluruh 77 file JPG tersimpan di: ${jpgDir}`);
-  console.log(`📕 File PDF bersih tersimpan di: ${outPdfPath}`);
+  console.log(`📁 Seluruh file JPG tersimpan di: ${jpgDir}`);
 }
 
-exportPagesAndPDF();
+exportPagesAndDynamicPDF();
