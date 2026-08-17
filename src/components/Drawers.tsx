@@ -2074,25 +2074,27 @@ export const Drawers: React.FC<DrawersProps> = ({
                     const uniqueCategories = Array.from(new Set([
                       'Semua',
                       'Pariwisata Sumatera Barat',
-                      'Pariwisata Nasional',
+                      'Pariwisata Indonesia',
                       ...dynamicCats
                     ]));
 
                     return uniqueCategories.map((cat: string) => {
                       const isSelected = hotInfoCategory === cat;
                       const isSumbar = cat === 'Pariwisata Sumatera Barat';
+                      const isIndo = cat === 'Pariwisata Indonesia';
                       return (
                         <button
                           key={cat}
                           onClick={() => setHotInfoCategory(cat)}
-                          className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
+                          className={`px-3.5 py-1.5 rounded-full font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-1.5 text-xs ${
                             isSelected
                               ? isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
-                              : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
                           {isSumbar && <span>🏔️</span>}
-                          <span>{cat}</span>
+                          {isIndo && <span>🇮🇩</span>}
+                          <span className="whitespace-nowrap">{cat}</span>
                         </button>
                       );
                     });
@@ -2121,8 +2123,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
                         return item.category === 'Pariwisata Sumatera Barat' || isSumbarTopic(`${item.title} ${item.description || ''} ${item.locationName || ''}`);
                       }
-                      if (hotInfoCategory === 'Pariwisata Nasional') {
-                        return item.category === 'Pariwisata Nasional' || !isSumbarTopic(`${item.title} ${item.description || ''}`);
+                      if (hotInfoCategory === 'Pariwisata Indonesia' || hotInfoCategory === 'Pariwisata Nasional') {
+                        return item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || !isSumbarTopic(`${item.title} ${item.description || ''}`);
                       }
                       return item.category === hotInfoCategory;
                     });
@@ -2146,17 +2148,17 @@ export const Drawers: React.FC<DrawersProps> = ({
                               className="w-full h-full object-cover"
                               loading="lazy"
                             />
-                            <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/80 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
-                              {isEn && item.categoryEn ? item.categoryEn : item.category}
+                            <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/85 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md backdrop-blur-xs shrink-0 whitespace-nowrap z-10 shadow-xs">
+                              {isEn && item.categoryEn ? item.categoryEn : (item.category || 'Pariwisata Indonesia')}
                             </div>
                             {(item.tag === 'Penting' || item.isUrgent) && (
-                              <div className="absolute top-2 right-2 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded flex items-center gap-1 animate-pulse">
+                              <div className="absolute top-2 right-2 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 animate-pulse shadow-xs z-10">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-current" />
                                 {isEn && item.tagEn ? item.tagEn : (item.tag || 'Urgent')}
                               </div>
                             )}
                             {item.date && (
-                              <div className="absolute bottom-2 left-2 bg-black/60 text-gray-200 font-jakarta text-[10px] px-2 py-0.5 rounded backdrop-blur-xs">
+                              <div className="absolute bottom-2 left-2 bg-black/70 text-gray-200 font-jakarta text-[10px] px-2.5 py-0.5 rounded backdrop-blur-xs z-10">
                                 {isEn && item.dateEn ? item.dateEn : item.date}
                               </div>
                             )}
@@ -2164,11 +2166,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                         ) : (
                           <div className="px-4 pt-3.5 pb-2 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80">
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded">
-                                {isEn && item.categoryEn ? item.categoryEn : item.category}
+                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md shrink-0 whitespace-nowrap">
+                                {isEn && item.categoryEn ? item.categoryEn : (item.category || 'Pariwisata Indonesia')}
                               </span>
                               {(item.tag === 'Penting' || item.isUrgent) && (
-                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded flex items-center gap-1">
+                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1">
                                   <Flame className="w-3 h-3 text-yellow-300 fill-current" />
                                   {isEn && item.tagEn ? item.tagEn : (item.tag || 'Urgent')}
                                 </span>
@@ -2196,15 +2198,15 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                           <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
                             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500">
-                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-                              <span>
+                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                              <span className="whitespace-normal">
                                 {(() => {
                                   const rawLoc = isEn && item.locationNameEn ? item.locationNameEn : (item.locationName || '');
                                   const cleanLoc = rawLoc
                                     .replace(/Liputan\s*(Resmi\s*)?Terverifikasi\s*(\([^)]*\))?/gi, '')
                                     .replace(/Verified\s*Report\s*(\([^)]*\))?/gi, '')
                                     .trim();
-                                  return cleanLoc || (isEn ? 'Tourism Update' : (item.category === 'Pariwisata Sumatera Barat' ? 'Sumatera Barat' : 'Warta Pariwisata'));
+                                  return cleanLoc || (isEn ? 'Indonesian Tourism' : (item.category === 'Pariwisata Sumatera Barat' ? 'Sumatera Barat' : 'Pariwisata Indonesia'));
                                 })()}
                               </span>
                             </div>
