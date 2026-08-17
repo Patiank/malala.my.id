@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { X, Download, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
+import { X, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1 } from '../data/content';
-import { generateSumbarBookletPDF } from '../utils/pdfGenerator';
 
 interface EBookletModalProps {
   isOpen: boolean;
@@ -19,7 +18,6 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 }) => {
   const isEn = lang === 'en';
   const [activeTab, setActiveTab] = useState<'all' | 'destinations' | 'culture' | 'culinary' | 'events'>('all');
-  const [isDownloading, setIsDownloading] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
@@ -32,23 +30,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     window.print();
   };
 
-  const handleDownloadPdf = async () => {
-    try {
-      setIsDownloading(true);
-      await generateSumbarBookletPDF({
-        destinations,
-        cultureItems,
-        culinaryItems,
-        eventItems,
-        lang
-      });
-    } catch (e) {
-      console.error(e);
-      alert(isEn ? 'Please use the "Print / Save PDF" option above.' : 'Silakan gunakan tombol "Cetak / Simpan PDF" di atas.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+
 
   return (
     <div className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto p-2 sm:p-4 print:p-0 print:bg-white print:static">
@@ -79,14 +61,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
             <span>{isEn ? 'Print / Save PDF' : 'Cetak / Simpan PDF'}</span>
           </button>
 
-          <button
-            onClick={handleDownloadPdf}
-            disabled={isDownloading}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-jakarta font-bold text-xs uppercase transition-all flex items-center gap-1.5 cursor-pointer shadow-md disabled:opacity-50"
-          >
-            <Download className={`w-4 h-4 ${isDownloading ? 'animate-bounce' : ''}`} />
-            <span>{isDownloading ? (isEn ? 'Generating...' : 'Menyusun...') : (isEn ? 'Download .PDF' : 'Unduh .PDF')}</span>
-          </button>
+
 
           <button
             onClick={onClose}
@@ -130,7 +105,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           <article 
             className="w-full text-white rounded-2xl p-8 sm:p-12 shadow-2xl border border-gray-700 flex flex-col justify-between relative overflow-hidden print:rounded-none print:shadow-none print:break-after-page print:border-0 print:p-6 bg-cover bg-center min-h-[580px]"
             style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.90) 100%), url(${BG_IMAGE_1})`
+              backgroundImage: `url(${BG_IMAGE_1})`
             }}
           >
             <div className="space-y-4 relative z-10">

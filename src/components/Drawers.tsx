@@ -7,7 +7,7 @@ import { EBookletModal } from './EBookletModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
-import { generateSumbarBookletPDF } from '../utils/pdfGenerator';
+import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2342,30 +2342,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </button>
 
                   <button
-                    onClick={async () => {
-                      try {
-                        setIsGeneratingPdf(true);
-                        await generateSumbarBookletPDF({
-                          destinations: dataStore.destinations && dataStore.destinations.length > 0 ? dataStore.destinations : destinations,
-                          cultureItems: dataStore.cultureItems && dataStore.cultureItems.length > 0 ? dataStore.cultureItems : cultureItems,
-                          culinaryItems: dataStore.culinaryItems && dataStore.culinaryItems.length > 0 ? dataStore.culinaryItems : culinaryItems,
-                          eventItems: dataStore.eventItems && dataStore.eventItems.length > 0 ? dataStore.eventItems : eventItems,
-                          lang
-                        });
-                        setDownloadSuccessMessage(lang === 'en' ? 'Successfully downloaded Master E-Booklet PDF!' : 'Berhasil mengunduh E-Booklet Master PDF!');
-                        setTimeout(() => setDownloadSuccessMessage(null), 4000);
-                      } catch (err) {
-                        console.error("PDF generation error:", err);
-                        alert(lang === 'en' ? 'Download notice: You can also use the "Open Digital E-Booklet" button.' : 'Silakan gunakan tombol "Buka E-Booklet Digital" untuk melihat atau menyimpan.');
-                      } finally {
-                        setIsGeneratingPdf(false);
-                      }
-                    }}
-                    disabled={isGeneratingPdf}
-                    className="py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 hover:text-white border border-slate-700 font-jakarta font-bold text-xs uppercase transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    onClick={() => { setIsBookletModalOpen(true); setTimeout(() => window.print(), 600); }}
+                    className="py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 hover:text-white border border-slate-700 font-jakarta font-bold text-xs uppercase transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <Download className={`w-4 h-4 text-white ${isGeneratingPdf ? 'animate-bounce' : ''}`} />
-                    <span>{isGeneratingPdf ? (lang === 'en' ? 'Generating...' : 'Menyusun...') : (lang === 'en' ? 'Download .PDF' : 'Unduh .PDF')}</span>
+                    <Printer className="w-4 h-4 text-white" />
+                    <span>{lang === 'en' ? '🖨️ Print / Save PDF' : '🖨️ Cetak / Simpan PDF'}</span>
                   </button>
                 </div>
               </div>
