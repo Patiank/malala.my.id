@@ -41,7 +41,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
+    <div id="ebooklet-print-container" className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Floating Action Controls (Top-Right) */}
       <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
         {/* Download / Print PDF Button */}
@@ -106,25 +106,31 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
               loading="eager"
             />
 
-            {/* Top badge row */}
-            <div className="relative z-10 flex items-center justify-between">
-              <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
-                {isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI 2026'}
-              </span>
-              <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-                <BookOpen className="w-3.5 h-3.5 text-red-400" />
-                <span>MALALA.MY.ID</span>
+            {/* Top Area: Badge & Title directly below it */}
+            <div className="relative z-10 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
+                  {isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI 2026'}
+                </span>
+                <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+                  <BookOpen className="w-3.5 h-3.5 text-red-400" />
+                  <span>MALALA.MY.ID</span>
+                </div>
+              </div>
+
+              {/* Title and White Subtitle positioned right below the badge */}
+              <div className="space-y-1 pt-1">
+                <h1 className="font-orbitron font-extrabold text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] leading-tight">
+                  MALALA<br/>2026
+                </h1>
+                <p className="font-orbitron font-bold text-xs sm:text-sm text-white drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] tracking-wide">
+                  {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP PARIWISATA & BUDAYA RANAH MINANG'}
+                </p>
               </div>
             </div>
 
-            {/* Center / Bottom: Title block — Pure crisp text directly on image */}
+            {/* Bottom: Description & Footer */}
             <div className="relative z-10 mt-auto space-y-2 pt-16">
-              <h1 className="font-orbitron font-extrabold text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] leading-tight">
-                MALALA<br/>2026
-              </h1>
-              <p className="font-orbitron font-bold text-xs sm:text-sm text-red-300 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] tracking-wide">
-                {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP PARIWISATA & BUDAYA RANAH MINANG'}
-              </p>
               <p className="font-jakarta text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.9)] text-xs leading-relaxed max-w-sm pt-0.5">
                 {isEn
                   ? `${destinations.length} Destinations · ${cultureItems.length} Culture · ${culinaryItems.length} Culinary · ${eventItems.length} Events`
@@ -132,7 +138,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
               </p>
 
               {/* Divider + Footer */}
-              <div className="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white/90 font-jakarta drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
+              <div className="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white font-jakarta drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                 <span>Dinas Pariwisata Sumatera Barat</span>
                 <span className="font-bold text-white">E-Booklet Digital</span>
               </div>

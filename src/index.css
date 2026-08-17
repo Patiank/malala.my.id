@@ -143,6 +143,26 @@ body {
 /* PRINT STYLES — E-BOOKLET SAVE AS PDF                              */
 /* ================================================================ */
 @media print {
+  /* Hide all background website elements so print starts immediately with Cover Page 1 */
+  body * {
+    visibility: hidden;
+  }
+
+  #ebooklet-print-container,
+  #ebooklet-print-container * {
+    visibility: visible;
+  }
+
+  #ebooklet-print-container {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
   /* Force background colors & images to print */
   * {
     -webkit-print-color-adjust: exact !important;
