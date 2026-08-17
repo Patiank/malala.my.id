@@ -37,42 +37,42 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[200] bg-black/90 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
-      {/* Floating Minimalist Close Button */}
+    <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
+      {/* Floating Minimalist Close Button (Fixed Top-Right) */}
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[220] w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[230] w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
         title={isEn ? 'Close' : 'Tutup'}
         aria-label="Close"
       >
         <X className="w-5 h-5" />
       </button>
 
-      {/* Floating Bottom Minimalist Chapter Pill */}
-      <nav className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[220] bg-slate-950/85 hover:bg-slate-950/95 backdrop-blur-md border border-white/15 rounded-full p-1.5 shadow-2xl flex items-center gap-1 max-w-[92vw] overflow-x-auto print:hidden transition-all">
-        {[
-          { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
-          { key: 'destinations', label: isEn ? `🏔️ Destinasi` : `🏔️ Destinasi` },
-          { key: 'culture', label: isEn ? `🏛️ Budaya` : `🏛️ Budaya` },
-          { key: 'culinary', label: isEn ? `🍲 Kuliner` : `🍲 Kuliner` },
-          { key: 'events', label: isEn ? `📅 Event` : `📅 Event` },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key as any)}
-            className={`px-3 py-1.5 rounded-full font-jakarta font-bold text-[10px] uppercase transition-all cursor-pointer whitespace-nowrap ${
-              activeTab === tab.key
-                ? 'bg-red-600 text-white shadow-md'
-                : 'text-gray-400 hover:text-white hover:bg-white/10'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
-
       {/* Book Content Pages Container — Portrait phone-screen scroll */}
-      <main className="w-full max-w-[390px] mx-auto px-3 pt-6 pb-24 space-y-5 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
+      <main className="w-full max-w-[390px] mx-auto px-3 pt-4 pb-16 space-y-4 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
+        
+        {/* Clean Chapter Selector at the top (Scrolls away naturally, zero overlay on book) */}
+        <nav className="w-full bg-slate-900/80 backdrop-blur-sm border border-slate-800 rounded-xl p-1.5 flex items-center justify-between gap-1 overflow-x-auto print:hidden shadow-lg">
+          {[
+            { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
+            { key: 'destinations', label: isEn ? `🏔️ Destinasi` : `🏔️ Destinasi` },
+            { key: 'culture', label: isEn ? `🏛️ Budaya` : `🏛️ Budaya` },
+            { key: 'culinary', label: isEn ? `🍲 Kuliner` : `🍲 Kuliner` },
+            { key: 'events', label: isEn ? `📅 Event` : `📅 Event` },
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key as any)}
+              className={`flex-1 px-2 py-1.5 rounded-lg font-jakarta font-bold text-[10px] uppercase transition-all cursor-pointer whitespace-nowrap text-center ${
+                activeTab === tab.key
+                  ? 'bg-red-600 text-white shadow-sm'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
         
         {/* ============================================================== */}
         {/* COVER PAGE (PAGE 1) - HERO IMAGE BACKGROUND & MINIMALIST CLEAN */}
