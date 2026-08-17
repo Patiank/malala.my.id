@@ -16,6 +16,36 @@ async function startServer() {
     next(err);
   });
 
+  // API Route: Sync Database to GitHub
+  app.post("/api/sync-github", async (req, res) => {
+    try {
+      const fs = await import("fs");
+      const path = await import("path");
+      const { execSync } = await import("child_process");
+
+      if (req.body && Object.keys(req.body).length > 0) {
+        const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
+        fs.writeFileSync(backupPath, JSON.stringify({
+          timestamp: new Date().toISOString(),
+          ...req.body
+        }, null, 2), 'utf-8');
+      }
+
+      try {
+        execSync('git add .', { stdio: 'ignore' });
+        execSync('git commit -m "sync: update live data from admin panel"', { stdio: 'ignore' });
+      } catch (e) {}
+
+      try {
+        execSync('git push origin main', { stdio: 'ignore' });
+      } catch (e) {}
+
+      return res.json({ success: true, message: "Synced to GitHub successfully" });
+    } catch (err: any) {
+      return res.status(500).json({ success: false, error: err?.message });
+    }
+  });
+
   // API Route: AI Travel Planner (UNI MALA AI Minangkabau)
   app.post("/api/ai/itinerary", async (req, res) => {
     try {

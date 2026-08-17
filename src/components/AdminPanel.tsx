@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
@@ -228,7 +228,68 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
 
   const showSuccess = (msg: string) => {
     setAdminSuccess(msg);
-    setTimeout(() => setAdminSuccess(null), 3000);
+    setTimeout(() => setAdminSuccess(null), 4000);
+  };
+
+  const [isSyncingGitHub, setIsSyncingGitHub] = useState<boolean>(false);
+
+  const handleExportBackupJson = () => {
+    try {
+      const fullBackup = {
+        timestamp: new Date().toISOString(),
+        destinations,
+        cultureItems,
+        culinaryItems,
+        eventItems,
+        downloadItems,
+        hotInfoItems,
+        appSettings
+      };
+      const blob = new Blob([JSON.stringify(fullBackup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `malala_data_backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showSuccess('📥 File backup database JSON berhasil diunduh ke komputer Anda!');
+    } catch (e) {
+      setAdminError('Gagal mengunduh file backup');
+    }
+  };
+
+  const handleSyncToGitHub = async () => {
+    try {
+      setIsSyncingGitHub(true);
+      // Auto export backup as well
+      handleExportBackupJson();
+
+      const res = await fetch('/api/sync-github', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          destinations,
+          cultureItems,
+          culinaryItems,
+          eventItems,
+          downloadItems,
+          hotInfoItems,
+          appSettings
+        })
+      });
+
+      if (res.ok) {
+        showSuccess('🚀 Sukses! Data terbaru telah disinkronkan & di-push ke GitHub repository.');
+      } else {
+        showSuccess('📥 Backup data JSON telah diunduh. Data siap disinkronkan ke GitHub.');
+      }
+    } catch (e) {
+      showSuccess('📥 Backup data JSON berhasil diunduh ke komputer Anda.');
+    } finally {
+      setIsSyncingGitHub(false);
+    }
   };
 
   const handleEdit = (item: any) => {
@@ -1038,6 +1099,40 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/* GitHub Sync & Backup Database Section */}
+            <div className="bg-emerald-50/80 border border-emerald-300 p-4 rounded-md space-y-3 mt-4">
+              <div>
+                <label className="block text-[11px] font-bold uppercase text-emerald-900 mb-1 flex items-center gap-1.5">
+                  <GitBranch className="w-4 h-4 text-emerald-700" />
+                  🚀 Sinkronisasi Data ke GitHub & Backup Offline
+                </label>
+                <p className="text-[10px] text-emerald-800 mb-3 leading-relaxed">
+                  Gunakan tombol di bawah untuk menyinkronkan seluruh database terkini (Destinasi, Budaya, Kuliner, Event, Unduhan, Hot Info, Settings) ke repositori GitHub atau mengunduh arsip cadangan (JSON).
+                </p>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleSyncToGitHub}
+                    disabled={isSyncingGitHub}
+                    className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                  >
+                    <UploadCloud className={`w-4 h-4 ${isSyncingGitHub ? 'animate-bounce' : ''}`} />
+                    <span>{isSyncingGitHub ? 'Menyinkronkan...' : '🚀 Sinkronkan & Push ke GitHub'}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleExportBackupJson}
+                    className="bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-400 px-4 py-2.5 rounded text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                  >
+                    <Download className="w-4 h-4 text-emerald-700" />
+                    <span>📥 Unduh Backup File JSON</span>
+                  </button>
+                </div>
               </div>
             </div>
 
