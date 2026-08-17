@@ -2136,12 +2136,20 @@ export const Drawers: React.FC<DrawersProps> = ({
                   const dedupedList = deduplicateNewsItems(rawList)
                     .filter((item: any) => {
                       if (hotInfoCategory === 'Semua') return true;
+                      
+                      const isExplicitSumbar = item.category === 'Pariwisata Sumatera Barat' || item.tag === 'Sumbar';
+                      const isExplicitNational = item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || item.tag === 'Indonesia';
+
                       if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
-                        return item.category === 'Pariwisata Sumatera Barat' || isSumbarTopic(`${item.title} ${item.description || ''} ${item.locationName || ''}`);
+                        if (isExplicitNational) return false;
+                        return isExplicitSumbar || isSumbarTopic(item.title);
                       }
+                      
                       if (hotInfoCategory === 'Pariwisata Indonesia' || hotInfoCategory === 'Pariwisata Nasional') {
-                        return item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || !isSumbarTopic(`${item.title} ${item.description || ''}`);
+                        if (isExplicitSumbar) return false;
+                        return isExplicitNational || !isSumbarTopic(item.title);
                       }
+                      
                       return item.category === hotInfoCategory;
                     });
 
