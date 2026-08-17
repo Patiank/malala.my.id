@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Download, Printer, Sparkles, MapPin, Check, BookOpen } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1 } from '../data/content';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator';
 
 interface EBookletModalProps {
@@ -124,22 +124,26 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
       <main className="w-full max-w-4xl space-y-8 print:space-y-6">
         
         {/* ============================================================== */}
-        {/* COVER PAGE (PAGE 1)                                            */}
+        {/* COVER PAGE (PAGE 1) - HERO IMAGE BACKGROUND & MINIMALIST CLEAN */}
         {/* ============================================================== */}
         {(activeTab === 'all') && (
-          <article className="w-full bg-slate-900 text-white rounded-2xl p-8 sm:p-12 shadow-2xl border-4 border-slate-800 flex flex-col justify-between relative overflow-hidden print:rounded-none print:shadow-none print:break-after-page print:border-0 print:p-6">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="space-y-4">
+          <article 
+            className="w-full text-white rounded-2xl p-8 sm:p-12 shadow-2xl border border-gray-700 flex flex-col justify-between relative overflow-hidden print:rounded-none print:shadow-none print:break-after-page print:border-0 print:p-6 bg-cover bg-center min-h-[580px]"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.90) 100%), url(${BG_IMAGE_1})`
+            }}
+          >
+            <div className="space-y-4 relative z-10">
               <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-xs uppercase px-3 py-1 rounded tracking-wider shadow-sm">
-                {isEn ? 'OFFICIAL GOVERNMENT & TOURISM PUBLICATION' : 'PUBLIKASI RESMI DINAS PARIWISATA PROVINSI SUMATERA BARAT'}
+                {isEn ? 'OFFICIAL TOURISM PUBLICATION 2026' : 'PUBLIKASI RESMI DINAS PARIWISATA PROVINSI SUMATERA BARAT'}
               </span>
-              <h1 className="font-orbitron font-extrabold text-4xl sm:text-5xl text-white tracking-wide">
+              <h1 className="font-orbitron font-extrabold text-4xl sm:text-5xl text-white tracking-wide drop-shadow-md">
                 MALALA 2026
               </h1>
-              <p className="font-orbitron font-bold text-xl sm:text-2xl text-red-500">
+              <p className="font-orbitron font-bold text-xl sm:text-2xl text-red-400 drop-shadow-sm">
                 {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP WISATA & BUDAYA RANAH MINANG'}
               </p>
-              <p className="font-jakarta text-gray-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+              <p className="font-jakarta text-gray-200 text-sm sm:text-base max-w-2xl leading-relaxed">
                 {isEn 
                   ? 'Official master compilation of 26 curated destinations, 14 living cultural traditions, 16 authentic gastronomic dishes, and 20 major events & Karisma Event Nusantara (KEN) 2026.'
                   : 'Kompilasi master resmi 26 destinasi wisata unggulan, 14 warisan adat luhur, 16 kuliner gastronomi otentik, dan 20 kalender festival KEN 2026.'}
@@ -147,37 +151,37 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
             </div>
 
             {/* Stats Summary Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-8 bg-slate-800/80 p-5 rounded-xl border border-slate-700 font-jakarta">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-8 bg-black/50 backdrop-blur-md p-5 rounded-xl border border-white/10 font-jakarta relative z-10">
               <div>
-                <span className="text-gray-400 text-xs block">{isEn ? 'Destinations' : 'Destinasi Wisata'}</span>
+                <span className="text-gray-300 text-xs block">{isEn ? 'Destinations' : 'Destinasi Wisata'}</span>
                 <span className="text-2xl font-bold text-white">26 Objek</span>
               </div>
               <div>
-                <span className="text-gray-400 text-xs block">{isEn ? 'Culture & Custom' : 'Tradisi Adat'}</span>
+                <span className="text-gray-300 text-xs block">{isEn ? 'Culture & Custom' : 'Tradisi Adat'}</span>
                 <span className="text-2xl font-bold text-amber-400">14 Tradisi</span>
               </div>
               <div>
-                <span className="text-gray-400 text-xs block">{isEn ? 'Authentic Culinary' : 'Kuliner Otentik'}</span>
+                <span className="text-gray-300 text-xs block">{isEn ? 'Authentic Culinary' : 'Kuliner Otentik'}</span>
                 <span className="text-2xl font-bold text-rose-400">16 Makanan</span>
               </div>
               <div>
-                <span className="text-gray-400 text-xs block">{isEn ? 'KEN & Events' : 'Festival & KEN'}</span>
+                <span className="text-gray-300 text-xs block">{isEn ? 'KEN & Events' : 'Festival & KEN'}</span>
                 <span className="text-2xl font-bold text-red-400">20 Event</span>
               </div>
             </div>
 
             {/* Philosophy Box */}
-            <div className="border-l-4 border-red-600 pl-4 py-2 bg-slate-800/50 rounded-r-lg font-jakarta">
+            <div className="border-l-4 border-red-600 pl-4 py-2 bg-black/40 backdrop-blur-md rounded-r-lg font-jakarta relative z-10">
               <p className="italic font-bold text-amber-300 text-sm">
                 "Adat Basandi Syarak, Syarak Basandi Kitabullah" • "Alam Takambang Jadi Guru"
               </p>
-              <p className="text-gray-400 text-xs pt-1">
+              <p className="text-gray-300 text-xs pt-1">
                 {isEn ? 'Fostering cultural integrity and natural harmony in West Sumatra.' : 'Falsafah keluhuran kearifan lokal dan harmoni alam semesta Ranah Minang.'}
               </p>
             </div>
 
             {/* Footer Cover */}
-            <footer className="pt-8 border-t border-slate-800 flex items-center justify-between text-xs text-gray-400 font-jakarta">
+            <footer className="pt-8 border-t border-white/20 flex items-center justify-between text-xs text-gray-300 font-jakarta relative z-10">
               <span>Dinas Pariwisata Provinsi Sumatera Barat • 2026</span>
               <span className="font-bold text-white">https://malala.my.id</span>
             </footer>
