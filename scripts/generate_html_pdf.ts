@@ -194,6 +194,10 @@ function generateFullHTML(): string {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    @page {
+      margin: 0 !important;
+      size: portrait;
+    }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #f8fafc;
@@ -208,19 +212,24 @@ function generateFullHTML(): string {
     .page-card {
       page-break-after: always;
       break-after: page;
-      min-height: 98vh;
+      min-height: 100vh;
       max-width: 480px;
       margin-left: auto;
       margin-right: auto;
+      box-sizing: border-box;
     }
     @media print {
       body {
         background: transparent;
+        padding: 0;
+        margin: 0;
       }
       .page-card {
         margin: 0 auto;
         box-shadow: none;
         border: none;
+        border-radius: 0;
+        min-height: 100vh;
       }
     }
   </style>
