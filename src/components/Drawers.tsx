@@ -2349,7 +2349,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                     className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-jakarta font-bold text-xs uppercase transition-all border border-slate-700 flex items-center justify-center gap-2 cursor-pointer text-center"
                   >
                     <Download className="w-4 h-4 text-red-400" />
-                    <span>{lang === 'en' ? '⬇️ Direct Download PDF (77 Pages)' : '⬇️ Unduh PDF Resmi (Lengkap 77 Halaman)'}</span>
+                    <span>{lang === 'en' ? '⬇️ [Direct Download PDF (77 Pages)]' : '⬇️ [Unduh PDF Resmi (Lengkap 77 Halaman)]'}</span>
                   </a>
                 </div>
               </div>

@@ -72,10 +72,17 @@ async function syncToGitHub() {
   fs.writeFileSync(backupPath, JSON.stringify(dataBackup, null, 2), 'utf-8');
   console.log(`💾 2/4 Backup tersimpan di: src/data/firestore_backup.json`);
 
+  console.log('🔄 2.5/4 Memperbarui HTML, PDF Seamless, dan Export JPG...');
+  try {
+    execSync('cmd /c npx tsx scripts/export_all_pages_jpg.ts', { stdio: 'inherit' });
+  } catch (err) {
+    console.warn('Gagal merender PDF otomatis:', err);
+  }
+
   console.log('🚀 3/4 Menjalankan Git Commit...');
   try {
     execSync('git add .', { stdio: 'inherit' });
-    execSync('git commit -m "sync: update live data from admin Firestore database"', { stdio: 'inherit' });
+    execSync('git commit -m "sync: update live data, PDF ebooklet, and high-res page JPGs from admin Firestore"', { stdio: 'inherit' });
   } catch (e) {
     console.log('ℹ️ File repositori sudah up to date.');
   }
