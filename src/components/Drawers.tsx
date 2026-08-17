@@ -5,7 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2196,7 +2196,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                             {getNewsDisplayTitle(item, lang)}
                           </h3>
                           <div className="font-jakarta text-gray-700 text-xs leading-relaxed space-y-2">
-                            {(isEn && item.descriptionEn ? item.descriptionEn : (item.description || item.content || ''))
+                            {getNewsDisplayDescription(item, lang)
                               .split('\n\n')
                               .map((paragraph: string, pIdx: number) => (
                                 <p key={pIdx}>{paragraph}</p>

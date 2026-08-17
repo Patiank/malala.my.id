@@ -652,16 +652,155 @@ export function translateHeadlineIndoToEn(titleId: string): string {
   return str;
 }
 
+export const textTranslationMemory = new Map<string, string>();
+
+/**
+ * Fetches high-accuracy neural translation via Google GTX & MyMemory with local memory caching
+ */
+export async function fetchDirectTranslation(text: string, from = 'id', to = 'en'): Promise<string> {
+  if (!text || !text.trim()) return '';
+  const trimmed = text.trim();
+  const cacheKey = `${from}-${to}-${trimmed}`;
+  if (textTranslationMemory.has(cacheKey)) {
+    return textTranslationMemory.get(cacheKey)!;
+  }
+
+  // Check localStorage cache
+  try {
+    if (typeof window !== 'undefined') {
+      const local = localStorage.getItem(`malala_trans_${cacheKey.slice(0, 100)}`);
+      if (local) {
+        textTranslationMemory.set(cacheKey, local);
+        return local;
+      }
+    }
+  } catch {}
+
+  try {
+    // 1. Google GTX Public API
+    const gtxUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(trimmed)}`;
+    const res = await fetch(gtxUrl);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && Array.isArray(data[0])) {
+        const translated = data[0].map((chunk: any) => chunk[0]).join('').trim();
+        if (translated && translated.toLowerCase() !== trimmed.toLowerCase()) {
+          textTranslationMemory.set(cacheKey, translated);
+          try {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem(`malala_trans_${cacheKey.slice(0, 100)}`, translated);
+            }
+          } catch {}
+          return translated;
+        }
+      }
+    }
+  } catch (e) {}
+
+  try {
+    // 2. MyMemory Translation API fallback
+    const mmUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(trimmed)}&langpair=${from}|${to}`;
+    const res = await fetch(mmUrl);
+    if (res.ok) {
+      const json = await res.json();
+      if (json?.responseData?.translatedText) {
+        const translated = json.responseData.translatedText.trim();
+        if (translated && translated.toLowerCase() !== trimmed.toLowerCase()) {
+          textTranslationMemory.set(cacheKey, translated);
+          try {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem(`malala_trans_${cacheKey.slice(0, 100)}`, translated);
+            }
+          } catch {}
+          return translated;
+        }
+      }
+    }
+  } catch (e) {}
+
+  // 3. Robust rule-based fallback
+  const fallback = translateHeadlineIndoToEn(trimmed);
+  textTranslationMemory.set(cacheKey, fallback);
+  return fallback;
+}
+
+/**
+ * Pre-fetches translations in background for all active news items
+ */
+export function prefetchNewsTranslations(items: any[]) {
+  if (!Array.isArray(items) || items.length === 0) return;
+  items.forEach(item => {
+    if (item.title) {
+      fetchDirectTranslation(item.title, 'id', 'en').catch(() => {});
+    }
+    if (item.description) {
+      fetchDirectTranslation(item.description, 'id', 'en').catch(() => {});
+    }
+  });
+}
+
 export function getNewsDisplayTitle(item: any, lang: string): string {
   if (!item) return '';
   const isEn = lang === 'en';
   if (!isEn) return item.title || '';
 
+  const cacheKey = `id-en-${(item.title || '').trim()}`;
+  if (textTranslationMemory.has(cacheKey)) {
+    return textTranslationMemory.get(cacheKey)!;
+  }
+
+  try {
+    if (typeof window !== 'undefined') {
+      const local = localStorage.getItem(`malala_trans_${cacheKey.slice(0, 100)}`);
+      if (local) {
+        textTranslationMemory.set(cacheKey, local);
+        return local;
+      }
+    }
+  } catch {}
+
   if (item.titleEn && item.titleEn.trim() && item.titleEn !== item.title) {
     return item.titleEn;
   }
 
+  // Trigger background translation for perfect async update
+  if (item.title) {
+    fetchDirectTranslation(item.title, 'id', 'en').catch(() => {});
+  }
+
   return translateHeadlineIndoToEn(item.title || item.titleEn || '');
+}
+
+export function getNewsDisplayDescription(item: any, lang: string): string {
+  if (!item) return '';
+  const isEn = lang === 'en';
+  const desc = item.description || item.content || '';
+  if (!isEn) return desc;
+
+  const cacheKey = `id-en-${desc.trim()}`;
+  if (textTranslationMemory.has(cacheKey)) {
+    return textTranslationMemory.get(cacheKey)!;
+  }
+
+  try {
+    if (typeof window !== 'undefined') {
+      const local = localStorage.getItem(`malala_trans_${cacheKey.slice(0, 100)}`);
+      if (local) {
+        textTranslationMemory.set(cacheKey, local);
+        return local;
+      }
+    }
+  } catch {}
+
+  if (item.descriptionEn && item.descriptionEn.trim() && item.descriptionEn !== desc) {
+    return item.descriptionEn;
+  }
+
+  if (desc) {
+    fetchDirectTranslation(desc, 'id', 'en').catch(() => {});
+  }
+
+  return item.descriptionEn || desc;
 }
 
 /**

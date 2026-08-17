@@ -11,7 +11,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
@@ -39,6 +39,13 @@ export default function App() {
   const [isRefreshingTicker, setIsRefreshingTicker] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
+
+  // Background translation pre-fetching for instant smooth English experience
+  useEffect(() => {
+    if (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0) {
+      prefetchNewsTranslations(dataStore.hotInfoItems);
+    }
+  }, [dataStore.hotInfoItems]);
 
   // Automatic 2-hour refresh for Hot Info news ticker via Live RSS & AI (National Indonesia tourism news)
   useEffect(() => {
