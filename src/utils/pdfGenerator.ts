@@ -9,33 +9,71 @@ interface BookletData {
   lang?: 'id' | 'en';
 }
 
+const imageMemoryCache = new Map<string, string>();
+
 /**
- * Converts image URL to base64 Data URL for embedding into jsPDF
+ * Safely converts an image URL to base64 Data URL with strict timeout and fallback
  */
-async function getBase64ImageFromUrl(imageUrl: string): Promise<string | null> {
-  if (!imageUrl) return null;
+async function getSafeImageData(url: string): Promise<string | null> {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) return null;
+  
+  if (imageMemoryCache.has(url)) {
+    return imageMemoryCache.get(url)!;
+  }
+
   return new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.naturalWidth || 800;
-        canvas.height = img.naturalHeight || 500;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          ctx.drawImage(img, 0, 0);
-          resolve(canvas.toDataURL('image/jpeg', 0.85));
-        } else {
+    const timer = setTimeout(() => {
+      resolve(null);
+    }, 1200); // 1.2s timeout per image
+
+    try {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        clearTimeout(timer);
+        try {
+          const canvas = document.createElement('canvas');
+          const w = Math.min(img.naturalWidth || 600, 800);
+          const h = Math.min(img.naturalHeight || 400, 500);
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            if (dataUrl && dataUrl.startsWith('data:image')) {
+              imageMemoryCache.set(url, dataUrl);
+              resolve(dataUrl);
+              return;
+            }
+          }
+          resolve(null);
+        } catch {
           resolve(null);
         }
-      } catch (e) {
+      };
+      img.onerror = () => {
+        clearTimeout(timer);
         resolve(null);
-      }
-    };
-    img.onerror = () => resolve(null);
-    img.src = imageUrl;
+      };
+      img.src = url;
+    } catch {
+      clearTimeout(timer);
+      resolve(null);
+    }
   });
+}
+
+/**
+ * Pre-caches images in small parallel batches to prevent browser lockup
+ */
+async function preloadCatalogImages(urls: string[]) {
+  const cleanUrls = urls.filter(u => u && u.startsWith('http') && !imageMemoryCache.has(u));
+  const batchSize = 6;
+  for (let i = 0; i < cleanUrls.length; i += batchSize) {
+    const batch = cleanUrls.slice(i, i + batchSize);
+    await Promise.allSettled(batch.map(url => getSafeImageData(url)));
+  }
 }
 
 /**
@@ -43,10 +81,26 @@ async function getBase64ImageFromUrl(imageUrl: string): Promise<string | null> {
  */
 export async function generateSumbarBookletPDF(data: BookletData): Promise<void> {
   const isEn = data.lang === 'en';
+  
+  // 1. Gather all image URLs and pre-load in background batches
+  const allImageUrls: string[] = [
+    ...(data.destinations || []).map(d => d.imageUrl),
+    ...(data.cultureItems || []).map(c => c.imageUrl),
+    ...(data.culinaryItems || []).map(cu => cu.imageUrl),
+    ...(data.eventItems || []).map(e => e.imageUrl),
+  ].filter(Boolean) as string[];
+
+  try {
+    await preloadCatalogImages(allImageUrls);
+  } catch (e) {
+    console.warn("Preload images warning:", e);
+  }
+
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a4'
+    format: 'a4',
+    compress: true
   });
 
   const pageWidth = 210;
@@ -56,39 +110,41 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   let pageNumber = 1;
 
   const addHeaderFooter = (categoryLabel: string, subCategory: string) => {
-    // Header Bar
-    doc.setFillColor(15, 23, 42); // slate-900
-    doc.rect(0, 0, pageWidth, 11, 'F');
+    try {
+      // Header Bar
+      doc.setFillColor(15, 23, 42); // slate-900
+      doc.rect(0, 0, pageWidth, 11, 'F');
 
-    doc.setFillColor(220, 38, 38); // red-600
-    doc.rect(0, 11, pageWidth, 1, 'F');
+      doc.setFillColor(220, 38, 38); // red-600
+      doc.rect(0, 11, pageWidth, 1, 'F');
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(251, 191, 36); // amber-400
-    doc.text('MALALA 2026 • DINAS PARIWISATA PROVINSI SUMATERA BARAT', margin, 7.5);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(251, 191, 36); // amber-400
+      doc.text('MALALA 2026 • DINAS PARIWISATA PROVINSI SUMATERA BARAT', margin, 7.5);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text(`${categoryLabel.toUpperCase()} — ${subCategory.toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(`${categoryLabel.toUpperCase()} — ${subCategory.toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
 
-    // Footer Bar
-    doc.setFillColor(248, 250, 252);
-    doc.rect(0, pageHeight - 10, pageWidth, 10, 'F');
-    doc.setDrawColor(226, 232, 240);
-    doc.line(0, pageHeight - 10, pageWidth, pageHeight - 10);
+      // Footer Bar
+      doc.setFillColor(248, 250, 252);
+      doc.rect(0, pageHeight - 10, pageWidth, 10, 'F');
+      doc.setDrawColor(226, 232, 240);
+      doc.line(0, pageHeight - 10, pageWidth, pageHeight - 10);
 
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7.5);
-    doc.setTextColor(100, 116, 139);
-    doc.text('Katalog Resmi Panduan Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(100, 116, 139);
+      doc.text('Katalog Resmi Panduan Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
+    } catch {}
   };
 
   // ==============================================================
-  // 1. COVER PAGE (Halaman Judul Eksklusif)
+  // 1. COVER PAGE
   // ==============================================================
   doc.setFillColor(15, 23, 42); // slate-900
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
@@ -118,7 +174,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   doc.setFontSize(10);
   doc.setTextColor(203, 213, 225);
   const coverSubtitle = isEn 
-    ? 'Comprehensive collection of 26 Iconic Destinations, 14 Living Cultural Traditions, 16 Authentic Culinaries, and 20 Official Events & KEN 2026.'
+    ? 'Comprehensive compilation of 26 Iconic Destinations, 14 Living Cultural Traditions, 16 Authentic Culinaries, and 20 Official Events & KEN 2026.'
     : 'Kompilasi komprehensif master data 26 destinasi wisata, 14 tradisi adat luhur, 16 kuliner gastronomi otentik, dan 20 kalender festival KEN 2026.';
   doc.text(doc.splitTextToSize(coverSubtitle, 160), 25, 74);
 
@@ -180,7 +236,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
 
     const title = (isEn && dest.titleEn ? dest.titleEn : dest.title).toUpperCase();
     const category = isEn && dest.categoryEn ? dest.categoryEn : dest.category;
-    const location = isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency);
+    const location = isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency || 'Sumatera Barat');
     const desc = isEn && dest.descriptionEn ? dest.descriptionEn : dest.description;
     const highlights = (isEn && dest.highlightsEn ? dest.highlightsEn : dest.highlights) || [];
     const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
@@ -188,20 +244,29 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     let y = 16;
 
     // 1. Image Header Banner (Width: 182mm, Height: 70mm)
-    const imgData = await getBase64ImageFromUrl(dest.imageUrl);
+    const imgData = dest.imageUrl ? imageMemoryCache.get(dest.imageUrl) : null;
+    let hasImage = false;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+        hasImage = true;
       } catch {
-        doc.setFillColor(30, 41, 59);
-        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+        hasImage = false;
       }
-    } else {
-      doc.setFillColor(30, 41, 59);
-      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
     }
 
-    // Image overlay tag
+    if (!hasImage) {
+      doc.setFillColor(30, 41, 59);
+      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      doc.setFillColor(220, 38, 38);
+      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
+    }
+
+    // Category Pill Overlay
     doc.setFillColor(0, 0, 0);
     doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
     doc.setFont('helvetica', 'bold');
@@ -228,11 +293,11 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     doc.line(margin, y, pageWidth - margin, y);
     y += 5;
 
-    // 3. Full Detailed Narrative Paragraphs (Split by \n\n)
+    // 3. Full Detailed Narrative Paragraphs
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(51, 65, 85); // slate-700
-    const paragraphs = desc.split('\n\n').filter(Boolean);
+    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
     paragraphs.forEach((p) => {
       const cleanP = p.replace(/\n/g, ' ').trim();
       const splitP = doc.splitTextToSize(cleanP, contentWidth);
@@ -240,7 +305,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
       y += (splitP.length * 3.8) + 3;
     });
 
-    // 4. Highlights Box (Modal exact style)
+    // 4. Highlights Box
     if (highlights.length > 0) {
       y += 1;
       const boxHeight = 10 + (highlights.length * 5);
@@ -289,24 +354,33 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
 
     const title = (isEn && cult.titleEn ? cult.titleEn : cult.title).toUpperCase();
     const category = isEn && cult.categoryEn ? cult.categoryEn : cult.category;
-    const origin = isEn && cult.originEn ? cult.originEn : cult.origin;
+    const origin = isEn && cult.originEn ? cult.originEn : (cult.origin || 'Alam Minangkabau');
     const desc = isEn && cult.descriptionEn ? cult.descriptionEn : cult.description;
     const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
     let y = 16;
 
     // 1. Image Header Banner
-    const imgData = await getBase64ImageFromUrl(cult.imageUrl);
+    const imgData = cult.imageUrl ? imageMemoryCache.get(cult.imageUrl) : null;
+    let hasImage = false;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+        hasImage = true;
       } catch {
-        doc.setFillColor(69, 26, 3);
-        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+        hasImage = false;
       }
-    } else {
+    }
+
+    if (!hasImage) {
       doc.setFillColor(69, 26, 3);
       doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      doc.setFillColor(217, 119, 6);
+      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
     }
 
     // Category badge
@@ -340,7 +414,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(68, 64, 60);
-    const paragraphs = desc.split('\n\n').filter(Boolean);
+    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
     paragraphs.forEach((p) => {
       const cleanP = p.replace(/\n/g, ' ').trim();
       const splitP = doc.splitTextToSize(cleanP, contentWidth);
@@ -381,7 +455,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
 
     const title = (isEn && cul.titleEn ? cul.titleEn : cul.title).toUpperCase();
     const category = isEn && cul.categoryEn ? cul.categoryEn : cul.category;
-    const origin = isEn && cul.originEn ? cul.originEn : cul.origin;
+    const origin = isEn && cul.originEn ? cul.originEn : (cul.origin || 'Ranah Minang');
     const desc = isEn && cul.descriptionEn ? cul.descriptionEn : cul.description;
     const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
     const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
@@ -390,17 +464,26 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     let y = 16;
 
     // 1. Image Header Banner
-    const imgData = await getBase64ImageFromUrl(cul.imageUrl);
+    const imgData = cul.imageUrl ? imageMemoryCache.get(cul.imageUrl) : null;
+    let hasImage = false;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+        hasImage = true;
       } catch {
-        doc.setFillColor(76, 29, 44);
-        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+        hasImage = false;
       }
-    } else {
+    }
+
+    if (!hasImage) {
       doc.setFillColor(76, 29, 44);
       doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      doc.setFillColor(220, 38, 38);
+      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
     }
 
     // Category badge
@@ -434,7 +517,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(76, 29, 44);
-    const paragraphs = desc.split('\n\n').filter(Boolean);
+    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
     paragraphs.forEach((p) => {
       const cleanP = p.replace(/\n/g, ' ').trim();
       const splitP = doc.splitTextToSize(cleanP, contentWidth);
@@ -461,7 +544,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
       doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 17);
     }
 
-    // 5. Gastronomic Philosophy (if present)
+    // 5. Gastronomic Philosophy
     if (philosophy) {
       y += 26;
       doc.setFillColor(248, 250, 252);
@@ -491,17 +574,26 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     let y = 16;
 
     // 1. Image Header Banner
-    const imgData = await getBase64ImageFromUrl(ev.imageUrl);
+    const imgData = ev.imageUrl ? imageMemoryCache.get(ev.imageUrl) : null;
+    let hasImage = false;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
+        hasImage = true;
       } catch {
-        doc.setFillColor(15, 23, 42);
-        doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+        hasImage = false;
       }
-    } else {
+    }
+
+    if (!hasImage) {
       doc.setFillColor(15, 23, 42);
       doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      doc.setFillColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
     }
 
     // Status Badge (KEN vs Regular)
@@ -535,7 +627,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
     doc.setTextColor(51, 65, 85);
-    const paragraphs = desc.split('\n\n').filter(Boolean);
+    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
     paragraphs.forEach((p) => {
       const cleanP = p.replace(/\n/g, ' ').trim();
       const splitP = doc.splitTextToSize(cleanP, contentWidth);
@@ -564,7 +656,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   }
 
   // ==============================================================
-  // 6. BACK COVER (Halaman Penutup & Kontak)
+  // 6. BACK COVER
   // ==============================================================
   doc.addPage();
   pageNumber++;
