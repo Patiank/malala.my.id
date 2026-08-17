@@ -56,24 +56,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     <div id="ebooklet-print-container" className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Floating Action Controls (Top-Right) */}
       <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
-        {/* Live Print to PDF with in-memory Cloudinary images */}
-        <button
-          onClick={() => window.print()}
-          className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
-          title={isEn ? 'Save / Print Live PDF' : 'Cetak / Simpan PDF Live'}
-        >
-          <BookOpen className="w-4 h-4" />
-          <span>{isEn ? 'Print / Save PDF' : 'Cetak / Simpan PDF'}</span>
-        </button>
-
-        {/* Direct Download File */}
+        {/* Download PDF Button */}
         <button
           onClick={handleDownload}
-          className="h-10 px-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider border border-white/20"
-          title={isEn ? 'Direct Download PDF File' : 'Unduh File PDF'}
+          className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
+          title={isEn ? 'Download PDF' : 'Unduh PDF'}
         >
-          <Download className="w-4 h-4 text-red-400" />
-          <span>{isEn ? 'Direct File' : 'File PDF'}</span>
+          <Download className="w-4 h-4" />
+          <span>{isEn ? 'Download PDF' : 'Unduh PDF'}</span>
         </button>
 
         {/* Minimalist Close Button */}
