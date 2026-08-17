@@ -113,8 +113,8 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         {/* ============================================================== */}
         {(activeTab === 'all') && (
           <article 
-            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
-            style={{ minHeight: '600px' }}
+            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0 print:aspect-auto"
+            style={{ aspectRatio: '2/3' }}
           >
             {/* Background image as real <img> tag so it prints correctly */}
             <img
@@ -168,56 +168,55 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
           return (
-            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
-              <div>
-                {/* Header info */}
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
-                  <span>MALALA 2026 • {dest.regency || 'SUMATERA BARAT'}</span>
-                  <span className="text-red-600 uppercase font-extrabold">{category}</span>
-                </div>
+            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 flex flex-col print:shadow-none print:border-0 print:p-4 print:break-after-page print:aspect-auto print:overflow-visible" style={{ aspectRatio: '2/3' }}>
+              {/* Header info */}
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500 shrink-0">
+                <span>MALALA 2026 • {dest.regency || 'SUMATERA BARAT'}</span>
+                <span className="text-red-600 uppercase font-extrabold">{category}</span>
+              </div>
 
-                {/* Hero Image */}
-                <div className="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900">
-                  <img
-                    src={imgSrc(dest.imageUrl)}
-                    alt={title}
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <span className="bg-white text-black font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow">
-                      {category}
-                    </span>
-                    <h3 className="font-orbitron font-extrabold text-xl sm:text-2xl text-white pt-1 drop-shadow-md">
-                      {title}
-                    </h3>
-                  </div>
+              {/* Hero Image */}
+              <div className="h-36 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900 shrink-0">
+                <img
+                  src={imgSrc(dest.imageUrl)}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 text-white">
+                  <span className="bg-white text-black font-jakarta font-extrabold text-[10px] uppercase px-2 py-0.5 rounded shadow">
+                    {category}
+                  </span>
+                  <h3 className="font-orbitron font-extrabold text-base text-white pt-1 drop-shadow-md leading-tight">
+                    {title}
+                  </h3>
                 </div>
+              </div>
 
+              {/* Scrollable body */}
+              <div className="flex-1 overflow-y-auto mt-3 space-y-3 print:overflow-visible">
                 {/* Location */}
-                <div className="pt-3 flex items-center gap-1.5 text-xs font-bold text-red-600 font-jakarta">
-                  <MapPin className="w-4 h-4 shrink-0" />
+                <div className="flex items-center gap-1.5 text-xs font-bold text-red-600 font-jakarta">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
                   <span>{location}</span>
                 </div>
 
-                {/* Full Description */}
-                <div className="font-jakarta text-xs sm:text-[13px] text-gray-700 leading-relaxed pt-3 space-y-2.5">
-                  {desc.split('\n\n').map((p, pIdx) => (
-                    <p key={pIdx}>{p}</p>
-                  ))}
+                {/* Description — first paragraph only to keep page clean */}
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed">
+                  <p>{desc.split('\n\n')[0]}</p>
                 </div>
 
                 {/* Highlights */}
                 {highlights.length > 0 && (
-                  <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200 font-jakarta">
-                    <h4 className="font-bold text-xs uppercase text-slate-900 tracking-wider mb-2">
-                      {isEn ? 'Key Highlights & Attractions:' : 'Daya Tarik Utama (Highlights):'}
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 font-jakarta">
+                    <h4 className="font-bold text-[10px] uppercase text-slate-900 tracking-wider mb-1.5">
+                      {isEn ? 'Key Highlights:' : 'Daya Tarik Utama:'}
                     </h4>
-                    <ul className="space-y-1 text-xs text-gray-700">
-                      {highlights.map((h, hIdx) => (
-                        <li key={hIdx} className="flex items-center gap-2">
-                          <Check className="w-3.5 h-3.5 text-green-600 shrink-0 font-bold" />
+                    <ul className="space-y-1 text-[11px] text-gray-700">
+                      {highlights.slice(0, 3).map((h, hIdx) => (
+                        <li key={hIdx} className="flex items-center gap-1.5">
+                          <Check className="w-3 h-3 text-green-600 shrink-0" />
                           <span>{h}</span>
                         </li>
                       ))}
@@ -228,9 +227,9 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               {/* Best Time Footer */}
               {bestTime && (
-                <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
-                  <span>{isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} <strong className="text-black">{bestTime}</strong></span>
-                  <span className="text-gray-400"># {idx + 1}</span>
+                <div className="pt-2 mt-2 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500 shrink-0">
+                  <span>{isEn ? 'Best Time:' : 'Waktu Terbaik:'} <strong className="text-black">{bestTime}</strong></span>
+                  <span className="text-gray-400">#{idx + 1}</span>
                 </div>
               )}
             </article>
@@ -248,7 +247,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
           return (
-            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-4 flex flex-col print:shadow-none print:border-0 print:p-4 print:break-after-page print:aspect-auto print:overflow-visible" style={{ aspectRatio: '2/3' }}>
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • WARISAN BUDAYA & TRADISI ADAT</span>
@@ -317,7 +316,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
 
           return (
-            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-4 flex flex-col print:shadow-none print:border-0 print:p-4 print:break-after-page print:aspect-auto print:overflow-visible" style={{ aspectRatio: '2/3' }}>
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • GASTRONOMI & KULINER OTENTIK</span>
@@ -387,7 +386,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
 
           return (
-            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 space-y-4 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 flex flex-col print:shadow-none print:border-0 print:p-4 print:break-after-page print:aspect-auto print:overflow-visible" style={{ aspectRatio: '2/3' }}>
               <div>
                 <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • CALENDAR OF EVENTS</span>
