@@ -2338,7 +2338,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                     className="flex-1 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <BookOpen className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '📖 Open E-Booklet & Print / Save' : '📖 Buka & Cetak / Simpan E-Booklet'}</span>
+                    <span>{lang === 'en' ? '📖 Open Digital E-Booklet' : '📖 Buka E-Booklet Digital'}</span>
                   </button>
 
                   <button
@@ -2356,7 +2356,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         setTimeout(() => setDownloadSuccessMessage(null), 4000);
                       } catch (err) {
                         console.error("PDF generation error:", err);
-                        alert(lang === 'en' ? 'PDF compilation notice: You can also use the "Open E-Booklet & Print / Save" button.' : 'Silakan gunakan tombol "Buka & Cetak / Simpan E-Booklet" untuk menyimpan ke PDF.');
+                        alert(lang === 'en' ? 'Download notice: You can also use the "Open Digital E-Booklet" button.' : 'Silakan gunakan tombol "Buka E-Booklet Digital" untuk melihat atau menyimpan.');
                       } finally {
                         setIsGeneratingPdf(false);
                       }
