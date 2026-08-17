@@ -2315,40 +2315,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-700/60 font-jakarta text-[11px]">
-                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
-                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Destinations' : 'Destinasi'}</span>
-                    <span className="font-bold text-white">26 Objek</span>
-                  </div>
-                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
-                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Culture' : 'Kebudayaan'}</span>
-                    <span className="font-bold text-amber-400">14 Tradisi</span>
-                  </div>
-                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
-                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Culinary' : 'Kuliner'}</span>
-                    <span className="font-bold text-rose-400">16 Makanan</span>
-                  </div>
-                  <div className="bg-slate-800/80 p-2 rounded border border-slate-700">
-                    <span className="text-gray-400 block text-[10px]">{lang === 'en' ? 'Events' : 'Kalender Event'}</span>
-                    <span className="font-bold text-red-400">20 Festival</span>
-                  </div>
-                </div>
-
-                <div className="pt-1 space-y-2">
-                  <button
-                    onClick={() => setIsBookletModalOpen(true)}
-                    className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01]"
-                  >
-                    <BookOpen className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '📖 Open Digital E-Booklet' : '📖 Buka E-Booklet Digital'}</span>
-                  </button>
-
+                <div className="pt-2">
                   <a
                     href="/downloads/malala-panduan-wisata-sumbar-2026.pdf"
                     download="MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf"
-                    className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-jakarta font-bold text-xs uppercase transition-all border border-slate-700 flex items-center justify-center gap-2 cursor-pointer text-center"
+                    className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
-                    <Download className="w-4 h-4 text-red-400" />
+                    <Download className="w-4 h-4 text-white" />
                     <span>{lang === 'en' ? '⬇️ Direct Download PDF (Complete)' : '⬇️ Unduh PDF Resmi (Lengkap)'}</span>
                   </a>
                 </div>
