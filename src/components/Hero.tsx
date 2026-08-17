@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
-import { WeatherWidget } from './WeatherWidget';
+
 import { DrawerType, AppSettings } from '../types';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
@@ -391,9 +391,8 @@ export const Hero: React.FC<HeroProps> = ({
             <CornerBracket type="BR" />
           </div>
 
-          {/* Official Tourism Board Metadata & Real-time Weather Widget */}
+          {/* Official Tourism Board Metadata */}
           <div className="flex flex-col space-y-4">
-            <WeatherWidget lang={lang} textColor={heroTextColor} textShadow={heroTextShadow} />
 
             <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2 border-t border-gray-200/40">
               <div

@@ -256,11 +256,9 @@ export function useData() {
 
   const saveItem = async (colName: string, item: any) => {
     try {
-      const formattedItem = {
-        ...item,
-        imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : ''
-      };
-      await setDoc(doc(db, colName, item.id), formattedItem);
+      // Save imageUrl as-is (raw URL). Transformation via getDirectDriveUrl
+      // is only applied on read (onSnapshot), not on write.
+      await setDoc(doc(db, colName, item.id), item);
     } catch (e) {
       console.error("Error saving to Firebase: ", e);
     }

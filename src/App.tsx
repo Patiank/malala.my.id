@@ -40,32 +40,45 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
 
-  // Automatic daily refresh for Hot Info news ticker via Gemini AI
+  // Automatic 2-hour refresh for Hot Info news ticker via Gemini AI (National Indonesia tourism news)
   useEffect(() => {
-    const autoRefreshDaily = async () => {
+    const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 7,200,000 ms
+
+    const autoRefresh = async () => {
       try {
-        const todayStr = new Date().toISOString().slice(0, 10);
-        const lastAutoRefresh = localStorage.getItem('malala_hotinfo_last_auto_refresh');
-        if (lastAutoRefresh !== todayStr) {
+        const lastRefreshStr = localStorage.getItem('malala_hotinfo_last_auto_refresh');
+        const lastRefreshTime = lastRefreshStr ? parseInt(lastRefreshStr, 10) : 0;
+        const now = Date.now();
+
+        if (now - lastRefreshTime > TWO_HOURS_MS) {
           setIsRefreshingTicker(true);
           const data = await fetchAiHotInfo(lang);
           if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
             await dataStore.updateHotInfoItems(data);
-            localStorage.setItem('malala_hotinfo_last_auto_refresh', todayStr);
+            localStorage.setItem('malala_hotinfo_last_auto_refresh', now.toString());
           }
         }
       } catch (e) {
-        console.warn("Daily auto-refresh hot info error:", e);
+        console.warn("Auto-refresh hot info error:", e);
       } finally {
         setIsRefreshingTicker(false);
       }
     };
 
-    const timer = setTimeout(() => {
-      autoRefreshDaily();
+    // Initial refresh after 4s delay
+    const initialTimer = setTimeout(() => {
+      autoRefresh();
     }, 4000);
 
-    return () => clearTimeout(timer);
+    // Re-check every 2 hours while the app is open
+    const intervalTimer = setInterval(() => {
+      autoRefresh();
+    }, TWO_HOURS_MS);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(intervalTimer);
+    };
   }, []);
 
   const handleRefreshTicker = async (e: React.MouseEvent) => {

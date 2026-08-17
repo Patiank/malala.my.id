@@ -162,63 +162,63 @@ Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangata
       const fallbackData = [
         {
           "id": "news-fallback-1",
-          "title": "Festival Pesona Minangkabau 2026 Segera Digelar",
-          "titleEn": "Minangkabau Charm Festival 2026 to be Held Soon",
-          "date": "Oktober 2026",
-          "dateEn": "October 2026",
+          "title": "Indonesia Targetkan 17 Juta Wisatawan Mancanegara 2026",
+          "titleEn": "Indonesia Targets 17 Million International Tourists in 2026",
+          "date": "Agustus 2026",
+          "dateEn": "August 2026",
           "category": "Event",
           "categoryEn": "Event",
-          "description": "Pemerintah Provinsi Sumatera Barat bersiap menyelenggarakan Festival Pesona Minangkabau 2026 yang akan menampilkan ragam kebudayaan autentik dari seluruh penjuru Ranah Minang. Acara tahunan ini menjadi magnet bagi ribuan wisatawan nusantara dan mancanegara yang ingin menyaksikan langsung kemegahan budaya lokal.\n\nBerpusat di Istano Basa Pagaruyung, festival ini akan menghadirkan pawai budaya dengan ribuan peserta berpakaian adat, pameran kuliner tradisional yang menggugah selera, serta pertunjukan seni kolosal yang memukau. Selain itu, pengunjung juga bisa mengikuti berbagai lokakarya kerajinan tangan khas Minang.\n\nPara pelaku UMKM lokal pun turut dilibatkan secara maksimal untuk memperkenalkan produk unggulan mereka, mulai dari tenun songket, ukiran kayu, hingga variasi makanan ringan khas Sumatera Barat. Pastikan Anda merencanakan kunjungan ke Batusangkar untuk menjadi bagian dari perayaan budaya terbesar ini.",
-          "descriptionEn": "The West Sumatra Provincial Government is preparing to host the 2026 Minangkabau Charm Festival, which will showcase a variety of authentic cultures from across the Minang realm. This annual event attracts thousands of domestic and international tourists eager to witness the grandeur of local culture firsthand.\n\nCentered at the Istano Basa Pagaruyung, the festival will feature a cultural parade with thousands of participants in traditional attire, mouthwatering traditional culinary exhibitions, and mesmerizing colossal art performances. Additionally, visitors can participate in various traditional Minang handicraft workshops.\n\nLocal MSMEs are also maximally involved to introduce their premium products, ranging from songket weaving and wood carving to various West Sumatran snacks. Make sure to plan your visit to Batusangkar to be part of this grand cultural celebration.",
+          "description": "Kementerian Pariwisata dan Ekonomi Kreatif menyatakan target ambisius untuk mendatangkan 17 juta wisatawan mancanegara pada tahun 2026. Strategi ini didukung oleh pengembangan 5 Destinasi Super Prioritas dan penguatan branding Wonderful Indonesia di pasar global.\n\nBerbagai program promosi digital, kemudahan visa, dan peningkatan konektivitas penerbangan internasional menjadi pilar utama pencapaian target tersebut. Kolaborasi dengan platform digital dan influencer global turut memperkuat penetrasi pasar wisata dunia.\n\nSektor UMKM dan ekonomi kreatif lokal diharapkan menjadi beneficiary utama, dengan penguatan rantai pasok pariwisata dari hulu ke hilir di seluruh wilayah Indonesia.",
+          "descriptionEn": "The Ministry of Tourism and Creative Economy announced an ambitious target to attract 17 million international tourists in 2026. The strategy is supported by developing 5 Super Priority Destinations and strengthening the Wonderful Indonesia branding in global markets.\n\nDigital promotions, visa facilitation, and enhanced international flight connectivity serve as the main pillars. Collaborations with digital platforms and global influencers further strengthen penetration into world tourism markets.\n\nLocal MSMEs and creative economy sectors are expected to be the primary beneficiaries, with strengthened tourism supply chains across all regions of Indonesia.",
           "tag": "Populer",
           "tagEn": "Popular",
           "actionUrl": "",
-          "highlights": ["Pawai Ribuan Baju Adat", "Kuliner Tradisional Terbesar", "Pertunjukan Seni Kolosal"],
-          "highlightsEn": ["Thousands in Traditional Attire Parade", "Largest Traditional Culinary Expo", "Colossal Art Performances"],
-          "tips": "Datanglah lebih awal untuk mendapatkan spot foto terbaik saat pawai.",
-          "tipsEn": "Arrive early to secure the best photo spots during the parade.",
-          "locationName": "Istano Basa Pagaruyung, Tanah Datar",
-          "locationNameEn": "Pagaruyung Palace, Tanah Datar"
+          "highlights": ["Target 17 Juta Wisman", "5 Destinasi Super Prioritas", "Branding Wonderful Indonesia"],
+          "highlightsEn": ["17 Million Tourist Target", "5 Super Priority Destinations", "Wonderful Indonesia Branding"],
+          "tips": "Pantau program promo penerbangan internasional untuk mendapatkan harga terbaik.",
+          "tipsEn": "Monitor international flight promo programs for the best deals.",
+          "locationName": "Seluruh Indonesia",
+          "locationNameEn": "All of Indonesia"
         },
         {
           "id": "news-fallback-2",
-          "title": "Peresmian Kawasan Ekowisata Baru di Lembah Harau",
-          "titleEn": "Inauguration of New Ecotourism Area in Harau Valley",
+          "title": "Labuan Bajo Jadi Tuan Rumah KTT ASEAN Tourism 2026",
+          "titleEn": "Labuan Bajo Hosts ASEAN Tourism Summit 2026",
           "date": "Minggu Ini",
           "dateEn": "This Week",
           "category": "Berita",
           "categoryEn": "News",
-          "description": "Lembah Harau kembali menambah daya tariknya dengan diresmikannya kawasan ekowisata baru yang mengusung konsep ramah lingkungan dan pelestarian alam. Langkah ini diambil untuk memberikan alternatif liburan yang menyatu dengan alam tanpa merusak ekosistem asli lembah granit tersebut.\n\nKawasan baru ini dilengkapi dengan fasilitas glamping premium, jalur trekking yang dirancang dengan memperhatikan kontur tanah alami, serta area konservasi burung endemik. Wisatawan kini memiliki kesempatan untuk bermalam di tengah pelukan tebing-tebing raksasa sambil mendengarkan harmoni suara alam yang menenangkan.\n\nSelain menikmati keindahan alam, pengunjung juga akan diedukasi mengenai pentingnya menjaga kelestarian lingkungan dan budaya lokal. Masyarakat setempat turut diberdayakan sebagai pemandu wisata ekologis yang siap berbagi cerita dan kearifan lokal kepada para tamu.",
-          "descriptionEn": "Harau Valley is adding to its appeal with the inauguration of a new ecotourism area that promotes eco-friendly concepts and nature conservation. This step was taken to provide vacation alternatives that blend with nature without harming the original ecosystem of the granite valley.\n\nThe new area is equipped with premium glamping facilities, trekking paths designed with respect for the natural terrain, and an endemic bird conservation area. Tourists now have the opportunity to spend the night embraced by giant cliffs while listening to the soothing harmony of nature's sounds.\n\nBesides enjoying the natural beauty, visitors will also be educated on the importance of preserving the environment and local culture. Local communities are empowered as ecological tour guides ready to share stories and local wisdom with guests.",
+          "description": "Labuan Bajo, Nusa Tenggara Timur, resmi menjadi tuan rumah KTT Pariwisata ASEAN 2026 yang dihadiri delegasi dari 10 negara anggota. Forum ini membahas pengembangan pariwisata berkelanjutan, ekonomi kreatif, dan konektivitas wisata regional di kawasan Asia Tenggara.\n\nBerbagai fasilitas infrastruktur baru telah diresmikan, termasuk perluasan Bandara Komodo dan penataan kawasan waterfront premium. Keindahan Taman Nasional Komodo menjadi latar belakang sempurna untuk diplomasi pariwisata tingkat tinggi ini.\n\nPelaku usaha pariwisata lokal berkesempatan memamerkan produk dan layanan mereka kepada buyer internasional melalui travel mart yang digelar bersamaan dengan KTT.",
+          "descriptionEn": "Labuan Bajo, East Nusa Tenggara, officially hosts the 2026 ASEAN Tourism Summit attended by delegations from 10 member countries. The forum discusses sustainable tourism development, creative economy, and regional tourism connectivity in Southeast Asia.\n\nNew infrastructure facilities have been inaugurated, including Komodo Airport expansion and premium waterfront area development. The beauty of Komodo National Park serves as the perfect backdrop for this high-level tourism diplomacy.\n\nLocal tourism businesses have the opportunity to showcase their products and services to international buyers through a travel mart held alongside the summit.",
           "tag": "Baru",
           "tagEn": "New",
           "actionUrl": "",
-          "highlights": ["Glamping Premium", "Jalur Trekking Ramah Lingkungan", "Edukasi Pelestarian Alam"],
-          "highlightsEn": ["Premium Glamping", "Eco-friendly Trekking Paths", "Nature Conservation Education"],
-          "tips": "Bawa pakaian hangat karena suhu malam hari di lembah cukup dingin.",
-          "tipsEn": "Bring warm clothing as night temperatures in the valley can be quite chilly.",
-          "locationName": "Lembah Harau, Kab. Limapuluh Kota",
-          "locationNameEn": "Harau Valley, Limapuluh Kota Regency"
+          "highlights": ["KTT ASEAN Tourism", "Infrastruktur Baru Labuan Bajo", "Travel Mart Internasional"],
+          "highlightsEn": ["ASEAN Tourism Summit", "New Labuan Bajo Infrastructure", "International Travel Mart"],
+          "tips": "Booking akomodasi di Labuan Bajo jauh hari saat event internasional untuk harga terbaik.",
+          "tipsEn": "Book Labuan Bajo accommodation well in advance during international events for best rates.",
+          "locationName": "Labuan Bajo, NTT",
+          "locationNameEn": "Labuan Bajo, East Nusa Tenggara"
         },
         {
           "id": "news-fallback-3",
-          "title": "Jalur Kelok 44 Ditata Ulang dengan Gardu Pandang Baru",
-          "titleEn": "Kelok 44 Route Revamped with New Viewing Decks",
+          "title": "Bali Luncurkan Sistem E-Ticket Wisata Terintegrasi",
+          "titleEn": "Bali Launches Integrated Tourism E-Ticket System",
           "date": "Bulan Ini",
           "dateEn": "This Month",
           "category": "Pengumuman",
           "categoryEn": "Announcement",
-          "description": "Dinas Pariwisata Sumatera Barat bersama pemerintah daerah setempat merampungkan penataan ulang kawasan wisata Kelok 44 di Maninjau. Penataan ini mencakup pembuatan spot gardu pandang baru yang lebih aman serta tempat peristirahatan yang nyaman bagi para pengendara dan wisatawan.\n\nDengan hadirnya spot pendukung ini, wisatawan dapat menikmati keindahan panorama Danau Maninjau dari ketinggian dengan rasa aman dan nyaman. Gardu pandang dirancang dengan estetika Minang yang kental, menyajikan pemandangan lanskap alam yang memukau mata.",
-          "descriptionEn": "West Sumatra Tourism Board alongside local government has completed revamping the Kelok 44 tourism area in Maninjau. The project includes new safe viewing decks and comfortable rest stops for drivers and tourists.\n\nWith these new spots, visitors can admire the panoramic view of Lake Maninjau from heights with safety and comfort. Viewing decks are designed with rich Minang aesthetics.",
+          "description": "Pemerintah Provinsi Bali meluncurkan sistem tiket elektronik terintegrasi untuk seluruh destinasi wisata utama di pulau dewata. Sistem ini menghubungkan lebih dari 50 atraksi wisata termasuk pura, pantai, taman budaya, dan museum dalam satu platform digital.\n\nWisatawan cukup membeli satu e-ticket melalui aplikasi resmi atau website untuk mengakses berbagai destinasi dengan harga bundling yang lebih terjangkau. Sistem pembayaran mendukung berbagai metode termasuk kartu kredit internasional, QRIS, dan dompet digital.\n\nLangkah ini diharapkan meningkatkan efisiensi kunjungan wisata sekaligus mengurangi penggunaan tiket kertas demi mendukung visi Bali sebagai destinasi wisata berkelanjutan.",
+          "descriptionEn": "The Bali Provincial Government launched an integrated electronic ticketing system for all major tourist destinations on the island. The system connects over 50 attractions including temples, beaches, cultural parks, and museums in a single digital platform.\n\nTourists simply purchase one e-ticket through the official app or website to access various destinations with more affordable bundle pricing. The payment system supports various methods including international credit cards, QRIS, and digital wallets.\n\nThis move is expected to improve tourism visit efficiency while reducing paper ticket usage in support of Bali's vision as a sustainable tourism destination.",
           "tag": "Terkini",
           "tagEn": "Latest",
           "actionUrl": "",
-          "highlights": ["Gardu Pandang Baru", "Aman & Nyaman", "Panorama Danau Maninjau"],
-          "highlightsEn": ["New Viewing Decks", "Safe & Comfortable", "Lake Maninjau Panorama"],
-          "tips": "Hati-hati saat melintasi tikungan tajam Kelok 44 dan gunakan gigi rendah.",
-          "tipsEn": "Drive carefully on Kelok 44 sharp bends using low gear.",
-          "locationName": "Kelok 44, Kab. Agam",
-          "locationNameEn": "Kelok 44, Agam Regency"
+          "highlights": ["E-Ticket Terintegrasi 50+ Destinasi", "Pembayaran Digital Multi-Metode", "Wisata Berkelanjutan"],
+          "highlightsEn": ["Integrated E-Ticket for 50+ Destinations", "Multi-Method Digital Payment", "Sustainable Tourism"],
+          "tips": "Download aplikasi e-ticket resmi sebelum tiba di Bali untuk kemudahan akses.",
+          "tipsEn": "Download the official e-ticket app before arriving in Bali for easy access.",
+          "locationName": "Bali",
+          "locationNameEn": "Bali"
         }
       ];
 
@@ -237,12 +237,13 @@ Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangata
 
           const currentDateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
 
-          const prompt = `Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita, event, atau informasi terkini mengenai pariwisata di provinsi Sumatera Barat.
+          const prompt = `Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita, event, atau informasi terkini mengenai pariwisata di seluruh Indonesia (nasional).
 
 SANGAT PENTING & KHUSUS:
 1. Cari HANYA informasi/berita yang DIPUBLIKASIKAN DALAM KURUN WAKTU 1 BULAN TERAKHIR dari hari ini (${currentDateStr}).
 2. JANGAN PERNAH menampilkan berita, artikel, event, atau isu yang sudah lewat lebih dari 1 bulan dari batas waktu tersebut.
-3. Ekstrak 5 informasi paling segar, relevan, dan penting.
+3. Ekstrak 5 informasi paling segar, relevan, dan penting dari berbagai wilayah di Indonesia (bukan hanya 1 provinsi).
+4. Cakupan berita meliputi: Bali, Lombok, Raja Ampat, Labuan Bajo, Yogyakarta, Sumatera Barat, Sulawesi, Kalimantan, Papua, dan destinasi wisata nasional lainnya.
 
 Formatkan output HANYA dalam format JSON valid sebagai Array of Objects dengan struktur berikut untuk SETIAP item:
 {
@@ -262,8 +263,8 @@ Formatkan output HANYA dalam format JSON valid sebagai Array of Objects dengan s
   "highlightsEn": ["Key point 1", "Key point 2"],
   "tips": "Satu tips terkait untuk wisatawan (Bahasa Indonesia)",
   "tipsEn": "Satu tips terkait untuk wisatawan (Bahasa Inggris)",
-  "locationName": "Lokasi spesifik (jika ada, misal: 'Kota Padang' atau 'Kab. Tanah Datar')",
-  "locationNameEn": "Lokasi spesifik (jika ada, misal: 'Padang City' atau 'Tanah Datar Regency')"
+  "locationName": "Lokasi spesifik (jika ada, misal: 'Bali' atau 'Labuan Bajo, NTT')",
+  "locationNameEn": "Lokasi spesifik (jika ada, misal: 'Bali' atau 'Labuan Bajo, NTT')"
 }
 
 Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;

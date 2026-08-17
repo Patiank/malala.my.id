@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
@@ -74,6 +74,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [formData, setFormData] = useState<any>(null);
   const [adminError, setAdminError] = useState<string | null>(null);
   const [adminSuccess, setAdminSuccess] = useState<string | null>(null);
+  const [adminSearchQuery, setAdminSearchQuery] = useState<string>('');
   
   // Auth state & Admin Whitelist
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -473,6 +474,115 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         <button onClick={() => { setAdminTab('download'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'download' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Unduhan</button>
         <button onClick={() => { setAdminTab('hotinfo'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'hotinfo' ? 'bg-red-600 text-white shadow-xs' : 'text-red-700 bg-red-50 hover:bg-red-100'}`}>Hot Info</button>
         <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all col-span-2 sm:col-span-1 ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
+      </div>
+
+      {/* Global Search Bar */}
+      <div className="relative mb-4">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="text"
+            value={adminSearchQuery}
+            onChange={(e) => setAdminSearchQuery(e.target.value)}
+            placeholder="Cari katalog di semua kategori... (judul, ID, deskripsi)"
+            className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg text-xs font-jakarta focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-all bg-gray-50 placeholder:text-gray-400"
+          />
+          {adminSearchQuery && (
+            <button
+              onClick={() => setAdminSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Global Search Results Dropdown */}
+        {adminSearchQuery.trim().length >= 2 && (() => {
+          const q = adminSearchQuery.toLowerCase().trim();
+          const categoryMap: { key: TabType; label: string; data: any[]; color: string }[] = [
+            { key: 'destinations', label: 'Destinasi', data: destinations, color: 'bg-blue-100 text-blue-800' },
+            { key: 'culture', label: 'Budaya', data: cultureItems, color: 'bg-purple-100 text-purple-800' },
+            { key: 'culinary', label: 'Kuliner', data: culinaryItems, color: 'bg-orange-100 text-orange-800' },
+            { key: 'events', label: 'Event', data: eventItems, color: 'bg-green-100 text-green-800' },
+            { key: 'hotinfo', label: 'Hot Info', data: hotInfoItems, color: 'bg-red-100 text-red-800' },
+          ];
+
+          const allResults: { item: any; category: typeof categoryMap[0] }[] = [];
+          categoryMap.forEach(cat => {
+            (cat.data || []).forEach((item: any) => {
+              const searchable = [
+                item.id, item.title, item.titleEn, item.category, item.categoryEn,
+                item.description, item.descriptionEn, item.regency, item.origin, item.originEn,
+                item.tag, item.tagEn, item.type, item.typeEn, item.location, item.locationEn
+              ].filter(Boolean).join(' ').toLowerCase();
+              if (searchable.includes(q)) {
+                allResults.push({ item, category: cat });
+              }
+            });
+          });
+
+          if (allResults.length === 0) {
+            return (
+              <div className="absolute z-30 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-4 text-center text-xs text-gray-500 font-jakarta">
+                Tidak ada hasil untuk "{adminSearchQuery}"
+              </div>
+            );
+          }
+
+          return (
+            <div className="absolute z-30 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-80 overflow-y-auto">
+              <div className="p-2 border-b border-gray-100 flex items-center justify-between">
+                <span className="text-[10px] font-bold text-gray-500 uppercase font-jakarta">
+                  {allResults.length} hasil ditemukan
+                </span>
+                <div className="flex gap-1 flex-wrap">
+                  {categoryMap.map(cat => {
+                    const count = allResults.filter(r => r.category.key === cat.key).length;
+                    if (count === 0) return null;
+                    return (
+                      <span key={cat.key} className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${cat.color}`}>
+                        {cat.label}: {count}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+              {allResults.slice(0, 20).map(({ item, category }) => (
+                <div
+                  key={`${category.key}-${item.id}`}
+                  className="flex items-center justify-between px-3 py-2.5 hover:bg-gray-50 border-b border-gray-50 last:border-0 cursor-pointer transition-colors"
+                  onClick={() => {
+                    setAdminTab(category.key);
+                    setFormData({ ...item });
+                    setEditingId(item.id);
+                    setAdminSearchQuery('');
+                  }}
+                >
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${category.color}`}>
+                      {category.label}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-xs font-bold text-gray-900 truncate font-jakarta">{item.title || item.id}</div>
+                      <div className="text-[10px] text-gray-500 truncate font-jakarta">
+                        ID: {item.id} {item.category ? `• ${item.category}` : ''} {item.regency ? `• ${item.regency}` : ''}
+                      </div>
+                    </div>
+                  </div>
+                  <button className="shrink-0 ml-2 bg-black text-white px-2.5 py-1 rounded text-[10px] font-bold font-jakarta uppercase flex items-center gap-1 hover:bg-gray-800 transition-colors">
+                    <Edit3 className="w-3 h-3" /> Edit
+                  </button>
+                </div>
+              ))}
+              {allResults.length > 20 && (
+                <div className="px-3 py-2 text-center text-[10px] text-gray-400 font-jakarta">
+                  Menampilkan 20 dari {allResults.length} hasil. Perkecil pencarian untuk hasil lebih spesifik.
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Messages */}
