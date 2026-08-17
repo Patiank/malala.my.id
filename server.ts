@@ -77,52 +77,144 @@ async function startServer() {
         // Fallback response when GEMINI_API_KEY is not configured
         return res.json({
           title: isEnglish
-            ? `West Sumatra Exploration (${durasiHari || 3} Days${startDate ? ` - Starting ${startDate}` : ''})`
-            : `Eksplorasi Ranah Minang (${durasiHari || 3} Hari${startDate ? ` - Mulai ${startDate}` : ''})`,
+            ? `Master Tour Itinerary: Wonderful West Sumatra Exploration (${durasiHari || 3} Days${startDate ? ` - Starting ${startDate}` : ''})`
+            : `Rencana Perjalanan Eksklusif: Pesona Ranah Minang (${durasiHari || 3} Hari${startDate ? ` - Mulai ${startDate}` : ''})`,
           summary: isEnglish
-            ? `UNI MALA AI recommended travel plan combining geopark landscapes, authentic Rendang gastronomy, and rich Minangkabau Rumah Gadang heritage.`
-            : `Rencana wisata rekomendasi UNI MALA AI mencakup perpaduan keindahan geowisata, kuliner Rendang autentik, serta warisan budaya Rumah Gadang.`,
-          itinerary: Array.from({ length: Number(durasiHari) || 3 }).map((_, idx) => ({
-            day: idx + 1,
-            title: isEnglish
-              ? (idx === 0 ? "Arrival & Bukittinggi Clock Tower Charm" : idx === 1 ? "Lembah Harau Canyon Adventure & Payakumbuh Food" : "Lake Maninjau & Nagari Pariangan Heritage Village")
-              : (idx === 0 ? "Kedatangan & Pesona Kota Jam Gadang Bukittinggi" : idx === 1 ? "Petualangan Geopark Lembah Harau & Kuliner Payakumbuh" : "Wisata Danau Maninjau & Desa Terindah Nagari Pariangan"),
-            activities: [
-              {
-                time: "08:30 - 11:30",
-                location: idx === 0 ? "Jam Gadang & Ngarai Sianok" : idx === 1 ? "Lembah Harau Canyon" : "Nagari Pariangan",
-                activity: isEnglish
-                  ? (idx === 0 ? "Photo session at Bukittinggi Clock Tower, followed by exploring Sianok Canyon and Japanese Tunnel." : idx === 1 ? "Enjoying spectacular granite cliffs and Sarasah Bunta Waterfall." : "Explore Minangkabau's oldest village featuring traditional wooden architecture and Mount Marapi views.")
-                  : (idx === 0 ? "Sesi foto di Ikon Jam Gadang, dilanjutkan menyusuri panorama Ngarai Sianok dan Lubang Jepang." : idx === 1 ? "Menikmati tebing tebing granit spektakuler dan air terjun Sarasah Bunta." : "Jelajah desa tertua Minangkabau dengan arsitektur kayu tradisional dan pemandangan Gunung Marapi."),
-                tips: isEnglish ? "Wear warm layers and comfortable walking shoes." : "Gunakan pakaian hangat dan sepatu jalan yang nyaman."
-              },
-              {
-                time: "12:30 - 14:00",
-                location: isEnglish ? "Authentic Padang Cuisine Restaurant" : "Restoran Rumah Makan Padang Autentik",
-                activity: isEnglish ? "Lunch featuring Beef Rendang, Pop Chicken, and Bukittinggi Kapau Curry." : "Makan siang dengan hidangan Rendang Daging, Ayam Pop, dan Gulai Kapau khas Bukittinggi.",
-                tips: isEnglish ? "Try pairing Green Sambal with Tunjang Curry." : "Coba padukan Sambal Lado Mudo dengan Gulai Tunjang."
-              },
-              {
-                time: "15:30 - 18:00",
-                location: idx === 0 ? "Puncak Lawang & Kelok 44" : idx === 1 ? "Istano Basa Pagaruyung" : "Padang Beach & Grand Mosque of West Sumatra",
-                activity: isEnglish
-                  ? (idx === 0 ? "Enjoying Lake Maninjau panoramic view from Puncak Lawang height." : idx === 1 ? "Exploring Minangkabau Royal Palace wearing traditional costume." : "Sunset at Padang Beach and admiring the unique dome-less Minangkabau architecture of West Sumatra Grand Mosque.")
-                  : (idx === 0 ? "Menikmati pemandangan Danau Maninjau dari ketinggian Puncak Lawang." : idx === 1 ? "Eksplorasi Istana Kerajaan Minangkabau dengan pakaian adat tradisional." : "Sunset di Pantai Padang dan menikmati keindahan arsitektur Rumah Gadang tanpa kubah Masjid Raya Sumbar."),
-                tips: isEnglish ? "Capture the sunset moments." : "Abadikan momen matahari terbenam."
-              }
-            ],
-            culinaryRecommendation: isEnglish
-              ? (idx === 0 ? "Pasar Atas Nasi Kapau & Teh Talua (Egg Tea)" : idx === 1 ? "Payakumbuh Satay & Tapai Sticky Rice" : "Padang Satay & Durian Ice")
-              : (idx === 0 ? "Nasi Kapau Pasar Atas & Teh Talua" : idx === 1 ? "Sate Payakumbuh & Lemang Tapai" : "Sate Padang & Es Durian")
-          })),
+            ? `A professionally curated, geographically optimized travel itinerary designed by master tour operators. Features seamless corridor routing, realistic drive times, iconic Minangkabau geoparks, UNESCO cultural heritage, and world-class culinary stops.`
+            : `Rencana perjalanan wisata logis dan praktikal yang dirancang oleh Master Tour Operator berpengalaman. Mengutamakan rute searah tanpa bolak-balik, estimasi waktu tempuh realistis, kepuasan maksimal wisatawan, serta eksplorasi kuliner legendaris khas Minangkabau.`,
+          itinerary: Array.from({ length: Number(durasiHari) || 3 }).map((_, idx) => {
+            if (idx === 0) {
+              return {
+                day: 1,
+                title: isEnglish ? "Airport Arrival, Anai Valley & Bukittinggi Highland Charm" : "Kedatangan BIM, Lembah Anai & Pesona Dataran Tinggi Bukittinggi",
+                activities: [
+                  {
+                    time: "08:30 - 11:30",
+                    location: isEnglish ? "BIM Airport → Lembah Anai Waterfall [Drive ±1.5 hrs]" : "Bandara BIM → Air Terjun Lembah Anai [Perjalanan ±1.5 jam]",
+                    activity: isEnglish
+                      ? "Airport pickup, scenic mountain drive along Anai Valley Gorge with a photo stop at the iconic roadside Lembah Anai Waterfall and lush tropical rainforest."
+                      : "Penjemputan di Bandara BIM, perjalanan menyusuri kawasan cagar alam Lembah Anai dengan perhentian foto di Air Terjun Lembah Anai yang sejuk.",
+                    tips: isEnglish ? "Roads can be damp; wear slip-resistant footwear and keep a light jacket ready." : "Jalanan sekitar air terjun lembap; gunakan alas kaki nyaman dan siapkan jaket ringan."
+                  },
+                  {
+                    time: "12:00 - 13:30",
+                    location: isEnglish ? "Padang Panjang Culinary Stop (Sate Mak Syukur / Restoran Gumarang)" : "Pemberhentian Kuliner Padang Panjang (Sate Mak Syukur / RM Pak Datuk)",
+                    activity: isEnglish
+                      ? "Authentic lunch savoring legendary Padang Panjang Beef Satay with thick yellow curry soup, or hearty Padang dishes."
+                      : "Makan siang menikmati Sate Padang Panjang legendaris dengan kuah kuning rempah khas yang gurih dan nikmat.",
+                    tips: isEnglish ? "Pair with warm Teh Talua (Minang whipped egg tea) for energy." : "Padukan dengan Teh Talua hangat untuk menambah stamina di udara sejuk."
+                  },
+                  {
+                    time: "14:00 - 15:30",
+                    location: isEnglish ? "Pandai Sikek Weaving Village [Drive ±20 mins]" : "Desa Tenun Songket Pandai Sikek [Perjalanan ±20 menit]",
+                    activity: isEnglish
+                      ? "Visit master weavers crafting gold-threaded Songket and intricate Minangkabau wood carvings under the silhouettes of Mount Singgalang and Marapi."
+                      : "Menyaksikan mahakarya perajin tenun Songket benang emas dan ukiran kayu tradisional khas Minangkabau berlatar Gunung Singgalang.",
+                    tips: isEnglish ? "Great spot to purchase genuine certified handmade Songket and scarves." : "Tempat terbaik membeli kain songket dan selendang tenun asli langsung dari perajin."
+                  },
+                  {
+                    time: "16:30 - 18:30",
+                    location: isEnglish ? "Jam Gadang & Panorama Ngarai Sianok [Bukittinggi]" : "Taman Jam Gadang & Panorama Ngarai Sianok [Bukittinggi]",
+                    activity: isEnglish
+                      ? "Check-in hotel in Bukittinggi, stroll around the historic 1926 Jam Gadang clock tower plaza, and enjoy golden hour canyon views at Ngarai Sianok."
+                      : "Check-in hotel di Bukittinggi, menikmati suasana senja di pelataran Jam Gadang 1926 dan panorama sunset tebing 100 meter Ngarai Sianok.",
+                    tips: isEnglish ? "Cool evening breeze (18-20°C); perfect time for family photography." : "Udara sore cukup sejuk (18-20°C); waktu terbaik untuk berfoto bersama keluarga."
+                  }
+                ],
+                culinaryRecommendation: isEnglish
+                  ? "Dinner: Nasi Kapau Uni Lis at Los Lambuang Pasar Atas (Must-try: Gulai Tambusu & Dendeng Batokok)."
+                  : "Makan Malam: Nasi Kapau Uni Lis di Los Lambuang Pasar Atas Bukittinggi (Wajib coba: Gulai Tambusu, Dendeng Batokok, dan Rendang)."
+              };
+            } else if (idx === 1) {
+              return {
+                day: 2,
+                title: isEnglish ? "Lembah Harau Granite Canyon & Kelok 9 Mega Flyover" : "Geopark Tebing Granit Lembah Harau & Megaproyek Jembatan Kelok 9",
+                activities: [
+                  {
+                    time: "08:00 - 11:30",
+                    location: isEnglish ? "Lembah Harau Geopark, 50 Kota [Drive ±1 hr from Bukittinggi]" : "Geopark Lembah Harau, Kab. 50 Kota [Perjalanan ±1 jam dari Bukittinggi]",
+                    activity: isEnglish
+                      ? "Exploring the towering 100-300m vertical granite cliffs of Lembah Harau, visiting Sarasah Murai and Sarasah Bunta waterfalls amidst emerald rice terraces."
+                      : "Menjelajahi keagungan tebing granit tegak 100-300 meter Lembah Harau, menikmati Air Terjun Sarasah Murai dan hamparan sawah hijau asri.",
+                    tips: isEnglish ? "Rent a local motor-scooter or open safari jeep for best cliff photography." : "Sewa safari jeep terbuka atau jalan kaki santai untuk sudut foto tebing terbaik."
+                  },
+                  {
+                    time: "12:00 - 13:30",
+                    location: isEnglish ? "Harau Countryside Resto (Pondok Flora / Rumah Makan Pongek Oci)" : "Restoran Tepi Sawah Harau (RM Pondok Flora / Pongek Situjuah)",
+                    activity: isEnglish
+                      ? "Authentic Payakumbuh lunch featuring Gulai Itiak Lado Mudo (green chili smoked duck) and fresh river gourami fish."
+                      : "Makan siang dengan hidangan Gulai Itiak Lado Mudo (bebek cabe hijau), Pongek Cubadak, dan Ikan Bakar segar.",
+                    tips: isEnglish ? "Duck is slow-cooked for 8 hours, extremely tender with moderate aroma." : "Daging itik dimasak perlahan dengan bumbu rempah harum dan empuk."
+                  },
+                  {
+                    time: "14:30 - 16:30",
+                    location: isEnglish ? "Kelok 9 Flyover & Batang Sanipan Canyon [Drive ±30 mins]" : "Jembatan Layang Kelok 9 & Ngalau Indah [Perjalanan ±30 menit]",
+                    activity: isEnglish
+                      ? "Admire the magnificent engineering of Kelok 9 winding flyover bridges carved into the rainforest gorge, followed by scenic coffee at cliffside rest areas."
+                      : "Menyaksikan kemegahan arsitektur jembatan layang Kelok 9 yang meliuk di antara dua bukit cagar alam, dilanjutkan rehat kopi di gardu pandang.",
+                    tips: isEnglish ? "Spot local roasted sweet corn and banana fritters at viewpoints." : "Nikmati jagung bakar manis dan pisang kapik kelapa di spot gardu pandang."
+                  }
+                ],
+                culinaryRecommendation: isEnglish
+                  ? "Payakumbuh Special: Lamang Tapai (black fermented sticky rice with bamboo-roasted sticky rice) & Sate Danguang-Danguang."
+                  : "Kuliner Khas Payakumbuh: Lamang Tapai ketan hitam bambu & Sate Danguang-Danguang berkuah rempah kelapa."
+              };
+            } else {
+              return {
+                day: idx + 1,
+                title: isEnglish ? "Royal Heritage Istano Pagaruyung & Lake Singkarak Sunset" : "Warisan Kerajaan Istano Basa Pagaruyung & Danau Singkarak",
+                activities: [
+                  {
+                    time: "08:30 - 10:30",
+                    location: isEnglish ? "Nagari Pariangan Heritage Village [Drive ±45 mins]" : "Desa Wisata Nagari Pariangan [Perjalanan ±45 menit]",
+                    activity: isEnglish
+                      ? "Walking through the oldest Minang village on Mount Marapi slopes, marveling at century-old wooden Rumah Gadang and drinking roasted Kawa Daun coffee."
+                      : "Menyusuri desa tertua Minangkabau di lereng Marapi, mengagumi arsitektur Rumah Gadang kayu ratusan tahun, dan mencicipi seduhan kopi Kawa Daun.",
+                    tips: isEnglish ? "Wear respectful attire and drink Kawa tea from traditional coconut shells." : "Kenakan pakaian sopan dan nikmati sensasi minum kopi daun dari batok kelapa."
+                  },
+                  {
+                    time: "11:15 - 13:30",
+                    location: isEnglish ? "Istano Basa Pagaruyung, Batusangkar [Drive ±25 mins]" : "Istano Basa Pagaruyung, Batusangkar [Perjalanan ±25 menit]",
+                    activity: isEnglish
+                      ? "Touring the majestic 3-storey Minangkabau Royal Palace, admiring golden carvings, and trying on royal ceremonial Minang attire for commemorative photos."
+                      : "Eksplorasi kemegahan Istana Kerajaan Minangkabau 3 lantai beratap gonjong 11 lekuk, serta mencoba kostum adat raja dan ratu Bundo Kanduang.",
+                    tips: isEnglish ? "Costume rental available on ground floor; highly recommended for souvenirs." : "Sewa busana adat tersedia di lokasi; sangat direkomendasikan untuk kenang-kenangan."
+                  },
+                  {
+                    time: "14:15 - 16:30",
+                    location: isEnglish ? "Lake Singkarak Shoreline [Drive ±30 mins]" : "Tepian Danau Singkarak [Perjalanan ±30 menit]",
+                    activity: isEnglish
+                      ? "Late lunch and relaxation along the turquoise shores of Lake Singkarak, tasting endemic crispy fried Bilih fish while enjoying the vast lake panorama."
+                      : "Makan siang santai di tepi Danau Singkarak, menikmati hidangan Ikan Bilih goreng renyah yang hanya hidup endemik di danau ini.",
+                    tips: isEnglish ? "Buy packaged dried Ikan Bilih as exclusive authentic gifts." : "Beli oleh-oleh Ikan Bilih krispi kemasan langsung dari nelayan danau."
+                  },
+                  {
+                    time: "17:30 - 19:30",
+                    location: isEnglish ? "Grand Mosque of West Sumatra & Padang Beach [Drive ±1.5 hrs to Padang]" : "Masjid Raya Sumatera Barat & Pantai Padang [Perjalanan ±1.5 jam ke Padang]",
+                    activity: isEnglish
+                      ? "Sunset contemplation at Padang Beach followed by admiring the iconic award-winning Rumah Gadang architectural dome of Grand Mosque of West Sumatra."
+                      : "Menikmati sunset di Pantai Padang / Jembatan Siti Nurbaya, dilanjutkan beribadah dan mengagumi kemegahan arsitektur Masjid Raya Sumatera Barat.",
+                    tips: isEnglish ? "Grand Mosque has beautiful night illumination." : "Masjid Raya Sumbar bermandikan cahaya lampu yang sangat megah di malam hari."
+                  }
+                ],
+                culinaryRecommendation: isEnglish
+                  ? "Dinner in Padang: Es Durian Ganti Nan Jano & Sate Padang Ajo Ramon."
+                  : "Kuliner Penutup Kota Padang: Es Durian Iko Gantinyo / Ganti Nan Jano & Sate Padang Ajo Ramon."
+              };
+            }
+          }),
           localTips: isEnglish
             ? [
-                "Minangkabau culture deeply values 'Adat Basandi Syarak, Syarak Basandi Kitabullah' (Custom based on religion). Please respect local wisdom and dress modestly.",
-                "Must-buy souvenirs: Sanjai Balado Chips, Local Coffee, and Packaged Rendang."
+                "Geographic Flow: Itinerary is arranged sequentially without back-and-forth travel, ensuring comfort and maximum sightseeing time.",
+                "Cultural Etiquette: Ranah Minang honors 'Adat Basandi Syarak, Syarak Basandi Kitabullah'. Dress modestly when visiting villages, palaces, and mosques.",
+                "Gastronomy Note: When dining at traditional Padang restaurants, dishes are served 'Hidang' on your table; you only pay for what you eat.",
+                "Essential Souvenirs: Christine Hakim Balado Chips, Songket Pandai Sikek, Kopi Kawa Daun, and Vacuum-packed Rendang."
               ]
             : [
-                "Masyarakat Minangkabau memegang teguh falsafah 'Adat Basandi Syarak, Syarak Basandi Kitabullah'. Hargai kearifan lokal.",
-                "Oleh-oleh wajib: Keripik Balado Sanjai, Kopi Bawaan, dan Rendang Kemasan."
+                "Logika Perjalanan: Rute disusun secara linear searah per klaster geografis tanpa bolak-balik, menjamin kenyamanan fisik dan efisiensi waktu.",
+                "Etika Budaya: Masyarakat Minangkabau memegang teguh 'Adat Basandi Syarak, Syarak Basandi Kitabullah'. Kenakan busana sopan saat berkunjung ke nagari, istana, dan masjid.",
+                "Tradisi Kuliner Hidang: Di Rumah Makan Padang otentik, makanan disajikan bertumpuk di meja (sistem hidang); Anda hanya membayar piring yang dimakan.",
+                "Oleh-Oleh Wajib: Keripik Balado Sanjai Christine Hakim/Mahkota, Kain Tenun Pandai Sikek, Kopi Kawa Daun, dan Rendang Kemasan Vakum."
               ]
         });
       }
@@ -143,9 +235,79 @@ async function startServer() {
       // Format events list for context
       const eventsSummary = Array.isArray(availableEvents) && availableEvents.length > 0
         ? availableEvents.map((ev: any) => `- ${ev.title} (${ev.schedule || ev.date || ''} di ${ev.location || 'Sumbar'}) ${ev.isKen ? '[KEN Kemenparekraf]' : ''}: ${ev.description || ''}`).join('\n')
-        : 'Katalog event resmi Dinas Pariwisata Sumbar 2026: Pacu Jawi (Mei-Juni / Agt-Sept), Tour de Singkarak (Juli-Agustus), Festival Tabuik (Muharram/Juli), Rang Solok Baralek Gadang (September), Payakumbuh Botuang Festival (Juli), Sawahlunto Songket Carnival (September), Festival Siti Nurbaya Padang (Agustus).';
+        : 'Katalog event resmi Dinas Pariwisata Sumbar 2026: Pacu Jawi (Mei-Juni / Agt-Sept di Tanah Datar), Tour de Singkarak (Juli-Agustus), Festival Tabuik (Muharram/Juli di Pariaman), Rang Solok Baralek Gadang (September di Solok), Payakumbuh Botuang Festival (Juli), Sawahlunto Songket Carnival (September), Festival Siti Nurbaya Padang (Agustus).';
 
-      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi Dinas Pariwisata Provinsi Sumatera Barat (Wonderful West Sumatra).\n${langInstruction}\n\nDetail Permintaan Wisatawan:\n- Tanggal Kunjungan: ${startDate ? `${startDate}${endDate ? ` s/d ${endDate}` : ''}` : 'Fleksibel'}\n- Durasi: ${durasiHari || 3} hari\n- Profil Wisatawan: ${profilWisatawan?.jumlahOrang || 2} orang (${profilWisatawan?.kategori || 'pasangan'}, Asal: ${profilWisatawan?.asal || 'domestik'})\n- Minat Destinasi: ${(preferensiMinat?.kategoriWisata || []).join(', ')}\n- Tingkat Aktivitas: ${preferensiMinat?.tingkatAktivitas || 'sedang'}\n- Kelas Anggaran: ${anggaran?.rentang || 'menengah'}\n- Kebutuhan Khusus / Alergi / Catatan: ${kebutuhanKhusus?.catatanKhusus || (kebutuhanKhusus?.alergiMakanan || []).join(', ') || 'Tidak ada'}\n\nKatalog Event & Festival Resmi Sumbar 2026:\n${eventsSummary}\n\nINSTRUKSI ITINERARY:\n1. Rancang urutan rute logistik perjalanan yang paling efisien, searah, dan menyenangkan bagi wisatawan.\n2. Perhatikan kebutuhan khusus atau catatan alergi makanan wisatawan dalam merekomendasikan kuliner dan aktivitas.\n3. HANYA JIKA DIBUTUHKAN & RELEVAN: Apabila wisatawan memilih tanggal tertentu dan terdapat festival resmi yang bertepatan serta cocok dengan minat/durasi, usulkan dan masukkan festival tersebut ke agenda itinerary hari yang sesuai. Jika tidak ada event yang bertepatan atau event tidak relevan, fokuskan pada destinasi dan budaya unggulan.\n\nFormatkan output HANYA dalam format JSON valid dengan struktur:\n{\n  "title": "${isEnglish ? 'Trip Title' : 'Judul Rencana Perjalanan Wisata'}",\n  "summary": "${isEnglish ? 'Summary of experience' : 'Ringkasan pengalaman wisata yang akan dirasakan'}",\n  "itinerary": [\n    {\n      "day": 1,\n      "title": "${isEnglish ? 'Day 1 Theme' : 'Tema Hari Ke-1'}",\n      "activities": [\n        {\n          "time": "08:00 - 10:00",\n          "location": "${isEnglish ? 'Location Name' : 'Nama Tempat / Destinasi'}",\n          "activity": "${isEnglish ? 'Recommended activity description' : 'Deskripsi kegiatan yang direkomendasikan'}",\n          "tips": "${isEnglish ? 'Local tips' : 'Tips lokal / kearifan lokal'}"\n        }\n      ],\n      "culinaryRecommendation": "${isEnglish ? 'Culinary recommendation' : 'Rekomendasi kuliner khas untuk hari ini'}"\n    }\n  ],\n  "localTips": [\n    "${isEnglish ? 'Minangkabau etiquette tip' : 'Tips etika Minangkabau (Adat Basandi Syarak, Syarak Basandi Kitabullah)'}",\n    "${isEnglish ? 'Souvenir recommendation' : 'Rekomendasi oleh-oleh khas Sumbar'}"\n  ]\n}\n\nBerikan respon HANYA dalam format JSON tanpa markdown backticks atau teks lain di luar JSON. Language requested: ${isEnglish ? 'ENGLISH' : 'INDONESIAN'}.`;
+      const prompt = `Anda adalah MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK & PALING BERPENGALAMAN di Sumatera Barat (Wonderful West Sumatra Tourism Board).
+${langInstruction}
+
+TUGAS ANDA:
+Rancang rencana perjalanan wisata (Itinerary) yang SANGAT LOGIS, PRAKTIKAL, REALISTIS, SEARAH, dan MENGUTAMAKAN KESENANGAN, KEPUASAN, SERTA KENYAMANAN MAKSIMAL WISATAWAN.
+
+DATA PERMINTAAN WISATAWAN:
+- Durasi Perjalanan: ${durasiHari || 3} Hari
+- Tanggal Kunjungan: ${startDate ? `${startDate}${endDate ? ` s/d ${endDate}` : ''}` : 'Fleksibel'}
+- Profil Wisatawan: ${profilWisatawan?.jumlahOrang || 2} orang (${profilWisatawan?.kategori || 'pasangan'}, Asal: ${profilWisatawan?.asal || 'domestik'})
+- Preferensi Minat: ${(preferensiMinat?.kategoriWisata || []).join(', ') || 'Semua Minat (Alam, Budaya, Kuliner)'}
+- Tingkat Aktivitas: ${preferensiMinat?.tingkatAktivitas || 'sedang'}
+- Kelas Anggaran: ${anggaran?.rentang || 'menengah'}
+- Kebutuhan Khusus / Alergi Makanan / Catatan Penting: ${kebutuhanKhusus?.catatanKhusus || (kebutuhanKhusus?.alergiMakanan || []).join(', ') || 'Tidak ada catatan khusus'}
+
+KATALOG EVENT & FESTIVAL RESMI SUMBAR 2026:
+${eventsSummary}
+
+============================================================
+PANDUAN LOGISTIK & STANDAR MASTER TOUR OPERATOR:
+============================================================
+1. KLASTER GEOGRAFIS & RUTE SEARAH (STRICT CORRIDOR ROUTING - DILARANG ZIG-ZAG / BOLAK-BALIK):
+   - Gerbang Masuk & Keluar Utama: Bandara Internasional Minangkabau (BIM) Padang Pariaman / Kota Padang.
+   - Pola Rute Standar:
+     * HARI 1 (Upward Flow): BIM / Padang → Air Terjun Lembah Anai (Rehat) → Sentra Tenun Pandai Sikek → Bukittinggi (Check-in, Jam Gadang, Ngarai Sianok Sunset, Nasi Kapau Pasar Atas).
+     * HARI 2 (Geopark & Alam Spektakuler): Bukittinggi → Payakumbuh → Lembah Harau (Tebing Granit & Air Terjun) → Jembatan Kelok 9 → Kuliner Khas Payakumbuh (Gulai Itiak Lado Mudo / Sate Danguang-Danguang).
+     * HARI 3 (Heritage & Culture): Bukittinggi → Desa Terindah Dunia Nagari Pariangan → Istano Basa Pagaruyung (Batusangkar) → Makan Ikan Bilih tepi Danau Singkarak → Kembali ke Padang/BIM (Masjid Raya Sumbar & Pantai Padang).
+     * HARI 4/5/7 (Jika durasi lebih panjang): Tambahkan Kawasan Bahari Mandeh (Pesisir Selatan), Danau Maninjau & Puncak Lawang via Kelok 44, Danau Kembar & Kebun Teh Alahan Panjang Solok, atau Kota Tambang UNESCO Sawahlunto.
+
+2. PACING MANUSIAWI & ESTIMASI WAKTU TEMPUH RIIL:
+   - Maksimal 3 - 4 destinasi utama per hari agar wisatawan tidak terburu-buru dan tidak kelelahan di jalan.
+   - PADA SETIAP NAMA LOKASI/AKTIVITAS, CANTUMKAN ESTIMASI WAKTU TEMPUH DARI LOKASI SEBELUMNYA. Contoh: "Lembah Harau [Perjalanan ±45 mnt dari Bukittinggi]" atau "Istano Basa Pagaruyung [Perjalanan ±30 mnt]".
+
+3. KULINER OTENTIK SEARAH JALUR (ROUTE-ALIGNED ICONIC FOOD):
+   - Wajib merekomendasikan kuliner legendaris yang berada tepat di jalur perjalanan hari itu (bukan yang berlawanan arah). Contoh: Sate Mak Syukur di Padang Panjang, Nasi Kapau Los Lambuang di Bukittinggi, Gulai Itiak Lado Mudo di Ngarai/Harau, Ikan Bilih Goreng di Danau Singkarak, Es Durian Ganti Nan Jano di Padang.
+   - Sesuaikan rekomendasi kuliner dengan catatan alergi atau kebutuhan khusus wisatawan jika ada.
+
+4. SINKRONISASI EVENT (HANYA JIKA RELEVAN):
+   - Jika wisatawan memilih tanggal tertentu dan terdapat event KEN / festival budaya yang bertepatan, masukkan festival tersebut ke dalam itinerary pada hari dan klaster wilayah yang tepat.
+
+5. KEARIFAN LOKAL & TIPS TOUR LEADER:
+   - Sertakan tips etika berpakaian sopan Minangkabau ("Adat Basandi Syarak, Syarak Basandi Kitabullah"), waktu terbaik foto (golden hour), waktu sholat/istirahat, serta rekomendasi oleh-oleh otentik.
+
+============================================================
+FORMAT OUTPUT:
+============================================================
+Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau teks pengantar apa pun di luar JSON:
+{
+  "title": "${isEnglish ? 'Executive Tour Itinerary Title' : 'Judul Rencana Perjalanan Wisata Eksklusif'}",
+  "summary": "${isEnglish ? 'Professional summary of the optimized travel experience' : 'Ringkasan profesional pengalaman perjalanan yang logis, nyaman, dan berkesan'}",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "${isEnglish ? 'Day 1 Theme with Geographical Focus' : 'Tema Hari Ke-1 & Fokus Wilayah'}",
+      "activities": [
+        {
+          "time": "08:30 - 11:30",
+          "location": "${isEnglish ? 'Location Name [Drive ±X mins/hrs]' : 'Nama Tempat / Destinasi [Waktu Tempuh ±X mnt/jam]'}",
+          "activity": "${isEnglish ? 'Detailed exciting & practical activity description' : 'Deskripsi aktivitas yang seru, terperinci, dan praktikal'}",
+          "tips": "${isEnglish ? 'Tour leader insider tips & photo spots' : 'Tips praktis tour leader, spot foto terbaik, dan persiapan'}"
+        }
+      ],
+      "culinaryRecommendation": "${isEnglish ? 'Authentic route-aligned food & restaurant recommendation' : 'Rekomendasi kuliner legendaris dan tempat makan otentik yang searah rute'}"
+    }
+  ],
+  "localTips": [
+    "${isEnglish ? 'Minangkabau etiquette & dressing advice' : 'Etika dan tata krama Minangkabau (Adat Basandi Syarak)'}",
+    "${isEnglish ? 'Top authentic souvenir recommendations' : 'Rekomendasi oleh-oleh khas otentik'}",
+    "${isEnglish ? 'Travel logistics & weather tips' : 'Tips logistik jalan pegunungan & kenyamanan fisik'}"
+  ]
+}`;
 
       const response = await ai.models.generateContent({
         model: 'gemini-3.6-flash',
