@@ -27,7 +27,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   const eventItems: EventItem[] = (dataStore.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems : EVENTS_SCHEDULE;
 
   // Compress Unsplash images to WebP for fast performance
-  const imgSrc = (url: string, w = 800) => {
+  const imgSrc = (url: string, w = 600) => {
     if (!url) return url;
     if (url.includes('unsplash.com')) {
       const base = url.split('?')[0];
@@ -41,31 +41,31 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
       {/* Floating Minimalist Close Button (Fixed Top-Right) */}
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[230] w-11 h-11 rounded-full bg-black/70 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
+        className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
         title={isEn ? 'Close' : 'Tutup'}
         aria-label="Close"
       >
         <X className="w-5 h-5" />
       </button>
 
-      {/* Book Content Pages Container — Expansive Magazine View */}
-      <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-20 space-y-6 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
+      {/* Book Content Pages Container — Half Width (~460px) & Natural Auto Height */}
+      <main className="w-full max-w-[460px] mx-auto px-3 pt-4 pb-16 space-y-4 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
         
-        {/* Clean Chapter Selector at the top (Fit nicely, NO slider / scrollbar) */}
-        <nav className="w-full bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-2 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 shadow-xl print:hidden">
+        {/* Clean Chapter Selector at the top (5-grid, NO slider / scrollbar) */}
+        <nav className="w-full bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-xl p-1.5 grid grid-cols-5 gap-1 shadow-lg print:hidden">
           {[
-            { key: 'all', label: isEn ? '📖 Semua' : '📖 Semua' },
-            { key: 'destinations', label: isEn ? `🏔️ Destinasi (${destinations.length})` : `🏔️ Destinasi (${destinations.length})` },
-            { key: 'culture', label: isEn ? `🏛️ Budaya (${cultureItems.length})` : `🏛️ Budaya (${cultureItems.length})` },
-            { key: 'culinary', label: isEn ? `🍲 Kuliner (${culinaryItems.length})` : `🍲 Kuliner (${culinaryItems.length})` },
-            { key: 'events', label: isEn ? `📅 Event (${eventItems.length})` : `📅 Event (${eventItems.length})` },
+            { key: 'all', label: isEn ? 'Semua' : 'Semua' },
+            { key: 'destinations', label: isEn ? 'Destinasi' : 'Destinasi' },
+            { key: 'culture', label: isEn ? 'Budaya' : 'Budaya' },
+            { key: 'culinary', label: isEn ? 'Kuliner' : 'Kuliner' },
+            { key: 'events', label: isEn ? 'Event' : 'Event' },
           ].map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
-              className={`flex-1 min-w-[90px] py-2 px-3 rounded-xl font-jakarta font-bold text-xs uppercase transition-all cursor-pointer text-center ${
+              className={`py-1.5 px-1 rounded-lg font-jakarta font-bold text-[10px] sm:text-[11px] uppercase transition-all cursor-pointer text-center truncate ${
                 activeTab === tab.key
-                  ? 'bg-red-600 text-white shadow-md'
+                  ? 'bg-red-600 text-white shadow-sm'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -75,58 +75,56 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         </nav>
         
         {/* ============================================================== */}
-        {/* COVER PAGE (PAGE 1) - HERO IMAGE BACKGROUND & MINIMALIST CLEAN */}
+        {/* COVER PAGE (PAGE 1) - PURE HERO IMAGE & CLEAN MINIMALIST TEXT  */}
         {/* ============================================================== */}
         {(activeTab === 'all') && (
           <article 
-            className="w-full text-white rounded-3xl overflow-hidden shadow-2xl relative min-h-[480px] sm:min-h-[580px] flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
+            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative min-h-[440px] flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
           >
-            {/* Background image */}
+            {/* Pure Hero Background image without gradient overlay */}
             <img
               src={BG_IMAGE_2}
               alt="Cover E-Booklet Sumatera Barat"
               className="absolute inset-0 w-full h-full object-cover"
               loading="eager"
             />
-            {/* Gradient overlay for contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/40 pointer-events-none" />
 
             {/* Top badge row */}
-            <div className="relative z-10 p-6 sm:p-8 flex items-center justify-between">
-              <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-xs uppercase px-3 py-1.5 rounded-lg tracking-widest shadow-md">
-                {isEn ? 'OFFICIAL DIGITAL PUBLICATION 2026' : 'PUBLIKASI RESMI DIGITAL 2026'}
+            <div className="relative z-10 p-5 flex items-center justify-between">
+              <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
+                {isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI 2026'}
               </span>
-              <div className="flex items-center gap-2 text-white/80 font-jakarta text-xs font-semibold">
-                <BookOpen className="w-4 h-4 text-red-400" />
+              <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded">
+                <BookOpen className="w-3.5 h-3.5 text-red-400" />
                 <span>MALALA.MY.ID</span>
               </div>
             </div>
 
-            {/* Center: Title block */}
-            <div className="relative z-10 p-6 sm:p-10 mt-auto space-y-3">
-              <h1 className="font-orbitron font-extrabold text-4xl sm:text-6xl text-white tracking-wide drop-shadow-2xl leading-tight">
+            {/* Center: Title block — Clean, small, well proportioned */}
+            <div className="relative z-10 p-5 mt-auto space-y-1.5 bg-black/40 backdrop-blur-xs rounded-b-2xl">
+              <h1 className="font-orbitron font-extrabold text-2xl text-white tracking-wide drop-shadow-md leading-tight">
                 MALALA 2026
               </h1>
-              <p className="font-orbitron font-bold text-lg sm:text-xl text-red-300 drop-shadow-md tracking-wide">
-                {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL COMPREHENSIVE GUIDE' : 'PANDUAN LENGKAP PARIWISATA & BUDAYA RANAH MINANG'}
+              <p className="font-orbitron font-bold text-xs text-red-300 drop-shadow-sm tracking-wide">
+                {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP PARIWISATA & BUDAYA RANAH MINANG'}
               </p>
-              <p className="font-jakarta text-white/90 text-sm sm:text-base leading-relaxed max-w-2xl pt-1">
+              <p className="font-jakarta text-white/90 text-[11px] leading-relaxed pt-0.5">
                 {isEn
-                  ? `An extensive curated guide exploring ${destinations.length} majestic destinations, ${cultureItems.length} living Minangkabau cultural traditions, ${culinaryItems.length} authentic gastronomic treasures, and ${eventItems.length} official 2026 festivals.`
-                  : `Kompilasi kurasi terlengkap yang memuat ${destinations.length} destinasi wisata alam & sejarah, ${cultureItems.length} tradisi adat Minangkabau, ${culinaryItems.length} pusaka kuliner otentik, serta ${eventItems.length} kalender event pariwisata resmi 2026.`}
+                  ? `${destinations.length} Destinations · ${cultureItems.length} Culture · ${culinaryItems.length} Culinary · ${eventItems.length} Events`
+                  : `${destinations.length} Destinasi · ${cultureItems.length} Budaya · ${culinaryItems.length} Kuliner · ${eventItems.length} Event`}
               </p>
 
               {/* Divider + Footer */}
-              <div className="pt-5 border-t border-white/20 flex flex-wrap items-center justify-between text-xs text-white/70 font-jakarta gap-2">
-                <span>Dinas Pariwisata & Kebudayaan Provinsi Sumatera Barat</span>
-                <span className="font-bold text-white tracking-wide">E-Booklet Digital Edition</span>
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[10px] text-white/70 font-jakarta">
+                <span>Dinas Pariwisata Sumatera Barat</span>
+                <span className="font-bold text-white">E-Booklet Digital</span>
               </div>
             </div>
           </article>
         )}
 
         {/* ============================================================== */}
-        {/* BAB I: 26 DESTINASI WISATA (1 HALAMAN PER ITEM)                 */}
+        {/* BAB I: 26 DESTINASI WISATA (NATURAL ADAPTIVE HEIGHT)           */}
         {/* ============================================================== */}
         {(activeTab === 'all' || activeTab === 'destinations') && destinations.map((dest, idx) => {
           const title = isEn && dest.titleEn ? dest.titleEn : dest.title;
@@ -137,16 +135,16 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
           return (
-            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={dest.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 sm:p-5 space-y-3.5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
                 {/* Header info */}
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
+                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • {dest.regency || 'SUMATERA BARAT'}</span>
                   <span className="text-red-600 uppercase font-extrabold">{category}</span>
                 </div>
 
                 {/* Hero Image */}
-                <div className="h-64 sm:h-80 w-full rounded-2xl overflow-hidden mt-4 relative bg-slate-900 shadow-inner">
+                <div className="h-44 sm:h-52 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900 shadow-sm">
                   <img
                     src={imgSrc(dest.imageUrl)}
                     alt={title}
@@ -154,24 +152,24 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <span className="bg-white text-black font-jakarta font-extrabold text-[11px] uppercase px-3 py-1 rounded-md shadow">
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <span className="bg-white text-black font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
                       {category}
                     </span>
-                    <h3 className="font-orbitron font-extrabold text-xl sm:text-3xl text-white pt-1.5 drop-shadow-md">
+                    <h3 className="font-orbitron font-extrabold text-base sm:text-lg text-white pt-1 drop-shadow-md leading-tight">
                       {title}
                     </h3>
                   </div>
                 </div>
 
                 {/* Location */}
-                <div className="pt-4 flex items-center gap-2 text-sm font-bold text-red-600 font-jakarta">
-                  <MapPin className="w-4 h-4 shrink-0" />
+                <div className="pt-2.5 flex items-center gap-1.5 text-xs font-bold text-red-600 font-jakarta">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
                   <span>{location}</span>
                 </div>
 
-                {/* Full Description */}
-                <div className="font-jakarta text-sm text-gray-700 leading-relaxed pt-3 space-y-3">
+                {/* Full Description — Natural dynamic length */}
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
                   {desc.split('\n\n').map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>
                   ))}
@@ -179,14 +177,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
                 {/* Highlights */}
                 {highlights.length > 0 && (
-                  <div className="mt-5 p-4 sm:p-5 bg-gray-50 rounded-2xl border border-gray-200 font-jakarta">
-                    <h4 className="font-bold text-xs uppercase text-slate-900 tracking-wider mb-2.5">
-                      {isEn ? 'Key Highlights & Attractions:' : 'Daya Tarik Utama (Highlights):'}
+                  <div className="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-200 font-jakarta">
+                    <h4 className="font-bold text-[10px] uppercase text-slate-900 tracking-wider mb-1.5">
+                      {isEn ? 'Key Highlights:' : 'Daya Tarik Utama:'}
                     </h4>
-                    <ul className="space-y-1.5 text-xs sm:text-sm text-gray-700">
+                    <ul className="space-y-1 text-xs text-gray-700">
                       {highlights.map((h, hIdx) => (
-                        <li key={hIdx} className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-green-600 shrink-0 font-bold" />
+                        <li key={hIdx} className="flex items-center gap-1.5">
+                          <Check className="w-3.5 h-3.5 text-green-600 shrink-0 font-bold" />
                           <span>{h}</span>
                         </li>
                       ))}
@@ -197,9 +195,9 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               {/* Best Time Footer */}
               {bestTime && (
-                <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
-                  <span>{isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} <strong className="text-black">{bestTime}</strong></span>
-                  <span className="text-gray-400"># {idx + 1}</span>
+                <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500">
+                  <span>{isEn ? 'Best Time:' : 'Waktu Terbaik:'} <strong className="text-black">{bestTime}</strong></span>
+                  <span className="text-gray-400">#{idx + 1}</span>
                 </div>
               )}
             </article>
@@ -207,7 +205,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         })}
 
         {/* ============================================================== */}
-        {/* BAB II: 14 WARISAN BUDAYA (1 HALAMAN PER ITEM)                  */}
+        {/* BAB II: 14 WARISAN BUDAYA (NATURAL ADAPTIVE HEIGHT)             */}
         {/* ============================================================== */}
         {(activeTab === 'all' || activeTab === 'culture') && cultureItems.map((cult, idx) => {
           const title = isEn && cult.titleEn ? cult.titleEn : cult.title;
@@ -217,14 +215,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
           return (
-            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-amber-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cult.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-amber-200 p-4 sm:p-5 space-y-3.5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
-                  <span>MALALA 2026 • WARISAN BUDAYA & TRADISI ADAT</span>
+                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-jakarta font-bold text-gray-500">
+                  <span>MALALA 2026 • WARISAN BUDAYA</span>
                   <span className="text-amber-700 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-2xl overflow-hidden mt-4 relative bg-amber-950 shadow-inner">
+                <div className="h-44 sm:h-52 w-full rounded-xl overflow-hidden mt-3 relative bg-amber-950 shadow-sm">
                   <img
                     src={imgSrc(cult.imageUrl)}
                     alt={title}
@@ -232,49 +230,49 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <span className="bg-amber-600 text-white font-jakarta font-extrabold text-[11px] uppercase px-3 py-1 rounded-md shadow">
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <span className="bg-amber-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
                       {category}
                     </span>
-                    <h3 className="font-orbitron font-extrabold text-xl sm:text-3xl text-white pt-1.5 drop-shadow-md">
+                    <h3 className="font-orbitron font-extrabold text-base sm:text-lg text-white pt-1 drop-shadow-md leading-tight">
                       {title}
                     </h3>
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-center gap-2 text-sm font-bold text-amber-700 font-jakarta">
-                  <MapPin className="w-4 h-4 shrink-0" />
-                  <span>{isEn ? 'Cultural Origin:' : 'Asal Nagari / Tradisi:'} {origin}</span>
+                <div className="pt-2.5 flex items-center gap-1.5 text-xs font-bold text-amber-700 font-jakarta">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+                  <span>{isEn ? 'Origin:' : 'Asal Nagari / Tradisi:'} {origin}</span>
                 </div>
 
-                <div className="font-jakarta text-sm text-gray-700 leading-relaxed pt-3 space-y-3">
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
                   {desc.split('\n\n').map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>
                   ))}
                 </div>
 
                 {philosophy && (
-                  <div className="mt-5 p-4 sm:p-5 bg-amber-50 rounded-2xl border border-amber-200 font-jakarta">
-                    <h4 className="font-bold text-xs uppercase text-amber-900 tracking-wider mb-1.5">
-                      {isEn ? 'Minangkabau Customary Philosophy:' : 'Falsafah & Makna Adat Minangkabau:'}
+                  <div className="mt-3 p-3 bg-amber-50 rounded-xl border border-amber-200 font-jakarta">
+                    <h4 className="font-bold text-[10px] uppercase text-amber-900 tracking-wider mb-1">
+                      {isEn ? 'Customary Philosophy:' : 'Falsafah & Makna Adat:'}
                     </h4>
-                    <p className="italic font-bold text-amber-900 text-xs sm:text-sm leading-relaxed">
+                    <p className="italic font-bold text-amber-900 text-xs leading-snug">
                       "{philosophy}"
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
-                <span>Dinas Pariwisata & Kebudayaan Sumatera Barat</span>
-                <span className="text-gray-400"># {destinations.length + idx + 1}</span>
+              <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500">
+                <span>Dinas Kebudayaan Sumatera Barat</span>
+                <span className="text-gray-400">#{destinations.length + idx + 1}</span>
               </div>
             </article>
           );
         })}
 
         {/* ============================================================== */}
-        {/* BAB III: 16 KULINER OTENTIK (1 HALAMAN PER ITEM)                */}
+        {/* BAB III: 16 KULINER OTENTIK (NATURAL ADAPTIVE HEIGHT)           */}
         {/* ============================================================== */}
         {(activeTab === 'all' || activeTab === 'culinary') && culinaryItems.map((cul, idx) => {
           const title = isEn && cul.titleEn ? cul.titleEn : cul.title;
@@ -285,14 +283,14 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
 
           return (
-            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-rose-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={cul.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-rose-200 p-4 sm:p-5 space-y-3.5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
-                  <span>MALALA 2026 • GASTRONOMI & KULINER OTENTIK</span>
+                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-jakarta font-bold text-gray-500">
+                  <span>MALALA 2026 • GASTRONOMI OTENTIK</span>
                   <span className="text-rose-600 uppercase font-extrabold">{category}</span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-2xl overflow-hidden mt-4 relative bg-rose-950 shadow-inner">
+                <div className="h-44 sm:h-52 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950 shadow-sm">
                   <img
                     src={imgSrc(cul.imageUrl)}
                     alt={title}
@@ -300,53 +298,53 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <span className="bg-rose-600 text-white font-jakarta font-extrabold text-[11px] uppercase px-3 py-1 rounded-md shadow">
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <span className="bg-rose-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
                       {category}
                     </span>
-                    <h3 className="font-orbitron font-extrabold text-xl sm:text-3xl text-white pt-1.5 drop-shadow-md">
+                    <h3 className="font-orbitron font-extrabold text-base sm:text-lg text-white pt-1 drop-shadow-md leading-tight">
                       {title}
                     </h3>
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-center gap-2 text-sm font-bold text-rose-600 font-jakarta">
-                  <MapPin className="w-4 h-4 shrink-0" />
-                  <span>{isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} {origin}</span>
+                <div className="pt-2.5 flex items-center gap-1.5 text-xs font-bold text-rose-600 font-jakarta">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+                  <span>{isEn ? 'Origin:' : 'Asal Kuliner:'} {origin}</span>
                 </div>
 
-                <div className="font-jakarta text-sm text-gray-700 leading-relaxed pt-3 space-y-3">
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
                   {desc.split('\n\n').map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>
                   ))}
                 </div>
 
                 {/* Ingredients & Taste */}
-                <div className="mt-5 p-4 sm:p-5 bg-rose-50 rounded-2xl border border-rose-200 font-jakarta space-y-2">
-                  <h4 className="font-bold text-xs uppercase text-rose-900 tracking-wider">
-                    {isEn ? '🥘 Spices & Main Ingredients:' : '🥘 Bahan & Rempah Utama:'}
+                <div className="mt-3 p-3 bg-rose-50 rounded-xl border border-rose-200 font-jakarta space-y-1">
+                  <h4 className="font-bold text-[10px] uppercase text-rose-900 tracking-wider">
+                    {isEn ? '🥘 Key Ingredients:' : '🥘 Bahan & Rempah Utama:'}
                   </h4>
-                  <p className="text-xs sm:text-sm text-gray-700 font-medium">
+                  <p className="text-xs text-gray-700 font-medium">
                     {ingredients.join(', ')}
                   </p>
                   {taste && (
-                    <p className="text-xs sm:text-sm text-rose-800 font-bold pt-1">
-                      👅 {isEn ? 'Taste Profile:' : 'Karakter Rasa:'} {taste}
+                    <p className="text-xs text-rose-800 font-bold pt-0.5">
+                      👅 {taste}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
-                <span>Warisan Kuliner Takbenda UNESCO & Ranah Minang</span>
-                <span className="text-gray-400"># {destinations.length + cultureItems.length + idx + 1}</span>
+              <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500">
+                <span>Warisan Kuliner Ranah Minang</span>
+                <span className="text-gray-400">#{destinations.length + cultureItems.length + idx + 1}</span>
               </div>
             </article>
           );
         })}
 
         {/* ============================================================== */}
-        {/* BAB IV: 20 KALENDER EVENT & KEN (1 HALAMAN PER ITEM)            */}
+        {/* BAB IV: 20 KALENDER EVENT & KEN (NATURAL ADAPTIVE HEIGHT)       */}
         {/* ============================================================== */}
         {(activeTab === 'all' || activeTab === 'events') && eventItems.map((ev, idx) => {
           const title = isEn && ev.titleEn ? ev.titleEn : ev.title;
@@ -355,16 +353,16 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
           const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
 
           return (
-            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 p-6 sm:p-8 space-y-5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
+            <article key={ev.id || idx} className="w-full bg-white text-slate-900 rounded-2xl overflow-hidden shadow-xl border border-gray-200 p-4 sm:p-5 space-y-3.5 print:shadow-none print:border-0 print:p-4 print:break-after-page flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100 text-xs font-jakarta font-bold text-gray-500">
+                <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-jakarta font-bold text-gray-500">
                   <span>MALALA 2026 • CALENDAR OF EVENTS</span>
                   <span className={`uppercase font-extrabold ${ev.isKen ? 'text-red-600' : 'text-slate-800'}`}>
-                    {ev.isKen ? '⭐ KARISMA EVENT NUSANTARA' : 'FESTIVAL RESMI'}
+                    {ev.isKen ? '⭐ KEN 2026' : 'FESTIVAL'}
                   </span>
                 </div>
 
-                <div className="h-64 sm:h-80 w-full rounded-2xl overflow-hidden mt-4 relative bg-slate-900 shadow-inner">
+                <div className="h-44 sm:h-52 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900 shadow-sm">
                   <img
                     src={imgSrc(ev.imageUrl)}
                     alt={title}
@@ -372,42 +370,42 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <span className={`font-jakarta font-extrabold text-[11px] uppercase px-3 py-1 rounded-md shadow ${ev.isKen ? 'bg-red-600 text-white' : 'bg-white text-black'}`}>
-                      {ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'COE 2026'}
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <span className={`font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow ${ev.isKen ? 'bg-red-600 text-white' : 'bg-white text-black'}`}>
+                      {ev.isKen ? '⭐ KEN 2026' : 'COE 2026'}
                     </span>
-                    <h3 className="font-orbitron font-extrabold text-xl sm:text-3xl text-white pt-1.5 drop-shadow-md">
+                    <h3 className="font-orbitron font-extrabold text-base sm:text-lg text-white pt-1 drop-shadow-md leading-tight">
                       {title}
                     </h3>
                   </div>
                 </div>
 
-                <div className="pt-4 flex items-center justify-between text-xs sm:text-sm font-bold text-slate-800 font-jakarta flex-wrap gap-2">
+                <div className="pt-2.5 flex items-center justify-between text-xs font-bold text-slate-800 font-jakarta flex-wrap gap-1">
                   <span className="text-red-600 font-bold">📅 {schedule}</span>
                   <span className="text-gray-600">📍 {location}</span>
                 </div>
 
-                <div className="font-jakarta text-sm text-gray-700 leading-relaxed pt-3 space-y-3">
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
                   {desc.split('\n\n').map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>
                   ))}
                 </div>
 
                 {ev.isKen && (
-                  <div className="mt-5 p-4 sm:p-5 bg-red-50 rounded-2xl border border-red-200 font-jakarta">
-                    <h4 className="font-bold text-xs uppercase text-red-700 tracking-wider">
-                      ⭐ Event Unggulan Karisma Event Nusantara (KEN) Kemenparekraf RI
+                  <div className="mt-3 p-3 bg-red-50 rounded-xl border border-red-200 font-jakarta">
+                    <h4 className="font-bold text-[10px] uppercase text-red-700 tracking-wider">
+                      ⭐ Karisma Event Nusantara (KEN)
                     </h4>
-                    <p className="text-xs sm:text-sm text-red-900 pt-1 leading-relaxed">
-                      Event ini masuk dalam kalender pariwisata nasional Kemenparekraf sebagai daya tarik budaya kelas dunia.
+                    <p className="text-xs text-red-900 pt-0.5 leading-snug">
+                      Event resmi kalender pariwisata nasional Kemenparekraf RI.
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-jakarta text-gray-500">
-                <span>Dinas Pariwisata Provinsi Sumatera Barat</span>
-                <span className="text-gray-400"># {destinations.length + cultureItems.length + culinaryItems.length + idx + 1}</span>
+              <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500">
+                <span>Dinas Pariwisata Sumatera Barat</span>
+                <span className="text-gray-400">#{destinations.length + cultureItems.length + culinaryItems.length + idx + 1}</span>
               </div>
             </article>
           );
