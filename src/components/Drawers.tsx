@@ -748,6 +748,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     try {
       const data: FormAIResponse = await fetchAiItinerary({
         ...itineraryForm,
+        availableEvents: eventItems,
         language: lang,
       });
       setAiResponse(data);
@@ -1693,6 +1694,75 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </button>
                         ))}
                       </div>
+                    </div>
+
+                    {/* Tanggal Mulai Perjalanan (Pilihan) & Deteksi Event Otomatis */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black">
+                          📅 {translations[lang].fieldTravelDate}
+                        </label>
+                        {itineraryForm.waktuKunjungan?.tanggalMulai && (
+                          <button
+                            type="button"
+                            onClick={() => updateForm(['waktuKunjungan'], { tanggalMulai: '', tanggalSelesai: '' })}
+                            className="text-[10px] text-red-500 font-bold hover:underline cursor-pointer"
+                          >
+                            {lang === 'en' ? 'Clear Date' : 'Hapus Tanggal'}
+                          </button>
+                        )}
+                      </div>
+                      <input
+                        type="date"
+                        value={itineraryForm.waktuKunjungan?.tanggalMulai || ''}
+                        onChange={(e) => {
+                          const start = e.target.value;
+                          let end = '';
+                          if (start) {
+                            const d = new Date(start);
+                            d.setDate(d.getDate() + (itineraryForm.durasiHari - 1));
+                            end = d.toISOString().split('T')[0];
+                          }
+                          updateForm(['waktuKunjungan'], { tanggalMulai: start, tanggalSelesai: end });
+                        }}
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black cursor-pointer"
+                      />
+                      <p className="text-[10px] text-gray-500 font-jakarta mt-1">
+                        {translations[lang].fieldTravelDateHint}
+                      </p>
+
+                      {/* Smart Event Matching Notice if date chosen */}
+                      {(() => {
+                        const startStr = itineraryForm.waktuKunjungan?.tanggalMulai;
+                        if (!startStr) return null;
+                        
+                        const dateObj = new Date(startStr);
+                        const monthIndex = dateObj.getMonth();
+                        const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                        const selectedMonth = monthNamesId[monthIndex];
+
+                        const matchedEvents = eventItems.filter((ev: EventItem) => {
+                          const sched = (ev.schedule || ev.date || '').toLowerCase();
+                          return sched.includes(selectedMonth.toLowerCase());
+                        });
+
+                        if (matchedEvents.length === 0) return null;
+
+                        return (
+                          <div className="mt-2 p-2.5 bg-yellow-50 border border-yellow-200 rounded-lg text-xs font-jakarta space-y-1">
+                            <span className="font-bold text-amber-900 text-[11px] flex items-center gap-1">
+                              {translations[lang].badgeEventMatched}
+                            </span>
+                            <div className="flex flex-wrap gap-1 pt-0.5">
+                              {matchedEvents.map((ev: EventItem) => (
+                                <span key={ev.id} className="inline-block bg-white text-slate-800 border border-amber-300 text-[10px] font-semibold px-2 py-0.5 rounded shadow-2xs">
+                                  🎪 {ev.title} {ev.isKen ? '⭐ [KEN]' : ''} ({ev.schedule || selectedMonth})
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">

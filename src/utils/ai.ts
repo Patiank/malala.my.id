@@ -68,14 +68,15 @@ export const HOT_INFO_FALLBACK = [
 ];
 
 export function getItineraryFallback(params: any) {
-  const { durasiHari = 3, profilWisatawan, language = 'id' } = params || {};
+  const { durasiHari = 3, profilWisatawan, waktuKunjungan, language = 'id' } = params || {};
   const isEnglish = language === 'en';
   const daysCount = Number(durasiHari) || 3;
+  const startDate = waktuKunjungan?.tanggalMulai || '';
 
   return {
     title: isEnglish
-      ? `West Sumatra Exploration (${daysCount} Days - ${profilWisatawan?.kategori || 'Nature & Culinary'})`
-      : `Eksplorasi Ranah Minang (${daysCount} Hari - ${profilWisatawan?.kategori || 'Wisata Alam & Kuliner'})`,
+      ? `West Sumatra Exploration (${daysCount} Days${startDate ? ` - Starting ${startDate}` : ''})`
+      : `Eksplorasi Ranah Minang (${daysCount} Hari${startDate ? ` - Mulai ${startDate}` : ''})`,
     summary: isEnglish
       ? `UNI MALA AI recommended travel plan combining geopark landscapes, authentic Rendang gastronomy, and rich Minangkabau Rumah Gadang heritage.`
       : `Rencana wisata rekomendasi UNI MALA AI mencakup perpaduan keindahan geowisata, kuliner Rendang autentik, serta warisan budaya Rumah Gadang.`,
@@ -146,7 +147,7 @@ export async function fetchAiItinerary(params: any) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
       const isEnglish = params?.language === 'en';
-      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi. Formatkan output HANYA JSON:\n${JSON.stringify(params)}`;
+      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi. Formatkan output HANYA JSON. Jika ada tanggal dan event yang bertepatan, usulkan secara opsional:\n${JSON.stringify(params)}`;
       const response = await ai.models.generateContent({
         model: 'gemini-3.6-flash',
         contents: prompt,

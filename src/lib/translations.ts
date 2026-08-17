@@ -95,6 +95,9 @@ export const translations = {
     optBudget: 'Hemat (Backpacker)',
     optStandard: 'Menengah (Standard)',
     optPremium: 'Mewah (Premium / Resort)',
+    fieldTravelDate: 'Tanggal Mulai Perjalanan (Pilihan)',
+    fieldTravelDateHint: 'AI akan menyelaraskan jadwal dan mengusulkan festival resmi jika ada yang berlangsung di tanggal ini.',
+    badgeEventMatched: '✨ Festival Resmi Sumbar Tersedia:',
   },
   en: {
     // Header & Nav
@@ -190,5 +193,8 @@ export const translations = {
     optBudget: 'Budget (Backpacker)',
     optStandard: 'Standard (Mid-range)',
     optPremium: 'Premium (Luxury / Resort)',
+    fieldTravelDate: 'Travel Start Date (Optional)',
+    fieldTravelDateHint: 'AI will align your schedule and suggest official festivals if any occur during this date.',
+    badgeEventMatched: '✨ Official West Sumatra Festival Available:',
   },
 };

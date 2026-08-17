@@ -55,16 +55,30 @@ async function startServer() {
   app.post("/api/ai/itinerary", async (req, res) => {
     try {
       const apiKey = process.env.GEMINI_API_KEY;
-      const { durasiHari, profilWisatawan, preferensiMinat, logistik, anggaran, akomodasi, kebutuhanKhusus, outputPreferensi, language = 'id' } = req.body;
+      const { 
+        durasiHari, 
+        profilWisatawan, 
+        preferensiMinat, 
+        logistik, 
+        anggaran, 
+        akomodasi, 
+        waktuKunjungan, 
+        kebutuhanKhusus, 
+        outputPreferensi, 
+        language = 'id',
+        availableEvents = []
+      } = req.body;
 
       const isEnglish = language === 'en';
+      const startDate = waktuKunjungan?.tanggalMulai || '';
+      const endDate = waktuKunjungan?.tanggalSelesai || '';
 
       if (!apiKey) {
         // Fallback response when GEMINI_API_KEY is not configured
         return res.json({
           title: isEnglish
-            ? `West Sumatra Exploration (${durasiHari || 3} Days - ${profilWisatawan?.kategori || 'Nature & Culinary'})`
-            : `Eksplorasi Ranah Minang (${durasiHari || 3} Hari - ${profilWisatawan?.kategori || 'Wisata Alam & Kuliner'})`,
+            ? `West Sumatra Exploration (${durasiHari || 3} Days${startDate ? ` - Starting ${startDate}` : ''})`
+            : `Eksplorasi Ranah Minang (${durasiHari || 3} Hari${startDate ? ` - Mulai ${startDate}` : ''})`,
           summary: isEnglish
             ? `UNI MALA AI recommended travel plan combining geopark landscapes, authentic Rendang gastronomy, and rich Minangkabau Rumah Gadang heritage.`
             : `Rencana wisata rekomendasi UNI MALA AI mencakup perpaduan keindahan geowisata, kuliner Rendang autentik, serta warisan budaya Rumah Gadang.`,
@@ -126,7 +140,12 @@ async function startServer() {
         ? "Please generate the official trip itinerary for West Sumatra completely in ENGLISH language."
         : "Buatkan rencana perjalanan wisata (Itinerary) resmi & komprehensif untuk Sumatera Barat dalam Bahasa Indonesia.";
 
-      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi Dinas Pariwisata Provinsi Sumatera Barat (Wonderful West Sumatra).\n${langInstruction}\n\nDetail Permintaan Wisatawan:\n- Durasi: ${durasiHari || 3} hari\n- Profil Wisatawan: ${profilWisatawan?.jumlahOrang || 2} orang (${profilWisatawan?.kategori || 'pasangan'}, Asal: ${profilWisatawan?.asal || 'domestik'})\n- Minat Destinasi: ${(preferensiMinat?.kategoriWisata || []).join(', ')}\n- Tingkat Aktivitas: ${preferensiMinat?.tingkatAktivitas || 'sedang'}\n- Kelas Anggaran: ${anggaran?.rentang || 'menengah'}\n- Kebutuhan Khusus / Alergi: ${(kebutuhanKhusus?.alergiMakanan || []).join(', ')}\n\nFormatkan output HANYA dalam format JSON valid dengan struktur:\n{\n  "title": "${isEnglish ? 'Trip Title' : 'Judul Rencana Perjalanan Wisata'}",\n  "summary": "${isEnglish ? 'Summary of experience' : 'Ringkasan pengalaman wisata yang akan dirasakan'}",\n  "itinerary": [\n    {\n      "day": 1,\n      "title": "${isEnglish ? 'Day 1 Theme' : 'Tema Hari Ke-1'}",\n      "activities": [\n        {\n          "time": "08:00 - 10:00",\n          "location": "${isEnglish ? 'Location Name' : 'Nama Tempat / Destinasi'}",\n          "activity": "${isEnglish ? 'Recommended activity description' : 'Deskripsi kegiatan yang direkomendasikan'}",\n          "tips": "${isEnglish ? 'Local tips' : 'Tips lokal / kearifan lokal'}"\n        }\n      ],\n      "culinaryRecommendation": "${isEnglish ? 'Culinary recommendation' : 'Rekomendasi kuliner khas untuk hari ini'}"\n    }\n  ],\n  "localTips": [\n    "${isEnglish ? 'Minangkabau etiquette tip' : 'Tips etika Minangkabau (Adat Basandi Syarak, Syarak Basandi Kitabullah)'}",\n    "${isEnglish ? 'Souvenir recommendation' : 'Rekomendasi oleh-oleh khas Sumbar'}"\n  ]\n}\n\nBerikan respon HANYA dalam format JSON tanpa markdown backticks atau teks lain di luar JSON. Language requested: ${isEnglish ? 'ENGLISH' : 'INDONESIAN'}.`;
+      // Format events list for context
+      const eventsSummary = Array.isArray(availableEvents) && availableEvents.length > 0
+        ? availableEvents.map((ev: any) => `- ${ev.title} (${ev.schedule || ev.date || ''} di ${ev.location || 'Sumbar'}) ${ev.isKen ? '[KEN Kemenparekraf]' : ''}: ${ev.description || ''}`).join('\n')
+        : 'Katalog event resmi Dinas Pariwisata Sumbar 2026: Pacu Jawi (Mei-Juni / Agt-Sept), Tour de Singkarak (Juli-Agustus), Festival Tabuik (Muharram/Juli), Rang Solok Baralek Gadang (September), Payakumbuh Botuang Festival (Juli), Sawahlunto Songket Carnival (September), Festival Siti Nurbaya Padang (Agustus).';
+
+      const prompt = `Anda adalah UNI MALA AI Sumatera Barat - Asisten AI Pariwisata Resmi Dinas Pariwisata Provinsi Sumatera Barat (Wonderful West Sumatra).\n${langInstruction}\n\nDetail Permintaan Wisatawan:\n- Tanggal Kunjungan: ${startDate ? `${startDate}${endDate ? ` s/d ${endDate}` : ''}` : 'Fleksibel'}\n- Durasi: ${durasiHari || 3} hari\n- Profil Wisatawan: ${profilWisatawan?.jumlahOrang || 2} orang (${profilWisatawan?.kategori || 'pasangan'}, Asal: ${profilWisatawan?.asal || 'domestik'})\n- Minat Destinasi: ${(preferensiMinat?.kategoriWisata || []).join(', ')}\n- Tingkat Aktivitas: ${preferensiMinat?.tingkatAktivitas || 'sedang'}\n- Kelas Anggaran: ${anggaran?.rentang || 'menengah'}\n- Kebutuhan Khusus / Alergi: ${(kebutuhanKhusus?.alergiMakanan || []).join(', ')}\n\nKatalog Event & Festival Resmi Sumbar 2026:\n${eventsSummary}\n\nINSTRUKSI KHUSUS EVENT (HANYA JIKA DIBUTUHKAN & RELEVAN):\n1. Jika wisatawan memilih tanggal tertentu, periksa apakah terdapat festival/event resmi yang bertepatan dengan tanggal/bulan tersebut.\n2. HANYA JIKA RELEVAN dan cocok dengan durasi & profil minat wisatawan, usulkan dan masukkan event tersebut sebagai salah satu agenda dalam itinerary pada hari yang sesuai (beri tanda bintang ⭐ atau keterangan event resmi).\n3. Jika tidak ada event yang bertepatan dengan tanggal tersebut atau jika event tidak relevan, JANGAN memaksakan event dan fokuskan itinerary pada destinasi alam, budaya, dan kuliner unggulan Minangkabau.\n\nFormatkan output HANYA dalam format JSON valid dengan struktur:\n{\n  "title": "${isEnglish ? 'Trip Title' : 'Judul Rencana Perjalanan Wisata'}",\n  "summary": "${isEnglish ? 'Summary of experience' : 'Ringkasan pengalaman wisata yang akan dirasakan'}",\n  "itinerary": [\n    {\n      "day": 1,\n      "title": "${isEnglish ? 'Day 1 Theme' : 'Tema Hari Ke-1'}",\n      "activities": [\n        {\n          "time": "08:00 - 10:00",\n          "location": "${isEnglish ? 'Location Name' : 'Nama Tempat / Destinasi'}",\n          "activity": "${isEnglish ? 'Recommended activity description' : 'Deskripsi kegiatan yang direkomendasikan'}",\n          "tips": "${isEnglish ? 'Local tips' : 'Tips lokal / kearifan lokal'}"\n        }\n      ],\n      "culinaryRecommendation": "${isEnglish ? 'Culinary recommendation' : 'Rekomendasi kuliner khas untuk hari ini'}"\n    }\n  ],\n  "localTips": [\n    "${isEnglish ? 'Minangkabau etiquette tip' : 'Tips etika Minangkabau (Adat Basandi Syarak, Syarak Basandi Kitabullah)'}",\n    "${isEnglish ? 'Souvenir recommendation' : 'Rekomendasi oleh-oleh khas Sumbar'}"\n  ]\n}\n\nBerikan respon HANYA dalam format JSON tanpa markdown backticks atau teks lain di luar JSON. Language requested: ${isEnglish ? 'ENGLISH' : 'INDONESIAN'}.`;
 
       const response = await ai.models.generateContent({
         model: 'gemini-3.6-flash',
