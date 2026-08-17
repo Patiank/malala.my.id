@@ -1,3 +1,4 @@
+import { jsPDF } from 'jspdf';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
 
@@ -10,9 +11,9 @@ interface BookletData {
 }
 
 /**
- * Opens a dedicated, high-fidelity printable document window identical to the website's modal preview layout
+ * DIRECT SILENT PDF DOWNLOAD (Zero Popup, Zero Window, Instantly Saves to Downloads Folder)
  */
-export function openPrintableBookletWindow(data: BookletData = {}): void {
+export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<void> {
   const isEn = data.lang === 'en';
 
   const destinations: Destination[] = (data.destinations && data.destinations.length > 0) ? data.destinations : DESTINATIONS;
@@ -20,517 +21,544 @@ export function openPrintableBookletWindow(data: BookletData = {}): void {
   const culinaryItems: CulinaryItem[] = (data.culinaryItems && data.culinaryItems.length > 0) ? data.culinaryItems : CULINARY_ITEMS;
   const eventItems: EventItem[] = (data.eventItems && data.eventItems.length > 0) ? data.eventItems : EVENTS_SCHEDULE;
 
-  const printWindow = window.open('', '_blank');
-  if (!printWindow) {
-    alert(isEn ? 'Please allow pop-ups in your browser to view and download the PDF.' : 'Silakan izinkan pop-up di browser Anda untuk melihat dan mengunduh PDF.');
-    return;
-  }
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
 
-  const htmlContent = `
-<!DOCTYPE html>
-<html lang="${isEn ? 'en' : 'id'}">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${isEn ? 'West Sumatra Official Tourism & Culture Guide 2026 - MALALA' : 'Buku Panduan Resmi Pariwisata & Budaya Sumbar 2026 - MALALA'}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
-  <style>
-    @page {
-      size: auto;
-      margin: 10mm 12mm;
-    }
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #1e293b;
-      background: #f8fafc;
-      line-height: 1.6;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-      padding-bottom: 40px;
-    }
-    .print-actions {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      background: #0f172a;
-      color: #ffffff;
-      padding: 14px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-      border-bottom: 2px solid #dc2626;
-    }
-    .print-actions button {
-      background: #dc2626;
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background 0.2s;
-    }
-    .print-actions button:hover {
-      background: #b91c1c;
-    }
-    .book-container {
-      max-width: 820px;
-      margin: 20px auto;
-      padding: 0 15px;
-    }
-    .catalog-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 28px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-    .cover-card {
-      background: #0f172a;
-      color: #ffffff;
-      border-radius: 16px;
-      padding: 40px 30px;
-      margin-bottom: 28px;
-      border: 2px solid #334155;
-      page-break-after: always;
-      break-after: page;
-    }
-    .hero-img-wrap {
-      width: 100%;
-      height: 280px;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-      background: #1e293b;
-      margin: 14px 0 16px 0;
-    }
-    .hero-img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 6px;
-      letter-spacing: 0.05em;
-    }
-    .badge-red { background: #dc2626; color: #ffffff; }
-    .badge-amber { background: #d97706; color: #ffffff; }
-    .badge-rose { background: #e11d48; color: #ffffff; }
-    .badge-dark { background: #0f172a; color: #ffffff; }
-    .title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 20px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: #0f172a;
-      letter-spacing: 0.03em;
-      margin-top: 4px;
-    }
-    .subtitle {
-      font-size: 12px;
-      font-weight: 700;
-      color: #dc2626;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 2px;
-      margin-bottom: 12px;
-    }
-    .desc-text {
-      font-size: 12.5px;
-      color: #475569;
-      line-height: 1.7;
-      margin-bottom: 14px;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 12px;
-    }
-    .desc-text p {
-      margin-bottom: 10px;
-    }
-    .box-info {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin-top: 12px;
-      font-size: 11.5px;
-    }
-    .box-info h4 {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: #0f172a;
-      margin-bottom: 6px;
-      letter-spacing: 0.05em;
-    }
-    .box-info ul {
-      list-style: none;
-    }
-    .box-info li {
-      padding: 2px 0;
-      color: #334155;
-    }
-    .box-info li::before {
-      content: "✓ ";
-      color: #16a34a;
-      font-weight: bold;
-    }
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid #f1f5f9;
-      padding-top: 10px;
-      margin-top: 14px;
-      font-size: 11px;
-      color: #64748b;
-    }
-    @media print {
-      body {
-        background: #ffffff;
-        padding-bottom: 0;
-      }
-      .print-actions {
-        display: none !important;
-      }
-      .book-container {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      .catalog-card {
-        border: 1px solid #cbd5e1;
-        box-shadow: none;
-        margin-bottom: 20px;
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-      .cover-card {
-        border: none;
-        box-shadow: none;
-      }
-    }
-  </style>
-</head>
-<body>
+  const pageWidth = 210;
+  const pageHeight = 297;
+  const margin = 14;
+  const contentWidth = pageWidth - margin * 2; // 182mm
+  let pageNumber = 1;
 
-  <!-- Top Action Bar -->
-  <div class="print-actions">
-    <div>
-      <strong style="font-family: 'Orbitron', sans-serif; font-size: 14px;">MALALA 2026</strong>
-      <span style="font-size: 12px; opacity: 0.8; margin-left: 8px;">${isEn ? 'Official E-Booklet & Travel Guide' : 'Buku Panduan Resmi Pariwisata & Budaya Sumbar'}</span>
-    </div>
-    <div style="display: flex; gap: 10px;">
-      <button onclick="window.print()">🖨️ ${isEn ? 'Save as PDF / Print' : 'Simpan sebagai PDF / Cetak'}</button>
-      <button onclick="window.close()" style="background: #334155;">✖ ${isEn ? 'Close' : 'Tutup'}</button>
-    </div>
-  </div>
+  const addHeaderFooter = (categoryLabel: string, subCategory: string) => {
+    try {
+      doc.setFillColor(15, 23, 42); // slate-900
+      doc.rect(0, 0, pageWidth, 11, 'F');
 
-  <div class="book-container">
+      doc.setFillColor(220, 38, 38); // red-600
+      doc.rect(0, 11, pageWidth, 1, 'F');
 
-    <!-- ========================================== -->
-    <!-- COVER PAGE                                 -->
-    <!-- ========================================== -->
-    <div class="cover-card">
-      <div style="margin-bottom: 20px;">
-        <span class="badge badge-red">${isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI DINAS PARIWISATA PROVINSI SUMATERA BARAT'}</span>
-      </div>
-      <h1 style="font-family: 'Orbitron', sans-serif; font-size: 38px; font-weight: 900; letter-spacing: 0.05em; margin-bottom: 4px;">
-        MALALA 2026
-      </h1>
-      <h2 style="font-family: 'Orbitron', sans-serif; font-size: 18px; color: #ef4444; margin-bottom: 16px;">
-        ${isEn ? 'WEST SUMATRA TRAVEL & CULTURAL MASTER GUIDE' : 'PANDUAN LENGKAP WISATA & BUDAYA RANAH MINANG'}
-      </h2>
-      <p style="font-size: 13px; color: #cbd5e1; max-width: 600px; line-height: 1.7; margin-bottom: 24px;">
-        ${isEn 
-          ? 'Comprehensive compilation of 26 curated destinations, 14 living cultural traditions, 16 authentic gastronomic dishes, and 20 major 2026 events & KEN calendar.' 
-          : 'Kompilasi master data 26 destinasi wisata unggulan, 14 tradisi adat luhur, 16 kuliner gastronomi otentik, serta 20 kalender festival KEN resmi 2026.'}
-      </p>
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(251, 191, 36); // amber-400
+      doc.text('MALALA 2026 • DINAS PARIWISATA PROVINSI SUMATERA BARAT', margin, 7.5);
 
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: rgba(30, 41, 59, 0.8); padding: 14px; border-radius: 10px; border: 1px solid #334155; margin-bottom: 24px;">
-        <div>
-          <span style="font-size: 10px; color: #94a3b8; display: block;">${isEn ? 'Destinations' : 'Destinasi'}</span>
-          <strong style="font-size: 18px; color: #ffffff;">26 Objek</strong>
-        </div>
-        <div>
-          <span style="font-size: 10px; color: #94a3b8; display: block;">${isEn ? 'Culture' : 'Kebudayaan'}</span>
-          <strong style="font-size: 18px; color: #fbbf24;">14 Tradisi</strong>
-        </div>
-        <div>
-          <span style="font-size: 10px; color: #94a3b8; display: block;">${isEn ? 'Culinary' : 'Kuliner'}</span>
-          <strong style="font-size: 18px; color: #fb7185;">16 Makanan</strong>
-        </div>
-        <div>
-          <span style="font-size: 10px; color: #94a3b8; display: block;">${isEn ? 'Events' : 'Kalender Event'}</span>
-          <strong style="font-size: 18px; color: #f87171;">20 Festival</strong>
-        </div>
-      </div>
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(`${(categoryLabel || '').toUpperCase()} — ${(subCategory || '').toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
 
-      <div style="border-left: 4px solid #dc2626; padding-left: 12px; font-style: italic; color: #fde68a; font-size: 12px; margin-bottom: 24px;">
-        "Adat Basandi Syarak, Syarak Basandi Kitabullah" • "Alam Takambang Jadi Guru"
-      </div>
+      doc.setFillColor(248, 250, 252);
+      doc.rect(0, pageHeight - 10, pageWidth, 10, 'F');
+      doc.setDrawColor(226, 232, 240);
+      doc.line(0, pageHeight - 10, pageWidth, pageHeight - 10);
 
-      <div style="border-top: 1px solid #334155; padding-top: 14px; display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8;">
-        <span>Dinas Pariwisata Provinsi Sumatera Barat • 2026</span>
-        <span style="color: #ffffff; font-weight: bold;">https://malala.my.id</span>
-      </div>
-    </div>
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7.5);
+      doc.setTextColor(100, 116, 139);
+      doc.text('Katalog Resmi Panduan Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
+    } catch {}
+  };
 
-    <!-- ========================================== -->
-    <!-- BAB I: 26 DESTINASI WISATA                 -->
-    <!-- ========================================== -->
-    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #0f172a; margin: 30px 0 15px 0; text-transform: uppercase; border-bottom: 2px solid #dc2626; padding-bottom: 6px;">
-      ${isEn ? 'Chapter I: 26 Tourism Destinations' : 'Bab I: 26 Destinasi Wisata Pilihan'}
-    </h2>
+  // ==============================================================
+  // 1. COVER PAGE
+  // ==============================================================
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-    ${destinations.map((dest, idx) => {
-      const title = isEn && dest.titleEn ? dest.titleEn : dest.title;
-      const category = isEn && dest.categoryEn ? dest.categoryEn : dest.category;
-      const location = isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency);
-      const desc = isEn && dest.descriptionEn ? dest.descriptionEn : dest.description;
+  doc.setFillColor(220, 38, 38);
+  doc.rect(0, 0, 12, pageHeight, 'F');
+  doc.setFillColor(217, 119, 6);
+  doc.rect(12, 0, 3, pageHeight, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(251, 191, 36);
+  doc.text(isEn ? 'OFFICIAL TOURISM & CULTURAL MASTER CATALOG 2026' : 'MASTER KATALOG RESMI PARIWISATA & KEBUDAYAAN 2026', 25, 38);
+
+  doc.setFontSize(30);
+  doc.setTextColor(255, 255, 255);
+  doc.text('MALALA 2026', 25, 52);
+
+  doc.setFontSize(18);
+  doc.setTextColor(220, 38, 38);
+  doc.text(isEn ? 'WEST SUMATRA TRAVEL GUIDE' : 'PANDUAN LENGKAP WISATA RANAH MINANG', 25, 62);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(203, 213, 225);
+  const coverSubtitle = isEn 
+    ? 'Comprehensive compilation of 26 Iconic Destinations, 14 Living Cultural Traditions, 16 Authentic Culinaries, and 20 Official Events & KEN 2026.'
+    : 'Kompilasi komprehensif master data 26 destinasi wisata, 14 tradisi adat luhur, 16 kuliner gastronomi otentik, dan 20 kalender festival KEN 2026.';
+  doc.text(doc.splitTextToSize(coverSubtitle, 160), 25, 74);
+
+  doc.setFillColor(30, 41, 59);
+  doc.roundedRect(25, 100, 165, 50, 3, 3, 'F');
+  doc.setDrawColor(217, 119, 6);
+  doc.roundedRect(25, 100, 165, 50, 3, 3, 'S');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(251, 191, 36);
+  doc.text(isEn ? 'MASTER CATALOG OVERVIEW' : 'DAFTAR MASTER KATALOG LENGKAP', 32, 112);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text(`• Bab I   : ${destinations.length} ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 122);
+  doc.text(`• Bab II  : ${cultureItems.length} ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 129);
+  doc.text(`• Bab III : ${culinaryItems.length} ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 136);
+  doc.text(`• Bab IV  : ${eventItems.length} ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 143);
+
+  doc.setFillColor(220, 38, 38);
+  doc.rect(25, 175, 4, 32, 'F');
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(11);
+  doc.setTextColor(226, 232, 240);
+  doc.text('"Adat Basandi Syarak, Syarak Basandi Kitabullah"', 35, 186);
+  doc.text('"Alam Takambang Jadi Guru"', 35, 194);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(148, 163, 184);
+  doc.text(isEn ? 'Fostering cultural integrity and natural conservation in West Sumatra.' : 'Falsafah keluhuran kearifan lokal dan harmoni alam semesta Ranah Minang.', 35, 202);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text(isEn ? 'PUBLISHED BY:' : 'DITERBITKAN OLEH:', 25, 255);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(203, 213, 225);
+  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', 25, 261);
+  doc.text('Padang, Sumatera Barat, Indonesia • 2026', 25, 267);
+  doc.text('Platform Resmi: https://malala.my.id', 25, 273);
+
+  // ==============================================================
+  // 2. BAB I: DESTINASI WISATA
+  // ==============================================================
+  for (let i = 0; i < destinations.length; i++) {
+    try {
+      const dest = destinations[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Destinations' : 'Destinasi Wisata', dest.regency || 'Sumatera Barat');
+
+      const title = String(isEn && dest.titleEn ? dest.titleEn : dest.title || '').toUpperCase();
+      const category = String(isEn && dest.categoryEn ? dest.categoryEn : dest.category || 'Wisata');
+      const location = String(isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency || 'Sumatera Barat'));
+      const desc = String(isEn && dest.descriptionEn ? dest.descriptionEn : dest.description || '');
       const highlights = (isEn && dest.highlightsEn ? dest.highlightsEn : dest.highlights) || [];
       const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
-      return `
-      <div class="catalog-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span class="badge badge-dark">#${idx + 1} • ${dest.regency || 'Sumatera Barat'}</span>
-          <span class="badge badge-red">${category}</span>
-        </div>
+      let y = 16;
 
-        <div class="hero-img-wrap">
-          <img src="${dest.imageUrl}" alt="${title}" onerror="this.style.display='none'">
-        </div>
+      // Banner Box
+      doc.setFillColor(30, 41, 59);
+      doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+      doc.setFillColor(220, 38, 38);
+      doc.rect(margin, y + 66, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
 
-        <div class="title">${title}</div>
-        <div class="subtitle">📍 ${location}</div>
+      doc.setFillColor(0, 0, 0);
+      doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
 
-        <div class="desc-text">
-          ${desc.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-        </div>
+      y += 73;
 
-        ${highlights.length > 0 ? `
-        <div class="box-info">
-          <h4>${isEn ? 'Key Highlights:' : 'Daya Tarik Utama (Highlights):'}</h4>
-          <ul>
-            ${highlights.map(h => `<li>${h}</li>`).join('')}
-          </ul>
-        </div>` : ''}
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13.5);
+      doc.setTextColor(15, 23, 42);
+      doc.text(title, margin, y);
 
-        ${bestTime ? `
-        <div class="footer-row">
-          <span>⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} <strong>${bestTime}</strong></span>
-          <span>Dinas Pariwisata Sumbar</span>
-        </div>` : ''}
-      </div>
-      `;
-    }).join('')}
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(220, 38, 38);
+      doc.text(`📍 ${location}`, margin, y);
 
-    <!-- ========================================== -->
-    <!-- BAB II: 14 WARISAN BUDAYA                  -->
-    <!-- ========================================== -->
-    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #0f172a; margin: 30px 0 15px 0; text-transform: uppercase; border-bottom: 2px solid #d97706; padding-bottom: 6px;">
-      ${isEn ? 'Chapter II: 14 Sacred Cultural Traditions' : 'Bab II: 14 Warisan Budaya & Tradisi Adat'}
-    </h2>
+      y += 4;
+      doc.setDrawColor(226, 232, 240);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
 
-    ${cultureItems.map((cult, idx) => {
-      const title = isEn && cult.titleEn ? cult.titleEn : cult.title;
-      const category = isEn && cult.categoryEn ? cult.categoryEn : cult.category;
-      const origin = isEn && cult.originEn ? cult.originEn : cult.origin;
-      const desc = isEn && cult.descriptionEn ? cult.descriptionEn : cult.description;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(51, 65, 85);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      if (highlights.length > 0) {
+        y += 1;
+        const boxHeight = 10 + (highlights.length * 5);
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'F');
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'S');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(15, 23, 42);
+        doc.text(isEn ? 'KEY HIGHLIGHTS & ATTRACTIONS' : 'DAYA TARIK UTAMA (HIGHLIGHTS)', margin + 4, y + 6);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(51, 65, 85);
+        let hlY = y + 11;
+        highlights.forEach((hl) => {
+          doc.text(`✓  ${hl}`, margin + 5, hlY);
+          hlY += 5;
+        });
+
+        y += boxHeight + 4;
+      }
+
+      if (bestTime) {
+        doc.setFillColor(254, 243, 199);
+        doc.roundedRect(margin, y, contentWidth, 8.5, 1.5, 1.5, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(180, 83, 9);
+        doc.text(`⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${bestTime}`, margin + 4, y + 5.8);
+      }
+    } catch {}
+  }
+
+  // ==============================================================
+  // 3. BAB II: WARISAN BUDAYA
+  // ==============================================================
+  for (let i = 0; i < cultureItems.length; i++) {
+    try {
+      const cult = cultureItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Culture & Heritage' : 'Warisan Budaya', cult.category || 'Adat Minang');
+
+      const title = String(isEn && cult.titleEn ? cult.titleEn : cult.title || '').toUpperCase();
+      const category = String(isEn && cult.categoryEn ? cult.categoryEn : cult.category || 'Budaya');
+      const origin = String(isEn && cult.originEn ? cult.originEn : (cult.origin || 'Alam Minangkabau'));
+      const desc = String(isEn && cult.descriptionEn ? cult.descriptionEn : cult.description || '');
       const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
-      return `
-      <div class="catalog-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span class="badge badge-dark">#${destinations.length + idx + 1} • WARISAN ADAT</span>
-          <span class="badge badge-amber">${category}</span>
-        </div>
+      let y = 16;
 
-        <div class="hero-img-wrap">
-          <img src="${cult.imageUrl}" alt="${title}" onerror="this.style.display='none'">
-        </div>
+      doc.setFillColor(69, 26, 3);
+      doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+      doc.setFillColor(217, 119, 6);
+      doc.rect(margin, y + 66, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
 
-        <div class="title" style="color: #78350f;">${title}</div>
-        <div class="subtitle" style="color: #b45309;">🏛️ ${isEn ? 'Origin:' : 'Asal Nagari / Tradisi:'} ${origin}</div>
+      doc.setFillColor(217, 119, 6);
+      doc.roundedRect(margin + 4, y + 4, 40, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(category.toUpperCase(), margin + 24, y + 8.8, { align: 'center' });
 
-        <div class="desc-text">
-          ${desc.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-        </div>
+      y += 73;
 
-        ${philosophy ? `
-        <div class="box-info" style="background: #fefce8; border-color: #fde68a;">
-          <h4 style="color: #92400e;">${isEn ? 'Minangkabau Customary Philosophy:' : 'Falsafah & Makna Adat Minangkabau:'}</h4>
-          <p style="font-style: italic; font-weight: bold; color: #78350f;">"${philosophy}"</p>
-        </div>` : ''}
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13.5);
+      doc.setTextColor(120, 53, 15);
+      doc.text(title, margin, y);
 
-        <div class="footer-row">
-          <span>Kebudayaan & Adat Minangkabau</span>
-          <span>Dinas Pariwisata Sumbar</span>
-        </div>
-      </div>
-      `;
-    }).join('')}
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(180, 83, 9);
+      doc.text(`🏛️ ${isEn ? 'Origin:' : 'Asal Nagari:'} ${origin}`, margin, y);
 
-    <!-- ========================================== -->
-    <!-- BAB III: 16 KULINER OTENTIK                -->
-    <!-- ========================================== -->
-    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #0f172a; margin: 30px 0 15px 0; text-transform: uppercase; border-bottom: 2px solid #e11d48; padding-bottom: 6px;">
-      ${isEn ? 'Chapter III: 16 Authentic Culinaries' : 'Bab III: 16 Kuliner Otentik Ranah Minang'}
-    </h2>
+      y += 4;
+      doc.setDrawColor(253, 230, 138);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
 
-    ${culinaryItems.map((cul, idx) => {
-      const title = isEn && cul.titleEn ? cul.titleEn : cul.title;
-      const category = isEn && cul.categoryEn ? cul.categoryEn : cul.category;
-      const origin = isEn && cul.originEn ? cul.originEn : cul.origin;
-      const desc = isEn && cul.descriptionEn ? cul.descriptionEn : cul.description;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(68, 64, 60);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      if (philosophy) {
+        y += 2;
+        doc.setFillColor(254, 252, 232);
+        doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'F');
+        doc.setDrawColor(253, 230, 138);
+        doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'S');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(146, 64, 14);
+        doc.text(isEn ? 'MINANGKABAU CUSTOMARY PHILOSOPHY' : 'FALSAFAH & MAKNA ADAT MINANGKABAU', margin + 4, y + 6.5);
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 53, 15);
+        const splitPhil = doc.splitTextToSize(`"${philosophy}"`, contentWidth - 8);
+        doc.text(splitPhil, margin + 4, y + 13.5);
+      }
+    } catch {}
+  }
+
+  // ==============================================================
+  // 4. BAB III: KULINER OTENTIK
+  // ==============================================================
+  for (let i = 0; i < culinaryItems.length; i++) {
+    try {
+      const cul = culinaryItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Authentic Gastronomy' : 'Kuliner Otentik Minang', cul.category || 'Kuliner');
+
+      const title = String(isEn && cul.titleEn ? cul.titleEn : cul.title || '').toUpperCase();
+      const category = String(isEn && cul.categoryEn ? cul.categoryEn : cul.category || 'Kuliner');
+      const origin = String(isEn && cul.originEn ? cul.originEn : (cul.origin || 'Ranah Minang'));
+      const desc = String(isEn && cul.descriptionEn ? cul.descriptionEn : cul.description || '');
       const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
       const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
+      const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
 
-      return `
-      <div class="catalog-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span class="badge badge-dark">#${destinations.length + cultureItems.length + idx + 1} • GASTRONOMI</span>
-          <span class="badge badge-rose">${category}</span>
-        </div>
+      let y = 16;
 
-        <div class="hero-img-wrap">
-          <img src="${cul.imageUrl}" alt="${title}" onerror="this.style.display='none'">
-        </div>
+      doc.setFillColor(76, 29, 44);
+      doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+      doc.setFillColor(220, 38, 38);
+      doc.rect(margin, y + 66, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
 
-        <div class="title" style="color: #9f1239;">${title}</div>
-        <div class="subtitle" style="color: #e11d48;">🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}</div>
+      doc.setFillColor(220, 38, 38);
+      doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
 
-        <div class="desc-text">
-          ${desc.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-        </div>
+      y += 73;
 
-        <div class="box-info" style="background: #fff1f2; border-color: #fecdd3;">
-          <h4 style="color: #9f1239;">🥘 ${isEn ? 'Spices & Ingredients:' : 'Bahan & Rempah Utama:'}</h4>
-          <p style="color: #4c1d2e; font-weight: 500; margin-bottom: 4px;">${ingredients.join(', ')}</p>
-          ${taste ? `<p style="color: #9f1239; font-weight: bold;">👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}</p>` : ''}
-        </div>
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13.5);
+      doc.setTextColor(159, 18, 57);
+      doc.text(title, margin, y);
 
-        <div class="footer-row">
-          <span>Warisan Kuliner Dunia UNESCO</span>
-          <span>Dinas Pariwisata Sumbar</span>
-        </div>
-      </div>
-      `;
-    }).join('')}
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(225, 29, 72);
+      doc.text(`🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}`, margin, y);
 
-    <!-- ========================================== -->
-    <!-- BAB IV: 20 KALENDER EVENT & KEN 2026       -->
-    <!-- ========================================== -->
-    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 16px; color: #0f172a; margin: 30px 0 15px 0; text-transform: uppercase; border-bottom: 2px solid #0f172a; padding-bottom: 6px;">
-      ${isEn ? 'Chapter IV: Official Calendar of Events (CoE) 2026' : 'Bab IV: Kalender Event Resmi (CoE) & KEN 2026'}
-    </h2>
+      y += 4;
+      doc.setDrawColor(254, 205, 211);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
 
-    ${eventItems.map((ev, idx) => {
-      const title = isEn && ev.titleEn ? ev.titleEn : ev.title;
-      const schedule = isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule;
-      const location = isEn && ev.locationEn ? ev.locationEn : ev.location;
-      const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(76, 29, 44);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
 
-      return `
-      <div class="catalog-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span class="badge badge-dark">#${destinations.length + cultureItems.length + culinaryItems.length + idx + 1} • EVENT</span>
-          <span class="badge ${ev.isKen ? 'badge-red' : 'badge-dark'}">${ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI'}</span>
-        </div>
+      y += 2;
+      doc.setFillColor(255, 241, 242);
+      doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'F');
+      doc.setDrawColor(254, 205, 211);
+      doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'S');
 
-        <div class="hero-img-wrap">
-          <img src="${ev.imageUrl}" alt="${title}" onerror="this.style.display='none'">
-        </div>
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(159, 18, 57);
+      doc.text(`🥘 ${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 5.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(ingredients.join(', '), margin + 4, y + 10.5);
 
-        <div class="title">${title}</div>
-        <div class="subtitle" style="color: #334155;">📅 ${schedule}  •  📍 ${location}</div>
+      if (taste) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 15.5);
+      }
 
-        <div class="desc-text">
-          ${desc.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-        </div>
+      if (philosophy) {
+        y += 24;
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(margin, y, contentWidth, 11, 1.5, 1.5, 'F');
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(7.5);
+        doc.setTextColor(71, 85, 105);
+        doc.text(`📜 "${philosophy}"`, margin + 4, y + 6.5);
+      }
+    } catch {}
+  }
 
-        ${ev.isKen ? `
-        <div class="box-info" style="background: #fef2f2; border-color: #fecaca;">
-          <h4 style="color: #b91c1c;">⭐ Karisma Event Nusantara (KEN) Kemenparekraf RI</h4>
-          <p style="color: #991b1b;">Event unggulan terkurasi resmi oleh Kementerian Pariwisata dan Ekonomi Kreatif Republik Indonesia.</p>
-        </div>` : ''}
+  // ==============================================================
+  // 5. BAB IV: KALENDER EVENT & KEN 2026
+  // ==============================================================
+  for (let i = 0; i < eventItems.length; i++) {
+    try {
+      const ev = eventItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Calendar of Events' : 'Kalender Event 2026', ev.isKen ? 'Karisma Event Nusantara' : 'Festival Sumbar');
 
-        <div class="footer-row">
-          <span>Calendar of Events 2026</span>
-          <span>Dinas Pariwisata Sumbar</span>
-        </div>
-      </div>
-      `;
-    }).join('')}
+      const title = String(isEn && ev.titleEn ? ev.titleEn : ev.title || '').toUpperCase();
+      const schedule = String(isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule || '');
+      const location = String(isEn && ev.locationEn ? ev.locationEn : ev.location || '');
+      const desc = String(isEn && ev.descriptionEn ? ev.descriptionEn : ev.description || '');
 
-    <!-- ========================================== -->
-    <!-- BACK COVER                                 -->
-    <!-- ========================================== -->
-    <div class="cover-card" style="page-break-before: always; break-before: page; text-align: center;">
-      <h2 style="font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900; margin-bottom: 8px;">
-        ${isEn ? 'EXPERIENCE WEST SUMATRA' : 'JELAJAHI RANAH MINANG'}
-      </h2>
-      <p style="color: #cbd5e1; font-size: 13px; margin-bottom: 24px;">
-        ${isEn ? 'Taste the Heritage, Feel the Culture, Embrace the Nature.' : 'Rasakan Warisan, Hayati Kebudayaan, Rengkuh Pesona Alam Nan Megah.'}
-      </p>
+      let y = 16;
 
-      <div style="background: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155; max-width: 500px; margin: 0 auto 24px auto; font-size: 12px; line-height: 1.8;">
-        <strong style="color: #fbbf24; font-size: 13px; display: block; margin-bottom: 6px;">${isEn ? 'OFFICIAL CONTACT & INFORMATION' : 'KONTAK & INFORMASI RESMI'}</strong>
-        <div>Dinas Pariwisata Provinsi Sumatera Barat</div>
-        <div>Jl. Khatib Sulaiman No. 22, Padang, Sumatera Barat</div>
-        <div>Email: info@pariwisata.sumbarprov.go.id</div>
-        <div>Platform Resmi: <strong style="color: #ffffff;">https://malala.my.id</strong></div>
-        <div>Hotline: +62 751 7055183</div>
-      </div>
+      doc.setFillColor(15, 23, 42);
+      doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+      doc.setFillColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+      doc.rect(margin, y + 66, contentWidth, 2, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(255, 255, 255);
+      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
 
-      <p style="font-size: 11px; color: #94a3b8; font-style: italic;">
-        © 2026 Malala Official • Hak Cipta Dilindungi
-      </p>
-    </div>
+      doc.setFillColor(ev.isKen ? 220 : 15, ev.isKen ? 38 : 23, ev.isKen ? 38 : 42);
+      doc.roundedRect(margin + 4, y + 4, ev.isKen ? 52 : 36, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 30 : 22), y + 8.8, { align: 'center' });
 
-  </div>
+      y += 73;
 
-  <script>
-    // Auto-prompt print dialog after content and images load
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        window.print();
-      }, 800);
-    });
-  </script>
-</body>
-</html>
-  `;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(15, 23, 42);
+      doc.text(title, margin, y);
 
-  printWindow.document.open();
-  printWindow.document.write(htmlContent);
-  printWindow.document.close();
-}
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+      doc.text(`📅 ${schedule}  •  📍 ${location}`, margin, y);
 
-/**
- * Backward-compatible wrapper
- */
-export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<void> {
-  openPrintableBookletWindow(data);
+      y += 4;
+      doc.setDrawColor(203, 213, 225);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(51, 65, 85);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      if (ev.isKen) {
+        y += 2;
+        doc.setFillColor(254, 242, 242);
+        doc.roundedRect(margin, y, contentWidth, 16, 2, 2, 'F');
+        doc.setDrawColor(254, 202, 202);
+        doc.roundedRect(margin, y, contentWidth, 16, 2, 2, 'S');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(185, 28, 28);
+        doc.text(isEn ? '⭐ OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : '⭐ EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 5.5);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(153, 27, 27);
+        doc.text(isEn ? 'Curated and recognized by the Ministry of Tourism and Creative Economy.' : 'Terkurasi resmi oleh Kementerian Pariwisata dan Ekonomi Kreatif RI.', margin + 4, y + 11);
+      }
+    } catch {}
+  }
+
+  // ==============================================================
+  // 6. BACK COVER
+  // ==============================================================
+  doc.addPage();
+  pageNumber++;
+
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+  doc.setFillColor(220, 38, 38);
+  doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(255, 255, 255);
+  doc.text(isEn ? 'EXPERIENCE WEST SUMATRA' : 'JELAJAHI RANAH MINANG', pageWidth / 2, 70, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(203, 213, 225);
+  doc.text(isEn ? 'Taste the Heritage, Feel the Culture, Embrace the Nature.' : 'Rasakan Warisan, Hayati Kebudayaan, Rengkuh Pesona Alam Nan Megah.', pageWidth / 2, 80, { align: 'center' });
+
+  doc.setFillColor(30, 41, 59);
+  doc.roundedRect(30, 110, 150, 75, 4, 4, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.setTextColor(251, 191, 36);
+  doc.text(isEn ? 'OFFICIAL CONTACT & INFORMATION' : 'KONTAK & INFORMASI RESMI', pageWidth / 2, 125, { align: 'center' });
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(255, 255, 255);
+  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', pageWidth / 2, 137, { align: 'center' });
+  doc.text('Jl. Khatib Sulaiman No. 22, Padang, Sumatera Barat', pageWidth / 2, 144, { align: 'center' });
+  doc.text('Email: info@pariwisata.sumbarprov.go.id', pageWidth / 2, 151, { align: 'center' });
+  doc.text('Official Platform: https://malala.my.id', pageWidth / 2, 158, { align: 'center' });
+  doc.text('Call Center / Hotline: +62 751 7055183', pageWidth / 2, 165, { align: 'center' });
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(8.5);
+  doc.setTextColor(148, 163, 184);
+  doc.text(isEn ? '© 2026 Malala Official. All rights reserved.' : '© 2026 Malala Official. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
+
+  // SAVE FILE DIRECTLY (Zero Popups)
+  const filename = isEn ? 'Master-Booklet-West-Sumatra-Guide-2026.pdf' : 'Master-E-Booklet-Pariwisata-Budaya-Sumbar-2026.pdf';
+  
+  const pdfBlob = doc.output('blob');
+  const blobUrl = URL.createObjectURL(pdfBlob);
+  const downloadAnchor = document.createElement('a');
+  downloadAnchor.href = blobUrl;
+  downloadAnchor.download = filename;
+  downloadAnchor.style.display = 'none';
+  document.body.appendChild(downloadAnchor);
+  downloadAnchor.click();
+  setTimeout(() => {
+    document.body.removeChild(downloadAnchor);
+    URL.revokeObjectURL(blobUrl);
+  }, 3000);
 }
