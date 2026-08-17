@@ -2308,11 +2308,20 @@ export const Drawers: React.FC<DrawersProps> = ({
                   <h3 className="font-orbitron font-extrabold text-white text-base tracking-wide">
                     {lang === 'en' ? 'Complete West Sumatra Tourism & Culture Guide 2026' : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026'}
                   </h3>
-                  <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
-                    {lang === 'en' 
-                      ? 'Comprehensive compilation of 26 curated destinations, 14 sacred Minang cultural heritage traditions, 16 authentic gastronomic dishes, and 20 major 2026 events & KEN calendar.' 
-                      : 'Kompilasi komprehensif seluruh data 26 destinasi wisata, 14 warisan budaya & adat Minangkabau, 16 kuliner gastronomi otentik, serta 20 kalender event & KEN resmi 2026.'}
-                  </p>
+                  {(() => {
+                    const liveDestCount = (dataStore?.destinations && dataStore.destinations.length > 0) ? dataStore.destinations.length : DESTINATIONS.length;
+                    const liveCultCount = (dataStore?.cultureItems && dataStore.cultureItems.length > 0) ? dataStore.cultureItems.length : CULTURE_ITEMS.length;
+                    const liveCulCount = (dataStore?.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems.length : CULINARY_ITEMS.length;
+                    const liveEvCount = (dataStore?.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems.length : EVENTS_SCHEDULE.length;
+
+                    return (
+                      <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
+                        {lang === 'en' 
+                          ? `Comprehensive compilation of ${liveDestCount} curated destinations, ${liveCultCount} sacred Minang cultural heritage traditions, ${liveCulCount} authentic gastronomic dishes, and ${liveEvCount} major 2026 events & KEN calendar.` 
+                          : `Kompilasi komprehensif seluruh data ${liveDestCount} destinasi wisata, ${liveCultCount} warisan budaya & adat Minangkabau, ${liveCulCount} kuliner gastronomi otentik, serta ${liveEvCount} kalender event & KEN resmi 2026.`}
+                      </p>
+                    );
+                  })()}
                 </div>
 
                 <div className="pt-2">
