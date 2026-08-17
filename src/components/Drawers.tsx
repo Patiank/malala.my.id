@@ -1582,10 +1582,6 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </button>
                       ))}
                     </div>
-
-                    <span className="text-[11px] font-bold text-gray-500">
-                      {sortedEvents.length} {isEn ? 'events found' : 'event ditemukan'}
-                    </span>
                   </div>
 
                   {/* Month Filter Tabs (Januari - Desember) */}
