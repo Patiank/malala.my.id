@@ -354,6 +354,84 @@ function buildJournalisticNarrative(cleanTitle: string, source: string): {
   return { descId, descEn, highlightsId, highlightsEn, tipsId, tipsEn };
 }
 
+const DEDUP_STOP_WORDS = new Set([
+  'di', 'ke', 'dari', 'pada', 'dalam', 'oleh', 'untuk', 'dengan', 'dan', 'atau', 'yang', 'ini', 'itu',
+  'adalah', 'sebagai', 'akan', 'telah', 'sudah', 'sedang', 'bisa', 'dapat', 'resmi', 'digelar', 'gelar',
+  'dibuka', 'buka', 'tinjau', 'kunjungi', 'kunjungan', 'soal', 'terkait', 'tentang', 'kata', 'ungkap',
+  'siap', 'jadi', 'ada', 'menjadi', 'sebut', 'beberkan', 'hingga', 'juga', 'tak', 'tidak', 'lebih',
+  'kemenparekraf', 'menteri', 'menparekraf', 'dinas', 'pariwisata',
+  'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'will'
+]);
+
+function extractKeywords(title: string): string[] {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(word => word.length > 2 && !DEDUP_STOP_WORDS.has(word));
+}
+
+function calculateTitleSimilarity(titleA: string, titleB: string): number {
+  const wordsA = new Set(extractKeywords(titleA));
+  const wordsB = new Set(extractKeywords(titleB));
+  if (wordsA.size === 0 || wordsB.size === 0) return 0;
+
+  let matches = 0;
+  for (const wa of wordsA) {
+    if (wordsB.has(wa)) {
+      matches += 1;
+    } else {
+      for (const wb of wordsB) {
+        if ((wa.length >= 4 && wb.startsWith(wa)) || (wb.length >= 4 && wa.startsWith(wb))) {
+          matches += 0.8;
+          break;
+        }
+      }
+    }
+  }
+
+  // Sorensen-Dice coefficient
+  return (2 * matches) / (wordsA.size + wordsB.size);
+}
+
+/**
+ * Intelligent News Deduplication Engine
+ * Removes redundant news items covering the same topic/event from different media outlets.
+ */
+export function deduplicateNewsItems<T extends { title: string; titleEn?: string }>(items: T[]): T[] {
+  const uniqueItems: T[] = [];
+
+  for (const item of items) {
+    if (!item || !item.title) continue;
+
+    const isDuplicate = uniqueItems.some((existing) => {
+      const cleanA = item.title.trim().toLowerCase();
+      const cleanB = existing.title.trim().toLowerCase();
+
+      // 1. Exact title match
+      if (cleanA === cleanB) return true;
+
+      // 2. High keyword similarity (threshold 0.38 - catches same news reported by different outlets)
+      const simId = calculateTitleSimilarity(item.title, existing.title);
+      if (simId >= 0.38) return true;
+
+      // 3. English title similarity check if available
+      if (item.titleEn && existing.titleEn) {
+        const simEn = calculateTitleSimilarity(item.titleEn, existing.titleEn);
+        if (simEn >= 0.38) return true;
+      }
+
+      return false;
+    });
+
+    if (!isDuplicate) {
+      uniqueItems.push(item);
+    }
+  }
+
+  return uniqueItems;
+}
+
 /**
  * Fetch live Real-Time National Indonesia Tourism News strictly within the last 30 days (1 month)
  * Note: imageUrl is left empty ('') so the admin can manually upload/set banner images.
@@ -361,8 +439,11 @@ function buildJournalisticNarrative(cleanTitle: string, source: string): {
 async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   const rssQueries = [
     'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:30d&hl=id&gl=ID&ceid=ID:id',
-    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id'
+    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id',
+    'https://news.google.com/rss/search?q=desa+wisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id'
   ];
+
+  const candidateList: any[] = [];
 
   for (const rssUrl of rssQueries) {
     try {
@@ -372,81 +453,20 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
 
       const data = await res.json();
       if (data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
-        const parsedItems = data.items
-          .map((item: any, idx: number) => {
-            const rawTitle = cleanHtml(item.title || '');
-            const titleParts = rawTitle.split(' - ');
-            const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
-            const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
-
-            const { dateId, dateEn, isWithin30d } = formatDateIndo(item.pubDate);
-            if (!isWithin30d) return null; // Strictly ignore news older than 1 month
-
-            const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
-
-            return {
-              id: `news-live-${idx + 1}-${Date.now().toString().slice(-6)}`,
-              title: cleanTitle,
-              titleEn: cleanTitle,
-              category: 'Pariwisata Nasional',
-              categoryEn: 'National Tourism',
-              date: dateId,
-              dateEn: dateEn,
-              tag: 'Terkini',
-              tagEn: 'Latest',
-              description: narrative.descId,
-              descriptionEn: narrative.descEn,
-              imageUrl: '', // Left blank for manual admin input as requested
-              actionUrl: '',
-              highlights: narrative.highlightsId,
-              highlightsEn: narrative.highlightsEn,
-              tips: narrative.tipsId,
-              tipsEn: narrative.tipsEn,
-              locationName: `Liputan Terverifikasi (${source})`,
-              locationNameEn: `Verified Report (${source})`
-            };
-          })
-          .filter(Boolean)
-          .slice(0, 6);
-
-        if (parsedItems.length > 0) {
-          return parsedItems;
-        }
-      }
-    } catch (err) {
-      console.warn("RSS fetch error:", err);
-    }
-  }
-
-  // Secondary fallback via CORS proxy
-  try {
-    const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      'https://news.google.com/rss/search?q=pariwisata+indonesia+when:30d&hl=id&gl=ID&ceid=ID:id'
-    )}`;
-    const res = await fetch(corsProxyUrl, { cache: 'no-store' });
-    if (res.ok) {
-      const json = await res.json();
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(json.contents, 'text/xml');
-      const items = xmlDoc.querySelectorAll('item');
-
-      if (items && items.length > 0) {
-        const parsed: any[] = [];
-        for (let i = 0; i < items.length && parsed.length < 6; i++) {
-          const it = items[i];
-          const rawTitle = it.querySelector('title')?.textContent || '';
-          const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
-          const { dateId, dateEn, isWithin30d } = formatDateIndo(pubDate);
-
-          if (!isWithin30d) continue; // Ignore if older than 30 days
-
+        for (let idx = 0; idx < data.items.length; idx++) {
+          const item = data.items[idx];
+          const rawTitle = cleanHtml(item.title || '');
           const titleParts = rawTitle.split(' - ');
           const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
           const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+
+          const { dateId, dateEn, isWithin30d } = formatDateIndo(item.pubDate);
+          if (!isWithin30d) continue; // Strictly ignore news older than 1 month
+
           const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
 
-          parsed.push({
-            id: `news-proxy-${i + 1}-${Date.now().toString().slice(-6)}`,
+          candidateList.push({
+            id: `news-live-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
             title: cleanTitle,
             titleEn: cleanTitle,
             category: 'Pariwisata Nasional',
@@ -467,11 +487,72 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             locationNameEn: `Verified Report (${source})`
           });
         }
-        if (parsed.length > 0) return parsed;
       }
+    } catch (err) {
+      console.warn("RSS fetch error:", err);
     }
-  } catch (err) {
-    console.warn("CORS proxy news fetch error:", err);
+  }
+
+  // Fallback via CORS proxy if candidate list is small
+  if (candidateList.length < 4) {
+    try {
+      const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
+        'https://news.google.com/rss/search?q=pariwisata+indonesia+when:30d&hl=id&gl=ID&ceid=ID:id'
+      )}`;
+      const res = await fetch(corsProxyUrl, { cache: 'no-store' });
+      if (res.ok) {
+        const json = await res.json();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(json.contents, 'text/xml');
+        const items = xmlDoc.querySelectorAll('item');
+
+        if (items && items.length > 0) {
+          for (let i = 0; i < items.length; i++) {
+            const it = items[i];
+            const rawTitle = it.querySelector('title')?.textContent || '';
+            const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
+            const { dateId, dateEn, isWithin30d } = formatDateIndo(pubDate);
+
+            if (!isWithin30d) continue;
+
+            const titleParts = rawTitle.split(' - ');
+            const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
+            const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+            const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
+
+            candidateList.push({
+              id: `news-proxy-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
+              title: cleanTitle,
+              titleEn: cleanTitle,
+              category: 'Pariwisata Nasional',
+              categoryEn: 'National Tourism',
+              date: dateId,
+              dateEn: dateEn,
+              tag: 'Terkini',
+              tagEn: 'Latest',
+              description: narrative.descId,
+              descriptionEn: narrative.descEn,
+              imageUrl: '', // Left blank for manual admin input
+              actionUrl: '',
+              highlights: narrative.highlightsId,
+              highlightsEn: narrative.highlightsEn,
+              tips: narrative.tipsId,
+              tipsEn: narrative.tipsEn,
+              locationName: `Liputan Terverifikasi (${source})`,
+              locationNameEn: `Verified Report (${source})`
+            });
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("CORS proxy news fetch error:", err);
+    }
+  }
+
+  // Deduplicate to filter out duplicate news stories from different outlets
+  const deduped = deduplicateNewsItems(candidateList);
+  if (deduped.length > 0) {
+    return deduped.slice(0, 8);
   }
 
   return null;
@@ -490,7 +571,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
     if (res.ok && contentType.includes('application/json')) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
-        return data.filter((it: any) => isWithinLast30Days(it.date));
+        return deduplicateNewsItems(data.filter((it: any) => isWithinLast30Days(it.date)));
       }
     }
   } catch (e) {
@@ -502,7 +583,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
   if (viteApiKey) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
-      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
+      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Setiap butir berita WAJIB mengangkat topik atau peristiwa yang berbeda (DILARANG membuat berita dengan topik yang sama). Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
       id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string tanggal 30 hari terakhir), dateEn (string), tag (string), tagEn (string), description (string 3 paragraf), descriptionEn (string 3 paragraf), imageUrl (""), actionUrl (""), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
       Hanya kembalikan valid JSON tanpa markdown.`;
 
@@ -514,7 +595,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
       const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(cleanJson);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed.filter((it: any) => isWithinLast30Days(it.date));
+        return deduplicateNewsItems(parsed.filter((it: any) => isWithinLast30Days(it.date)));
       }
     } catch (err) {
       console.warn("Client Gemini hotinfo generation failed, moving to live RSS:", err);
@@ -524,11 +605,11 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 3. Live Google News / RSS National Tourism Feed (Direct, Real-time & strictly within 30 days)
   const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
   if (liveRssNews && liveRssNews.length > 0) {
-    return liveRssNews;
+    return deduplicateNewsItems(liveRssNews);
   }
 
   // 4. Static fallback if completely offline (within 30 days)
-  return HOT_INFO_FALLBACK.filter((it: any) => isWithinLast30Days(it.date));
+  return deduplicateNewsItems(HOT_INFO_FALLBACK.filter((it: any) => isWithinLast30Days(it.date)));
 }
 
 

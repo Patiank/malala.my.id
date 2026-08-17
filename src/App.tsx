@@ -11,7 +11,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo, isWithinLast30Days } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems } from './utils/ai';
 
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
@@ -240,8 +240,9 @@ export default function App() {
 
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           {(() => {
-            const validItems = (dataStore.hotInfoItems || []).filter((news: any) => isWithinLast30Days(news.date || news.createdAt));
-            const displayItems = validItems.length > 0 ? validItems : dataStore.hotInfoItems;
+            const rawFiltered = (dataStore.hotInfoItems || []).filter((news: any) => isWithinLast30Days(news.date || news.createdAt));
+            const validItems = deduplicateNewsItems(rawFiltered);
+            const displayItems = validItems.length > 0 ? validItems : deduplicateNewsItems(dataStore.hotInfoItems || []);
             // Ultra-calm tempo: ~35 seconds per item (minimum 160 seconds total) for effortless readability
             const marqueeDuration = Math.max(160, displayItems.length * 35);
 

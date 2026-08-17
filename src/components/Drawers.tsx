@@ -5,7 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2074,19 +2074,25 @@ export const Drawers: React.FC<DrawersProps> = ({
               {/* Category Filter Pills & Refresh Button */}
               <div className="flex items-center justify-between gap-2 pb-2">
                 <div className="flex items-center gap-2 overflow-x-auto scrollbar-none text-xs font-jakarta flex-1">
-                  {Array.from(new Set(['Semua', ...(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS).filter((i: any) => isWithinLast30Days(i.date || i.createdAt)).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
-                    <button
-                      key={cat}
-                      onClick={() => setHotInfoCategory(cat)}
-                      className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                        hotInfoCategory === cat
-                          ? 'bg-red-600 text-white shadow-xs'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+                  {(() => {
+                    const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
+                      .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
+                    const dedupedList = deduplicateNewsItems(rawList);
+                    const uniqueCategories = Array.from(new Set(['Semua', ...dedupedList.map((i: any) => i.category).filter(Boolean)]));
+                    return uniqueCategories.map((cat: string) => (
+                      <button
+                        key={cat}
+                        onClick={() => setHotInfoCategory(cat)}
+                        className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                          hotInfoCategory === cat
+                            ? 'bg-red-600 text-white shadow-xs'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        {cat}
+                      </button>
+                    ));
+                  })()}
                 </div>
                 <button
                   onClick={handleRefreshHotInfo}
@@ -2100,12 +2106,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </button>
               </div>
 
-              {/* Hot Info Items List (Strictly last 30 days) */}
+              {/* Hot Info Items List (Strictly last 30 days & deduplicated by topic/event) */}
               <div className="space-y-4">
-                {(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                  .filter((item: any) => isWithinLast30Days(item.date || item.createdAt))
-                  .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory)
-                  .map((item: any, idx: number) => {
+                {(() => {
+                  const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
+                    .filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
+                  const dedupedList = deduplicateNewsItems(rawList)
+                    .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory);
+
+                  return dedupedList.map((item: any, idx: number) => {
                     const isEn = lang === 'en';
                     return (
                       <div
@@ -2198,7 +2207,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
                       </div>
                     );
-                  })}
+                  });
+                })()}
               </div>
             </div>
           )}
