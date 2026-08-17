@@ -664,7 +664,7 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* 1. YouTube Video Preview (If videoUrl is provided) */}
                   {ytEmbedUrl ? (
-                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black">
+                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black shrink-0">
                       <iframe
                         src={ytEmbedUrl}
                         title={title}
@@ -690,7 +690,7 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   ) : eventItem.imageUrl ? (
                     /* 2. Photo Banner Image (If imageUrl is provided without video) */
-                    <div className="relative h-28 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gray-900">
+                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gray-900 shrink-0">
                       <img
                         src={eventItem.imageUrl}
                         alt={title}
@@ -716,23 +716,28 @@ export const Hero: React.FC<HeroProps> = ({
                       )}
                     </div>
                   ) : (
-                    /* 3. Header Badge (If no media provided) */
-                    <div className="flex items-center justify-between gap-1 flex-wrap">
-                      <div className="flex items-center gap-1.5">
+                    /* 3. Handsome Minang Gradient Banner if no media provided */
+                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gradient-to-br from-amber-800 via-stone-900 to-black shrink-0 flex items-center justify-center p-3">
+                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full">
                         <span className="relative flex h-2 w-2">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
-                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
+                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
                           {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
                       {isKEN && (
-                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
+                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
                           KEN Kemenparekraf
                         </span>
                       )}
+
+                      <div className="text-center text-white/90 space-y-1">
+                        <Calendar className="w-6 h-6 mx-auto text-amber-400 opacity-80" />
+                        <p className="font-orbitron font-bold text-[11px] uppercase tracking-wider line-clamp-1">{title}</p>
+                      </div>
                     </div>
                   )}
 
@@ -752,9 +757,9 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   )}
 
-                  {/* Title & Info */}
+                  {/* Title & Info with fixed height */}
                   <div className="space-y-0.5">
-                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-1 group-hover:text-amber-600 transition-colors">
+                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
                       {title}
                     </h4>
                     <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
