@@ -5,7 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2078,20 +2078,32 @@ export const Drawers: React.FC<DrawersProps> = ({
                     const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                       .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
                     const dedupedList = deduplicateNewsItems(rawList);
-                    const uniqueCategories = Array.from(new Set(['Semua', ...dedupedList.map((i: any) => i.category).filter(Boolean)]));
-                    return uniqueCategories.map((cat: string) => (
-                      <button
-                        key={cat}
-                        onClick={() => setHotInfoCategory(cat)}
-                        className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                          hotInfoCategory === cat
-                            ? 'bg-red-600 text-white shadow-xs'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
-                      >
-                        {cat}
-                      </button>
-                    ));
+                    const dynamicCats = dedupedList.map((i: any) => i.category).filter(Boolean);
+                    const uniqueCategories = Array.from(new Set([
+                      'Semua',
+                      'Pariwisata Sumatera Barat',
+                      'Pariwisata Nasional',
+                      ...dynamicCats
+                    ]));
+
+                    return uniqueCategories.map((cat: string) => {
+                      const isSelected = hotInfoCategory === cat;
+                      const isSumbar = cat === 'Pariwisata Sumatera Barat';
+                      return (
+                        <button
+                          key={cat}
+                          onClick={() => setHotInfoCategory(cat)}
+                          className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
+                            isSelected
+                              ? isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
+                              : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          {isSumbar && <span>🏔️</span>}
+                          <span>{cat}</span>
+                        </button>
+                      );
+                    });
                   })()}
                 </div>
                 <button
@@ -2112,7 +2124,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                   const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                     .filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
                   const dedupedList = deduplicateNewsItems(rawList)
-                    .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory);
+                    .filter((item: any) => {
+                      if (hotInfoCategory === 'Semua') return true;
+                      if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
+                        return item.category === 'Pariwisata Sumatera Barat' || isSumbarTopic(`${item.title} ${item.description || ''} ${item.locationName || ''}`);
+                      }
+                      if (hotInfoCategory === 'Pariwisata Nasional') {
+                        return item.category === 'Pariwisata Nasional' || !isSumbarTopic(`${item.title} ${item.description || ''}`);
+                      }
+                      return item.category === hotInfoCategory;
+                    });
 
                   return dedupedList.map((item: any, idx: number) => {
                     const isEn = lang === 'en';

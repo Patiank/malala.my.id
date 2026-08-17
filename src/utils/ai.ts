@@ -452,15 +452,26 @@ export function deduplicateNewsItems<T extends { title: string; titleEn?: string
   return uniqueItems;
 }
 
+export function isSumbarTopic(text: string): boolean {
+  const sumbarKeywords = [
+    'sumbar', 'sumatera barat', 'padang', 'bukittinggi', 'mentawai', 'tanah datar',
+    'pagaruyung', 'sawahlunto', 'agam', 'solok', 'pasaman', 'sianok', 'harau',
+    'singkarak', 'maninjau', 'mandeh', 'pariaman', 'payakumbuh', 'dharmasraya',
+    'sijunjung', 'pesisir selatan', 'minang', 'minangkabau', 'marapi', 'talamau'
+  ];
+  const lower = (text || '').toLowerCase();
+  return sumbarKeywords.some(kw => lower.includes(kw));
+}
+
 /**
  * Fetch live Real-Time National Indonesia Tourism News strictly within the last 30 days (1 month)
  * Note: imageUrl is left empty ('') so the admin can manually upload/set banner images.
  */
 async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   const rssQueries = [
-    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:30d&hl=id&gl=ID&ceid=ID:id',
     'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id',
-    'https://news.google.com/rss/search?q=desa+wisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id'
+    'https://news.google.com/rss/search?q=desa+wisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id',
+    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:30d&hl=id&gl=ID&ceid=ID:id'
   ];
 
   const candidateList: any[] = [];
@@ -484,17 +495,18 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
           if (!isWithin30d) continue; // Strictly ignore news older than 1 month
 
           const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
+          const isSumbar = isSumbarTopic(cleanTitle) || isSumbarTopic(rssUrl);
 
           candidateList.push({
             id: `news-live-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
             title: cleanTitle,
             titleEn: cleanTitle,
-            category: 'Pariwisata Nasional',
-            categoryEn: 'National Tourism',
+            category: isSumbar ? 'Pariwisata Sumatera Barat' : 'Pariwisata Nasional',
+            categoryEn: isSumbar ? 'West Sumatra Tourism' : 'National Tourism',
             date: dateId,
             dateEn: dateEn,
-            tag: 'Terkini',
-            tagEn: 'Latest',
+            tag: isSumbar ? 'Sumbar' : 'Nasional',
+            tagEn: isSumbar ? 'West Sumatra' : 'National',
             description: narrative.descId,
             descriptionEn: narrative.descEn,
             imageUrl: '', // Left blank for manual admin input
@@ -517,7 +529,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   if (candidateList.length < 4) {
     try {
       const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-        'https://news.google.com/rss/search?q=pariwisata+indonesia+when:30d&hl=id&gl=ID&ceid=ID:id'
+        'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id'
       )}`;
       const res = await fetch(corsProxyUrl, { cache: 'no-store' });
       if (res.ok) {
@@ -527,7 +539,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
         const items = xmlDoc.querySelectorAll('item');
 
         if (items && items.length > 0) {
-          for (let i = 0; i < items.length; i++) {
+          for (let i = 0; i < Math.min(items.length, 6); i++) {
             const it = items[i];
             const rawTitle = it.querySelector('title')?.textContent || '';
             const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
@@ -539,17 +551,18 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
             const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
             const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
+            const isSumbar = isSumbarTopic(cleanTitle);
 
             candidateList.push({
               id: `news-proxy-${candidateList.length + 1}-${Date.now().toString().slice(-6)}`,
               title: cleanTitle,
               titleEn: cleanTitle,
-              category: 'Pariwisata Nasional',
-              categoryEn: 'National Tourism',
+              category: isSumbar ? 'Pariwisata Sumatera Barat' : 'Pariwisata Nasional',
+              categoryEn: isSumbar ? 'West Sumatra Tourism' : 'National Tourism',
               date: dateId,
               dateEn: dateEn,
-              tag: 'Terkini',
-              tagEn: 'Latest',
+              tag: isSumbar ? 'Sumbar' : 'Nasional',
+              tagEn: isSumbar ? 'West Sumatra' : 'National',
               description: narrative.descId,
               descriptionEn: narrative.descEn,
               imageUrl: '', // Left blank for manual admin input

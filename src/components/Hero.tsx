@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
@@ -243,26 +243,37 @@ export const Hero: React.FC<HeroProps> = ({
     return evaluated.slice(0, 2);
   }, [eventsList]);
 
-  // Multi-event carousel index & automatic rotation with pause on hover
-  const [activeEventIndex, setActiveEventIndex] = useState(0);
+  // Split into Video Event (if linked with YouTube) and Banner Events (photo banner)
+  const videoEvent = useMemo(() => {
+    return activeSpotlightEvents.find(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+  }, [activeSpotlightEvents]);
+
+  const bannerEvents = useMemo(() => {
+    if (videoEvent) {
+      return activeSpotlightEvents.filter(e => e !== videoEvent);
+    }
+    return activeSpotlightEvents;
+  }, [activeSpotlightEvents, videoEvent]);
+
+  // Carousel index for banner events & rotation with pause on hover
+  const [activeBannerIndex, setActiveBannerIndex] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
 
   useEffect(() => {
-    if (activeSpotlightEvents.length <= 1 || isCarouselPaused) return;
+    if (bannerEvents.length <= 1 || isCarouselPaused) return;
 
     const timer = setInterval(() => {
-      setActiveEventIndex(prev => (prev + 1) % activeSpotlightEvents.length);
+      setActiveBannerIndex(prev => (prev + 1) % bannerEvents.length);
     }, 7000);
 
     return () => clearInterval(timer);
-  }, [activeSpotlightEvents.length, isCarouselPaused]);
+  }, [bannerEvents.length, isCarouselPaused]);
 
-  // Keep active index within bounds if list size changes
   useEffect(() => {
-    if (activeEventIndex >= activeSpotlightEvents.length) {
-      setActiveEventIndex(0);
+    if (activeBannerIndex >= bannerEvents.length) {
+      setActiveBannerIndex(0);
     }
-  }, [activeSpotlightEvents.length, activeEventIndex]);
+  }, [bannerEvents.length, activeBannerIndex]);
 
   // Combined searchable index across all Sumbar tourism items
   const allSearchableItems = useMemo(() => {
@@ -601,9 +612,105 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
           <div className="flex flex-col space-y-3 w-full">
-            {/* Spotlight: Event Sedang Berlangsung & 2 Minggu Mendatang (Multi-Event Carousel) */}
-            {activeSpotlightEvents.length > 0 && (() => {
-              const activeItemObj = activeSpotlightEvents[activeEventIndex] || activeSpotlightEvents[0];
+            {/* Spotlight 1: Video Event Card (If an active event has a YouTube link) */}
+            {videoEvent && (() => {
+              const eventItem = videoEvent.item;
+              const timeline = videoEvent.timeline;
+              const isEn = lang === 'en';
+              const title = isEn && eventItem.titleEn ? eventItem.titleEn : eventItem.title;
+              const schedule = isEn && eventItem.scheduleEn ? eventItem.scheduleEn : eventItem.schedule;
+              const location = isEn && eventItem.locationEn ? eventItem.locationEn : eventItem.location;
+              const isKEN = Boolean(eventItem.isKen);
+              const ytEmbedUrl = getYoutubeEmbedUrl(eventItem.videoUrl || (eventItem as any).youtubeUrl);
+
+              const getGoogleCalUrl = () => {
+                const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
+                const d = encodeURIComponent(`${isEn && eventItem.descriptionEn ? eventItem.descriptionEn : eventItem.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
+                const l = encodeURIComponent(`${location}, Sumatera Barat`);
+                return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${d}&location=${l}`;
+              };
+
+              return (
+                <div className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
+                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Video Header */}
+                  <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                      <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
+                      <span>{isEn ? 'Live Video Event' : 'Video Event Sedang Berlangsung'}</span>
+                    </div>
+                    {isKEN && (
+                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                        KEN Kemenparekraf
+                      </span>
+                    )}
+                  </div>
+
+                  {/* YouTube Player */}
+                  <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black shrink-0">
+                    <iframe
+                      src={ytEmbedUrl!}
+                      title={title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="w-full h-full border-0"
+                    />
+                    <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/75 backdrop-blur-xs px-2 py-0.5 rounded-full pointer-events-none z-10 shadow-xs">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                      </span>
+                      <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
+                        {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Title & Info */}
+                  <div className="space-y-0.5">
+                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                      {title}
+                    </h4>
+                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
+                      <span className="flex items-center gap-1 shrink-0">
+                        <Calendar className="w-3 h-3 text-amber-600" />
+                        <span>{schedule}</span>
+                      </span>
+                      <span className="flex items-center gap-1 truncate">
+                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
+                        <span className="truncate">{location}</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onOpenDrawer('events')}
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+                    >
+                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </button>
+                    <a
+                      href={getGoogleCalUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                    >
+                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <span>+ Kalender</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Spotlight 2: Photo Banner Event Card (New Panel below Video Event or primary card if no video) */}
+            {bannerEvents.length > 0 && (() => {
+              const activeItemObj = bannerEvents[activeBannerIndex] || bannerEvents[0];
               const eventItem = activeItemObj.item;
               const timeline = activeItemObj.timeline;
               const isEn = lang === 'en';
@@ -611,7 +718,6 @@ export const Hero: React.FC<HeroProps> = ({
               const schedule = isEn && eventItem.scheduleEn ? eventItem.scheduleEn : eventItem.schedule;
               const location = isEn && eventItem.locationEn ? eventItem.locationEn : eventItem.location;
               const isKEN = Boolean(eventItem.isKen);
-              const ytEmbedUrl = getYoutubeEmbedUrl(eventItem.videoUrl || (eventItem as any).youtubeUrl);
 
               const getGoogleCalUrl = () => {
                 const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
@@ -633,25 +739,25 @@ export const Hero: React.FC<HeroProps> = ({
                     <div className="flex items-center gap-1.5 font-bold text-amber-900">
                       <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
                       <span>
-                        {isEn ? `Live & 2-Week Events` : `Event Sedang / 2 Minggu Ini`}
+                        {videoEvent ? (isEn ? 'Other Active Events (2 Weeks)' : 'Event Banner 2 Minggu Ini') : (isEn ? 'Live & 2-Week Events' : 'Event Sedang / 2 Minggu Ini')}
                       </span>
                     </div>
 
-                    {activeSpotlightEvents.length > 1 && (
+                    {bannerEvents.length > 1 && (
                       <div className="flex items-center gap-1.5">
                         <span className="text-[9px] font-bold text-gray-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
-                          {activeEventIndex + 1}/{activeSpotlightEvents.length}
+                          {activeBannerIndex + 1}/{bannerEvents.length}
                         </span>
                         <div className="flex items-center gap-0.5">
                           <button
-                            onClick={() => setActiveEventIndex((prev) => (prev - 1 + activeSpotlightEvents.length) % activeSpotlightEvents.length)}
+                            onClick={() => setActiveBannerIndex((prev) => (prev - 1 + bannerEvents.length) % bannerEvents.length)}
                             className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
                             title="Sebelumnya"
                           >
                             <ChevronLeft className="w-3 h-3" />
                           </button>
                           <button
-                            onClick={() => setActiveEventIndex((prev) => (prev + 1) % activeSpotlightEvents.length)}
+                            onClick={() => setActiveBannerIndex((prev) => (prev + 1) % bannerEvents.length)}
                             className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
                             title="Berikutnya"
                           >
@@ -662,34 +768,8 @@ export const Hero: React.FC<HeroProps> = ({
                     )}
                   </div>
 
-                  {/* 1. YouTube Video Preview (If videoUrl is provided) */}
-                  {ytEmbedUrl ? (
-                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black shrink-0">
-                      <iframe
-                        src={ytEmbedUrl}
-                        title={title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="w-full h-full border-0"
-                      />
-                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/75 backdrop-blur-xs px-2 py-0.5 rounded-full pointer-events-none z-10 shadow-xs">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                        </span>
-                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
-                          {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
-                        </span>
-                      </div>
-
-                      {isKEN && (
-                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm pointer-events-none z-10">
-                          KEN Kemenparekraf
-                        </span>
-                      )}
-                    </div>
-                  ) : eventItem.imageUrl ? (
-                    /* 2. Photo Banner Image (If imageUrl is provided without video) */
+                  {/* Photo Banner Image */}
+                  {eventItem.imageUrl ? (
                     <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gray-900 shrink-0">
                       <img
                         src={eventItem.imageUrl}
@@ -716,7 +796,6 @@ export const Hero: React.FC<HeroProps> = ({
                       )}
                     </div>
                   ) : (
-                    /* 3. Handsome Minang Gradient Banner if no media provided */
                     <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gradient-to-br from-amber-800 via-stone-900 to-black shrink-0 flex items-center justify-center p-3">
                       <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full">
                         <span className="relative flex h-2 w-2">
@@ -742,14 +821,14 @@ export const Hero: React.FC<HeroProps> = ({
                   )}
 
                   {/* Multi-Event Dots Indicator */}
-                  {activeSpotlightEvents.length > 1 && (
+                  {bannerEvents.length > 1 && (
                     <div className="flex items-center justify-center gap-1.5 py-0.5">
-                      {activeSpotlightEvents.map((_, i) => (
+                      {bannerEvents.map((_, i) => (
                         <button
                           key={i}
-                          onClick={() => setActiveEventIndex(i)}
+                          onClick={() => setActiveBannerIndex(i)}
                           className={`h-1 rounded-full transition-all cursor-pointer ${
-                            activeEventIndex === i ? 'w-5 bg-amber-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                            activeBannerIndex === i ? 'w-5 bg-amber-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'
                           }`}
                           title={`Event ${i + 1}`}
                         />
