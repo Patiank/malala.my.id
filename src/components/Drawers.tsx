@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search } from 'lucide-react';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
+import { EBookletModal } from './EBookletModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
@@ -194,6 +195,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
+  const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
 
   const handleRefreshHotInfo = async () => {
     setIsFetchingHotInfo(true);
@@ -2322,32 +2324,42 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                <button
-                  onClick={async () => {
-                    try {
-                      setIsGeneratingPdf(true);
-                      await generateSumbarBookletPDF({
-                        destinations: dataStore.destinations && dataStore.destinations.length > 0 ? dataStore.destinations : destinations,
-                        cultureItems: dataStore.cultureItems && dataStore.cultureItems.length > 0 ? dataStore.cultureItems : cultureItems,
-                        culinaryItems: dataStore.culinaryItems && dataStore.culinaryItems.length > 0 ? dataStore.culinaryItems : culinaryItems,
-                        eventItems: dataStore.eventItems && dataStore.eventItems.length > 0 ? dataStore.eventItems : eventItems,
-                        lang
-                      });
-                      setDownloadSuccessMessage(lang === 'en' ? 'Successfully generated and downloaded Master E-Booklet PDF!' : 'Berhasil menyusun dan mengunduh E-Booklet Master PDF!');
-                      setTimeout(() => setDownloadSuccessMessage(null), 4000);
-                    } catch (err) {
-                      console.error("PDF generation error:", err);
-                      alert(lang === 'en' ? 'Failed to generate PDF. Please try again.' : 'Gagal menyusun PDF. Silakan coba kembali.');
-                    } finally {
-                      setIsGeneratingPdf(false);
-                    }
-                  }}
-                  disabled={isGeneratingPdf}
-                  className="w-full py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                >
-                  <Download className={`w-4 h-4 text-white ${isGeneratingPdf ? 'animate-bounce' : ''}`} />
-                  <span>{isGeneratingPdf ? (lang === 'en' ? 'Compiling PDF Booklet...' : 'Menyusun E-Booklet PDF...') : (lang === 'en' ? 'Download Full PDF Booklet' : 'Unduh E-Booklet PDF Lengkap')}</span>
-                </button>
+                <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                  <button
+                    onClick={() => setIsBookletModalOpen(true)}
+                    className="flex-1 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <BookOpen className="w-4 h-4 text-white" />
+                    <span>{lang === 'en' ? '📖 Open A4 E-Booklet & Print' : '📖 Buka & Cetak E-Booklet A4'}</span>
+                  </button>
+
+                  <button
+                    onClick={async () => {
+                      try {
+                        setIsGeneratingPdf(true);
+                        await generateSumbarBookletPDF({
+                          destinations: dataStore.destinations && dataStore.destinations.length > 0 ? dataStore.destinations : destinations,
+                          cultureItems: dataStore.cultureItems && dataStore.cultureItems.length > 0 ? dataStore.cultureItems : cultureItems,
+                          culinaryItems: dataStore.culinaryItems && dataStore.culinaryItems.length > 0 ? dataStore.culinaryItems : culinaryItems,
+                          eventItems: dataStore.eventItems && dataStore.eventItems.length > 0 ? dataStore.eventItems : eventItems,
+                          lang
+                        });
+                        setDownloadSuccessMessage(lang === 'en' ? 'Successfully downloaded Master E-Booklet PDF!' : 'Berhasil mengunduh E-Booklet Master PDF!');
+                        setTimeout(() => setDownloadSuccessMessage(null), 4000);
+                      } catch (err) {
+                        console.error("PDF generation error:", err);
+                        alert(lang === 'en' ? 'PDF compilation notice: You can also use the "Open A4 E-Booklet & Print" button.' : 'Silakan gunakan tombol "Buka & Cetak E-Booklet A4" untuk menyimpan ke PDF.');
+                      } finally {
+                        setIsGeneratingPdf(false);
+                      }
+                    }}
+                    disabled={isGeneratingPdf}
+                    className="py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-gray-200 hover:text-white border border-slate-700 font-jakarta font-bold text-xs uppercase transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  >
+                    <Download className={`w-4 h-4 text-white ${isGeneratingPdf ? 'animate-bounce' : ''}`} />
+                    <span>{isGeneratingPdf ? (lang === 'en' ? 'Generating...' : 'Menyusun...') : (lang === 'en' ? 'Download .PDF' : 'Unduh .PDF')}</span>
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -2777,6 +2789,14 @@ export const Drawers: React.FC<DrawersProps> = ({
           </div>
         </div>
       )}
+
+      {/* E-BOOKLET MAGAZINE READER & PRINT-TO-PDF MODAL */}
+      <EBookletModal
+        isOpen={isBookletModalOpen}
+        onClose={() => setIsBookletModalOpen(false)}
+        lang={lang}
+        dataStore={dataStore}
+      />
     </>
   );
 };

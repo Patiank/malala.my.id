@@ -1,11 +1,12 @@
 import { jsPDF } from 'jspdf';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
 
 interface BookletData {
-  destinations: Destination[];
-  cultureItems: CultureItem[];
-  culinaryItems: CulinaryItem[];
-  eventItems: EventItem[];
+  destinations?: Destination[];
+  cultureItems?: CultureItem[];
+  culinaryItems?: CulinaryItem[];
+  eventItems?: EventItem[];
   lang?: 'id' | 'en';
 }
 
@@ -24,7 +25,7 @@ async function getSafeImageData(url: string): Promise<string | null> {
   return new Promise((resolve) => {
     const timer = setTimeout(() => {
       resolve(null);
-    }, 1200); // 1.2s timeout per image
+    }, 1000); // 1.0s timeout per image
 
     try {
       const img = new Image();
@@ -33,14 +34,14 @@ async function getSafeImageData(url: string): Promise<string | null> {
         clearTimeout(timer);
         try {
           const canvas = document.createElement('canvas');
-          const w = Math.min(img.naturalWidth || 600, 800);
-          const h = Math.min(img.naturalHeight || 400, 500);
+          const w = Math.min(img.naturalWidth || 600, 700);
+          const h = Math.min(img.naturalHeight || 350, 400);
           canvas.width = w;
           canvas.height = h;
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, w, h);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
             if (dataUrl && dataUrl.startsWith('data:image')) {
               imageMemoryCache.set(url, dataUrl);
               resolve(dataUrl);
@@ -65,42 +66,20 @@ async function getSafeImageData(url: string): Promise<string | null> {
 }
 
 /**
- * Pre-caches images in small parallel batches to prevent browser lockup
+ * Generates an official A4 Master E-Booklet where EACH catalog item has its own FULL PAGE
  */
-async function preloadCatalogImages(urls: string[]) {
-  const cleanUrls = urls.filter(u => u && u.startsWith('http') && !imageMemoryCache.has(u));
-  const batchSize = 6;
-  for (let i = 0; i < cleanUrls.length; i += batchSize) {
-    const batch = cleanUrls.slice(i, i + batchSize);
-    await Promise.allSettled(batch.map(url => getSafeImageData(url)));
-  }
-}
-
-/**
- * Generates an official A4 Master E-Booklet where EACH catalog item has its own FULL PAGE (modal-exact layout)
- */
-export async function generateSumbarBookletPDF(data: BookletData): Promise<void> {
+export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<void> {
   const isEn = data.lang === 'en';
-  
-  // 1. Gather all image URLs and pre-load in background batches
-  const allImageUrls: string[] = [
-    ...(data.destinations || []).map(d => d.imageUrl),
-    ...(data.cultureItems || []).map(c => c.imageUrl),
-    ...(data.culinaryItems || []).map(cu => cu.imageUrl),
-    ...(data.eventItems || []).map(e => e.imageUrl),
-  ].filter(Boolean) as string[];
 
-  try {
-    await preloadCatalogImages(allImageUrls);
-  } catch (e) {
-    console.warn("Preload images warning:", e);
-  }
+  const destinations: Destination[] = (data.destinations && data.destinations.length > 0) ? data.destinations : DESTINATIONS;
+  const cultureItems: CultureItem[] = (data.cultureItems && data.cultureItems.length > 0) ? data.cultureItems : CULTURE_ITEMS;
+  const culinaryItems: CulinaryItem[] = (data.culinaryItems && data.culinaryItems.length > 0) ? data.culinaryItems : CULINARY_ITEMS;
+  const eventItems: EventItem[] = (data.eventItems && data.eventItems.length > 0) ? data.eventItems : EVENTS_SCHEDULE;
 
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a4',
-    compress: true
+    format: 'a4'
   });
 
   const pageWidth = 210;
@@ -126,7 +105,7 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(255, 255, 255);
-      doc.text(`${categoryLabel.toUpperCase()} — ${subCategory.toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
+      doc.text(`${(categoryLabel || '').toUpperCase()} — ${(subCategory || '').toUpperCase()}`, pageWidth - margin, 7.5, { align: 'right' });
 
       // Footer Bar
       doc.setFillColor(248, 250, 252);
@@ -192,10 +171,10 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(255, 255, 255);
-  doc.text(`• Bab I   : 26 ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 122);
-  doc.text(`• Bab II  : 14 ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 129);
-  doc.text(`• Bab III : 16 ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 136);
-  doc.text(`• Bab IV  : 20 ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 143);
+  doc.text(`• Bab I   : ${destinations.length} ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 122);
+  doc.text(`• Bab II  : ${cultureItems.length} ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 129);
+  doc.text(`• Bab III : ${culinaryItems.length} ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 136);
+  doc.text(`• Bab IV  : ${eventItems.length} ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 143);
 
   // Philosophy Box
   doc.setFillColor(220, 38, 38);
@@ -225,433 +204,429 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   doc.text('Platform Resmi: https://malala.my.id', 25, 273);
 
   // ==============================================================
-  // 2. BAB I: DESTINASI WISATA (1 HALAMAN PENUH PER DESTINASI)
+  // 2. BAB I: DESTINASI WISATA
   // ==============================================================
-  const destinations = data.destinations || [];
   for (let i = 0; i < destinations.length; i++) {
-    const dest = destinations[i];
-    doc.addPage();
-    pageNumber++;
-    addHeaderFooter(isEn ? 'Destinations' : 'Destinasi Wisata', dest.regency || 'Sumatera Barat');
+    try {
+      const dest = destinations[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Destinations' : 'Destinasi Wisata', dest.regency || 'Sumatera Barat');
 
-    const title = (isEn && dest.titleEn ? dest.titleEn : dest.title).toUpperCase();
-    const category = isEn && dest.categoryEn ? dest.categoryEn : dest.category;
-    const location = isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency || 'Sumatera Barat');
-    const desc = isEn && dest.descriptionEn ? dest.descriptionEn : dest.description;
-    const highlights = (isEn && dest.highlightsEn ? dest.highlightsEn : dest.highlights) || [];
-    const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
+      const title = String(isEn && dest.titleEn ? dest.titleEn : dest.title || '').toUpperCase();
+      const category = String(isEn && dest.categoryEn ? dest.categoryEn : dest.category || 'Wisata');
+      const location = String(isEn && dest.locationDetailsEn ? dest.locationDetailsEn : (dest.locationDetails || dest.regency || 'Sumatera Barat'));
+      const desc = String(isEn && dest.descriptionEn ? dest.descriptionEn : dest.description || '');
+      const highlights = (isEn && dest.highlightsEn ? dest.highlightsEn : dest.highlights) || [];
+      const bestTime = isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime;
 
-    let y = 16;
+      let y = 16;
 
-    // 1. Image Header Banner (Width: 182mm, Height: 70mm)
-    const imgData = dest.imageUrl ? imageMemoryCache.get(dest.imageUrl) : null;
-    let hasImage = false;
-    if (imgData) {
-      try {
-        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
-        hasImage = true;
-      } catch {
-        hasImage = false;
+      // 1. Image Header Banner (Width: 182mm, Height: 68mm)
+      let hasImage = false;
+      if (dest.imageUrl) {
+        const imgData = await getSafeImageData(dest.imageUrl);
+        if (imgData) {
+          try {
+            doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 68);
+            hasImage = true;
+          } catch {}
+        }
       }
-    }
 
-    if (!hasImage) {
-      doc.setFillColor(30, 41, 59);
-      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
-      doc.setFillColor(220, 38, 38);
-      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      if (!hasImage) {
+        doc.setFillColor(30, 41, 59);
+        doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+        doc.setFillColor(220, 38, 38);
+        doc.rect(margin, y + 66, contentWidth, 2, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.setTextColor(255, 255, 255);
+        doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
+      }
+
+      // Category Overlay Tag
+      doc.setFillColor(0, 0, 0);
+      doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
+      doc.setFontSize(7.5);
       doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
-    }
+      doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
 
-    // Category Pill Overlay
-    doc.setFillColor(0, 0, 0);
-    doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
+      y += 73;
 
-    y += 75;
-
-    // 2. Title & Regency
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(15, 23, 42); // slate-900
-    doc.text(title, margin, y);
-
-    y += 5.5;
-    doc.setFontSize(9);
-    doc.setTextColor(220, 38, 38);
-    doc.text(`📍 ${location}`, margin, y);
-
-    y += 4;
-    doc.setDrawColor(226, 232, 240);
-    doc.setLineWidth(0.4);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 5;
-
-    // 3. Full Detailed Narrative Paragraphs
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(51, 65, 85); // slate-700
-    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
-    paragraphs.forEach((p) => {
-      const cleanP = p.replace(/\n/g, ' ').trim();
-      const splitP = doc.splitTextToSize(cleanP, contentWidth);
-      doc.text(splitP, margin, y);
-      y += (splitP.length * 3.8) + 3;
-    });
-
-    // 4. Highlights Box
-    if (highlights.length > 0) {
-      y += 1;
-      const boxHeight = 10 + (highlights.length * 5);
-      doc.setFillColor(248, 250, 252);
-      doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'F');
-      doc.setDrawColor(226, 232, 240);
-      doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'S');
-
+      // 2. Title & Regency
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
+      doc.setFontSize(13.5);
       doc.setTextColor(15, 23, 42);
-      doc.text(isEn ? 'KEY HIGHLIGHTS & ATTRACTIONS' : 'DAYA TARIK UTAMA (HIGHLIGHTS)', margin + 4, y + 6);
+      doc.text(title, margin, y);
 
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(220, 38, 38);
+      doc.text(`📍 ${location}`, margin, y);
+
+      y += 4;
+      doc.setDrawColor(226, 232, 240);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
+
+      // 3. Full Detailed Narrative
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(8);
+      doc.setFontSize(8.5);
       doc.setTextColor(51, 65, 85);
-      let hlY = y + 11;
-      highlights.forEach((hl) => {
-        doc.text(`✓  ${hl}`, margin + 5, hlY);
-        hlY += 5;
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
       });
 
-      y += boxHeight + 4;
-    }
+      // 4. Highlights Box
+      if (highlights.length > 0) {
+        y += 1;
+        const boxHeight = 10 + (highlights.length * 5);
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'F');
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(margin, y, contentWidth, boxHeight, 2, 2, 'S');
 
-    // 5. Best Time to Visit Footer Row
-    if (bestTime) {
-      doc.setFillColor(254, 243, 199); // amber-100
-      doc.roundedRect(margin, y, contentWidth, 9, 1.5, 1.5, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8);
-      doc.setTextColor(180, 83, 9); // amber-700
-      doc.text(`⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${bestTime}`, margin + 4, y + 6);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(15, 23, 42);
+        doc.text(isEn ? 'KEY HIGHLIGHTS & ATTRACTIONS' : 'DAYA TARIK UTAMA (HIGHLIGHTS)', margin + 4, y + 6);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(51, 65, 85);
+        let hlY = y + 11;
+        highlights.forEach((hl) => {
+          doc.text(`✓  ${hl}`, margin + 5, hlY);
+          hlY += 5;
+        });
+
+        y += boxHeight + 4;
+      }
+
+      // 5. Best Time to Visit Footer Row
+      if (bestTime) {
+        doc.setFillColor(254, 243, 199);
+        doc.roundedRect(margin, y, contentWidth, 8.5, 1.5, 1.5, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(180, 83, 9);
+        doc.text(`⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${bestTime}`, margin + 4, y + 5.8);
+      }
+    } catch (errDest) {
+      console.warn("Error rendering destination page:", errDest);
     }
   }
 
   // ==============================================================
-  // 3. BAB II: WARISAN BUDAYA (1 HALAMAN PENUH PER BUDAYA)
+  // 3. BAB II: WARISAN BUDAYA
   // ==============================================================
-  const cultures = data.cultureItems || [];
-  for (let i = 0; i < cultures.length; i++) {
-    const cult = cultures[i];
-    doc.addPage();
-    pageNumber++;
-    addHeaderFooter(isEn ? 'Culture & Heritage' : 'Warisan Budaya', cult.category || 'Adat Minang');
+  for (let i = 0; i < cultureItems.length; i++) {
+    try {
+      const cult = cultureItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Culture & Heritage' : 'Warisan Budaya', cult.category || 'Adat Minang');
 
-    const title = (isEn && cult.titleEn ? cult.titleEn : cult.title).toUpperCase();
-    const category = isEn && cult.categoryEn ? cult.categoryEn : cult.category;
-    const origin = isEn && cult.originEn ? cult.originEn : (cult.origin || 'Alam Minangkabau');
-    const desc = isEn && cult.descriptionEn ? cult.descriptionEn : cult.description;
-    const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
+      const title = String(isEn && cult.titleEn ? cult.titleEn : cult.title || '').toUpperCase();
+      const category = String(isEn && cult.categoryEn ? cult.categoryEn : cult.category || 'Budaya');
+      const origin = String(isEn && cult.originEn ? cult.originEn : (cult.origin || 'Alam Minangkabau'));
+      const desc = String(isEn && cult.descriptionEn ? cult.descriptionEn : cult.description || '');
+      const philosophy = isEn && cult.philosophyEn ? cult.philosophyEn : cult.philosophy;
 
-    let y = 16;
+      let y = 16;
 
-    // 1. Image Header Banner
-    const imgData = cult.imageUrl ? imageMemoryCache.get(cult.imageUrl) : null;
-    let hasImage = false;
-    if (imgData) {
-      try {
-        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
-        hasImage = true;
-      } catch {
-        hasImage = false;
+      let hasImage = false;
+      if (cult.imageUrl) {
+        const imgData = await getSafeImageData(cult.imageUrl);
+        if (imgData) {
+          try {
+            doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 68);
+            hasImage = true;
+          } catch {}
+        }
       }
-    }
 
-    if (!hasImage) {
-      doc.setFillColor(69, 26, 3);
-      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
+      if (!hasImage) {
+        doc.setFillColor(69, 26, 3);
+        doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+        doc.setFillColor(217, 119, 6);
+        doc.rect(margin, y + 66, contentWidth, 2, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.setTextColor(255, 255, 255);
+        doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
+      }
+
       doc.setFillColor(217, 119, 6);
-      doc.rect(margin, y + 68, contentWidth, 2, 'F');
+      doc.roundedRect(margin + 4, y + 4, 40, 7, 1.5, 1.5, 'F');
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
-    }
-
-    // Category badge
-    doc.setFillColor(217, 119, 6);
-    doc.roundedRect(margin + 4, y + 4, 40, 7, 1.5, 1.5, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text(category.toUpperCase(), margin + 24, y + 8.8, { align: 'center' });
-
-    y += 75;
-
-    // 2. Title & Origin
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(120, 53, 15); // amber-900
-    doc.text(title, margin, y);
-
-    y += 5.5;
-    doc.setFontSize(9);
-    doc.setTextColor(180, 83, 9);
-    doc.text(`🏛️ ${isEn ? 'Origin:' : 'Asal Nagari:'} ${origin}`, margin, y);
-
-    y += 4;
-    doc.setDrawColor(253, 230, 138);
-    doc.setLineWidth(0.4);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 5;
-
-    // 3. Narrative Description
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(68, 64, 60);
-    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
-    paragraphs.forEach((p) => {
-      const cleanP = p.replace(/\n/g, ' ').trim();
-      const splitP = doc.splitTextToSize(cleanP, contentWidth);
-      doc.text(splitP, margin, y);
-      y += (splitP.length * 3.8) + 3;
-    });
-
-    // 4. Customary Philosophy Box
-    if (philosophy) {
-      y += 2;
-      doc.setFillColor(254, 252, 232); // amber-50
-      doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'F');
-      doc.setDrawColor(253, 230, 138);
-      doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'S');
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.setTextColor(146, 64, 14);
-      doc.text(isEn ? 'MINANGKABAU CUSTOMARY PHILOSOPHY' : 'FALSAFAH & MAKNA ADAT MINANGKABAU', margin + 4, y + 6.5);
-
-      doc.setFont('helvetica', 'bolditalic');
-      doc.setFontSize(8.5);
-      doc.setTextColor(120, 53, 15);
-      const splitPhil = doc.splitTextToSize(`"${philosophy}"`, contentWidth - 8);
-      doc.text(splitPhil, margin + 4, y + 13.5);
-    }
-  }
-
-  // ==============================================================
-  // 4. BAB III: KULINER OTENTIK (1 HALAMAN PENUH PER KULINER)
-  // ==============================================================
-  const culinaries = data.culinaryItems || [];
-  for (let i = 0; i < culinaries.length; i++) {
-    const cul = culinaries[i];
-    doc.addPage();
-    pageNumber++;
-    addHeaderFooter(isEn ? 'Authentic Gastronomy' : 'Kuliner Otentik Minang', cul.category || 'Kuliner Tradisional');
-
-    const title = (isEn && cul.titleEn ? cul.titleEn : cul.title).toUpperCase();
-    const category = isEn && cul.categoryEn ? cul.categoryEn : cul.category;
-    const origin = isEn && cul.originEn ? cul.originEn : (cul.origin || 'Ranah Minang');
-    const desc = isEn && cul.descriptionEn ? cul.descriptionEn : cul.description;
-    const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
-    const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
-    const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
-
-    let y = 16;
-
-    // 1. Image Header Banner
-    const imgData = cul.imageUrl ? imageMemoryCache.get(cul.imageUrl) : null;
-    let hasImage = false;
-    if (imgData) {
-      try {
-        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
-        hasImage = true;
-      } catch {
-        hasImage = false;
-      }
-    }
-
-    if (!hasImage) {
-      doc.setFillColor(76, 29, 44);
-      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
-      doc.setFillColor(220, 38, 38);
-      doc.rect(margin, y + 68, contentWidth, 2, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
-    }
-
-    // Category badge
-    doc.setFillColor(220, 38, 38);
-    doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
-
-    y += 75;
-
-    // 2. Title & Origin
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(159, 18, 57); // rose-900
-    doc.text(title, margin, y);
-
-    y += 5.5;
-    doc.setFontSize(9);
-    doc.setTextColor(225, 29, 72);
-    doc.text(`🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}`, margin, y);
-
-    y += 4;
-    doc.setDrawColor(254, 205, 211);
-    doc.setLineWidth(0.4);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 5;
-
-    // 3. Narrative Description
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(76, 29, 44);
-    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
-    paragraphs.forEach((p) => {
-      const cleanP = p.replace(/\n/g, ' ').trim();
-      const splitP = doc.splitTextToSize(cleanP, contentWidth);
-      doc.text(splitP, margin, y);
-      y += (splitP.length * 3.8) + 3;
-    });
-
-    // 4. Ingredients & Flavor Box
-    y += 2;
-    doc.setFillColor(255, 241, 242); // rose-50
-    doc.roundedRect(margin, y, contentWidth, 22, 2, 2, 'F');
-    doc.setDrawColor(254, 205, 211);
-    doc.roundedRect(margin, y, contentWidth, 22, 2, 2, 'S');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8);
-    doc.setTextColor(159, 18, 57);
-    doc.text(`🥘 ${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 6);
-    doc.setFont('helvetica', 'normal');
-    doc.text(ingredients.join(', '), margin + 4, y + 11);
-
-    if (taste) {
-      doc.setFont('helvetica', 'bold');
-      doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 17);
-    }
-
-    // 5. Gastronomic Philosophy
-    if (philosophy) {
-      y += 26;
-      doc.setFillColor(248, 250, 252);
-      doc.roundedRect(margin, y, contentWidth, 12, 1.5, 1.5, 'F');
-      doc.setFont('helvetica', 'italic');
       doc.setFontSize(7.5);
-      doc.setTextColor(71, 85, 105);
-      doc.text(`📜 "${philosophy}"`, margin + 4, y + 7);
-    }
-  }
-
-  // ==============================================================
-  // 5. BAB IV: KALENDER EVENT & KEN 2026 (1 HALAMAN PENUH PER EVENT)
-  // ==============================================================
-  const events = data.eventItems || [];
-  for (let i = 0; i < events.length; i++) {
-    const ev = events[i];
-    doc.addPage();
-    pageNumber++;
-    addHeaderFooter(isEn ? 'Calendar of Events' : 'Kalender Event 2026', ev.isKen ? 'Karisma Event Nusantara' : 'Festival Sumbar');
-
-    const title = (isEn && ev.titleEn ? ev.titleEn : ev.title).toUpperCase();
-    const schedule = isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule;
-    const location = isEn && ev.locationEn ? ev.locationEn : ev.location;
-    const desc = isEn && ev.descriptionEn ? ev.descriptionEn : ev.description;
-
-    let y = 16;
-
-    // 1. Image Header Banner
-    const imgData = ev.imageUrl ? imageMemoryCache.get(ev.imageUrl) : null;
-    let hasImage = false;
-    if (imgData) {
-      try {
-        doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 70);
-        hasImage = true;
-      } catch {
-        hasImage = false;
-      }
-    }
-
-    if (!hasImage) {
-      doc.setFillColor(15, 23, 42);
-      doc.roundedRect(margin, y, contentWidth, 70, 2, 2, 'F');
-      doc.setFillColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
-      doc.rect(margin, y + 68, contentWidth, 2, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
       doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
-    }
+      doc.text(category.toUpperCase(), margin + 24, y + 8.8, { align: 'center' });
 
-    // Status Badge (KEN vs Regular)
-    doc.setFillColor(ev.isKen ? 220 : 15, ev.isKen ? 38 : 23, ev.isKen ? 38 : 42);
-    doc.roundedRect(margin + 4, y + 4, ev.isKen ? 52 : 36, 7, 1.5, 1.5, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(7.5);
-    doc.setTextColor(255, 255, 255);
-    doc.text(ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 30 : 22), y + 8.8, { align: 'center' });
-
-    y += 75;
-
-    // 2. Title & Schedule
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(13);
-    doc.setTextColor(15, 23, 42);
-    doc.text(title, margin, y);
-
-    y += 5.5;
-    doc.setFontSize(9);
-    doc.setTextColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
-    doc.text(`📅 ${schedule}  •  📍 ${location}`, margin, y);
-
-    y += 4;
-    doc.setDrawColor(203, 213, 225);
-    doc.setLineWidth(0.4);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 5;
-
-    // 3. Narrative Description
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(51, 65, 85);
-    const paragraphs = (desc || '').split('\n\n').filter(Boolean);
-    paragraphs.forEach((p) => {
-      const cleanP = p.replace(/\n/g, ' ').trim();
-      const splitP = doc.splitTextToSize(cleanP, contentWidth);
-      doc.text(splitP, margin, y);
-      y += (splitP.length * 3.8) + 3;
-    });
-
-    // 4. KEN Special Notice Box
-    if (ev.isKen) {
-      y += 2;
-      doc.setFillColor(254, 242, 242); // red-50
-      doc.roundedRect(margin, y, contentWidth, 18, 2, 2, 'F');
-      doc.setDrawColor(254, 202, 202);
-      doc.roundedRect(margin, y, contentWidth, 18, 2, 2, 'S');
+      y += 73;
 
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(8.5);
-      doc.setTextColor(185, 28, 28);
-      doc.text(isEn ? '⭐ OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : '⭐ EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 6.5);
+      doc.setFontSize(13.5);
+      doc.setTextColor(120, 53, 15);
+      doc.text(title, margin, y);
+
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(180, 83, 9);
+      doc.text(`🏛️ ${isEn ? 'Origin:' : 'Asal Nagari:'} ${origin}`, margin, y);
+
+      y += 4;
+      doc.setDrawColor(253, 230, 138);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
 
       doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(68, 64, 60);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      if (philosophy) {
+        y += 2;
+        doc.setFillColor(254, 252, 232);
+        doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'F');
+        doc.setDrawColor(253, 230, 138);
+        doc.roundedRect(margin, y, contentWidth, 24, 2, 2, 'S');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(146, 64, 14);
+        doc.text(isEn ? 'MINANGKABAU CUSTOMARY PHILOSOPHY' : 'FALSAFAH & MAKNA ADAT MINANGKABAU', margin + 4, y + 6.5);
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8.5);
+        doc.setTextColor(120, 53, 15);
+        const splitPhil = doc.splitTextToSize(`"${philosophy}"`, contentWidth - 8);
+        doc.text(splitPhil, margin + 4, y + 13.5);
+      }
+    } catch (errCult) {
+      console.warn("Error rendering culture page:", errCult);
+    }
+  }
+
+  // ==============================================================
+  // 4. BAB III: KULINER OTENTIK
+  // ==============================================================
+  for (let i = 0; i < culinaryItems.length; i++) {
+    try {
+      const cul = culinaryItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Authentic Gastronomy' : 'Kuliner Otentik Minang', cul.category || 'Kuliner');
+
+      const title = String(isEn && cul.titleEn ? cul.titleEn : cul.title || '').toUpperCase();
+      const category = String(isEn && cul.categoryEn ? cul.categoryEn : cul.category || 'Kuliner');
+      const origin = String(isEn && cul.originEn ? cul.originEn : (cul.origin || 'Ranah Minang'));
+      const desc = String(isEn && cul.descriptionEn ? cul.descriptionEn : cul.description || '');
+      const ingredients = (isEn && cul.mainIngredientsEn ? cul.mainIngredientsEn : cul.mainIngredients) || [];
+      const taste = isEn && cul.tasteProfileEn ? cul.tasteProfileEn : cul.tasteProfile;
+      const philosophy = isEn && cul.culturalPhilosophyEn ? cul.culturalPhilosophyEn : cul.culturalPhilosophy;
+
+      let y = 16;
+
+      let hasImage = false;
+      if (cul.imageUrl) {
+        const imgData = await getSafeImageData(cul.imageUrl);
+        if (imgData) {
+          try {
+            doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 68);
+            hasImage = true;
+          } catch {}
+        }
+      }
+
+      if (!hasImage) {
+        doc.setFillColor(76, 29, 44);
+        doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+        doc.setFillColor(220, 38, 38);
+        doc.rect(margin, y + 66, contentWidth, 2, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.setTextColor(255, 255, 255);
+        doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
+      }
+
+      doc.setFillColor(220, 38, 38);
+      doc.roundedRect(margin + 4, y + 4, 38, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(category.toUpperCase(), margin + 23, y + 8.8, { align: 'center' });
+
+      y += 73;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13.5);
+      doc.setTextColor(159, 18, 57);
+      doc.text(title, margin, y);
+
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(225, 29, 72);
+      doc.text(`🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}`, margin, y);
+
+      y += 4;
+      doc.setDrawColor(254, 205, 211);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(76, 29, 44);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      y += 2;
+      doc.setFillColor(255, 241, 242);
+      doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'F');
+      doc.setDrawColor(254, 205, 211);
+      doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'S');
+
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
-      doc.setTextColor(153, 27, 27);
-      doc.text(isEn ? 'Curated and recognized by the Ministry of Tourism and Creative Economy.' : 'Terkurasi resmi oleh Kementerian Pariwisata dan Ekonomi Kreatif RI.', margin + 4, y + 12);
+      doc.setTextColor(159, 18, 57);
+      doc.text(`🥘 ${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 5.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(ingredients.join(', '), margin + 4, y + 10.5);
+
+      if (taste) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 15.5);
+      }
+
+      if (philosophy) {
+        y += 24;
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(margin, y, contentWidth, 11, 1.5, 1.5, 'F');
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(7.5);
+        doc.setTextColor(71, 85, 105);
+        doc.text(`📜 "${philosophy}"`, margin + 4, y + 6.5);
+      }
+    } catch (errCul) {
+      console.warn("Error rendering culinary page:", errCul);
+    }
+  }
+
+  // ==============================================================
+  // 5. BAB IV: KALENDER EVENT & KEN 2026
+  // ==============================================================
+  for (let i = 0; i < eventItems.length; i++) {
+    try {
+      const ev = eventItems[i];
+      doc.addPage();
+      pageNumber++;
+      addHeaderFooter(isEn ? 'Calendar of Events' : 'Kalender Event 2026', ev.isKen ? 'Karisma Event Nusantara' : 'Festival Sumbar');
+
+      const title = String(isEn && ev.titleEn ? ev.titleEn : ev.title || '').toUpperCase();
+      const schedule = String(isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule || '');
+      const location = String(isEn && ev.locationEn ? ev.locationEn : ev.location || '');
+      const desc = String(isEn && ev.descriptionEn ? ev.descriptionEn : ev.description || '');
+
+      let y = 16;
+
+      let hasImage = false;
+      if (ev.imageUrl) {
+        const imgData = await getSafeImageData(ev.imageUrl);
+        if (imgData) {
+          try {
+            doc.addImage(imgData, 'JPEG', margin, y, contentWidth, 68);
+            hasImage = true;
+          } catch {}
+        }
+      }
+
+      if (!hasImage) {
+        doc.setFillColor(15, 23, 42);
+        doc.roundedRect(margin, y, contentWidth, 68, 2, 2, 'F');
+        doc.setFillColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+        doc.rect(margin, y + 66, contentWidth, 2, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.setTextColor(255, 255, 255);
+        doc.text(title, margin + contentWidth / 2, y + 35, { align: 'center' });
+      }
+
+      doc.setFillColor(ev.isKen ? 220 : 15, ev.isKen ? 38 : 23, ev.isKen ? 38 : 42);
+      doc.roundedRect(margin + 4, y + 4, ev.isKen ? 52 : 36, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 30 : 22), y + 8.8, { align: 'center' });
+
+      y += 73;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(15, 23, 42);
+      doc.text(title, margin, y);
+
+      y += 5.5;
+      doc.setFontSize(9);
+      doc.setTextColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
+      doc.text(`📅 ${schedule}  •  📍 ${location}`, margin, y);
+
+      y += 4;
+      doc.setDrawColor(203, 213, 225);
+      doc.setLineWidth(0.4);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 5;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(51, 65, 85);
+      const paragraphs = desc.split('\n\n').filter(Boolean);
+      paragraphs.forEach((p) => {
+        const cleanP = p.replace(/\n/g, ' ').trim();
+        const splitP = doc.splitTextToSize(cleanP, contentWidth);
+        doc.text(splitP, margin, y);
+        y += (splitP.length * 3.8) + 3;
+      });
+
+      if (ev.isKen) {
+        y += 2;
+        doc.setFillColor(254, 242, 242);
+        doc.roundedRect(margin, y, contentWidth, 16, 2, 2, 'F');
+        doc.setDrawColor(254, 202, 202);
+        doc.roundedRect(margin, y, contentWidth, 16, 2, 2, 'S');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(185, 28, 28);
+        doc.text(isEn ? '⭐ OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : '⭐ EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 5.5);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(153, 27, 27);
+        doc.text(isEn ? 'Curated and recognized by the Ministry of Tourism and Creative Economy.' : 'Terkurasi resmi oleh Kementerian Pariwisata dan Ekonomi Kreatif RI.', margin + 4, y + 11);
+      }
+    } catch (errEv) {
+      console.warn("Error rendering event page:", errEv);
     }
   }
 
@@ -699,7 +674,23 @@ export async function generateSumbarBookletPDF(data: BookletData): Promise<void>
   doc.setTextColor(148, 163, 184);
   doc.text(isEn ? '© 2026 Malala Official. All rights reserved.' : '© 2026 Malala Official. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
 
-  // Save the generated PDF
+  // Save the generated PDF via Blob URL
   const filename = isEn ? 'Master-Booklet-West-Sumatra-Guide-2026.pdf' : 'Master-E-Booklet-Pariwisata-Budaya-Sumbar-2026.pdf';
-  doc.save(filename);
+  
+  try {
+    const pdfBlob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.href = blobUrl;
+    downloadAnchor.download = filename;
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    setTimeout(() => {
+      document.body.removeChild(downloadAnchor);
+      URL.revokeObjectURL(blobUrl);
+    }, 2000);
+  } catch (errSave) {
+    // Fallback to doc.save
+    doc.save(filename);
+  }
 }
