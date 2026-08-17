@@ -19,8 +19,11 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   const tag = isEn && item.tagEn ? item.tagEn : item.tag;
   const date = isEn && item.dateEn ? item.dateEn : item.date;
   const highlights = isEn && item.highlightsEn ? item.highlightsEn : item.highlights;
-  const tips = isEn && item.tipsEn ? item.tipsEn : item.tips;
-  const locationName = isEn && item.locationNameEn ? item.locationNameEn : item.locationName;
+  const rawLocation = isEn && item.locationNameEn ? item.locationNameEn : item.locationName;
+  const locationName = (rawLocation || '')
+    .replace(/Liputan\s*(Resmi\s*)?Terverifikasi\s*(\([^)]*\))?/gi, '')
+    .replace(/Verified\s*Report\s*(\([^)]*\))?/gi, '')
+    .trim();
 
   const handleShare = () => {
     if (navigator.share) {
@@ -137,7 +140,12 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
               {highlights.map((h, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-black mt-1.5 shrink-0" />
-                  <span>{h}</span>
+                  <span>
+                    {h
+                      .replace(/Liputan\s*(terverifikasi|kredibel)\s*[^,]*(,\s*|\s*&\s*)?/gi, 'Informasi aktual ')
+                      .replace(/Credible,\s*verified\s*coverage\s*from\s*[^,]*(,\s*)?/gi, 'Latest updates ')
+                      .trim()}
+                  </span>
                 </li>
               ))}
             </ul>

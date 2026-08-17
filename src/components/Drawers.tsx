@@ -1524,43 +1524,35 @@ export const Drawers: React.FC<DrawersProps> = ({
 
             return (
               <div className="space-y-6 font-jakarta">
-                {/* Grand Header Calendar of Events */}
-                <div className="bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden border border-gray-700">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-                  <div className="relative z-10 space-y-3">
+                {/* Minimalist Header Calendar of Events */}
+                <div className="bg-neutral-900 text-white p-3.5 sm:p-4 rounded-xl shadow-xs relative overflow-hidden border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="bg-amber-500 text-black font-orbitron font-black text-[10px] uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+                      <span className="bg-amber-500 text-black font-orbitron font-black text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
                         OFFICIAL CoE 2026
                       </span>
-                      <span className="bg-white/10 text-white font-jakarta font-semibold text-[10px] uppercase px-2.5 py-0.5 rounded-full backdrop-blur-xs">
-                        {isEn ? 'West Sumatra Tourism Board' : 'Dinas Pariwisata Provinsi Sumatera Barat'}
+                      <span className="text-gray-300 font-jakarta font-medium text-[10px]">
+                        {isEn ? 'West Sumatra Tourism Board' : 'Dinas Pariwisata Sumatera Barat'}
                       </span>
                     </div>
-
-                    <h2 className="font-orbitron font-extrabold text-base sm:text-xl uppercase tracking-wider text-white">
-                      {isEn ? 'CALENDAR OF EVENTS (CoE) WEST SUMATRA 2026' : 'CALENDAR OF EVENTS (CoE) PARIWISATA SUMATERA BARAT 2026'}
+                    <h2 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide text-white">
+                      {isEn ? 'CALENDAR OF EVENTS (CoE) 2026' : 'CALENDAR OF EVENTS (CoE) SUMBAR 2026'}
                     </h2>
+                  </div>
 
-                    <p className="text-xs text-gray-300 leading-relaxed max-w-2xl">
-                      {isEn
-                        ? 'Official chronological schedule of 20 certified tourism festivals in West Sumatra. Sorted automatically by upcoming proximity to your current date.'
-                        : 'Jadwal resmi 20 festival kepariwisataan unggulan Sumatera Barat, diurutkan secara otomatis dari festival yang paling mendekati waktu hari ini.'}
-                    </p>
-
-                    {/* Quick Stats Badges */}
-                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-800 text-center">
-                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
-                        <div className="font-orbitron font-bold text-base text-amber-400">{eventItems.length}</div>
-                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Total Festivals' : 'Total Festival'}</div>
-                      </div>
-                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
-                        <div className="font-orbitron font-bold text-base text-yellow-300">{totalKenCount} KEN</div>
-                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'National KEN Events' : 'Karisma Nusantara'}</div>
-                      </div>
-                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
-                        <div className="font-orbitron font-bold text-base text-emerald-400">19 Kota/Kab</div>
-                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Regencies Coverage' : 'Cakupan Daerah'}</div>
-                      </div>
+                  {/* Compact Quick Stats */}
+                  <div className="flex items-center gap-2 shrink-0 text-center">
+                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
+                      <span className="font-orbitron font-bold text-xs text-amber-400">{eventItems.length}</span>
+                      <span className="text-[9px] text-gray-400 ml-1 uppercase">{isEn ? 'Events' : 'Event'}</span>
+                    </div>
+                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
+                      <span className="font-orbitron font-bold text-xs text-yellow-300">{totalKenCount}</span>
+                      <span className="text-[9px] text-gray-400 ml-1 uppercase">KEN</span>
+                    </div>
+                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
+                      <span className="font-orbitron font-bold text-xs text-emerald-400">19</span>
+                      <span className="text-[9px] text-gray-400 ml-1 uppercase">Kab/Kota</span>
                     </div>
                   </div>
                 </div>
@@ -2205,7 +2197,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
                             <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500">
                               <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-                              <span>{isEn && item.locationNameEn ? item.locationNameEn : (item.locationName || 'Liputan Resmi Terverifikasi')}</span>
+                              <span>
+                                {(() => {
+                                  const rawLoc = isEn && item.locationNameEn ? item.locationNameEn : (item.locationName || '');
+                                  const cleanLoc = rawLoc
+                                    .replace(/Liputan\s*(Resmi\s*)?Terverifikasi\s*(\([^)]*\))?/gi, '')
+                                    .replace(/Verified\s*Report\s*(\([^)]*\))?/gi, '')
+                                    .trim();
+                                  return cleanLoc || (isEn ? 'Tourism Update' : (item.category === 'Pariwisata Sumatera Barat' ? 'Sumatera Barat' : 'Warta Pariwisata'));
+                                })()}
+                              </span>
                             </div>
 
                             <button

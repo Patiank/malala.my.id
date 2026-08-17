@@ -337,15 +337,15 @@ function buildJournalisticNarrative(cleanTitle: string, source: string): {
   const descEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
   const highlightsId = [
-    `Liputan terverifikasi & kredibel dari ${source}`,
-    'Analisis mendalam terhadap tren dan kesiapan sektor pariwisata nasional',
-    'Dampak positif bagi penguatan ekonomi kreatif dan komunitas lokal'
+    'Informasi aktual seputar perkembangan dan agenda kepariwisataan',
+    'Analisis kesiapan destinasi, aksesibilitas, dan amenitas pendukung',
+    'Dukungan penguatan ekonomi kreatif masyarakat dan komunitas lokal'
   ];
 
   const highlightsEn = [
-    `Credible, verified coverage from ${source}`,
-    'In-depth analysis of national tourism trends and infrastructure readiness',
-    'Positive multiplier impact on creative economy and local communities'
+    'Latest updates on tourism development and strategic agenda',
+    'Analysis of destination readiness, accessibility, and visitor amenities',
+    'Support for strengthening local creative economy and community empowerment'
   ];
 
   const tipsId = 'Rencanakan perjalanan Anda lebih awal, manfaatkan kanal informasi resmi, dan nikmati keramahan budaya lokal secara menyeluruh.';
@@ -515,8 +515,8 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             highlightsEn: narrative.highlightsEn,
             tips: narrative.tipsId,
             tipsEn: narrative.tipsEn,
-            locationName: `Liputan Terverifikasi (${source})`,
-            locationNameEn: `Verified Report (${source})`
+            locationName: isSumbar ? 'Sumatera Barat' : 'Pariwisata Indonesia',
+            locationNameEn: isSumbar ? 'West Sumatra' : 'Indonesian Tourism'
           });
         }
       }
@@ -571,8 +571,8 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
               highlightsEn: narrative.highlightsEn,
               tips: narrative.tipsId,
               tipsEn: narrative.tipsEn,
-              locationName: `Liputan Terverifikasi (${source})`,
-              locationNameEn: `Verified Report (${source})`
+              locationName: isSumbar ? 'Sumatera Barat' : 'Pariwisata Indonesia',
+              locationNameEn: isSumbar ? 'West Sumatra' : 'Indonesian Tourism'
             });
           }
         }
