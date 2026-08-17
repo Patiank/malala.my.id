@@ -2162,10 +2162,33 @@ export const Drawers: React.FC<DrawersProps> = ({
                               ))}
                           </div>
 
-                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                            {(item.actionUrl || item.locationQuery) ? (
+                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
+                            {item.actionUrl ? (
+                              item.actionUrl.includes('google.com/maps') || item.actionUrl.includes('maps.') ? (
+                                <a
+                                  href={item.actionUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"
+                                >
+                                  <MapPin className="w-3.5 h-3.5" />
+                                  <span>{translations[lang].btnMap}</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              ) : (
+                                <a
+                                  href={item.actionUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"
+                                >
+                                  <span>{isEn ? '📰 Read Full Report' : '📰 Baca Berita Lengkap'}</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              )
+                            ) : item.locationQuery ? (
                               <a
-                                href={getGoogleMapsUrl(item.actionUrl || item.locationQuery)!}
+                                href={getGoogleMapsUrl(item.locationQuery)!}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"

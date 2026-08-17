@@ -201,7 +201,189 @@ export async function fetchAiChat(message: string) {
   };
 }
 
+const TOURISM_IMAGES_POOL = [
+  'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+  'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+];
+
+function cleanHtml(html: string): string {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>?/gm, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .trim();
+}
+
+function formatDateIndo(dateStr: string): { dateId: string; dateEn: string } {
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return { dateId: 'Hari Ini', dateEn: 'Today' };
+    const monthNamesId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+    const monthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const date = d.getDate();
+    const monthId = monthNamesId[d.getMonth()];
+    const monthEn = monthNamesEn[d.getMonth()];
+    const year = d.getFullYear();
+    const hours = String(d.getHours()).padStart(2, '0');
+    const mins = String(d.getMinutes()).padStart(2, '0');
+    return {
+      dateId: `${date} ${monthId} ${year} • ${hours}:${mins} WIB`,
+      dateEn: `${monthEn} ${date}, ${year} • ${hours}:${mins}`
+    };
+  } catch {
+    return { dateId: 'Hari Ini', dateEn: 'Today' };
+  }
+}
+
+/**
+ * Fetch live Real-Time National Indonesia Tourism News directly from credible RSS feeds (Google News Indonesia Tourism)
+ */
+async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
+  const isEn = language === 'en';
+  const rssQueries = [
+    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:7d&hl=id&gl=ID&ceid=ID:id',
+    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:7d&hl=id&gl=ID&ceid=ID:id'
+  ];
+
+  for (const rssUrl of rssQueries) {
+    try {
+      const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+      const res = await fetch(endpoint, { cache: 'no-store' });
+      if (!res.ok) continue;
+
+      const data = await res.json();
+      if (data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
+        const parsedItems = data.items.slice(0, 6).map((item: any, idx: number) => {
+          // Clean title by stripping trailing media source e.g. " - Kompas.com"
+          const rawTitle = cleanHtml(item.title || '');
+          const titleParts = rawTitle.split(' - ');
+          const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
+          const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+
+          const { dateId, dateEn } = formatDateIndo(item.pubDate);
+          const rawDesc = cleanHtml(item.description || item.content || '');
+          const cleanDesc = rawDesc || `Berita pariwisata terkini dari ${source} mengenai perkembangan pariwisata nasional dan destinasi Indonesia.`;
+
+          const imgUrl = item.thumbnail || item.enclosure?.link || TOURISM_IMAGES_POOL[idx % TOURISM_IMAGES_POOL.length];
+
+          return {
+            id: `news-live-${idx + 1}-${Date.now().toString().slice(-6)}`,
+            title: cleanTitle,
+            titleEn: cleanTitle,
+            category: 'Pariwisata Nasional',
+            categoryEn: 'National Tourism',
+            date: dateId,
+            dateEn: dateEn,
+            tag: 'Terkini',
+            tagEn: 'Latest',
+            description: cleanDesc,
+            descriptionEn: cleanDesc,
+            imageUrl: imgUrl,
+            actionUrl: item.link || '',
+            highlights: [
+              `Sumber resmi terpercaya: ${source}`,
+              'Update sektor pariwisata & ekonomi kreatif terkini',
+              'Informasi destinasi dan pergerakan wisatawan Nusantara'
+            ],
+            highlightsEn: [
+              `Official credible source: ${source}`,
+              'Latest tourism & creative economy sector updates',
+              'Traveler insights and destination highlights across Indonesia'
+            ],
+            tips: 'Klik "Baca Selengkapnya" untuk membaca laporan berita lengkap dari sumber media aslinya.',
+            tipsEn: 'Click "Read Full Article" to review the comprehensive reporting from the original source.',
+            locationName: `Indonesia (${source})`,
+            locationNameEn: `Indonesia (${source})`
+          };
+        });
+
+        if (parsedItems.length > 0) {
+          return parsedItems;
+        }
+      }
+    } catch (err) {
+      console.warn("RSS fetch error:", err);
+    }
+  }
+
+  // Secondary fallback via CORS proxy
+  try {
+    const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
+      'https://news.google.com/rss/search?q=pariwisata+indonesia&hl=id&gl=ID&ceid=ID:id'
+    )}`;
+    const res = await fetch(corsProxyUrl, { cache: 'no-store' });
+    if (res.ok) {
+      const json = await res.json();
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(json.contents, 'text/xml');
+      const items = xmlDoc.querySelectorAll('item');
+
+      if (items && items.length > 0) {
+        const parsed: any[] = [];
+        for (let i = 0; i < Math.min(items.length, 6); i++) {
+          const it = items[i];
+          const rawTitle = it.querySelector('title')?.textContent || '';
+          const link = it.querySelector('link')?.textContent || '';
+          const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
+          const { dateId, dateEn } = formatDateIndo(pubDate);
+
+          const titleParts = rawTitle.split(' - ');
+          const source = titleParts.length > 1 ? titleParts.pop() : 'Nasional';
+          const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+
+          parsed.push({
+            id: `news-proxy-${i + 1}-${Date.now().toString().slice(-6)}`,
+            title: cleanTitle,
+            titleEn: cleanTitle,
+            category: 'Pariwisata Nasional',
+            categoryEn: 'National Tourism',
+            date: dateId,
+            dateEn: dateEn,
+            tag: 'Terkini',
+            tagEn: 'Latest',
+            description: `Update terkini pariwisata Indonesia dari ${source}. Pantau terus perkembangan destinasi dan pergerakan wisatawan Nusantara.`,
+            descriptionEn: `Latest Indonesian tourism update from ${source}. Follow ongoing destination developments and domestic travel movements.`,
+            imageUrl: TOURISM_IMAGES_POOL[i % TOURISM_IMAGES_POOL.length],
+            actionUrl: link,
+            highlights: [
+              `Diliput oleh ${source}`,
+              'Laporan langsung kepariwisataan Indonesia',
+              'Data & kabar terbaru sektor perjalanan'
+            ],
+            highlightsEn: [
+              `Covered by ${source}`,
+              'Direct Indonesia tourism reporting',
+              'Latest travel updates and destination data'
+            ],
+            tips: 'Simak artikel selengkapnya melalui tautan berita resmi.',
+            tipsEn: 'Check the complete article via the official news link.',
+            locationName: `Indonesia (${source})`,
+            locationNameEn: `Indonesia (${source})`
+          });
+        }
+        if (parsed.length > 0) return parsed;
+      }
+    }
+  } catch (err) {
+    console.warn("CORS proxy news fetch error:", err);
+  }
+
+  return null;
+}
+
 export async function fetchAiHotInfo(language: string = 'id') {
+  // 1. Try local server API if running in node environment
   try {
     const res = await fetch('/api/ai/fetch-hot-info', {
       method: 'POST',
@@ -217,8 +399,40 @@ export async function fetchAiHotInfo(language: string = 'id') {
       }
     }
   } catch (e) {
-    console.warn("Server API fetch-hot-info endpoint unavailable, using fallback news items", e);
+    // Normal in static Firebase Hosting environment
   }
 
+  // 2. Client-side Gemini AI if API key is provided
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  if (viteApiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT terkini dalam format JSON array. Setiap objek wajib memiliki properti:
+      id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string), dateEn (string), tag (string), tagEn (string), description (string), descriptionEn (string), imageUrl (string url unsplash pariwisata), actionUrl (string), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
+      Hanya kembalikan valid JSON tanpa markdown.`;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+      });
+
+      const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    } catch (err) {
+      console.warn("Client Gemini hotinfo generation failed, moving to live RSS:", err);
+    }
+  }
+
+  // 3. Live Google News / RSS National Tourism Feed (Direct, Real-time & 100% automated)
+  const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
+  if (liveRssNews && liveRssNews.length > 0) {
+    return liveRssNews;
+  }
+
+  // 4. Static fallback if completely offline
   return HOT_INFO_FALLBACK;
 }
+

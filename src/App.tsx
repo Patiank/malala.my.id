@@ -40,7 +40,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
 
-  // Automatic 2-hour refresh for Hot Info news ticker via Gemini AI (National Indonesia tourism news)
+  // Automatic 2-hour refresh for Hot Info news ticker via Live RSS & AI (National Indonesia tourism news)
   useEffect(() => {
     const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 7,200,000 ms
 
@@ -49,8 +49,12 @@ export default function App() {
         const lastRefreshStr = localStorage.getItem('malala_hotinfo_last_auto_refresh');
         const lastRefreshTime = lastRefreshStr ? parseInt(lastRefreshStr, 10) : 0;
         const now = Date.now();
+        const hasOldStaticData = dataStore.hotInfoItems.some((it: any) => 
+          it.id?.startsWith('hi') || it.id?.startsWith('news-fallback')
+        );
 
-        if (now - lastRefreshTime > TWO_HOURS_MS) {
+        // Refresh if 2 hours elapsed OR if currently holding old static data
+        if (now - lastRefreshTime > TWO_HOURS_MS || hasOldStaticData) {
           setIsRefreshingTicker(true);
           const data = await fetchAiHotInfo(lang);
           if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
@@ -65,10 +69,10 @@ export default function App() {
       }
     };
 
-    // Initial refresh after 4s delay
+    // Quick initial refresh after 1.5s delay
     const initialTimer = setTimeout(() => {
       autoRefresh();
-    }, 4000);
+    }, 1500);
 
     // Re-check every 2 hours while the app is open
     const intervalTimer = setInterval(() => {
@@ -79,15 +83,26 @@ export default function App() {
       clearTimeout(initialTimer);
       clearInterval(intervalTimer);
     };
-  }, []);
+  }, [dataStore.hotInfoItems]);
 
   const handleRefreshTicker = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsRefreshingTicker(true);
     try {
       const data = await fetchAiHotInfo(lang);
-      if (dataStore.updateHotInfoItems) {
+      if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
         await dataStore.updateHotInfoItems(data);
+        localStorage.setItem('malala_hotinfo_last_auto_refresh', Date.now().toString());
+        setToasts((prev) => [
+          ...prev,
+          {
+            id: `toast-${Date.now()}`,
+            message: lang === 'en'
+              ? 'Real-time Indonesia tourism news updated successfully!'
+              : 'Berita pariwisata real-time Indonesia berhasil diperbarui!',
+            type: 'info'
+          }
+        ]);
       }
     } catch (err) {
       console.warn('Failed to refresh ticker:', err);
