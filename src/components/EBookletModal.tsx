@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MapPin, Check, BookOpen } from 'lucide-react';
+import { X, MapPin, Check, BookOpen, Download } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2 } from '../data/content';
 
@@ -36,17 +36,34 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     return url;
   };
 
+  const handleDownload = () => {
+    window.print();
+  };
+
   return (
     <div className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
-      {/* Floating Minimalist Close Button (Fixed Top-Right) */}
-      <button
-        onClick={onClose}
-        className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer print:hidden"
-        title={isEn ? 'Close' : 'Tutup'}
-        aria-label="Close"
-      >
-        <X className="w-5 h-5" />
-      </button>
+      {/* Floating Action Controls (Top-Right) */}
+      <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
+        {/* Download / Print PDF Button */}
+        <button
+          onClick={handleDownload}
+          className="h-10 px-3.5 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
+          title={isEn ? 'Download / Print PDF' : 'Unduh / Cetak PDF'}
+        >
+          <Download className="w-4 h-4" />
+          <span>{isEn ? 'Download' : 'Unduh PDF'}</span>
+        </button>
+
+        {/* Minimalist Close Button */}
+        <button
+          onClick={onClose}
+          className="w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white/80 hover:text-white backdrop-blur-md border border-white/20 flex items-center justify-center transition-all hover:scale-110 shadow-2xl cursor-pointer"
+          title={isEn ? 'Close' : 'Tutup'}
+          aria-label="Close"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
 
       {/* Book Content Pages Container — Half Width (~460px) & Natural Auto Height */}
       <main className="w-full max-w-[460px] mx-auto px-3 pt-4 pb-16 space-y-4 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
@@ -79,7 +96,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         {/* ============================================================== */}
         {(activeTab === 'all') && (
           <article 
-            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative min-h-[440px] flex flex-col justify-between print:rounded-none print:shadow-none print:break-after-page print:border-0"
+            className="w-full text-white rounded-2xl overflow-hidden shadow-2xl relative min-h-[580px] sm:min-h-[620px] flex flex-col justify-between p-6 sm:p-7 print:rounded-none print:shadow-none print:break-after-page print:border-0"
           >
             {/* Pure Hero Background image without gradient overlay */}
             <img
@@ -90,32 +107,32 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
             />
 
             {/* Top badge row */}
-            <div className="relative z-10 p-5 flex items-center justify-between">
+            <div className="relative z-10 flex items-center justify-between">
               <span className="inline-block bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
                 {isEn ? 'OFFICIAL PUBLICATION 2026' : 'PUBLIKASI RESMI 2026'}
               </span>
-              <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold bg-black/40 backdrop-blur-xs px-2 py-0.5 rounded">
+              <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                 <BookOpen className="w-3.5 h-3.5 text-red-400" />
                 <span>MALALA.MY.ID</span>
               </div>
             </div>
 
-            {/* Center: Title block — Clean, small, well proportioned */}
-            <div className="relative z-10 p-5 mt-auto space-y-1.5 bg-black/40 backdrop-blur-xs rounded-b-2xl">
-              <h1 className="font-orbitron font-extrabold text-2xl text-white tracking-wide drop-shadow-md leading-tight">
-                MALALA 2026
+            {/* Center / Bottom: Title block — Pure crisp text directly on image */}
+            <div className="relative z-10 mt-auto space-y-2 pt-16">
+              <h1 className="font-orbitron font-extrabold text-3xl sm:text-4xl text-white tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] leading-tight">
+                MALALA<br/>2026
               </h1>
-              <p className="font-orbitron font-bold text-xs text-red-300 drop-shadow-sm tracking-wide">
+              <p className="font-orbitron font-bold text-xs sm:text-sm text-red-300 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)] tracking-wide">
                 {isEn ? 'WEST SUMATRA TRAVEL & CULTURAL GUIDE' : 'PANDUAN LENGKAP PARIWISATA & BUDAYA RANAH MINANG'}
               </p>
-              <p className="font-jakarta text-white/90 text-[11px] leading-relaxed pt-0.5">
+              <p className="font-jakarta text-white drop-shadow-[0_1px_5px_rgba(0,0,0,0.9)] text-xs leading-relaxed max-w-sm pt-0.5">
                 {isEn
                   ? `${destinations.length} Destinations · ${cultureItems.length} Culture · ${culinaryItems.length} Culinary · ${eventItems.length} Events`
                   : `${destinations.length} Destinasi · ${cultureItems.length} Budaya · ${culinaryItems.length} Kuliner · ${eventItems.length} Event`}
               </p>
 
               {/* Divider + Footer */}
-              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[10px] text-white/70 font-jakarta">
+              <div className="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white/90 font-jakarta drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                 <span>Dinas Pariwisata Sumatera Barat</span>
                 <span className="font-bold text-white">E-Booklet Digital</span>
               </div>
