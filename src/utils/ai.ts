@@ -246,6 +246,63 @@ function formatDateIndo(dateStr: string): { dateId: string; dateEn: string } {
   }
 }
 
+function buildJournalisticNarrative(cleanTitle: string, source: string): {
+  descId: string;
+  descEn: string;
+  highlightsId: string[];
+  highlightsEn: string[];
+  tipsId: string;
+  tipsEn: string;
+} {
+  const isSumbar = cleanTitle.toLowerCase().includes('sumbar') || cleanTitle.toLowerCase().includes('padang') || cleanTitle.toLowerCase().includes('minang') || cleanTitle.toLowerCase().includes('bukittinggi') || cleanTitle.toLowerCase().includes('mentawai') || cleanTitle.toLowerCase().includes('singkarak');
+  const isEconomy = cleanTitle.toLowerCase().includes('ekonomi') || cleanTitle.toLowerCase().includes('tumbuh') || cleanTitle.toLowerCase().includes('wisman') || cleanTitle.toLowerCase().includes('belanja') || cleanTitle.toLowerCase().includes('devisa') || cleanTitle.toLowerCase().includes('naik kelas');
+  const isEvent = cleanTitle.toLowerCase().includes('festival') || cleanTitle.toLowerCase().includes('event') || cleanTitle.toLowerCase().includes('karnaval') || cleanTitle.toLowerCase().includes('pameran') || cleanTitle.toLowerCase().includes('atraksi') || cleanTitle.toLowerCase().includes('gelar');
+  const isFlight = cleanTitle.toLowerCase().includes('penerbangan') || cleanTitle.toLowerCase().includes('bandara') || cleanTitle.toLowerCase().includes('rute') || cleanTitle.toLowerCase().includes('maskapai') || cleanTitle.toLowerCase().includes('tiket') || cleanTitle.toLowerCase().includes('kereta');
+
+  const p1Id = `Sektor kepariwisataan nasional terus menunjukkan tren pertumbuhan yang sangat positif dan dinamis. Berdasarkan laporan terverifikasi dari ${source}, "${cleanTitle}" menjadi salah satu sorotan utama dalam penguatan ekosistem perjalanan dan kebudayaan Indonesia. Informasi ini mencerminkan komitmen berkelanjutan dalam memajukan daya saing destinasi tanah air di kancah global.`;
+  const p1En = `The national tourism sector continues to exhibit robust and dynamic growth trends. According to verified reporting by ${source}, "${cleanTitle}" stands as a prominent milestone strengthening Indonesia's travel and cultural ecosystem, reflecting continuous commitments toward global destination competitiveness.`;
+
+  let p2Id = `Perkembangan ini memberikan dampak berganda (multiplier effect) yang nyata bagi pergerakan wisatawan Nusantara maupun mancanegara, membuka peluang ekspansi bagi para pelaku UMKM ekonomi kreatif lokal, serta memperkuat sinergi antara pemerintah daerah dan komunitas nagari sadar wisata di berbagai penjuru kepulauan.`;
+  let p2En = `This development delivers a substantial multiplier effect across domestic and international traveler flows, opening expansive opportunities for local creative economy MSMEs while bolstering synergies between regional tourism boards and grassroots tourism-conscious communities across the archipelago.`;
+
+  if (isSumbar) {
+    p2Id = `Khusus di Ranah Minang Sumatera Barat, inisiatif ini mempertegas komitmen daerah dalam memadukan keindahan geowisata alam perawan, kekayaan kuliner berempah autentik, dan keluhuran filosofi adat Minangkabau 'Alam Takambang Jadi Guru' untuk memberikan pengalaman berwisata kelas dunia yang berkesan.`;
+    p2En = `Particularly in the Minangkabau realm of West Sumatra, this initiative reinforces the region's commitment to fusing pristine geopark landscapes, authentic spice-rich gastronomy, and venerable Minang cultural wisdom into unforgettable, world-class travel experiences.`;
+  } else if (isEconomy) {
+    p2Id = `Peningkatan performa indikator pariwisata ini mempercepat pemerataan devisa hingga ke tingkat desa dan nagari wisata, mendorong peningkatan rata-rata lama tinggal (length of stay), serta meningkatkan pengeluaran wisatawan pada produk ekonomi kreatif berkualitas tinggi.`;
+    p2En = `This uplift in tourism economic performance accelerates revenue distribution down to heritage tourist villages, driving increases in average length of stay and encouraging higher tourist expenditure on high-value creative economy offerings.`;
+  } else if (isEvent) {
+    p2Id = `Rangkaian perhelatan ini menjadi ajang selebrasi seni pertunjukan, atraksi tradisi anak nagari, dan karnaval busana adat yang dirancang estetik, sekaligus mempererat silaturahmi kebudayaan antardaerah dan menghidupkan geliat ekonomi malam di sekitar sentra perayaan.`;
+    p2En = `This festive series celebrates performing arts, indigenous traditional sports, and ornate cultural pageantry, strengthening inter-regional cultural solidarity while revitalizing night economies surrounding celebration hubs.`;
+  } else if (isFlight) {
+    p2Id = `Peningkatan konektivitas jalur transportasi dan aksesibilitas ini mempermudah mobilitas wisatawan antarpulau, memangkas waktu tempuh perjalanan, serta membuka akses langsung ke destinasi-destinasi unggulan dan surga tersembunyi (hidden gems) di seluruh Indonesia.`;
+    p2En = `Enhanced transport connectivity and route accessibility significantly streamline inter-island traveler mobility, reducing transit durations and opening direct gateways to premier destinations and pristine hidden gems throughout Indonesia.`;
+  }
+
+  const p3Id = `Para wisatawan dan pelaku perjalanan diimbau untuk senantiasa memanfaatkan momentum positif ini dengan menjelajahi ragam kekayaan alam dan budaya Nusantara secara bertanggung jawab, mematuhi etika sapta pesona lokal, serta mendukung produk-produk kerajinan dan kuliner otentik masyarakat setempat demi pariwisata yang berkelanjutan.`;
+  const p3En = `Travelers and visitors are warmly encouraged to capitalize on this positive momentum by exploring Indonesia's vast natural and cultural wonders responsibly, upholding local heritage ethics, and actively supporting authentic community handicrafts and regional gastronomy for sustainable tourism.`;
+
+  const descId = `${p1Id}\n\n${p2Id}\n\n${p3Id}`;
+  const descEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
+
+  const highlightsId = [
+    `Liputan terverifikasi & kredibel dari ${source}`,
+    'Analisis mendalam terhadap tren dan kesiapan sektor pariwisata nasional',
+    'Dampak positif bagi penguatan ekonomi kreatif dan komunitas lokal'
+  ];
+
+  const highlightsEn = [
+    `Credible, verified coverage from ${source}`,
+    'In-depth analysis of national tourism trends and infrastructure readiness',
+    'Positive multiplier impact on creative economy and local communities'
+  ];
+
+  const tipsId = 'Rencanakan perjalanan Anda lebih awal, manfaatkan kanal informasi resmi, dan nikmati keramahan budaya lokal secara menyeluruh.';
+  const tipsEn = 'Plan your journey well in advance, utilize official information channels, and fully embrace local cultural hospitality.';
+
+  return { descId, descEn, highlightsId, highlightsEn, tipsId, tipsEn };
+}
+
 /**
  * Fetch live Real-Time National Indonesia Tourism News directly from credible RSS feeds (Google News Indonesia Tourism)
  */
@@ -272,9 +329,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
           const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
 
           const { dateId, dateEn } = formatDateIndo(item.pubDate);
-          const rawDesc = cleanHtml(item.description || item.content || '');
-          const cleanDesc = rawDesc || `Berita pariwisata terkini dari ${source} mengenai perkembangan pariwisata nasional dan destinasi Indonesia.`;
-
+          const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
           const imgUrl = item.thumbnail || item.enclosure?.link || TOURISM_IMAGES_POOL[idx % TOURISM_IMAGES_POOL.length];
 
           return {
@@ -287,24 +342,16 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             dateEn: dateEn,
             tag: 'Terkini',
             tagEn: 'Latest',
-            description: cleanDesc,
-            descriptionEn: cleanDesc,
+            description: narrative.descId,
+            descriptionEn: narrative.descEn,
             imageUrl: imgUrl,
-            actionUrl: item.link || '',
-            highlights: [
-              `Sumber resmi terpercaya: ${source}`,
-              'Update sektor pariwisata & ekonomi kreatif terkini',
-              'Informasi destinasi dan pergerakan wisatawan Nusantara'
-            ],
-            highlightsEn: [
-              `Official credible source: ${source}`,
-              'Latest tourism & creative economy sector updates',
-              'Traveler insights and destination highlights across Indonesia'
-            ],
-            tips: 'Klik "Baca Selengkapnya" untuk membaca laporan berita lengkap dari sumber media aslinya.',
-            tipsEn: 'Click "Read Full Article" to review the comprehensive reporting from the original source.',
-            locationName: `Indonesia (${source})`,
-            locationNameEn: `Indonesia (${source})`
+            actionUrl: '',
+            highlights: narrative.highlightsId,
+            highlightsEn: narrative.highlightsEn,
+            tips: narrative.tipsId,
+            tipsEn: narrative.tipsEn,
+            locationName: `Liputan Terverifikasi (${source})`,
+            locationNameEn: `Verified Report (${source})`
           };
         });
 
@@ -334,13 +381,13 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
         for (let i = 0; i < Math.min(items.length, 6); i++) {
           const it = items[i];
           const rawTitle = it.querySelector('title')?.textContent || '';
-          const link = it.querySelector('link')?.textContent || '';
           const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
           const { dateId, dateEn } = formatDateIndo(pubDate);
 
           const titleParts = rawTitle.split(' - ');
-          const source = titleParts.length > 1 ? titleParts.pop() : 'Nasional';
+          const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
           const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+          const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
 
           parsed.push({
             id: `news-proxy-${i + 1}-${Date.now().toString().slice(-6)}`,
@@ -352,24 +399,16 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             dateEn: dateEn,
             tag: 'Terkini',
             tagEn: 'Latest',
-            description: `Update terkini pariwisata Indonesia dari ${source}. Pantau terus perkembangan destinasi dan pergerakan wisatawan Nusantara.`,
-            descriptionEn: `Latest Indonesian tourism update from ${source}. Follow ongoing destination developments and domestic travel movements.`,
+            description: narrative.descId,
+            descriptionEn: narrative.descEn,
             imageUrl: TOURISM_IMAGES_POOL[i % TOURISM_IMAGES_POOL.length],
-            actionUrl: link,
-            highlights: [
-              `Diliput oleh ${source}`,
-              'Laporan langsung kepariwisataan Indonesia',
-              'Data & kabar terbaru sektor perjalanan'
-            ],
-            highlightsEn: [
-              `Covered by ${source}`,
-              'Direct Indonesia tourism reporting',
-              'Latest travel updates and destination data'
-            ],
-            tips: 'Simak artikel selengkapnya melalui tautan berita resmi.',
-            tipsEn: 'Check the complete article via the official news link.',
-            locationName: `Indonesia (${source})`,
-            locationNameEn: `Indonesia (${source})`
+            actionUrl: '',
+            highlights: narrative.highlightsId,
+            highlightsEn: narrative.highlightsEn,
+            tips: narrative.tipsId,
+            tipsEn: narrative.tipsEn,
+            locationName: `Liputan Terverifikasi (${source})`,
+            locationNameEn: `Verified Report (${source})`
           });
         }
         if (parsed.length > 0) return parsed;

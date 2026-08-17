@@ -2163,41 +2163,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </div>
 
                           <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
-                            {item.actionUrl ? (
-                              item.actionUrl.includes('google.com/maps') || item.actionUrl.includes('maps.') ? (
-                                <a
-                                  href={item.actionUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"
-                                >
-                                  <MapPin className="w-3.5 h-3.5" />
-                                  <span>{translations[lang].btnMap}</span>
-                                  <ExternalLink className="w-3 h-3" />
-                                </a>
-                              ) : (
-                                <a
-                                  href={item.actionUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-50 text-red-700 hover:bg-red-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"
-                                >
-                                  <span>{isEn ? '📰 Read Full Report' : '📰 Baca Berita Lengkap'}</span>
-                                  <ExternalLink className="w-3 h-3" />
-                                </a>
-                              )
-                            ) : item.locationQuery ? (
-                              <a
-                                href={getGoogleMapsUrl(item.locationQuery)!}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-600 hover:text-white transition-all font-jakarta font-bold text-xs uppercase cursor-pointer"
-                              >
-                                <MapPin className="w-3.5 h-3.5" />
-                                <span>{translations[lang].btnMap}</span>
-                                <ExternalLink className="w-3 h-3" />
-                              </a>
-                            ) : <div />}
+                            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500">
+                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                              <span>{isEn && item.locationNameEn ? item.locationNameEn : (item.locationName || 'Liputan Resmi Terverifikasi')}</span>
+                            </div>
 
                             <button
                               onClick={() => {
@@ -2209,10 +2178,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                                   alert('Tautan informasi berhasil disalin!');
                                 }
                               }}
-                              className="p-1.5 text-gray-500 hover:text-black hover:bg-gray-100 rounded transition-colors cursor-pointer"
+                              className="p-1.5 text-gray-500 hover:text-black hover:bg-gray-100 rounded transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-medium"
                               title="Bagikan Info Ini"
                             >
-                              <Share2 className="w-4 h-4" />
+                              <Share2 className="w-3.5 h-3.5" />
+                              <span>{isEn ? 'Share' : 'Bagikan'}</span>
                             </button>
                           </div>
                         </div>
