@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
@@ -72,51 +72,197 @@ export const Hero: React.FC<HeroProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Helper: Parse event month index and calculate relative proximity to current date
-  const parseEventMonth = (scheduleStr: string): number => {
-    if (!scheduleStr) return 0;
-    const s = scheduleStr.toLowerCase();
-    const idMonths = ['januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'];
-    const enMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-    
-    for (let i = 0; i < 12; i++) {
-      if (s.includes(idMonths[i]) || s.includes(enMonths[i])) {
-        return i;
-      }
-    }
-    if (s.includes('rajab')) return 0; // ~ Jan/Feb
-    if (s.includes('syawal') || s.includes('lebaran')) return 3; // ~ April
-    if (s.includes('muharram')) return 6; // ~ July
-    if (s.includes('mingguan') || s.includes('akhir pekan') || s.includes('weekend')) return new Date().getMonth();
-    return 7;
-  };
-
-  const getEventProximity = (scheduleStr: string) => {
-    const currentMonth = new Date().getMonth();
-    const eventMonth = parseEventMonth(scheduleStr);
-    let diff = eventMonth - currentMonth;
-    if (diff < 0) {
-      diff += 12;
-    }
-    return {
-      diff,
-      eventMonth,
-      isCurrentMonth: diff === 0,
-      isNextMonth: diff === 1
-    };
-  };
-
   const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  // Precise Event Timeline & 2-Week Window Evaluation
+  const evaluateEventTimeline = (scheduleStr: string, isKen?: boolean) => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-11 (7 for August)
+    const nowMs = now.getTime();
+
+    const s = (scheduleStr || '').toLowerCase();
+
+    // 1. Weekly / Routine / Year-round events
+    if (s.includes('akhir pekan') || s.includes('mingguan') || s.includes('weekend') || s.includes('sepanjang tahun') || s.includes('bergilir')) {
+      return {
+        isOngoing: true,
+        isWithin2Weeks: true,
+        daysUntil: 0,
+        badgeLabelId: '🔥 Event Rutin Aktif Pekan Ini',
+        badgeLabelEn: '🔥 Active Weekly / Routine Event',
+        isKEN: Boolean(isKen),
+        sortScore: 10
+      };
+    }
+
+    const monthMap: { [key: string]: number } = {
+      'januari': 0, 'january': 0, 'jan': 0,
+      'februari': 1, 'february': 1, 'feb': 1,
+      'maret': 2, 'march': 2, 'mar': 2,
+      'april': 3, 'apr': 3,
+      'mei': 4, 'may': 4,
+      'juni': 5, 'june': 5, 'jun': 5,
+      'juli': 6, 'july': 6, 'jul': 6,
+      'agustus': 7, 'august': 7, 'agu': 7, 'aug': 7,
+      'september': 8, 'sep': 8, 'sept': 8,
+      'oktober': 9, 'october': 9, 'okt': 9, 'oct': 9,
+      'november': 10, 'nov': 10,
+      'desember': 11, 'december': 11, 'des': 11, 'dec': 11
+    };
+
+    let foundMonth: number | null = null;
+    for (const [mName, mIdx] of Object.entries(monthMap)) {
+      if (s.includes(mName)) {
+        foundMonth = mIdx;
+        break;
+      }
+    }
+
+    // 2. Specific day range (e.g. "15 - 20 Agustus", "25 Agustus", "1 - 10 Muharram")
+    const dateMatch = s.match(/(\d{1,2})\s*(?:-|sampai|hingga|\/)\s*(\d{1,2})?/);
+    if (dateMatch && foundMonth !== null) {
+      const startDay = parseInt(dateMatch[1], 10);
+      const endDay = dateMatch[2] ? parseInt(dateMatch[2], 10) : startDay;
+
+      let eventYear = currentYear;
+      if (foundMonth < currentMonth - 2) {
+        eventYear = currentYear + 1;
+      }
+
+      const startDate = new Date(eventYear, foundMonth, startDay, 0, 0, 0);
+      const endDate = new Date(eventYear, foundMonth, endDay, 23, 59, 59);
+
+      const diffToStartMs = startDate.getTime() - nowMs;
+      const diffToEndMs = endDate.getTime() - nowMs;
+
+      const daysToStart = Math.ceil(diffToStartMs / (1000 * 60 * 60 * 24));
+      const daysToEnd = Math.ceil(diffToEndMs / (1000 * 60 * 60 * 24));
+
+      // Currently ongoing
+      if (nowMs >= startDate.getTime() && nowMs <= endDate.getTime()) {
+        return {
+          isOngoing: true,
+          isWithin2Weeks: true,
+          daysUntil: 0,
+          badgeLabelId: `🔥 Sedang Berlangsung (${startDay}-${endDay} ${monthNamesId[foundMonth]})`,
+          badgeLabelEn: `🔥 Happening Now (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`,
+          isKEN: Boolean(isKen),
+          sortScore: 1
+        };
+      }
+
+      // Starting within next 14 days (2 weeks)
+      if (daysToStart > 0 && daysToStart <= 14) {
+        return {
+          isOngoing: false,
+          isWithin2Weeks: true,
+          daysUntil: daysToStart,
+          badgeLabelId: `⏳ Hadir dlm ${daysToStart} Hari (${startDay} ${monthNamesId[foundMonth]})`,
+          badgeLabelEn: `⏳ Starts in ${daysToStart} Days (${startDay} ${monthNamesEn[foundMonth]})`,
+          isKEN: Boolean(isKen),
+          sortScore: 20 + daysToStart
+        };
+      }
+
+      return {
+        isOngoing: false,
+        isWithin2Weeks: false,
+        daysUntil: daysToStart,
+        badgeLabelId: `🗓️ ${startDay} ${monthNamesId[foundMonth]} ${eventYear}`,
+        badgeLabelEn: `🗓️ ${monthNamesEn[foundMonth]} ${startDay}, ${eventYear}`,
+        isKEN: Boolean(isKen),
+        sortScore: 100 + daysToStart
+      };
+    }
+
+    // 3. Month-based without specific day (e.g. "Agustus", "Tahunan (Agustus/September)")
+    if (foundMonth !== null) {
+      if (foundMonth === currentMonth) {
+        return {
+          isOngoing: true,
+          isWithin2Weeks: true,
+          daysUntil: 0,
+          badgeLabelId: `🔥 Bulan Ini (${monthNamesId[foundMonth]})`,
+          badgeLabelEn: `🔥 This Month (${monthNamesEn[foundMonth]})`,
+          isKEN: Boolean(isKen),
+          sortScore: 5
+        };
+      }
+
+      // Check if next month and within 2 weeks of the 1st of next month
+      if (foundMonth === (currentMonth + 1) % 12) {
+        const daysUntilNextMonth = (new Date(currentYear, currentMonth + 1, 1).getTime() - nowMs) / (1000 * 60 * 60 * 24);
+        if (daysUntilNextMonth <= 14) {
+          return {
+            isOngoing: false,
+            isWithin2Weeks: true,
+            daysUntil: Math.max(1, Math.ceil(daysUntilNextMonth)),
+            badgeLabelId: `⏳ 2 Minggu Ini (${monthNamesId[foundMonth]})`,
+            badgeLabelEn: `⏳ Next 2 Weeks (${monthNamesEn[foundMonth]})`,
+            isKEN: Boolean(isKen),
+            sortScore: 30
+          };
+        }
+      }
+    }
+
+    return {
+      isOngoing: false,
+      isWithin2Weeks: false,
+      daysUntil: 999,
+      badgeLabelId: '🗓️ Jadwal CoE Sumbar',
+      badgeLabelEn: '🗓️ CoE Event Schedule',
+      isKEN: Boolean(isKen),
+      sortScore: 999
+    };
+  };
+
   const eventsList = eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE;
-  const closestUpcomingEvent = useMemo(() => {
-    if (!eventsList || eventsList.length === 0) return null;
-    const sorted = [...eventsList].sort((a, b) => {
-      return getEventProximity(a.schedule).diff - getEventProximity(b.schedule).diff;
-    });
-    return sorted[0];
+
+  // Multi-Event Filter: Strictly Ongoing or starting within the next 2 weeks (14 days)
+  const activeSpotlightEvents = useMemo(() => {
+    if (!eventsList || eventsList.length === 0) return [];
+    
+    const evaluated = eventsList.map(item => ({
+      item,
+      timeline: evaluateEventTimeline(item.schedule, item.isKen)
+    }));
+
+    // Filter strictly for ongoing or starting within 2 weeks
+    const strictlyActive = evaluated.filter(e => e.timeline.isOngoing || e.timeline.isWithin2Weeks);
+
+    if (strictlyActive.length > 0) {
+      strictlyActive.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+      return strictlyActive;
+    }
+
+    // Fallback: If no event in strict 2 weeks, show top 2 closest upcoming events
+    evaluated.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+    return evaluated.slice(0, 2);
   }, [eventsList]);
+
+  // Multi-event carousel index & automatic rotation with pause on hover
+  const [activeEventIndex, setActiveEventIndex] = useState(0);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+
+  useEffect(() => {
+    if (activeSpotlightEvents.length <= 1 || isCarouselPaused) return;
+
+    const timer = setInterval(() => {
+      setActiveEventIndex(prev => (prev + 1) % activeSpotlightEvents.length);
+    }, 7000);
+
+    return () => clearInterval(timer);
+  }, [activeSpotlightEvents.length, isCarouselPaused]);
+
+  // Keep active index within bounds if list size changes
+  useEffect(() => {
+    if (activeEventIndex >= activeSpotlightEvents.length) {
+      setActiveEventIndex(0);
+    }
+  }, [activeSpotlightEvents.length, activeEventIndex]);
 
   // Combined searchable index across all Sumbar tourism items
   const allSearchableItems = useMemo(() => {
@@ -456,30 +602,70 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
           <div className="flex flex-col space-y-3">
-            {/* Spotlight: Event Terdekat Mendatang */}
-            {closestUpcomingEvent && (() => {
+            {/* Spotlight: Event Sedang Berlangsung & 2 Minggu Mendatang (Multi-Event Carousel) */}
+            {activeSpotlightEvents.length > 0 && (() => {
+              const activeItemObj = activeSpotlightEvents[activeEventIndex] || activeSpotlightEvents[0];
+              const eventItem = activeItemObj.item;
+              const timeline = activeItemObj.timeline;
               const isEn = lang === 'en';
-              const title = isEn && closestUpcomingEvent.titleEn ? closestUpcomingEvent.titleEn : closestUpcomingEvent.title;
-              const schedule = isEn && closestUpcomingEvent.scheduleEn ? closestUpcomingEvent.scheduleEn : closestUpcomingEvent.schedule;
-              const location = isEn && closestUpcomingEvent.locationEn ? closestUpcomingEvent.locationEn : closestUpcomingEvent.location;
-              const isKEN = Boolean(closestUpcomingEvent.isKen);
-              const prox = getEventProximity(closestUpcomingEvent.schedule);
-              const ytEmbedUrl = getYoutubeEmbedUrl(closestUpcomingEvent.videoUrl || (closestUpcomingEvent as any).youtubeUrl);
+              const title = isEn && eventItem.titleEn ? eventItem.titleEn : eventItem.title;
+              const schedule = isEn && eventItem.scheduleEn ? eventItem.scheduleEn : eventItem.schedule;
+              const location = isEn && eventItem.locationEn ? eventItem.locationEn : eventItem.location;
+              const isKEN = Boolean(eventItem.isKen);
+              const ytEmbedUrl = getYoutubeEmbedUrl(eventItem.videoUrl || (eventItem as any).youtubeUrl);
 
               const getGoogleCalUrl = () => {
                 const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
-                const d = encodeURIComponent(`${isEn && closestUpcomingEvent.descriptionEn ? closestUpcomingEvent.descriptionEn : closestUpcomingEvent.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
+                const d = encodeURIComponent(`${isEn && eventItem.descriptionEn ? eventItem.descriptionEn : eventItem.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
                 const l = encodeURIComponent(`${location}, Sumatera Barat`);
                 return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${d}&location=${l}`;
               };
 
               return (
-                <div className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
+                <div
+                  onMouseEnter={() => setIsCarouselPaused(true)}
+                  onMouseLeave={() => setIsCarouselPaused(false)}
+                  className="bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all"
+                >
                   <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Multi-Event Mini Header with Carousel Controls */}
+                  <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+                      <span>
+                        {isEn ? `Live & 2-Week Events` : `Event Sedang / 2 Minggu Ini`}
+                      </span>
+                    </div>
+
+                    {activeSpotlightEvents.length > 1 && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[9px] font-bold text-gray-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                          {activeEventIndex + 1}/{activeSpotlightEvents.length}
+                        </span>
+                        <div className="flex items-center gap-0.5">
+                          <button
+                            onClick={() => setActiveEventIndex((prev) => (prev - 1 + activeSpotlightEvents.length) % activeSpotlightEvents.length)}
+                            className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                            title="Sebelumnya"
+                          >
+                            <ChevronLeft className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={() => setActiveEventIndex((prev) => (prev + 1) % activeSpotlightEvents.length)}
+                            className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                            title="Berikutnya"
+                          >
+                            <ChevronRight className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
                   {/* 1. YouTube Video Preview (If videoUrl is provided) */}
                   {ytEmbedUrl ? (
-                    <div className="relative h-36 -mx-3.5 -mt-3.5 mb-2 overflow-hidden rounded-t-lg bg-black">
+                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black">
                       <iframe
                         src={ytEmbedUrl}
                         title={title}
@@ -493,11 +679,7 @@ export const Hero: React.FC<HeroProps> = ({
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
                         <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
-                          {prox.isCurrentMonth
-                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung')
-                            : prox.isNextMonth
-                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir')
-                            : (isEn ? `🗓️ ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat`)}
+                          {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
@@ -507,11 +689,11 @@ export const Hero: React.FC<HeroProps> = ({
                         </span>
                       )}
                     </div>
-                  ) : closestUpcomingEvent.imageUrl ? (
+                  ) : eventItem.imageUrl ? (
                     /* 2. Photo Banner Image (If imageUrl is provided without video) */
-                    <div className="relative h-28 -mx-3.5 -mt-3.5 mb-2 overflow-hidden rounded-t-lg bg-gray-900">
+                    <div className="relative h-28 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gray-900">
                       <img
-                        src={closestUpcomingEvent.imageUrl}
+                        src={eventItem.imageUrl}
                         alt={title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
@@ -524,11 +706,7 @@ export const Hero: React.FC<HeroProps> = ({
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
                         <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
-                          {prox.isCurrentMonth
-                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung')
-                            : prox.isNextMonth
-                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir')
-                            : (isEn ? `🗓️ ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat`)}
+                          {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
@@ -547,11 +725,7 @@ export const Hero: React.FC<HeroProps> = ({
                           <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
                         <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-red-600">
-                          {prox.isCurrentMonth
-                            ? (isEn ? '🔥 Happening This Month' : '🔥 Sedang Berlangsung / Bulan Ini')
-                            : prox.isNextMonth
-                            ? (isEn ? '⏳ Upcoming Next Month' : '⏳ Segera Hadir Bulan Depan')
-                            : (isEn ? `🗓️ Next: ${monthNamesEn[prox.eventMonth]}` : `🗓️ Event Terdekat: ${monthNamesId[prox.eventMonth]}`)}
+                          {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
@@ -560,6 +734,22 @@ export const Hero: React.FC<HeroProps> = ({
                           KEN Kemenparekraf
                         </span>
                       )}
+                    </div>
+                  )}
+
+                  {/* Multi-Event Dots Indicator */}
+                  {activeSpotlightEvents.length > 1 && (
+                    <div className="flex items-center justify-center gap-1.5 py-0.5">
+                      {activeSpotlightEvents.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setActiveEventIndex(i)}
+                          className={`h-1 rounded-full transition-all cursor-pointer ${
+                            activeEventIndex === i ? 'w-5 bg-amber-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                          }`}
+                          title={`Event ${i + 1}`}
+                        />
+                      ))}
                     </div>
                   )}
 
