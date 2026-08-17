@@ -2325,14 +2325,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
 
                 <div className="pt-2">
-                  <a
-                    href="/downloads/malala-panduan-wisata-sumbar-2026.pdf"
-                    download="MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf"
+                  <button
+                    onClick={() => setIsBookletModalOpen(true)}
                     className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
                     <Download className="w-4 h-4 text-white" />
                     <span>{lang === 'en' ? '⬇️ Direct Download PDF (Complete)' : '⬇️ Unduh PDF Resmi (Lengkap)'}</span>
-                  </a>
+                  </button>
                 </div>
               </div>
 

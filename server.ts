@@ -29,11 +29,16 @@ async function startServer() {
           timestamp: new Date().toISOString(),
           ...req.body
         }, null, 2), 'utf-8');
+
+        // Regenerate static PDF & JPGs with the freshly received payload
+        try {
+          execSync('cmd /c npx tsx scripts/export_all_pages_jpg.ts', { stdio: 'ignore' });
+        } catch (e) {}
       }
 
       try {
         execSync('git add .', { stdio: 'ignore' });
-        execSync('git commit -m "sync: update live data from admin panel"', { stdio: 'ignore' });
+        execSync('git commit -m "sync: update live data and dynamic PDF from admin panel"', { stdio: 'ignore' });
       } catch (e) {}
 
       try {
