@@ -120,11 +120,41 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Category filter state for destinations
   const [destCategory, setDestCategory] = useState<string>('Semua');
 
+  // Calendar of Events (CoE) state
+  const [eventViewMode, setEventViewMode] = useState<'timeline' | 'grid'>('timeline');
+  const [eventCategoryFilter, setEventCategoryFilter] = useState<string>('all');
+  const [eventQuarterFilter, setEventQuarterFilter] = useState<string>('all');
+
   // Selected item modal/detail view
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [selectedCulture, setSelectedCulture] = useState<CultureItem | null>(null);
   const [selectedCulinary, setSelectedCulinary] = useState<CulinaryItem | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+
+  // Calendar of Events helpers
+  const getGoogleCalendarUrl = (ev: EventItem) => {
+    const isEn = lang === 'en';
+    const title = encodeURIComponent(`${isEn && ev.titleEn ? ev.titleEn : ev.title} - Wonderful West Sumatra`);
+    const desc = encodeURIComponent(`${isEn && ev.descriptionEn ? ev.descriptionEn : ev.description}\n\nJadwal: ${isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}\nLokasi: ${isEn && ev.locationEn ? ev.locationEn : ev.location}\nPortal Resmi: https://malala-my-id.web.app`);
+    const loc = encodeURIComponent(`${isEn && ev.locationEn ? ev.locationEn : ev.location}, Sumatera Barat, Indonesia`);
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${desc}&location=${loc}`;
+  };
+
+  const handleShareEvent = async (ev: EventItem) => {
+    const isEn = lang === 'en';
+    const title = isEn && ev.titleEn ? ev.titleEn : ev.title;
+    const text = `${title} | Calendar of Events Pariwisata Sumatera Barat`;
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url });
+      } catch (err) {}
+    } else {
+      navigator.clipboard.writeText(`${title} - ${url}`);
+      alert(isEn ? 'Event information copied to clipboard!' : 'Informasi event berhasil disalin!');
+    }
+  };
 
   // Hot Info & Download state
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
@@ -1301,61 +1331,314 @@ export const Drawers: React.FC<DrawersProps> = ({
           )}
 
           {/* =================================================== */}
-          {/* 4. EVENT & FESTIVAL DRAWER                          */}
+          {/* 4. CALENDAR OF EVENTS (CoE) SUMATERA BARAT          */}
           {/* =================================================== */}
-          {activeDrawer === 'events' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {eventItems.map((ev: EventItem) => {
-                const isEn = lang === 'en';
-                return (
-                  <div
-                    key={ev.id}
-                    className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all group"
-                  >
-                    <div>
-                      {/* Image Banner */}
-                      <div className="relative h-36 w-full overflow-hidden bg-gray-100">
-                        <img
-                          src={ev.imageUrl}
-                          alt={isEn && ev.titleEn ? ev.titleEn : ev.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
-                        <div className="absolute top-2 left-2 bg-black/80 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded flex items-center gap-1 backdrop-blur-xs">
-                          <Calendar className="w-3 h-3" />
-                          {isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}
+          {activeDrawer === 'events' && (() => {
+            const isEn = lang === 'en';
+
+            // Filter logic
+            const filteredEvents = eventItems.filter((ev: EventItem) => {
+              if (searchQuery.trim().length > 0) {
+                const q = searchQuery.toLowerCase().trim();
+                const matchText = [
+                  ev.title, ev.titleEn, ev.location, ev.locationEn,
+                  ev.schedule, ev.scheduleEn, ev.description, ev.descriptionEn
+                ].filter(Boolean).join(' ').toLowerCase();
+                if (!matchText.includes(q)) return false;
+              }
+
+              if (eventCategoryFilter === 'ken') {
+                const titleMatch = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
+                return titleMatch.includes('ken') || titleMatch.includes('karisma event nusantara');
+              } else if (eventCategoryFilter === 'budaya') {
+                const text = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
+                return text.includes('budaya') || text.includes('tradisi') || text.includes('alek') || text.includes('suku');
+              } else if (eventCategoryFilter === 'sport') {
+                const text = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.description).toLowerCase();
+                return text.includes('pacu') || text.includes('tour de') || text.includes('paralayang') || text.includes('sampan') || text.includes('kudo') || text.includes('jawi');
+              } else if (eventCategoryFilter === 'bahari') {
+                const text = (ev.title + ' ' + (ev.titleEn || '') + ' ' + ev.location).toLowerCase();
+                return text.includes('pantai') || text.includes('danau') || text.includes('sungai') || text.includes('pesisir') || text.includes('mentawai') || text.includes('muaro');
+              }
+
+              return true;
+            });
+
+            // Quarterly Seasons definition
+            const quarters = [
+              {
+                id: 'Q1',
+                title: isEn ? 'Quarter I (Jan - Mar): Sacred Traditions & Early Year Heritage' : 'Triwulan I (Januari - Maret): Kearifan Religi & Tradisi Awal Tahun',
+                desc: isEn ? 'Post-harvest agrarian celebrations and Islamic sacred cultural commemorations.' : 'Perayaan pascapanen anak nagari dan peringatan sakral kebudayaan Islam.',
+                color: 'border-amber-400 bg-amber-50/60 text-amber-900',
+                badgeColor: 'bg-amber-600 text-white',
+                events: filteredEvents.filter(ev => ['ev15', 'ev19', 'ev1'].includes(ev.id))
+              },
+              {
+                id: 'Q2',
+                title: isEn ? 'Quarter II (Apr - Jun): Coastal Flotillas & Festive Holidays' : 'Triwulan II (April - Juni): Pesta Pesisir, Bahari & Libur Idul Fitri',
+                desc: isEn ? 'Spectacular river flotillas, coastal paragliding championships, and historical waterfront festivals.' : 'Parade kapal hias megah sungai, kejuaraan paralayang pesisir, dan festival kota tua.',
+                color: 'border-blue-400 bg-blue-50/60 text-blue-900',
+                badgeColor: 'bg-blue-600 text-white',
+                events: filteredEvents.filter(ev => ['ev13', 'ev14', 'ev17', 'ev11'].includes(ev.id))
+              },
+              {
+                id: 'Q3',
+                title: isEn ? 'Quarter III (Jul - Sep): Peak KEN Festivals & Geopark Arts' : 'Triwulan III (Juli - September): Puncak Karisma Event Nusantara (KEN) & Seni Geopark',
+                desc: isEn ? 'UNESCO geopark canyon festivals, tribal tattooing arts, Tabuik sea processions, and harvest theater.' : 'Festival ngarai geopark, tato purba Mentawai, prosesi laut Tabuik, dan teater sawah.',
+                color: 'border-emerald-400 bg-emerald-50/60 text-emerald-900',
+                badgeColor: 'bg-emerald-600 text-white',
+                events: filteredEvents.filter(ev => ['ev6', 'ev12', 'ev16', 'ev3', 'ev4', 'ev8', 'ev20'].includes(ev.id))
+              },
+              {
+                id: 'Q4',
+                title: isEn ? 'Quarter IV (Oct - Dec): Historical Heritage, Sport Tourism & Year-End Galas' : 'Triwulan IV (Oktober - Desember): Warisan Sejarah, Sport Tourism & Pesta Akhir Tahun',
+                desc: isEn ? 'Royal palace Minangkabau festivals, international cycling races, and 13th-century Pamalayu expeditions.' : 'Festival istana Pagaruyung, balap sepeda internasional, dan napak tilas Pamalayu abad ke-13.',
+                color: 'border-purple-400 bg-purple-50/60 text-purple-900',
+                badgeColor: 'bg-purple-600 text-white',
+                events: filteredEvents.filter(ev => ['ev7', 'ev10', 'ev5', 'ev2', 'ev18', 'ev9'].includes(ev.id))
+              }
+            ];
+
+            const renderEventCard = (ev: EventItem) => {
+              const titleText = isEn && ev.titleEn ? ev.titleEn : ev.title;
+              const isKEN = titleText.toUpperCase().includes('KEN') || ev.description.includes('Karisma Event Nusantara');
+
+              return (
+                <div
+                  key={ev.id}
+                  className={`border rounded-xl overflow-hidden bg-white flex flex-col justify-between shadow-xs transition-all duration-300 group hover:shadow-md ${
+                    isKEN ? 'border-amber-300 ring-1 ring-amber-200' : 'border-gray-200 hover:border-black'
+                  }`}
+                >
+                  <div>
+                    {/* Image Banner */}
+                    <div className="relative h-40 w-full overflow-hidden bg-gray-100">
+                      <img
+                        src={ev.imageUrl}
+                        alt={titleText}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                      {/* Top Badges */}
+                      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <div className="bg-black/80 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 backdrop-blur-md shadow-xs">
+                          <Calendar className="w-3 h-3 text-amber-400" />
+                          <span>{isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}</span>
                         </div>
+
+                        {isKEN && (
+                          <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 shadow-sm tracking-wider">
+                            <Sparkles className="w-3 h-3 text-yellow-200 animate-pulse" />
+                            <span>KEN Kemenparekraf</span>
+                          </div>
+                        )}
                       </div>
 
-                      <div className="p-3.5 space-y-2">
-                        <div className="text-gray-400 font-jakarta text-[10px] flex items-center gap-1 font-semibold">
-                          <MapPin className="w-3 h-3 text-black" />
-                          {isEn && ev.locationEn ? ev.locationEn : ev.location}
-                        </div>
-                        <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
-                          {isEn && ev.titleEn ? ev.titleEn : ev.title}
-                        </h3>
-                        <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
-                          {isEn && ev.descriptionEn ? ev.descriptionEn : ev.description}
-                        </p>
+                      {/* Location at bottom of image */}
+                      <div className="absolute bottom-2 left-3 right-3 text-white font-jakarta text-[10px] flex items-center gap-1 font-semibold truncate drop-shadow-sm">
+                        <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                        <span className="truncate">{isEn && ev.locationEn ? ev.locationEn : ev.location}</span>
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[10px] font-jakarta text-gray-500 flex items-center justify-between">
-                      <span className="uppercase tracking-widest font-semibold">{isEn ? 'Official Event' : 'Event Resmi'}</span>
+                    {/* Content Section */}
+                    <div className="p-4 space-y-2.5">
+                      <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm line-clamp-2 group-hover:text-amber-600 transition-colors">
+                        {titleText}
+                      </h3>
+                      <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
+                        {isEn && ev.descriptionEn ? ev.descriptionEn : ev.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Card Footer & Action Buttons */}
+                  <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                    {/* 1-Click Google Calendar button */}
+                    <a
+                      href={getGoogleCalendarUrl(ev)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white border border-gray-300 hover:border-black text-gray-700 hover:text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-2xs hover:bg-gray-50 shrink-0"
+                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                    >
+                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <span>{isEn ? '+ Calendar' : '+ Kalender'}</span>
+                    </a>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleShareEvent(ev)}
+                        className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white"
+                        title={isEn ? 'Share Event' : 'Bagikan Event'}
+                      >
+                        <Share2 className="w-3 h-3" />
+                      </button>
+
                       <button
                         onClick={() => setSelectedEvent(ev)}
-                        className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
+                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-3 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                       >
-                        {translations[lang].btnDetail}
+                        <span>{translations[lang].btnDetail}</span>
                         <ChevronRight className="w-3 h-3" />
                       </button>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                </div>
+              );
+            };
+
+            return (
+              <div className="space-y-6 font-jakarta">
+                {/* Grand Header Calendar of Events */}
+                <div className="bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden border border-gray-700">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+                  <div className="relative z-10 space-y-3">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="bg-amber-500 text-black font-orbitron font-black text-[10px] uppercase px-2.5 py-0.5 rounded-full tracking-wider">
+                        OFFICIAL CoE 2026
+                      </span>
+                      <span className="bg-white/10 text-white font-jakarta font-semibold text-[10px] uppercase px-2.5 py-0.5 rounded-full backdrop-blur-xs">
+                        {isEn ? 'West Sumatra Tourism Board' : 'Dinas Pariwisata Provinsi Sumatera Barat'}
+                      </span>
+                    </div>
+
+                    <h2 className="font-orbitron font-extrabold text-base sm:text-xl uppercase tracking-wider text-white">
+                      {isEn ? 'CALENDAR OF EVENTS (CoE) WEST SUMATRA 2026' : 'CALENDAR OF EVENTS (CoE) PARIWISATA SUMATERA BARAT 2026'}
+                    </h2>
+
+                    <p className="text-xs text-gray-300 leading-relaxed max-w-2xl">
+                      {isEn
+                        ? 'Explore 20 certified tourism festivals across West Sumatra, featuring 12 national events recognized in Karisma Event Nusantara (KEN) by the Ministry of Tourism.'
+                        : 'Jadwal resmi 20 festival dan perhelatan kepariwisataan unggulan di 19 Kabupaten/Kota Sumatera Barat, termasuk 12 event nasional terkurasi dalam Karisma Event Nusantara (KEN) Kemenparekraf.'}
+                    </p>
+
+                    {/* Quick Stats Badges */}
+                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-800 text-center">
+                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
+                        <div className="font-orbitron font-bold text-base text-amber-400">{eventItems.length}</div>
+                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Total Festivals' : 'Total Festival'}</div>
+                      </div>
+                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
+                        <div className="font-orbitron font-bold text-base text-yellow-300">12 KEN</div>
+                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'National KEN Events' : 'Karisma Nusantara'}</div>
+                      </div>
+                      <div className="bg-white/5 p-2 rounded-lg border border-white/10">
+                        <div className="font-orbitron font-bold text-base text-emerald-400">4 {isEn ? 'Seasons' : 'Musim'}</div>
+                        <div className="text-[9px] uppercase tracking-wider text-gray-400">{isEn ? 'Quarterly Themes' : 'Triwulan Wisata'}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* View Switcher & Category Filter Controls */}
+                <div className="space-y-3 bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-gray-200 shadow-2xs">
+                      <button
+                        onClick={() => setEventViewMode('timeline')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
+                          eventViewMode === 'timeline'
+                            ? 'bg-black text-white shadow-xs'
+                            : 'text-gray-600 hover:text-black'
+                        }`}
+                      >
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{isEn ? 'Quarterly Timeline (Q1-Q4)' : 'Timeline Musim (Q1-Q4)'}</span>
+                      </button>
+                      <button
+                        onClick={() => setEventViewMode('grid')}
+                        className={`px-3 py-1.5 rounded-md text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-1.5 ${
+                          eventViewMode === 'grid'
+                            ? 'bg-black text-white shadow-xs'
+                            : 'text-gray-600 hover:text-black'
+                        }`}
+                      >
+                        <span>{isEn ? 'All Events (Grid View)' : 'Semua Event (Grid)'}</span>
+                      </button>
+                    </div>
+
+                    <span className="text-[11px] font-bold text-gray-500">
+                      {filteredEvents.length} {isEn ? 'events found' : 'event ditemukan'}
+                    </span>
+                  </div>
+
+                  {/* Filter Pills */}
+                  <div className="flex items-center gap-1.5 flex-wrap pt-1 border-t border-gray-200/60">
+                    {[
+                      { key: 'all', label: isEn ? 'All Events (20)' : 'Semua Event (20)' },
+                      { key: 'ken', label: isEn ? '⭐ KEN Kemenparekraf (12)' : '⭐ Karisma Event Nusantara (KEN)' },
+                      { key: 'budaya', label: isEn ? '🏛️ Culture & Custom' : '🏛️ Tradisi & Budaya' },
+                      { key: 'sport', label: isEn ? '🏇 Sport & Equestrian' : '🏇 Sport & Pacuan' },
+                      { key: 'bahari', label: isEn ? '🌊 Marine & Nature' : '🌊 Bahari & Danau' },
+                    ].map((f) => (
+                      <button
+                        key={f.key}
+                        onClick={() => setEventCategoryFilter(f.key)}
+                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase transition-all cursor-pointer ${
+                          eventCategoryFilter === f.key
+                            ? 'bg-black text-white shadow-xs'
+                            : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* VIEW MODE 1: TIMELINE MUSIM (Q1 - Q4) */}
+                {eventViewMode === 'timeline' && (
+                  <div className="space-y-8">
+                    {quarters.map((q) => {
+                      if (q.events.length === 0) return null;
+                      return (
+                        <div key={q.id} className="space-y-4">
+                          {/* Quarter Header */}
+                          <div className={`p-4 rounded-xl border-l-4 ${q.color} flex items-start justify-between gap-3 shadow-2xs`}>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className={`font-orbitron font-bold text-[10px] uppercase px-2 py-0.5 rounded ${q.badgeColor}`}>
+                                  {q.id}
+                                </span>
+                                <h3 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide">
+                                  {q.title}
+                                </h3>
+                              </div>
+                              <p className="text-[11px] text-gray-600 leading-relaxed">
+                                {q.desc}
+                              </p>
+                            </div>
+                            <span className="font-orbitron font-bold text-xs shrink-0 px-2 py-1 bg-white rounded-md border border-gray-200">
+                              {q.events.length} {isEn ? 'Events' : 'Event'}
+                            </span>
+                          </div>
+
+                          {/* Quarter Event Grid */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pl-2">
+                            {q.events.map(renderEventCard)}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* VIEW MODE 2: ALL EVENTS GRID */}
+                {eventViewMode === 'grid' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {filteredEvents.map(renderEventCard)}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {/* =================================================== */}
 
           {/* =================================================== */}
           {/* 5. FORMAI SUMATERA BARAT (AI ITINERARY & CHAT)      */}
@@ -2290,12 +2573,34 @@ export const Drawers: React.FC<DrawersProps> = ({
                 ))}
             </div>
 
+            {/* Action Buttons: Add to Calendar & Share */}
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              <a
+                href={getGoogleCalendarUrl(selectedEvent)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>{lang === 'en' ? 'Add to Calendar' : 'Simpan ke Kalender'}</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => handleShareEvent(selectedEvent)}
+                className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 border border-gray-200"
+              >
+                <Share2 className="w-4 h-4" />
+                <span>{lang === 'en' ? 'Share Event' : 'Bagikan Event'}</span>
+              </button>
+            </div>
+
             {getGoogleMapsUrl(selectedEvent.mapUrl) && (
               <a
                 href={getGoogleMapsUrl(selectedEvent.mapUrl)!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-blue-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+                className="w-full bg-emerald-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-emerald-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
               >
                 <MapPin className="w-4 h-4 text-white" />
                 <span>{translations[lang].btnOpenMap}</span>
