@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
 import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
+import { isWithinLast30Days, deduplicateNewsItems } from '../utils/ai';
 
 export function useData() {
   const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
@@ -180,21 +181,13 @@ export function useData() {
           const item = doc.data() as HotInfoItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
-        .filter(item => item.title && item.title.trim().length > 0);
+        .filter(item => item.title && item.title.trim().length > 0 && isWithinLast30Days(item.date || item.createdAt));
 
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = HOT_INFO_ITEMS.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setHotInfoItems(merged.length > 0 ? merged : HOT_INFO_ITEMS);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'hotinfo', item.id), item).catch(() => {});
-        });
-      }
+      const dedupedMerged = deduplicateNewsItems(data.length > 0 ? data : HOT_INFO_ITEMS);
+      setHotInfoItems(dedupedMerged.length > 0 ? dedupedMerged : deduplicateNewsItems(HOT_INFO_ITEMS));
     }, (err) => {
       console.warn("Firestore hotinfo error:", err);
-      setHotInfoItems(HOT_INFO_ITEMS);
+      setHotInfoItems(deduplicateNewsItems(HOT_INFO_ITEMS));
     });
 
     const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
@@ -401,10 +394,20 @@ export function useData() {
   }));
 
   const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
-    setHotInfoItems(newItems);
+    const cleanItems = deduplicateNewsItems(
+      newItems.filter(item => isWithinLast30Days(item.date || item.createdAt))
+    );
+    setHotInfoItems(cleanItems);
     try {
+      const snapshot = await getDocs(collection(db, 'hotinfo'));
       const batch = writeBatch(db);
-      newItems.forEach(item => {
+      // Remove obsolete/duplicate documents from Firestore
+      snapshot.docs.forEach(d => {
+        if (!cleanItems.some(ci => ci.id === d.id)) {
+          batch.delete(d.ref);
+        }
+      });
+      cleanItems.forEach(item => {
         if (item.id) {
           batch.set(doc(db, 'hotinfo', item.id), item);
         }
