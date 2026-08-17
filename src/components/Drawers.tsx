@@ -5,7 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days } from '../utils/ai';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -2084,7 +2084,7 @@ export const Drawers: React.FC<DrawersProps> = ({
               {/* Category Filter Pills & Refresh Button */}
               <div className="flex items-center justify-between gap-2 pb-2">
                 <div className="flex items-center gap-2 overflow-x-auto scrollbar-none text-xs font-jakarta flex-1">
-                  {Array.from(new Set(['Semua', ...(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
+                  {Array.from(new Set(['Semua', ...(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS).filter((i: any) => isWithinLast30Days(i.date || i.createdAt)).map((i: any) => i.category).filter(Boolean)])).map((cat: string) => (
                     <button
                       key={cat}
                       onClick={() => setHotInfoCategory(cat)}
@@ -2110,9 +2110,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </button>
               </div>
 
-              {/* Hot Info Items List */}
+              {/* Hot Info Items List (Strictly last 30 days) */}
               <div className="space-y-4">
                 {(dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
+                  .filter((item: any) => isWithinLast30Days(item.date || item.createdAt))
                   .filter((item: any) => hotInfoCategory === 'Semua' || item.category === hotInfoCategory)
                   .map((item: any, idx: number) => {
                     const isEn = lang === 'en';
@@ -2125,7 +2126,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           item.tag === 'Penting' || item.isUrgent ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200 hover:border-black'
                         }`}
                       >
-                        {item.imageUrl && (
+                        {item.imageUrl ? (
                           <div className="relative h-40 w-full overflow-hidden bg-gray-100">
                             <img
                               src={item.imageUrl}
@@ -2146,6 +2147,25 @@ export const Drawers: React.FC<DrawersProps> = ({
                               <div className="absolute bottom-2 left-2 bg-black/60 text-gray-200 font-jakarta text-[10px] px-2 py-0.5 rounded backdrop-blur-xs">
                                 {isEn && item.dateEn ? item.dateEn : item.date}
                               </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="px-4 pt-3.5 pb-2 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded">
+                                {isEn && item.categoryEn ? item.categoryEn : item.category}
+                              </span>
+                              {(item.tag === 'Penting' || item.isUrgent) && (
+                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded flex items-center gap-1">
+                                  <Flame className="w-3 h-3 text-yellow-300 fill-current" />
+                                  {isEn && item.tagEn ? item.tagEn : (item.tag || 'Urgent')}
+                                </span>
+                              )}
+                            </div>
+                            {item.date && (
+                              <span className="text-gray-500 font-jakarta text-[10px] font-medium whitespace-nowrap">
+                                {isEn && item.dateEn ? item.dateEn : item.date}
+                              </span>
                             )}
                           </div>
                         )}

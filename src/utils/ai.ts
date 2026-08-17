@@ -225,10 +225,60 @@ function cleanHtml(html: string): string {
     .trim();
 }
 
-function formatDateIndo(dateStr: string): { dateId: string; dateEn: string } {
+export function isWithinLast30Days(dateStr?: string): boolean {
+  if (!dateStr) return true;
+  try {
+    const parsedTime = Date.parse(dateStr);
+    if (!isNaN(parsedTime)) {
+      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+      return (Date.now() - parsedTime) <= thirtyDaysInMs && (parsedTime <= Date.now() + 86400000);
+    }
+    const monthsMap: Record<string, number> = {
+      'jan': 0, 'januari': 0, 'january': 0,
+      'feb': 1, 'februari': 1, 'february': 1,
+      'mar': 2, 'maret': 2, 'march': 2,
+      'apr': 3, 'april': 3,
+      'mei': 4, 'may': 4,
+      'jun': 5, 'juni': 5, 'june': 5,
+      'jul': 6, 'juli': 6, 'july': 6,
+      'ags': 7, 'agustus': 7, 'aug': 7, 'august': 7,
+      'sep': 8, 'september': 8,
+      'okt': 9, 'oktober': 9, 'oct': 9, 'october': 9,
+      'nov': 10, 'november': 10,
+      'des': 11, 'desember': 11, 'dec': 11, 'december': 11,
+    };
+    const lower = dateStr.toLowerCase();
+    if (lower.includes('hari ini') || lower.includes('today') || lower.includes('minggu ini') || lower.includes('this week') || lower.includes('bulan ini') || lower.includes('this month')) {
+      return true;
+    }
+    const match = lower.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
+    if (match) {
+      const day = parseInt(match[1], 10);
+      const monthName = match[2];
+      const year = parseInt(match[3], 10);
+      const monthIndex = monthsMap[monthName];
+      if (monthIndex !== undefined) {
+        const itemDate = new Date(year, monthIndex, day).getTime();
+        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+        return (Date.now() - itemDate) <= thirtyDaysInMs;
+      }
+    }
+    return true;
+  } catch {
+    return true;
+  }
+}
+
+function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWithin30d: boolean } {
   try {
     const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return { dateId: 'Hari Ini', dateEn: 'Today' };
+    if (isNaN(d.getTime())) {
+      return { dateId: 'Hari Ini', dateEn: 'Today', isWithin30d: true };
+    }
+    const diffMs = Date.now() - d.getTime();
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    const isWithin30d = diffMs <= thirtyDaysMs && diffMs >= -86400000;
+
     const monthNamesId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
     const monthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const date = d.getDate();
@@ -239,10 +289,11 @@ function formatDateIndo(dateStr: string): { dateId: string; dateEn: string } {
     const mins = String(d.getMinutes()).padStart(2, '0');
     return {
       dateId: `${date} ${monthId} ${year} • ${hours}:${mins} WIB`,
-      dateEn: `${monthEn} ${date}, ${year} • ${hours}:${mins}`
+      dateEn: `${monthEn} ${date}, ${year} • ${hours}:${mins}`,
+      isWithin30d
     };
   } catch {
-    return { dateId: 'Hari Ini', dateEn: 'Today' };
+    return { dateId: 'Hari Ini', dateEn: 'Today', isWithin30d: true };
   }
 }
 
@@ -304,13 +355,13 @@ function buildJournalisticNarrative(cleanTitle: string, source: string): {
 }
 
 /**
- * Fetch live Real-Time National Indonesia Tourism News directly from credible RSS feeds (Google News Indonesia Tourism)
+ * Fetch live Real-Time National Indonesia Tourism News strictly within the last 30 days (1 month)
+ * Note: imageUrl is left empty ('') so the admin can manually upload/set banner images.
  */
 async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
-  const isEn = language === 'en';
   const rssQueries = [
-    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:7d&hl=id&gl=ID&ceid=ID:id',
-    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:7d&hl=id&gl=ID&ceid=ID:id'
+    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:30d&hl=id&gl=ID&ceid=ID:id',
+    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:30d&hl=id&gl=ID&ceid=ID:id'
   ];
 
   for (const rssUrl of rssQueries) {
@@ -321,39 +372,42 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
 
       const data = await res.json();
       if (data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
-        const parsedItems = data.items.slice(0, 6).map((item: any, idx: number) => {
-          // Clean title by stripping trailing media source e.g. " - Kompas.com"
-          const rawTitle = cleanHtml(item.title || '');
-          const titleParts = rawTitle.split(' - ');
-          const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
-          const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+        const parsedItems = data.items
+          .map((item: any, idx: number) => {
+            const rawTitle = cleanHtml(item.title || '');
+            const titleParts = rawTitle.split(' - ');
+            const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
+            const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
 
-          const { dateId, dateEn } = formatDateIndo(item.pubDate);
-          const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
-          const imgUrl = item.thumbnail || item.enclosure?.link || TOURISM_IMAGES_POOL[idx % TOURISM_IMAGES_POOL.length];
+            const { dateId, dateEn, isWithin30d } = formatDateIndo(item.pubDate);
+            if (!isWithin30d) return null; // Strictly ignore news older than 1 month
 
-          return {
-            id: `news-live-${idx + 1}-${Date.now().toString().slice(-6)}`,
-            title: cleanTitle,
-            titleEn: cleanTitle,
-            category: 'Pariwisata Nasional',
-            categoryEn: 'National Tourism',
-            date: dateId,
-            dateEn: dateEn,
-            tag: 'Terkini',
-            tagEn: 'Latest',
-            description: narrative.descId,
-            descriptionEn: narrative.descEn,
-            imageUrl: imgUrl,
-            actionUrl: '',
-            highlights: narrative.highlightsId,
-            highlightsEn: narrative.highlightsEn,
-            tips: narrative.tipsId,
-            tipsEn: narrative.tipsEn,
-            locationName: `Liputan Terverifikasi (${source})`,
-            locationNameEn: `Verified Report (${source})`
-          };
-        });
+            const narrative = buildJournalisticNarrative(cleanTitle, source || 'Media Nasional');
+
+            return {
+              id: `news-live-${idx + 1}-${Date.now().toString().slice(-6)}`,
+              title: cleanTitle,
+              titleEn: cleanTitle,
+              category: 'Pariwisata Nasional',
+              categoryEn: 'National Tourism',
+              date: dateId,
+              dateEn: dateEn,
+              tag: 'Terkini',
+              tagEn: 'Latest',
+              description: narrative.descId,
+              descriptionEn: narrative.descEn,
+              imageUrl: '', // Left blank for manual admin input as requested
+              actionUrl: '',
+              highlights: narrative.highlightsId,
+              highlightsEn: narrative.highlightsEn,
+              tips: narrative.tipsId,
+              tipsEn: narrative.tipsEn,
+              locationName: `Liputan Terverifikasi (${source})`,
+              locationNameEn: `Verified Report (${source})`
+            };
+          })
+          .filter(Boolean)
+          .slice(0, 6);
 
         if (parsedItems.length > 0) {
           return parsedItems;
@@ -367,7 +421,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   // Secondary fallback via CORS proxy
   try {
     const corsProxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(
-      'https://news.google.com/rss/search?q=pariwisata+indonesia&hl=id&gl=ID&ceid=ID:id'
+      'https://news.google.com/rss/search?q=pariwisata+indonesia+when:30d&hl=id&gl=ID&ceid=ID:id'
     )}`;
     const res = await fetch(corsProxyUrl, { cache: 'no-store' });
     if (res.ok) {
@@ -378,11 +432,13 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
 
       if (items && items.length > 0) {
         const parsed: any[] = [];
-        for (let i = 0; i < Math.min(items.length, 6); i++) {
+        for (let i = 0; i < items.length && parsed.length < 6; i++) {
           const it = items[i];
           const rawTitle = it.querySelector('title')?.textContent || '';
           const pubDate = it.querySelector('pubDate')?.textContent || new Date().toISOString();
-          const { dateId, dateEn } = formatDateIndo(pubDate);
+          const { dateId, dateEn, isWithin30d } = formatDateIndo(pubDate);
+
+          if (!isWithin30d) continue; // Ignore if older than 30 days
 
           const titleParts = rawTitle.split(' - ');
           const source = titleParts.length > 1 ? titleParts.pop() : 'Media Nasional';
@@ -401,7 +457,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             tagEn: 'Latest',
             description: narrative.descId,
             descriptionEn: narrative.descEn,
-            imageUrl: TOURISM_IMAGES_POOL[i % TOURISM_IMAGES_POOL.length],
+            imageUrl: '', // Left blank for manual admin input
             actionUrl: '',
             highlights: narrative.highlightsId,
             highlightsEn: narrative.highlightsEn,
@@ -434,7 +490,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
     if (res.ok && contentType.includes('application/json')) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
-        return data;
+        return data.filter((it: any) => isWithinLast30Days(it.date));
       }
     }
   } catch (e) {
@@ -446,8 +502,8 @@ export async function fetchAiHotInfo(language: string = 'id') {
   if (viteApiKey) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
-      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT terkini dalam format JSON array. Setiap objek wajib memiliki properti:
-      id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string), dateEn (string), tag (string), tagEn (string), description (string), descriptionEn (string), imageUrl (string url unsplash pariwisata), actionUrl (string), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
+      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
+      id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string tanggal 30 hari terakhir), dateEn (string), tag (string), tagEn (string), description (string 3 paragraf), descriptionEn (string 3 paragraf), imageUrl (""), actionUrl (""), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
       Hanya kembalikan valid JSON tanpa markdown.`;
 
       const response = await ai.models.generateContent({
@@ -458,20 +514,21 @@ export async function fetchAiHotInfo(language: string = 'id') {
       const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(cleanJson);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
+        return parsed.filter((it: any) => isWithinLast30Days(it.date));
       }
     } catch (err) {
       console.warn("Client Gemini hotinfo generation failed, moving to live RSS:", err);
     }
   }
 
-  // 3. Live Google News / RSS National Tourism Feed (Direct, Real-time & 100% automated)
+  // 3. Live Google News / RSS National Tourism Feed (Direct, Real-time & strictly within 30 days)
   const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
   if (liveRssNews && liveRssNews.length > 0) {
     return liveRssNews;
   }
 
-  // 4. Static fallback if completely offline
-  return HOT_INFO_FALLBACK;
+  // 4. Static fallback if completely offline (within 30 days)
+  return HOT_INFO_FALLBACK.filter((it: any) => isWithinLast30Days(it.date));
 }
+
 

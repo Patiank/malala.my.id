@@ -11,7 +11,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast30Days } from './utils/ai';
 
 export default function App() {
   const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
@@ -275,26 +275,30 @@ export default function App() {
 
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           <div className="inline-flex items-center gap-8 animate-marquee hover:[animation-play-state:paused] font-jakarta text-xs text-gray-200">
-            {[...dataStore.hotInfoItems, ...dataStore.hotInfoItems].map((news, idx) => {
-              const isEn = lang === 'en';
-              const cat = isEn && news.categoryEn ? news.categoryEn : news.category;
-              const titleText = isEn && news.titleEn ? news.titleEn : news.title;
-              const dateText = isEn && news.dateEn ? news.dateEn : news.date;
-              return (
-                <button
-                  key={`${news.id}-${idx}`}
-                  onClick={() => {
-                    setSelectedNews(news);
-                  }}
-                  className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group"
-                >
-                  <span className="font-bold text-red-400 group-hover:text-red-300">[{cat}]</span>
-                  <span className="underline-offset-2 group-hover:underline">{titleText}</span>
-                  <span className="text-gray-400 font-mono text-[10px]">({dateText})</span>
-                  <span className="text-gray-600 ml-4">•</span>
-                </button>
-              );
-            })}
+            {(() => {
+              const validItems = (dataStore.hotInfoItems || []).filter((news: any) => isWithinLast30Days(news.date || news.createdAt));
+              const displayItems = validItems.length > 0 ? validItems : dataStore.hotInfoItems;
+              return [...displayItems, ...displayItems].map((news, idx) => {
+                const isEn = lang === 'en';
+                const cat = isEn && news.categoryEn ? news.categoryEn : news.category;
+                const titleText = isEn && news.titleEn ? news.titleEn : news.title;
+                const dateText = isEn && news.dateEn ? news.dateEn : news.date;
+                return (
+                  <button
+                    key={`${news.id}-${idx}`}
+                    onClick={() => {
+                      setSelectedNews(news);
+                    }}
+                    className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group"
+                  >
+                    <span className="font-bold text-red-400 group-hover:text-red-300">[{cat}]</span>
+                    <span className="underline-offset-2 group-hover:underline">{titleText}</span>
+                    <span className="text-gray-400 font-mono text-[10px]">({dateText})</span>
+                    <span className="text-gray-600 ml-4">•</span>
+                  </button>
+                );
+              });
+            })()}
           </div>
         </div>
 
