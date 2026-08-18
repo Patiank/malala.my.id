@@ -54,6 +54,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     heroTextColor: appSettings?.heroTextColor || '#000000',
     heroTextTheme: appSettings?.heroTextTheme || 'black',
     heroTextShadow: appSettings?.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
+    githubToken: appSettings?.githubToken || '',
+    githubRepo: appSettings?.githubRepo || 'Patiank/malala.my.id',
+    githubBranch: appSettings?.githubBranch || 'main',
   });
 
   useEffect(() => {
@@ -66,6 +69,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         heroTextColor: appSettings.heroTextColor || '#000000',
         heroTextTheme: appSettings.heroTextTheme || 'black',
         heroTextShadow: appSettings.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
+        githubToken: appSettings.githubToken || '',
+        githubRepo: appSettings.githubRepo || 'Patiank/malala.my.id',
+        githubBranch: appSettings.githubBranch || 'main',
       });
     }
   }, [appSettings]);
@@ -320,30 +326,131 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const handleSyncToGitHub = async () => {
     try {
       setIsSyncingGitHub(true);
-      // Auto export backup as well
+      // Auto export backup as safety copy
       handleExportBackupJson();
 
-      const res = await fetch('/api/sync-github', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      // 1. Try local server endpoint first if running in node dev environment
+      try {
+        const res = await fetch('/api/sync-github', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            destinations,
+            cultureItems,
+            culinaryItems,
+            eventItems,
+            downloadItems,
+            hotInfoItems,
+            appSettings
+          })
+        });
+
+        if (res.ok) {
+          const sData = await res.json();
+          if (sData && sData.success) {
+            showSuccess('🚀 SUKSES! Data terbaru telah disinkronkan & di-push ke GitHub repository via server.');
+            return;
+          }
+        }
+      } catch (e) {
+        // Fall through to Direct GitHub REST API
+      }
+
+      // 2. Direct GitHub REST API Push (Works on mobile, desktop, anywhere in the world!)
+      const repo = appSettings?.githubRepo || settingsFormData?.githubRepo || 'Patiank/malala.my.id';
+      const branch = appSettings?.githubBranch || settingsFormData?.githubBranch || 'main';
+      let token = appSettings?.githubToken || settingsFormData?.githubToken || localStorage.getItem('malala_github_pat') || '';
+
+      if (!token) {
+        const userEnteredToken = window.prompt(
+          '🔑 Masukkan GitHub Personal Access Token (PAT) Anda untuk melakukan Push langsung ke GitHub dari perangkat ini:\n\n(Token akan disimpan aman di pengaturan Firestore agar Anda tidak perlu mengetiknya lagi)',
+          ''
+        );
+        if (!userEnteredToken || !userEnteredToken.trim()) {
+          showSuccess('📥 Backup JSON telah diunduh. Untuk push otomatis ke GitHub dari browser, silakan masukkan GitHub Token di Pengaturan.');
+          return;
+        }
+        token = userEnteredToken.trim();
+        localStorage.setItem('malala_github_pat', token);
+        if (saveSettings) {
+          saveSettings({
+            ...(appSettings || {}),
+            githubToken: token,
+            githubRepo: repo,
+            githubBranch: branch
+          });
+        }
+      }
+
+      const filePath = 'src/data/firestore_backup.json';
+      const apiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+      // A. Fetch current file SHA from GitHub
+      let fileSha: string | undefined = undefined;
+      try {
+        const getRes = await fetch(`${apiUrl}?ref=${branch}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (getRes.ok) {
+          const fileInfo = await getRes.json();
+          fileSha = fileInfo.sha;
+        }
+      } catch (err) {
+        console.warn('Could not fetch existing file SHA, will try create new', err);
+      }
+
+      // B. Build JSON backup payload
+      const backupData = {
+        timestamp: new Date().toISOString(),
+        destinations,
+        cultureItems,
+        culinaryItems,
+        eventItems,
+        downloadItems,
+        hotInfoItems,
+        appSettings: {
+          ...(appSettings || {}),
+          githubRepo: repo,
+          githubBranch: branch
+        }
+      };
+
+      const jsonStr = JSON.stringify(backupData, null, 2);
+      const utf8Bytes = new TextEncoder().encode(jsonStr);
+      let binaryStr = '';
+      for (let i = 0; i < utf8Bytes.byteLength; i++) {
+        binaryStr += String.fromCharCode(utf8Bytes[i]);
+      }
+      const base64Content = window.btoa(binaryStr);
+
+      // C. PUT commit to GitHub API
+      const putRes = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-          destinations,
-          cultureItems,
-          culinaryItems,
-          eventItems,
-          downloadItems,
-          hotInfoItems,
-          appSettings
+          message: `sync(admin): direct cloud sync from malala.my.id [${new Date().toLocaleString('id-ID')}]`,
+          content: base64Content,
+          sha: fileSha,
+          branch: branch
         })
       });
 
-      if (res.ok) {
-        showSuccess('🚀 Sukses! Data terbaru telah disinkronkan & di-push ke GitHub repository.');
+      if (putRes.ok) {
+        showSuccess(`🚀 SUKSES BESAR! Data Firestore telah berhasil disinkronkan & di-push langsung ke GitHub (${repo}) secara online global dari perangkat Anda!`);
       } else {
-        showSuccess('📥 Backup data JSON telah diunduh. Data siap disinkronkan ke GitHub.');
+        const errJson = await putRes.json().catch(() => ({}));
+        throw new Error(errJson.message || `GitHub API error: HTTP ${putRes.status}`);
       }
-    } catch (e) {
-      showSuccess('📥 Backup data JSON berhasil diunduh ke komputer Anda.');
+    } catch (e: any) {
+      console.error('GitHub Sync Error:', e);
+      setAdminError(`Gagal melakukan direct push ke GitHub: ${e.message || 'Periksa GitHub Token Anda'}. File backup JSON tetap tersimpan aman di perangkat Anda.`);
     } finally {
       setIsSyncingGitHub(false);
     }
@@ -1159,37 +1266,86 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               </div>
             </div>
 
-            {/* GitHub Sync & Backup Database Section */}
-            <div className="bg-emerald-50/80 border border-emerald-300 p-4 rounded-md space-y-3 mt-4">
+            {/* GitHub Direct Global Sync & Backup Database Section */}
+            <div className="bg-emerald-50/90 border border-emerald-300 p-4 sm:p-5 rounded-xl space-y-4 mt-4 shadow-xs">
               <div>
-                <label className="block text-[11px] font-bold uppercase text-emerald-900 mb-1 flex items-center gap-1.5">
+                <label className="block text-xs font-bold uppercase text-emerald-900 mb-1 flex items-center gap-1.5">
                   <GitBranch className="w-4 h-4 text-emerald-700" />
-                  🚀 Sinkronisasi Data ke GitHub & Backup Offline
+                  🚀 Sinkronisasi Data ke GitHub & Backup Global
                 </label>
-                <p className="text-[10px] text-emerald-800 mb-3 leading-relaxed">
-                  Gunakan tombol di bawah untuk menyinkronkan seluruh database terkini (Destinasi, Budaya, Kuliner, Event, Unduhan, Hot Info, Settings) ke repositori GitHub atau mengunduh arsip cadangan (JSON).
+                <p className="text-[11px] text-emerald-800 leading-relaxed">
+                  Fitur ini memungkinkan Anda melakukan <strong>Direct Push ke GitHub</strong> dari perangkat apapun (HP, Tablet, Laptop) di mana saja secara online global. Seluruh data Firestore (Destinasi, Budaya, Kuliner, Event, Media Kit Unduhan, Hot Info, dan Pengaturan) akan otomatis ter-commit ke repositori GitHub.
                 </p>
+              </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleSyncToGitHub}
-                    disabled={isSyncingGitHub}
-                    className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-xs"
-                  >
-                    <UploadCloud className={`w-4 h-4 ${isSyncingGitHub ? 'animate-bounce' : ''}`} />
-                    <span>{isSyncingGitHub ? 'Menyinkronkan...' : '🚀 Sinkronkan & Push ke GitHub'}</span>
-                  </button>
+              {/* GitHub Credentials Configuration */}
+              <div className="bg-white/80 border border-emerald-200 p-3 rounded-lg space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-gray-700 mb-1">
+                      GitHub Personal Access Token (PAT)
+                    </label>
+                    <input
+                      type="password"
+                      name="githubToken"
+                      value={settingsFormData.githubToken || ''}
+                      onChange={handleSettingsChange}
+                      placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                      className="w-full bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-hidden font-mono"
+                    />
+                    <p className="text-[9px] text-gray-500 mt-0.5">
+                      Buat token di: <em>GitHub &gt; Settings &gt; Developer Settings &gt; Personal access tokens &gt; repo scope</em>.
+                    </p>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={handleExportBackupJson}
-                    className="bg-white hover:bg-emerald-100 text-emerald-800 border border-emerald-400 px-4 py-2.5 rounded text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-xs"
-                  >
-                    <Download className="w-4 h-4 text-emerald-700" />
-                    <span>📥 Unduh Backup File JSON</span>
-                  </button>
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-gray-700 mb-1">
+                      Target Repository & Branch
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        name="githubRepo"
+                        value={settingsFormData.githubRepo || 'Patiank/malala.my.id'}
+                        onChange={handleSettingsChange}
+                        placeholder="Patiank/malala.my.id"
+                        className="w-2/3 bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-hidden font-mono"
+                      />
+                      <input
+                        type="text"
+                        name="githubBranch"
+                        value={settingsFormData.githubBranch || 'main'}
+                        onChange={handleSettingsChange}
+                        placeholder="main"
+                        className="w-1/3 bg-white border border-gray-300 rounded px-2.5 py-1.5 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-hidden font-mono"
+                      />
+                    </div>
+                    <p className="text-[9px] text-gray-500 mt-0.5">
+                      Default: Repositori utama <code>Patiank/malala.my.id</code> (branch <code>main</code>).
+                    </p>
+                  </div>
                 </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={handleSyncToGitHub}
+                  disabled={isSyncingGitHub}
+                  className="bg-emerald-700 hover:bg-emerald-800 text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-sm disabled:opacity-50"
+                >
+                  <UploadCloud className={`w-4 h-4 ${isSyncingGitHub ? 'animate-bounce' : ''}`} />
+                  <span>{isSyncingGitHub ? 'Sedang Melakukan Direct Push...' : '🚀 Sinkronkan & Push ke GitHub Sekarang'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleExportBackupJson}
+                  className="bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-400 px-4 py-2.5 rounded-lg text-xs font-bold uppercase transition-all cursor-pointer flex items-center gap-2 shadow-xs"
+                >
+                  <Download className="w-4 h-4 text-emerald-700" />
+                  <span>📥 Unduh Backup File JSON</span>
+                </button>
               </div>
             </div>
 
