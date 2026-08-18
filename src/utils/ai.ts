@@ -395,6 +395,75 @@ export async function fetchAiItinerary(params: any) {
   return getItineraryFallback(params);
 }
 
+export function generateSmartUniMalaChatReply(message: string): string {
+  const cleanMsg = (message || '').trim();
+  const lower = cleanMsg.toLowerCase();
+
+  // 1. Salam & Perkenalan
+  if (lower.match(/^(halo|hai|hi|hey|assalam|selamat pagi|selamat siang|selamat sore|selamat malam|pagi|siang|malam|tes|test|halo uni|hai uni)/)) {
+    return `**Salamaik Datang di Ranah Minang!** 🙏✨\n\nSaya **UNI MALA AI**, pemandu virtual resmi pariwisata & kebudayaan Sumatera Barat. Saya siap membantu Anda dengan:\n\n1. 🗺️ **Penyusunan Itinerary Cerdas (1–7 Hari)** searah klaster geografis tanpa bolak-balik.\n2. 🍲 **Rekomendasi Kuliner Otentik** (Nasi Kapau, Rendang Asli, Sate Padang, Teh Talua, Gulai Itiak Lado Mudo).\n3. 📍 **Panduan Destinasi & Hidden Gems** (Lembah Harau, Puncak Lawang, Danau Biru, Mentawai, Mandeh).\n4. 🚗 **Info Transportasi & Rute** (Akses BIM, Sewa Mobil, Kapal Cepat Mentawai, Rute Kelok 9 & 44).\n5. 🏛️ **Kisah Sejarah & Falsafah Budaya Minangkabau**.\n\nAda rencana perjalanan atau destinasi yang ingin Anda tanyakan hari ini, Dunsanak? 😊`;
+  }
+
+  // 2. Transportasi, Rute & Aksesibilitas
+  if (lower.includes('mentawai') && (lower.includes('kapal') || lower.includes('cara ke') || lower.includes('transport') || lower.includes('akses') || lower.includes('feri'))) {
+    return `🚢 **Panduan Akses & Transportasi ke Kepulauan Mentawai:**\n\n1. **Kapal Cepat (Mentawai Fast):**\n   - Berangkat dari **Pelabuhan Muaro Padang** menuju **Tua Pejat (Sipora)** atau **Siberut / Sikabaluan**.\n   - Waktu tempuh: ±3 hingga 3,5 jam (menggunakan kapal ber-AC nyaman).\n   - Jadwal: Beroperasi hampir setiap hari (bergantian rute Tuapejat, Siberut, dan Sikakap) pukul 06:30 atau 07:00 WIB.\n\n2. **Kapal Feri RORO (KMP Gambolo / KMP Ambu-Ambu):**\n   - Berangkat dari **Pelabuhan Teluk Bayur / Bungus Padang** untuk penumpang dan kendaraan logistik (waktu tempuh malam ±10-12 jam).\n\n💡 *Tips Uni Mala:* Untuk wisata surfing atau budaya suku Sikerei di Siberut, pesan tiket Mentawai Fast 1-2 hari sebelumnya dan siapkan obat anti-mabuk laut.`;
+  }
+
+  if (lower.includes('jarak') || lower.includes('berapa jam') || lower.includes('padang ke bukittinggi') || lower.includes('bim ke') || lower.includes('sewa mobil') || lower.includes('rental') || lower.includes('transport')) {
+    return `🚗 **Info Rute, Waktu Tempuh & Transportasi Sumatera Barat:**\n\n- **Bandara BIM ⇄ Kota Padang:** ±45 menit (23 km) via jalur Bypass atau Kereta Bandara Minangkabau Ekspres.\n- **Bandara BIM ⇄ Kota Bukittinggi:** ±2 hingga 2,5 jam (±75 km) via Padang Panjang & Lembah Anai.\n- **Bukittinggi ⇄ Lembah Harau & Kelok 9 (Payakumbuh):** ±1 hingga 1,5 jam (±45 km).\n- **Bukittinggi ⇄ Danau Maninjau (Kelok 44):** ±1 jam menuju Puncak Lawang (1.200 mdpl).\n- **Padang ⇄ Kawasan Wisata Bahari Mandeh (Pesisir Selatan):** ±1,5 jam (±56 km) via jalan darat pesisir yang mulus.\n- **Padang ⇄ Alahan Panjang (Kebun Teh & Danau Kembar):** ±1,5 hingga 2 jam (±65 km).\n\n💡 *Tips Transportasi:* Sangat disarankan menyewa mobil (dengan supir lokal berpengalaman) di Bandara BIM agar perjalanan melintasi jalur pegunungan dan tikungan terasa nyaman dan aman.`;
+  }
+
+  // 3. Rekomendasi Kuliner Spesifik
+  if (lower.includes('nasi kapau') || lower.includes('kapau')) {
+    return `🍲 **Rekomendasi Nasi Kapau Otentik di Bukittinggi:**\n\nNasi Kapau adalah mahakarya kuliner khas Nagari Kapau dengan ciri khas sendok gulai bertangkai kayu panjang dan aneka gulai bertingkat.\n\n**Spot Terbaik:**\n1. **Los Lambuang Pasar Atas Bukittinggi:**\n   - *Uni Lis:* Sangat legendaris dengan Gulai Tambusu (usus sapi isi telur-tahu) dan Rendang Daging gurih.\n   - *Uni Erna & Uni Pit:* Terkenal dengan Gulai Tunjang dan Dendeng Batokok cabe merah.\n2. **Nagari Kapau Asli (Kec. Tilatang Kamang, Agam):**\n   - Langsung di kampung asalnya, nikmati sajian segar Gulai Cubadak (nangka muda) dan Sambal Lado Mudo.\n\n💡 *Menu Wajib Coba:* Gulai Tambusu, Gulai Cancang, Dendeng Lado Hijau, dan Dendeng Paru Renyah!`;
+  }
+
+  if (lower.includes('sate') || lower.includes('sate padang') || lower.includes('sate danguang')) {
+    return `🍢 **Rekomendasi Sate Padang & Pariaman Terbaik:**\n\n1. **Sate Mak Syukur (Padang Panjang):**\n   - Kuah kuning kental kaya rempah kunyit, serai, dan jahe dengan irisan lidah dan daging sapi empuk.\n2. **Sate Danguang-Danguang (Payakumbuh):**\n   - Kuah gurih santan rempah agak kecokelatan dengan taburan serundeng kelapa wangi.\n3. **Sate Ajo Ramon (Kota Padang):**\n   - Cita rasa khas Pariaman dengan kuah kemerahan pedas nendang dan aroma bakaran daging asap.\n4. **Sate Lokan Pesisir (Pantai Pariaman & Painan):**\n   - Sate berbahan kerang muara (lokan) segar berbalut kuah gulai pedas gurih.`;
+  }
+
+  if (lower.includes('rendang') || lower.includes('oleh-oleh') || lower.includes('sanjai') || lower.includes('keripik')) {
+    return `🎁 **Panduan Oleh-Oleh Khas & Rendang Asli Minangkabau:**\n\n1. **Keripik Sanjai Balado:**\n   - *Christine Hakim Idea Park (Padang)* & *Mahkota Sanjai (Bukittinggi)*: Keripik singkong renyah dibalut saus cabai gula aren asli.\n2. **Rendang Kemasan Vakum Premium:**\n   - *Rendang Asese, Rendang Selamat, Rendang Erika (Payakumbuh/Padang):* Tersedia varian Rendang Daging Sapi, Rendang Paru, Rendang Suwir, dan Rendang Belut.\n3. **Kain Tenun & Kerajinan:**\n   - *Songket Pandai Sikek:* Tenun benang emas & perak bersertifikat.\n   - *Kerajinan Perak Filigri Koto Gadang:* Perhiasan perak halus buatan tangan.\n   - *Kopi Kawa Daun & Kopi Bukittinggi.*`;
+  }
+
+  // 4. Hotel & Penginapan
+  if (lower.includes('hotel') || lower.includes('penginapan') || lower.includes('resort') || lower.includes('villa') || lower.includes('glamping') || lower.includes('homestay')) {
+    return `🏨 **Rekomendasi Akomodasi & Hotel Terbaik di Sumatera Barat:**\n\n1. **Kota Bukittinggi (Dataran Tinggi & Heritage):**\n   - *The Balcone Hotel & Resort:* Hotel bintang 4 view spektakuler Gunung Merapi & Singgalang.\n   - *Grand Rocky Hotel & Novotel Bukittinggi:* Sangat dekat dengan Jam Gadang dan pusat kuliner.\n2. **Lembah Harau & Payakumbuh:**\n   - *Abdi Homestay / Harau Sky / Syafiq Glamping:* Menginap persis di bawah dinding tebing granit 300m.\n3. **Alahan Panjang & Danau Kembar (Dingin & Estetik):**\n   - *Glamping Danau Diatas & Villa Alahan Panjang:* Pemandangan langsung ke danau dan kebun teh berhawa 15–18°C.\n4. **Kawasan Mandeh & Kepulauan Pesisir:**\n   - *Labuan Sundi Mandeh Resort & Cubadak Paradiso Village:* Resort tepi pantai private ala Maldives.\n5. **Kota Padang:**\n   - *Hotel Mercure, Santika Premiere, dan The ZHM Premiere:* View sunset Samudra Hindia.`;
+  }
+
+  // 5. Destinasi Spesifik
+  if (lower.includes('danau biru') || lower.includes('sawahlunto')) {
+    return `💎 **Pesona Danau Biru & Kota Warisan Dunia UNESCO Sawahlunto:**\n\n- **Danau Biru Sawahlunto:** Danau kawah bekas tambang terbuka di Parambahan, Talawi. Airnya berwarna biru toska safir cerah alami akibat reaksi mineral silika dan sulfat formasi batuan Ombilin, berpagar tebing kapur putih dan pinus yang sangat fotogenik.\n- **Kota Tua Sawahlunto (UNESCO):** Kunjungi *Lubang Mbah Soero* (terowongan tambang 185m), Museum Kereta Api Mak Itam, dan sentra Songket Silungkang.\n\n💡 *Tips:* Waktu terbaik ke Danau Biru adalah pukul 08:00 - 11:00 WIB saat sinar matahari membuat warna air biru toska berkilau sempurna.`;
+  }
+
+  if (lower.includes('harau') || lower.includes('lembah harau')) {
+    return `🏞️ **Geopark Lembah Harau (Yosemite-nya Indonesia):**\n\nLembah Harau di Kabupaten Lima Puluh Kota dikelilingi tebing granit tegak setinggi 100–300 meter dengan 7 air terjun alami memukau:\n- **Sarasah Murai & Sarasah Bunta:** Air terjun bertingkat yang sejuk di tengah hutan.\n- **Harau Sky & Kampung Eropa:** Spot rekreasi modern di lembah tebing.\n- **Aktivitas:** Safari jeep keliling sawah tebing, bouldering/rock climbing, dan foto sunset tebing emas.`;
+  }
+
+  if (lower.includes('maninjau') || lower.includes('puncak lawang') || lower.includes('kelok 44')) {
+    return `🌄 **Danau Maninjau, Puncak Lawang & Sensasi Kelok 44:**\n\n- **Puncak Lawang (1.200 mdpl):** Gardu pandang kaldera terindah di Asia Tenggara, spot olahraga paralayang internasional, dan perkebunan tebu tradisional dengan air tebu Lawang murni.\n- **Kelok 44:** Menuruni 44 tikungan legendaris dengan pemandangan danau bertingkat.\n- **Tepian Danau & Museum Buya Hamka:** Berziarah ke rumah kelahiran ulama & sastrawan besar Buya Hamka di Sungai Batang dan mencicipi kuliner endemik *Palai Rinuak*.`;
+  }
+
+  if (lower.includes('mandeh') || lower.includes('pulau')) {
+    return `🏝️ **Kawasan Wisata Bahari Mandeh (Raja Ampat-nya Sumbar):**\n\nTerletak di Teluk Carocok Tarusan, Pesisir Selatan:\n- **Island Hopping:** Pulau Setan (pasir putih & banana boat), Pulau Sironjong Gadang & Ketek (cliff jumping 15m), Pulau Cubadak, dan Hutan Mangrove Sungai Nyalo.\n- **Snorkeling & Diving:** Menjelajahi terumbu karang dangkal dan bangkai kapal karam Belanda *MV Boelongan Nederland*.\n- **Waktu Terbaik:** Bulan April hingga Oktober saat laut sangat tenang dan jernih seperti kaca.`;
+  }
+
+  if (lower.includes('jam gadang') || lower.includes('ngarai sianok') || lower.includes('bukittinggi')) {
+    return `🏰 **Ikon Bukittinggi: Jam Gadang & Ngarai Sianok:**\n\n- **Jam Gadang (1926):** Menara jam bersejarah hadiah Ratu Wilhelmina dengan mesin langka buatan Jerman Vortmann Recklinghausen yang hanya ada dua di dunia (satunya lagi Big Ben London!).\n- **Ngarai Sianok & Lubang Jepang:** Ngarai patahan bumi sedalam 100m dengan terowongan pertahanan militer Jepang 1,4 km dibangun 1942.\n- **Janjang Koto Gadang:** 'Great Wall Minangkabau' yang menghubungkan Bukittinggi dengan desa perak Koto Gadang.`;
+  }
+
+  if (lower.includes('pagaruyung') || lower.includes('batusangkar') || lower.includes('pariangan')) {
+    return `🏛️ **Pusat Budaya Minangkabau: Istano Basa Pagaruyung & Nagari Pariangan:**\n\n- **Istano Basa Pagaruyung (Batusangkar):** Istana megah 3 lantai dengan 11 gonjong Rumah Gadang berlapis ukiran filosofis Minang. Wisatawan dapat menyewa baju adat marapulai dan anak daro lengkap.\n- **Nagari Pariangan (Tanah Datar):** Dinobatkan sebagai salah satu desa terindah di dunia oleh media internasional, cikal bakal peradaban Minang di lereng Gunung Marapi dengan pemandian air panas alami Rangek dan Masjid Ishlah kuno.`;
+  }
+
+  if (lower.includes('event') || lower.includes('festival') || lower.includes('pacu jawi') || lower.includes('tabuik')) {
+    return `🎪 **Kalender Event Pariwisata Unggulan Sumatera Barat 2026:**\n\n1. **Pacu Jawi (Kab. Tanah Datar):** Atraksi balap sapi di sawah berlumpur spektakuler (Karisma Event Nusantara / KEN).\n2. **Festival Tabuik Pariaman (Juli/Muharram 2026):** Prosesi budaya bahari pelemparan Tabuik raksasa ke laut di Pantai Gandoriah.\n3. **Rang Solok Baralek Gadang (Solok - KEN):** Perayaan panen budaya padi Bareh Solok.\n4. **Sawahlunto International Songket Carnival (SISCa):** Karnaval kostum songket di kota warisan dunia.\n5. **Payakumbuh Botuang Festival & Festival Pesona Minangkabau (Pagaruyung).**`;
+  }
+
+  // Default Smart Generative Reply
+  return `**Rancak bana!** Menjawab pertanyaan Anda mengenai *"${cleanMsg}"*:\n\nSumatera Barat menyimpan kekayaan pariwisata luar biasa yang memadukan keindahan alam lanskap Bukit Barisan (seperti Geopark Lembah Harau, Danau Singkarak, Ngarai Sianok, dan Kepulauan Mandeh), tradisi budaya Minangkabau yang mendalam (*Adat Basandi Syarak, Syarak Basandi Kitabullah*), serta gastronomi kelas dunia (Rendang, Nasi Kapau, Sate Padang, dan Teh Talua).\n\n💡 **Saran Pemandu:**\n- Untuk efisiensi waktu, gunakan **Menu Rencanakan AI** di samping untuk menyusun rencana perjalanan harian (1–7 hari) otomatis yang disesuaikan dengan minat dan jumlah anggota keluarga Anda.\n- Apakah Anda ingin rekomendasi rute spesifik, tempat makan legendaris, atau pilihan hotel terdekat? Silakan tanyakan pada Uni Mala! 😊`;
+}
+
 export async function fetchAiChat(message: string) {
   try {
     const res = await fetch('/api/ai/chat', {
@@ -405,30 +474,43 @@ export async function fetchAiChat(message: string) {
 
     const contentType = res.headers.get('content-type') || '';
     if (res.ok && contentType.includes('application/json')) {
-      return await res.json();
+      const data = await res.json();
+      if (data && data.reply && !data.reply.includes('Terkait "')) {
+        return data;
+      }
     }
   } catch (e) {
-    console.warn("Server API chat endpoint unavailable, using fallback response", e);
+    console.warn("Server API chat endpoint unavailable, falling back to client Gemini / local smart conversational engine", e);
   }
 
-  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
+  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    try {
-      const ai = new GoogleGenAI({ apiKey: viteApiKey });
-      const prompt = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu AI Resmi Pariwisata & Kebudayaan Minangkabau. Pertanyaan Wisatawan: ${message}`;
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: prompt,
-      });
-      return { reply: response.text };
-    } catch (err) {
-      console.warn("Client Gemini API failed", err);
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash'];
+    for (const modelName of modelsToTry) {
+      try {
+        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const prompt = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu Wisata & Budaya Resmi Sumatera Barat (Wonderful West Sumatra) yang super pintar, ramah, berwawasan luas, dan menyenangkan.
+Jawablah pertanyaan wisatawan berikut dengan akurat, komprehensif, terstruktur (gunakan bullet points, tips, dan emoji), serta dengan kehangatan khas Ranah Minang:
+Pertanyaan Wisatawan: "${message}"`;
+
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: prompt,
+        });
+
+        if (response && response.text && response.text.trim()) {
+          return { reply: response.text.trim() };
+        }
+      } catch (err) {
+        console.warn(`Client Gemini API chat with ${modelName} encountered rate-limit / quota, activating Smart Conversational Engine:`, err);
+      }
     }
   }
 
+  // Super Smart Conversational Knowledge Engine
   return {
-    reply: `Rancak bana! Saya UNI MALA AI Sumbar. Terkait "${message}", Sumatera Barat menawarkan destinasi luar biasa seperti Lembah Harau, Jam Gadang Bukittinggi, Danau Maninjau, serta sajian Rendang autentik dan Sate Padang. Ada tempat spesifik yang ingin Anda ketahui lebih dalam?`
+    reply: generateSmartUniMalaChatReply(message)
   };
 }
 

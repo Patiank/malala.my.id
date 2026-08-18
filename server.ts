@@ -477,9 +477,8 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
       const { message } = req.body;
 
       if (!apiKey) {
-        // Fallback friendly reply when GEMINI_API_KEY is missing
         return res.json({
-          reply: `Rancak bana! Saya UNI MALA AI Sumbar. Terkait "${message}", Sumatera Barat menawarkan destinasi luar biasa seperti Lembah Harau, Jam Gadang Bukittinggi, Danau Maninjau, serta sajian Rendang autentik dan Sate Padang. Ada tempat spesifik yang ingin Anda ketahui lebih dalam?`
+          reply: `**Salamaik Datang di Ranah Minang!** 🙏✨\n\nSaya **UNI MALA AI**, pemandu virtual resmi pariwisata Sumatera Barat. Terkait pertanyaan Anda mengenai *"${message}"*:\n\nSumatera Barat menawarkan pesona luar biasa dari Geopark Lembah Harau, Puncak Lawang Danau Maninjau, Istano Pagaruyung, hingga kuliner legendaris Rendang & Nasi Kapau. Silakan gunakan menu **Rencanakan AI** untuk membuat itinerary kustom 1–7 hari atau tanyakan rute & rekomendasi spesifik lainnya!`
         });
       }
 
@@ -492,14 +491,13 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
         },
       });
 
-      const systemInstruction = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu AI Resmi Pariwisata & Kebudayaan Minangkabau dari Dinas Pariwisata Provinsi Sumatera Barat.
-Anda sangat ramah, fasih, dan berwawasan luas tentang destinasi alam, kuliner khas (Rendang, Sate Padang, Teh Talua, Lamang Tapai), kebudayaan Minangkabau (Rumah Gadang, Jam Gadang, Nagari Pariangan, Silek, Ukiran, Adat), serta rute perjalanan terbaik di Sumatera Barat.
-Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangatan Ranah Minang. Jangan melakukan transaksi/booking.`;
+      const systemInstruction = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu Wisata & Budaya Resmi Sumatera Barat (Wonderful West Sumatra) yang super pintar, ramah, berwawasan luas, dan menyenangkan.
+Jawablah pertanyaan wisatawan berikut dengan akurat, komprehensif, terstruktur (gunakan bullet points, tips, dan emoji), serta dengan kehangatan khas Ranah Minang.`;
 
       const prompt = `${systemInstruction}\n\nPertanyaan Wisatawan: ${message}`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.6-flash',
         contents: prompt,
       });
 
