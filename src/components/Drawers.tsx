@@ -2666,21 +2666,26 @@ export const Drawers: React.FC<DrawersProps> = ({
                 <div className="pt-2 flex flex-col sm:flex-row gap-2">
                   <button
                     type="button"
-                    onClick={() => setIsBookletModalOpen(true)}
+                    onClick={() => {
+                      setIsBookletModalOpen(true);
+                      setTimeout(() => {
+                        window.print();
+                      }, 1000);
+                    }}
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
-                    <BookOpen className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '📖 Live E-Booklet & Save PDF' : '📖 E-Booklet & Simpan PDF Live'}</span>
+                    <Download className="w-4 h-4 text-white" />
+                    <span>{lang === 'en' ? '⬇️ Download Master PDF (Live)' : '⬇️ Unduh Master PDF (Live)'}</span>
                   </button>
 
-                  <a
-                    href={`/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`}
-                    download="MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf"
+                  <button
+                    type="button"
+                    onClick={() => setIsBookletModalOpen(true)}
                     className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
                   >
-                    <Download className="w-4 h-4 text-yellow-300" />
-                    <span>{lang === 'en' ? '⬇️ Direct Master PDF' : '⬇️ Unduh File Master PDF'}</span>
-                  </a>
+                    <BookOpen className="w-4 h-4 text-yellow-300" />
+                    <span>{lang === 'en' ? '📖 Open E-Booklet' : '📖 Buka E-Booklet'}</span>
+                  </button>
                 </div>
               </div>
 

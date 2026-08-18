@@ -63,21 +63,11 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         {/* Real-time Live PDF Save / Print Button (Primary) */}
         <button
           onClick={handlePrint}
-          className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
+          className="h-10 px-5 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
           title={isEn ? 'Save / Print Live PDF (100% Real-Time)' : 'Simpan / Cetak PDF Live (100% Real-Time)'}
         >
           <Printer className="w-4 h-4 text-white" />
           <span>{isEn ? 'Save Live PDF' : 'Simpan PDF Live'}</span>
-        </button>
-
-        {/* Download Static File (Secondary) */}
-        <button
-          onClick={handleDownload}
-          className="h-10 px-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider border border-slate-600"
-          title={isEn ? 'Direct File Download' : 'Unduh File Offline'}
-        >
-          <Download className="w-4 h-4 text-gray-300" />
-          <span className="hidden sm:inline">{isEn ? 'Direct File' : 'File Offline'}</span>
         </button>
 
         {/* Minimalist Close Button */}
