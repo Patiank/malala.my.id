@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, MapPin, Check, BookOpen, Download } from 'lucide-react';
+import { X, MapPin, Check, BookOpen, Download, Printer } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2, getDirectDriveUrl } from '../data/content';
 
@@ -44,7 +44,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = '/downloads/malala-panduan-wisata-sumbar-2026.pdf';
+    link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
     link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
     link.target = '_blank';
     document.body.appendChild(link);
@@ -52,15 +52,29 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     document.body.removeChild(link);
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div id="ebooklet-print-container" className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Floating Action Controls (Top-Right) */}
       <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
-        {/* Download PDF Button */}
+        {/* Real-time Browser Print / Save to PDF */}
+        <button
+          onClick={handlePrint}
+          className="h-10 px-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider border border-slate-600"
+          title={isEn ? 'Print / Save Live PDF' : 'Cetak / Simpan PDF Real-Time'}
+        >
+          <Printer className="w-4 h-4 text-yellow-300" />
+          <span className="hidden sm:inline">{isEn ? 'Print Live PDF' : 'Cetak PDF Terkini'}</span>
+        </button>
+
+        {/* Download Master PDF Button */}
         <button
           onClick={handleDownload}
           className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
-          title={isEn ? 'Download PDF' : 'Unduh PDF'}
+          title={isEn ? 'Download Master PDF' : 'Unduh Master PDF'}
         >
           <Download className="w-4 h-4" />
           <span>{isEn ? 'Download PDF' : 'Unduh PDF'}</span>

@@ -2663,15 +2663,24 @@ export const Drawers: React.FC<DrawersProps> = ({
                   })()}
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 flex flex-col sm:flex-row gap-2">
                   <a
-                    href="/downloads/malala-panduan-wisata-sumbar-2026.pdf"
+                    href={`/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`}
                     download="MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf"
-                    className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
+                    className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
                     <Download className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '⬇️ Direct Download PDF (Complete)' : '⬇️ Unduh PDF Resmi (Lengkap)'}</span>
+                    <span>{lang === 'en' ? '⬇️ Download Master PDF' : '⬇️ Unduh Master PDF'}</span>
                   </a>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsBookletModalOpen(true)}
+                    className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
+                  >
+                    <BookOpen className="w-4 h-4 text-yellow-300" />
+                    <span>{lang === 'en' ? '📖 Live E-Booklet & Print' : '📖 E-Booklet & Cetak Live'}</span>
+                  </button>
                 </div>
               </div>
 
