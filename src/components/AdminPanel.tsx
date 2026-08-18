@@ -385,22 +385,30 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       const filePath = 'src/data/firestore_backup.json';
       const apiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
-      // A. Fetch current file SHA from GitHub
-      let fileSha: string | undefined = undefined;
-      try {
-        const getRes = await fetch(`${apiUrl}?ref=${branch}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github.v3+json'
+      // Helper to fetch latest file SHA without cache
+      const getLatestSha = async (): Promise<string | undefined> => {
+        try {
+          const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}&_t=${Date.now()}`, {
+            cache: 'no-store',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Pragma': 'no-cache'
+            }
+          });
+          if (getRes.ok) {
+            const fileInfo = await getRes.json();
+            return fileInfo.sha;
           }
-        });
-        if (getRes.ok) {
-          const fileInfo = await getRes.json();
-          fileSha = fileInfo.sha;
+        } catch (err) {
+          console.warn('Could not fetch existing file SHA', err);
         }
-      } catch (err) {
-        console.warn('Could not fetch existing file SHA, will try create new', err);
-      }
+        return undefined;
+      };
+
+      // A. Fetch current file SHA from GitHub
+      let fileSha = await getLatestSha();
 
       // B. Build JSON backup payload
       const backupData = {
@@ -427,7 +435,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       const base64Content = window.btoa(binaryStr);
 
       // C. PUT commit to GitHub API
-      const putRes = await fetch(apiUrl, {
+      let putRes = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -441,6 +449,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           branch: branch
         })
       });
+
+      // D. If HTTP 409 Conflict (SHA mismatch from recent commits), fetch fresh SHA and retry
+      if (putRes.status === 409) {
+        const freshSha = await getLatestSha();
+        if (freshSha) {
+          putRes = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `sync(admin): direct cloud sync (auto-resolved) from malala.my.id [${new Date().toLocaleString('id-ID')}]`,
+              content: base64Content,
+              sha: freshSha,
+              branch: branch
+            })
+          });
+        }
+      }
 
       if (putRes.ok) {
         showSuccess(`🚀 SUKSES BESAR! Data Firestore telah berhasil disinkronkan & di-push langsung ke GitHub (${repo}) secara online global dari perangkat Anda!`);
