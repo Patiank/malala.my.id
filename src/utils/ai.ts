@@ -1648,11 +1648,16 @@ export async function fetchAiHotInfo(language: string = 'id') {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
         const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Setiap butir berita WAJIB mengangkat topik atau peristiwa yang berbeda (DILARANG membuat berita dengan topik yang sama). Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
         id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string tanggal 30 hari terakhir), dateEn (string), tag (string), tagEn (string), description (string 3 paragraf), descriptionEn (string 3 paragraf), imageUrl (""), actionUrl (""), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
-        Hanya kembalikan valid JSON tanpa markdown.`;
+        Hanya kembalikan valid JSON tanpa markdown.
+        Waktu saat ini: ${new Date().toISOString()}
+        Variasi Permintaan Seed: ${Math.random()}`;
   
         const response = await ai.models.generateContent({
           model: modelName,
           contents: prompt,
+          config: {
+            temperature: 0.9,
+          }
         });
   
         const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
