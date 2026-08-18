@@ -25,6 +25,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
     .replace(/Liputan\s*(Resmi\s*)?Terverifikasi\s*(\([^)]*\))?/gi, '')
     .replace(/Verified\s*Report\s*(\([^)]*\))?/gi, '')
     .trim();
+  const tips = isEn && item.tipsEn ? item.tipsEn : item.tips;
 
   const handleShare = () => {
     if (navigator.share) {
@@ -131,7 +132,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
         </div>
 
         {/* Highlights / Key Points Box */}
-        {highlights && highlights.length > 0 && (
+        {Array.isArray(highlights) && highlights.length > 0 && (
           <div className="space-y-2 bg-gray-50 p-3.5 rounded-lg border border-gray-100">
             <h4 className="font-jakarta font-bold text-xs uppercase text-black tracking-wider flex items-center gap-1.5">
               <Check className="w-4 h-4 text-black shrink-0" />
