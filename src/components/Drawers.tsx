@@ -2636,7 +2636,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 <div className="flex items-center justify-between">
                   <span className="bg-red-600 text-white font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-                    {lang === 'en' ? 'OFFICIAL MASTER E-BOOKLET 2026' : 'E-BOOKLET MASTER RESMI 2026'}
+                    {lang === 'en' ? 'OFFICIAL E-BOOK 2026' : 'E-BOOK RESMI 2026'}
                   </span>
                   <span className="text-yellow-400 font-jakarta text-xs font-bold">
                     PDF E-Book
@@ -2675,16 +2675,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
                     <Download className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '⬇️ Download Master PDF (Live)' : '⬇️ Unduh Master PDF (Live)'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setIsBookletModalOpen(true)}
-                    className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
-                  >
-                    <BookOpen className="w-4 h-4 text-yellow-300" />
-                    <span>{lang === 'en' ? '📖 Open E-Booklet' : '📖 Buka E-Booklet'}</span>
+                    <span>{lang === 'en' ? '⬇️ Download E-Book' : '⬇️ Unduh E-Book'}</span>
                   </button>
                 </div>
               </div>
