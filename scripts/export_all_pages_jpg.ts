@@ -64,27 +64,43 @@ async function exportPagesAndDynamicPDF() {
   // Generate clean filenames
   const fileNames: string[] = ['01_cover_malala_2026.jpg'];
 
-  DESTINATIONS.forEach((d, idx) => {
+  let destinations = DESTINATIONS;
+  let cultureItems = CULTURE_ITEMS;
+  let culinaryItems = CULINARY_ITEMS;
+  let eventItems = EVENTS_SCHEDULE;
+
+  try {
+    const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
+    if (fs.existsSync(backupPath)) {
+      const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
+      if (raw.destinations && raw.destinations.length > 0) destinations = raw.destinations;
+      if (raw.cultureItems && raw.cultureItems.length > 0) cultureItems = raw.cultureItems;
+      if (raw.culinaryItems && raw.culinaryItems.length > 0) culinaryItems = raw.culinaryItems;
+      if (raw.eventItems && raw.eventItems.length > 0) eventItems = raw.eventItems;
+    }
+  } catch (e) {}
+
+  destinations.forEach((d, idx) => {
     const slug = d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
     const num = String(idx + 2).padStart(2, '0');
     fileNames.push(`${num}_destinasi_${slug}.jpg`);
   });
 
-  CULTURE_ITEMS.forEach((c, idx) => {
+  cultureItems.forEach((c, idx) => {
     const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(DESTINATIONS.length + idx + 2).padStart(2, '0');
+    const num = String(destinations.length + idx + 2).padStart(2, '0');
     fileNames.push(`${num}_budaya_${slug}.jpg`);
   });
 
-  CULINARY_ITEMS.forEach((cu, idx) => {
+  culinaryItems.forEach((cu, idx) => {
     const slug = cu.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(DESTINATIONS.length + CULTURE_ITEMS.length + idx + 2).padStart(2, '0');
+    const num = String(destinations.length + cultureItems.length + idx + 2).padStart(2, '0');
     fileNames.push(`${num}_kuliner_${slug}.jpg`);
   });
 
-  EVENTS_SCHEDULE.forEach((ev, idx) => {
+  eventItems.forEach((ev, idx) => {
     const slug = ev.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(DESTINATIONS.length + CULTURE_ITEMS.length + CULINARY_ITEMS.length + idx + 2).padStart(2, '0');
+    const num = String(destinations.length + cultureItems.length + culinaryItems.length + idx + 2).padStart(2, '0');
     fileNames.push(`${num}_event_${slug}.jpg`);
   });
 

@@ -30,152 +30,102 @@ export function useData() {
   });
 
   useEffect(() => {
-    // We subscribe to all collections and merge missing default items automatically
+    // 1. Destinations listener (Real-time Cloud Sync)
     const unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
+      if (snapshot.empty) {
+        setDestinations(DESTINATIONS);
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as Destination;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = DESTINATIONS.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setDestinations(merged.length > 0 ? merged : DESTINATIONS);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'destinations', item.id), {
-            ...item,
-            titleEn: item.titleEn || item.title,
-            categoryEn: item.categoryEn || item.category,
-            tagEn: item.tagEn || item.tag,
-            descriptionEn: item.descriptionEn || item.description,
-            highlightsEn: item.highlightsEn || item.highlights,
-            bestTimeEn: item.bestTimeEn || item.bestTime,
-            locationDetailsEn: item.locationDetailsEn || item.locationDetails
-          }).catch(() => {});
-        });
-      }
+      setDestinations(data.length > 0 ? data : DESTINATIONS);
     }, (err) => {
       console.warn("Firestore destinations error:", err);
       setDestinations(DESTINATIONS);
     });
 
+    // 2. Cultures listener
     const unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
+      if (snapshot.empty) {
+        setCultureItems(CULTURE_ITEMS);
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as CultureItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = CULTURE_ITEMS.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setCultureItems(merged.length > 0 ? merged : CULTURE_ITEMS);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'cultures', item.id), {
-            ...item,
-            titleEn: item.titleEn || item.title,
-            categoryEn: item.categoryEn || item.category,
-            descriptionEn: item.descriptionEn || item.description,
-            philosophyEn: item.philosophyEn || item.philosophy,
-            originEn: item.originEn || item.origin
-          }).catch(() => {});
-        });
-      }
+      setCultureItems(data.length > 0 ? data : CULTURE_ITEMS);
     }, (err) => {
       console.warn("Firestore cultures error:", err);
       setCultureItems(CULTURE_ITEMS);
     });
 
+    // 3. Culinaries listener
     const unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
+      if (snapshot.empty) {
+        setCulinaryItems(CULINARY_ITEMS);
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as CulinaryItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = CULINARY_ITEMS.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setCulinaryItems(merged.length > 0 ? merged : CULINARY_ITEMS);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'culinaries', item.id), {
-            ...item,
-            titleEn: item.titleEn || item.title,
-            typeEn: item.typeEn || item.type,
-            originEn: item.originEn || item.origin,
-            descriptionEn: item.descriptionEn || item.description,
-            flavorProfileEn: item.flavorProfileEn || item.flavorProfile
-          }).catch(() => {});
-        });
-      }
+      setCulinaryItems(data.length > 0 ? data : CULINARY_ITEMS);
     }, (err) => {
       console.warn("Firestore culinaries error:", err);
       setCulinaryItems(CULINARY_ITEMS);
     });
 
+    // 4. Events listener
     const unsubEvt = onSnapshot(collection(db, 'events'), (snapshot) => {
+      if (snapshot.empty) {
+        setEventItems(EVENTS_SCHEDULE);
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as EventItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = EVENTS_SCHEDULE.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setEventItems(merged.length > 0 ? merged : EVENTS_SCHEDULE);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'events', item.id), {
-            ...item,
-            titleEn: item.titleEn || item.title,
-            scheduleEn: item.scheduleEn || item.schedule,
-            locationEn: item.locationEn || item.location,
-            descriptionEn: item.descriptionEn || item.description
-          }).catch(() => {});
-        });
-      }
+      setEventItems(data.length > 0 ? data : EVENTS_SCHEDULE);
     }, (err) => {
       console.warn("Firestore events error:", err);
       setEventItems(EVENTS_SCHEDULE);
     });
 
+    // 5. Downloads listener
     const unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
+      if (snapshot.empty) {
+        setDownloadItems(DOWNLOAD_ITEMS);
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as DownloadItem;
           return { id: doc.id, ...item };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-
-      const firestoreIds = new Set(data.map(i => i.id));
-      const missingDefaults = DOWNLOAD_ITEMS.filter(item => !firestoreIds.has(item.id));
-      const merged = [...data, ...missingDefaults];
-      setDownloadItems(merged.length > 0 ? merged : DOWNLOAD_ITEMS);
-
-      if (missingDefaults.length > 0) {
-        missingDefaults.forEach(item => {
-          setDoc(doc(db, 'downloads', item.id), item).catch(() => {});
-        });
-      }
+      setDownloadItems(data.length > 0 ? data : DOWNLOAD_ITEMS);
     }, (err) => {
       console.warn("Firestore downloads error:", err);
       setDownloadItems(DOWNLOAD_ITEMS);
     });
 
+    // 6. Hot Info listener
     const unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
+      if (snapshot.empty) {
+        setHotInfoItems(deduplicateNewsItems(HOT_INFO_ITEMS));
+        return;
+      }
       const data = snapshot.docs
         .map(doc => {
           const item = doc.data() as HotInfoItem;
@@ -190,48 +140,35 @@ export function useData() {
       setHotInfoItems(deduplicateNewsItems(HOT_INFO_ITEMS));
     });
 
+    // 7. Settings listener (Cloud Firestore is the Master Authority)
     const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data() as AppSettings;
-        
-        let localSettings: AppSettings | null = null;
-        if (typeof window !== 'undefined') {
-          try {
-            const localSaved = localStorage.getItem('malala_app_settings');
-            if (localSaved) {
-              localSettings = JSON.parse(localSaved);
-            }
-          } catch (e) {}
-        }
+        const effectiveMediaType = data.bgMediaType || 'image';
+        const effectiveBaseVideo = data.baseVideo || '';
+        const effectiveBaseImage = data.baseImage ? getDirectDriveUrl(data.baseImage) : BG_IMAGE_1;
+        const effectiveRevealImage = data.revealImage ? getDirectDriveUrl(data.revealImage) : BG_IMAGE_2;
+        const effectiveHeroTextColor = data.heroTextColor || '#000000';
+        const effectiveHeroTextTheme = data.heroTextTheme || 'black';
+        const effectiveHeroTextShadow = data.heroTextShadow !== undefined ? data.heroTextShadow : true;
 
-        // Prioritize local user choices for media type and videos to prevent reverting during initial sync
-        const effectiveMediaType = localSettings?.bgMediaType || data.bgMediaType || 'image';
-        const effectiveBaseVideo = localSettings?.baseVideo || data.baseVideo || '';
-        const effectiveBaseImage = localSettings?.baseImage || (data.baseImage ? getDirectDriveUrl(data.baseImage) : BG_IMAGE_1);
-        const effectiveRevealImage = localSettings?.revealImage || (data.revealImage ? getDirectDriveUrl(data.revealImage) : BG_IMAGE_2);
-        const effectiveHeroTextColor = localSettings?.heroTextColor || data.heroTextColor || '#000000';
-        const effectiveHeroTextTheme = localSettings?.heroTextTheme || data.heroTextTheme || 'black';
-        const effectiveHeroTextShadow = localSettings?.heroTextShadow !== undefined ? localSettings.heroTextShadow : (data.heroTextShadow !== undefined ? data.heroTextShadow : true);
-
-        const mergedSettings: AppSettings = {
+        const liveSettings: AppSettings = {
           bgMediaType: effectiveMediaType,
           baseImage: effectiveBaseImage,
           revealImage: effectiveRevealImage,
           baseVideo: effectiveBaseVideo,
-          allowedAdminEmails: data.allowedAdminEmails && data.allowedAdminEmails.length > 0 ? data.allowedAdminEmails : (localSettings?.allowedAdminEmails || ['aldoaldiles@gmail.com']),
+          allowedAdminEmails: data.allowedAdminEmails && data.allowedAdminEmails.length > 0 ? data.allowedAdminEmails : ['aldoaldiles@gmail.com'],
           heroTextColor: effectiveHeroTextColor,
           heroTextTheme: effectiveHeroTextTheme,
           heroTextShadow: effectiveHeroTextShadow,
         };
 
-        setAppSettings(mergedSettings);
+        setAppSettings(liveSettings);
 
         if (typeof window !== 'undefined') {
           try {
-            localStorage.setItem('malala_app_settings', JSON.stringify(mergedSettings));
-          } catch (e) {
-            console.warn('Failed to save merged settings to localStorage:', e);
-          }
+            localStorage.setItem('malala_app_settings', JSON.stringify(liveSettings));
+          } catch (e) {}
         }
       }
     }, (err) => console.warn("Firestore settings error:", err));
@@ -249,11 +186,11 @@ export function useData() {
 
   const saveItem = async (colName: string, item: any) => {
     try {
-      // Save imageUrl as-is (raw URL). Transformation via getDirectDriveUrl
-      // is only applied on read (onSnapshot), not on write.
-      await setDoc(doc(db, colName, item.id), item);
+      // Save item directly to Cloud Firestore with merge support
+      await setDoc(doc(db, colName, item.id), item, { merge: true });
     } catch (e) {
       console.error("Error saving to Firebase: ", e);
+      throw e;
     }
   };
 
@@ -300,6 +237,7 @@ export function useData() {
       await setDoc(doc(db, 'settings', 'hero'), firestorePayload, { merge: true });
     } catch (e) {
       console.warn("Cloud settings sync notice (saved locally): ", e);
+      throw e;
     }
   };
 
@@ -308,6 +246,7 @@ export function useData() {
       await deleteDoc(doc(db, colName, id));
     } catch (e) {
       console.error("Error deleting from Firebase: ", e);
+      throw e;
     }
   };
 
