@@ -380,9 +380,20 @@ export async function fetchAiItinerary(params: any) {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
         const isEnglish = params?.language === 'en';
         const langStr = isEnglish ? 'English' : 'Bahasa Indonesia';
+        const availableDestinations = params?.availableDestinations || [];
+        const destSummary = availableDestinations.map((d: any) => `- ${d.title} (${d.category}): ${d.tag}`).join('\n');
+        
+        // Remove large arrays before stringifying to keep prompt clean
+        const cleanParams = { ...params };
+        delete cleanParams.availableDestinations;
+        delete cleanParams.availableEvents;
+
         const prompt = `Anda adalah 'UNI MALA AI', MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK di Sumatera Barat. 
 Tugas Anda merancang itinerary wisata yang SANGAT SPESIFIK dan MEMATUHI SEMUA preferensi pengguna berikut:
-${JSON.stringify(params, null, 2)}
+${JSON.stringify(cleanParams, null, 2)}
+
+Daftar Destinasi & Kategori di Sumatera Barat yang dapat Anda pilih:
+${destSummary}
 
 Aturan Ketat:
 1. Wajib sesuaikan destinasi, ritme, dan aktivitas dengan profil wisatawan (misal: jika bawa lansia/anak, kurangi aktivitas fisik ekstrem, pilih yang mudah diakses).

@@ -807,6 +807,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       const data: FormAIResponse = await fetchAiItinerary({
         ...itineraryForm,
         availableEvents: eventItems,
+        availableDestinations: destinations,
         language: lang,
       });
       setAiResponse(data);
