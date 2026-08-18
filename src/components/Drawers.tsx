@@ -2667,11 +2667,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setIsBookletModalOpen(true);
-                      setTimeout(() => {
-                        window.print();
-                        setTimeout(() => setIsBookletModalOpen(false), 500);
-                      }, 1000);
+                      const link = document.createElement('a');
+                      link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+                      link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
                     }}
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
