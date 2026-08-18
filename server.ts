@@ -452,7 +452,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
 }`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
       });
 
@@ -499,7 +499,7 @@ Gunakan Bahasa Indonesia yang sopan dan hangat. Selalu sertakan nuansa kehangata
       const prompt = `${systemInstruction}\n\nPertanyaan Wisatawan: ${message}`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
       });
 
@@ -628,7 +628,7 @@ Formatkan output HANYA dalam format JSON valid sebagai Array of Objects dengan s
 Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;
 
           const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
               tools: [{ googleSearch: {} }],
@@ -778,7 +778,7 @@ ${typePrompt}
 Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-2.5-flash',
         contents: prompt,
       });
 
