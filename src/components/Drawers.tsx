@@ -2670,6 +2670,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       setIsBookletModalOpen(true);
                       setTimeout(() => {
                         window.print();
+                        setTimeout(() => setIsBookletModalOpen(false), 500);
                       }, 1000);
                     }}
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"

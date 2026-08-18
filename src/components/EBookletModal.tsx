@@ -57,7 +57,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   };
 
   return (
-    <div id="ebooklet-print-container" className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
+    <div id="ebooklet-print-container" className="hidden print:block print:p-0 print:bg-white print:static">
       {/* Floating Action Controls (Top-Right) */}
       <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
         {/* Real-time Live PDF Save / Print Button (Primary) */}
