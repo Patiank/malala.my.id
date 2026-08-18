@@ -130,12 +130,13 @@ function generateFullHTML(): string {
 
   const culHtml = culinaryItems.map((cul, idx) => {
     const img = getDirectDriveUrl(cul.imageUrl);
+    const culCategory = cul.type || cul.category || 'Kuliner Khas';
     return `
     <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-rose-200 p-5 flex flex-col justify-between mb-6">
       <div>
         <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span>MALALA 2026 • GASTRONOMI MINANG</span>
-          <span class="text-rose-600 uppercase font-extrabold">${cul.category}</span>
+          <span class="text-rose-600 uppercase font-extrabold">${culCategory}</span>
         </div>
 
         <div class="h-48 w-full rounded-xl overflow-hidden mt-3 relative bg-rose-950 shadow-sm">
@@ -143,7 +144,7 @@ function generateFullHTML(): string {
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
           <div class="absolute bottom-3 left-3 text-white">
             <span class="bg-rose-600 text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
-              ${cul.category}
+              ${culCategory}
             </span>
             <h3 class="font-orbitron font-extrabold text-lg text-white pt-1 drop-shadow-md leading-tight">
               ${cul.title}
@@ -159,11 +160,12 @@ function generateFullHTML(): string {
           ${(cul.description || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
         </div>
 
-        <div class="mt-3 p-3 bg-rose-50 rounded-xl border border-rose-200">
-          <h4 class="font-bold text-[10px] uppercase text-rose-900 tracking-wider mb-1">Bahan & Rempah Utama:</h4>
-          <p class="text-xs text-rose-950 mb-1.5">${(cul.mainIngredients || []).join(', ')}</p>
-          ${cul.tasteProfile ? `<p class="text-[11px] text-rose-900 font-bold">Rasa: ${cul.tasteProfile}</p>` : ''}
-        </div>
+        ${cul.flavorProfile ? `
+          <div class="mt-3 p-3 bg-rose-50 rounded-xl border border-rose-200">
+            <h4 class="font-bold text-[10px] uppercase text-rose-900 tracking-wider mb-1">Karakteristik & Cita Rasa:</h4>
+            <p class="text-xs text-rose-950 font-medium">${cul.flavorProfile}</p>
+          </div>
+        ` : ''}
       </div>
 
       <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-4">
