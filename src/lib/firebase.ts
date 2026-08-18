@@ -16,5 +16,5 @@ export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentSingleTabManager({})
   })
-}, "ai-studio-malaladiscoverwe-562e18f6-b088-4083-a613-a873b9667b3f");
+});
 export const auth = getAuth(app);
