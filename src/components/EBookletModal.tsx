@@ -60,24 +60,24 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
     <div id="ebooklet-print-container" className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-md flex flex-col items-center justify-start overflow-y-auto print:p-0 print:bg-white print:static">
       {/* Floating Action Controls (Top-Right) */}
       <div className="fixed top-3 right-3 sm:top-5 sm:right-5 z-[230] flex items-center gap-2 print:hidden">
-        {/* Real-time Browser Print / Save to PDF */}
+        {/* Real-time Live PDF Save / Print Button (Primary) */}
         <button
           onClick={handlePrint}
-          className="h-10 px-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider border border-slate-600"
-          title={isEn ? 'Print / Save Live PDF' : 'Cetak / Simpan PDF Real-Time'}
+          className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
+          title={isEn ? 'Save / Print Live PDF (100% Real-Time)' : 'Simpan / Cetak PDF Live (100% Real-Time)'}
         >
-          <Printer className="w-4 h-4 text-yellow-300" />
-          <span className="hidden sm:inline">{isEn ? 'Print Live PDF' : 'Cetak PDF Terkini'}</span>
+          <Printer className="w-4 h-4 text-white" />
+          <span>{isEn ? 'Save Live PDF' : 'Simpan PDF Live'}</span>
         </button>
 
-        {/* Download Master PDF Button */}
+        {/* Download Static File (Secondary) */}
         <button
           onClick={handleDownload}
-          className="h-10 px-4 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider"
-          title={isEn ? 'Download Master PDF' : 'Unduh Master PDF'}
+          className="h-10 px-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-white flex items-center gap-1.5 transition-all hover:scale-105 shadow-2xl cursor-pointer text-xs font-jakarta font-bold uppercase tracking-wider border border-slate-600"
+          title={isEn ? 'Direct File Download' : 'Unduh File Offline'}
         >
-          <Download className="w-4 h-4" />
-          <span>{isEn ? 'Download PDF' : 'Unduh PDF'}</span>
+          <Download className="w-4 h-4 text-gray-300" />
+          <span className="hidden sm:inline">{isEn ? 'Direct File' : 'File Offline'}</span>
         </button>
 
         {/* Minimalist Close Button */}
