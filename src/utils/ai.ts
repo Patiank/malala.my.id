@@ -1642,24 +1642,27 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 2. Client-side Gemini AI if API key is provided
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    try {
-      const ai = new GoogleGenAI({ apiKey: viteApiKey });
-      const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Setiap butir berita WAJIB mengangkat topik atau peristiwa yang berbeda (DILARANG membuat berita dengan topik yang sama). Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
-      id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string tanggal 30 hari terakhir), dateEn (string), tag (string), tagEn (string), description (string 3 paragraf), descriptionEn (string 3 paragraf), imageUrl (""), actionUrl (""), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
-      Hanya kembalikan valid JSON tanpa markdown.`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: prompt,
-      });
-
-      const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return deduplicateNewsItems(parsed.filter((it: any) => isWithinLast30Days(it.date)));
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+    for (const modelName of modelsToTry) {
+      try {
+        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const prompt = `Hasilkan 4 butir berita dan pengumuman pariwisata NASIONAL INDONESIA dan SUMATERA BARAT TERKINI (dalam 30 hari terakhir) dalam format JSON array. Setiap butir berita WAJIB mengangkat topik atau peristiwa yang berbeda (DILARANG membuat berita dengan topik yang sama). Jangan menyertakan imageUrl (buat kosong string ""). Setiap objek wajib memiliki properti:
+        id (string), title (string bahasa indonesia), titleEn (string inggris), category (string), categoryEn (string), date (string tanggal 30 hari terakhir), dateEn (string), tag (string), tagEn (string), description (string 3 paragraf), descriptionEn (string 3 paragraf), imageUrl (""), actionUrl (""), highlights (array string 3 butir), highlightsEn (array string 3 butir), tips (string), tipsEn (string), locationName (string), locationNameEn (string).
+        Hanya kembalikan valid JSON tanpa markdown.`;
+  
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: prompt,
+        });
+  
+        const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(cleanJson);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return deduplicateNewsItems(parsed.filter((it: any) => isWithinLast30Days(it.date)));
+        }
+      } catch (err) {
+        console.warn(`Client Gemini hotinfo generation failed with ${modelName}, trying next...`, err);
       }
-    } catch (err) {
-      console.warn("Client Gemini hotinfo generation failed, moving to live RSS:", err);
     }
   }
 
