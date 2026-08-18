@@ -374,21 +374,55 @@ export async function fetchAiItinerary(params: any) {
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    try {
-      const ai = new GoogleGenAI({ apiKey: viteApiKey });
-      const isEnglish = params?.language === 'en';
-      const prompt = `Anda adalah MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK di Sumatera Barat. Rancang itinerary ${params?.durasiHari || 3} hari dengan rute SEARAH per klaster geografis, TANPA MENGULANG destinasi atau aktivitas yang sama di hari yang berbeda. Formatkan output HANYA format JSON valid:\n${JSON.stringify(params)}`;
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
-        contents: prompt,
-      });
-      const rawText = response.text || '';
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        return JSON.parse(jsonMatch[0]);
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+    for (const modelName of modelsToTry) {
+      try {
+        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const isEnglish = params?.language === 'en';
+        const langStr = isEnglish ? 'English' : 'Bahasa Indonesia';
+        const prompt = `Anda adalah 'UNI MALA AI', MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK di Sumatera Barat. 
+Tugas Anda merancang itinerary wisata yang SANGAT SPESIFIK dan MEMATUHI SEMUA preferensi pengguna berikut:
+${JSON.stringify(params, null, 2)}
+
+Aturan Ketat:
+1. Wajib sesuaikan destinasi, ritme, dan aktivitas dengan profil wisatawan (misal: jika bawa lansia/anak, kurangi aktivitas fisik ekstrem, pilih yang mudah diakses).
+2. Rute HARUS SEARAH per klaster geografis tiap harinya. JANGAN bolak-balik.
+3. JANGAN mengulang destinasi di hari yang berbeda.
+4. Gunakan bahasa: ${langStr}.
+5. FORMAT OUTPUT WAJIB BERUPA JSON VALID dengan struktur berikut:
+{
+  "title": "Judul Itinerary",
+  "summary": "Ringkasan itinerary",
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Judul Hari 1",
+      "activities": [
+        {
+          "time": "08:00 - 10:00",
+          "location": "Nama Tempat",
+          "activity": "Deskripsi aktivitas",
+          "tips": "Tips lokal"
+        }
+      ],
+      "culinaryRecommendation": "Rekomendasi kuliner"
+    }
+  ],
+  "localTips": ["Tip 1", "Tip 2"]
+}`;
+
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: prompt,
+        });
+        const rawText = response.text || '';
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          return JSON.parse(jsonMatch[0]);
+        }
+      } catch (err) {
+        console.warn(`Client Gemini API failed with ${modelName}, trying next...`, err);
       }
-    } catch (err) {
-      console.warn("Client Gemini API failed, using structured fallback", err);
     }
   }
 
