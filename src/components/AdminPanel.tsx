@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2 } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { generateCatalogItemWithAi } from '../utils/ai';
 
 interface AdminPanelProps {
   dataStore: any;
@@ -229,6 +230,45 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const showSuccess = (msg: string) => {
     setAdminSuccess(msg);
     setTimeout(() => setAdminSuccess(null), 4000);
+  };
+
+  const [isGeneratingAi, setIsGeneratingAi] = useState<boolean>(false);
+
+  const handleAiAutoFill = async () => {
+    const titleToUse = (formData?.title || '').trim();
+    if (!titleToUse) {
+      const typeLabel = adminTab === 'destinations' ? 'Destinasi' : adminTab === 'culture' ? 'Budaya' : adminTab === 'culinary' ? 'Kuliner' : 'Event';
+      const userInput = prompt(`Masukkan Nama ${typeLabel} yang ingin dibuatkan informasinya secara otomatis oleh AI (misal: "Danau Singkarak" / "Gulai Banak"):`);
+      if (!userInput || !userInput.trim()) return;
+      setFormData((prev: any) => ({ ...prev, title: userInput.trim() }));
+      await executeAiGenerate(userInput.trim());
+      return;
+    }
+    await executeAiGenerate(titleToUse);
+  };
+
+  const executeAiGenerate = async (itemName: string) => {
+    try {
+      setIsGeneratingAi(true);
+      setAdminError(null);
+      const aiResult = await generateCatalogItemWithAi(adminTab, itemName);
+      if (aiResult) {
+        setFormData((prev: any) => ({
+          ...prev,
+          ...aiResult,
+          id: prev?.id || (adminTab === 'destinations' ? `d${Date.now().toString().slice(-4)}` : adminTab === 'culture' ? `c${Date.now().toString().slice(-4)}` : adminTab === 'culinary' ? `cul${Date.now().toString().slice(-4)}` : `e${Date.now().toString().slice(-4)}`),
+          imageUrl: prev?.imageUrl || aiResult.imageUrl || '',
+          videoUrl: prev?.videoUrl || aiResult.videoUrl || '',
+          mapUrl: prev?.mapUrl || aiResult.mapUrl || '',
+        }));
+        showSuccess(`✨ Sukses! Seluruh data katalog & terjemahan "${itemName}" berhasil diisi otomatis oleh AI.`);
+      }
+    } catch (err: any) {
+      console.error("AI Auto-Fill error:", err);
+      setAdminError(err?.message || "Gagal meng-generate data katalog dengan AI.");
+    } finally {
+      setIsGeneratingAi(false);
+    }
   };
 
   const [isSyncingGitHub, setIsSyncingGitHub] = useState<boolean>(false);
@@ -1160,15 +1200,96 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             </div>
           </div>
         ) : editingId ? (
-          <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-4">
-            <h4 className="font-bold text-xs uppercase text-gray-500">{editingId === 'new' ? 'Tambah Item Baru' : 'Edit Item'}</h4>
+          <div className="bg-gray-50 border border-gray-200 p-4 sm:p-5 rounded-xl space-y-4 shadow-sm">
+            <div className="flex items-center justify-between flex-wrap gap-2 border-b border-gray-200 pb-3">
+              <h4 className="font-bold text-xs uppercase text-gray-700 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                {editingId === 'new' ? 'Tambah Item Baru' : 'Edit Item'}
+              </h4>
+
+              {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+                <button
+                  type="button"
+                  onClick={handleAiAutoFill}
+                  disabled={isGeneratingAi}
+                  className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-all shadow-xs ${
+                    isGeneratingAi
+                      ? 'bg-emerald-400 text-white cursor-not-allowed opacity-75'
+                      : 'bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white hover:shadow-md'
+                  }`}
+                  title="Isi deskripsi, kategori, tag, dan translate English otomatis dari nama item"
+                >
+                  <Sparkles className={`w-3.5 h-3.5 ${isGeneratingAi ? 'animate-spin text-amber-300' : 'text-amber-200'}`} />
+                  <span>{isGeneratingAi ? 'Meneliti & Mengisi Otomatis...' : '✨ Isi Otomatis dengan AI'}</span>
+                </button>
+              )}
+            </div>
+
+            {/* Smart AI Auto-Fill Helper Banner */}
+            {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+              <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-amber-500/10 p-3 rounded-lg border border-emerald-300/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-1.5 font-bold text-[11px] text-emerald-950 uppercase">
+                    <Wand2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Fitur Pintar: Auto-Fill & Translate AI</span>
+                  </div>
+                  <p className="text-[11px] text-emerald-900/80 leading-tight">
+                    Cukup ketikkan nama {adminTab === 'destinations' ? 'destinasi' : adminTab === 'culture' ? 'kebudayaan' : adminTab === 'culinary' ? 'kuliner' : 'event'} di bawah, lalu klik <span className="font-semibold text-emerald-800">"✨ Isi Otomatis dengan AI"</span> untuk menghasilkan deskripsi naratif, kategori, lokasi, dan terjemahan Bahasa Inggris secara instan.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAiAutoFill}
+                  disabled={isGeneratingAi}
+                  className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer transition-all shrink-0 ${
+                    isGeneratingAi
+                      ? 'bg-emerald-400 text-white cursor-not-allowed opacity-75'
+                      : 'bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs'
+                  }`}
+                >
+                  <RefreshCw className={`w-3 h-3 ${isGeneratingAi ? 'animate-spin' : ''}`} />
+                  <span>{isGeneratingAi ? 'Sedang Memproses...' : 'Generate Sekarang'}</span>
+                </button>
+              </div>
+            )}
             
             <div className="space-y-3 font-jakarta">
               {/* Title (ID & EN) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">1. Judul / Nama (Bahasa Indonesia)</label>
-                  <input type="text" name="title" value={formData.title || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-[10px] font-bold uppercase text-gray-500">1. Judul / Nama (Bahasa Indonesia)</label>
+                    {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+                      <button
+                        type="button"
+                        onClick={handleAiAutoFill}
+                        disabled={isGeneratingAi}
+                        className="text-[10px] text-emerald-700 hover:text-emerald-900 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <Sparkles className="w-2.5 h-2.5" />
+                        <span>Isi AI</span>
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title || ''}
+                    onChange={handleChange}
+                    placeholder={
+                      adminTab === 'destinations'
+                        ? 'e.g. Danau Singkarak / Air Terjun Nyarai'
+                        : adminTab === 'culture'
+                        ? 'e.g. Tari Piring / Tradisi Batagak Pangulu'
+                        : adminTab === 'culinary'
+                        ? 'e.g. Gulai Banak / Sate Danguang-Danguang'
+                        : adminTab === 'events'
+                        ? 'e.g. Sawahlunto International Songket Carnival'
+                        : 'Ketik judul...'
+                    }
+                    className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">1. Title / Name (English Translation)</label>

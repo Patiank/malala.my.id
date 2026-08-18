@@ -432,6 +432,135 @@ export async function fetchAiChat(message: string) {
   };
 }
 
+export async function generateCatalogItemWithAi(type: string, name: string, hint?: string) {
+  try {
+    const res = await fetch('/api/ai/generate-catalog-item', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, name, hint }),
+    });
+
+    const contentType = res.headers.get('content-type') || '';
+    if (res.ok && contentType.includes('application/json')) {
+      return await res.json();
+    }
+  } catch (e) {
+    console.warn("Server API generate catalog endpoint unavailable, falling back to client Gemini", e);
+  }
+
+  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  if (viteApiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+
+      let typePrompt = '';
+      if (type === 'destinations') {
+        typePrompt = `Kategori: DESTINASI WISATA SUMATERA BARAT
+Nama Destinasi: "${name}" ${hint ? `(Petunjuk tambahan: ${hint})` : ''}
+
+Format output HANYA JSON valid:
+{
+  "title": "${name}",
+  "titleEn": "Nama Destinasi dalam Bahasa Inggris",
+  "category": "Alam | Danau & Gunung | Lembah & Geopark | Pantai & Bahari | Desa Wisata | Sejarah | Air Terjun & Alam",
+  "categoryEn": "Nature | Lakes & Mountains | Geological Wonder | Marine & Island | Tourism Village | History & Heritage | Waterfall & Ecotourism",
+  "regency": "Kabupaten / Kota di Sumatera Barat (contoh: Kabupaten Agam / Kota Bukittinggi / Kabupaten Pesisir Selatan)",
+  "regencyEn": "Nama Kabupaten/Kota dalam Bahasa Inggris (contoh: Agam Regency / Bukittinggi City)",
+  "tag": "Tag singkat menarik (contoh: Ikonik, Petualangan, Geopark, Warisan Budaya, Hidden Gem)",
+  "tagEn": "Tag singkat dalam Bahasa Inggris (contoh: Iconic, Adventure, Geopark, Cultural Heritage, Hidden Gem)",
+  "description": "Deskripsi naratif mendalam pariwisata 2-3 paragraf (pisahkan dengan \\n\\n) mengenai daya tarik, sejarah/geologi, serta keunikan tempat ini.",
+  "descriptionEn": "Comprehensive 2-3 paragraph narrative description in English (separated by \\n\\n).",
+  "highlights": ["Poin keunggulan 1", "Poin keunggulan 2", "Poin keunggulan 3"],
+  "highlightsEn": ["Highlight point 1", "Highlight point 2", "Highlight point 3"],
+  "bestTime": "Waktu terbaik berkunjung (contoh: Pagi Hari (07:00 - 11:00 WIB) / Sepanjang Hari)",
+  "bestTimeEn": "Best time in English (contoh: Morning (07:00 AM - 11:00 AM) / All Day)",
+  "locationDetails": "Detail lokasi spesifik nagari/kecamatan (contoh: Nagari Pariangan, Kab. Tanah Datar)",
+  "locationDetailsEn": "Location details in English",
+  "lat": -0.305000,
+  "lng": 100.370000
+}`;
+      } else if (type === 'culture') {
+        typePrompt = `Kategori: KEBUDAYAAN & TRADISI MINANGKABAU
+Nama Budaya / Tradisi: "${name}" ${hint ? `(Petunjuk tambahan: ${hint})` : ''}
+
+Format output HANYA JSON valid:
+{
+  "title": "${name}",
+  "titleEn": "Nama Kebudayaan dalam Bahasa Inggris",
+  "category": "Arsitektur | Tari & Musik | Seni Beladiri | Kain & Kerajinan | Tradisi Adat | Upacara Adat | Sistem Sosial",
+  "categoryEn": "Architecture | Dance & Music | Martial Arts | Textile & Craft | Customary Tradition | Traditional Ceremony | Social System",
+  "origin": "Asal Daerah / Nagari (contoh: Seluruh Wilayah Alam Minangkabau / Kabupaten Tanah Datar)",
+  "originEn": "Origin in English (contoh: Entire Minangkabau Cultural Realm / Tanah Datar Regency)",
+  "description": "Deskripsi mendalam kebudayaan Minangkabau 2-3 paragraf (pisahkan dengan \\n\\n) mengenai sejarah, proses pelaksanaan, alat/atribut adat, dan fungsi sosialnya.",
+  "descriptionEn": "Comprehensive 2-3 paragraph cultural description in English (separated by \\n\\n).",
+  "philosophy": "Filosofi adat mendalam (contoh: Adat Basandi Syarak, Syarak Basandi Kitabullah / Raso Jo Pareso)",
+  "philosophyEn": "Philosophical meaning in English",
+  "lat": -0.471111,
+  "lng": 100.621111
+}`;
+      } else if (type === 'culinary') {
+        typePrompt = `Kategori: KULINER AUTENTIK MINANGKABAU / SUMATERA BARAT
+Nama Kuliner: "${name}" ${hint ? `(Petunjuk tambahan: ${hint})` : ''}
+
+Format output HANYA JSON valid:
+{
+  "title": "${name}",
+  "titleEn": "Nama Kuliner dalam Bahasa Inggris",
+  "type": "Makanan Utama | Minuman Tradisional | Kudapan Khas",
+  "typeEn": "Main Course | Traditional Beverage | Traditional Snack",
+  "origin": "Asal Daerah / Nagari di Sumbar (contoh: Kota Bukittinggi / Payakumbuh / Solok / Padang Pariaman)",
+  "originEn": "Origin in English (contoh: Bukittinggi City / Payakumbuh Regency)",
+  "description": "Deskripsi mendalam kuliner 2-3 paragraf (pisahkan dengan \\n\\n) mengenai bahan baku rempah, tradisi memasak khas Minangkabau, dan sensasi kelezatannya.",
+  "descriptionEn": "Comprehensive 2-3 paragraph culinary description in English (separated by \\n\\n).",
+  "flavorProfile": "Profil rasa (contoh: Gurih berempah kaya santan, pedas segar cabe hijau, aroma asap kelapa)",
+  "flavorProfileEn": "Flavor profile in English (contoh: Rich savory spiced coconut curry with smoky aroma)",
+  "lat": -0.305000,
+  "lng": 100.370000
+}`;
+      } else if (type === 'events') {
+        typePrompt = `Kategori: EVENT & FESTIVAL PARIWISATA SUMATERA BARAT 2026
+Nama Event: "${name}" ${hint ? `(Petunjuk tambahan: ${hint})` : ''}
+
+Format output HANYA JSON valid:
+{
+  "title": "${name}",
+  "titleEn": "Nama Event dalam Bahasa Inggris",
+  "schedule": "Estimasi jadwal pelaksanaan 2026 (contoh: 15 - 18 Juli 2026 / September 2026)",
+  "scheduleEn": "Schedule in English (contoh: July 15 - 18, 2026 / September 2026)",
+  "location": "Lokasi pelaksanaan (contoh: Lapangan Kantin Kota Bukittinggi / Kawasan Lembah Harau, Kab. 50 Kota)",
+  "locationEn": "Location in English (contoh: Harau Valley, 50 Kota Regency)",
+  "description": "Deskripsi mendalam event pariwisata 2-3 paragraf (pisahkan dengan \\n\\n) mengenai agenda acara, atraksi seni budaya, parade, dan daya tarik bagi wisatawan.",
+  "descriptionEn": "Comprehensive 2-3 paragraph event description in English (separated by \\n\\n).",
+  "isKen": false
+}`;
+      }
+
+      const prompt = `Anda adalah ASISTEN AHLI PARIWISATA & KEBUDAYAAN SUMATERA BARAT (Wonderful West Sumatra Tourism Board).
+Tugas Anda adalah meneliti dan menghasilkan data katalog pariwisata yang sangat akurat, mendalam, kaya nilai budaya Minangkabau, dan lengkap dengan terjemahan Bahasa Inggris (Bilingual ID & EN).
+
+${typePrompt}
+
+Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
+
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
+      });
+
+      const rawText = response.text || '';
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+    } catch (err) {
+      console.warn("Client Gemini API catalog generation failed", err);
+    }
+  }
+
+  throw new Error("Layanan AI sedang tidak dapat diakses. Pastikan koneksi internet stabil.");
+}
+
 const TOURISM_IMAGES_POOL = [
   'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80',
   'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
