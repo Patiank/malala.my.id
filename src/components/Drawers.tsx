@@ -2602,8 +2602,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Hot Info Items List (Strictly last 30 days & deduplicated by topic/event) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-stretch">
+              {/* Hot Info Items List (2 Columns flowing downward with full rich narrative) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-start">
                 {(() => {
                   const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                     .filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
@@ -2643,43 +2643,43 @@ export const Drawers: React.FC<DrawersProps> = ({
                     return (
                       <div
                         key={item.id}
-                        style={{ animationDelay: `${idx * 60}ms` }}
+                        style={{ animationDelay: `${idx * 50}ms` }}
                         onClick={() => onSelectNews && onSelectNews(item)}
-                        className={`flex flex-col h-full border rounded-xl overflow-hidden bg-white shadow-xs transition-all duration-200 animate-content-stagger cursor-pointer group hover:shadow-md hover:border-black/70 ${
+                        className={`flex flex-col border rounded-xl overflow-hidden bg-white shadow-xs transition-all duration-200 animate-content-stagger cursor-pointer group hover:shadow-md hover:border-black/70 ${
                           item.tag === 'Penting' || item.isUrgent ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200'
                         }`}
                       >
                         {item.imageUrl ? (
-                          <div className="relative h-40 w-full overflow-hidden bg-gray-100 shrink-0">
+                          <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-gray-100 shrink-0">
                             <img
                               src={item.imageUrl}
                               alt={getNewsDisplayTitle(item, lang)}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               loading="lazy"
                             />
-                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-black/85 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded-md backdrop-blur-xs shrink-0 whitespace-nowrap z-10 shadow-xs">
+                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-black/85 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md backdrop-blur-xs shrink-0 whitespace-nowrap z-10 shadow-xs">
                               {categoryDisplay}
                             </div>
                             {(item.tag === 'Penting' || item.isUrgent) && (
-                              <div className="absolute top-2.5 right-2.5 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md flex items-center gap-1 animate-pulse shadow-xs z-10">
+                              <div className="absolute top-2.5 right-2.5 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 animate-pulse shadow-xs z-10">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-current" />
                                 {tagDisplay}
                               </div>
                             )}
                             {item.date && (
-                              <div className="absolute bottom-2.5 left-2.5 bg-black/70 text-gray-200 font-jakarta text-[10px] px-2 py-0.5 rounded backdrop-blur-xs z-10">
+                              <div className="absolute bottom-2.5 left-2.5 bg-black/70 text-gray-200 font-jakarta text-[10px] px-2.5 py-0.5 rounded backdrop-blur-xs z-10 font-medium">
                                 {isEn && item.dateEn ? item.dateEn : item.date}
                               </div>
                             )}
                           </div>
                         ) : (
-                          <div className="px-3.5 pt-3 pb-2 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80 shrink-0">
+                          <div className="px-4 pt-3.5 pb-2.5 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80 shrink-0">
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap">
+                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md shrink-0 whitespace-nowrap">
                                 {categoryDisplay}
                               </span>
                               {(item.tag === 'Penting' || item.isUrgent) && (
-                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md flex items-center gap-1">
+                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1">
                                   <Flame className="w-3 h-3 text-yellow-300 fill-current" />
                                   {tagDisplay}
                                 </span>
@@ -2693,20 +2693,24 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </div>
                         )}
 
-                        <div className="p-3.5 flex flex-col flex-1 justify-between gap-2.5">
-                          <div className="space-y-1.5">
-                            <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug line-clamp-2 group-hover:text-amber-600 transition-colors">
+                        <div className="p-4 flex flex-col flex-1 justify-between gap-3">
+                          <div className="space-y-2">
+                            <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug group-hover:text-amber-600 transition-colors">
                               {getNewsDisplayTitle(item, lang)}
                             </h3>
-                            <p className="font-jakarta text-gray-600 text-xs leading-relaxed line-clamp-3">
-                              {getNewsDisplayDescription(item, lang)}
-                            </p>
+                            <div className="font-jakarta text-gray-700 text-xs leading-relaxed space-y-2">
+                              {getNewsDisplayDescription(item, lang)
+                                .split('\n\n')
+                                .map((paragraph: string, pIdx: number) => (
+                                  <p key={pIdx}>{paragraph}</p>
+                                ))}
+                            </div>
                           </div>
 
-                          <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap mt-auto">
-                            <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold text-gray-500">
-                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
-                              <span className="truncate max-w-[140px] sm:max-w-[170px]">
+                          <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap mt-auto">
+                            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500">
+                              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                              <span className="truncate max-w-[150px] sm:max-w-[190px]">
                                 {(() => {
                                   const rawLoc = isEn && item.locationNameEn ? item.locationNameEn : (item.locationName || '');
                                   const cleanLoc = rawLoc
@@ -2721,7 +2725,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                const textToShare = `${getNewsDisplayTitle(item, lang)}\n${getNewsDisplayDescription(item, lang)}`;
+                                const textToShare = `${getNewsDisplayTitle(item, lang)}\n\n${getNewsDisplayDescription(item, lang)}`;
                                 if (navigator.share) {
                                   navigator.share({ title: getNewsDisplayTitle(item, lang), text: textToShare, url: window.location.href });
                                 } else {
@@ -2729,10 +2733,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                                   alert(isEn ? 'News link copied to clipboard!' : 'Tautan informasi berhasil disalin!');
                                 }
                               }}
-                              className="p-1 text-gray-500 hover:text-black hover:bg-gray-100 rounded transition-colors cursor-pointer flex items-center gap-1 text-[10px] font-medium"
+                              className="p-1.5 text-gray-500 hover:text-black hover:bg-gray-100 rounded-md transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-medium"
                               title={isEn ? 'Share this update' : 'Bagikan Info Ini'}
                             >
-                              <Share2 className="w-3 h-3" />
+                              <Share2 className="w-3.5 h-3.5" />
                               <span>{isEn ? 'Share' : 'Bagikan'}</span>
                             </button>
                           </div>
