@@ -876,6 +876,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         className={`fixed top-0 bottom-0 z-[70] ${
           activeDrawer === 'hotinfo'
             ? 'w-full md:w-1/2 lg:w-1/2 left-0 border-r border-gray-200 animate-drawer-slide-left'
+            : activeDrawer === 'events'
+            ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
         } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
       >
@@ -1604,7 +1606,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             const firstDayOfWeek = new Date(year2026, calendarMonth, 1).getDay(); // 0 = Sun, 1 = Mon ...
 
             // Month events
-            const eventsInActiveMonth = eventItems.filter((ev: EventItem) => parseEventMonth(ev.schedule) === calendarMonth);
+            const eventsInActiveMonth = filteredEvents.filter((ev: EventItem) => parseEventMonth(ev.schedule) === calendarMonth);
             
             // Events to show in cards below calendar (filtered by day if clicked)
             const calendarEventsToDisplay = calendarSelectedDate 
@@ -1646,42 +1648,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                {/* Dual-View Switcher Tab */}
-                <div className="flex items-center bg-gray-100 p-1 rounded-xl gap-1">
-                  <button
-                    onClick={() => {
-                      setEventViewMode('calendar');
-                      setCalendarSelectedDate(null);
-                    }}
-                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-jakarta font-bold uppercase transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                      eventViewMode === 'calendar'
-                        ? 'bg-black text-white shadow-xs'
-                        : 'text-gray-600 hover:text-black'
-                    }`}
-                  >
-                    <Calendar className="w-4 h-4" />
-                    <span>{isEn ? '📅 Monthly Calendar Grid' : '📅 Kalender Visual Bulanan'}</span>
-                  </button>
-
-                  <button
-                    onClick={() => setEventViewMode('list')}
-                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-jakarta font-bold uppercase transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                      eventViewMode === 'list'
-                        ? 'bg-black text-white shadow-xs'
-                        : 'text-gray-600 hover:text-black'
-                    }`}
-                  >
-                    <span>{isEn ? `📋 Complete List (${eventItems.length})` : `📋 Daftar Lengkap (${eventItems.length})`}</span>
-                  </button>
-                </div>
-
-                {/* ======================================================== */}
-                {/* 1. MODE KALENDER INTERAKTIF (MONTHLY CALENDAR GRID)      */}
-                {/* ======================================================== */}
-                {eventViewMode === 'calendar' && (
-                  <div className="space-y-4">
+                {/* 2-Panel Master-Detail Layout: Kalender di Kiri, Semua Event 2 Kolom di Kanan */}
+                <div className="flex flex-col lg:flex-row gap-6 items-start">
+                  
+                  {/* ======================================================== */}
+                  {/* PANEL KIRI: PANEL KHUSUS KALENDER VISUAL BULANAN        */}
+                  {/* ======================================================== */}
+                  <div className="w-full lg:w-[380px] xl:w-[410px] shrink-0 space-y-4 lg:sticky lg:top-0">
                     {/* Month Navigator Header */}
-                    <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-xs space-y-3">
+                    <div className="bg-white border border-gray-200 rounded-xl p-3.5 shadow-xs space-y-3">
                       <div className="flex items-center justify-between">
                         <button
                           onClick={() => {
@@ -1695,18 +1670,18 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </button>
 
                         <div className="text-center">
-                          <h3 className="font-orbitron font-bold text-sm sm:text-base text-black uppercase tracking-wider flex items-center justify-center gap-2">
+                          <h3 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider flex items-center justify-center gap-2">
                             <span>{isEn ? monthNamesEn[calendarMonth] : monthNamesId[calendarMonth]} 2026</span>
                             {calendarMonth === currentMonthIdx && (
-                              <span className="bg-red-600 text-white text-[9px] font-bold font-jakarta px-2 py-0.5 rounded-full uppercase">
+                              <span className="bg-red-600 text-white text-[8.5px] font-bold font-jakarta px-2 py-0.5 rounded-full uppercase">
                                 {isEn ? 'Current' : 'Bulan Ini'}
                               </span>
                             )}
                           </h3>
-                          <p className="text-[11px] text-gray-500 font-jakarta">
+                          <p className="text-[10.5px] text-gray-500 font-jakarta mt-0.5">
                             {eventsInActiveMonth.length > 0
-                              ? (isEn ? `${eventsInActiveMonth.length} Tourism Events Scheduled` : `${eventsInActiveMonth.length} Event Pariwisata Terjadwal`)
-                              : (isEn ? 'No major festivals scheduled this month' : 'Tidak ada festival besar terjadwal di bulan ini')}
+                              ? (isEn ? `${eventsInActiveMonth.length} Events Scheduled` : `${eventsInActiveMonth.length} Event Terjadwal`)
+                              : (isEn ? 'No events this month' : 'Tidak ada event bulan ini')}
                           </p>
                         </div>
 
@@ -1722,8 +1697,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </button>
                       </div>
 
-                      {/* Quick 12-Month Pills Bar */}
-                      <div className="grid grid-cols-6 sm:grid-cols-12 gap-1 pt-2 border-t border-gray-100">
+                      {/* Quick 12-Month Selector Pills */}
+                      <div className="grid grid-cols-6 gap-1 pt-2 border-t border-gray-100">
                         {(isEn ? monthNamesEn : monthNamesId).map((mName, idx) => {
                           const hasEvents = eventItems.some((e: EventItem) => parseEventMonth(e.schedule) === idx);
                           const isSelected = calendarMonth === idx;
@@ -1756,7 +1731,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                     {/* Interactive Calendar Grid Table */}
                     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-xs">
                       {/* Day of Week Header */}
-                      <div className="grid grid-cols-7 bg-slate-900 text-white text-center py-2 text-[10px] sm:text-xs font-bold font-orbitron uppercase tracking-wider">
+                      <div className="grid grid-cols-7 bg-slate-900 text-white text-center py-2 text-[10px] font-bold font-orbitron uppercase tracking-wider">
                         {(isEn ? dayNamesEn : dayNamesId).map((dName, i) => (
                           <div key={i} className={i === 0 || i === 6 ? 'text-amber-400' : 'text-gray-200'}>
                             {dName}
@@ -1766,12 +1741,12 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                       {/* Day Cells Grid */}
                       <div className="grid grid-cols-7 gap-px bg-gray-200">
-                        {/* Leading empty cells for start of month */}
+                        {/* Leading empty cells */}
                         {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                          <div key={`empty-${i}`} className="bg-gray-50 min-h-[64px] sm:min-h-[85px] p-1 opacity-40" />
+                          <div key={`empty-${i}`} className="bg-gray-50 min-h-[44px] sm:min-h-[50px] p-1 opacity-40" />
                         ))}
 
-                        {/* Month Days (1 to 31) */}
+                        {/* Month Days */}
                         {Array.from({ length: daysInActiveMonth }).map((_, i) => {
                           const dayNum = i + 1;
                           const matchedDayEvents = eventsInActiveMonth.filter((ev: EventItem) =>
@@ -1788,176 +1763,55 @@ export const Drawers: React.FC<DrawersProps> = ({
                                   setCalendarSelectedDate(isSelectedDay ? null : dayNum);
                                 }
                               }}
-                              className={`min-h-[64px] sm:min-h-[85px] p-1.5 flex flex-col justify-between transition-all ${
-                                matchedDayEvents.length > 0 ? 'cursor-pointer hover:scale-[1.02] hover:z-10' : ''
+                              className={`min-h-[44px] sm:min-h-[50px] p-1 flex flex-col justify-between transition-all ${
+                                matchedDayEvents.length > 0 ? 'cursor-pointer hover:scale-105 hover:z-10' : ''
                               } ${
                                 isSelectedDay
-                                  ? 'bg-amber-100 ring-2 ring-amber-500 shadow-md'
+                                  ? 'bg-amber-200 ring-2 ring-amber-500 shadow-md font-bold'
                                   : matchedDayEvents.length > 0
                                   ? hasKen
-                                    ? 'bg-amber-50/90 hover:bg-amber-100/90 border-amber-200'
-                                    : 'bg-red-50/80 hover:bg-red-100/80 border-red-200'
+                                    ? 'bg-amber-100 hover:bg-amber-200 border-amber-300 font-bold'
+                                    : 'bg-red-100 hover:bg-red-200 border-red-300 font-bold'
                                   : 'bg-white hover:bg-gray-50'
                               }`}
                             >
                               <div className="flex items-center justify-between">
-                                <span className={`text-[11px] sm:text-xs font-orbitron font-bold ${
-                                  matchedDayEvents.length > 0 ? 'text-black' : 'text-gray-400'
+                                <span className={`text-[11px] font-orbitron ${
+                                  matchedDayEvents.length > 0 ? 'text-black font-bold' : 'text-gray-400'
                                 }`}>
                                   {dayNum}
                                 </span>
                                 {hasKen && (
-                                  <span className="text-[10px]" title="Karisma Event Nusantara">⭐</span>
+                                  <span className="text-[9px]" title="Karisma Event Nusantara">⭐</span>
                                 )}
                               </div>
 
-                              {/* Event Chips inside the day cell */}
-                              <div className="space-y-1 mt-1">
-                                {matchedDayEvents.map((ev: EventItem) => (
-                                  <div
-                                    key={ev.id}
-                                    className={`text-[9px] sm:text-[9.5px] font-jakarta font-semibold px-1 py-0.5 rounded truncate transition-all ${
-                                      ev.isKen
-                                        ? 'bg-amber-500 text-black font-bold shadow-2xs'
-                                        : 'bg-slate-900 text-white'
-                                    }`}
-                                    title={`${ev.title} (${ev.schedule})`}
-                                  >
-                                    {ev.isKen ? '⭐ ' : '🎪 '}
-                                    {ev.title}
-                                  </div>
-                                ))}
-                              </div>
+                              {/* Mini Dot Event Indicator */}
+                              {matchedDayEvents.length > 0 && (
+                                <div className="flex items-center gap-0.5 justify-center mt-1">
+                                  {matchedDayEvents.slice(0, 3).map((ev: EventItem) => (
+                                    <span
+                                      key={ev.id}
+                                      className={`w-1.5 h-1.5 rounded-full ${
+                                        ev.isKen ? 'bg-amber-500' : 'bg-red-500'
+                                      }`}
+                                      title={ev.title}
+                                    />
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           );
                         })}
                       </div>
                     </div>
 
-                    {/* Selected Month / Day Event Detail Cards */}
-                    <div className="space-y-3 pt-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-orbitron font-bold text-xs sm:text-sm uppercase text-black">
-                            {calendarSelectedDate 
-                              ? (isEn ? `📅 Events on ${calendarSelectedDate} ${monthNamesEn[calendarMonth]} 2026:` : `📅 Event pada ${calendarSelectedDate} ${monthNamesId[calendarMonth]} 2026:`)
-                              : (isEn ? `🎪 All Events in ${monthNamesEn[calendarMonth]} 2026 (${eventsInActiveMonth.length}):` : `🎪 Seluruh Event Bulan ${monthNamesId[calendarMonth]} 2026 (${eventsInActiveMonth.length}):`)}
-                          </h4>
-                        </div>
-                        {calendarSelectedDate && (
-                          <button
-                            onClick={() => setCalendarSelectedDate(null)}
-                            className="text-xs text-amber-700 font-bold hover:underline cursor-pointer"
-                          >
-                            {isEn ? 'Show All Month Events' : 'Tampilkan Semua Bulan Ini'}
-                          </button>
-                        )}
-                      </div>
-
-                      {calendarEventsToDisplay.length === 0 ? (
-                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center text-gray-500 space-y-2">
-                          <p className="text-xs">
-                            {isEn 
-                              ? `No official festivals scheduled in ${monthNamesEn[calendarMonth]} 2026.`
-                              : `Belum ada festival resmi yang dijadwalkan pada bulan ${monthNamesId[calendarMonth]} 2026.`}
-                          </p>
-                          <button
-                            onClick={() => setCalendarMonth(7)} // jump to august
-                            className="text-xs text-black font-bold underline cursor-pointer"
-                          >
-                            {isEn ? 'View Peak Festival Season (August 2026) →' : 'Lihat Musim Puncak Festival (Agustus 2026) →'}
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {calendarEventsToDisplay.map((ev: EventItem) => (
-                            <div
-                              key={ev.id}
-                              className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-xs hover:border-black transition-all flex flex-col justify-between group"
-                            >
-                              <div>
-                                <div className="relative h-40 w-full overflow-hidden bg-gray-100">
-                                  <img
-                                    src={ev.imageUrl || 'https://images.unsplash.com/photo-1549479373-cf673e4a9e2c?auto=format&fit=crop&w=800&q=80'}
-                                    alt={ev.title}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                    loading="lazy"
-                                  />
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
-                                  <div className="absolute top-2 left-2 flex items-center gap-1.5 flex-wrap">
-                                    {ev.isKen && (
-                                      <span className="bg-amber-400 text-black font-orbitron font-bold text-[9px] uppercase px-2 py-0.5 rounded shadow-sm">
-                                        ⭐ KEN Kemenparekraf
-                                      </span>
-                                    )}
-                                  </div>
-                                  <div className="absolute bottom-2 left-3 right-3 text-white">
-                                    <h3 className="font-orbitron font-bold text-xs sm:text-sm line-clamp-1">
-                                      {isEn && ev.titleEn ? ev.titleEn : ev.title}
-                                    </h3>
-                                    <p className="text-[10px] text-gray-200 flex items-center gap-1 mt-0.5">
-                                      <MapPin className="w-3 h-3 text-amber-400" />
-                                      <span className="truncate">{isEn && ev.locationEn ? ev.locationEn : ev.location}</span>
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="p-3.5 space-y-2.5">
-                                  <div className="flex items-center justify-between text-[11px] bg-amber-50 p-2 rounded-lg border border-amber-200">
-                                    <span className="font-bold text-amber-900 flex items-center gap-1">
-                                      📅 {isEn && ev.scheduleEn ? ev.scheduleEn : ev.schedule}
-                                    </span>
-                                    <a
-                                      href={getGoogleCalendarUrl(ev)}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-[10px] text-blue-700 font-bold hover:underline flex items-center gap-0.5"
-                                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
-                                    >
-                                      <Calendar className="w-3 h-3" />
-                                      <span>+ Kalender</span>
-                                    </a>
-                                  </div>
-
-                                  <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                                    {isEn && ev.descriptionEn ? ev.descriptionEn : ev.description}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="p-3.5 pt-0 flex items-center gap-2">
-                                <button
-                                  onClick={() => handlePlanEventWithAi(ev)}
-                                  className="flex-1 py-2 px-3 rounded-lg bg-black hover:bg-neutral-800 text-white font-jakarta font-bold text-[10.5px] uppercase transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-                                >
-                                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                                  <span>{isEn ? 'Plan Trip with AI' : 'Rencanakan dengan AI'}</span>
-                                </button>
-
-                                <button
-                                  onClick={() => setSelectedEvent(ev)}
-                                  className="py-2 px-3 rounded-lg border border-gray-300 hover:border-black text-black font-jakarta font-bold text-[10.5px] uppercase transition-all cursor-pointer"
-                                >
-                                  {isEn ? 'Detail' : 'Detail'}
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* ======================================================== */}
-                {/* 2. MODE DAFTAR LENGKAP (LIST VIEW)                       */}
-                {/* ======================================================== */}
-                {eventViewMode === 'list' && (
-                  <div className="space-y-4">
-                    {/* Filter Controls Bar (100% 1 Baris Pas Tanpa Slider) */}
-                    <div className="space-y-2.5 bg-gray-50 p-2.5 sm:p-3 rounded-xl border border-gray-200">
-                      {/* Category Filter Pills (5 Grid Columns - 1 Baris Pas) */}
-                      <div className="grid grid-cols-5 gap-1 text-center">
+                    {/* Category Filter Pills on Left Sidebar */}
+                    <div className="bg-gray-50 p-2.5 rounded-xl border border-gray-200 space-y-1.5">
+                      <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                        {isEn ? 'Filter by Category' : 'Filter Kategori Event'}
+                      </span>
+                      <div className="grid grid-cols-2 gap-1.5">
                         {[
                           { key: 'all', label: isEn ? `Semua (${eventItems.length})` : `Semua (${eventItems.length})` },
                           { key: 'ken', label: isEn ? `⭐ KEN (${totalKenCount})` : `⭐ KEN (${totalKenCount})` },
@@ -1968,7 +1822,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <button
                             key={f.key}
                             onClick={() => setEventCategoryFilter(f.key)}
-                            className={`w-full py-1.5 px-0.5 rounded-lg text-[9.5px] sm:text-[10.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
+                            className={`w-full py-1.5 px-2 rounded-lg text-[10px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
                               eventCategoryFilter === f.key
                                 ? 'bg-black text-white shadow-xs'
                                 : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
@@ -1979,56 +1833,66 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </button>
                         ))}
                       </div>
-
-                      {/* Month Filter Tabs (1 Baris Pas Tanpa Slider) */}
-                      <div className="flex items-center gap-0.5 w-full pt-2 border-t border-gray-200/60">
-                        <button
-                          onClick={() => setEventMonthFilter('all')}
-                          className={`flex-1 py-1 px-0.5 rounded text-[9px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
-                            eventMonthFilter === 'all'
-                              ? 'bg-black text-white shadow-xs'
-                              : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
-                          }`}
-                          title={isEn ? 'All Months' : 'Semua Bulan'}
-                        >
-                          {isEn ? 'All' : 'Semua'}
-                        </button>
-
-                        <button
-                          onClick={() => setEventMonthFilter('current')}
-                          className={`flex-1 py-1 px-0.5 rounded text-[9px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
-                            eventMonthFilter === 'current'
-                              ? 'bg-red-600 text-white shadow-xs'
-                              : 'bg-red-50 text-red-700 border border-red-200 hover:border-red-400'
-                          }`}
-                          title={isEn ? 'This Month' : 'Bulan Ini'}
-                        >
-                          {isEn ? 'Now' : 'Ini'}
-                        </button>
-
-                        {(isEn ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] : ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des']).map((mShort, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => setEventMonthFilter(idx)}
-                            className={`flex-1 py-1 px-0.5 rounded text-[8.5px] sm:text-[9.5px] font-bold uppercase transition-all cursor-pointer text-center truncate ${
-                              eventMonthFilter === idx
-                                ? 'bg-black text-white shadow-xs'
-                                : 'bg-white border border-gray-200 text-gray-600 hover:border-black hover:text-black'
-                            }`}
-                            title={mShort}
-                          >
-                            {mShort}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* ALL EVENTS LIST (Chronologically Sorted - Upcoming First) */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {sortedEvents.map(renderEventCard)}
                     </div>
                   </div>
-                )}
+
+                  {/* ======================================================== */}
+                  {/* PANEL KANAN: SEMUA EVENT TETAP 2 KOLOM PANEL            */}
+                  {/* ======================================================== */}
+                  <div className="flex-1 w-full space-y-4">
+                    {/* Header Panel Kanan: Status Bulan / Tanggal Terpilih */}
+                    <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-gray-200">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-orbitron font-bold text-xs sm:text-sm uppercase text-black">
+                          {calendarSelectedDate
+                            ? (isEn ? `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesEn[calendarMonth]} 2026:` : `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesId[calendarMonth]} 2026:`)
+                            : (isEn ? `🎪 Event Bulan ${monthNamesEn[calendarMonth]} 2026 (${eventsInActiveMonth.length}):` : `🎪 Event Bulan ${monthNamesId[calendarMonth]} 2026 (${eventsInActiveMonth.length}):`)}
+                        </h3>
+                      </div>
+
+                      {calendarSelectedDate ? (
+                        <button
+                          onClick={() => setCalendarSelectedDate(null)}
+                          className="text-xs text-amber-700 font-bold hover:underline cursor-pointer bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200"
+                        >
+                          {isEn ? '← Show All Month Events' : '← Tampilkan Seluruh Bulan Ini'}
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] text-gray-500 font-medium font-jakarta">
+                            {isEn ? `Total ${eventItems.length} Annual Events` : `Total ${eventItems.length} Event Tahunan`}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 2 Kolom Event Cards di Sebelah Kanan */}
+                    {calendarEventsToDisplay.length === 0 ? (
+                      <div className="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center text-gray-500 space-y-3">
+                        <p className="text-xs sm:text-sm font-jakarta">
+                          {isEn
+                            ? `No events scheduled in ${monthNamesEn[calendarMonth]} 2026.`
+                            : `Belum ada festival resmi yang dijadwalkan pada bulan ${monthNamesId[calendarMonth]} 2026.`}
+                        </p>
+                        <div className="flex justify-center gap-2">
+                          <button
+                            onClick={() => {
+                              setCalendarMonth(7); // Jump to August (Peak Season)
+                              setCalendarSelectedDate(null);
+                            }}
+                            className="bg-black hover:bg-neutral-800 text-white font-jakarta font-bold text-xs px-4 py-2 rounded-lg cursor-pointer"
+                          >
+                            {isEn ? 'View Peak Festival Season (August 2026) →' : 'Lihat Musim Puncak Festival (Agustus 2026) →'}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {calendarEventsToDisplay.map(renderEventCard)}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             );
           })()}
