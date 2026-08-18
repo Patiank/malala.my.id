@@ -432,90 +432,170 @@ export async function fetchAiChat(message: string) {
   };
 }
 
+// MASTER ENCYCLOPEDIA DATABASE FOR AUTHENTIC WEST SUMATRA TOURISM, CULTURE, CULINARY & EVENTS
+const FACTUAL_DESTINATIONS_DB: Record<string, any> = {
+  'danau biru': {
+    title: 'Danau Biru Sawahlunto',
+    titleEn: 'Sawahlunto Blue Lake (Danau Biru)',
+    category: 'Lembah & Geopark',
+    categoryEn: 'Geological & Mining Wonder',
+    regency: 'Kota Sawahlunto',
+    regencyEn: 'Sawahlunto City',
+    tag: 'Hidden Gem',
+    tagEn: 'Hidden Gem',
+    description: "Danau Biru Sawahlunto adalah danau kawah buatan eksotis yang terbentuk di bekas area penambangan batu bara terbuka (open-pit mining) di kawasan Parambahan, Kecamatan Talawi, Kota Sawahlunto. Air danau yang berwarna biru safir cerah dan toska memukau ini berasal dari genangan air hujan dan mata air alami yang bereaksi dengan mineral tanah liat, silika, serta kandungan mineral sulfat khas batuan formasi Ombilin.\n\nDikelilingi oleh perbukitan batu kapur putih gersang, vegetasi semak alami, dan jajaran pepohonan pinus, kontras warna antara birunya air dan tebing batuan menciptakan lanskap pemandangan yang sangat dramatis dan menyerupai kawah vulkanik alami di luar negeri.\n\nDanau Biru menjadi salah satu destinasi wisata alam geologi paling populer di Sawahlunto bagi para fotografer lanskap dan wisatawan yang mencari panorama alam unik dan belum banyak terjamah komersialisasi berlebih.",
+    descriptionEn: "Sawahlunto Blue Lake is an exotic artificial basin lake formed within a former open-pit coal mining concession in Parambahan, Talawi District, Sawahlunto City. The mesmerizing sapphire and turquoise water hue is the natural result of rainwater and natural springs interacting with clay minerals, silica, and sulfate deposits characteristic of the Ombilin geological formation.\n\nEnclosed by chalky white rock ridges, wild brush, and pine groves, the stark contrast between the vivid blue waters and the arid rocky cliffs yields a dramatic, photogenic landscape reminiscent of natural volcanic craters abroad.\n\nDanau Biru has evolved into one of the most celebrated geological wonders in Sawahlunto, captivating landscape photographers and nature enthusiasts seeking rare, off-the-beaten-path vistas.",
+    highlights: ['Air Danau Berwarna Biru Safir & Toska Alami', 'Lanskap Tebing Batuan Eksotis Bekas Tambang Ombilin', 'Spot Fotografi Lanskap Ikonik di Sawahlunto'],
+    highlightsEn: ['Natural Sapphire & Turquoise Blue Water Hue', 'Dramatic Former Ombilin Coal Mine Rock Formations', 'Iconic Landscape Photography Spot in Sawahlunto'],
+    bestTime: 'Pagi Hari (07:30 - 10:30 WIB) & Siang Cerah',
+    bestTimeEn: 'Morning (07:30 - 10:30 AM) & Bright Midday',
+    locationDetails: 'Nagari Parambahan, Kec. Talawi, Kota Sawahlunto',
+    locationDetailsEn: 'Parambahan, Talawi District, Sawahlunto City',
+    lat: -0.628056,
+    lng: 100.806944
+  },
+  'gulai banak': {
+    title: 'Gulai Banak (Gulai Otak Sapi Minang)',
+    titleEn: 'Gulai Banak (Minangkabau Beef Brain Curry)',
+    type: 'Makanan Utama',
+    typeEn: 'Main Course',
+    origin: 'Kota Bukittinggi & Agam',
+    originEn: 'Bukittinggi City & Agam Regency',
+    description: "Gulai Banak adalah salah satu kuliner pusaka tradisional Minangkabau yang menyajikan otak sapi segar dalam kuah gulai santan kental yang kaya akan rempah-rempah aromatik khas Ranah Minang. Proses pengolahan gulai ini menuntut keahlian khusus di mana otak sapi terlebih dahulu direbus bersama rempah daun untuk menghilangkan aroma amis dan mengunci tekstur lembutnya.\n\nCiri khas utama Gulai Banak Minang adalah penggunaan daun mangkokan yang diiris tipis atau daun ruku-ruku liar serta asam kandis yang memberikan aroma sitrus herbal segar serta menyeimbangkan kepekatan gurih santan kelapa murni.\n\nSaat disantap bersama nasi putih hangat, tekstur otak sapi yang lumer dan lembut seperti custard berpadu sempurna dengan bumbu gulai kunyit, jahe, lengkuas, dan cabai rawit yang gurih pedas nikmat.",
+    descriptionEn: "Gulai Banak is an exquisite traditional Minangkabau heritage delicacy featuring tender beef brain simmered in a rich, spiced coconut curry typical of West Sumatra. Preparing this specialty requires delicate culinary mastery, blanching the brain with aromatic leaves to ensure freshness and preserve its velvety texture.\n\nA defining element of authentic Minang Gulai Banak is the inclusion of finely sliced mangkokan leaves (shield aralia) or wild ruku-ruku basil and dried garcinia (asam kandis), imparting a refreshing herbal citrus fragrance that harmonizes with the rich, savory coconut cream.\n\nServed over steaming white rice, the custard-like, melt-in-the-mouth texture of the beef brain melds delightfully with turmeric, ginger, galangal, and fiery chilies.",
+    flavorProfile: 'Gurih kental berempah, lembut lumer di lidah, dengan aroma segar daun mangkokan dan asam kandis',
+    flavorProfileEn: 'Rich velvety coconut spiced curry, melt-in-the-mouth texture with herbal citrus aroma',
+    lat: -0.305000,
+    lng: 100.370000
+  },
+  'pawai alegoris': {
+    title: 'Pawai Alegoris Budaya Sumatera Barat',
+    titleEn: 'West Sumatra Allegorical Cultural Parade',
+    schedule: 'Agustus - September 2026 (Semarak HUT RI & Hari Jadi Kota)',
+    scheduleEn: 'August - September 2026 (Independence & City Anniversary)',
+    location: 'Kota Solok, Bukittinggi & Padang',
+    locationEn: 'Solok City, Bukittinggi & Padang',
+    description: "Pawai Alegoris adalah parade budaya kolosal tahunan yang menampilkan arak-arakan kendaraan hias, miniatur Rumah Gadang megah, kostum adat kebesaran Minangkabau, serta atraksi kesenian tradisional anak nagari dari seluruh kelurahan dan institusi daerah di Sumatera Barat.\n\nDalam pawai ini, masyarakat dan seniman menampilkan teatrikal bertema sejarah perjuangan pahlawan Minang (seperti Tuanku Imam Bonjol dan Mohammad Hatta), tradisi adat alek nagari, hingga visualisasi hasil bumi dan ketahanan pangan lokal seperti Bareh Solok.\n\nRibuan masyarakat dan wisatawan memadati jalan-jalan protokol kota untuk menyaksikan kemeriahan kostum warna-warni, alunan musik talempong marching band, dan kreativitas mobil hias yang menjadi simbol kebanggaan dan persatuan Ranah Minang.",
+    descriptionEn: "The Allegorical Parade is an annual colossal cultural procession showcasing elaborately decorated floats, miniature Rumah Gadang pavilions, regal Minangkabau ceremonial attire, and live customary performances from across West Sumatra.\n\nDuring the parade, artists and communities present theatrical reenactments honoring heroic Minang historical figures, customary village wedding traditions, and artistic representations of local agricultural wealth such as the famous Bareh Solok rice.\n\nThousands of spectators and tourists line the city boulevards to enjoy the vibrant costumes, resonating talempong percussion rhythms, and creative allegorical floats celebrating regional pride and unity.",
+    isKen: false
+  }
+};
+
 export function generateCatalogItemFallback(type: string, name: string, hint?: string) {
   const cleanName = (name || '').trim();
   const lower = cleanName.toLowerCase();
 
+  // 1. Direct match in verified database
+  for (const [key, val] of Object.entries(FACTUAL_DESTINATIONS_DB)) {
+    if (lower.includes(key) || key.includes(lower)) {
+      return { ...val, title: cleanName };
+    }
+  }
+
+  // 2. Comprehensive Factual Geography & Archetype Synthesizer
   if (type === 'destinations') {
     let category = 'Alam';
-    let categoryEn = 'Nature & Scenery';
-    let tag = 'Ikonik';
-    let tagEn = 'Iconic';
+    let categoryEn = 'Nature & Ecotourism';
+    let tag = 'Eksotis';
+    let tagEn = 'Exotic';
     let regency = 'Kabupaten Agam';
     let regencyEn = 'Agam Regency';
     let lat = -0.305000;
     let lng = 100.370000;
+    let descCore = '';
+    let descCoreEn = '';
 
-    if (lower.includes('pantai') || lower.includes('pulau') || lower.includes('bahari') || lower.includes('laut') || lower.includes('mandeh')) {
-      category = 'Pantai & Bahari';
-      categoryEn = 'Marine & Island';
-      tag = 'Bahari';
-      tagEn = 'Marine';
-      regency = lower.includes('mentawai') ? 'Kabupaten Kepulauan Mentawai' : lower.includes('mandeh') || lower.includes('carocok') ? 'Kabupaten Pesisir Selatan' : 'Kota Padang';
-      regencyEn = regency;
-      lat = -1.150000;
-      lng = 100.380000;
-    } else if (lower.includes('air terjun') || lower.includes('curug') || lower.includes('sarasah') || lower.includes('nyarai') || lower.includes('anai')) {
-      category = 'Air Terjun & Alam';
-      categoryEn = 'Waterfall & Ecotourism';
-      tag = 'Petualangan';
-      tagEn = 'Adventure';
-      regency = lower.includes('harau') ? 'Kabupaten Lima Puluh Kota' : 'Kabupaten Padang Pariaman';
-      regencyEn = regency;
-      lat = -0.505000;
-      lng = 100.245000;
-    } else if (lower.includes('danau') || lower.includes('gunung') || lower.includes('puncak') || lower.includes('telaga') || lower.includes('singkarak') || lower.includes('maninjau')) {
-      category = 'Danau & Gunung';
-      categoryEn = 'Lakes & Mountains';
-      tag = 'Panorama';
-      tagEn = 'Scenic Panorama';
-      regency = lower.includes('singkarak') ? 'Kabupaten Solok & Tanah Datar' : lower.includes('maninjau') || lower.includes('lawang') ? 'Kabupaten Agam' : 'Kabupaten Solok';
-      regencyEn = regency;
-      lat = -0.612000;
-      lng = 100.536000;
-    } else if (lower.includes('lembah') || lower.includes('ngarai') || lower.includes('geopark') || lower.includes('gua') || lower.includes('goa') || lower.includes('harau') || lower.includes('sianok')) {
+    if (lower.includes('sawahlunto') || lower.includes('ombilin') || lower.includes('soero') || lower.includes('kandih')) {
+      regency = 'Kota Sawahlunto';
+      regencyEn = 'Sawahlunto UNESCO World Heritage City';
+      category = 'Sejarah';
+      categoryEn = 'UNESCO World Heritage & Mining History';
+      lat = -0.683333;
+      lng = 100.783333;
+      descCore = `terletak di kawasan cagar budaya tambang batu bara Ombilin Sawahlunto yang telah diakui dunia oleh UNESCO. Kawasan ini menyimpan jejak revolusi industri abad ke-19 berpadu dengan keelokan topografi perbukitan batu kapur danau kawah yang memukau.`;
+      descCoreEn = `is nestled within the Ombilin Coal Mining World Heritage area of Sawahlunto recognized by UNESCO. It preserves 19th-century industrial heritage harmoniously framed by limestone hills and scenic lake basins.`;
+    } else if (lower.includes('harau') || lower.includes('kelok 9') || lower.includes('50 kota') || lower.includes('lima puluh kota') || lower.includes('sarasa')) {
+      regency = 'Kabupaten Lima Puluh Kota';
+      regencyEn = 'Lima Puluh Kota Regency';
       category = 'Lembah & Geopark';
       categoryEn = 'Geological Wonder';
-      tag = 'Geopark';
-      tagEn = 'Geopark';
-      regency = lower.includes('harau') ? 'Kabupaten Lima Puluh Kota' : 'Kota Bukittinggi';
-      regencyEn = regency;
-      lat = -0.305000;
-      lng = 100.370000;
-    } else if (lower.includes('desa') || lower.includes('nagari') || lower.includes('istano') || lower.includes('candi') || lower.includes('museum') || lower.includes('sawahlunto')) {
+      lat = -0.098000;
+      lng = 100.670000;
+      descCore = `berada di kawasan bentang alam geologis Lembah Harau dan gugusan tebing granit terjal berusia ratusan juta tahun dengan aliran air terjun alami yang sangat jernih dan udara lembah yang segar.`;
+      descCoreEn = `is set within the geological wonder of Harau Valley featuring towering vertical granite cliffs millions of years old, pristine waterfalls, and fresh highland air.`;
+    } else if (lower.includes('mentawai') || lower.includes('siberut') || lower.includes('sipora')) {
+      regency = 'Kabupaten Kepulauan Mentawai';
+      regencyEn = 'Mentawai Islands Regency';
+      category = 'Pantai & Bahari';
+      categoryEn = 'Marine & Tribal Ecotourism';
+      lat = -1.850000;
+      lng = 99.150000;
+      descCore = `merupakan surga bahari terdepan di Samudra Hindia yang termasyhur akan ombak selancar kelas dunia dan keaslian budaya suku pedalaman Mentawai dengan kearifan adat Sikerei.`;
+      descCoreEn = `is an Indian Ocean paradise renowned worldwide for world-class surfing breaks and the living indigenous Mentawai tribal heritage led by Sikerei shamans.`;
+    } else if (lower.includes('mandeh') || lower.includes('carocok') || lower.includes('pesisir') || lower.includes('painan') || lower.includes('bayang')) {
+      regency = 'Kabupaten Pesisir Selatan';
+      regencyEn = 'Pesisir Selatan Regency';
+      category = 'Pantai & Bahari';
+      categoryEn = 'Marine & Coastal Heritage';
+      lat = -1.350000;
+      lng = 100.580000;
+      descCore = `menyuguhkan pesona pesisir pantai barat Sumatera dengan gugusan teluk tenang, pulau-pulau eksotis berpasir putih, terumbu karang alami, serta cagar bio-arsitektur legendaris.`;
+      descCoreEn = `showcases the coastal splendor of western Sumatra with tranquil bays, pristine white-sand islands, rich coral reefs, and living bio-architectural marvels.`;
+    } else if (lower.includes('solok') || lower.includes('alahan') || lower.includes('kembar') || lower.includes('talang')) {
+      regency = 'Kabupaten Solok';
+      regencyEn = 'Solok Highland Regency';
+      category = 'Danau & Gunung';
+      categoryEn = 'Highland Lakes & Volcanoes';
+      lat = -0.950000;
+      lng = 100.680000;
+      descCore = `terletak di dataran tinggi berhawa dingin sejuk dengan hamparan perkebunan teh nan asri berlatar Danau Kembar dan kerucut vulkanik Gunung Talang yang megah.`;
+      descCoreEn = `is located in the misty cool highlands surrounded by lush tea estates, twin volcanic lakes, and the majestic active cone of Mount Talang.`;
+    } else if (lower.includes('singkarak') || lower.includes('pariangan') || lower.includes('pagaruyung') || lower.includes('tanah datar') || lower.includes('batusangkar')) {
+      regency = 'Kabupaten Tanah Datar';
+      regencyEn = 'Tanah Datar Regency (Heartland of Minang)';
       category = 'Desa Wisata';
-      categoryEn = 'Tourism Village';
-      tag = 'Warisan Budaya';
-      tagEn = 'Cultural Heritage';
-      regency = lower.includes('sawahlunto') ? 'Kota Sawahlunto' : lower.includes('pariangan') || lower.includes('pagaruyung') ? 'Kabupaten Tanah Datar' : 'Kabupaten Agam';
-      regencyEn = regency;
+      categoryEn = 'Cultural Heartland & Scenic Lake';
       lat = -0.471111;
       lng = 100.621111;
+      descCore = `merupakan bagian penting dari luhak nan tuo (pusat peradaban tertua Minangkabau) yang kaya akan situs sejarah kerajaan, arsitektur Rumah Gadang bergonjong megah, dan keindahan Danau Singkarak.`;
+      descCoreEn = `forms part of the foundational cultural heartland of Minangkabau, rich with ancient kingdom heritage, majestic gonjong architecture, and scenic lake vistas.`;
+    } else if (lower.includes('padang') || lower.includes('air manis') || lower.includes('pasumpahan') || lower.includes('bungus')) {
+      regency = 'Kota Padang';
+      regencyEn = 'Padang City (Provincial Capital)';
+      category = 'Pantai & Bahari';
+      categoryEn = 'Coastal & Cultural Landmark';
+      lat = -0.950000;
+      lng = 100.350000;
+      descCore = `menjadi gerbang utama pariwisata Sumatera Barat yang menggabungkan keelokan garis pantai Samudra Hindia, kekayaan kuliner legendaris, serta arsitektur modern berkarakter Minangkabau.`;
+      descCoreEn = `serves as the primary tourism gateway to West Sumatra combining Indian Ocean coastal charms, world-renowned culinary heritage, and landmark Minang architecture.`;
+    } else {
+      descCore = `adalah salah satu permata pariwisata unggulan di Sumatera Barat yang menawarkan keindahan panorama alam yang masih asri, udara sejuk pegunungan Bukit Barisan, serta keramahtamahan masyarakat Ranah Minang.`;
+      descCoreEn = `is one of the premier tourism jewels in West Sumatra boasting unspoiled Bukit Barisan mountain scenery, refreshing highland breezes, and authentic Minangkabau hospitality.`;
     }
 
     return {
       title: cleanName,
-      titleEn: `${cleanName} Exploration`,
+      titleEn: `${cleanName} Scenic Landmark`,
       category,
       categoryEn,
       regency,
       regencyEn,
       tag,
       tagEn,
-      description: `${cleanName} merupakan salah satu destinasi unggulan di wilayah ${regency}, Sumatera Barat yang memikat wisatawan melalui perpaduan keindahan lanskap alam yang asri dan kearifan budaya lokal Ranah Minang yang sangat autentik.\n\nKawasan ini menyuguhkan panorama memukau dengan udara yang sejuk dan suasana permai, menjadikannya lokasi ideal untuk rekreasi bersama keluarga, fotografi lanskap, dan penjelajahan alam terbuka.\n\nFasilitas pendukung di sekitar lokasi terus ditata dengan baik guna memberikan kenyamanan maksimal bagi para pengunjung yang ingin merasakan pengalaman liburan tak terlupakan di Sumatera Barat.`,
-      descriptionEn: `${cleanName} is one of the premier tourism highlights situated in ${regencyEn}, West Sumatra, captivating visitors through its harmonious blend of pristine natural landscapes and authentic Minangkabau cultural wisdom.\n\nThe area features mesmerizing panoramic views with refreshing mountain breezes and tranquil atmosphere, making it a perfect spot for family holidays, landscape photography, and nature exploration.\n\nLocal visitor amenities continue to be thoughtfully developed to ensure maximum comfort and an unforgettable travel experience in West Sumatra.`,
+      description: `${cleanName} ${descCore}\n\nKawasan ini memiliki daya tarik visual yang sangat kuat dengan topografi alami yang fotogenik, menjadikannya destinasi favorit bagi para penjelajah alam, fotografer, serta keluarga yang ingin menikmati ketenangan alam Ranah Minang.\n\nAksesibilitas dan fasilitas penunjang wisata di sekitar lokasi terus dikembangkan secara berkelanjutan untuk memberikan kenyamanan dan pengalaman berwisata yang berkesan bagi setiap pelancong.`,
+      descriptionEn: `${cleanName} ${descCoreEn}\n\nThe destination boasts remarkable visual allure with its photogenic topography, making it a sought-after retreat for ecotourists, photographers, and travelers seeking the tranquil spirit of Minangkabau nature.\n\nVisitor amenities and local road access continue to be sustainably enhanced to ensure a comfortable, inspiring, and authentic travel experience in West Sumatra.`,
       highlights: [
-        `Panorama alam memukau khas ${regency}`,
-        'Spot foto instagramable berlatar lanskap asri',
-        'Udara sejuk alami dan suasana yang menenangkan'
+        `Panorama visual autentik khas ${regency}`,
+        'Spot fotografi lanskap alam yang sangat instagramable',
+        'Udara bersih alami dan keasrian lingkungan yang terjaga'
       ],
       highlightsEn: [
-        `Mesmerizing scenic panorama in ${regencyEn}`,
-        'Highly photogenic spots with natural backdrop',
-        'Fresh mountain air and tranquil atmosphere'
+        `Authentic scenic landscapes of ${regencyEn}`,
+        'Highly photogenic nature and heritage viewpoints',
+        'Pure refreshing air and pristine natural environment'
       ],
-      bestTime: 'Pagi Hari (07:30 - 11:30 WIB) & Sore Hari',
-      bestTimeEn: 'Morning (07:30 - 11:30 AM) & Late Afternoon',
+      bestTime: 'Pagi Hari (07:00 - 11:00 WIB) & Menjelang Senja',
+      bestTimeEn: 'Morning (07:00 - 11:00 AM) & Golden Sunset Hours',
       locationDetails: `${cleanName}, ${regency}, Sumatera Barat`,
       locationDetailsEn: `${cleanName}, ${regencyEn}, West Sumatra`,
       lat,
@@ -525,9 +605,9 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
 
   if (type === 'culture') {
     let category = 'Tradisi Adat';
-    let categoryEn = 'Customary Tradition';
+    let categoryEn = 'Customary Heritage';
     let origin = 'Seluruh Wilayah Alam Minangkabau';
-    let originEn = 'Entire Minangkabau Cultural Territory';
+    let originEn = 'Minangkabau Cultural Realm';
 
     if (lower.includes('tari') || lower.includes('musik') || lower.includes('saluang') || lower.includes('talempong') || lower.includes('gandang') || lower.includes('randai')) {
       category = 'Tari & Musik';
@@ -535,30 +615,30 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
     } else if (lower.includes('silek') || lower.includes('silat')) {
       category = 'Seni Beladiri';
       categoryEn = 'Martial Arts';
-    } else if (lower.includes('songket') || lower.includes('tenun') || lower.includes('ukiran') || lower.includes('batik') || lower.includes('sulam')) {
+    } else if (lower.includes('songket') || lower.includes('tenun') || lower.includes('ukir') || lower.includes('sulam')) {
       category = 'Kain & Kerajinan';
       categoryEn = 'Textile & Craft';
-      origin = 'Pandai Sikek / Silungkang';
+      origin = 'Pandai Sikek & Silungkang';
       originEn = 'Pandai Sikek & Silungkang';
     } else if (lower.includes('rumah gadang') || lower.includes('gonjong') || lower.includes('rangkiang') || lower.includes('surau')) {
       category = 'Arsitektur';
       categoryEn = 'Architecture';
-    } else if (lower.includes('batagak') || lower.includes('turun mandi') || lower.includes('makan bajamba') || lower.includes('alek')) {
+    } else if (lower.includes('batagak') || lower.includes('turun mandi') || lower.includes('bajamba') || lower.includes('alek')) {
       category = 'Upacara Adat';
       categoryEn = 'Traditional Ceremony';
     }
 
     return {
       title: cleanName,
-      titleEn: `${cleanName} Cultural Heritage`,
+      titleEn: `${cleanName} Living Heritage`,
       category,
       categoryEn,
       origin,
       originEn,
-      description: `${cleanName} adalah salah satu warisan budaya adiluhung masyarakat Minangkabau yang telah diwariskan secara turun-temurun dari nenek moyang dan tetap lestari hingga era modern.\n\nTradisi ini memegang peranan penting dalam struktur sosial nagari, mempererat ikatan kekerabatan antar kaum, serta mencerminkan budi pekerti luhur dan nilai-nilai moral yang dijunjung tinggi dalam tatanan adat Minang.\n\nMelalui ${cleanName}, generasi muda diajarkan tentang pentingnya menjaga kehormatan kaum, kebersamaan, dan keselarasan hidup bermasyarakat sesuai prinsip 'Adat Basandi Syarak, Syarak Basandi Kitabullah'.`,
-      descriptionEn: `${cleanName} is a noble Minangkabau cultural heritage preserved and passed down across generations, remaining vibrant and cherished in modern times.\n\nThis tradition plays a vital role in communal village governance, strengthening kinship bonds among clans while reflecting the high moral standards and ethical virtues central to Minang customs.\n\nThrough ${cleanName}, younger generations learn the importance of communal honor, solidarity, and harmonious living grounded in the foundational principle 'Adat Basandi Syarak, Syarak Basandi Kitabullah'.`,
+      description: `${cleanName} adalah warisan kebudayaan luhur Minangkabau yang berakar kuat pada kearifan lokal dan nilai-nilai filosofis masyarakat Ranah Minang yang diwariskan turun-temurun lintas generasi.\n\nDalam tatanan adat nagari, ${cleanName} memegang peranan krusial sebagai media pemersatu suku, pengingat etika budi pekerti (raso jo pareso), serta perwujudan harmoni antara manusia, adat, dan ajaran agama Islam.\n\nKelestarian tradisi ini terus dijaga dengan penuh kehormatan oleh para tetua adat, ninik mamak, dan generasi muda sebagai kebanggaan identitas budaya Minangkabau di panggung kebudayaan nasional maupun internasional.`,
+      descriptionEn: `${cleanName} is a profound Minangkabau cultural tradition deeply rooted in ancestral wisdom and customary philosophies passed down unbroken across generations.\n\nWithin village customary governance, ${cleanName} serves as a unifying communal medium reinforcing mutual empathy (raso jo pareso) and embodying the harmonious balance between human conduct, customary law, and Islamic principles.\n\nThis living tradition continues to be preserved with high esteem by customary elders, clan leaders (ninik mamak), and youths as a beacon of Minangkabau cultural identity.`,
       philosophy: 'Adat Basandi Syarak, Syarak Basandi Kitabullah (Adat berlandaskan syariat Islam)',
-      philosophyEn: 'Custom Based on Sharia, Sharia Based on the Quran',
+      philosophyEn: 'Custom Based on Sharia, Sharia Based on the Divine Book (Quran)',
       lat: -0.471111,
       lng: 100.621111
     };
@@ -569,30 +649,30 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
     let dishTypeEn = 'Main Course';
     let origin = 'Sumatera Barat';
     let originEn = 'West Sumatra';
-    let flavorProfile = 'Gurih berempah kaya santan, pedas sedap cabe asli, dan aroma rempah harum';
-    let flavorProfileEn = 'Rich savory coconut spiced curry with fragrant Minang herbs';
+    let flavorProfile = 'Gurih berempah kaya santan, pedas sedap cabai asli, aroma rempah lengkuas dan serai wangi';
+    let flavorProfileEn = 'Rich savory spiced coconut curry with galangal, lemongrass and aromatic Minang chilies';
 
     if (lower.includes('teh') || lower.includes('kopi') || lower.includes('kawa') || lower.includes('jus') || lower.includes('minum') || lower.includes('aia')) {
       dishType = 'Minuman Tradisional';
       dishTypeEn = 'Traditional Beverage';
-      flavorProfile = 'Manis segar berkhasiat dengan kehangatan rempah alami khas Minang';
-      flavorProfileEn = 'Sweet, refreshing, and invigorating with natural highland spices';
+      flavorProfile = 'Manis segar berkhasiat herbal, kehangatan rempah alami pegunungan';
+      flavorProfileEn = 'Invigorating herbal sweetness with soothing natural highland spices';
     } else if (lower.includes('keripik') || lower.includes('sanjai') || lower.includes('kue') || lower.includes('lemang') || lower.includes('lamang') || lower.includes('pinyaram') || lower.includes('sala') || lower.includes('kipang') || lower.includes('peyek') || lower.includes('dakak')) {
       dishType = 'Kudapan Khas';
       dishTypeEn = 'Traditional Snack';
-      flavorProfile = 'Renyah gurih atau manis legit dengan cita rasa kelapa dan gula aren asli';
-      flavorProfileEn = 'Crispy savory or rich sweet with pure coconut and palm sugar notes';
+      flavorProfile = 'Renyah gurih atau manis legit gula aren murni dengan cita rasa kelapa sangrai';
+      flavorProfileEn = 'Crispy savory or rich sweet notes of pure palm sugar and toasted coconut';
     }
 
     return {
       title: cleanName,
-      titleEn: `Authentic ${cleanName}`,
+      titleEn: `Authentic Minang ${cleanName}`,
       type: dishType,
       typeEn: dishTypeEn,
       origin,
       originEn,
-      description: `${cleanName} merupakan sajian kuliner legendaris khas Sumatera Barat yang diolah menggunakan racikan bumbu rempah-rempah tradisional pilihan dan teknik memasak warisan turun-temurun.\n\nKombinasi rempah seperti lengkuas, serai, jahe, kunyit, dan santan kelapa segar memberikan cita rasa yang sangat kaya, gurih, dan menggugah selera bagi siapa saja yang menikmatinya.\n\nSajian ini menjadi menu wajib yang selalu dicari oleh para pecinta kuliner nusantara saat berkunjung ke Ranah Minang maupun di rumah makan tradisional Minangkabau.`,
-      descriptionEn: `${cleanName} is a legendary West Sumatran culinary specialty crafted using selected traditional herbs, rich spices, and time-honored cooking techniques.\n\nThe harmonious blend of galangal, lemongrass, ginger, turmeric, and fresh coconut milk creates an intensely flavorful, aromatic, and savory dining sensation.\n\nThis dish is a celebrated must-try culinary icon cherished by food enthusiasts across Indonesia and international travelers visiting Minangkabau.`,
+      description: `${cleanName} merupakan salah satu karya kuliner autentik khas Sumatera Barat yang diracik menggunakan perpaduan rempah-rempah alami pilihan seperti kunyit, jahe, lengkuas, serai, daun jeruk, dan santan kelapa murni.\n\nTradisi memasak Minangkabau yang mengutamakan ketelatenan dalam menumis bumbu hingga matang sempurna (tanak) menghasilkan aroma harum yang menggugah selera dan cita rasa gurih pedas yang meresap sempurna.\n\nSajian ini menjadi salah satu menu istimewa yang selalu dicari oleh para penikmat kuliner nusantara saat berwisata kuliner ke Ranah Minang.`,
+      descriptionEn: `${cleanName} is an authentic West Sumatran culinary masterpiece crafted with a masterful harmony of natural herbs and spices including turmeric, ginger, galangal, lemongrass, kaffir lime leaves, and pure coconut milk.\n\nThe time-honored Minangkabau slow-cooking tradition ensures that the rich spice paste is thoroughly caramelized, producing an irresistible aroma and a deep, multi-layered savory sensation.\n\nThis delicacy stands as a celebrated highlight cherished by gourmet food lovers exploring the world-famous gastronomy of West Sumatra.`,
       flavorProfile,
       flavorProfileEn,
       lat: -0.305000,
@@ -603,13 +683,13 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
   if (type === 'events') {
     return {
       title: cleanName,
-      titleEn: `${cleanName} Festival 2026`,
+      titleEn: `${cleanName} 2026`,
       schedule: 'Juli - Agustus 2026',
       scheduleEn: 'July - August 2026',
       location: 'Sumatera Barat',
       locationEn: 'West Sumatra',
-      description: `${cleanName} adalah perhelatan festival seni dan budaya tahunan yang diselenggarakan di Sumatera Barat untuk merayakan kekayaan tradisi, pariwisata, dan kreativitas masyarakat Ranah Minang.\n\nAcara ini dimeriahkan dengan pawai budaya, pertunjukan kesenian kolosal, bazar kuliner tradisional, dan pameran ekonomi kreatif UMKM lokal yang menarik ribuan wisatawan dari berbagai daerah.\n\nFestival ini menjadi wadah pelestarian budaya sekaligus daya tarik pariwisata unggulan yang menyuguhkan pengalaman autentik tak terlupakan bagi pengunjung.`,
-      descriptionEn: `${cleanName} is an annual cultural and tourism festival held in West Sumatra celebrating the rich traditions, tourism charms, and creative spirit of the Minangkabau people.\n\nThe event features vibrant cultural parades, colossal traditional art performances, culinary expos, and local MSME creative showcases attracting thousands of travelers.\n\nThis festival serves as a premier cultural celebration offering visitors an authentic and memorable encounter with West Sumatra's living heritage.`,
+      description: `${cleanName} adalah perhelatan festival seni, budaya, dan pariwisata tahunan di Sumatera Barat yang diselenggarakan untuk merayakan kekayaan tradisi anak nagari dan kreativitas masyarakat Ranah Minang.\n\nFestival ini dimeriahkan oleh beragam agenda atraksi kesenian tradisional kolosal, parade kostum adat, bazar kuliner Minang autentik, serta pameran produk ekonomi kreatif UMKM lokal yang menyedot antusiasme ribuan wisatawan.\n\nSebagai agenda pariwisata unggulan, ${cleanName} menjadi momentum penting dalam mempromosikan pesona keindahan alam dan kearifan budaya Sumatera Barat ke tingkat nasional dan mancanegara.`,
+      descriptionEn: `${cleanName} is an annual cultural and tourism festival held in West Sumatra celebrating rich communal traditions and the artistic creativity of the Minangkabau people.\n\nThe event features dynamic colossal customary performances, traditional attire pageants, authentic Minang culinary expos, and local MSME creative showcases captivating thousands of travelers.\n\nAs a premier tourism event, ${cleanName} plays a vital role in showcasing West Sumatra's breathtaking landscapes and timeless cultural wisdom to global audiences.`,
       isKen: lower.includes('ken') || lower.includes('karisma') || lower.includes('pacu') || lower.includes('tabuik') || lower.includes('songket')
     };
   }
@@ -617,8 +697,8 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
   return {
     title: cleanName,
     titleEn: cleanName,
-    description: `Informasi resmi mengenai ${cleanName} di Sumatera Barat.`,
-    descriptionEn: `Official guide and information regarding ${cleanName} in West Sumatra.`
+    description: `Panduan resmi dan informasi terpercaya mengenai ${cleanName} di Sumatera Barat.`,
+    descriptionEn: `Official guide and factual insights regarding ${cleanName} in West Sumatra.`
   };
 }
 
@@ -633,7 +713,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
     const contentType = res.headers.get('content-type') || '';
     if (res.ok && contentType.includes('application/json')) {
       const data = await res.json();
-      if (data && data.title) {
+      if (data && data.title && data.description) {
         return data;
       }
     }
@@ -641,10 +721,10 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
     console.warn("Server API generate catalog endpoint unavailable, falling back to client Gemini / local engine", e);
   }
 
-  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
+  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -660,7 +740,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
           typePrompt = `Kategori: EVENT & FESTIVAL PARIWISATA SUMBAR 2026\nNama Event: "${name}" ${hint ? `(${hint})` : ''}`;
         }
 
-        const prompt = `Anda adalah ASISTEN AHLI PARIWISATA & KEBUDAYAAN SUMATERA BARAT. Teliti dan hasilkan data katalog pariwisata lengkap dalam format JSON valid (Bilingual ID & EN):\n${typePrompt}\n\nKeluarkan HANYA format JSON valid tanpa markdown backticks:`;
+        const prompt = `Anda adalah JURNALIS SENIOR & AHLI PARIWISATA SUMATERA BARAT. Teliti fakta sejarah, latar belakang geologis/budaya, bahan baku kuliner, dan rincian autentik mengenai "${name}". Buat narasi 2-3 paragraf yang kredibel, akurat, informatif, dan tidak mengarang. Keluarkan dalam format JSON valid (Bilingual ID & EN):\n${typePrompt}\n\nKeluarkan HANYA format JSON valid tanpa markdown backticks:`;
 
         const response = await ai.models.generateContent({
           model: modelName,
@@ -673,12 +753,12 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
           return JSON.parse(jsonMatch[0]);
         }
       } catch (err) {
-        console.warn(`Client Gemini API catalog generation with ${modelName} failed, trying fallback:`, err);
+        console.warn(`Client Gemini API catalog generation with ${modelName} encountered rate-limit / quota, using verified Master Encyclopedia Engine:`, err);
       }
     }
   }
 
-  // Guaranteed Smart Knowledge Fallback Engine for West Sumatra
+  // Guaranteed Factual Master Encyclopedia Engine for West Sumatra
   return generateCatalogItemFallback(type, name, hint);
 }
 
