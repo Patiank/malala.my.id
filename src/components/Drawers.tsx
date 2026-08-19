@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
@@ -271,6 +271,14 @@ export const Drawers: React.FC<DrawersProps> = ({
 
   // FormAI state
   const [formAiTab, setFormAiTab] = useState<'generator' | 'chat'>('generator');
+
+  // Listen for custom event to open chat directly
+  useEffect(() => {
+    const handleOpenChat = () => setFormAiTab('chat');
+    window.addEventListener('open-ai-chat', handleOpenChat);
+    return () => window.removeEventListener('open-ai-chat', handleOpenChat);
+  }, []);
+
   const [itineraryForm, setItineraryForm] = useState<any>({
     durasiHari: 3,
     profilWisatawan: {
