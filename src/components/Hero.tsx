@@ -588,7 +588,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Official Tourism Board Logo & Text (Left-Bottom) */}
-          <div className="flex items-center gap-3.5 transition-colors duration-300 pt-10 sm:pt-14 w-full max-w-md">
+          <div className="flex items-center gap-3.5 transition-colors duration-300 pt-14 sm:pt-20 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
               className="cursor-default shrink-0 select-none"
