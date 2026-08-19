@@ -3,6 +3,7 @@ import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, Ch
 import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
+import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
@@ -2202,6 +2203,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </button>
                         </div>
                       </div>
+
+                      {/* Itinerary Map */}
+                      <ItineraryMap
+                        aiResponse={aiResponse}
+                        destinations={destinations}
+                        cultureItems={cultureItems}
+                        culinaryItems={culinaryItems}
+                        eventItems={eventItems}
+                        lang={lang}
+                      />
 
                       {/* Itinerary Days */}
                       <div className="space-y-4">
