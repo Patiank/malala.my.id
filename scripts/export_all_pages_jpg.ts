@@ -45,7 +45,7 @@ async function exportPagesAndDynamicPDF() {
   const fileUrl = `file:///${htmlPath.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl}`);
-  await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+  await page.goto(fileUrl, { waitUntil: 'networkidle2', timeout: 120000 });
 
   // Wait extra 2s for images and fonts to render
   await new Promise(r => setTimeout(r, 2000));
