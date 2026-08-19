@@ -139,6 +139,22 @@ body {
   animation-play-state: paused !important;
 }
 
+@keyframes wobbleRotate {
+  0%, 100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  25% {
+    transform: rotate(-7deg) translateY(-5px);
+  }
+  75% {
+    transform: rotate(7deg) translateY(3px);
+  }
+}
+
+.animate-wobble-rotate {
+  animation: wobbleRotate 3s ease-in-out infinite;
+}
+
 /* ================================================================ */
 /* PRINT STYLES — E-BOOKLET SAVE AS PDF                              */
 /* ================================================================ */

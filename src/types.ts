@@ -10,6 +10,7 @@ export type DrawerType =
   | 'download'      // Unduh Asset, Booklet, Leaflet, Flyer
   | 'map'           // Peta Interaktif Sumatera Barat
   | 'search'        // Panel Pencarian Interaktif dari Samping Kanan
+  | 'chat'          // Tanya Uni Mala Guide Chat Box
   | null;
 
 export interface Destination {
