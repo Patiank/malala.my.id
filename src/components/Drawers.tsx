@@ -1929,28 +1929,8 @@ export const Drawers: React.FC<DrawersProps> = ({
               )}
               {/* Right Column: AI Form & Response */}
               <div className={`flex flex-col space-y-6 ${aiResponse && formAiTab === 'generator' ? 'overflow-y-auto pr-2 custom-scrollbar h-[85vh]' : 'w-full'}`}>
-              {/* FormAI Mode Switcher */}
-              <div className="grid grid-cols-2 gap-2 bg-gray-100 p-1 rounded-lg">
-                <button
-                  onClick={() => setFormAiTab('generator')}
-                  className={`py-2 px-3 rounded-md text-xs font-jakarta font-bold uppercase transition-all cursor-pointer ${
-                    formAiTab === 'generator'
-                      ? 'bg-black text-white shadow-xs'
-                      : 'text-gray-600 hover:text-black'
-                  }`}
-                >
-                  {translations[lang].tabGenerator}
-                </button>
-                <button
-                  onClick={() => setFormAiTab('chat')}
-                  className={`py-2 px-3 rounded-md text-xs font-jakarta font-bold uppercase transition-all cursor-pointer ${
-                    formAiTab === 'chat'
-                      ? 'bg-black text-white shadow-xs'
-                      : 'text-gray-600 hover:text-black'
-                  }`}
-                >
-                  {translations[lang].tabChat}
-                </button>
+              {/* FormAI Mode Switcher (Hidden as requested) */}
+              <div className="hidden">
               </div>
 
               {/* MODE 1: ITINERARY GENERATOR */}
