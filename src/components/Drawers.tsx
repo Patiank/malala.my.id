@@ -872,24 +872,6 @@ export const Drawers: React.FC<DrawersProps> = ({
             className="fixed inset-0 bg-black/40 backdrop-blur-xs z-[60] animate-fade-backdrop cursor-pointer"
             aria-hidden="true"
           />
-
-          {/* Dedicated Left Panel for AI Itinerary Map (Desktop Only) */}
-          {activeDrawer === 'formai' && aiResponse && (
-            <div className="fixed top-0 bottom-0 left-0 w-1/2 bg-gray-50 z-[70] border-r border-gray-200 shadow-2xl animate-drawer-slide-left hidden md:flex flex-col">
-              <div className="flex-1 p-6 overflow-hidden flex flex-col">
-                <ItineraryMap
-                  aiResponse={aiResponse}
-                  destinations={destinations}
-                  cultureItems={cultureItems}
-                  culinaryItems={culinaryItems}
-                  eventItems={eventItems}
-                  lang={lang}
-                  fullHeight={true}
-                />
-              </div>
-            </div>
-          )}
-
       {/* Drawer Outer Wrapper */}
       <div
         className={`fixed top-0 bottom-0 z-[70] ${
@@ -1922,7 +1904,23 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 5. FORMAI SUMATERA BARAT (AI ITINERARY & CHAT)      */}
           {/* =================================================== */}
           {activeDrawer === 'formai' && (
-            <div className="space-y-6">
+            <div className={`space-y-6 ${aiResponse && formAiTab === 'generator' ? 'md:grid md:grid-cols-2 md:gap-6 md:space-y-0 h-full' : 'flex flex-col'}`}>
+              {/* Left Column: Itinerary Map (Only visible on desktop when aiResponse exists) */}
+              {aiResponse && formAiTab === 'generator' && (
+                <div className="hidden md:flex flex-col border-r border-gray-200 pr-6 h-[85vh]">
+                  <ItineraryMap
+                    aiResponse={aiResponse}
+                    destinations={destinations}
+                    cultureItems={cultureItems}
+                    culinaryItems={culinaryItems}
+                    eventItems={eventItems}
+                    lang={lang}
+                    fullHeight={true}
+                  />
+                </div>
+              )}
+              {/* Right Column: AI Form & Response */}
+              <div className={`flex flex-col space-y-6 ${aiResponse && formAiTab === 'generator' ? 'overflow-y-auto pr-2 custom-scrollbar h-[85vh]' : 'w-full'}`}>
               {/* FormAI Mode Switcher */}
               <div className="grid grid-cols-2 gap-2 bg-gray-100 p-1 rounded-lg">
                 <button
@@ -2347,6 +2345,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </form>
                 </div>
               )}
+              </div>
             </div>
           )}
 
