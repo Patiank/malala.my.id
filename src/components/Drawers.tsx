@@ -873,6 +873,23 @@ export const Drawers: React.FC<DrawersProps> = ({
             aria-hidden="true"
           />
 
+          {/* Dedicated Left Panel for AI Itinerary Map (Desktop Only) */}
+          {activeDrawer === 'formai' && aiResponse && (
+            <div className="fixed top-0 bottom-0 left-0 w-1/2 bg-gray-50 z-[70] border-r border-gray-200 shadow-2xl animate-drawer-slide-left hidden md:flex flex-col">
+              <div className="flex-1 p-6 overflow-hidden flex flex-col">
+                <ItineraryMap
+                  aiResponse={aiResponse}
+                  destinations={destinations}
+                  cultureItems={cultureItems}
+                  culinaryItems={culinaryItems}
+                  eventItems={eventItems}
+                  lang={lang}
+                  fullHeight={true}
+                />
+              </div>
+            </div>
+          )}
+
       {/* Drawer Outer Wrapper */}
       <div
         className={`fixed top-0 bottom-0 z-[70] ${
@@ -2204,15 +2221,18 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
                       </div>
 
-                      {/* Itinerary Map */}
-                      <ItineraryMap
-                        aiResponse={aiResponse}
-                        destinations={destinations}
-                        cultureItems={cultureItems}
-                        culinaryItems={culinaryItems}
-                        eventItems={eventItems}
-                        lang={lang}
-                      />
+                      {/* Itinerary Map is now rendered in its own side panel on desktop */}
+                      <div className="block md:hidden">
+                        {/* Show map inline only on mobile devices */}
+                        <ItineraryMap
+                          aiResponse={aiResponse}
+                          destinations={destinations}
+                          cultureItems={cultureItems}
+                          culinaryItems={culinaryItems}
+                          eventItems={eventItems}
+                          lang={lang}
+                        />
+                      </div>
 
                       {/* Itinerary Days */}
                       <div className="space-y-4">

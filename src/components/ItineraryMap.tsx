@@ -9,6 +9,7 @@ interface ItineraryMapProps {
   culinaryItems: CulinaryItem[];
   eventItems: EventItem[];
   lang: string;
+  fullHeight?: boolean;
 }
 
 export const ItineraryMap: React.FC<ItineraryMapProps> = ({
@@ -18,6 +19,7 @@ export const ItineraryMap: React.FC<ItineraryMapProps> = ({
   culinaryItems,
   eventItems,
   lang,
+  fullHeight = false,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -118,11 +120,11 @@ export const ItineraryMap: React.FC<ItineraryMapProps> = ({
   }, [aiResponse, destinations, cultureItems, culinaryItems, eventItems, lang]);
 
   return (
-    <div className="w-full rounded-xl overflow-hidden border border-gray-200 mb-6 shadow-sm relative z-0">
-      <div className="bg-black text-white px-4 py-3 font-orbitron font-bold text-xs uppercase tracking-wider flex items-center justify-between">
+    <div className={`w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm relative z-0 flex flex-col ${fullHeight ? 'h-full mb-0' : 'mb-6'}`}>
+      <div className="bg-black text-white px-4 py-3 font-orbitron font-bold text-xs uppercase tracking-wider flex items-center justify-between shrink-0">
         <span>{lang === 'en' ? 'Interactive Itinerary Route Map' : 'Peta Rute Itinerary Interaktif'}</span>
       </div>
-      <div ref={mapContainerRef} className="w-full h-[400px] z-0 relative"></div>
+      <div ref={mapContainerRef} className={`w-full z-0 relative flex-1 ${fullHeight ? 'h-full min-h-[300px]' : 'h-[400px]'}`}></div>
     </div>
   );
 };
