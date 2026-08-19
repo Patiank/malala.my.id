@@ -890,7 +890,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           activeDrawer === 'hotinfo'
             ? 'w-full md:w-1/2 lg:w-1/2 left-0 border-r border-gray-200 animate-drawer-slide-left'
             : activeDrawer === 'chat'
-            ? 'w-full sm:w-[480px] md:w-[520px] left-0 border-r border-gray-200 animate-drawer-slide-left'
+            ? 'w-full sm:w-[480px] md:w-[520px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'events'
             ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'

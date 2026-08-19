@@ -586,6 +586,30 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             )}
           </div>
+
+          {/* Official Tourism Board Logo & Text (Left-Bottom) */}
+          <div className="flex items-center gap-3.5 transition-colors duration-300 pt-3 w-full max-w-md">
+            <div
+              onClick={handlePemprovLogoClick}
+              className="cursor-default shrink-0 select-none"
+            >
+              <PemprovSumbarLogo size={44} />
+            </div>
+            <div
+              className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none flex-1 min-w-0"
+              style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
+            >
+              <div>DINAS PARIWISATA</div>
+              <div title="Dinas Pariwisata Sumatera Barat" className="truncate">
+                PROVINSI SUMATERA BARAT
+              </div>
+              <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-0.5 tracking-normal normal-case transition-colors duration-300">
+                {lang === 'en'
+                  ? 'Official Tourism Portal for West Sumatra.'
+                  : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -878,33 +902,11 @@ export const Hero: React.FC<HeroProps> = ({
               );
             })()}
 
-            <div className="flex items-center gap-3.5 transition-colors duration-300 pt-2.5 border-t border-gray-200/40 w-full">
-              <div
-                onClick={handlePemprovLogoClick}
-                className="cursor-default shrink-0 select-none"
-              >
-                <PemprovSumbarLogo size={48} />
-              </div>
-              <div
-                className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none flex-1 min-w-0"
-                style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
-              >
-                <div>DINAS PARIWISATA</div>
-                <div title="Dinas Pariwisata Sumatera Barat" className="truncate">
-                  PROVINSI SUMATERA BARAT
-                </div>
-                <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-1 tracking-normal normal-case transition-colors duration-300">
-                  {lang === 'en'
-                    ? 'Official Tourism Portal for West Sumatra.'
-                    : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Tanya Uni Mala Guide Floating Bubble */}
-        <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 z-50 animate-fade-in block">
+        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right) */}
+        <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 animate-fade-in block">
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
