@@ -944,7 +944,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         </div>
 
         {/* Scrollable Main Content (Smooth, isolated scrolling) */}
-        <div className="p-6 overflow-y-auto flex-1 space-y-6 overscroll-contain scroll-smooth focus:outline-none" tabIndex={0}>
+        <div className={`overflow-y-auto flex-1 ${activeDrawer === 'chat' ? 'p-3.5 flex flex-col overflow-hidden h-full' : 'p-6 space-y-6'} overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
 
           {/* Sub-Menu Navigation Bar across main categories */}
           {['destinations', 'culture', 'culinary', 'events', 'download'].includes(activeDrawer) && (
@@ -2291,9 +2291,9 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 5.5 CHATBOT TANYA UNI MALA GUIDE (DEDICATED)       */}
           {/* =================================================== */}
           {activeDrawer === 'chat' && (
-            <div className="flex flex-col h-[calc(100vh-140px)] border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
+            <div className="flex flex-col flex-1 h-full min-h-0 border border-gray-200 rounded-xl overflow-hidden bg-gray-50 shadow-inner">
               {/* Chat Messages Log */}
-              <div className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar">
+              <div className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar min-h-0">
                 {chatHistory.map((item, index) => (
                   <div
                     key={index}
@@ -2761,10 +2761,12 @@ export const Drawers: React.FC<DrawersProps> = ({
 
         </div>
 
-        {/* Footer info */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50 text-center font-jakarta text-[10px] text-gray-500 uppercase tracking-widest shrink-0">
-          Dinas Pariwisata Provinsi Sumatera Barat © 2026 — Visit Wonderful West Sumatra
-        </div>
+        {/* Footer info (Hidden for chat so chat box gets full height) */}
+        {activeDrawer !== 'chat' && (
+          <div className="p-4 border-t border-gray-200 bg-gray-50 text-center font-jakarta text-[10px] text-gray-500 uppercase tracking-widest shrink-0">
+            Dinas Pariwisata Provinsi Sumatera Barat © 2026 — Visit Wonderful West Sumatra
+          </div>
+        )}
       </div>
       </>
       )}
