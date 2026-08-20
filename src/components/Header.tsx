@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-4 sm:px-6 md:px-[var(--pad-x)]"
+      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-5 sm:px-8 md:px-[var(--pad-x)]"
       style={{
         paddingTop: 'var(--header-pt)',
         paddingBottom: 'var(--section-gap)',

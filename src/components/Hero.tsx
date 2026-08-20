@@ -936,14 +936,14 @@ export const Hero: React.FC<HeroProps> = ({
       );
     })()}
 
-        {/* MINANGKAOS Brand Identity & Text (Mobile: Very Bottom of Screen) */}
-        <div className="flex lg:hidden items-center justify-center gap-2.5 transition-colors duration-300 mt-6 sm:mt-8 pb-4 w-full select-none z-10">
+        {/* MINANGKAOS Brand Identity & Text (Mobile: Bottom Left, Safe from chat bubble) */}
+        <div className="flex lg:hidden items-center justify-start gap-2.5 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full max-w-[calc(100%-5.5rem)] select-none z-10 pl-1">
           <div
             onClick={handlePemprovLogoClick}
             className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
             title="MINANGKAOS"
           >
-            <PemprovSumbarLogo size={46} />
+            <PemprovSumbarLogo size={48} />
           </div>
           <div
             className="font-slackside text-2xl sm:text-3xl font-normal leading-none select-none"
@@ -955,7 +955,7 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
 
         {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Shifted slightly left) */}
-        <div className="absolute bottom-10 right-12 sm:bottom-14 sm:right-16 lg:bottom-16 lg:right-20 z-50 animate-fade-in block">
+        <div className="absolute bottom-4 right-4 sm:bottom-10 sm:right-12 lg:bottom-16 lg:right-20 z-50 animate-fade-in block">
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
