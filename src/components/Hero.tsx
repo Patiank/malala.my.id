@@ -957,19 +957,19 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Right: Tanya Uni Mala Chat Bubble inline */}
-          <div className="shrink-0 -mr-1">
+          <div className="shrink-0 -mr-2 sm:-mr-1">
             <button
               onClick={() => onOpenDrawer('chat')}
               aria-label="Tanya Uni Mala Guide"
-              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none animate-wobble-rotate"
+              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none animate-wobble-rotate"
             >
-              <div className="relative w-20 h-20 sm:w-24 sm:h-24 drop-shadow-xl">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 drop-shadow-2xl">
                 <img
                   src="/chat-bubble-transparent.png"
                   alt="Tanya Uni Mala"
-                  className="w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.3)] select-none pointer-events-none"
+                  className="w-full h-full object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.35)] select-none pointer-events-none"
                 />
-                <div className="absolute top-0.5 right-1.5 sm:top-1 sm:right-2 bg-red-600 text-white text-[8px] sm:text-[9px] font-bold px-1.5 py-0.2 rounded-full animate-pulse border border-white shadow-md z-10 select-none">
+                <div className="absolute top-1.5 right-2 sm:top-2 sm:right-3 bg-red-600 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse border-2 border-white shadow-md z-10 select-none">
                   Online
                 </div>
               </div>
