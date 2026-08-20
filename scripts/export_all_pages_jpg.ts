@@ -56,8 +56,8 @@ async function exportAllPDFs() {
   const fileUrl1 = `file:///${htmlPath1.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl1}`);
-  await page1.goto(fileUrl1, { waitUntil: 'networkidle2', timeout: 120000 });
-  await new Promise(r => setTimeout(r, 2000));
+  await page1.goto(fileUrl1, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await new Promise(r => setTimeout(r, 4000));
 
   const jpgDir = path.join(process.cwd(), 'ebooklet_pages_jpg');
   if (!fs.existsSync(jpgDir)) fs.mkdirSync(jpgDir, { recursive: true });
@@ -188,8 +188,8 @@ async function exportAllPDFs() {
   const fileUrl2 = `file:///${htmlPath2.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl2}`);
-  await page2.goto(fileUrl2, { waitUntil: 'networkidle2', timeout: 120000 });
-  await new Promise(r => setTimeout(r, 2000));
+  await page2.goto(fileUrl2, { waitUntil: 'domcontentloaded', timeout: 60000 });
+  await new Promise(r => setTimeout(r, 4000));
 
   const articles2 = await page2.$$('article.page-card');
   console.log(`Ditemukan ${articles2.length} halaman kartu event.`);

@@ -588,7 +588,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         emptyItem = { id: '', title: '', schedule: '', location: '', description: '', imageUrl: '', videoUrl: '', mapUrl: '', isKen: false };
         break;
       case 'download':
-        emptyItem = { id: '', title: '', category: 'E-Booklet PDF', type: 'Document PDF', size: '2.5 MB', description: '', filename: 'Buku_Panduan.pdf', content: 'Isi Dokumen Resmi Pariwisata Sumbar...', mimeType: 'application/pdf' };
+        emptyItem = { id: '', title: '', category: 'E-Book PDF', type: 'Document PDF', size: '2.5 MB', description: '', filename: 'Buku_Panduan.pdf', content: 'Isi Dokumen Resmi Pariwisata Sumbar...', mimeType: 'application/pdf' };
         break;
       case 'hotinfo':
         emptyItem = { id: '', title: '', category: 'Berita Utama', date: 'Hari Ini', description: '', imageUrl: '', tag: 'Update', actionUrl: '' };
@@ -1564,7 +1564,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori Asset (Indonesian)</label>
-                      <input type="text" name="category" value={formData.category || ''} onChange={handleChange} placeholder="e.g. E-Booklet PDF, Logo Kit" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="category" value={formData.category || ''} onChange={handleChange} placeholder="e.g. E-Book PDF, Logo Kit" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Asset Category (English Translation)</label>

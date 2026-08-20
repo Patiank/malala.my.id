@@ -1048,20 +1048,20 @@ export const Hero: React.FC<HeroProps> = ({
               {/* 5. Unduhan */}
               <div 
                 onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('download'); }}
-                className="group bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-xl p-5 hover:shadow-lg hover:border-emerald-500 transition-all cursor-pointer flex flex-col justify-between"
+                className="group bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 rounded-xl p-5 hover:shadow-lg hover:border-indigo-500 transition-all cursor-pointer flex flex-col justify-between"
               >
                 <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
                     📥
                   </div>
                   <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
                     {t.navDownloads}
                   </h4>
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    Unduh media kit, leaflet wisata, dan E-Booklet panduan pariwisata PDF.
+                    Unduh media kit, leaflet wisata, dan E-Book panduan pariwisata PDF.
                   </p>
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-emerald-600 group-hover:translate-x-1 transition-transform">
+                <div className="mt-4 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition-transform">
                   <span>Buka Unduhan PDF</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </div>

@@ -925,8 +925,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </span>
               )}
               {activeDrawer === 'download' && (
-                <span className="bg-black text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
-                  <Download className="w-2.5 h-2.5 text-green-400" />
+                <span className="bg-indigo-700 text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
+                  <Download className="w-2.5 h-2.5 text-cyan-300" />
                   Media Kit
                 </span>
               )}
@@ -1012,7 +1012,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   onClick={() => onOpenDrawer?.('download')}
                   className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
                     activeDrawer === 'download'
-                      ? 'bg-emerald-600 text-white shadow-xs font-extrabold'
+                      ? 'bg-indigo-600 text-white shadow-xs font-extrabold'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
                   }`}
                 >
@@ -1682,11 +1682,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0 ml-auto sm:ml-0"
-                      title={isEn ? 'Download Calendar of Events E-Booklet (PDF)' : 'Unduh E-Booklet Kalender Event Resmi 2026 (PDF)'}
+                      className="bg-amber-500 hover:bg-amber-600 text-black px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0 ml-auto sm:ml-0"
+                      title={isEn ? 'Download Calendar of Events E-Book (PDF)' : 'Unduh E-Book Kalender Event Resmi 2026 (PDF)'}
                     >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>{isEn ? 'Download CoE PDF' : 'Unduh E-Booklet CoE'}</span>
+                      <Download className="w-3.5 h-3.5 text-black" />
+                      <span>{isEn ? 'Download CoE E-Book' : 'Unduh E-Book CoE'}</span>
                     </button>
                   </div>
                 </div>
@@ -2676,13 +2676,13 @@ export const Drawers: React.FC<DrawersProps> = ({
               )}
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 font-jakarta text-xs text-gray-600 space-y-1">
-                <p className="font-bold text-black uppercase tracking-wider">{lang === 'en' ? 'Official Media Kit & Travel Guides' : 'Materi Promosi & E-Booklet Resmi'}</p>
-                <p>{lang === 'en' ? 'Download West Sumatra tourism promotional assets, master e-booklets, and travel guides.' : 'Unduh materi promosi pariwisata Sumatera Barat, e-booklet master komprehensif, dan panduan perjalanan Anda.'}</p>
+                <p className="font-bold text-black uppercase tracking-wider">{lang === 'en' ? 'Official Media Kit & Travel Guides' : 'Materi Promosi & E-Book Resmi'}</p>
+                <p>{lang === 'en' ? 'Download West Sumatra tourism promotional assets, master e-books, and travel guides.' : 'Unduh materi promosi pariwisata Sumatera Barat, e-book master komprehensif, dan panduan perjalanan Anda.'}</p>
               </div>
 
-              {/* 2 FEATURED MASTER E-BOOKLET PANELS (GRID 2 COLUMNS / BARIS) */}
+              {/* 2 FEATURED MASTER E-BOOK PANELS (GRID 2 COLUMNS / BARIS) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* FEATURED MASTER E-BOOKLET COMPREHENSIVE PDF CARD */}
+                {/* FEATURED MASTER E-BOOK COMPREHENSIVE PDF CARD */}
                 <div className="border-2 border-red-600/40 rounded-xl p-5 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white shadow-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
                   <div className="space-y-3">
@@ -2692,7 +2692,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         {lang === 'en' ? 'OFFICIAL E-BOOK 2026' : 'E-BOOK RESMI 2026'}
                       </span>
                       <span className="text-yellow-400 font-jakarta text-xs font-bold">
-                        PDF E-Book (30 MB)
+                        PDF E-Book (29 MB)
                       </span>
                     </div>
 
@@ -2729,10 +2729,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
+                      className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                     >
                       <Download className="w-4 h-4 text-white" />
-                      <span>{lang === 'en' ? '⬇️ Download Guidebook' : '⬇️ Unduh Panduan Lengkap'}</span>
+                      <span>{lang === 'en' ? '⬇️ DOWNLOAD E-BOOK' : '⬇️ UNDUH E-BOOK'}</span>
                     </button>
                   </div>
                 </div>
@@ -2747,7 +2747,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         {lang === 'en' ? 'OFFICIAL CoE 2026' : 'KALENDER EVENT RESMI'}
                       </span>
                       <span className="text-amber-400 font-jakarta text-xs font-bold">
-                        PDF E-Book (6.8 MB)
+                        PDF E-Book (6.6 MB)
                       </span>
                     </div>
 
@@ -2757,8 +2757,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </h3>
                       <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
                         {lang === 'en'
-                          ? 'Official e-booklet detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
-                          : 'E-Booklet resmi Dinas Pariwisata Sumbar memuat ikhtisar lengkap seluruh festival budaya, tradisi anak nagari, dan KEN 2026.'}
+                          ? 'Official e-book detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
+                          : 'E-Book resmi Dinas Pariwisata Sumbar memuat ikhtisar lengkap seluruh festival budaya, tradisi anak nagari, dan KEN 2026.'}
                       </p>
                     </div>
                   </div>
@@ -2775,10 +2775,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
+                      className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
                     >
                       <Download className="w-4 h-4 text-black" />
-                      <span>{lang === 'en' ? '⬇️ Download CoE E-Booklet' : '⬇️ Unduh E-Booklet CoE'}</span>
+                      <span>{lang === 'en' ? '⬇️ Download CoE E-Book' : '⬇️ Unduh E-Book CoE'}</span>
                     </button>
                   </div>
                 </div>
@@ -2791,14 +2791,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                   return (
                     <div
                       key={item.id}
-                      className="border border-gray-200 rounded-lg p-4 bg-white hover:border-black transition-all flex flex-col justify-between space-y-3 shadow-xs group"
+                      className="border border-gray-200 rounded-xl p-4 bg-white hover:border-indigo-500 hover:shadow-md transition-all flex flex-col justify-between space-y-3 shadow-xs group"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
-                          <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
+                          <span className="bg-slate-900 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
                             {isEn && item.categoryEn ? item.categoryEn : item.category}
                           </span>
-                          <span className="text-gray-400 font-jakarta text-[10px] font-semibold">
+                          <span className="text-indigo-600 font-jakarta text-[10px] font-bold">
                             {item.size}
                           </span>
                         </div>
@@ -2820,9 +2820,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                             setDownloadSuccessMessage(isEn ? `Successfully downloaded "${item.titleEn || item.title}"` : `Berhasil mengunduh "${item.title}"`);
                             setTimeout(() => setDownloadSuccessMessage(null), 4000);
                           }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-black text-white font-jakarta font-bold text-xs uppercase hover:bg-gray-800 transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-xs cursor-pointer"
                         >
-                          <Download className="w-3.5 h-3.5 text-green-400" />
+                          <Download className="w-3.5 h-3.5 text-cyan-300" />
                           <span>{isEn ? 'Download File' : 'Unduh File'}</span>
                         </button>
                       </div>

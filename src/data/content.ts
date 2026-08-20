@@ -1587,8 +1587,8 @@ export const DOWNLOAD_ITEMS: DownloadItem[] = [
     type: 'PDF',
     typeEn: 'PDF',
     size: '7.2 MB',
-    description: 'E-Booklet resmi kalender seluruh festival budaya, seni tradisi Minangkabau, dan agenda Kharisma Event Nusantara (KEN) 2026.',
-    descriptionEn: 'Official e-booklet featuring all cultural festivals, traditional art events, and Karisma Event Nusantara (KEN) 2026 agenda.',
+    description: 'E-Book resmi kalender seluruh festival budaya, seni tradisi Minangkabau, dan agenda Kharisma Event Nusantara (KEN) 2026.',
+    descriptionEn: 'Official e-book featuring all cultural festivals, traditional art events, and Karisma Event Nusantara (KEN) 2026 agenda.',
     filename: 'kalender-event-sumbar-2026.pdf',
     content: '/downloads/kalender-event-sumbar-2026.pdf',
     mimeType: 'application/pdf'
