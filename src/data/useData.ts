@@ -26,6 +26,7 @@ export function useData() {
       baseImage: BG_IMAGE_1,
       revealImage: BG_IMAGE_2,
       baseVideo: '',
+      spotlightDisplayMode: 'both',
     };
   });
 
@@ -85,7 +86,7 @@ export function useData() {
     });
 
     // 4. Events listener
-    const unsubEvt = onSnapshot(collection(db, 'events'), (snapshot) => {
+    const unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
       if (snapshot.empty) {
         setEventItems(EVENTS_SCHEDULE);
         return;
@@ -151,6 +152,7 @@ export function useData() {
         const effectiveBaseVideo = data.baseVideo || '';
         const effectiveBaseImage = data.baseImage ? getDirectDriveUrl(data.baseImage) : BG_IMAGE_1;
         const effectiveRevealImage = data.revealImage ? getDirectDriveUrl(data.revealImage) : BG_IMAGE_2;
+        const effectiveSpotlightDisplayMode = data.spotlightDisplayMode || 'both';
         const effectiveHeroTextColor = data.heroTextColor || '#000000';
         const effectiveHeroTextTheme = data.heroTextTheme || 'black';
         const effectiveHeroTextShadow = data.heroTextShadow !== undefined ? data.heroTextShadow : true;
@@ -160,6 +162,7 @@ export function useData() {
           baseImage: effectiveBaseImage,
           revealImage: effectiveRevealImage,
           baseVideo: effectiveBaseVideo,
+          spotlightDisplayMode: effectiveSpotlightDisplayMode,
           allowedAdminEmails: data.allowedAdminEmails && data.allowedAdminEmails.length > 0 ? data.allowedAdminEmails : ['aldoaldiles@gmail.com'],
           heroTextColor: effectiveHeroTextColor,
           heroTextTheme: effectiveHeroTextTheme,

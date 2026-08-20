@@ -243,17 +243,21 @@ export const Hero: React.FC<HeroProps> = ({
     return evaluated.slice(0, 2);
   }, [eventsList]);
 
+  const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
+
   // Split into Video Event (if linked with YouTube) and Banner Events (photo banner)
   const videoEvent = useMemo(() => {
+    if (spotlightDisplayMode === 'event') return undefined;
     return activeSpotlightEvents.find(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-  }, [activeSpotlightEvents]);
+  }, [activeSpotlightEvents, spotlightDisplayMode]);
 
   const bannerEvents = useMemo(() => {
-    if (videoEvent) {
+    if (spotlightDisplayMode === 'video') return [];
+    if (videoEvent && spotlightDisplayMode === 'both') {
       return activeSpotlightEvents.filter(e => e !== videoEvent);
     }
     return activeSpotlightEvents;
-  }, [activeSpotlightEvents, videoEvent]);
+  }, [activeSpotlightEvents, videoEvent, spotlightDisplayMode]);
 
   // Carousel index for banner events & rotation with pause on hover
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);

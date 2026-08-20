@@ -137,6 +137,7 @@ export interface AppSettings {
   baseImage?: string;
   revealImage?: string;
   baseVideo?: string;
+  spotlightDisplayMode?: 'both' | 'video' | 'event';
   allowedAdminEmails?: string[];
   heroTextColor?: string;
   heroTextTheme?: 'black' | 'white' | 'red' | 'gold' | 'custom';

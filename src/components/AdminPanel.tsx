@@ -51,6 +51,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     baseImage: appSettings?.baseImage || '',
     revealImage: appSettings?.revealImage || '',
     baseVideo: appSettings?.baseVideo || '',
+    spotlightDisplayMode: appSettings?.spotlightDisplayMode || 'both',
     heroTextColor: appSettings?.heroTextColor || '#000000',
     heroTextTheme: appSettings?.heroTextTheme || 'black',
     heroTextShadow: appSettings?.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
@@ -66,6 +67,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         baseImage: appSettings.baseImage || '',
         revealImage: appSettings.revealImage || '',
         baseVideo: appSettings.baseVideo || '',
+        spotlightDisplayMode: appSettings.spotlightDisplayMode || 'both',
         heroTextColor: appSettings.heroTextColor || '#000000',
         heroTextTheme: appSettings.heroTextTheme || 'black',
         heroTextShadow: appSettings.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
@@ -1215,11 +1217,121 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 </div>
               </div>
 
+              {/* Pengaturan Spotlight Banner (Video & Event 2 Minggu) */}
+              <div className="pt-4 border-t border-gray-200 space-y-3">
+                <div>
+                  <label className="block text-[11px] font-bold uppercase text-gray-800 mb-1 flex items-center gap-1.5">
+                    <span>🎬 & 📅 Mode Tampilan Spotlight Banner (Hero Sisi Kanan/Bawah)</span>
+                  </label>
+                  <p className="text-[10px] text-gray-500 mb-3">
+                    Pilih jenis banner spotlight yang ingin Anda tampilkan pada halaman utama. Anda dapat menampilkan kartu <strong>Video Event</strong> saja, <strong>Event Banner 2 Minggu</strong> saja, atau <strong>Keduanya</strong> secara bersamaan.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {/* Option 1: Both */}
+                    <button
+                      type="button"
+                      onClick={() => setSettingsFormData(prev => ({ ...prev, spotlightDisplayMode: 'both' }))}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        settingsFormData.spotlightDisplayMode === 'both' || !settingsFormData.spotlightDisplayMode
+                          ? 'bg-black text-white border-black ring-2 ring-amber-400 shadow-sm'
+                          : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-base">🌟</span>
+                        <span className={`text-[8px] font-black uppercase px-1.5 py-0.5 rounded ${
+                          settingsFormData.spotlightDisplayMode === 'both' || !settingsFormData.spotlightDisplayMode
+                            ? 'bg-amber-400 text-black'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          Default
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-xs">Tampilkan Keduanya</div>
+                        <div className={`text-[10px] mt-0.5 leading-snug ${
+                          settingsFormData.spotlightDisplayMode === 'both' || !settingsFormData.spotlightDisplayMode
+                            ? 'text-gray-300'
+                            : 'text-gray-500'
+                        }`}>
+                          Video Event & Banner 2 Minggu tampil bersamaan
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Option 2: Video Only */}
+                    <button
+                      type="button"
+                      onClick={() => setSettingsFormData(prev => ({ ...prev, spotlightDisplayMode: 'video' }))}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        settingsFormData.spotlightDisplayMode === 'video'
+                          ? 'bg-black text-white border-black ring-2 ring-red-500 shadow-sm'
+                          : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-base">🎬</span>
+                        <span className={`text-[8px] font-black uppercase px-1.5 py-0.5 rounded ${
+                          settingsFormData.spotlightDisplayMode === 'video'
+                            ? 'bg-red-500 text-white'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          Hanya Video
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-xs">Hanya Banner Video</div>
+                        <div className={`text-[10px] mt-0.5 leading-snug ${
+                          settingsFormData.spotlightDisplayMode === 'video'
+                            ? 'text-gray-300'
+                            : 'text-gray-500'
+                        }`}>
+                          Hanya memutar video YouTube event yang aktif
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Option 3: Event Banner 2 Weeks Only */}
+                    <button
+                      type="button"
+                      onClick={() => setSettingsFormData(prev => ({ ...prev, spotlightDisplayMode: 'event' }))}
+                      className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                        settingsFormData.spotlightDisplayMode === 'event'
+                          ? 'bg-black text-white border-black ring-2 ring-blue-500 shadow-sm'
+                          : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="text-base">📅</span>
+                        <span className={`text-[8px] font-black uppercase px-1.5 py-0.5 rounded ${
+                          settingsFormData.spotlightDisplayMode === 'event'
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          Hanya Banner
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-bold text-xs">Hanya Banner 2 Minggu</div>
+                        <div className={`text-[10px] mt-0.5 leading-snug ${
+                          settingsFormData.spotlightDisplayMode === 'event'
+                            ? 'text-gray-300'
+                            : 'text-gray-500'
+                        }`}>
+                          Hanya menampilkan rotasi foto event 2 minggu
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <button
                 onClick={handleSaveSettings}
-                className="w-full bg-black text-white py-2.5 rounded text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-1.5 hover:bg-gray-800 transition-colors cursor-pointer"
+                className="w-full bg-black text-white py-2.5 rounded text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-1.5 hover:bg-gray-800 transition-colors cursor-pointer mt-4"
               >
-                <Check className="w-4 h-4" /> Simpan Pengaturan Hero & Warna Teks
+                <Check className="w-4 h-4" /> Simpan Pengaturan Hero & Spotlight Banner
               </button>
             </div>
 
