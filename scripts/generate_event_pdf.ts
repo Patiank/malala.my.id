@@ -231,51 +231,57 @@ export function generateEventHTML(): string {
 <body class="py-6 px-4">
   <div class="max-w-[480px] mx-auto space-y-6">
     
-    <!-- 1. COVER PAGE (USING ICONIC PACU JAWI EVENT PHOTOGRAPHY) -->
+    <!-- 1. COVER PAGE (BRIGHT ICONIC PHOTOGRAPHY WITHOUT DARK OVERLAY) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-slate-900 shadow-xl">
       <img src="${bgCover}" alt="Cover Pacu Jawi CoE 2026" class="absolute inset-0 w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/95"></div>
       
+      <!-- Subtle top and bottom vignette only for crystal clear text readability while keeping the photo 100% bright -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
+
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between">
-          <span class="inline-block bg-red-600 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded-full tracking-widest shadow-md">
-            PUBLIKASI RESMI CoE 2026
-          </span>
-          <span class="text-white text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] tracking-wider">
+          <div class="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+            <img src="https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png" alt="Logo" class="w-5 h-5 object-contain" />
+            <span class="text-amber-400 font-orbitron font-extrabold text-[9px] uppercase tracking-widest">
+              MINANGKAOS
+            </span>
+          </div>
+          <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/20 tracking-wider">
             MALALA.MY.ID
           </span>
         </div>
 
-        <div class="pt-8">
-          <div class="flex items-center gap-2 pb-1">
-            <span class="text-amber-400 font-orbitron font-extrabold text-xs tracking-widest uppercase">
-              ★ OFFICIAL EVENT CALENDAR ★
-            </span>
+        <div class="pt-6">
+          <div class="inline-block bg-amber-500 text-black font-orbitron font-black text-[9px] uppercase px-2.5 py-0.5 rounded shadow mb-2 tracking-wider">
+            CALENDAR OF EVENTS 2026
           </div>
-          <h1 class="font-orbitron font-black text-3xl sm:text-4xl text-white tracking-wide uppercase leading-tight drop-shadow-lg">
+          <h1 class="font-orbitron font-black text-3xl sm:text-4xl text-white tracking-wide uppercase leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
             CALENDAR<br/>OF EVENTS<br/><span class="text-amber-400">2026</span>
           </h1>
-          <p class="font-jakarta text-xs text-gray-200 pt-3 leading-relaxed drop-shadow">
-            Panduan Resmi Kalender Festival Budaya, Seni Tradisi Minangkabau, & Kharisma Event Nusantara (KEN) di Sumatera Barat (Januari - Desember 2026).
+          <p class="font-jakarta text-xs text-white pt-2.5 leading-relaxed drop-shadow-[0_1px_5px_rgba(0,0,0,0.9)] max-w-sm">
+            Kompilasi Kalender Festival Budaya, Seni Tradisi Minangkabau, & Kharisma Event Nusantara di Sumatera Barat (Januari - Desember 2026).
           </p>
         </div>
       </div>
 
-      <div class="relative z-10 space-y-4">
-        <div class="grid grid-cols-2 gap-2 bg-black/70 backdrop-blur-md p-3.5 rounded-xl border border-white/20 text-center">
+      <div class="relative z-10 space-y-3">
+        <div class="grid grid-cols-2 gap-2 bg-black/60 backdrop-blur-md p-3.5 rounded-xl border border-white/20 text-center">
           <div>
             <div class="font-orbitron font-extrabold text-xl text-amber-400">${eventItems.length}</div>
-            <div class="text-[9px] text-gray-300 font-bold uppercase tracking-wider">Total Event Resmi</div>
+            <div class="text-[9px] text-gray-200 font-bold uppercase tracking-wider">Total Event</div>
           </div>
           <div>
             <div class="font-orbitron font-extrabold text-xl text-red-400">${eventItems.filter(e => e.isKen).length}</div>
-            <div class="text-[9px] text-gray-300 font-bold uppercase tracking-wider">Karisma Event (KEN)</div>
+            <div class="text-[9px] text-gray-200 font-bold uppercase tracking-wider">Karisma Event (KEN)</div>
           </div>
         </div>
 
-        <div class="border-t border-white/20 pt-3 text-center text-[10px] text-gray-300">
-          <div class="font-bold text-amber-400 font-orbitron tracking-wider uppercase">MINANGKAOS</div>
-          <div class="text-[9px] text-gray-400 mt-0.5">Visit Beautiful West Sumatra © 2026</div>
+        <div class="border-t border-white/20 pt-2.5 flex items-center justify-between text-[10px] text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+          <div class="flex items-center gap-1.5 font-bold font-orbitron text-amber-300">
+            <img src="https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png" alt="Logo" class="w-4 h-4 object-contain" />
+            <span>MINANGKAOS</span>
+          </div>
+          <div class="text-[9px] text-gray-200">Edisi Spesial 2026</div>
         </div>
       </div>
     </article>
