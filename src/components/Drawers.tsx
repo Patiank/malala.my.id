@@ -84,8 +84,40 @@ export const getGoogleMapsUrl = (input?: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
 };
 
-export const getTravelokaHotelUrl = (_dest?: Destination | null): string => {
-  return 'https://www.traveloka.com/id-id/hotel';
+export const getTravelokaHotelUrl = (dest?: Destination | null): string => {
+  if (!dest) return 'https://www.traveloka.com/id-id/hotel';
+  
+  // Extract clean city/regency name from destination
+  let cityName = dest.regency ? dest.regency.replace(/^(Kabupaten|Kota)\s+/i, '').trim() : 'Sumatera Barat';
+  const text = `${dest.title} ${dest.regency || ''} ${dest.locationDetails || ''}`.toLowerCase();
+  
+  if (text.includes('harau') || text.includes('payakumbuh') || text.includes('kelok sembilan') || text.includes('lima puluh kota')) {
+    cityName = 'Payakumbuh';
+  } else if (text.includes('bukittinggi') || text.includes('jam gadang') || text.includes('ngarai sianok') || text.includes('lubang jepang')) {
+    cityName = 'Bukittinggi';
+  } else if (text.includes('pagaruyung') || text.includes('pariangan') || text.includes('tanah datar') || text.includes('batusangkar')) {
+    cityName = 'Tanah Datar';
+  } else if (text.includes('mandeh') || text.includes('pesisir selatan') || text.includes('painan') || text.includes('carocok')) {
+    cityName = 'Pesisir Selatan';
+  } else if (text.includes('singkarak') || text.includes('kembar') || text.includes('alahan panjang') || text.includes('solok')) {
+    cityName = 'Solok';
+  } else if (text.includes('maninjau') || text.includes('lawang') || text.includes('agam')) {
+    cityName = 'Kabupaten Agam';
+  } else if (text.includes('mentawai') || text.includes('siberut') || text.includes('tuapejat')) {
+    cityName = 'Kepulauan Mentawai';
+  } else if (text.includes('sawahlunto') || text.includes('ombilin')) {
+    cityName = 'Sawahlunto';
+  } else if (text.includes('pariaman')) {
+    cityName = 'Pariaman';
+  } else if (text.includes('dharmasraya')) {
+    cityName = 'Dharmasraya';
+  } else if (text.includes('pasaman')) {
+    cityName = 'Pasaman';
+  } else if (text.includes('padang')) {
+    cityName = 'Kota Padang';
+  }
+  
+  return `https://www.traveloka.com/id-id/hotel/search?text=${encodeURIComponent(cityName + ', Sumatera Barat')}`;
 };
 
 interface DrawersProps {
@@ -2980,7 +3012,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   rel="noopener noreferrer"
                   className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-700 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
                 >
-                  <span>🏨 {lang === 'en' ? 'Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
+                  <span>🏨 {lang === 'en' ? `Hotels in ${selectedDestination.regency ? selectedDestination.regency.replace(/^(Kabupaten|Kota)\s+/i, '') : 'Area'}` : `Cari Hotel di ${selectedDestination.regency ? selectedDestination.regency.replace(/^(Kabupaten|Kota)\s+/i, '') : 'Dekat Sini'}`}</span>
                   <ExternalLink className="w-3 h-3 shrink-0" />
                 </a>
 
