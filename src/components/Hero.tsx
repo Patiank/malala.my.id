@@ -611,7 +611,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* MINANGKAOS Brand Identity & Text (Left-Bottom) */}
-          <div className="flex items-center gap-3.5 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
+          <div className="flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
               className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
@@ -620,10 +620,9 @@ export const Hero: React.FC<HeroProps> = ({
               <PemprovSumbarLogo size={60} />
             </div>
             <div
-              className="font-slackside text-3xl sm:text-4xl lg:text-[40px] font-normal leading-none transition-colors duration-300 select-none flex-1 min-w-0"
-              style={heroTextStyle}
+              className="font-slackside text-xl sm:text-2xl lg:text-[26px] font-normal leading-none select-none flex-1 min-w-0"
             >
-              <div style={{ color: heroTextColor, opacity: 0.95 }} className="transition-colors duration-300 pt-1">
+              <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
                 Minangkaos
               </div>
             </div>
