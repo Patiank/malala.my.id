@@ -597,13 +597,21 @@ export const Hero: React.FC<HeroProps> = ({
               <PemprovSumbarLogo size={60} />
             </div>
             <div
-              className="font-jakarta text-xs sm:text-[13px] font-medium leading-relaxed transition-colors duration-300 select-none flex-1 min-w-0"
+              className="font-jakarta text-xs sm:text-[13.5px] font-medium leading-snug transition-colors duration-300 select-none flex-1 min-w-0"
               style={heroTextStyle}
             >
               <div style={{ color: heroTextColor, opacity: 0.95 }} className="transition-colors duration-300">
-                {lang === 'en'
-                  ? 'Kompilasi Pariwisata, Adat & Kuliner Ranah Minang oleh MINANGKAOS.'
-                  : 'Kompilasi Pariwisata, Adat & Kuliner Ranah Minang oleh MINANGKAOS.'}
+                {lang === 'en' ? (
+                  <>
+                    <span>West Sumatra Tourism, Culture &</span>
+                    <span className="block mt-0.5">Authentic Culinary by MINANGKAOS.</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Kompilasi Pariwisata, Adat &</span>
+                    <span className="block mt-0.5">Kuliner Ranah Minang oleh MINANGKAOS.</span>
+                  </>
+                )}
               </div>
             </div>
           </div>
