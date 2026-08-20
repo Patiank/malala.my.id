@@ -1,0 +1,27 @@
+# MALALA — Official West Sumatra Tourism, Cultural Heritage & Authentic Culinary Portal
+> Portal resmi eksplorasi pariwisata, warisan budaya Minangkabau, kuliner otentik, kalender festival Karisma Event Nusantara (KEN) 2026, dan asisten cerdas wisata Sumatera Barat. Dipersembahkan oleh MINANGKAOS.
+
+Website: https://malala.my.id
+Bahasa: Bahasa Indonesia & English
+Wilayah: Provinsi Sumatera Barat (19 Kabupaten & Kota di Ranah Minang)
+
+## Ringkasan Portal (Overview)
+MALALA adalah platform digital pariwisata Sumatera Barat terlengkap yang mengintegrasikan:
+1. **38 Destinasi Wisata Unggulan**: Dari Geopark Lembah Harau, Danau Singkarak & Danau Maninjau, Jam Gadang Bukittinggi, Kawasan Mandeh, Kepulauan Mentawai, hingga situs cagar budaya purba Candi Padang Roco dan Warisan Dunia UNESCO Sawahlunto.
+2. **22 Warisan Adat & Budaya Minangkabau**: Filosofi 'Adat Basandi Syarak, Syarak Basandi Kitabullah', sistem kekerabatan Matrilineal terbesar di dunia, arsitektur Rumah Gadang bergonjong, tradisi makan Bajamba, Randai, Tari Piring di atas pecahan kaca, hingga tradisi rahasia Marosok.
+3. **26 Kuliner Otentik Ranah Minang**: Rendang daging sapi lambat masak (Warisan UNESCO & Makanan Terenak di Dunia), Nasi Kapau & Gulai Tambusu, Sate Padang & Pariaman, Soto Padang kuah bening rempah, Lamang Tapai, Ampiang Dadiah (yoghurt susu kerbau fermentasi bambu), Palai Rinuak Danau Maninjau, Sala Lauak, dan Teh Talua.
+4. **20 Kalender Festival & Event (CoE 2026)**: Pacu Jawi Tanah Datar, Festival Tabuik Pariaman, Rang Solok Baralek Gadang, Sawahlunto International Songket Carnival, Payakumbuh Botuang Festival, Festival Pesona Minangkabau, dan Pacu Kuda Tradisional.
+5. **AI Travel Assistant 'Uni Mala'**: Asisten cerdas berbasis AI generatif yang mampu merancang itinerary liburan harian, rekomendasi kuliner halal, perkiraan estimasi anggaran, dan tips perjalanan ramah keluarga.
+6. **E-Booklet & Panduan PDF Resmi**: Panduan lengkap pariwisata (113 halaman) dan Kalender Event 2026 (27 halaman) beresolusi tinggi siap cetak dan unduh gratis.
+
+## Akses Cepat (Key Endpoints)
+- Beranda: https://malala.my.id/
+- Direktori Destinasi: https://malala.my.id/#destinasi
+- Warisan Budaya: https://malala.my.id/#budaya
+- Eksplorasi Kuliner: https://malala.my.id/#kuliner
+- Kalender Event 2026: https://malala.my.id/#event
+- Peta Wisata Interaktif: https://malala.my.id/#peta-interaktif
+- AI Travel Itinerary Planner: https://malala.my.id/#ai-planner
+- Unduh E-Book Panduan Wisata: https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf
+- Unduh E-Book Kalender Event 2026: https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf
+- Database Lengkap untuk LLM (Full Knowledge Base): https://malala.my.id/llms-full.txt
