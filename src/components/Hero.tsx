@@ -905,8 +905,8 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Raised upwards) */}
-        <div className="absolute bottom-20 right-6 sm:bottom-28 sm:right-8 lg:bottom-32 z-50 animate-fade-in block">
+        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right) */}
+        <div className="absolute bottom-10 right-6 sm:bottom-14 sm:right-8 lg:bottom-16 z-50 animate-fade-in block">
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
