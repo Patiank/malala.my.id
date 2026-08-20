@@ -106,7 +106,7 @@ export function generateEventHTML(): string {
       </div>
 
       <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-3">
-        <span class="font-semibold text-slate-700">Dinas Pariwisata Sumatera Barat</span>
+        <span class="font-semibold text-amber-600 font-orbitron">MINANGKAOS</span>
         <span>Halaman Ikhtisar ${pageIdx + 1} dari ${overviewChunks.length}</span>
       </div>
     </article>
@@ -119,7 +119,7 @@ export function generateEventHTML(): string {
     <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="flex items-center justify-between pb-2 border-b border-gray-100 text-[11px] font-bold text-gray-500">
-          <span class="font-orbitron">CoE 2026 • FESTIVAL & EVENT RESMI</span>
+          <span class="font-orbitron">CoE 2026 • FESTIVAL & EVENT</span>
           ${ev.isKen ? `
             <span class="bg-red-600 text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
               ★ OFFICIAL KEN 2026
@@ -170,7 +170,7 @@ export function generateEventHTML(): string {
       </div>
 
       <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-3">
-        <span class="font-semibold text-slate-700">Dinas Pariwisata Sumatera Barat</span>
+        <span class="font-semibold text-slate-700 font-orbitron">MINANGKAOS</span>
         <span class="font-orbitron font-bold text-gray-400">#${String(idx + 1).padStart(2, '0')} / ${eventItems.length}</span>
       </div>
     </article>
@@ -274,7 +274,7 @@ export function generateEventHTML(): string {
         </div>
 
         <div class="border-t border-white/20 pt-3 text-center text-[10px] text-gray-300">
-          <div class="font-bold text-white tracking-wider uppercase">DINAS PARIWISATA PROVINSI SUMATERA BARAT</div>
+          <div class="font-bold text-amber-400 font-orbitron tracking-wider uppercase">MINANGKAOS</div>
           <div class="text-[9px] text-gray-400 mt-0.5">Visit Beautiful West Sumatra © 2026</div>
         </div>
       </div>
@@ -356,7 +356,7 @@ export function generateEventHTML(): string {
       </div>
 
       <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[10px] text-gray-400 mt-2">
-        <span class="font-semibold text-white">Dinas Pariwisata Sumatera Barat</span>
+        <span class="font-semibold text-amber-400 font-orbitron">MINANGKAOS</span>
         <span>Halaman Peta Geografis</span>
       </div>
     </article>
@@ -408,8 +408,8 @@ export function generateEventHTML(): string {
 
       <div class="border-t border-white/20 pt-4 text-center space-y-1.5">
         <div class="font-orbitron font-bold text-xs text-amber-400">MALALA.MY.ID</div>
-        <div class="text-[10px] text-gray-400">Portal Pariwisata Resmi Sumatera Barat</div>
-        <div class="text-[9px] text-gray-500">Dinas Pariwisata Provinsi Sumatera Barat © 2026</div>
+        <div class="text-[10px] text-gray-400">Direktori Pariwisata & Budaya Digital</div>
+        <div class="text-[9px] text-gray-500">MINANGKAOS © 2026</div>
       </div>
     </article>
 
@@ -418,7 +418,7 @@ export function generateEventHTML(): string {
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between border-b border-white/20 pb-3">
           <span class="bg-amber-400 text-black font-extrabold text-[9px] uppercase px-2.5 py-1 rounded font-orbitron tracking-widest">
-            OFFICIAL BACK COVER
+            MINANGKAOS SPECIAL EDITION
           </span>
           <span class="text-gray-400 font-orbitron text-[9px] font-bold">
             EDISI 2026
@@ -430,7 +430,7 @@ export function generateEventHTML(): string {
             VISIT BEAUTIFUL WEST SUMATRA
           </span>
           <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white uppercase tracking-wider leading-tight">
-            ALAM TAKAMBANG<br/><span class="text-red-500">JADI GURU</span>
+            ALAM TAKAMBANG<br/><span class="text-amber-400">JADI GURU</span>
           </h2>
           <p class="text-xs text-gray-300 max-w-xs mx-auto italic pt-2 leading-relaxed">
             "Keagungan alam berpadu dengan kearifan adat Minangkabau. Setiap jengkal tanah menyimpan cerita, setiap festival menyalakan jiwa."
@@ -443,29 +443,29 @@ export function generateEventHTML(): string {
         <div class="bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-3">
           <div class="text-center pb-2 border-b border-white/10">
             <span class="font-orbitron font-extrabold text-sm text-amber-400">MALALA.MY.ID</span>
-            <div class="text-[10px] text-gray-300">Pusat Informasi & Direktori Pariwisata Digital</div>
+            <div class="text-[10px] text-gray-300">Direktori Pariwisata & Budaya Digital</div>
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300">
             <div>
               <div class="font-bold text-white uppercase">Instagram:</div>
-              <div class="text-amber-300">@pariwisatasumbar</div>
+              <div class="text-amber-300">@minangkaos</div>
             </div>
             <div>
-              <div class="font-bold text-white uppercase">Portal Resmi:</div>
+              <div class="font-bold text-white uppercase">Website:</div>
               <div class="text-amber-300">malala.my.id</div>
             </div>
-            <div class="col-span-2 pt-1">
-              <div class="font-bold text-white uppercase">Layanan Informasi:</div>
-              <div class="text-gray-300">Dinas Pariwisata Provinsi Sumatera Barat</div>
-              <div class="text-[9px] text-gray-400">Jl. Khatib Sulaiman No. 22, Kota Padang</div>
+            <div class="col-span-2 pt-1 text-center">
+              <div class="font-bold text-white uppercase">Presented By:</div>
+              <div class="text-amber-400 font-orbitron font-bold text-xs">MINANGKAOS</div>
+              <div class="text-[9px] text-gray-400">Sumatera Barat, Indonesia</div>
             </div>
           </div>
         </div>
 
         <div class="border-t border-white/20 pt-3 text-center text-[9px] text-gray-400 space-y-1">
-          <div class="font-bold text-white tracking-widest uppercase">DINAS PARIWISATA PROVINSI SUMATERA BARAT</div>
-          <div>Hak Cipta Dilindungi Undang-Undang © 2026. Dicetak & Didistribusikan Resmi.</div>
+          <div class="font-bold text-white tracking-widest uppercase">MALALA 2026 • MINANGKAOS</div>
+          <div>Hak Cipta Dilindungi Undang-Undang © 2026.</div>
         </div>
       </div>
     </article>

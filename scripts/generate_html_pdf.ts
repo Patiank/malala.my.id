@@ -305,8 +305,8 @@ function generateFullHTML(): string {
       
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between">
-          <span class="inline-block bg-red-600 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
-            PUBLIKASI RESMI 2026
+          <span class="inline-block bg-amber-500 text-black font-extrabold text-[9px] uppercase px-2.5 py-1 rounded tracking-widest shadow-md">
+            EDISI SPESIAL 2026
           </span>
           <span class="text-white text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
             MALALA.MY.ID
@@ -328,8 +328,8 @@ function generateFullHTML(): string {
           ${destinations.length} Destinasi · ${cultureItems.length} Budaya · ${culinaryItems.length} Kuliner · ${eventItems.length} Event
         </p>
         <div class="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
-          <span>Dinas Pariwisata Sumatera Barat</span>
-          <span class="font-bold font-orbitron">E-Book Resmi</span>
+          <span class="font-bold text-amber-300">MINANGKAOS</span>
+          <span class="font-bold font-orbitron">E-Book Eksklusif</span>
         </div>
       </div>
     </article>
@@ -402,7 +402,7 @@ function generateFullHTML(): string {
       </div>
 
       <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[10px] text-gray-400 mt-2">
-        <span class="font-semibold text-white">Dinas Pariwisata Sumatera Barat</span>
+        <span class="font-semibold text-amber-400 font-orbitron">MINANGKAOS</span>
         <span>Halaman Peta Zonasi 19 Kab/Kota</span>
       </div>
     </article>
@@ -444,7 +444,7 @@ function generateFullHTML(): string {
           </div>
         </div>
         <div class="border-t border-blue-500/20 pt-3 flex items-center justify-between text-[10px] text-blue-300">
-          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-bold text-amber-300 font-orbitron">MINANGKAOS</span>
           <span class="font-orbitron font-bold">BAB 1</span>
         </div>
       </div>
@@ -490,7 +490,7 @@ function generateFullHTML(): string {
           </div>
         </div>
         <div class="border-t border-purple-500/20 pt-3 flex items-center justify-between text-[10px] text-purple-300">
-          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-bold text-amber-300 font-orbitron">MINANGKAOS</span>
           <span class="font-orbitron font-bold">BAB 2</span>
         </div>
       </div>
@@ -536,7 +536,7 @@ function generateFullHTML(): string {
           </div>
         </div>
         <div class="border-t border-amber-500/20 pt-3 flex items-center justify-between text-[10px] text-amber-300">
-          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-bold text-amber-300 font-orbitron">MINANGKAOS</span>
           <span class="font-orbitron font-bold">BAB 3</span>
         </div>
       </div>
@@ -554,35 +554,35 @@ function generateFullHTML(): string {
             BAGIAN IV
           </span>
           <span class="text-red-300 font-orbitron text-[9px] font-bold">
-            ${eventItems.length} AGENDA RESMI 2026
+            ${eventItems.length} AGENDA EVENT 2026
           </span>
         </div>
 
         <div class="pt-10 space-y-3">
           <span class="text-red-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
-            OFFICIAL CALENDAR OF EVENTS
+            CALENDAR OF EVENTS 2026
           </span>
           <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
             KALENDER<br/><span class="text-red-400">EVENT & FESTIVAL</span><br/>SUMBAR 2026
           </h2>
           <p class="text-xs text-gray-300 leading-relaxed pt-2">
-            Agenda resmi festival kebudayaan dan atraksi unggulan Kharisma Event Nusantara (KEN) Kementerian Pariwisata dan Ekonomi Kreatif RI yang diselenggarakan di seluruh Sumatera Barat.
+            Agenda festival kebudayaan dan atraksi unggulan seni tradisi anak nagari yang diselenggarakan di seluruh 19 Kabupaten dan Kota di Sumatera Barat.
           </p>
         </div>
       </div>
 
       <div class="relative z-10 space-y-3">
         <div class="p-3 bg-red-950/60 rounded-xl border border-red-500/30 text-xs text-red-200">
-          <div class="font-bold text-white mb-1">Sorotan Festival Resmi:</div>
+          <div class="font-bold text-white mb-1">Sorotan Festival Pilihan:</div>
           <div class="flex flex-wrap gap-1.5 text-[10px]">
-            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🏆 Karisma Event Nusantara (KEN)</span>
+            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🏆 Karisma Event Nusantara</span>
             <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🐂 Pacu Jawi & Pacu Kudo</span>
             <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🎭 Tabuik & Siti Nurbaya</span>
             <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🚴 Tour de Singkarak</span>
           </div>
         </div>
         <div class="border-t border-red-500/20 pt-3 flex items-center justify-between text-[10px] text-red-300">
-          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-bold text-amber-300 font-orbitron">MINANGKAOS</span>
           <span class="font-orbitron font-bold">BAB 4</span>
         </div>
       </div>
@@ -595,11 +595,11 @@ function generateFullHTML(): string {
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-slate-950 via-slate-900 to-black shadow-2xl border border-slate-800">
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between border-b border-white/20 pb-3">
-          <span class="bg-red-600 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded font-orbitron tracking-widest">
-            OFFICIAL BACK COVER
+          <span class="bg-amber-500 text-black font-extrabold text-[9px] uppercase px-2.5 py-1 rounded font-orbitron tracking-widest">
+            MINANGKAOS SPECIAL EDITION
           </span>
           <span class="text-gray-400 font-orbitron text-[9px] font-bold">
-            EDISI LENGKAP 2026
+            EDISI 2026
           </span>
         </div>
 
@@ -608,7 +608,7 @@ function generateFullHTML(): string {
             VISIT BEAUTIFUL WEST SUMATRA
           </span>
           <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white uppercase tracking-wider leading-tight">
-            ALAM TAKAMBANG<br/><span class="text-red-500">JADI GURU</span>
+            ALAM TAKAMBANG<br/><span class="text-amber-400">JADI GURU</span>
           </h2>
           <p class="text-xs text-gray-300 max-w-xs mx-auto italic pt-2 leading-relaxed">
             "Panduan komprehensif mengeksplorasi mahakarya alam, kekayaan tradisi, dan kelezatan gastronomi Minangkabau di Sumatera Barat."
@@ -621,29 +621,29 @@ function generateFullHTML(): string {
         <div class="bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-3">
           <div class="text-center pb-2 border-b border-white/10">
             <span class="font-orbitron font-extrabold text-sm text-amber-400">MALALA.MY.ID</span>
-            <div class="text-[10px] text-gray-300">Pusat Informasi & Direktori Pariwisata Digital</div>
+            <div class="text-[10px] text-gray-300">Direktori Pariwisata & Budaya Digital</div>
           </div>
 
           <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300">
             <div>
               <div class="font-bold text-white uppercase">Instagram:</div>
-              <div class="text-amber-300">@pariwisatasumbar</div>
+              <div class="text-amber-300">@minangkaos</div>
             </div>
             <div>
-              <div class="font-bold text-white uppercase">Portal Resmi:</div>
+              <div class="font-bold text-white uppercase">Website:</div>
               <div class="text-amber-300">malala.my.id</div>
             </div>
-            <div class="col-span-2 pt-1">
-              <div class="font-bold text-white uppercase">Layanan Informasi:</div>
-              <div class="text-gray-300">Dinas Pariwisata Provinsi Sumatera Barat</div>
-              <div class="text-[9px] text-gray-400">Jl. Khatib Sulaiman No. 22, Kota Padang</div>
+            <div class="col-span-2 pt-1 text-center">
+              <div class="font-bold text-white uppercase">Presented By:</div>
+              <div class="text-amber-400 font-orbitron font-bold text-xs">MINANGKAOS</div>
+              <div class="text-[9px] text-gray-400">Sumatera Barat, Indonesia</div>
             </div>
           </div>
         </div>
 
         <div class="border-t border-white/20 pt-3 text-center text-[9px] text-gray-400 space-y-1">
-          <div class="font-bold text-white tracking-widest uppercase">DINAS PARIWISATA PROVINSI SUMATERA BARAT</div>
-          <div>Hak Cipta Dilindungi Undang-Undang © 2026. Dicetak & Didistribusikan Resmi.</div>
+          <div class="font-bold text-white tracking-widest uppercase">MALALA 2026 • MINANGKAOS</div>
+          <div>Hak Cipta Dilindungi Undang-Undang © 2026.</div>
         </div>
       </div>
     </article>

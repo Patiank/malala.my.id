@@ -41,7 +41,7 @@ async function buildEBookletPDF() {
     doc.setFontSize(7);
     doc.setTextColor(140, 140, 140);
     doc.setFont('helvetica', 'normal');
-    doc.text('Dinas Pariwisata & Kebudayaan Provinsi Sumatera Barat • malala.my.id', margin, pageHeight - 8);
+    doc.text('MALALA 2026 • Presented by MINANGKAOS • malala.my.id', margin, pageHeight - 8);
     doc.text(`#${pageNumber}`, pageWidth - margin, pageHeight - 8, { align: 'right' });
   };
 
@@ -80,7 +80,7 @@ async function buildEBookletPDF() {
   doc.setFontSize(6.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
-  doc.text('PUBLIKASI RESMI 2026', margin + 3, margin + 8.2);
+  doc.text('EDISI SPESIAL 2026', margin + 3, margin + 8.2);
 
   doc.setFontSize(8);
   doc.setTextColor(255, 255, 255);
@@ -110,8 +110,8 @@ async function buildEBookletPDF() {
   doc.line(margin, pageHeight - 16, pageWidth - margin, pageHeight - 16);
 
   doc.setFontSize(7);
-  doc.text('Dinas Pariwisata Sumatera Barat', margin, pageHeight - 11);
-  doc.text('E-Booklet Digital Edition', pageWidth - margin, pageHeight - 11, { align: 'right' });
+  doc.text('MINANGKAOS', margin, pageHeight - 11);
+  doc.text('E-Book Digital Edition', pageWidth - margin, pageHeight - 11, { align: 'right' });
 
   let currentPageNum = 1;
 

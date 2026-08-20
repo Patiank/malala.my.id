@@ -45,7 +45,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(251, 191, 36); // amber-400
-      doc.text('MALALA 2026 • DINAS PARIWISATA PROVINSI SUMATERA BARAT', margin, 7.5);
+      doc.text('MALALA 2026 • MINANGKAOS', margin, 7.5);
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
@@ -61,7 +61,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
       doc.setTextColor(100, 116, 139);
-      doc.text('Katalog Resmi Panduan Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
+      doc.text('Direktori Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
       doc.setFont('helvetica', 'bold');
       doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
     } catch {}
@@ -85,7 +85,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(255, 255, 255);
-  doc.text(isEn ? 'OFFICIAL TOURISM & CULTURAL PUBLICATION 2026' : 'PUBLIKASI RESMI DINAS PARIWISATA SUMATERA BARAT 2026', 28, 34.8);
+  doc.text(isEn ? 'SPECIAL EDITION PUBLICATION 2026' : 'EDISI SPESIAL MINANGKAOS 2026', 28, 34.8);
 
   // Main Title
   doc.setFontSize(32);
@@ -102,8 +102,8 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFontSize(9.5);
   doc.setTextColor(203, 213, 225);
   const coverDesc = isEn
-    ? 'Official master compilation of 26 Iconic Destinations, 14 Living Cultural Traditions, 16 Authentic Culinaries, and 20 Official Events & KEN 2026.'
-    : 'Kompilasi master data 26 destinasi wisata unggulan, 14 tradisi adat luhur, 16 kuliner gastronomi otentik, serta 20 kalender festival KEN resmi 2026.';
+    ? 'Master compilation of 38 Iconic Destinations, 22 Living Cultural Traditions, 26 Authentic Culinaries, and 20 Official Events & KEN 2026.'
+    : 'Kompilasi master data 38 destinasi wisata unggulan, 22 tradisi adat luhur, 26 kuliner gastronomi otentik, serta 20 kalender festival KEN 2026.';
   doc.text(doc.splitTextToSize(coverDesc, 155), 25, 72);
 
   // Clean Minimalist Stats Grid Box
@@ -123,7 +123,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.text(`• Bab I   : ${destinations.length} ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 116);
   doc.text(`• Bab II  : ${cultureItems.length} ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 123);
   doc.text(`• Bab III : ${culinaryItems.length} ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 130);
-  doc.text(`• Bab IV  : ${eventItems.length} ${isEn ? 'Official Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Resmi Dinas Pariwisata & KEN Kemenparekraf 2026'}`, 32, 137);
+  doc.text(`• Bab IV  : ${eventItems.length} ${isEn ? 'Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Festival & KEN 2026'}`, 32, 137);
 
   // Minang Philosophy Box
   doc.setFillColor(220, 38, 38);
@@ -140,17 +140,17 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setTextColor(148, 163, 184);
   doc.text(isEn ? 'Fostering cultural integrity and natural conservation in West Sumatra.' : 'Falsafah keluhuran kearifan lokal dan harmoni alam semesta Ranah Minang.', 34, 193);
 
-  // Official Publisher Footer
+  // Publisher Footer
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8.5);
   doc.setTextColor(255, 255, 255);
-  doc.text(isEn ? 'PUBLISHED BY:' : 'DITERBITKAN OLEH:', 25, 255);
+  doc.text(isEn ? 'PRESENTED BY:' : 'DIPERSEMBAHKAN OLEH:', 25, 255);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(203, 213, 225);
-  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', 25, 261);
-  doc.text('Padang, Sumatera Barat, Indonesia • 2026', 25, 266);
-  doc.text('Platform Resmi: https://malala.my.id', 25, 271);
+  doc.text('MINANGKAOS', 25, 261);
+  doc.text('Sumatera Barat, Indonesia • 2026', 25, 266);
+  doc.text('Platform: https://malala.my.id', 25, 271);
 
   // ==============================================================
   // 2. BAB I: 26 DESTINASI WISATA (1 HALAMAN PER ITEM)
@@ -525,16 +525,15 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9.5);
   doc.setTextColor(255, 255, 255);
-  doc.text('Dinas Pariwisata Provinsi Sumatera Barat', pageWidth / 2, 137, { align: 'center' });
-  doc.text('Jl. Khatib Sulaiman No. 22, Padang, Sumatera Barat', pageWidth / 2, 144, { align: 'center' });
-  doc.text('Email: info@pariwisata.sumbarprov.go.id', pageWidth / 2, 151, { align: 'center' });
-  doc.text('Official Platform: https://malala.my.id', pageWidth / 2, 158, { align: 'center' });
-  doc.text('Call Center / Hotline: +62 751 7055183', pageWidth / 2, 165, { align: 'center' });
+  doc.text('Presented by: MINANGKAOS', pageWidth / 2, 137, { align: 'center' });
+  doc.text('Sumatera Barat, Indonesia', pageWidth / 2, 144, { align: 'center' });
+  doc.text('Instagram: @minangkaos', pageWidth / 2, 151, { align: 'center' });
+  doc.text('Platform: https://malala.my.id', pageWidth / 2, 158, { align: 'center' });
 
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(8.5);
   doc.setTextColor(148, 163, 184);
-  doc.text(isEn ? '© 2026 Malala Official. All rights reserved.' : '© 2026 Malala Official. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
+  doc.text(isEn ? '© 2026 Malala • MINANGKAOS. All rights reserved.' : '© 2026 Malala • MINANGKAOS. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
 
   // SAVE FILE DIRECTLY (Zero Popups, Zero Blank Pages)
   const filename = isEn ? 'Master-Booklet-West-Sumatra-Guide-2026.pdf' : 'Master-E-Booklet-Pariwisata-Budaya-Sumbar-2026.pdf';

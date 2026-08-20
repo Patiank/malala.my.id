@@ -141,13 +141,19 @@ export const PemprovSumbarLogo: React.FC<{ className?: string; size?: number | s
     );
   }
 
+export const MinangkaosLogo: React.FC<{ className?: string; size?: number | string }> = ({ className = '', size = 48 }) => {
+  const widthStyle = typeof size === 'number' ? `${size}px` : size;
   return (
-    <img
-      src={imgSrc}
-      alt="Logo Resmi Pemerintah Provinsi Sumatera Barat"
-      onError={handleError}
-      style={{ width: widthStyle, height: 'auto', maxHeight: typeof size === 'number' ? `${size * 1.5}px` : 'auto' }}
-      className={`inline-block filter drop-shadow-md object-contain select-none transition-all duration-300 ${className}`}
-    />
+    <div
+      style={{ width: widthStyle, height: widthStyle }}
+      className={`relative inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 via-red-600 to-black text-white font-orbitron font-black shadow-lg border border-amber-400/40 select-none ${className}`}
+    >
+      <span className="text-xl tracking-tighter drop-shadow-md">M</span>
+      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-amber-400 rounded-full border-2 border-black flex items-center justify-center text-[7px] text-black font-black">
+        ★
+      </div>
+    </div>
   );
 };
+
+export const PemprovSumbarLogo = MinangkaosLogo;

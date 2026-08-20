@@ -370,12 +370,11 @@ async function startServer() {
         ? "Please generate the official trip itinerary for West Sumatra completely in ENGLISH language."
         : "Buatkan rencana perjalanan wisata (Itinerary) resmi & komprehensif untuk Sumatera Barat dalam Bahasa Indonesia.";
 
-      // Format events list for context
       const eventsSummary = Array.isArray(availableEvents) && availableEvents.length > 0
-        ? availableEvents.map((ev: any) => `- ${ev.title} (${ev.schedule || ev.date || ''} di ${ev.location || 'Sumbar'}) ${ev.isKen ? '[KEN Kemenparekraf]' : ''}: ${ev.description || ''}`).join('\n')
-        : 'Katalog event resmi Dinas Pariwisata Sumbar 2026: Pacu Jawi (Mei-Juni / Agt-Sept di Tanah Datar), Tour de Singkarak (Juli-Agustus), Festival Tabuik (Muharram/Juli di Pariaman), Rang Solok Baralek Gadang (September di Solok), Payakumbuh Botuang Festival (Juli), Sawahlunto Songket Carnival (September), Festival Siti Nurbaya Padang (Agustus).';
+        ? availableEvents.map((ev: any) => `- ${ev.title} (${ev.schedule || ev.date || ''} di ${ev.location || 'Sumbar'}) ${ev.isKen ? '[Karisma Event Nusantara]' : ''}: ${ev.description || ''}`).join('\n')
+        : 'Katalog event Sumatera Barat 2026: Pacu Jawi (Mei-Juni / Agt-Sept di Tanah Datar), Tour de Singkarak (Juli-Agustus), Festival Tabuik (Muharram/Juli di Pariaman), Rang Solok Baralek Gadang (September di Solok), Payakumbuh Botuang Festival (Juli), Sawahlunto Songket Carnival (September), Festival Siti Nurbaya Padang (Agustus).';
 
-      const prompt = `Anda adalah MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK & PALING BERPENGALAMAN di Sumatera Barat (Wonderful West Sumatra Tourism Board).
+      const prompt = `Anda adalah MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK & PALING BERPENGALAMAN di Sumatera Barat by MINANGKAOS (malala.my.id).
 ${langInstruction}
 
 TUGAS ANDA:

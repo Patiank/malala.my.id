@@ -1646,11 +1646,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                         OFFICIAL CoE 2026
                       </span>
                       <span className="text-gray-300 font-jakarta font-medium text-[10px]">
-                        {isEn ? 'West Sumatra Tourism Board' : 'Dinas Pariwisata Sumatera Barat'}
+                        {isEn ? 'Curated by MINANGKAOS' : 'Disusun oleh MINANGKAOS'}
                       </span>
                     </div>
                     <h2 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide text-white">
-                      {isEn ? 'CALENDAR OF EVENTS (CoE) 2026' : 'KALENDER EVENT RESMI SUMBAR 2026'}
+                      {isEn ? 'CALENDAR OF EVENTS (CoE) 2026' : 'KALENDER EVENT SUMBAR 2026'}
                     </h2>
                   </div>
 
@@ -2763,8 +2763,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </h3>
                       <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
                         {lang === 'en'
-                          ? 'Official e-book detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
-                          : 'E-Book resmi Dinas Pariwisata Sumbar memuat ikhtisar lengkap seluruh festival budaya, tradisi anak nagari, dan KEN 2026.'}
+                          ? 'Special e-book curated by MINANGKAOS detailing cultural festivals, traditional art celebrations, and CoE 2026.'
+                          : 'E-Book komprehensif oleh MINANGKAOS memuat ikhtisar lengkap seluruh festival budaya, tradisi anak nagari, dan CoE 2026.'}
                       </p>
                     </div>
                   </div>
@@ -2844,7 +2844,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         {/* Footer info (Hidden for chat so chat box gets full height) */}
         {activeDrawer !== 'chat' && (
           <div className="p-4 border-t border-gray-200 bg-gray-50 text-center font-jakarta text-[10px] text-gray-500 uppercase tracking-widest shrink-0">
-            Dinas Pariwisata Provinsi Sumatera Barat © 2026 — Visit Wonderful West Sumatra
+            MALALA © 2026 — Presented by MINANGKAOS
           </div>
         )}
       </div>

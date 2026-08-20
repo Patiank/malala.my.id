@@ -587,11 +587,12 @@ export const Hero: React.FC<HeroProps> = ({
             )}
           </div>
 
-          {/* Official Tourism Board Logo & Text (Left-Bottom) */}
+          {/* MINANGKAOS Brand Identity & Text (Left-Bottom) */}
           <div className="flex items-center gap-3.5 transition-colors duration-300 mt-8 sm:mt-12 lg:mt-16 pt-16 sm:pt-24 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
-              className="cursor-default shrink-0 select-none"
+              className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
+              title="MINANGKAOS"
             >
               <PemprovSumbarLogo size={44} />
             </div>
@@ -599,14 +600,14 @@ export const Hero: React.FC<HeroProps> = ({
               className="font-jakarta font-bold uppercase tracking-[0.14em] leading-tight transition-colors duration-300 select-none flex-1 min-w-0"
               style={{ ...heroTextStyle, fontSize: 'var(--body)' }}
             >
-              <div>DINAS PARIWISATA</div>
-              <div title="Dinas Pariwisata Sumatera Barat" className="truncate">
-                PROVINSI SUMATERA BARAT
+              <div className="font-orbitron font-black text-amber-500 tracking-wider">MINANGKAOS</div>
+              <div title="Pariwisata & Budaya Sumatera Barat" className="truncate text-xs text-white">
+                SUMATERA BARAT
               </div>
-              <div style={{ color: heroTextColor, opacity: 0.8 }} className="font-normal text-xs mt-0.5 tracking-normal normal-case transition-colors duration-300">
+              <div style={{ color: heroTextColor, opacity: 0.85 }} className="font-normal text-xs mt-0.5 tracking-normal normal-case transition-colors duration-300">
                 {lang === 'en'
-                  ? 'Official Tourism Portal for West Sumatra.'
-                  : 'Portal Resmi Pariwisata Provinsi Sumatera Barat.'}
+                  ? 'West Sumatra Tourism, Culture & Culinary curated by MINANGKAOS.'
+                  : 'Kompilasi Pariwisata, Adat & Kuliner Ranah Minang oleh MINANGKAOS.'}
               </div>
             </div>
           </div>

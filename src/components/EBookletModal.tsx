@@ -155,8 +155,8 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
               {/* Divider + Footer */}
               <div className="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white font-jakarta drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
-                <span>Dinas Pariwisata Sumatera Barat</span>
-                <span className="font-bold text-white">E-Booklet Digital</span>
+                <span className="font-bold text-amber-300">MINANGKAOS</span>
+                <span className="font-bold text-white">E-Book Digital</span>
               </div>
             </div>
           </article>
@@ -443,7 +443,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
               </div>
 
               <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] font-jakarta text-gray-500">
-                <span>Dinas Pariwisata Sumatera Barat</span>
+                <span className="font-semibold text-slate-700">MINANGKAOS</span>
                 <span className="text-gray-400">#{destinations.length + cultureItems.length + culinaryItems.length + idx + 1}</span>
               </div>
             </article>
