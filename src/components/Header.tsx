@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-5 sm:px-8 md:px-[var(--pad-x)]"
+      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-4 sm:px-6 md:px-[var(--pad-x)]"
       style={{
         paddingTop: 'var(--header-pt)',
         paddingBottom: 'var(--section-gap)',
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo (Left) */}
         <button
           onClick={onCloseDrawer}
-          className="font-orbitron font-black tracking-[0.15em] flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity text-left focus:outline-none"
+          className="font-orbitron font-black tracking-[0.12em] sm:tracking-[0.15em] flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity text-left focus:outline-none"
           style={{ fontSize: 'var(--logo)' }}
           aria-label="WEST SUMATRA TOURISM"
         >
@@ -75,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
           <span
-            className="font-jakarta text-[9px] tracking-[0.25em] font-semibold -mt-1 uppercase transition-colors duration-300"
+            className="font-jakarta text-[8.5px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] font-semibold -mt-1 uppercase transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.75, textShadow: shadowValue }}
           >
             {t.logoTagline}
@@ -83,43 +83,40 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Mobile Menu Toggle & Essentials */}
-        <div className="flex items-center gap-2 sm:gap-3 md:hidden">
+        <div className="flex items-center gap-1.5 sm:gap-2.5 md:hidden shrink-0 pr-1">
+          {/* Compact Language Toggle */}
           <button
             onClick={onToggleLang}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs"
+            className="inline-flex items-center gap-1 px-1.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
           >
-            <Globe className="w-3.5 h-3.5 text-red-600" />
-            <div className="flex items-center gap-0.5 text-[10px] font-extrabold tracking-wider uppercase">
-              <span className={`px-1 py-0.2 rounded ${lang === 'id' ? 'bg-black text-white' : 'text-gray-400'}`}>
-                ID
-              </span>
-              <span className="text-gray-300 font-normal">|</span>
-              <span className={`px-1 py-0.2 rounded ${lang === 'en' ? 'bg-black text-white' : 'text-gray-400'}`}>
-                EN
-              </span>
-            </div>
+            <Globe className="w-3 h-3 text-red-600 shrink-0" />
+            <span className="text-[9px] font-extrabold px-1 py-0.2 rounded bg-black text-white leading-tight uppercase">
+              {lang.toUpperCase()}
+            </span>
           </button>
           
+          {/* Compact Saved / Bookmark Button */}
           <button
             onClick={() => handleNavClick('saved')}
-            className="relative cursor-pointer p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800"
+            className="relative cursor-pointer p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800 shadow-2xs"
             title="Tersimpan"
           >
-            <Bookmark strokeWidth={2} className="w-4 h-4" />
+            <Bookmark strokeWidth={2} className="w-3.5 h-3.5" />
             {savedCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black text-white font-orbitron font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-xs">
+              <span className="absolute -top-1 -right-1 bg-black text-white font-orbitron font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center leading-none shadow-xs">
                 {savedCount}
               </span>
             )}
           </button>
           
+          {/* Hamburger Menu Toggle Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-2xs"
             aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
