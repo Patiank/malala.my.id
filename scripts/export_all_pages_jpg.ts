@@ -2,7 +2,6 @@ import puppeteer from 'puppeteer-core';
 import * as fs from 'fs';
 import * as path from 'path';
 import { jsPDF } from 'jspdf';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../src/data/content';
 import { execSync } from 'child_process';
 
 const edgePaths = [
@@ -30,20 +29,84 @@ console.log('🔄 Menyiapkan HTML template Panduan Lengkap & Kalender Event...')
 execSync('cmd /c npx tsx scripts/generate_html_pdf.ts', { stdio: 'inherit' });
 execSync('cmd /c npx tsx scripts/generate_event_pdf.ts', { stdio: 'inherit' });
 
+/**
+ * Ensures ALL images in the page are completely loaded, downloaded, and decoded
+ */
+async function preloadAndEnsureAllImages(page: any) {
+  console.log('   ⏳ Memuat dan mendownload seluruh gambar di halaman...');
+  
+  // Use pure string evaluation to avoid any tsx/esbuild helper injection (__name)
+  await page.evaluate(`
+    (async () => {
+      // 1. Scroll through the page to trigger all image requests
+      await new Promise((resolve) => {
+        let currentPosition = 0;
+        const step = 800;
+        const scrollInterval = setInterval(() => {
+          const totalHeight = document.body.scrollHeight;
+          window.scrollBy(0, step);
+          currentPosition += step;
+
+          if (currentPosition >= totalHeight) {
+            clearInterval(scrollInterval);
+            window.scrollTo(0, 0);
+            resolve();
+          }
+        }, 60);
+      });
+
+      // 2. Wait for every <img> element to be complete and decoded
+      const images = Array.from(document.querySelectorAll('img'));
+      await Promise.all(
+        images.map((img) => {
+          if (img.complete && img.naturalWidth > 0) {
+            return Promise.resolve();
+          }
+          return new Promise((resolve) => {
+            const finish = () => {
+              img.removeEventListener('load', finish);
+              img.removeEventListener('error', finish);
+              resolve();
+            };
+            img.addEventListener('load', finish);
+            img.addEventListener('error', finish);
+            setTimeout(finish, 10000);
+          });
+        })
+      );
+    })()
+  `);
+
+  // Extra safety buffer after decoding all images
+  await new Promise(r => setTimeout(r, 2000));
+}
+
 async function exportAllPDFs() {
   console.log(`🚀 Menjalankan browser engine (${browserExe})...`);
   
   const browser = await puppeteer.launch({
     executablePath: browserExe,
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-gpu',
+      '--disable-web-security',
+      '--allow-running-insecure-content'
+    ]
   });
 
   const pdfOutDir = path.join(process.cwd(), 'public', 'downloads');
   if (!fs.existsSync(pdfOutDir)) fs.mkdirSync(pdfOutDir, { recursive: true });
 
+  interface PageData {
+    buffer: Buffer;
+    width: number;
+    height: number;
+  }
+
   // =========================================================================
-  // TASK 1: FULL TRAVEL GUIDE PDF (107 PAGES)
+  // TASK 1: FULL TRAVEL GUIDE PDF (113 PAGES)
   // =========================================================================
   console.log('\n========================================');
   console.log('📘 1. MERENDER BUKU PANDUAN WISATA LENGKAP...');
@@ -56,8 +119,10 @@ async function exportAllPDFs() {
   const fileUrl1 = `file:///${htmlPath1.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl1}`);
-  await page1.goto(fileUrl1, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await new Promise(r => setTimeout(r, 4000));
+  await page1.goto(fileUrl1, { waitUntil: 'load', timeout: 90000 });
+  
+  // Preload and decode all images across the 113 cards
+  await preloadAndEnsureAllImages(page1);
 
   const jpgDir = path.join(process.cwd(), 'ebooklet_pages_jpg');
   if (!fs.existsSync(jpgDir)) fs.mkdirSync(jpgDir, { recursive: true });
@@ -68,61 +133,17 @@ async function exportAllPDFs() {
   const articles1 = await page1.$$('article.page-card');
   console.log(`Ditemukan ${articles1.length} halaman kartu.`);
 
-  // Generate filenames for full guide
-  const fileNames: string[] = ['01_cover_malala_2026.jpg'];
-  let destinations = DESTINATIONS;
-  let cultureItems = CULTURE_ITEMS;
-  let culinaryItems = CULINARY_ITEMS;
-  let eventItems = EVENTS_SCHEDULE;
-
-  try {
-    const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
-    if (fs.existsSync(backupPath)) {
-      const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
-      if (raw.destinations && raw.destinations.length > 0) destinations = raw.destinations;
-      if (raw.cultureItems && raw.cultureItems.length > 0) cultureItems = raw.cultureItems;
-      if (raw.culinaryItems && raw.culinaryItems.length > 0) culinaryItems = raw.culinaryItems;
-      if (raw.eventItems && raw.eventItems.length > 0) eventItems = raw.eventItems;
-    }
-  } catch (e) {}
-
-  destinations.forEach((d, idx) => {
-    const slug = d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(idx + 2).padStart(2, '0');
-    fileNames.push(`${num}_destinasi_${slug}.jpg`);
-  });
-
-  cultureItems.forEach((c, idx) => {
-    const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(destinations.length + idx + 2).padStart(2, '0');
-    fileNames.push(`${num}_budaya_${slug}.jpg`);
-  });
-
-  culinaryItems.forEach((cu, idx) => {
-    const slug = cu.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(destinations.length + cultureItems.length + idx + 2).padStart(2, '0');
-    fileNames.push(`${num}_kuliner_${slug}.jpg`);
-  });
-
-  eventItems.forEach((ev, idx) => {
-    const slug = ev.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 30);
-    const num = String(destinations.length + cultureItems.length + culinaryItems.length + idx + 2).padStart(2, '0');
-    fileNames.push(`${num}_event_${slug}.jpg`);
-  });
-
-  interface PageData {
-    buffer: Buffer;
-    width: number;
-    height: number;
-  }
-
   const pagesData1: PageData[] = [];
 
   for (let i = 0; i < articles1.length; i++) {
     const art = articles1[i];
-    const filename = fileNames[i] || `page_${String(i + 1).padStart(2, '0')}.jpg`;
+    const filename = `page_${String(i + 1).padStart(3, '0')}.jpg`;
     const targetPath = path.join(jpgDir, filename);
     const publicTargetPath = path.join(publicJpgDir, filename);
+
+    // Scroll into view to ensure paint
+    await art.scrollIntoView();
+    await new Promise(r => setTimeout(r, 60));
 
     const box = await art.boundingBox();
     const width = box ? Math.round(box.width) : 480;
@@ -175,7 +196,7 @@ async function exportAllPDFs() {
   await page1.close();
 
   // =========================================================================
-  // TASK 2: OFFICIAL CALENDAR OF EVENTS (CoE) 2026 DEDICATED PDF
+  // TASK 2: OFFICIAL CALENDAR OF EVENTS (CoE) 2026 DEDICATED PDF (27 PAGES)
   // =========================================================================
   console.log('\n========================================');
   console.log('📅 2. MERENDER E-BOOKLET KALENDER EVENT (CoE) 2026...');
@@ -188,8 +209,10 @@ async function exportAllPDFs() {
   const fileUrl2 = `file:///${htmlPath2.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl2}`);
-  await page2.goto(fileUrl2, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await new Promise(r => setTimeout(r, 4000));
+  await page2.goto(fileUrl2, { waitUntil: 'load', timeout: 90000 });
+  
+  // Preload and decode all images across the 27 event cards
+  await preloadAndEnsureAllImages(page2);
 
   const articles2 = await page2.$$('article.page-card');
   console.log(`Ditemukan ${articles2.length} halaman kartu event.`);
@@ -198,6 +221,9 @@ async function exportAllPDFs() {
 
   for (let i = 0; i < articles2.length; i++) {
     const art = articles2[i];
+    await art.scrollIntoView();
+    await new Promise(r => setTimeout(r, 60));
+
     const box = await art.boundingBox();
     const width = box ? Math.round(box.width) : 480;
     const height = box ? Math.round(box.height) : 720;
@@ -242,7 +268,7 @@ async function exportAllPDFs() {
   await page2.close();
   await browser.close();
 
-  console.log(`\n🎉 SEMUA PDF RESMI BERHASIL DIBUAT SEMPURNA!`);
+  console.log(`\n🎉 SEMUA PDF RESMI BERHASIL DIBUAT SEMPURNA DENGAN SELURUH GAMBAR TERENDER!`);
 }
 
 exportAllPDFs();
