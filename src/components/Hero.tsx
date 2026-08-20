@@ -588,7 +588,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Official Tourism Board Logo & Text (Left-Bottom) */}
-          <div className="flex items-center gap-3.5 transition-colors duration-300 pt-18 sm:pt-28 w-full max-w-md">
+          <div className="flex items-center gap-3.5 transition-colors duration-300 mt-8 sm:mt-12 lg:mt-16 pt-16 sm:pt-24 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
               className="cursor-default shrink-0 select-none"
@@ -613,9 +613,9 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-        {/* Right Lower Feature Block */}
+        {/* Right Lower Feature Block (Raised upwards) */}
         <div
-          className="self-start lg:self-end mt-8 lg:mt-0 relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full"
+          className="self-start lg:self-center mt-4 lg:mt-0 lg:-translate-y-12 xl:-translate-y-16 relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full"
           style={{
             padding: 'var(--feature-pad)',
           }}
@@ -905,8 +905,8 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
         </div>
 
-        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right) */}
-        <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-50 animate-fade-in block">
+        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Raised upwards) */}
+        <div className="absolute bottom-20 right-6 sm:bottom-28 sm:right-8 lg:bottom-32 z-50 animate-fade-in block">
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
