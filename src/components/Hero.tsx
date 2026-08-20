@@ -610,8 +610,8 @@ export const Hero: React.FC<HeroProps> = ({
             )}
           </div>
 
-          {/* MINANGKAOS Brand Identity & Text (Left-Bottom) */}
-          <div className="flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
+          {/* MINANGKAOS Brand Identity & Text (Desktop: Left-Bottom) */}
+          <div className="hidden lg:flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
               className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
@@ -935,6 +935,24 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       );
     })()}
+
+        {/* MINANGKAOS Brand Identity & Text (Mobile: Very Bottom of Screen) */}
+        <div className="flex lg:hidden items-center justify-center gap-2.5 transition-colors duration-300 mt-6 sm:mt-8 pb-4 w-full select-none z-10">
+          <div
+            onClick={handlePemprovLogoClick}
+            className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
+            title="MINANGKAOS"
+          >
+            <PemprovSumbarLogo size={46} />
+          </div>
+          <div
+            className="font-slackside text-2xl sm:text-3xl font-normal leading-none select-none"
+          >
+            <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
+              Minangkaos
+            </div>
+          </div>
+        </div>
 
         {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Shifted slightly left) */}
         <div className="absolute bottom-10 right-12 sm:bottom-14 sm:right-16 lg:bottom-16 lg:right-20 z-50 animate-fade-in block">

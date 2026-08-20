@@ -50,9 +50,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none"
+      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-4 sm:px-6 md:px-[var(--pad-x)]"
       style={{
-        paddingInline: 'var(--pad-x)',
         paddingTop: 'var(--header-pt)',
         paddingBottom: 'var(--section-gap)',
       }}
@@ -84,10 +83,10 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Mobile Menu Toggle & Essentials */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 sm:gap-3 md:hidden">
           <button
             onClick={onToggleLang}
-            className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs"
+            className="inline-flex items-center gap-1 px-2 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
           >
             <Globe className="w-3.5 h-3.5 text-red-600" />
@@ -104,9 +103,10 @@ export const Header: React.FC<HeaderProps> = ({
           
           <button
             onClick={() => handleNavClick('saved')}
-            className="relative cursor-pointer p-1"
+            className="relative cursor-pointer p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800"
+            title="Tersimpan"
           >
-            <Bookmark strokeWidth={2} className="w-5 h-5" />
+            <Bookmark strokeWidth={2} className="w-4 h-4" />
             {savedCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-black text-white font-orbitron font-bold text-[9px] w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-xs">
                 {savedCount}
@@ -116,9 +116,10 @@ export const Header: React.FC<HeaderProps> = ({
           
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-1 cursor-pointer"
+            className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-2xs"
+            aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
