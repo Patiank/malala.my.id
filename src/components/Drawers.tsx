@@ -84,55 +84,8 @@ export const getGoogleMapsUrl = (input?: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
 };
 
-export const getTravelokaHotelUrl = (dest?: Destination | null): string => {
-  if (!dest) return 'https://www.traveloka.com/id-id/hotel/indonesia/province/west-sumatra-106509';
-  
-  const text = `${dest.title} ${dest.regency || ''} ${dest.locationDetails || ''}`.toLowerCase();
-  
-  if (text.includes('bukittinggi') || text.includes('jam gadang') || text.includes('ngarai sianok') || text.includes('lubang jepang')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/bukittinggi-106511';
-  }
-  if (text.includes('payakumbuh') || text.includes('lima puluh kota') || text.includes('harau') || text.includes('kelok sembilan') || text.includes('kapalo banda')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/payakumbuh-106512';
-  }
-  if (text.includes('tanah datar') || text.includes('batusangkar') || text.includes('pagaruyung') || text.includes('pariangan') || text.includes('pacu jawi')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/tanah-datar-106514';
-  }
-  if (text.includes('agam') || text.includes('maninjau') || text.includes('lawang') || text.includes('tarusan kamang') || text.includes('kelok 44')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/agam-106516';
-  }
-  if (text.includes('pesisir selatan') || text.includes('mandeh') || text.includes('painan') || text.includes('carocok') || text.includes('bayang')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/pesisir-selatan-106517';
-  }
-  if (text.includes('solok') || text.includes('singkarak') || text.includes('kembar') || text.includes('alahan panjang') || text.includes('talang')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/solok-106515';
-  }
-  if (text.includes('mentawai') || text.includes('siberut') || text.includes('tuapejat') || text.includes('sipora')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/kepulauan-mentawai-106518';
-  }
-  if (text.includes('sawahlunto') || text.includes('ombilin') || text.includes('mbah soero')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/sawahlunto-106519';
-  }
-  if (text.includes('pariaman') || text.includes('nyarai') || text.includes('anai') || text.includes('angso duo') || text.includes('gandoriah')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/padang-pariaman-106520';
-  }
-  if (text.includes('dharmasraya') || text.includes('padang roco')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/dharmasraya-106523';
-  }
-  if (text.includes('pasaman') || text.includes('talamau') || text.includes('sasak')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/pasaman-106521';
-  }
-  if (text.includes('sijunjung') || text.includes('silokek')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/sijunjung-106522';
-  }
-  if (text.includes('solok selatan') || text.includes('seribu rumah gadang') || text.includes('batu kapal')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/solok-selatan-106524';
-  }
-  if (text.includes('padang') || text.includes('air manis') || text.includes('pasumpahan') || text.includes('sirandah') || text.includes('masjid raya')) {
-    return 'https://www.traveloka.com/id-id/hotel/indonesia/region/padang-106510';
-  }
-
-  return 'https://www.traveloka.com/id-id/hotel/indonesia/province/west-sumatra-106509';
+export const getTravelokaHotelUrl = (_dest?: Destination | null): string => {
+  return 'https://www.traveloka.com/id-id/hotel';
 };
 
 interface DrawersProps {
