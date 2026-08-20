@@ -7,7 +7,7 @@ import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
@@ -2516,7 +2516,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Hot Info Items List (2 Columns flowing downward with full rich narrative) */}
+              {/* Hot Info Items List (2 Columns flowing downward with full rich narrative sorted newest to oldest) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-start">
                 {(() => {
                   const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
@@ -2539,6 +2539,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                       }
                       
                       return item.category === hotInfoCategory;
+                    })
+                    // Sort descending: newest on top, oldest at the bottom
+                    .sort((a: any, b: any) => {
+                      const timeA = parseNewsTimestamp(a.date, a.createdAt);
+                      const timeB = parseNewsTimestamp(b.date, b.createdAt);
+                      return timeB - timeA;
                     });
 
                   if (dedupedList.length === 0) {

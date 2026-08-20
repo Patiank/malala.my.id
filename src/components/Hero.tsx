@@ -672,13 +672,13 @@ export const Hero: React.FC<HeroProps> = ({
                   </div>
 
                   {/* YouTube Player */}
-                  <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-black shrink-0">
+                  <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
                     <iframe
                       src={ytEmbedUrl!}
                       title={title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
-                      className="w-full h-full border-0"
+                      className="w-full h-full border-0 absolute inset-0"
                     />
                     <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/75 backdrop-blur-xs px-2 py-0.5 rounded-full pointer-events-none z-10 shadow-xs">
                       <span className="relative flex h-2 w-2">
@@ -794,7 +794,7 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Photo Banner Image */}
                   {eventItem.imageUrl ? (
-                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gray-900 shrink-0">
+                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-gray-900 shrink-0">
                       <img
                         src={eventItem.imageUrl}
                         alt={title}

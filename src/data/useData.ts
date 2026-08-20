@@ -3,7 +3,7 @@ import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } f
 import { db } from '../lib/firebase';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
 import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
-import { isWithinLast30Days, deduplicateNewsItems } from '../utils/ai';
+import { isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
 
 export function useData() {
   const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
@@ -133,11 +133,14 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0 && isWithinLast30Days(item.date || item.createdAt));
 
-      const dedupedMerged = deduplicateNewsItems(data.length > 0 ? data : HOT_INFO_ITEMS);
+      const dedupedMerged = deduplicateNewsItems(data.length > 0 ? data : HOT_INFO_ITEMS)
+        .sort((a: any, b: any) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
       setHotInfoItems(dedupedMerged.length > 0 ? dedupedMerged : deduplicateNewsItems(HOT_INFO_ITEMS));
     }, (err) => {
       console.warn("Firestore hotinfo error:", err);
-      setHotInfoItems(deduplicateNewsItems(HOT_INFO_ITEMS));
+      const fallbackSorted = deduplicateNewsItems(HOT_INFO_ITEMS)
+        .sort((a: any, b: any) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
+      setHotInfoItems(fallbackSorted);
     });
 
     // 7. Settings listener (Cloud Firestore is the Master Authority)

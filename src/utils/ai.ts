@@ -913,43 +913,62 @@ function cleanHtml(html: string): string {
     .trim();
 }
 
+export function parseNewsTimestamp(dateStr?: string, createdAt?: any): number {
+  if (createdAt) {
+    if (typeof createdAt === 'number') return createdAt;
+    if (typeof createdAt.toMillis === 'function') return createdAt.toMillis();
+    if (typeof createdAt.toDate === 'function') return createdAt.toDate().getTime();
+    if (typeof createdAt === 'string') {
+      const parsed = Date.parse(createdAt);
+      if (!isNaN(parsed)) return parsed;
+    }
+  }
+
+  if (!dateStr || !dateStr.trim()) return Date.now();
+
+  const lower = dateStr.toLowerCase().trim();
+  if (lower === 'hari ini' || lower === 'today' || lower === 'update') return Date.now();
+  if (lower === 'kemarin' || lower === 'yesterday') return Date.now() - 86400000;
+
+  const parsed = Date.parse(dateStr);
+  if (!isNaN(parsed)) return parsed;
+
+  const monthsMap: Record<string, number> = {
+    'jan': 0, 'januari': 0, 'january': 0,
+    'feb': 1, 'februari': 1, 'february': 1,
+    'mar': 2, 'maret': 2, 'march': 2,
+    'apr': 3, 'april': 3,
+    'mei': 4, 'may': 4,
+    'jun': 5, 'juni': 5, 'june': 5,
+    'jul': 6, 'juli': 6, 'july': 6,
+    'ags': 7, 'agustus': 7, 'aug': 7, 'august': 7,
+    'sep': 8, 'september': 8,
+    'okt': 9, 'oktober': 9, 'oct': 9, 'october': 9,
+    'nov': 10, 'november': 10,
+    'des': 11, 'desember': 11, 'dec': 11, 'december': 11,
+  };
+
+  const match = lower.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
+  if (match) {
+    const day = parseInt(match[1], 10);
+    const monthName = match[2];
+    const year = parseInt(match[3], 10);
+    const monthIndex = monthsMap[monthName];
+    if (monthIndex !== undefined) {
+      return new Date(year, monthIndex, day).getTime();
+    }
+  }
+
+  return 0;
+}
+
 export function isWithinLast30Days(dateStr?: string): boolean {
   if (!dateStr) return true;
   try {
-    const parsedTime = Date.parse(dateStr);
-    if (!isNaN(parsedTime)) {
+    const timestamp = parseNewsTimestamp(dateStr);
+    if (timestamp > 0) {
       const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
-      return (Date.now() - parsedTime) <= thirtyDaysInMs && (parsedTime <= Date.now() + 86400000);
-    }
-    const monthsMap: Record<string, number> = {
-      'jan': 0, 'januari': 0, 'january': 0,
-      'feb': 1, 'februari': 1, 'february': 1,
-      'mar': 2, 'maret': 2, 'march': 2,
-      'apr': 3, 'april': 3,
-      'mei': 4, 'may': 4,
-      'jun': 5, 'juni': 5, 'june': 5,
-      'jul': 6, 'juli': 6, 'july': 6,
-      'ags': 7, 'agustus': 7, 'aug': 7, 'august': 7,
-      'sep': 8, 'september': 8,
-      'okt': 9, 'oktober': 9, 'oct': 9, 'october': 9,
-      'nov': 10, 'november': 10,
-      'des': 11, 'desember': 11, 'dec': 11, 'december': 11,
-    };
-    const lower = dateStr.toLowerCase();
-    if (lower.includes('hari ini') || lower.includes('today') || lower.includes('minggu ini') || lower.includes('this week') || lower.includes('bulan ini') || lower.includes('this month')) {
-      return true;
-    }
-    const match = lower.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const monthName = match[2];
-      const year = parseInt(match[3], 10);
-      const monthIndex = monthsMap[monthName];
-      if (monthIndex !== undefined) {
-        const itemDate = new Date(year, monthIndex, day).getTime();
-        const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
-        return (Date.now() - itemDate) <= thirtyDaysInMs;
-      }
+      return (Date.now() - timestamp) <= thirtyDaysInMs && (timestamp <= Date.now() + 86400000);
     }
     return true;
   } catch {
