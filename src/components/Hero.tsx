@@ -588,7 +588,7 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* MINANGKAOS Brand Identity & Text (Left-Bottom) */}
-          <div className="flex items-center gap-3.5 transition-colors duration-300 mt-8 sm:mt-12 lg:mt-16 pt-16 sm:pt-24 w-full max-w-md">
+          <div className="flex items-center gap-3.5 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
               className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
