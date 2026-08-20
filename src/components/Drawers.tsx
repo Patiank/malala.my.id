@@ -893,6 +893,8 @@ export const Drawers: React.FC<DrawersProps> = ({
             ? 'w-full sm:w-[480px] md:w-[520px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'events'
             ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
+            : activeDrawer === 'download'
+            ? 'w-full md:w-[75vw] lg:w-[65vw] xl:w-[58vw] max-w-5xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
         } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
       >
@@ -2678,104 +2680,112 @@ export const Drawers: React.FC<DrawersProps> = ({
                 <p>{lang === 'en' ? 'Download West Sumatra tourism promotional assets, master e-booklets, and travel guides.' : 'Unduh materi promosi pariwisata Sumatera Barat, e-booklet master komprehensif, dan panduan perjalanan Anda.'}</p>
               </div>
 
-              {/* FEATURED MASTER E-BOOKLET COMPREHENSIVE PDF CARD */}
-              <div className="border-2 border-red-600/40 rounded-xl p-5 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white shadow-xl space-y-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
-                <div className="flex items-center justify-between">
-                  <span className="bg-red-600 text-white font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-                    {lang === 'en' ? 'OFFICIAL E-BOOK 2026' : 'E-BOOK RESMI 2026'}
-                  </span>
-                  <span className="text-yellow-400 font-jakarta text-xs font-bold">
-                    PDF E-Book
-                  </span>
+              {/* 2 FEATURED MASTER E-BOOKLET PANELS (GRID 2 COLUMNS / BARIS) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* FEATURED MASTER E-BOOKLET COMPREHENSIVE PDF CARD */}
+                <div className="border-2 border-red-600/40 rounded-xl p-5 bg-gradient-to-br from-slate-900 via-slate-800 to-black text-white shadow-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none" />
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="bg-red-600 text-white font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                        {lang === 'en' ? 'OFFICIAL E-BOOK 2026' : 'E-BOOK RESMI 2026'}
+                      </span>
+                      <span className="text-yellow-400 font-jakarta text-xs font-bold">
+                        PDF E-Book (30 MB)
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <h3 className="font-orbitron font-extrabold text-white text-sm sm:text-base tracking-wide">
+                        {lang === 'en' ? 'Complete West Sumatra Tourism & Culture Guide 2026' : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026'}
+                      </h3>
+                      {(() => {
+                        const liveDestCount = (dataStore?.destinations && dataStore.destinations.length > 0) ? dataStore.destinations.length : DESTINATIONS.length;
+                        const liveCultCount = (dataStore?.cultureItems && dataStore.cultureItems.length > 0) ? dataStore.cultureItems.length : CULTURE_ITEMS.length;
+                        const liveCulCount = (dataStore?.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems.length : CULINARY_ITEMS.length;
+                        const liveEvCount = (dataStore?.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems.length : EVENTS_SCHEDULE.length;
+
+                        return (
+                          <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
+                            {lang === 'en' 
+                              ? `Comprehensive compilation of ${liveDestCount} curated destinations, ${liveCultCount} sacred Minang cultural heritage traditions, ${liveCulCount} authentic gastronomic dishes, and ${liveEvCount} major 2026 events.` 
+                              : `Kompilasi komprehensif ${liveDestCount} destinasi wisata, ${liveCultCount} adat budaya Minangkabau, ${liveCulCount} kuliner otentik, serta ${liveEvCount} kalender event resmi 2026.`}
+                          </p>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
+                    >
+                      <Download className="w-4 h-4 text-white" />
+                      <span>{lang === 'en' ? '⬇️ Download Guidebook' : '⬇️ Unduh Panduan Lengkap'}</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <h3 className="font-orbitron font-extrabold text-white text-base tracking-wide">
-                    {lang === 'en' ? 'Complete West Sumatra Tourism & Culture Guide 2026' : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026'}
-                  </h3>
-                  {(() => {
-                    const liveDestCount = (dataStore?.destinations && dataStore.destinations.length > 0) ? dataStore.destinations.length : DESTINATIONS.length;
-                    const liveCultCount = (dataStore?.cultureItems && dataStore.cultureItems.length > 0) ? dataStore.cultureItems.length : CULTURE_ITEMS.length;
-                    const liveCulCount = (dataStore?.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems.length : CULINARY_ITEMS.length;
-                    const liveEvCount = (dataStore?.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems.length : EVENTS_SCHEDULE.length;
+                {/* FEATURED CALENDAR OF EVENTS 2026 PDF CARD */}
+                <div className="border-2 border-amber-500/40 rounded-xl p-5 bg-gradient-to-br from-amber-950 via-stone-900 to-black text-white shadow-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="bg-amber-500 text-black font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-black" />
+                        {lang === 'en' ? 'OFFICIAL CoE 2026' : 'KALENDER EVENT RESMI'}
+                      </span>
+                      <span className="text-amber-400 font-jakarta text-xs font-bold">
+                        PDF E-Book (6.8 MB)
+                      </span>
+                    </div>
 
-                    return (
+                    <div className="space-y-1.5">
+                      <h3 className="font-orbitron font-extrabold text-white text-sm sm:text-base tracking-wide">
+                        {lang === 'en' ? 'Official Calendar of Events (CoE) 2026' : 'Kalender Event & Kharisma Event Nusantara 2026'}
+                      </h3>
                       <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
-                        {lang === 'en' 
-                          ? `Comprehensive compilation of ${liveDestCount} curated destinations, ${liveCultCount} sacred Minang cultural heritage traditions, ${liveCulCount} authentic gastronomic dishes, and ${liveEvCount} major 2026 events & KEN calendar.` 
-                          : `Kompilasi komprehensif seluruh data ${liveDestCount} destinasi wisata, ${liveCultCount} warisan budaya & adat Minangkabau, ${liveCulCount} kuliner gastronomi otentik, serta ${liveEvCount} kalender event & KEN resmi 2026.`}
+                        {lang === 'en'
+                          ? 'Official e-booklet detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
+                          : 'E-Booklet resmi Dinas Pariwisata Sumbar memuat ikhtisar lengkap seluruh festival budaya, tradisi anak nagari, dan KEN 2026.'}
                       </p>
-                    );
-                  })()}
-                </div>
+                    </div>
+                  </div>
 
-                <div className="pt-2 flex flex-col sm:flex-row gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
-                      link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
-                      link.target = '_blank';
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    }}
-                    className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
-                  >
-                    <Download className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '⬇️ Download Guidebook' : '⬇️ Unduh Buku Panduan Lengkap'}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* FEATURED CALENDAR OF EVENTS 2026 PDF CARD */}
-              <div className="border-2 border-amber-500/40 rounded-xl p-5 bg-gradient-to-br from-amber-950 via-stone-900 to-black text-white shadow-xl space-y-4 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
-                <div className="flex items-center justify-between">
-                  <span className="bg-amber-500 text-black font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-black" />
-                    {lang === 'en' ? 'OFFICIAL CoE 2026' : 'KALENDER EVENT RESMI'}
-                  </span>
-                  <span className="text-amber-400 font-jakarta text-xs font-bold">
-                    PDF E-Book (CoE)
-                  </span>
-                </div>
-
-                <div className="space-y-1.5">
-                  <h3 className="font-orbitron font-extrabold text-white text-base tracking-wide">
-                    {lang === 'en' ? 'Official Calendar of Events (CoE) 2026' : 'Kalender Event & Kharisma Event Nusantara (KEN) 2026'}
-                  </h3>
-                  <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
-                    {lang === 'en'
-                      ? 'Official West Sumatra Tourism Board e-booklet detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
-                      : 'E-Booklet resmi Dinas Pariwisata Sumbar memuat rincian seluruh festival budaya, seni tradisi anak nagari, dan agenda Kharisma Event Nusantara (KEN) di 19 Kab/Kota.'}
-                  </p>
-                </div>
-
-                <div className="pt-2 flex flex-col sm:flex-row gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
-                      link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
-                      link.target = '_blank';
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    }}
-                    className="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
-                  >
-                    <Download className="w-4 h-4 text-black" />
-                    <span>{lang === 'en' ? '⬇️ Download CoE E-Booklet' : '⬇️ Unduh E-Booklet CoE (PDF)'}</span>
-                  </button>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
+                    >
+                      <Download className="w-4 h-4 text-black" />
+                      <span>{lang === 'en' ? '⬇️ Download CoE E-Booklet' : '⬇️ Unduh E-Booklet CoE'}</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-4">
+              {/* DOWNLOAD ITEMS LIST IN 2-COLUMN GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {(dataStore.downloadItems && dataStore.downloadItems.length > 0 ? dataStore.downloadItems : DOWNLOAD_ITEMS).map((item: any) => {
                   const isEn = lang === 'en';
                   return (
