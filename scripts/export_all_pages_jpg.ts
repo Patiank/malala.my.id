@@ -25,11 +25,12 @@ if (!browserExe) {
   process.exit(1);
 }
 
-// 1. Generate updated HTML
-console.log('🔄 Menyiapkan HTML template...');
+// 1. Generate updated HTML templates
+console.log('🔄 Menyiapkan HTML template Panduan Lengkap & Kalender Event...');
 execSync('cmd /c npx tsx scripts/generate_html_pdf.ts', { stdio: 'inherit' });
+execSync('cmd /c npx tsx scripts/generate_event_pdf.ts', { stdio: 'inherit' });
 
-async function exportPagesAndDynamicPDF() {
+async function exportAllPDFs() {
   console.log(`🚀 Menjalankan browser engine (${browserExe})...`);
   
   const browser = await puppeteer.launch({
@@ -38,16 +39,24 @@ async function exportPagesAndDynamicPDF() {
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
   });
 
-  const page = await browser.newPage();
-  await page.setViewport({ width: 600, height: 900, deviceScaleFactor: 2 }); // Crisp 2x retina scale
+  const pdfOutDir = path.join(process.cwd(), 'public', 'downloads');
+  if (!fs.existsSync(pdfOutDir)) fs.mkdirSync(pdfOutDir, { recursive: true });
 
-  const htmlPath = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
-  const fileUrl = `file:///${htmlPath.replace(/\\/g, '/')}`;
+  // =========================================================================
+  // TASK 1: FULL TRAVEL GUIDE PDF (107 PAGES)
+  // =========================================================================
+  console.log('\n========================================');
+  console.log('📘 1. MERENDER BUKU PANDUAN WISATA LENGKAP...');
+  console.log('========================================');
 
-  console.log(`📄 Memuat halaman: ${fileUrl}`);
-  await page.goto(fileUrl, { waitUntil: 'networkidle2', timeout: 120000 });
+  const page1 = await browser.newPage();
+  await page1.setViewport({ width: 600, height: 900, deviceScaleFactor: 2 });
 
-  // Wait extra 2s for images and fonts to render
+  const htmlPath1 = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
+  const fileUrl1 = `file:///${htmlPath1.replace(/\\/g, '/')}`;
+
+  console.log(`📄 Memuat halaman: ${fileUrl1}`);
+  await page1.goto(fileUrl1, { waitUntil: 'networkidle2', timeout: 120000 });
   await new Promise(r => setTimeout(r, 2000));
 
   const jpgDir = path.join(process.cwd(), 'ebooklet_pages_jpg');
@@ -56,14 +65,11 @@ async function exportPagesAndDynamicPDF() {
   const publicJpgDir = path.join(process.cwd(), 'public', 'ebooklet_pages_jpg');
   if (!fs.existsSync(publicJpgDir)) fs.mkdirSync(publicJpgDir, { recursive: true });
 
-  console.log(`📸 Mengekspor Halaman menjadi File JPG ke folder: ${jpgDir}...`);
+  const articles1 = await page1.$$('article.page-card');
+  console.log(`Ditemukan ${articles1.length} halaman kartu.`);
 
-  const articles = await page.$$('article.page-card');
-  console.log(`Ditemukan ${articles.length} halaman kartu.`);
-
-  // Generate clean filenames
+  // Generate filenames for full guide
   const fileNames: string[] = ['01_cover_malala_2026.jpg'];
-
   let destinations = DESTINATIONS;
   let cultureItems = CULTURE_ITEMS;
   let culinaryItems = CULINARY_ITEMS;
@@ -110,10 +116,10 @@ async function exportPagesAndDynamicPDF() {
     height: number;
   }
 
-  const pagesData: PageData[] = [];
+  const pagesData1: PageData[] = [];
 
-  for (let i = 0; i < articles.length; i++) {
-    const art = articles[i];
+  for (let i = 0; i < articles1.length; i++) {
+    const art = articles1[i];
     const filename = fileNames[i] || `page_${String(i + 1).padStart(2, '0')}.jpg`;
     const targetPath = path.join(jpgDir, filename);
     const publicTargetPath = path.join(publicJpgDir, filename);
@@ -130,26 +136,19 @@ async function exportPagesAndDynamicPDF() {
     fs.writeFileSync(targetPath, imgBuffer);
     fs.copyFileSync(targetPath, publicTargetPath);
 
-    pagesData.push({
+    pagesData1.push({
       buffer: imgBuffer,
       width,
       height
     });
 
-    if ((i + 1) % 15 === 0 || i === articles.length - 1) {
-      console.log(`   [${i + 1}/${articles.length}] Halaman tersimpan: ${filename} (${width}x${height}px)`);
+    if ((i + 1) % 25 === 0 || i === articles1.length - 1) {
+      console.log(`   [${i + 1}/${articles1.length}] Halaman tersimpan: ${filename} (${width}x${height}px)`);
     }
   }
 
-  await browser.close();
-
-  // =========================================================================
-  // COMPILE SEAMLESS DYNAMIC PDF (ZERO BLANK PAPER MARGINS - EXACT CARD SIZES)
-  // =========================================================================
-  console.log('\n📕 Menyusun PDF Seamless Dinamis (Tanpa Margin Kertas Tertentu / Pas Sesuai Bentuk Kartu)...');
-  
-  if (pagesData.length > 0) {
-    const first = pagesData[0];
+  if (pagesData1.length > 0) {
+    const first = pagesData1[0];
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'px',
@@ -157,30 +156,93 @@ async function exportPagesAndDynamicPDF() {
       hotfixes: ['px_scaling']
     });
 
-    // Add first page
     doc.addImage(first.buffer.toString('base64'), 'JPEG', 0, 0, first.width, first.height);
 
-    // Add remaining pages with their own exact natural dimensions
-    for (let i = 1; i < pagesData.length; i++) {
-      const p = pagesData[i];
+    for (let i = 1; i < pagesData1.length; i++) {
+      const p = pagesData1[i];
       doc.addPage([p.width, p.height], 'portrait');
       doc.addImage(p.buffer.toString('base64'), 'JPEG', 0, 0, p.width, p.height);
     }
 
-    const pdfOutDir = path.join(process.cwd(), 'public', 'downloads');
-    if (!fs.existsSync(pdfOutDir)) fs.mkdirSync(pdfOutDir, { recursive: true });
-    const outPdfPath = path.join(pdfOutDir, 'malala-panduan-wisata-sumbar-2026.pdf');
+    const outPdfPath1 = path.join(pdfOutDir, 'malala-panduan-wisata-sumbar-2026.pdf');
+    const pdfArrayBuffer1 = Buffer.from(doc.output('arraybuffer'));
+    fs.writeFileSync(outPdfPath1, pdfArrayBuffer1);
 
-    const pdfArrayBuffer = Buffer.from(doc.output('arraybuffer'));
-    fs.writeFileSync(outPdfPath, pdfArrayBuffer);
-
-    console.log(`🎉 PDF Seamless Berhasil Dibuat: ${outPdfPath}`);
-    console.log(`⚖️ Ukuran File: ${(pdfArrayBuffer.length / (1024 * 1024)).toFixed(2)} MB`);
-    console.log(`📄 Total Halaman: ${pagesData.length} halaman pas kartu 100% tanpa sisa kertas!`);
+    console.log(`🎉 PDF Panduan Lengkap Selesai: ${outPdfPath1}`);
+    console.log(`⚖️ Ukuran: ${(pdfArrayBuffer1.length / (1024 * 1024)).toFixed(2)} MB (${pagesData1.length} Halaman)`);
   }
 
-  console.log(`\n🎉 SELESAI SEMPURNA!`);
-  console.log(`📁 Seluruh file JPG tersimpan di: ${jpgDir}`);
+  await page1.close();
+
+  // =========================================================================
+  // TASK 2: OFFICIAL CALENDAR OF EVENTS (CoE) 2026 DEDICATED PDF
+  // =========================================================================
+  console.log('\n========================================');
+  console.log('📅 2. MERENDER E-BOOKLET KALENDER EVENT (CoE) 2026...');
+  console.log('========================================');
+
+  const page2 = await browser.newPage();
+  await page2.setViewport({ width: 600, height: 900, deviceScaleFactor: 2 });
+
+  const htmlPath2 = path.join(process.cwd(), 'public', 'event_calendar_printable.html');
+  const fileUrl2 = `file:///${htmlPath2.replace(/\\/g, '/')}`;
+
+  console.log(`📄 Memuat halaman: ${fileUrl2}`);
+  await page2.goto(fileUrl2, { waitUntil: 'networkidle2', timeout: 120000 });
+  await new Promise(r => setTimeout(r, 2000));
+
+  const articles2 = await page2.$$('article.page-card');
+  console.log(`Ditemukan ${articles2.length} halaman kartu event.`);
+
+  const pagesData2: PageData[] = [];
+
+  for (let i = 0; i < articles2.length; i++) {
+    const art = articles2[i];
+    const box = await art.boundingBox();
+    const width = box ? Math.round(box.width) : 480;
+    const height = box ? Math.round(box.height) : 720;
+
+    const imgBuffer = await art.screenshot({
+      type: 'jpeg',
+      quality: 92
+    }) as Buffer;
+
+    pagesData2.push({
+      buffer: imgBuffer,
+      width,
+      height
+    });
+  }
+
+  if (pagesData2.length > 0) {
+    const first = pagesData2[0];
+    const doc2 = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [first.width, first.height],
+      hotfixes: ['px_scaling']
+    });
+
+    doc2.addImage(first.buffer.toString('base64'), 'JPEG', 0, 0, first.width, first.height);
+
+    for (let i = 1; i < pagesData2.length; i++) {
+      const p = pagesData2[i];
+      doc2.addPage([p.width, p.height], 'portrait');
+      doc2.addImage(p.buffer.toString('base64'), 'JPEG', 0, 0, p.width, p.height);
+    }
+
+    const outPdfPath2 = path.join(pdfOutDir, 'kalender-event-sumbar-2026.pdf');
+    const pdfArrayBuffer2 = Buffer.from(doc2.output('arraybuffer'));
+    fs.writeFileSync(outPdfPath2, pdfArrayBuffer2);
+
+    console.log(`🎉 PDF Kalender Event 2026 Selesai: ${outPdfPath2}`);
+    console.log(`⚖️ Ukuran: ${(pdfArrayBuffer2.length / (1024 * 1024)).toFixed(2)} MB (${pagesData2.length} Halaman)`);
+  }
+
+  await page2.close();
+  await browser.close();
+
+  console.log(`\n🎉 SEMUA PDF RESMI BERHASIL DIBUAT SEMPURNA!`);
 }
 
-exportPagesAndDynamicPDF();
+exportAllPDFs();

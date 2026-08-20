@@ -1571,11 +1571,26 @@ export const DOWNLOAD_ITEMS: DownloadItem[] = [
     categoryEn: 'Guidebook',
     type: 'PDF',
     typeEn: 'PDF',
-    size: '5.2 MB',
-    description: 'Panduan lengkap berisi rekomendasi destinasi, kuliner, dan tips perjalanan.',
-    descriptionEn: 'Comprehensive guide with destination recommendations, culinary options, and travel tips.',
-    filename: 'panduan-wisata-sumbar.pdf',
-    content: 'data:application/pdf;base64,JVBERi0xLjQKJ...',
+    size: '38.5 MB',
+    description: 'Panduan lengkap komprehensif berisi rekomendasi seluruh destinasi, adat budaya, kuliner, dan tips perjalanan.',
+    descriptionEn: 'Comprehensive guide with complete destinations, cultural heritage, authentic cuisine, and travel tips.',
+    filename: 'malala-panduan-wisata-sumbar-2026.pdf',
+    content: '/downloads/malala-panduan-wisata-sumbar-2026.pdf',
+    mimeType: 'application/pdf'
+  },
+  {
+    id: 'dl2',
+    title: 'Calendar of Events (CoE) Sumatera Barat 2026',
+    titleEn: 'Official Calendar of Events (CoE) 2026',
+    category: 'Kalender Event',
+    categoryEn: 'Event Calendar',
+    type: 'PDF',
+    typeEn: 'PDF',
+    size: '7.2 MB',
+    description: 'E-Booklet resmi kalender seluruh festival budaya, seni tradisi Minangkabau, dan agenda Kharisma Event Nusantara (KEN) 2026.',
+    descriptionEn: 'Official e-booklet featuring all cultural festivals, traditional art events, and Karisma Event Nusantara (KEN) 2026 agenda.',
+    filename: 'kalender-event-sumbar-2026.pdf',
+    content: '/downloads/kalender-event-sumbar-2026.pdf',
     mimeType: 'application/pdf'
   }
 ];

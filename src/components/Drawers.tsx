@@ -51,12 +51,12 @@ const triggerDownload = (filename: string, content: string, mimeType: string = '
     }
   }
 
-  // Case 2: Web URL (http:// or https://)
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+  // Case 2: Web URL (http://, https://, or relative /downloads/...)
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('/')) {
     const a = document.createElement('a');
-    a.href = trimmed;
+    a.href = `${trimmed}${trimmed.includes('?') ? '&' : '?'}v=${Date.now()}`;
     a.target = '_blank';
-    a.download = filename || 'downloaded_file';
+    a.download = filename || 'downloaded_file.pdf';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1652,20 +1652,40 @@ export const Drawers: React.FC<DrawersProps> = ({
                     </h2>
                   </div>
 
-                  {/* Compact Quick Stats */}
-                  <div className="flex items-center gap-2 shrink-0 text-center">
-                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-                      <span className="font-orbitron font-bold text-xs text-amber-400">{eventItems.length}</span>
-                      <span className="text-[9px] text-gray-400 ml-1 uppercase">{isEn ? 'Events' : 'Event'}</span>
+                  {/* Compact Quick Stats & CoE Download Button */}
+                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                    <div className="flex items-center gap-2">
+                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
+                        <span className="font-orbitron font-bold text-xs text-amber-400">{eventItems.length}</span>
+                        <span className="text-[9px] text-gray-400 ml-1 uppercase">{isEn ? 'Events' : 'Event'}</span>
+                      </div>
+                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
+                        <span className="font-orbitron font-bold text-xs text-yellow-300">{totalKenCount}</span>
+                        <span className="text-[9px] text-gray-400 ml-1 uppercase">KEN</span>
+                      </div>
+                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
+                        <span className="font-orbitron font-bold text-xs text-emerald-400">19</span>
+                        <span className="text-[9px] text-gray-400 ml-1 uppercase">Kab/Kota</span>
+                      </div>
                     </div>
-                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-                      <span className="font-orbitron font-bold text-xs text-yellow-300">{totalKenCount}</span>
-                      <span className="text-[9px] text-gray-400 ml-1 uppercase">KEN</span>
-                    </div>
-                    <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10">
-                      <span className="font-orbitron font-bold text-xs text-emerald-400">19</span>
-                      <span className="text-[9px] text-gray-400 ml-1 uppercase">Kab/Kota</span>
-                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0 ml-auto sm:ml-0"
+                      title={isEn ? 'Download Calendar of Events E-Booklet (PDF)' : 'Unduh E-Booklet Kalender Event Resmi 2026 (PDF)'}
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>{isEn ? 'Download CoE PDF' : 'Unduh E-Booklet CoE'}</span>
+                    </button>
                   </div>
                 </div>
 
@@ -2706,7 +2726,51 @@ export const Drawers: React.FC<DrawersProps> = ({
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
                   >
                     <Download className="w-4 h-4 text-white" />
-                    <span>{lang === 'en' ? '⬇️ Download E-Book' : '⬇️ Unduh E-Book'}</span>
+                    <span>{lang === 'en' ? '⬇️ Download Guidebook' : '⬇️ Unduh Buku Panduan Lengkap'}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* FEATURED CALENDAR OF EVENTS 2026 PDF CARD */}
+              <div className="border-2 border-amber-500/40 rounded-xl p-5 bg-gradient-to-br from-amber-950 via-stone-900 to-black text-white shadow-xl space-y-4 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none" />
+                <div className="flex items-center justify-between">
+                  <span className="bg-amber-500 text-black font-jakarta font-extrabold text-[10px] uppercase px-2.5 py-1 rounded shadow-xs flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-black" />
+                    {lang === 'en' ? 'OFFICIAL CoE 2026' : 'KALENDER EVENT RESMI'}
+                  </span>
+                  <span className="text-amber-400 font-jakarta text-xs font-bold">
+                    PDF E-Book (CoE)
+                  </span>
+                </div>
+
+                <div className="space-y-1.5">
+                  <h3 className="font-orbitron font-extrabold text-white text-base tracking-wide">
+                    {lang === 'en' ? 'Official Calendar of Events (CoE) 2026' : 'Kalender Event & Kharisma Event Nusantara (KEN) 2026'}
+                  </h3>
+                  <p className="font-jakarta text-gray-300 text-xs leading-relaxed">
+                    {lang === 'en'
+                      ? 'Official West Sumatra Tourism Board e-booklet detailing all cultural festivals, traditional art celebrations, and national KEN agendas across 19 regencies/cities.'
+                      : 'E-Booklet resmi Dinas Pariwisata Sumbar memuat rincian seluruh festival budaya, seni tradisi anak nagari, dan agenda Kharisma Event Nusantara (KEN) di 19 Kab/Kota.'}
+                  </p>
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                      link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    className="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-bold text-xs uppercase transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
+                  >
+                    <Download className="w-4 h-4 text-black" />
+                    <span>{lang === 'en' ? '⬇️ Download CoE E-Booklet' : '⬇️ Unduh E-Booklet CoE (PDF)'}</span>
                   </button>
                 </div>
               </div>
