@@ -2302,6 +2302,45 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </ul>
                         </div>
                       )}
+
+                      {/* Traveloka Official Accommodation & Flight Booking CTA */}
+                      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-4 rounded-xl space-y-2.5 shadow-md">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="bg-white text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              Traveloka Partner
+                            </span>
+                            <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
+                              {lang === 'en' ? 'Book Itinerary Accommodation' : 'Pesan Akomodasi Rute Liburan'}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
+                          {lang === 'en'
+                            ? 'Ready to make this itinerary a reality? Book your hotels and flights to Padang (BIM) with official partner Traveloka.'
+                            : 'Wujudkan rencana liburan impian ini dengan memesan hotel, penginapan, dan tiket pesawat ke Padang (BIM) di Traveloka.'}
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                          <a
+                            href="https://www.traveloka.com/id-id/hotel/indonesia/province/west-sumatra-106509"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full bg-white text-blue-700 py-2 px-3 rounded-lg font-jakarta font-bold text-xs hover:bg-blue-50 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
+                          >
+                            <span>🏨 {lang === 'en' ? 'Book Hotels in Sumbar' : 'Cek Hotel di Sumbar'}</span>
+                            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                          </a>
+                          <a
+                            href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full bg-blue-900/80 text-white border border-blue-400/60 py-2 px-3 rounded-lg font-jakarta font-bold text-xs hover:bg-blue-900 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
+                          >
+                            <span>✈️ {lang === 'en' ? 'Flight to Padang (BIM)' : 'Tiket Pesawat ke Padang'}</span>
+                            <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -2914,12 +2953,51 @@ export const Drawers: React.FC<DrawersProps> = ({
               <span className="font-bold text-black">{lang === 'en' && selectedDestination.bestTimeEn ? selectedDestination.bestTimeEn : selectedDestination.bestTime}</span>
             </div>
 
+            {/* Traveloka Partner Booking Section */}
+            <div className="bg-gradient-to-br from-blue-50/90 to-sky-50/90 p-3.5 rounded-xl border border-blue-200/80 space-y-2.5 mt-3 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="bg-blue-600 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full tracking-wider shadow-2xs">
+                    Traveloka
+                  </span>
+                  <span className="text-[11px] font-bold text-blue-950 font-jakarta">
+                    {lang === 'en' ? 'Book Hotels & Flights' : 'Pesan Hotel & Tiket'}
+                  </span>
+                </div>
+                <span className="text-[9px] text-blue-600 font-semibold font-jakarta">
+                  {lang === 'en' ? 'Official Partner' : 'Partner Resmi'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                <a
+                  href={`https://www.traveloka.com/id-id/hotel/search?spec=${encodeURIComponent(selectedDestination.title + ' ' + (selectedDestination.regency || 'Sumatera Barat'))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-700 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
+                >
+                  <span>🏨 {lang === 'en' ? 'Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
+
+                <a
+                  href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-white text-blue-700 border border-blue-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer text-center"
+                >
+                  <span>✈️ {lang === 'en' ? 'Flights to Padang' : 'Tiket Pesawat ke Padang'}</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
+              </div>
+            </div>
+
             {getGoogleMapsUrl(selectedDestination.mapUrl) && (
               <a
                 href={getGoogleMapsUrl(selectedDestination.mapUrl)!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-blue-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+                className="w-full bg-slate-900 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-black transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
               >
                 <MapPin className="w-4 h-4 text-white" />
                 <span>{translations[lang].btnOpenMap}</span>
