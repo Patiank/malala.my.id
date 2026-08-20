@@ -7,6 +7,9 @@
   .font-jakarta {
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
+  .font-slackside {
+    font-family: 'Slackside One', cursive;
+  }
 }
 
 :root {
