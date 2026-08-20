@@ -936,38 +936,61 @@ export const Hero: React.FC<HeroProps> = ({
       );
     })()}
 
-        {/* MINANGKAOS Brand Identity & Text (Mobile: Bottom Left, Safe from chat bubble) */}
-        <div className="flex lg:hidden items-center justify-start gap-2.5 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full max-w-[calc(100%-5.5rem)] select-none z-10 pl-1">
-          <div
-            onClick={handlePemprovLogoClick}
-            className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
-            title="MINANGKAOS"
-          >
-            <PemprovSumbarLogo size={48} />
-          </div>
-          <div
-            className="font-slackside text-2xl sm:text-3xl font-normal leading-none select-none"
-          >
-            <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
-              Minangkaos
+        {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
+        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full select-none z-30">
+          {/* Left: Minangkaos Branding */}
+          <div className="flex items-center gap-2.5 min-w-0 pl-1">
+            <div
+              onClick={handlePemprovLogoClick}
+              className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
+              title="MINANGKAOS"
+            >
+              <PemprovSumbarLogo size={46} />
             </div>
+            <div
+              className="font-slackside text-2xl sm:text-3xl font-normal leading-none select-none truncate"
+            >
+              <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
+                Minangkaos
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Tanya Uni Mala Chat Bubble inline */}
+          <div className="shrink-0 -mr-1">
+            <button
+              onClick={() => onOpenDrawer('chat')}
+              aria-label="Tanya Uni Mala Guide"
+              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none animate-wobble-rotate"
+            >
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 drop-shadow-xl">
+                <img
+                  src="/chat-bubble-transparent.png"
+                  alt="Tanya Uni Mala"
+                  className="w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.3)] select-none pointer-events-none"
+                />
+                <div className="absolute top-0.5 right-1.5 sm:top-1 sm:right-2 bg-red-600 text-white text-[8px] sm:text-[9px] font-bold px-1.5 py-0.2 rounded-full animate-pulse border border-white shadow-md z-10 select-none">
+                  Online
+                </div>
+              </div>
+            </button>
           </div>
         </div>
 
-        {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Shifted slightly left) */}
-        <div className="absolute bottom-4 right-4 sm:bottom-10 sm:right-12 lg:bottom-16 lg:right-20 z-50 animate-fade-in block">
+        {/* Desktop Tanya Uni Mala Floating Bubble (Only on lg+ screens) */}
+        <div className="hidden lg:block absolute bottom-16 right-20 z-50 animate-fade-in">
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
             className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none animate-wobble-rotate"
           >
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 drop-shadow-2xl">
+            <div className="relative w-32 h-32 drop-shadow-2xl">
               <img
                 src="/chat-bubble-transparent.png"
                 alt="Tanya Uni Mala"
                 className="w-full h-full object-contain drop-shadow-[0_15px_20px_rgba(0,0,0,0.35)] select-none pointer-events-none"
               />
-              <div className="absolute top-1 right-2 sm:top-2 sm:right-3 bg-red-600 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse border-2 border-white shadow-md z-10 select-none">
+              <div className="absolute top-2 right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse border-2 border-white shadow-md z-10 select-none">
                 Online
               </div>
             </div>
