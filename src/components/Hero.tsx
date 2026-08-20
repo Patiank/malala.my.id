@@ -248,8 +248,27 @@ export const Hero: React.FC<HeroProps> = ({
   // Split into Video Event (if linked with YouTube) and Banner Events (photo banner)
   const videoEvent = useMemo(() => {
     if (spotlightDisplayMode === 'event') return undefined;
-    return activeSpotlightEvents.find(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-  }, [activeSpotlightEvents, spotlightDisplayMode]);
+
+    // 1. Check in 2-week active events
+    const activeVideo = activeSpotlightEvents.find(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+    if (activeVideo) return activeVideo;
+
+    // 2. If mode is strictly 'video' and 2-week events don't have video, look across all upcoming events
+    if (spotlightDisplayMode === 'video') {
+      const allWithVideo = eventsList
+        .filter(item => Boolean(getYoutubeEmbedUrl(item.videoUrl || (item as any).youtubeUrl)))
+        .map(item => ({
+          item,
+          timeline: evaluateEventTimeline(item.schedule, item.isKen)
+        }));
+      if (allWithVideo.length > 0) {
+        allWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+        return allWithVideo[0];
+      }
+    }
+
+    return undefined;
+  }, [activeSpotlightEvents, eventsList, spotlightDisplayMode]);
 
   const bannerEvents = useMemo(() => {
     if (spotlightDisplayMode === 'video') return [];

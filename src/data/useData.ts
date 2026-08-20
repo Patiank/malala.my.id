@@ -207,6 +207,7 @@ export function useData() {
         baseImage: newSettings.baseImage ? getDirectDriveUrl(newSettings.baseImage) : BG_IMAGE_1,
         revealImage: newSettings.revealImage ? getDirectDriveUrl(newSettings.revealImage) : BG_IMAGE_2,
         baseVideo: newSettings.baseVideo || '',
+        spotlightDisplayMode: newSettings.spotlightDisplayMode || 'both',
         allowedAdminEmails: newSettings.allowedAdminEmails && newSettings.allowedAdminEmails.length > 0 ? newSettings.allowedAdminEmails : ['aldoaldiles@gmail.com'],
         heroTextColor: newSettings.heroTextColor || '#000000',
         heroTextTheme: newSettings.heroTextTheme || 'black',
@@ -225,6 +226,7 @@ export function useData() {
       // Safe payload for Firestore
       const firestorePayload: any = {
         bgMediaType: formatted.bgMediaType,
+        spotlightDisplayMode: formatted.spotlightDisplayMode,
         allowedAdminEmails: formatted.allowedAdminEmails,
         heroTextColor: formatted.heroTextColor,
         heroTextTheme: formatted.heroTextTheme,
