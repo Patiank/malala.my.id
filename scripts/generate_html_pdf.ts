@@ -407,10 +407,188 @@ function generateFullHTML(): string {
       </div>
     </article>
 
-    <!-- CONTENT CARDS -->
+    <!-- BAB 1 DIVIDER: DESTINASI WISATA -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-blue-950 via-slate-900 to-black shadow-2xl border border-blue-800/40">
+      <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center justify-between border-b border-blue-500/30 pb-3">
+          <span class="bg-blue-600 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded font-orbitron tracking-widest shadow">
+            BAGIAN I
+          </span>
+          <span class="text-blue-300 font-orbitron text-[9px] font-bold">
+            ${destinations.length} DESTINASI PILIHAN
+          </span>
+        </div>
+
+        <div class="pt-10 space-y-3">
+          <span class="text-blue-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
+            EXPLORE THE WONDERS OF MINANGKABAU
+          </span>
+          <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
+            DESTINASI<br/><span class="text-blue-400">WISATA ALAM</span><br/>& SEJARAH
+          </h2>
+          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+            Kompilasi komprehensif 38 surga tersembunyi, danau vulkanik, kemegahan ngarai dan lembah granit, pesona pulau bahari, hingga situs cagar budaya peninggalan purba di Sumatera Barat.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative z-10 space-y-3">
+        <div class="p-3 bg-blue-950/60 rounded-xl border border-blue-500/30 text-xs text-blue-200">
+          <div class="font-bold text-white mb-1">Kategori Destinasi:</div>
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            <span class="bg-blue-900/80 px-2 py-0.5 rounded text-white">🏔️ Danau & Gunung</span>
+            <span class="bg-blue-900/80 px-2 py-0.5 rounded text-white">🏞️ Lembah & Geopark</span>
+            <span class="bg-blue-900/80 px-2 py-0.5 rounded text-white">🏝️ Pantai & Bahari</span>
+            <span class="bg-blue-900/80 px-2 py-0.5 rounded text-white">🏛️ Sejarah & Budaya</span>
+          </div>
+        </div>
+        <div class="border-t border-blue-500/20 pt-3 flex items-center justify-between text-[10px] text-blue-300">
+          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-orbitron font-bold">BAB 1</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- CONTENT: DESTINASI -->
     ${destHtml}
+
+    <!-- BAB 2 DIVIDER: WARISAN ADAT & BUDAYA -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-purple-950 via-slate-900 to-black shadow-2xl border border-purple-800/40">
+      <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center justify-between border-b border-purple-500/30 pb-3">
+          <span class="bg-purple-600 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded font-orbitron tracking-widest shadow">
+            BAGIAN II
+          </span>
+          <span class="text-purple-300 font-orbitron text-[9px] font-bold">
+            ${cultureItems.length} WARISAN ADAT
+          </span>
+        </div>
+
+        <div class="pt-10 space-y-3">
+          <span class="text-purple-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
+            LIVING HERITAGE & PHILOSOPHY
+          </span>
+          <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
+            ADAT, SENI<br/><span class="text-purple-400">& TRADISI</span><br/>MINANGKABAU
+          </h2>
+          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+            Menyelami falsafah agung <em>"Adat Basandi Syarak, Syarak Basandi Kitabullah"</em>, arsitektur megah Rumah Gadang, mahakarya tenun Songket, seni beladiri Silek, dan upacara adat sakral.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative z-10 space-y-3">
+        <div class="p-3 bg-purple-950/60 rounded-xl border border-purple-500/30 text-xs text-purple-200">
+          <div class="font-bold text-white mb-1">Kategori Warisan Budaya:</div>
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            <span class="bg-purple-900/80 px-2 py-0.5 rounded text-white">🏛️ Arsitektur Tradisional</span>
+            <span class="bg-purple-900/80 px-2 py-0.5 rounded text-white">🥋 Seni Beladiri Silek</span>
+            <span class="bg-purple-900/80 px-2 py-0.5 rounded text-white">🧶 Tenun & Kriya Khas</span>
+            <span class="bg-purple-900/80 px-2 py-0.5 rounded text-white">🎭 Tari & Teater Rakyat</span>
+          </div>
+        </div>
+        <div class="border-t border-purple-500/20 pt-3 flex items-center justify-between text-[10px] text-purple-300">
+          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-orbitron font-bold">BAB 2</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- CONTENT: BUDAYA -->
     ${cultHtml}
+
+    <!-- BAB 3 DIVIDER: KULINER & GASTRONOMI -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-amber-950 via-slate-900 to-black shadow-2xl border border-amber-800/40">
+      <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center justify-between border-b border-amber-500/30 pb-3">
+          <span class="bg-amber-600 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded font-orbitron tracking-widest shadow">
+            BAGIAN III
+          </span>
+          <span class="text-amber-300 font-orbitron text-[9px] font-bold">
+            ${culinaryItems.length} KULINER OTENTIK
+          </span>
+        </div>
+
+        <div class="pt-10 space-y-3">
+          <span class="text-amber-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
+            AUTHENTIC MINANG GASTRONOMY
+          </span>
+          <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
+            KULINER &<br/><span class="text-amber-400">GASTRONOMI</span><br/>RANAH MINANG
+          </h2>
+          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+            Koleksi mahakarya kuliner Minangkabau legendaris, dari Rendang Daging terbaik dunia, Sate Pariaman, Gulai Tambusu, Palai Rinuak Maninjau, hingga kudapan manis Lamang Tapai.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative z-10 space-y-3">
+        <div class="p-3 bg-amber-950/60 rounded-xl border border-amber-500/30 text-xs text-amber-200">
+          <div class="font-bold text-white mb-1">Kategori Gastronomi:</div>
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            <span class="bg-amber-900/80 px-2 py-0.5 rounded text-white">🍛 Hidangan Utama & Gulai</span>
+            <span class="bg-amber-900/80 px-2 py-0.5 rounded text-white">🍡 Kudapan & Jajanan Khas</span>
+            <span class="bg-amber-900/80 px-2 py-0.5 rounded text-white">☕ Minuman Tradisional</span>
+            <span class="bg-amber-900/80 px-2 py-0.5 rounded text-white">🐟 Olahan Ikan Endemik</span>
+          </div>
+        </div>
+        <div class="border-t border-amber-500/20 pt-3 flex items-center justify-between text-[10px] text-amber-300">
+          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-orbitron font-bold">BAB 3</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- CONTENT: KULINER -->
     ${culHtml}
+
+    <!-- BAB 4 DIVIDER: KALENDER EVENT & FESTIVAL -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-red-950 via-slate-900 to-black shadow-2xl border border-red-800/40">
+      <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center justify-between border-b border-red-500/30 pb-3">
+          <span class="bg-red-600 text-white font-extrabold text-[9px] uppercase px-3 py-1 rounded font-orbitron tracking-widest shadow">
+            BAGIAN IV
+          </span>
+          <span class="text-red-300 font-orbitron text-[9px] font-bold">
+            ${eventItems.length} AGENDA RESMI 2026
+          </span>
+        </div>
+
+        <div class="pt-10 space-y-3">
+          <span class="text-red-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
+            OFFICIAL CALENDAR OF EVENTS
+          </span>
+          <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
+            KALENDER<br/><span class="text-red-400">EVENT & FESTIVAL</span><br/>SUMBAR 2026
+          </h2>
+          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+            Agenda resmi festival kebudayaan dan atraksi unggulan Kharisma Event Nusantara (KEN) Kementerian Pariwisata dan Ekonomi Kreatif RI yang diselenggarakan di seluruh Sumatera Barat.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative z-10 space-y-3">
+        <div class="p-3 bg-red-950/60 rounded-xl border border-red-500/30 text-xs text-red-200">
+          <div class="font-bold text-white mb-1">Sorotan Festival Resmi:</div>
+          <div class="flex flex-wrap gap-1.5 text-[10px]">
+            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🏆 Karisma Event Nusantara (KEN)</span>
+            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🐂 Pacu Jawi & Pacu Kudo</span>
+            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🎭 Tabuik & Siti Nurbaya</span>
+            <span class="bg-red-900/80 px-2 py-0.5 rounded text-white">🚴 Tour de Singkarak</span>
+          </div>
+        </div>
+        <div class="border-t border-red-500/20 pt-3 flex items-center justify-between text-[10px] text-red-300">
+          <span>Dinas Pariwisata Sumatera Barat</span>
+          <span class="font-orbitron font-bold">BAB 4</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- CONTENT: EVENTS -->
     ${evHtml}
 
     <!-- OFFICIAL BACK COVER -->
