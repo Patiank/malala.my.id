@@ -17,7 +17,7 @@ const db = getFirestore(app); // Default DB
 
 async function pullFirestoreData() {
   console.log("Menarik data terbaru dari Firestore...");
-  const collections = ['destinations', 'cultures', 'culinaries', 'events', 'downloads', 'hot_info'];
+  const collections = ['destinations', 'cultures', 'culinaries', 'events', 'downloads', 'hotinfo'];
   const backupData: any = {
     timestamp: new Date().toISOString()
   };
@@ -33,7 +33,7 @@ async function pullFirestoreData() {
       if (colName === 'culinaries') backupData.culinaryItems = items;
       if (colName === 'events') backupData.eventItems = items;
       if (colName === 'downloads') backupData.downloadItems = items;
-      if (colName === 'hot_info') backupData.hotInfoItems = items;
+      if (colName === 'hotinfo' || colName === 'hot_info') backupData.hotInfoItems = items;
       
       console.log(`✅ ${colName}: ${items.length} data`);
     }
