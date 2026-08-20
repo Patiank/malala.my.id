@@ -19,7 +19,66 @@ export function generateEventHTML(): string {
     console.warn('Backup parse error in generateEventHTML:', e);
   }
 
-  // Generate Event Cards HTML
+  // 1. Chunk overview timeline into pages of 10 items so NO event is ever cut off or hidden
+  const chunkSize = 10;
+  const overviewChunks: EventItem[][] = [];
+  for (let i = 0; i < eventItems.length; i += chunkSize) {
+    overviewChunks.push(eventItems.slice(i, i + chunkSize));
+  }
+
+  const overviewPagesHtml = overviewChunks.map((chunk, pageIdx) => `
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-6 flex flex-col justify-between mb-6 shadow-sm">
+      <div>
+        <div class="border-b border-gray-200 pb-3 mb-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-extrabold font-orbitron uppercase text-red-600 tracking-wider">
+              IKHTISAR JADWAL TAHUNAN • BAGIAN ${pageIdx + 1}/${overviewChunks.length}
+            </span>
+            <span class="text-[9px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded font-orbitron">
+              #${String(pageIdx * chunkSize + 1).padStart(2, '0')} - #${String(Math.min((pageIdx + 1) * chunkSize, eventItems.length)).padStart(2, '0')}
+            </span>
+          </div>
+          <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-1">
+            AGENDA FESTIVAL 2026
+          </h2>
+          <p class="text-xs text-gray-500 font-medium pt-0.5">
+            Rangkuman kalender festival budaya & atraksi resmi di 19 Kabupaten/Kota.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          ${chunk.map((ev, i) => {
+            const globalIndex = pageIdx * chunkSize + i + 1;
+            return `
+            <div class="flex items-center gap-2.5 p-2 rounded-xl border ${ev.isKen ? 'border-red-200 bg-red-50/60' : 'border-gray-100 bg-gray-50'} text-xs">
+              <div class="font-orbitron font-black text-xs ${ev.isKen ? 'text-red-700 bg-red-100 border border-red-300' : 'text-slate-700 bg-slate-200 border border-slate-300'} w-7 h-7 rounded-lg flex items-center justify-center shrink-0">
+                ${String(globalIndex).padStart(2, '0')}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 justify-between">
+                  <h4 class="font-bold text-slate-900 text-xs truncate">${ev.title}</h4>
+                  ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs">KEN 2026</span>' : ''}
+                </div>
+                <div class="text-[10px] text-gray-600 flex items-center gap-2 pt-0.5">
+                  <span class="font-semibold text-blue-900">📅 ${ev.schedule}</span>
+                  <span class="text-gray-300">•</span>
+                  <span class="truncate text-gray-600 font-medium">📍 ${ev.location}</span>
+                </div>
+              </div>
+            </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-2">
+        <span class="font-semibold text-slate-700">Dinas Pariwisata Sumatera Barat</span>
+        <span>Halaman Ikhtisar ${pageIdx + 1} dari ${overviewChunks.length}</span>
+      </div>
+    </article>
+  `).join('');
+
+  // 2. Generate Individual Event Detail Cards
   const eventsHtml = eventItems.map((ev, idx) => {
     const img = getDirectDriveUrl(ev.imageUrl || 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80');
     return `
@@ -187,47 +246,8 @@ export function generateEventHTML(): string {
       </div>
     </article>
 
-    <!-- 2. TIMELINE SUMMARY TABLE PAGE -->
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-6 flex flex-col justify-between mb-6 shadow-sm">
-      <div>
-        <div class="border-b border-gray-200 pb-3 mb-4">
-          <span class="text-[10px] font-extrabold font-orbitron uppercase text-red-600 tracking-wider">
-            IKHTISAR JADWAL TAHUNAN
-          </span>
-          <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-0.5">
-            AGENDA FESTIVAL 2026
-          </h2>
-          <p class="text-xs text-gray-500 font-medium pt-1">
-            Rangkuman seluruh jadwal festival & atraksi budaya di 19 Kabupaten/Kota.
-          </p>
-        </div>
-
-        <div class="space-y-2 max-h-[80vh] overflow-y-hidden">
-          ${eventItems.map((ev, i) => `
-            <div class="flex items-start gap-2.5 p-2 rounded-xl border ${ev.isKen ? 'border-red-200 bg-red-50/50' : 'border-gray-100 bg-gray-50'} text-xs">
-              <div class="font-orbitron font-extrabold text-xs ${ev.isKen ? 'text-red-600' : 'text-slate-600'} w-6 shrink-0 pt-0.5">
-                ${String(i + 1).padStart(2, '0')}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <h4 class="font-bold text-slate-900 text-xs truncate">${ev.title}</h4>
-                  ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.2 rounded shrink-0">KEN</span>' : ''}
-                </div>
-                <div class="text-[10px] text-gray-600 flex items-center gap-2 pt-0.5">
-                  <span class="font-semibold text-slate-800">📅 ${ev.schedule}</span>
-                  <span class="text-gray-400">•</span>
-                  <span class="truncate">📍 ${ev.location}</span>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-
-      <div class="pt-3 border-t border-gray-100 text-center text-[10px] text-gray-500">
-        Jadwal dapat mengalami penyesuaian teknis nagari. Cek pembaruan di <strong>malala.my.id</strong>
-      </div>
-    </article>
+    <!-- 2. TIMELINE SUMMARY TABLE PAGES (PAGINATED CHUNKS) -->
+    ${overviewPagesHtml}
 
     <!-- 3. INDIVIDUAL EVENT CARDS -->
     ${eventsHtml}
