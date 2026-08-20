@@ -280,13 +280,94 @@ export function generateEventHTML(): string {
       </div>
     </article>
 
-    <!-- 2. TIMELINE SUMMARY TABLE PAGES (CHRONOLOGICALLY SORTED JAN - DEC) -->
+    <!-- 2. PETA PERSEBARAN EVENT 19 KABUPATEN & KOTA (REGIONAL DISTRIBUTION MAP) -->
+    <article class="page-card bg-slate-950 text-white rounded-2xl overflow-hidden border border-slate-800 p-6 flex flex-col justify-between mb-6 shadow-xl relative">
+      <div class="space-y-4">
+        <div class="border-b border-white/15 pb-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-extrabold font-orbitron uppercase text-amber-400 tracking-wider">
+              INFOGRAFIS GEOGRAFIS
+            </span>
+            <span class="text-[9px] bg-red-600/80 text-white font-bold px-2 py-0.5 rounded font-orbitron">
+              19 KAB / KOTA
+            </span>
+          </div>
+          <h2 class="font-orbitron font-black text-lg sm:text-xl text-white uppercase pt-1">
+            PETA PERSEBARAN EVENT SUMBAR
+          </h2>
+          <p class="text-xs text-gray-400 font-medium pt-0.5">
+            Persebaran festival & atraksi budaya di 4 zona wilayah Sumatera Barat.
+          </p>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <!-- ZONA 1 -->
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron font-bold text-amber-400 text-xs">1. DATARAN TINGGI & LUHAK NAN TUO</span>
+              <span class="text-[9px] bg-amber-400/20 text-amber-300 px-1.5 py-0.2 rounded font-bold">5 KEN</span>
+            </div>
+            <ul class="text-[11px] text-gray-300 space-y-1">
+              <li>• <strong class="text-white">Tanah Datar:</strong> Pacu Jawi (KEN), Festival Pesona Minangkabau (KEN)</li>
+              <li>• <strong class="text-white">Agam & Bukittinggi:</strong> Festival Rakik-Rakik, Pesona Maninjau, Pacu Kudo</li>
+              <li>• <strong class="text-white">50 Kota & Payakumbuh:</strong> Payakumbuh Botuang (KEN), Pasa Harau (KEN), Alek Bakajang (KEN)</li>
+            </ul>
+          </div>
+
+          <!-- ZONA 2 -->
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron font-bold text-cyan-400 text-xs">2. PESISIR BARAT & BAHARI</span>
+              <span class="text-[9px] bg-cyan-400/20 text-cyan-300 px-1.5 py-0.2 rounded font-bold">3 KEN</span>
+            </div>
+            <ul class="text-[11px] text-gray-300 space-y-1">
+              <li>• <strong class="text-white">Kota Padang:</strong> Festival Siti Nurbaya (KEN), Festival Muaro Padang, Cap Go Meh</li>
+              <li>• <strong class="text-white">Kota & Kab. Padang Pariaman:</strong> Festival Tabuik (KEN), Pesona Nyarai</li>
+              <li>• <strong class="text-white">Pesisir Selatan:</strong> Festival Langkisau & Paralayang Dirgantara</li>
+              <li>• <strong class="text-white">Kepulauan Mentawai:</strong> Festival Pesona Mentawai (KEN)</li>
+            </ul>
+          </div>
+
+          <!-- ZONA 3 -->
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron font-bold text-emerald-400 text-xs">3. DANAU & GEOPARK HERITAGE</span>
+              <span class="text-[9px] bg-emerald-400/20 text-emerald-300 px-1.5 py-0.2 rounded font-bold">2 KEN</span>
+            </div>
+            <ul class="text-[11px] text-gray-300 space-y-1">
+              <li>• <strong class="text-white">Kota & Kab. Solok:</strong> Rang Solok Baralek Gadang (KEN), Festival 5 Danau</li>
+              <li>• <strong class="text-white">Kota Sawahlunto:</strong> SISCA (KEN), SIMFes (UNESCO World Heritage)</li>
+              <li>• <strong class="text-white">Lintas Wilayah:</strong> Kejuaraan Dunia Balap Sepeda Tour de Singkarak (TdS)</li>
+            </ul>
+          </div>
+
+          <!-- ZONA 4 -->
+          <div class="p-3 bg-white/5 rounded-xl border border-white/10 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron font-bold text-rose-400 text-xs">4. PERBATASAN & SEJARAH KUNO</span>
+              <span class="text-[9px] bg-rose-400/20 text-rose-300 px-1.5 py-0.2 rounded font-bold">Rekor MURI</span>
+            </div>
+            <ul class="text-[11px] text-gray-300 space-y-1">
+              <li>• <strong class="text-white">Pasaman Barat:</strong> Festival Tradisi Maapam Pasaman (Rekor MURI)</li>
+              <li>• <strong class="text-white">Dharmasraya:</strong> Festival Budaya Pamalayu (Kompleks Candi Padang Roco)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[10px] text-gray-400 mt-2">
+        <span class="font-semibold text-white">Dinas Pariwisata Sumatera Barat</span>
+        <span>Halaman Peta Geografis</span>
+      </div>
+    </article>
+
+    <!-- 3. TIMELINE SUMMARY TABLE PAGES (CHRONOLOGICALLY SORTED JAN - DEC) -->
     ${overviewPagesHtml}
 
-    <!-- 3. INDIVIDUAL EVENT CARDS -->
+    <!-- 4. INDIVIDUAL EVENT CARDS -->
     ${eventsHtml}
 
-    <!-- 4. CLOSING & VISITOR GUIDE PAGE -->
+    <!-- 5. CLOSING & VISITOR GUIDE PAGE -->
     <article class="page-card bg-slate-900 text-white rounded-2xl overflow-hidden border border-slate-800 p-6 flex flex-col justify-between mb-6 shadow-xl relative">
       <div class="space-y-4">
         <div class="border-b border-white/20 pb-3">
@@ -329,6 +410,63 @@ export function generateEventHTML(): string {
         <div class="font-orbitron font-bold text-xs text-amber-400">MALALA.MY.ID</div>
         <div class="text-[10px] text-gray-400">Portal Pariwisata Resmi Sumatera Barat</div>
         <div class="text-[9px] text-gray-500">Dinas Pariwisata Provinsi Sumatera Barat © 2026</div>
+      </div>
+    </article>
+
+    <!-- 6. OFFICIAL BACK COVER (SAMPUL BELAKANG RESMI) -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-slate-950 via-slate-900 to-black shadow-2xl border border-slate-800">
+      <div class="relative z-10 space-y-4">
+        <div class="flex items-center justify-between border-b border-white/20 pb-3">
+          <span class="bg-amber-400 text-black font-extrabold text-[9px] uppercase px-2.5 py-1 rounded font-orbitron tracking-widest">
+            OFFICIAL BACK COVER
+          </span>
+          <span class="text-gray-400 font-orbitron text-[9px] font-bold">
+            EDISI 2026
+          </span>
+        </div>
+
+        <div class="pt-6 text-center space-y-2">
+          <span class="text-amber-400 font-orbitron font-bold text-xs tracking-widest uppercase block">
+            VISIT BEAUTIFUL WEST SUMATRA
+          </span>
+          <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white uppercase tracking-wider leading-tight">
+            ALAM TAKAMBANG<br/><span class="text-red-500">JADI GURU</span>
+          </h2>
+          <p class="text-xs text-gray-300 max-w-xs mx-auto italic pt-2 leading-relaxed">
+            "Keagungan alam berpadu dengan kearifan adat Minangkabau. Setiap jengkal tanah menyimpan cerita, setiap festival menyalakan jiwa."
+          </p>
+        </div>
+      </div>
+
+      <!-- CREDENTIALS & CONTACT INFO -->
+      <div class="relative z-10 space-y-4">
+        <div class="bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10 space-y-3">
+          <div class="text-center pb-2 border-b border-white/10">
+            <span class="font-orbitron font-extrabold text-sm text-amber-400">MALALA.MY.ID</span>
+            <div class="text-[10px] text-gray-300">Pusat Informasi & Direktori Pariwisata Digital</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300">
+            <div>
+              <div class="font-bold text-white uppercase">Instagram:</div>
+              <div class="text-amber-300">@pariwisatasumbar</div>
+            </div>
+            <div>
+              <div class="font-bold text-white uppercase">Portal Resmi:</div>
+              <div class="text-amber-300">malala.my.id</div>
+            </div>
+            <div class="col-span-2 pt-1">
+              <div class="font-bold text-white uppercase">Layanan Informasi:</div>
+              <div class="text-gray-300">Dinas Pariwisata Provinsi Sumatera Barat</div>
+              <div class="text-[9px] text-gray-400">Jl. Khatib Sulaiman No. 22, Kota Padang</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-white/20 pt-3 text-center text-[9px] text-gray-400 space-y-1">
+          <div class="font-bold text-white tracking-widest uppercase">DINAS PARIWISATA PROVINSI SUMATERA BARAT</div>
+          <div>Hak Cipta Dilindungi Undang-Undang © 2026. Dicetak & Didistribusikan Resmi.</div>
+        </div>
       </div>
     </article>
 
