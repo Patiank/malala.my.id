@@ -1,16 +1,41 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { EVENTS_SCHEDULE, getDirectDriveUrl } from '../src/data/content';
+import { EVENTS_SCHEDULE, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from '../src/data/content';
 import { EventItem } from '../src/types';
+
+function getEventSortScore(scheduleStr: string = ''): number {
+  const s = scheduleStr.toLowerCase();
+  if (s.includes('januari') || s.includes('january')) return 10;
+  if (s.includes('februari') || s.includes('february') || s.includes('rajab') || s.includes('imlek')) return 20;
+  if (s.includes('maret') || s.includes('march')) return 30;
+  if (s.includes('april') || s.includes('syawal') || s.includes('langkisau') || s.includes('lebaran')) return 40;
+  if (s.includes('mei') || s.includes('may')) return 50;
+  if (s.includes('juni') || s.includes('june')) return 60;
+  if (s.includes('juli') || s.includes('july') || s.includes('muharram')) return 70;
+  if (s.includes('agustus') || s.includes('august')) return 80;
+  if (s.includes('september')) return 90;
+  if (s.includes('oktober') || s.includes('october')) return 100;
+  if (s.includes('november')) return 110;
+  if (s.includes('desember') || s.includes('december') || s.includes('pamalayu')) return 120;
+  if (s.includes('akhir pekan') || s.includes('sepanjang tahun') || s.includes('bergilir')) return 5;
+  return 95;
+}
 
 export function generateEventHTML(): string {
   let eventItems: EventItem[] = EVENTS_SCHEDULE;
-  let bgCover = 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85';
+  let bgCover = BG_IMAGE_1 || BG_IMAGE_2; // Official West Sumatra Website Hero Banner
 
   try {
     const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
     if (fs.existsSync(backupPath)) {
       const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
+      if (raw.appSettings) {
+        if (raw.appSettings.baseImage && raw.appSettings.baseImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.baseImage);
+        } else if (raw.appSettings.revealImage && raw.appSettings.revealImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
+        }
+      }
       if (raw.eventItems && raw.eventItems.length > 0) {
         eventItems = raw.eventItems;
       }
@@ -18,6 +43,14 @@ export function generateEventHTML(): string {
   } catch (e) {
     console.warn('Backup parse error in generateEventHTML:', e);
   }
+
+  // Sort events chronologically from January to December
+  eventItems = [...eventItems].sort((a, b) => {
+    const scoreA = getEventSortScore(a.schedule);
+    const scoreB = getEventSortScore(b.schedule);
+    if (scoreA !== scoreB) return scoreA - scoreB;
+    return (b.isKen ? 1 : 0) - (a.isKen ? 1 : 0);
+  });
 
   // 1. Chunk overview timeline into pages of 10 items so NO event is ever cut off or hidden
   const chunkSize = 10;
@@ -39,7 +72,7 @@ export function generateEventHTML(): string {
             </span>
           </div>
           <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-1">
-            AGENDA FESTIVAL 2026
+            AGENDA FESTIVAL 2026 (JANUARI - DESEMBER)
           </h2>
           <p class="text-xs text-gray-500 font-medium pt-0.5">
             Rangkuman kalender festival budaya & atraksi resmi di 19 Kabupaten/Kota.
@@ -197,10 +230,10 @@ export function generateEventHTML(): string {
 <body class="py-6 px-4">
   <div class="max-w-[480px] mx-auto space-y-6">
     
-    <!-- 1. COVER PAGE -->
+    <!-- 1. COVER PAGE (USING OFFICIAL WEBSITE HERO BANNER) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-slate-900 shadow-xl">
-      <img src="${bgCover}" alt="Cover CoE 2026" class="absolute inset-0 w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90"></div>
+      <img src="${bgCover}" alt="Cover Banner CoE 2026" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/95"></div>
       
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between">
@@ -222,13 +255,13 @@ export function generateEventHTML(): string {
             CALENDAR<br/>OF EVENTS<br/><span class="text-amber-400">2026</span>
           </h1>
           <p class="font-jakarta text-xs text-gray-200 pt-3 leading-relaxed drop-shadow">
-            Panduan Resmi Kalender Festival Budaya, Seni Tradisi Minangkabau, & Kharisma Event Nusantara (KEN) di Sumatera Barat.
+            Panduan Resmi Kalender Festival Budaya, Seni Tradisi Minangkabau, & Kharisma Event Nusantara (KEN) di Sumatera Barat (Januari - Desember 2026).
           </p>
         </div>
       </div>
 
       <div class="relative z-10 space-y-4">
-        <div class="grid grid-cols-2 gap-2 bg-black/60 backdrop-blur-md p-3.5 rounded-xl border border-white/20 text-center">
+        <div class="grid grid-cols-2 gap-2 bg-black/70 backdrop-blur-md p-3.5 rounded-xl border border-white/20 text-center">
           <div>
             <div class="font-orbitron font-extrabold text-xl text-amber-400">${eventItems.length}</div>
             <div class="text-[9px] text-gray-300 font-bold uppercase tracking-wider">Total Event Resmi</div>
@@ -246,7 +279,7 @@ export function generateEventHTML(): string {
       </div>
     </article>
 
-    <!-- 2. TIMELINE SUMMARY TABLE PAGES (PAGINATED CHUNKS) -->
+    <!-- 2. TIMELINE SUMMARY TABLE PAGES (CHRONOLOGICALLY SORTED JAN - DEC) -->
     ${overviewPagesHtml}
 
     <!-- 3. INDIVIDUAL EVENT CARDS -->

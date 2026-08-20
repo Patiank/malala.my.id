@@ -30,6 +30,31 @@ function generateFullHTML(): string {
     console.warn('Backup parse error:', e);
   }
 
+  function getEventSortScore(scheduleStr: string = ''): number {
+    const s = scheduleStr.toLowerCase();
+    if (s.includes('januari') || s.includes('january')) return 10;
+    if (s.includes('februari') || s.includes('february') || s.includes('rajab') || s.includes('imlek')) return 20;
+    if (s.includes('maret') || s.includes('march')) return 30;
+    if (s.includes('april') || s.includes('syawal') || s.includes('langkisau') || s.includes('lebaran')) return 40;
+    if (s.includes('mei') || s.includes('may')) return 50;
+    if (s.includes('juni') || s.includes('june')) return 60;
+    if (s.includes('juli') || s.includes('july') || s.includes('muharram')) return 70;
+    if (s.includes('agustus') || s.includes('august')) return 80;
+    if (s.includes('september')) return 90;
+    if (s.includes('oktober') || s.includes('october')) return 100;
+    if (s.includes('november')) return 110;
+    if (s.includes('desember') || s.includes('december') || s.includes('pamalayu')) return 120;
+    if (s.includes('akhir pekan') || s.includes('sepanjang tahun') || s.includes('bergilir')) return 5;
+    return 95;
+  }
+
+  eventItems = [...eventItems].sort((a, b) => {
+    const scoreA = getEventSortScore(a.schedule);
+    const scoreB = getEventSortScore(b.schedule);
+    if (scoreA !== scoreB) return scoreA - scoreB;
+    return (b.isKen ? 1 : 0) - (a.isKen ? 1 : 0);
+  });
+
   const destHtml = destinations.map((dest, idx) => {
     const img = getDirectDriveUrl(dest.imageUrl);
     return `
