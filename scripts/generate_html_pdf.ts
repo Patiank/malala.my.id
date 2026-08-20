@@ -96,14 +96,12 @@ function generateFullHTML(): string {
         ` : ''}
       </div>
 
-      ${dest.bestTime ? `
         <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-4">
-          <span>Waktu Terbaik: <strong class="text-black">${dest.bestTime}</strong></span>
+          <span>Waktu Terbaik: <strong class="text-black">${dest.bestTime || 'Sepanjang Tahun'}</strong></span>
           <span class="text-gray-400">#${idx + 1}</span>
         </div>
-      ` : ''}
-    </article>
-  `;
+      </article>
+    `;
   }).join('');
 
   const cultHtml = cultureItems.map((cult, idx) => {

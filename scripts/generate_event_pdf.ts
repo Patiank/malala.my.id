@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { EVENTS_SCHEDULE, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from '../src/data/content';
+import { EVENTS_SCHEDULE, getDirectDriveUrl } from '../src/data/content';
 import { EventItem } from '../src/types';
 
 function getEventSortScore(scheduleStr: string = ''): number {
@@ -23,19 +23,11 @@ function getEventSortScore(scheduleStr: string = ''): number {
 
 export function generateEventHTML(): string {
   let eventItems: EventItem[] = EVENTS_SCHEDULE;
-  let bgCover = BG_IMAGE_1 || BG_IMAGE_2; // Official West Sumatra Website Hero Banner
 
   try {
     const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
     if (fs.existsSync(backupPath)) {
       const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
-      if (raw.appSettings) {
-        if (raw.appSettings.baseImage && raw.appSettings.baseImage.trim()) {
-          bgCover = getDirectDriveUrl(raw.appSettings.baseImage);
-        } else if (raw.appSettings.revealImage && raw.appSettings.revealImage.trim()) {
-          bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
-        }
-      }
       if (raw.eventItems && raw.eventItems.length > 0) {
         eventItems = raw.eventItems;
       }
@@ -52,15 +44,24 @@ export function generateEventHTML(): string {
     return (b.isKen ? 1 : 0) - (a.isKen ? 1 : 0);
   });
 
-  // 1. Chunk overview timeline into pages of 10 items so NO event is ever cut off or hidden
-  const chunkSize = 10;
+  // Cover image: Use the spectacular Pacu Jawi event image from the Calendar of Events
+  let bgCover = 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=85';
+  const pacuJawi = eventItems.find(e => e.id === 'ev1' || e.title.toUpperCase().includes('PACU JAWI'));
+  if (pacuJawi && pacuJawi.imageUrl) {
+    bgCover = getDirectDriveUrl(pacuJawi.imageUrl);
+  } else if (eventItems.length > 0 && eventItems[0].imageUrl) {
+    bgCover = getDirectDriveUrl(eventItems[0].imageUrl);
+  }
+
+  // 1. Chunk overview timeline into pages of 7 items so NO text is ever cut off or squeezed
+  const chunkSize = 7;
   const overviewChunks: EventItem[][] = [];
   for (let i = 0; i < eventItems.length; i += chunkSize) {
     overviewChunks.push(eventItems.slice(i, i + chunkSize));
   }
 
   const overviewPagesHtml = overviewChunks.map((chunk, pageIdx) => `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-6 flex flex-col justify-between mb-6 shadow-sm">
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 sm:p-6 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="border-b border-gray-200 pb-3 mb-3">
           <div class="flex items-center justify-between">
@@ -71,31 +72,31 @@ export function generateEventHTML(): string {
               #${String(pageIdx * chunkSize + 1).padStart(2, '0')} - #${String(Math.min((pageIdx + 1) * chunkSize, eventItems.length)).padStart(2, '0')}
             </span>
           </div>
-          <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-1">
-            AGENDA FESTIVAL 2026 (JANUARI - DESEMBER)
+          <h2 class="font-orbitron font-black text-lg sm:text-xl text-slate-900 uppercase pt-1">
+            AGENDA FESTIVAL 2026 (JAN - DES)
           </h2>
           <p class="text-xs text-gray-500 font-medium pt-0.5">
             Rangkuman kalender festival budaya & atraksi resmi di 19 Kabupaten/Kota.
           </p>
         </div>
 
-        <div class="space-y-2">
+        <div class="space-y-2.5">
           ${chunk.map((ev, i) => {
             const globalIndex = pageIdx * chunkSize + i + 1;
             return `
-            <div class="flex items-center gap-2.5 p-2 rounded-xl border ${ev.isKen ? 'border-red-200 bg-red-50/60' : 'border-gray-100 bg-gray-50'} text-xs">
-              <div class="font-orbitron font-black text-xs ${ev.isKen ? 'text-red-700 bg-red-100 border border-red-300' : 'text-slate-700 bg-slate-200 border border-slate-300'} w-7 h-7 rounded-lg flex items-center justify-center shrink-0">
+            <div class="flex items-start gap-2.5 p-2.5 rounded-xl border ${ev.isKen ? 'border-red-200 bg-red-50/60' : 'border-gray-100 bg-gray-50'} text-xs">
+              <div class="font-orbitron font-black text-xs ${ev.isKen ? 'text-red-700 bg-red-100 border border-red-300' : 'text-slate-700 bg-slate-200 border border-slate-300'} w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                 ${String(globalIndex).padStart(2, '0')}
               </div>
               <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1.5 justify-between">
-                  <h4 class="font-bold text-slate-900 text-xs truncate">${ev.title}</h4>
-                  ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs">KEN 2026</span>' : ''}
+                <div class="flex items-start gap-1.5 justify-between">
+                  <h4 class="font-bold text-slate-900 text-xs leading-snug break-words">${ev.title}</h4>
+                  ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs ml-1">KEN 2026</span>' : ''}
                 </div>
-                <div class="text-[10px] text-gray-600 flex items-center gap-2 pt-0.5">
-                  <span class="font-semibold text-blue-900">📅 ${ev.schedule}</span>
+                <div class="text-[10.5px] text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-1">
+                  <span class="font-bold text-blue-900">📅 ${ev.schedule}</span>
                   <span class="text-gray-300">•</span>
-                  <span class="truncate text-gray-600 font-medium">📍 ${ev.location}</span>
+                  <span class="text-gray-700 font-medium break-words">📍 ${ev.location}</span>
                 </div>
               </div>
             </div>
@@ -104,7 +105,7 @@ export function generateEventHTML(): string {
         </div>
       </div>
 
-      <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-2">
+      <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-3">
         <span class="font-semibold text-slate-700">Dinas Pariwisata Sumatera Barat</span>
         <span>Halaman Ikhtisar ${pageIdx + 1} dari ${overviewChunks.length}</span>
       </div>
@@ -117,7 +118,7 @@ export function generateEventHTML(): string {
     return `
     <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
-        <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
+        <div class="flex items-center justify-between pb-2 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span class="font-orbitron">CoE 2026 • FESTIVAL & EVENT RESMI</span>
           ${ev.isKen ? `
             <span class="bg-red-600 text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
@@ -130,45 +131,45 @@ export function generateEventHTML(): string {
           `}
         </div>
 
-        <div class="h-52 w-full rounded-xl overflow-hidden mt-3 relative bg-slate-900 shadow-sm">
+        <div class="h-44 w-full rounded-xl overflow-hidden mt-2.5 relative bg-slate-900 shadow-sm">
           <img src="${img}" alt="${ev.title}" class="w-full h-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-          <div class="absolute bottom-3 left-3 right-3 text-white">
+          <div class="absolute bottom-2.5 left-3 right-3 text-white">
             <span class="bg-amber-500 text-black font-extrabold text-[9px] uppercase px-2 py-0.5 rounded shadow">
               ${ev.schedule}
             </span>
-            <h3 class="font-orbitron font-extrabold text-base text-white pt-1 drop-shadow-md leading-tight">
+            <h3 class="font-orbitron font-extrabold text-sm sm:text-base text-white pt-1 drop-shadow-md leading-snug break-words">
               ${ev.title}
             </h3>
           </div>
         </div>
 
-        <div class="pt-3 flex flex-wrap items-center gap-2 text-xs font-bold">
+        <div class="pt-2.5 flex flex-wrap items-center gap-2 text-xs font-bold">
           <span class="bg-blue-50 text-blue-800 border border-blue-200 px-2.5 py-1 rounded-lg">
             📅 ${ev.schedule}
           </span>
-          <span class="bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg truncate max-w-full">
+          <span class="bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg break-words max-w-full leading-tight">
             📍 ${ev.location}
           </span>
         </div>
 
-        <div class="text-xs text-gray-700 leading-relaxed pt-3 space-y-2">
+        <div class="text-[11.5px] text-gray-700 leading-relaxed pt-2.5 space-y-2">
           ${(ev.description || '').split('\n\n').map(p => `<p class="text-justify">${p}</p>`).join('')}
         </div>
 
         ${ev.isKen ? `
-          <div class="mt-3 p-3 bg-red-50 rounded-xl border border-red-200">
+          <div class="mt-2.5 p-2.5 bg-red-50 rounded-xl border border-red-200">
             <h4 class="font-bold text-[10px] uppercase text-red-900 tracking-wider mb-0.5 flex items-center gap-1">
               🏆 Karisma Event Nusantara (KEN):
             </h4>
             <p class="text-[11px] text-red-950">
-              Event terpilih bertaraf nasional oleh Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf RI).
+              Event unggulan bertaraf nasional oleh Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf RI).
             </p>
           </div>
         ` : ''}
       </div>
 
-      <div class="pt-3 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-4">
+      <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-3">
         <span class="font-semibold text-slate-700">Dinas Pariwisata Sumatera Barat</span>
         <span class="font-orbitron font-bold text-gray-400">#${String(idx + 1).padStart(2, '0')} / ${eventItems.length}</span>
       </div>
@@ -230,10 +231,10 @@ export function generateEventHTML(): string {
 <body class="py-6 px-4">
   <div class="max-w-[480px] mx-auto space-y-6">
     
-    <!-- 1. COVER PAGE (USING OFFICIAL WEBSITE HERO BANNER) -->
+    <!-- 1. COVER PAGE (USING ICONIC PACU JAWI EVENT PHOTOGRAPHY) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-slate-900 shadow-xl">
-      <img src="${bgCover}" alt="Cover Banner CoE 2026" class="absolute inset-0 w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/95"></div>
+      <img src="${bgCover}" alt="Cover Pacu Jawi CoE 2026" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/95"></div>
       
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between">
