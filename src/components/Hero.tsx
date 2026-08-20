@@ -641,29 +641,41 @@ export const Hero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-        {/* Right Lower Feature Block (Raised upwards) */}
-        <div
-          className="self-start lg:self-center mt-4 lg:mt-0 lg:-translate-y-12 xl:-translate-y-16 relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full"
-          style={{
-            padding: 'var(--feature-pad)',
-          }}
-        >
-          {/* Absolute Corner Brackets framing the box */}
-          <div style={bracketStyle} className="absolute top-0 left-0">
-            <CornerBracket type="TL" />
-          </div>
-          <div style={bracketStyle} className="absolute top-0 right-0">
-            <CornerBracket type="TR" />
-          </div>
-          <div style={bracketStyle} className="absolute bottom-0 left-0">
-            <CornerBracket type="BL" />
-          </div>
-          <div style={bracketStyle} className="absolute bottom-0 right-0">
-            <CornerBracket type="BR" />
-          </div>
+        {/* Right Lower Feature Block */}
+        {(() => {
+          const hasVideoCard = Boolean(spotlightDisplayMode !== 'event' && videoEvent);
+          const hasBannerCard = Boolean(spotlightDisplayMode !== 'video' && bannerEvents.length > 0);
+          const isDualBanner = hasVideoCard && hasBannerCard;
 
-          {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
-          <div className="flex flex-col space-y-3 w-full">
+          if (!hasVideoCard && !hasBannerCard) return null;
+
+          return (
+            <div
+              className={`self-start relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full transition-all duration-300 ${
+                isDualBanner
+                  ? 'lg:self-center mt-4 lg:mt-0 lg:-translate-y-12 xl:-translate-y-16'
+                  : 'lg:self-end mt-6 lg:mt-auto lg:translate-y-8 xl:translate-y-12'
+              }`}
+              style={{
+                padding: 'var(--feature-pad)',
+              }}
+            >
+              {/* Absolute Corner Brackets framing the box */}
+              <div style={bracketStyle} className="absolute top-0 left-0">
+                <CornerBracket type="TL" />
+              </div>
+              <div style={bracketStyle} className="absolute top-0 right-0">
+                <CornerBracket type="TR" />
+              </div>
+              <div style={bracketStyle} className="absolute bottom-0 left-0">
+                <CornerBracket type="BL" />
+              </div>
+              <div style={bracketStyle} className="absolute bottom-0 right-0">
+                <CornerBracket type="BR" />
+              </div>
+
+              {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
+              <div className="flex flex-col space-y-3 w-full">
             {/* Spotlight 1: Video Event Card (If an active event has a YouTube link) */}
             {videoEvent && (() => {
               const eventItem = videoEvent.item;
@@ -932,6 +944,8 @@ export const Hero: React.FC<HeroProps> = ({
 
           </div>
         </div>
+      );
+    })()}
 
         {/* Tanya Uni Mala Guide Floating Bubble (Bottom-Right, Shifted slightly left) */}
         <div className="absolute bottom-10 right-12 sm:bottom-14 sm:right-16 lg:bottom-16 lg:right-20 z-50 animate-fade-in block">
