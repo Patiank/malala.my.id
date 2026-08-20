@@ -653,8 +653,8 @@ export const Hero: React.FC<HeroProps> = ({
             <div
               className={`self-start relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full transition-all duration-300 ${
                 isDualBanner
-                  ? 'lg:self-center mt-4 lg:mt-0 lg:-translate-y-14 xl:-translate-y-18'
-                  : 'lg:self-end mt-6 lg:mt-auto lg:-translate-y-2 xl:-translate-y-4'
+                  ? 'lg:self-center mt-4 lg:mt-0 lg:-translate-y-20 xl:-translate-y-24'
+                  : 'lg:self-end mt-6 lg:mt-auto lg:-translate-y-10 xl:-translate-y-14'
               }`}
               style={{
                 padding: 'var(--feature-pad)',
