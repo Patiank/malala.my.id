@@ -682,6 +682,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       locationName?: string;
       subTag?: string;
       keywords: string;
+      rawItem: any;
     }> = [];
 
     (destinations || []).forEach((d: Destination) => {
@@ -699,6 +700,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         locationName: d.regency,
         subTag: d.category,
         keywords: `${d.title} ${d.titleEn || ''} ${d.regency} ${d.category} ${d.description}`.toLowerCase(),
+        rawItem: d,
       });
     });
 
@@ -717,6 +719,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         locationName: c.origin,
         subTag: c.category,
         keywords: `${c.title} ${c.titleEn || ''} ${c.origin} ${c.category} ${c.description}`.toLowerCase(),
+        rawItem: c,
       });
     });
 
@@ -735,6 +738,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         locationName: c.origin,
         subTag: c.type,
         keywords: `${c.title} ${c.titleEn || ''} ${c.origin} ${c.type} ${c.description}`.toLowerCase(),
+        rawItem: c,
       });
     });
 
@@ -753,6 +757,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         locationName: e.location,
         subTag: e.schedule,
         keywords: `${e.title} ${e.titleEn || ''} ${e.location} ${e.description}`.toLowerCase(),
+        rawItem: e,
       });
     });
 
@@ -771,6 +776,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         locationName: h.locationName || h.category,
         subTag: h.date,
         keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description}`.toLowerCase(),
+        rawItem: h,
       });
     });
 
@@ -788,6 +794,24 @@ export const Drawers: React.FC<DrawersProps> = ({
     }
     return result;
   }, [searchQuery, searchCategory, searchableIndex]);
+
+  const handleOpenSearchItemDetail = (item: any) => {
+    if (!item?.rawItem) {
+      onOpenDrawer?.(item?.drawerType || 'destinations');
+      return;
+    }
+    if (item.drawerType === 'destinations') {
+      setSelectedDestination(item.rawItem as Destination);
+    } else if (item.drawerType === 'culture') {
+      setSelectedCulture(item.rawItem as CultureItem);
+    } else if (item.drawerType === 'culinary') {
+      setSelectedCulinary(item.rawItem as CulinaryItem);
+    } else if (item.drawerType === 'events') {
+      setSelectedEvent(item.rawItem as EventItem);
+    } else if (item.drawerType === 'hotinfo') {
+      onOpenDrawer?.('hotinfo');
+    }
+  };
 
   const getDrawerTitle = () => {
     const isEn = lang === 'en';
@@ -1183,7 +1207,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                   {filteredSearchItems.map((item, idx) => (
                     <div
                       key={`${item.id}-${idx}`}
-                      className="border border-gray-200 rounded-xl p-3.5 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-2.5 font-jakarta"
+                      onClick={() => handleOpenSearchItemDetail(item)}
+                      className="border border-gray-200 rounded-xl p-3.5 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-2.5 font-jakarta cursor-pointer"
                     >
                       <div className="space-y-2">
                         {item.imageUrl ? (
@@ -1227,10 +1252,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                           )}
                         </span>
                         <button
-                          onClick={() => onOpenDrawer?.(item.drawerType)}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenSearchItemDetail(item);
+                          }}
                           className="inline-flex items-center gap-0.5 font-bold text-red-600 hover:text-black transition-colors cursor-pointer shrink-0"
                         >
-                          <span>{lang === 'en' ? 'View' : 'Detail'}</span>
+                          <span>{lang === 'en' ? 'View Details' : 'Lihat Detail'}</span>
                           <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
