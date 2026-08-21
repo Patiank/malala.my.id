@@ -2191,18 +2191,78 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* =================================================== */}
           {activeDrawer === 'formai' && (
             <div className={`space-y-6 ${aiResponse ? 'md:grid md:grid-cols-2 md:gap-6 md:space-y-0 h-full' : 'flex flex-col'}`}>
-              {/* Left Column: Itinerary Map (Only visible on desktop when aiResponse exists) */}
+              {/* Left Column: Itinerary Map & Traveloka Booking (Visible on desktop when aiResponse exists) */}
               {aiResponse && (
-                <div className="hidden md:flex flex-col border-r border-gray-200 pr-6 h-[85vh]">
-                  <ItineraryMap
-                    aiResponse={aiResponse}
-                    destinations={destinations}
-                    cultureItems={cultureItems}
-                    culinaryItems={culinaryItems}
-                    eventItems={eventItems}
-                    lang={lang}
-                    fullHeight={true}
-                  />
+                <div className="hidden md:flex flex-col border-r border-gray-200 pr-6 h-[85vh] justify-between space-y-3">
+                  {/* Interactive Map with proportional height */}
+                  <div className="flex-1 min-h-[280px] overflow-hidden">
+                    <ItineraryMap
+                      aiResponse={aiResponse}
+                      destinations={destinations}
+                      cultureItems={cultureItems}
+                      culinaryItems={culinaryItems}
+                      eventItems={eventItems}
+                      lang={lang}
+                      fullHeight={true}
+                    />
+                  </div>
+
+                  {/* Traveloka Logistics & Booking Suite placed directly below the map */}
+                  <div className="shrink-0 bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-3.5 rounded-xl space-y-2.5 shadow-md">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="bg-white text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                          Traveloka
+                        </span>
+                        <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
+                          {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
+                        </span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
+                      {lang === 'en'
+                        ? 'Ready to make this itinerary a reality? Book your hotels, car rentals, activities, and flights via Traveloka.'
+                        : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil, tur wisata, dan tiket pesawat di Traveloka.'}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 pt-0.5">
+                      <a
+                        href="https://www.traveloka.com/id-id/hotel"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white text-blue-700 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                      >
+                        <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
+                        <ExternalLink className="w-3 h-3 shrink-0" />
+                      </a>
+                      <a
+                        href="https://www.traveloka.com/id-id/car-rental"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                      >
+                        <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
+                        <ExternalLink className="w-3 h-3 shrink-0" />
+                      </a>
+                      <a
+                        href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                      >
+                        <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
+                        <ExternalLink className="w-3 h-3 shrink-0" />
+                      </a>
+                      <a
+                        href="https://www.traveloka.com/id-id/activities"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                      >
+                        <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
+                        <ExternalLink className="w-3 h-3 shrink-0" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               )}
               {/* Right Column: AI Form & Response */}
@@ -2481,9 +2541,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
                       </div>
 
-                      {/* Itinerary Map is now rendered in its own side panel on desktop */}
-                      <div className="block md:hidden">
-                        {/* Show map inline only on mobile devices */}
+                      {/* Itinerary Map & Traveloka Booking Suite for Mobile */}
+                      <div className="block md:hidden space-y-3">
                         <ItineraryMap
                           aiResponse={aiResponse}
                           destinations={destinations}
@@ -2492,6 +2551,63 @@ export const Drawers: React.FC<DrawersProps> = ({
                           eventItems={eventItems}
                           lang={lang}
                         />
+
+                        {/* Traveloka Complete Logistics & Booking Suite on Mobile */}
+                        <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-3.5 rounded-xl space-y-2.5 shadow-md">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="bg-white text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                Traveloka
+                              </span>
+                              <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
+                                {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
+                            {lang === 'en'
+                              ? 'Ready to make this itinerary a reality? Book your hotels, car rentals, activities, and flights via Traveloka.'
+                              : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil, tur wisata, dan tiket pesawat di Traveloka.'}
+                          </p>
+                          <div className="grid grid-cols-2 gap-2 pt-0.5">
+                            <a
+                              href="https://www.traveloka.com/id-id/hotel"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white text-blue-700 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                            >
+                              <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
+                              <ExternalLink className="w-3 h-3 shrink-0" />
+                            </a>
+                            <a
+                              href="https://www.traveloka.com/id-id/car-rental"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                            >
+                              <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
+                              <ExternalLink className="w-3 h-3 shrink-0" />
+                            </a>
+                            <a
+                              href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                            >
+                              <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
+                              <ExternalLink className="w-3 h-3 shrink-0" />
+                            </a>
+                            <a
+                              href="https://www.traveloka.com/id-id/activities"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                            >
+                              <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
+                              <ExternalLink className="w-3 h-3 shrink-0" />
+                            </a>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Itinerary Days */}
@@ -2546,63 +2662,6 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </ul>
                         </div>
                       )}
-
-                      {/* Traveloka Complete Logistics & Booking Suite */}
-                      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-4 rounded-xl space-y-3 shadow-md">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="bg-white text-blue-700 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                              Traveloka
-                            </span>
-                            <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
-                              {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
-                          {lang === 'en'
-                            ? 'Ready to make this itinerary a reality? Book your hotels, car rentals, activities, and flights via Traveloka.'
-                            : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil, tur wisata, dan tiket pesawat di Traveloka.'}
-                        </p>
-                        <div className="grid grid-cols-2 gap-2 pt-0.5">
-                          <a
-                            href="https://www.traveloka.com/id-id/hotel"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white text-blue-700 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
-                          >
-                            <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
-                            <ExternalLink className="w-3 h-3 shrink-0" />
-                          </a>
-                          <a
-                            href="https://www.traveloka.com/id-id/car-rental"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
-                          >
-                            <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
-                            <ExternalLink className="w-3 h-3 shrink-0" />
-                          </a>
-                          <a
-                            href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
-                          >
-                            <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
-                            <ExternalLink className="w-3 h-3 shrink-0" />
-                          </a>
-                          <a
-                            href="https://www.traveloka.com/id-id/activities"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
-                          >
-                            <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
-                            <ExternalLink className="w-3 h-3 shrink-0" />
-                          </a>
-                        </div>
-                      </div>
                     </div>
                   )}
                 </div>
