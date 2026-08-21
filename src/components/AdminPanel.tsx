@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2 } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { generateCatalogItemWithAi, generateCatalogItemFallback } from '../utils/ai';
