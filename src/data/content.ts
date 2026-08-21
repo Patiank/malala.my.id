@@ -1,4 +1,4 @@
-import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem } from '../types';
+import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, SouvenirItem } from '../types';
 
 export const RAW_BG_IMAGE_1 = "https://drive.google.com/file/d/15YQ1KiIdWOO216udJAHNZP4dmR5CNKf-/view?usp=drive_link";
 export const RAW_BG_IMAGE_2 = "https://drive.google.com/file/d/1sKE9Y3NKIh6wwIQMsy5zYEQtROna5H1f/view?usp=drive_link";
@@ -1897,3 +1897,279 @@ export const EVENTS_SCHEDULE: EventItem[] = [
     lng: 100.200000,
   }
 ];
+
+export const SOUVENIR_ITEMS: SouvenirItem[] = [
+  {
+    id: 's1',
+    title: 'Kaos Eksklusif MINANGKAOS',
+    titleEn: 'Exclusive MINANGKAOS Apparel',
+    category: 'Fashion & Tenun',
+    categoryEn: 'Fashion & Merchandise',
+    origin: 'Kota Padang & Ranah Minang',
+    originEn: 'Padang City & West Sumatra',
+    description: "Kaos Eksklusif MINANGKAOS adalah apparel dan cenderamata fesyen premium kebanggaan Sumatera Barat. Didesain dengan memadukan tipografi modern berkelas dan kekayaan filosofi luhur Minangkabau seperti 'Alam Takambang Jadi Guru' dan pepatah adat sakral.\n\nMenggunakan bahan 100% Premium Cotton Combed 24s/30s yang sangat lembut, adem, menyerap keringat, dan berdaya tahan tinggi, sangat nyaman dipakai untuk aktivitas harian maupun saat berwisata menjelajahi keelokan alam Ranah Minang.\n\nSetiap lembar kaos diproduksi secara teliti dengan sablon berstandar tinggi (Plastisol/Discharge) yang tidak mudah luntur atau pecah. Menjadi oleh-oleh wajib yang modis dan penuh identitas budaya bagi para wisatawan domestik maupun mancanegara.",
+    descriptionEn: "Exclusive MINANGKAOS Apparel is the premier fashion merchandise and pride of West Sumatra. It seamlessly merges modern cutting-edge typography with profound Minangkabau ancestral philosophies such as 'Alam Takambang Jadi Guru'.\n\nCrafted from 100% Premium Cotton Combed 24s/30s, offering exceptional softness, breathability, sweat absorption, and durable comfort during both daily wear and adventure tours across West Sumatra.\n\nEach piece features high-grade printing (Plastisol/Discharge) engineered for lasting vibrancy without cracking. A quintessential, stylish souvenir celebrating cultural heritage for both domestic and international travelers.",
+    priceRange: 'Rp 110.000 - Rp 165.000',
+    priceRangeEn: 'IDR 110,000 - 165,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=kaos+minang+asli',
+    whatsappUrl: 'https://wa.me/6281234567890?text=Halo%20Admin%20Minangkaos,%20saya%20tertarik%20dengan%20produk%20kaos%20resmi%20Minang',
+    isMinangkaos: true,
+    imageUrl: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Bahan 100% Premium Cotton Combed 24s/30s',
+      'Desain Tipografi & Filosofi Minang Eksklusif',
+      'Merchandise Resmi & Original Kebanggaan Sumbar'
+    ],
+    highlightsEn: [
+      '100% Premium Cotton Combed 24s/30s Fabric',
+      'Exclusive Typography & Minang Philosophy Designs',
+      'Official Authentic Regional Pride Merchandise'
+    ],
+    lat: -0.950000,
+    lng: 100.350000
+  },
+  {
+    id: 's2',
+    title: 'Rendang Daging Sapi Kemasan Vakum',
+    titleEn: 'Vacuum-Packed Authentic Beef Rendang',
+    category: 'Kuliner Kemasan',
+    categoryEn: 'Long-Lasting Culinary',
+    origin: 'Kota Payakumbuh & Padang',
+    originEn: 'Payakumbuh & Padang City',
+    description: "Rendang Daging Sapi Kemasan Vakum adalah olahan mahakarya kuliner Minangkabau yang diproses secara higienis menggunakan teknologi sterilisasi retort dan pengemasan vakum kedap udara modern. Menjadikan rendang otentik ini mampu bertahan 6 hingga 12 bulan pada suhu ruang tanpa menggunakan bahan pengawet kimia buatan.\n\nDimasak secara tradisional menggunakan tungku kayu bakar selama lebih dari 8 jam dengan potongan daging sapi segar pilihan, santan kelapa murni berkualitas tinggi, serta belasan racikan rempah alami Minangkabau.\n\nSangat praktis untuk dibawa bepergian, oleh-oleh jarak jauh antar-pulau maupun ke luar negeri, serta siap langsung disantap hanya dengan menghangatkan kemasan beberapa menit.",
+    descriptionEn: "Vacuum-Packed Authentic Beef Rendang brings the UNESCO-recognized culinary masterpiece to modern travelers using hygienic retort sterilization and airtight packaging. This preserves authentic flavor and tenderness for 6 to 12 months at room temperature without artificial preservatives.\n\nSlow-cooked traditionally over wood fires for over 8 hours using prime beef cuts, rich pure coconut milk, and dozens of aromatic native spices.\n\nExtremely convenient for long-distance travel, overseas gifts, or family stocking, ready to enjoy within minutes of gentle reheating.",
+    priceRange: 'Rp 75.000 - Rp 160.000',
+    priceRangeEn: 'IDR 75,000 - 160,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=rendang+padang+kemasan+vakum',
+    imageUrl: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Daging Sapi Pilihan & Rempah Asli Minang',
+      'Kemasan Steril Vakum Tahan 6-12 Bulan',
+      'Siap Saji Praktis Tanpa Pengawet Buatan'
+    ],
+    highlightsEn: [
+      'Prime Beef & Authentic Native Spices',
+      'Sterile Vacuum Pack Lasts 6-12 Months',
+      'Ready-to-Eat Without Artificial Preservatives'
+    ],
+    lat: -0.220000,
+    lng: 100.630000
+  },
+  {
+    id: 's3',
+    title: 'Keripik Sanjai Balado Bukittinggi',
+    titleEn: 'Bukittinggi Balado Sanjai Chips',
+    category: 'Kuliner Kemasan',
+    categoryEn: 'Long-Lasting Culinary',
+    origin: 'Kota Bukittinggi',
+    originEn: 'Bukittinggi City',
+    description: "Keripik Sanjai Balado adalah oleh-oleh paling legendaris dan ikonik dari Kota Bukittinggi. Berasal dari kawasan Desa Sanjai di Mandiangin, keripik ini dibuat dari singkong (ubi kayu) berkualitas tinggi yang diiris tipis membujur, lalu digoreng hingga menghasilkan kerenyahan maksimal.\n\nKeripik singkong renyah kemudian dilumuri dengan saus karamel balado kental berwarna merah menyala yang terbuat dari campuran cabai merah segar, gula pasir murni, bawang merah, dan sedikit asam jawa.\n\nPerpaduan rasa pedas, manis legit, dan renyah garing dalam setiap gigitan menjadikan Sanjai Balado camilan yang sangat adiktif dan selalu menjadi buah tangan nomor satu yang wajib dibeli saat berlibur ke Bukittinggi.",
+    descriptionEn: "Bukittinggi Balado Sanjai Chips are the most iconic and beloved snack souvenir from the highland city of Bukittinggi. Originating from Sanjai village in Mandiangin, these chips are crafted from thinly sliced prime cassava roots fried to golden crisp perfection.\n\nThe crispy cassava wafers are coated in a glossy, fiery red balado glaze made from fresh red chilies, pure cane sugar, shallots, and a hint of tamarind.\n\nThe harmonious symphony of spicy heat, sweet caramel, and shatteringly crisp texture makes Sanjai Balado an irresistible treat sought by every visitor.",
+    priceRange: 'Rp 25.000 - Rp 55.000',
+    priceRangeEn: 'IDR 25,000 - 55,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=keripik+sanjai+balado+bukittinggi',
+    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Singkong Renyah Balado Manis Pedas Legit',
+      'Oleh-Oleh Ikonik Wajib Khas Bukittinggi',
+      'Kemasan Tebal Segel Kedap Udara'
+    ],
+    highlightsEn: [
+      'Crispy Cassava Glazed in Sweet & Spicy Balado',
+      'Iconic Must-Buy Souvenir from Bukittinggi',
+      'Airtight Sealed Packaging for Maximum Freshness'
+    ],
+    lat: -0.304987,
+    lng: 100.369434
+  },
+  {
+    id: 's4',
+    title: 'Kain Songket Pandai Sikek & Tenun Silungkang',
+    titleEn: 'Pandai Sikek Songket & Silungkang Handwoven Silk',
+    category: 'Fashion & Tenun',
+    categoryEn: 'Fashion & Merchandise',
+    origin: 'Pandai Sikek (Tanah Datar) & Silungkang (Sawahlunto)',
+    originEn: 'Pandai Sikek & Silungkang, West Sumatra',
+    description: "Kain Songket Pandai Sikek dan Tenun Silungkang adalah mahakarya seni kriya tenun tradisional Minangkabau yang telah diakui dunia atas kemewahan dan kehalusan teknik pembuatannya. Ditenun helai demi helai menggunakan Alat Tenun Bukan Mesin (ATBM) oleh para penenun terampil nagari.\n\nMemadukan benang sutra halus dengan benang emas dan perak murni berkualitas tinggi yang membentuk motif-motif sakral bernilai filosofis tinggi seperti Motif Pucuak Rebuang (melambangkan tunas bambu yang berguna di segala usia), Saik Kalamai, dan Kaluak Paku.\n\nKain Songket ini menjadi simbol prestise, keanggunan, dan warisan pusaka agung yang sangat bernilai tinggi untuk busana pesta adat, pernikahan, maupun koleksi seni adibusana Nusantara.",
+    descriptionEn: "Pandai Sikek Songket and Silungkang Handwoven Silk represent the pinnacle of traditional Minangkabau textile craftsmanship, internationally acclaimed for their opulent intricacy. Handwoven thread by thread using traditional non-mechanized wooden looms (ATBM) by master village artisans.\n\nCombining fine silk fibers with real gold and silver threads to form sacred motifs rich in philosophical wisdom, such as Pucuak Rebuang (bamboo shoots signifying lifelong utility), Saik Kalamai, and Kaluak Paku.\n\nThese opulent textiles symbolize prestige, elegance, and timeless ancestral heritage, highly prized for formal gala attire, weddings, and prestigious textile collections.",
+    priceRange: 'Rp 350.000 - Rp 2.500.000',
+    priceRangeEn: 'IDR 350,000 - 2,500,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=songket+pandai+sikek+asli',
+    imageUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Tenunan Tangan ATBM Tradisional Asli',
+      'Benang Emas & Perak Motif Pucuak Rebuang',
+      'Mahakarya Budaya & Prestise Adat Minangkabau'
+    ],
+    highlightsEn: [
+      'Authentic Handwoven Traditional ATBM Craft',
+      'Pure Gold & Silver Thread Sacred Motifs',
+      'Cultural Masterpiece of Minangkabau Prestige'
+    ],
+    lat: -0.450000,
+    lng: 100.410000
+  },
+  {
+    id: 's5',
+    title: 'Dendeng Batokok & Balado Basah Siap Saji',
+    titleEn: 'Ready-to-Eat Dendeng Batokok & Balado',
+    category: 'Kuliner Kemasan',
+    categoryEn: 'Long-Lasting Culinary',
+    origin: 'Kota Padang & Bukittinggi',
+    originEn: 'Padang & Bukittinggi',
+    description: "Dendeng Batokok Kemasan Siap Saji adalah hidangan daging sapi olahan khas Minang yang terkenal dengan kelembutan serat dagingnya. Daging sapi dipotong tipis lalu dipukul-pukul (batokok) menggunakan cobek kayu atau batu hingga pipih dan seratnya empuk merata.\n\nDaging yang telah dibumbui bawang putih, ketumbar, dan garam kemudian dipanggang di atas bara arang kelapa atau digoreng singkat, lalu dikemas bersama lumuran sambal lado merah atau sambal lado mudo (cabai hijau) yang ditumis wangi.\n\nDikemas dalam plastik vakum kedap udara bersegel higienis, hidangan ini sangat praktis disimpan sebagai stok makanan lezat di rumah atau oleh-oleh premium keluarga.",
+    descriptionEn: "Ready-to-Eat Dendeng Batokok features tender, pounded beef slices seasoned with garlic, coriander, and sea salt, gently grilled over coconut shell embers or flash-fried to retain succulent moisture.\n\nAccompanied by fragrant red chili sambal (balado) or crushed green chili relish (lado mudo) sautéed with shallots and coconut oil.\n\nPackaged in sterile vacuum pouches, it offers an effortless gourmet Minang dining experience straight to your kitchen table.",
+    priceRange: 'Rp 85.000 - Rp 150.000',
+    priceRangeEn: 'IDR 85,000 - 150,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=dendeng+batokok+padang+kemasan',
+    imageUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Daging Sapi Lembut Dipukul (Batokok) Tradisional',
+      'Sambal Balado Merah & Cabai Hijau Terpisah',
+      'Kemasan Vakum Higienis Siap Hangatkan'
+    ],
+    highlightsEn: [
+      'Tender Traditional Pounded Beef (Batokok)',
+      'Aromatic Red or Green Balado Sambal Included',
+      'Hygienic Vacuum Pack Ready to Reheat'
+    ],
+    lat: -0.950000,
+    lng: 100.350000
+  },
+  {
+    id: 's6',
+    title: 'Karak Kaliang & Arai Pinang Tradisional',
+    titleEn: 'Traditional Karak Kaliang & Arai Pinang Crackers',
+    category: 'Kuliner Kemasan',
+    categoryEn: 'Long-Lasting Culinary',
+    origin: 'Payakumbuh & Padang Pariaman',
+    originEn: 'Payakumbuh & Padang Pariaman',
+    description: "Karak Kaliang dan Arai Pinang adalah dua camilan kering tradisional tertua di Ranah Minang yang melegenda. Karak Kaliang berbentuk angka delapan berwarna kuning cerah, terbuat dari olahan ubi kayu (singkong) parut yang dibumbui bawang putih, kunyit, dan garam lalu digoreng sangat garing.\n\nSedangkan Arai Pinang adalah kerupuk tipis bundar berbahan tepung beras, santan, dan kapur sirih yang permukaannya dicetak menggunakan bunga pohon pinang (arai pinang) asli sehingga memiliki tekstur garis-garis artistik yang sangat khas.\n\nKedua kudapan ini memiliki rasa sangat gurih dan renyah kriuk di lidah, menjadi camilan wajib di ruang tamu masyarakat Minang saat hari raya maupun teman setia minum teh di sore hari.",
+    descriptionEn: "Karak Kaliang and Arai Pinang are two of the most classic traditional dry snacks in West Sumatra. Karak Kaliang features golden yellow figure-eight crisps made from seasoned grated cassava with garlic and turmeric.\n\nArai Pinang are delicate, paper-thin rice flour wafers pressed against natural betel palm blossoms (arai pinang) to produce their signature ribbed botanical texture.\n\nBoth deliver a supremely savory, crunchy bite, serving as timeless holiday staples and beloved teatime companions.",
+    priceRange: 'Rp 20.000 - Rp 45.000',
+    priceRangeEn: 'IDR 20,000 - 45,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=karak+kaliang+minang',
+    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Karak Kaliang Angka Delapan Ubi Kayu Gurih',
+      'Arai Pinang Dicetak Bunga Pohon Pinang Asli',
+      'Kudapan Kering Tradisional Tahan Lama'
+    ],
+    highlightsEn: [
+      'Savory Golden Figure-Eight Cassava Crisps',
+      'Artisanal Palm Blossom-Pressed Rice Wafers',
+      'Long-Lasting Traditional Heritage Snacks'
+    ],
+    lat: -0.220000,
+    lng: 100.630000
+  },
+  {
+    id: 's7',
+    title: 'Kopi Kawa Daun & Robusta Bukittinggi',
+    titleEn: 'Kawa Daun Smoked Tea & Highland Robusta Coffee',
+    category: 'Kopi & Rempah',
+    categoryEn: 'Coffee & Spices',
+    origin: 'Kabupaten Tanah Datar & Agam',
+    originEn: 'Tanah Datar & Agam Regency',
+    description: "Kopi Kawa Daun dan Bubuk Kopi Robusta Dataran Tinggi adalah minuman legendaris dengan sejarah budaya mendalam di Sumatera Barat. Kawa Daun lahir pada era tanam paksa kolonial Belanda (Cultuurstelsel) abad ke-19, di mana masyarakat Minang mengolah daun kopi yang disangrai di atas bara arang bambu lalu diseduh menyerupai teh herbal dengan aroma asap (smoky) yang khas.\n\nSementara itu, bubuk kopi Robusta dan Arabika lereng Gunung Marapi dan Singgalang dipetik dari perkebunan dataran tinggi berketinggian 1.000+ mdpl, menghasilkan cita rasa kopi yang tebal (full body), aroma cokelat rempah, dan tingkat keasaman rendah yang nyaman di lambung.\n\nDikemas dalam kantong foil premium kedap udara dengan valve satu arah untuk mengunci kesegaran aroma aslinya.",
+    descriptionEn: "Kawa Daun Smoked Coffee-Leaf Tea and Highland Robusta Coffee represent deep cultural heritage from the slopes of Mount Marapi and Singgalang (1,000+ meters altitude).\n\nKawa Daun originated during 19th-century colonial forced cultivation, where locals wood-roasted coffee leaves to brew an antioxidant-rich, smoky herbal infusion.\n\nAccompanied by full-bodied single-origin highland Robusta coffee with chocolate-spice undertones, packaged in sealed aroma-lock foil bags.",
+    priceRange: 'Rp 35.000 - Rp 85.000',
+    priceRangeEn: 'IDR 35,000 - 85,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=kopi+kawa+daun+minang',
+    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Tradisi Unik Seduhan Daun Kopi Berasap (Kawa Daun)',
+      'Biji Kopi Robusta Asli Lereng Gunung Marapi',
+      'Kaya Antioksidan & Kemasan Foil Kunci Aroma'
+    ],
+    highlightsEn: [
+      'Unique Smoked Coffee-Leaf Tea Tradition (Kawa Daun)',
+      'Single-Origin Robusta from Mount Marapi Slopes',
+      'Rich in Antioxidants with Aroma-Lock Foil Seal'
+    ],
+    lat: -0.450000,
+    lng: 100.410000
+  },
+  {
+    id: 's8',
+    title: 'Mukena Bordir Kerancang Asli Bukittinggi',
+    titleEn: 'Bukittinggi Hand-Embroidered Kerancang Prayer Robe',
+    category: 'Fashion & Tenun',
+    categoryEn: 'Fashion & Merchandise',
+    origin: 'Kota Bukittinggi',
+    originEn: 'Bukittinggi City',
+    description: "Mukena Bordir Kerancang adalah mahakarya seni sulam tangan paling prestisius dari Kota Bukittinggi. Dinamakan 'kerancang' karena teknik pembuatannya yang sangat rumit dan presisi tinggi dengan melubangi kain katun secara manual lalu menyulam benang di tepian lubang membentuk motif floral dan ornamen geometris yang sangat halus.\n\nDibuat dari bahan katun silky dan rayon dingin premium yang jatuh lembut, terasa sangat sejuk di kulit, dan tidak menerawang saat dikenakan beribadah.\n\nKualitas pengerjaan kerancang Bukittinggi yang sangat rapi telah tersohor hingga ke Malaysia, Singapura, dan Brunei Darussalam, menjadikannya pilihan hadiah suci dan hantaran pernikahan paling dicari.",
+    descriptionEn: "Bukittinggi Hand-Embroidered Kerancang Prayer Robe (Mukena) is a celebrated textile art from the artisan workshops of Bukittinggi. 'Kerancang' refers to the painstaking cutwork embroidery where tiny perforations are hand-stitched with intricate floral lace motifs.\n\nCrafted from premium silky-soft cool cotton rayon that drapes gracefully, feels extraordinarily comfortable on the skin, and ensures modesty.\n\nRenowned across Indonesia, Malaysia, and Singapore as the premier choice for sacred gifts and bridal trousseaus.",
+    priceRange: 'Rp 250.000 - Rp 1.200.000',
+    priceRangeEn: 'IDR 250,000 - 1,200,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=mukena+bordir+kerancang+bukittinggi',
+    imageUrl: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Bordir Kerancang Tangan Halus Khas Bukittinggi',
+      'Bahan Katun Silky & Rayon Dingin Nyaman',
+      'Produk Unggulan Terkenal Se-Asia Tenggara'
+    ],
+    highlightsEn: [
+      'Artisanal Cutwork Hand-Embroidery Craftsmanship',
+      'Cool Breathable Silky Cotton Rayon Fabric',
+      'Renowned Southeast Asian Heritage Favorite'
+    ],
+    lat: -0.304987,
+    lng: 100.369434
+  },
+  {
+    id: 's9',
+    title: 'Bumbu Rendang & Gulai Instan Khas Minang',
+    titleEn: 'Authentic Minang Rendang & Curry Spice Blend',
+    category: 'Kopi & Rempah',
+    categoryEn: 'Coffee & Spices',
+    origin: 'Kota Padang & Pariaman',
+    originEn: 'Padang & Pariaman',
+    description: "Bumbu Rendang dan Gulai Instan Khas Minang adalah racikan rempah giling kering otentik warisan juru masak Minang yang diracik dari 16 jenis rempah alami pilihan seperti ketumbar sangrai, kayu manis, pala, cengkih, jintan, kapulaga, serai, daun salam koja, dan asam kandis murni.\n\nDiproses tanpa bahan pengawet kimia dan tanpa MSG berlebih, memungkinkan siapa saja untuk memasak Rendang Daging, Gulai Ayam, atau Kalio dengan rasa dan aroma yang sama persis seperti di restoran Minang legendaris langsung dari dapur rumah mereka.\n\nSangat ringan, hemat ruang di koper, dan memiliki masa simpan lebih dari satu tahun, menjadi bumbu wajib bawa bagi diaspora Minang dan pencinta kuliner di seluruh dunia.",
+    descriptionEn: "Authentic Minang Rendang & Curry Spice Blend is a secret traditional combination of 16 sun-dried native spices including toasted coriander, cinnamon, nutmeg, cloves, cumin, cardamom, and wild asam kandis.\n\nAll-natural and preservative-free, enabling anyone anywhere in the world to recreate authentic Padang Rendang and rich curries with flawless flavor profiles.\n\nCompact, lightweight, and long-lasting, it is an essential pantry item for culinary enthusiasts and travelers alike.",
+    priceRange: 'Rp 18.000 - Rp 45.000',
+    priceRangeEn: 'IDR 18,000 - 45,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=bumbu+rendang+padang+asli',
+    imageUrl: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Paduan 16 Rempah Rempah Kering Alami',
+      'Praktis Masak Rendang Otentik di Rumah',
+      'Tahan Lama & Sangat Ringan Dibawa Travelling'
+    ],
+    highlightsEn: [
+      '16 All-Natural Sun-Dried Native Spices',
+      'Effortlessly Cook Authentic Rendang at Home',
+      'Lightweight & Long-Lasting Travel Size'
+    ],
+    lat: -0.950000,
+    lng: 100.350000
+  },
+  {
+    id: 's10',
+    title: 'Miniatur Rumah Gadang & Saluang Bambu',
+    titleEn: 'Miniature Rumah Gadang & Traditional Saluang Flute',
+    category: 'Kriya & Kerajinan',
+    categoryEn: 'Handicrafts & Art',
+    origin: 'Seluruh Wilayah Ranah Minangkabau',
+    originEn: 'All Minangkabau Territory',
+    description: "Miniatur Rumah Gadang dan Alat Musik Saluang Bambu adalah kerajinan tangan ukir kayu dan bambu otentik yang melambangkan keagungan arsitektur dan seni musik Minangkabau. Miniatur Rumah Gadang dipahat presisi dari kayu mahoni atau jati dengan atap gonjong melengkung tajam dan dinding berukir ornamen tradisional berwarna-warni.\n\nSementara itu, Saluang dibuat dari bambu talang pilihan yang telah dikeringkan secara alami, dirancang dengan 4 lubang nada presisi yang mampu menghasilkan alunan melodi melankolis khas Ranah Minang.\n\nSangat cocok sebagai pajangan meja ruang tamu, cinderamata VIP kantor, koleksi seni budaya, atau hadiah kenang-kenangan eksklusif perjalanan wisata Anda di Sumatera Barat.",
+    descriptionEn: "Miniature Rumah Gadang and Traditional Saluang Flute are authentic wooden and bamboo handicrafts capturing the architectural brilliance and sonic identity of Minangkabau culture. The miniature is carved from solid mahogany wood featuring the iconic curved buffalo-horn gonjong roofs and painted traditional motifs.\n\nThe Saluang is crafted from seasoned talang bamboo with 4 acoustic holes tuned to evoke hauntingly beautiful traditional melodies.\n\nAn ideal centerpiece for desks, cultural collections, corporate gifts, and prestigious souvenirs of your journey through West Sumatra.",
+    priceRange: 'Rp 50.000 - Rp 350.000',
+    priceRangeEn: 'IDR 50,000 - 350,000',
+    shopeeUrl: 'https://shopee.co.id/search?keyword=miniatur+rumah+gadang+souvenir',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+    highlights: [
+      'Pahat Kayu Mahoni & Bambu Talang Alami',
+      'Ikon Arsitektur Rumah Gadang Gonjong Khas',
+      'Pajangan Meja & Koleksi Budaya Bernilai Seni'
+    ],
+    highlightsEn: [
+      'Handcrafted Mahogany Wood & Natural Bamboo',
+      'Iconic Curved Gonjong Roof Architecture',
+      'Prestigious Decorative Cultural Collection'
+    ],
+    lat: -0.471111,
+    lng: 100.621111
+  }
+];
+

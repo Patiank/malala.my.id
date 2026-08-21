@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer } from 'lucide-react';
-import { DrawerType, Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag } from 'lucide-react';
+import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { ItineraryMap } from './ItineraryMap';
@@ -175,7 +175,9 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [selectedCulture, setSelectedCulture] = useState<CultureItem | null>(null);
   const [selectedCulinary, setSelectedCulinary] = useState<CulinaryItem | null>(null);
+  const [selectedSouvenir, setSelectedSouvenir] = useState<SouvenirItem | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+  const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
 
   // Calendar of Events helpers
   const [eventViewMode, setEventViewMode] = useState<'calendar' | 'list'>('calendar');
@@ -761,6 +763,25 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
+    (dataStore?.souvenirItems || []).forEach((s: SouvenirItem) => {
+      items.push({
+        id: s.id,
+        title: s.title,
+        titleEn: s.titleEn || s.title,
+        desc: s.description,
+        descEn: s.descriptionEn || s.description,
+        icon: '🛍️',
+        categoryLabel: 'Oleh-Oleh',
+        categoryLabelEn: 'Souvenirs',
+        drawerType: 'souvenirs',
+        imageUrl: s.imageUrl,
+        locationName: s.origin,
+        subTag: s.category,
+        keywords: `${s.title} ${s.titleEn || ''} ${s.origin} ${s.category} ${s.description}`.toLowerCase(),
+        rawItem: s,
+      });
+    });
+
     (dataStore?.hotInfoItems || []).forEach((h: HotInfoItem) => {
       items.push({
         id: h.id,
@@ -781,7 +802,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     });
 
     return items;
-  }, [destinations, cultureItems, culinaryItems, eventItems, dataStore?.hotInfoItems]);
+  }, [destinations, cultureItems, culinaryItems, dataStore?.souvenirItems, eventItems, dataStore?.hotInfoItems]);
 
   const filteredSearchItems = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -806,6 +827,8 @@ export const Drawers: React.FC<DrawersProps> = ({
       setSelectedCulture(item.rawItem as CultureItem);
     } else if (item.drawerType === 'culinary') {
       setSelectedCulinary(item.rawItem as CulinaryItem);
+    } else if (item.drawerType === 'souvenirs') {
+      setSelectedSouvenir(item.rawItem as SouvenirItem);
     } else if (item.drawerType === 'events') {
       setSelectedEvent(item.rawItem as EventItem);
     } else if (item.drawerType === 'hotinfo') {
@@ -822,6 +845,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         return isEn ? 'Minangkabau Culture & Heritage' : 'Seni & Budaya Minang';
       case 'culinary':
         return isEn ? 'Authentic West Sumatra Culinary' : 'Kuliner Authentic';
+      case 'souvenirs':
+        return isEn ? 'Authentic Minang Souvenirs & Crafts' : 'Oleh-Oleh & Kriya Khas Minang';
       case 'events':
         return isEn ? 'Events & Festivals' : 'Event & Festival';
       case 'formai':
@@ -852,6 +877,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         return isEn ? 'Traditional Rumah Gadang architecture, arts & heritage' : 'Warisan Rumah Gadang, Ukiran & Seni Tradisi';
       case 'culinary':
         return isEn ? 'Authentic Rendang, Padang Satay & traditional flavors' : 'Rendang, Sate Padang & Cita Rasa Khas';
+      case 'souvenirs':
+        return isEn ? 'Long-lasting culinary specialties, Songket textiles & official Minang merchandise' : 'Koleksi Kuliner Khas Tahan Lama, Kain Tenun Songket & Merchandise Resmi Minang';
       case 'events':
         return isEn ? 'Cultural calendar & sports tourism events' : 'Kalender Budaya & Olahraga Parawisata';
       case 'formai':
@@ -1512,6 +1539,150 @@ export const Drawers: React.FC<DrawersProps> = ({
               })}
             </div>
           )}
+
+          {/* =================================================== */}
+          {/* 3.5. OLEH-OLEH & KRIYA KHAS MINANG (SHOPEE AFFILIATE) */}
+          {/* =================================================== */}
+          {activeDrawer === 'souvenirs' && (() => {
+            const isEn = lang === 'en';
+            const allSouvenirs: SouvenirItem[] = (dataStore?.souvenirItems && dataStore.souvenirItems.length > 0)
+              ? dataStore.souvenirItems
+              : [];
+
+            const filteredSouvenirs = allSouvenirs.filter((s: SouvenirItem) => {
+              if (souvenirCategory === 'Semua') return true;
+              return s.category === souvenirCategory;
+            });
+
+            return (
+              <div className="space-y-6">
+                {/* Category Filter Pills */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-jakarta">
+                  {[
+                    { val: 'Semua', label: isEn ? 'All Souvenirs' : 'Semua Oleh-Oleh' },
+                    { val: 'Kuliner Kemasan', label: isEn ? 'Packaged Food' : 'Kuliner Kemasan' },
+                    { val: 'Fashion & Tenun', label: isEn ? 'Fashion & Songket' : 'Fashion & Tenun' },
+                    { val: 'Kopi & Rempah', label: isEn ? 'Coffee & Spices' : 'Kopi & Rempah' },
+                    { val: 'Kriya & Kerajinan', label: isEn ? 'Handicrafts' : 'Kriya & Kerajinan' }
+                  ].map((cat) => (
+                    <button
+                      key={cat.val}
+                      onClick={() => setSouvenirCategory(cat.val)}
+                      className={`px-3 py-1.5 rounded-full uppercase tracking-wider font-bold text-[10px] whitespace-nowrap transition-colors cursor-pointer ${
+                        souvenirCategory === cat.val
+                          ? 'bg-red-600 text-white shadow-xs'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Souvenir Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {filteredSouvenirs.map((souv: SouvenirItem) => {
+                    return (
+                      <div
+                        key={souv.id}
+                        className="border border-gray-200 rounded-xl overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:shadow-md hover:border-red-300 transition-all group font-jakarta"
+                      >
+                        <div>
+                          {/* Image Banner */}
+                          <div
+                            onClick={() => setSelectedSouvenir(souv)}
+                            className="relative h-44 w-full overflow-hidden bg-gray-100 cursor-pointer"
+                          >
+                            <img
+                              src={souv.imageUrl}
+                              alt={isEn && souv.titleEn ? souv.titleEn : souv.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                            />
+                            <div className="absolute top-2 left-2 flex flex-col gap-1 items-start">
+                              <span className="bg-black/80 text-white font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
+                                {isEn && souv.categoryEn ? souv.categoryEn : souv.category}
+                              </span>
+                              {souv.isMinangkaos && (
+                                <span className="bg-red-600 text-white font-black text-[9px] uppercase px-2 py-0.5 rounded shadow-2xs tracking-wider">
+                                  Official Minangkaos
+                                </span>
+                              )}
+                            </div>
+
+                            <span className="absolute bottom-2 right-2 bg-white/95 text-red-600 font-orbitron font-extrabold text-[10.5px] px-2.5 py-0.5 rounded-full shadow-xs backdrop-blur-xs border border-red-200">
+                              {isEn && souv.priceRangeEn ? souv.priceRangeEn : souv.priceRange}
+                            </span>
+                          </div>
+
+                          <div className="p-3.5 space-y-2">
+                            <div className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold flex items-center gap-1">
+                              <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                              <span>{isEn ? 'Origin:' : 'Asal:'} {isEn && souv.originEn ? souv.originEn : souv.origin}</span>
+                            </div>
+                            <h3
+                              onClick={() => setSelectedSouvenir(souv)}
+                              className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm group-hover:text-red-600 transition-colors cursor-pointer line-clamp-1"
+                            >
+                              {isEn && souv.titleEn ? souv.titleEn : souv.title}
+                            </h3>
+                            <p className="text-gray-600 text-[11px] leading-relaxed line-clamp-2">
+                              {isEn && souv.descriptionEn ? souv.descriptionEn : souv.description}
+                            </p>
+
+                            {/* Highlights pills */}
+                            <div className="flex flex-wrap gap-1 pt-1">
+                              {(isEn && souv.highlightsEn ? souv.highlightsEn : souv.highlights).slice(0, 2).map((h, hIdx) => (
+                                <span key={hIdx} className="text-[9px] font-semibold bg-gray-100 text-gray-700 px-2 py-0.5 rounded-md">
+                                  ✓ {h}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="p-3 bg-gray-50 border-t border-gray-100 space-y-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                            <a
+                              href={souv.shopeeUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full bg-[#EE4D2D] hover:bg-[#d73211] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1.5 shadow-2xs text-center cursor-pointer"
+                            >
+                              <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
+                              <span>{isEn ? 'Buy on Shopee' : 'Beli di Shopee'}</span>
+                              <ExternalLink className="w-2.5 h-2.5 shrink-0 opacity-80" />
+                            </a>
+
+                            {souv.isMinangkaos && souv.whatsappUrl ? (
+                              <a
+                                href={souv.whatsappUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1.5 shadow-2xs text-center cursor-pointer"
+                              >
+                                <span>💬 {isEn ? 'WhatsApp' : 'Pesan WA'}</span>
+                              </a>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setSelectedSouvenir(souv)}
+                                className="w-full bg-white hover:bg-gray-100 text-gray-800 border border-gray-200 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 text-center cursor-pointer"
+                              >
+                                <span>{translations[lang].btnDetail}</span>
+                                <ChevronRight className="w-3 h-3 shrink-0" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* =================================================== */}
           {/* 4. CALENDAR OF EVENTS (CoE) SUMATERA BARAT          */}
@@ -3287,6 +3458,115 @@ export const Drawers: React.FC<DrawersProps> = ({
             >
               {translations[lang].btnClose}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL INFORMATION DIALOG FOR SOUVENIR (OLEH-OLEH & SHOPEE AFFILIATE) */}
+      {selectedSouvenir && (
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => setSelectedSouvenir(null)}
+              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Modal Image Header */}
+            <div className="-mx-6 -mt-6 mb-4 h-52 overflow-hidden bg-gray-100 relative">
+              <img
+                src={selectedSouvenir.imageUrl}
+                alt={selectedSouvenir.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute top-4 left-4 flex flex-col gap-1 items-start">
+                <span className="bg-white text-black font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-0.5 rounded tracking-wider shadow-2xs">
+                  {lang === 'en' && selectedSouvenir.categoryEn ? selectedSouvenir.categoryEn : selectedSouvenir.category}
+                </span>
+                {selectedSouvenir.isMinangkaos && (
+                  <span className="bg-red-600 text-white font-jakarta font-black text-[9px] uppercase px-2.5 py-0.5 rounded tracking-wider shadow-2xs">
+                    Official Minangkaos
+                  </span>
+                )}
+              </div>
+
+              <div className="absolute bottom-3 left-4 right-4 text-white flex items-end justify-between">
+                <div>
+                  <h3 className="font-orbitron font-bold text-base uppercase text-white drop-shadow-xs">
+                    {lang === 'en' && selectedSouvenir.titleEn ? selectedSouvenir.titleEn : selectedSouvenir.title}
+                  </h3>
+                </div>
+                <span className="bg-red-600 text-white font-orbitron font-black text-xs px-3 py-1 rounded-full shadow-md whitespace-nowrap">
+                  {lang === 'en' && selectedSouvenir.priceRangeEn ? selectedSouvenir.priceRangeEn : selectedSouvenir.priceRange}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <p className="font-jakarta text-xs text-gray-500 flex items-center gap-1 font-semibold uppercase tracking-wider">
+                <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                {lang === 'en' ? 'Origin / Center:' : 'Sentra Asal:'} {lang === 'en' && selectedSouvenir.originEn ? selectedSouvenir.originEn : selectedSouvenir.origin}
+              </p>
+            </div>
+
+            {/* Highlights Box */}
+            <div className="bg-amber-50/80 border border-amber-200/80 rounded-lg p-3 space-y-1.5 font-jakarta">
+              <span className="font-bold text-amber-900 text-xs uppercase tracking-wider block">
+                {lang === 'en' ? 'Product Highlights & Quality' : 'Keunggulan & Kualitas Produk:'}
+              </span>
+              <ul className="space-y-1 text-xs text-amber-950">
+                {(lang === 'en' && selectedSouvenir.highlightsEn ? selectedSouvenir.highlightsEn : selectedSouvenir.highlights).map((h: string, idx: number) => (
+                  <li key={idx} className="flex items-center gap-1.5">
+                    <span className="text-amber-600 font-bold">✓</span>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+              {(lang === 'en' && selectedSouvenir.descriptionEn ? selectedSouvenir.descriptionEn : selectedSouvenir.description)
+                .split('\n\n')
+                .map((paragraph: string, idx: number) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+            </div>
+
+            {/* Shopee & WhatsApp Checkout CTAs */}
+            <div className="space-y-2 pt-2 border-t border-gray-100 font-jakarta">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <a
+                  href={selectedSouvenir.shopeeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#EE4D2D] hover:bg-[#d73211] text-white py-2.5 rounded-lg font-bold uppercase text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer text-center"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>{lang === 'en' ? 'Buy on Shopee' : 'Beli di Shopee'}</span>
+                  <ExternalLink className="w-3 h-3 opacity-80" />
+                </a>
+
+                {selectedSouvenir.isMinangkaos && selectedSouvenir.whatsappUrl ? (
+                  <a
+                    href={selectedSouvenir.whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white py-2.5 rounded-lg font-bold uppercase text-xs transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer text-center"
+                  >
+                    <span>💬 {lang === 'en' ? 'Order WhatsApp' : 'Pesan via WhatsApp'}</span>
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setSelectedSouvenir(null)}
+                    className="w-full bg-black text-white py-2.5 rounded-lg font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
+                  >
+                    {translations[lang].btnClose}
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

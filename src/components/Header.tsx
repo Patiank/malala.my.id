@@ -165,6 +165,18 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <button
+          onClick={() => handleNavClick('souvenirs')}
+          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
+            activeDrawer === 'souvenirs'
+              ? 'bg-red-600 text-white border-red-600 font-bold'
+              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
+          }`}
+          style={activeDrawer !== 'souvenirs' ? headerTextStyle : undefined}
+        >
+          {t.navSouvenirs}
+        </button>
+
+        <button
           onClick={() => handleNavClick('events')}
           className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
             activeDrawer === 'events'

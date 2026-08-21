@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
-import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
+import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
 import { isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
 
 export function useData() {
   const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
   const [cultureItems, setCultureItems] = useState<CultureItem[]>(CULTURE_ITEMS);
   const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>(CULINARY_ITEMS);
+  const [souvenirItems, setSouvenirItems] = useState<SouvenirItem[]>(SOUVENIR_ITEMS);
   const [eventItems, setEventItems] = useState<EventItem[]>(EVENTS_SCHEDULE);
   const [downloadItems, setDownloadItems] = useState<DownloadItem[]>(DOWNLOAD_ITEMS);
   const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>(HOT_INFO_ITEMS);
@@ -85,7 +86,25 @@ export function useData() {
       setCulinaryItems(CULINARY_ITEMS);
     });
 
-    // 4. Events listener
+    // 4. Souvenirs listener
+    const unsubSouv = onSnapshot(collection(db, 'souvenirs'), (snapshot) => {
+      if (snapshot.empty) {
+        setSouvenirItems(SOUVENIR_ITEMS);
+        return;
+      }
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as SouvenirItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.title.trim().length > 0);
+      setSouvenirItems(data.length > 0 ? data : SOUVENIR_ITEMS);
+    }, (err) => {
+      console.warn("Firestore souvenirs error:", err);
+      setSouvenirItems(SOUVENIR_ITEMS);
+    });
+
+    // 5. Events listener
     const unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
       if (snapshot.empty) {
         setEventItems(EVENTS_SCHEDULE);
@@ -183,7 +202,8 @@ export function useData() {
       unsubDest();
       unsubCult();
       unsubCul();
-      unsubEvt();
+      unsubSouv();
+      unsubEv();
       unsubDl();
       unsubHot();
       unsubSett();
@@ -369,6 +389,7 @@ export function useData() {
     destinations: destinations.length > 0 ? destinations : getDestinationsWithEn(),
     cultureItems: cultureItems.length > 0 ? cultureItems : getCultureWithEn(),
     culinaryItems: culinaryItems.length > 0 ? culinaryItems : getCulinaryWithEn(),
+    souvenirItems: souvenirItems.length > 0 ? souvenirItems : SOUVENIR_ITEMS,
     eventItems: eventItems.length > 0 ? eventItems : getEventsWithEn(),
     downloadItems: downloadItems.length > 0 ? downloadItems : DOWNLOAD_ITEMS,
     hotInfoItems: hotInfoItems.length > 0 ? hotInfoItems : HOT_INFO_ITEMS,

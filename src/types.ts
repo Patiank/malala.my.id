@@ -2,6 +2,7 @@ export type DrawerType =
   | 'destinations'  // Wisata Alam & Populer
   | 'culture'       // Seni & Budaya Minangkabau
   | 'culinary'      // Wisata Kuliner & Rendang
+  | 'souvenirs'     // Oleh-oleh & Kriya Khas Minang
   | 'events'        // Festival & Event Pariwisata
   | 'formai'        // FormAI / AI Tourism Assistant
   | 'saved'         // Destinasi Favorit Disimpan
@@ -12,6 +13,29 @@ export type DrawerType =
   | 'search'        // Panel Pencarian Interaktif dari Samping Kanan
   | 'chat'          // Tanya Uni Mala Guide Chat Box
   | null;
+
+export interface SouvenirItem {
+  id: string;
+  title: string;
+  titleEn?: string;
+  category: 'Kuliner Kemasan' | 'Fashion & Tenun' | 'Kriya & Kerajinan' | 'Kopi & Rempah';
+  categoryEn?: string;
+  origin: string;
+  originEn?: string;
+  description: string;
+  descriptionEn?: string;
+  priceRange: string;
+  priceRangeEn?: string;
+  shopeeUrl: string;
+  whatsappUrl?: string;
+  isMinangkaos?: boolean;
+  imageUrl: string;
+  highlights: string[];
+  highlightsEn?: string[];
+  mapUrl?: string;
+  lat?: number;
+  lng?: number;
+}
 
 export interface Destination {
   id: string;

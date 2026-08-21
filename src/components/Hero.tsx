@@ -4,7 +4,7 @@ import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } fr
 
 import { DrawerType, AppSettings, EventItem } from '../types';
 import { Language, translations } from '../lib/translations';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
@@ -355,6 +355,21 @@ export const Hero: React.FC<HeroProps> = ({
         categoryLabelEn: 'Culinary',
         drawerType: 'culinary',
         keywords: `${c.title} ${c.titleEn || ''} ${c.type} ${c.description}`.toLowerCase()
+      });
+    });
+
+    SOUVENIR_ITEMS.forEach(s => {
+      items.push({
+        id: s.id,
+        title: s.title,
+        titleEn: s.titleEn || s.title,
+        desc: s.description,
+        descEn: s.descriptionEn || s.description,
+        icon: '🛍️',
+        categoryLabel: 'Oleh-Oleh',
+        categoryLabelEn: 'Souvenirs',
+        drawerType: 'souvenirs',
+        keywords: `${s.title} ${s.titleEn || ''} ${s.origin} ${s.category} ${s.description}`.toLowerCase()
       });
     });
 
