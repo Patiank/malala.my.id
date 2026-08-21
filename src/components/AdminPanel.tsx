@@ -493,7 +493,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
 
   const handleEdit = (item: any) => {
     setEditingId(item.id);
-    setFormData({ ...item });
+    setFormData({
+      ...item,
+      title: item.title || '',
+      titleEn: item.titleEn || '',
+      category: item.category || '',
+      categoryEn: item.categoryEn || '',
+      origin: item.origin || '',
+      originEn: item.originEn || '',
+      priceRange: item.priceRange || '',
+      priceRangeEn: item.priceRangeEn || '',
+      shopeeUrl: item.shopeeUrl || '',
+      whatsappUrl: item.whatsappUrl || '',
+      isMinangkaos: Boolean(item.isMinangkaos),
+      description: item.description || '',
+      descriptionEn: item.descriptionEn || '',
+      highlights: Array.isArray(item.highlights) ? item.highlights : (item.highlights ? [item.highlights] : []),
+      highlightsEn: Array.isArray(item.highlightsEn) ? item.highlightsEn : (item.highlightsEn ? [item.highlightsEn] : []),
+      imageUrl: item.imageUrl || '',
+      videoUrl: item.videoUrl || '',
+      mapUrl: item.mapUrl || '',
+      tag: item.tag || '',
+      tagEn: item.tagEn || '',
+      regency: item.regency || '',
+      regencyEn: item.regencyEn || '',
+      bestTime: item.bestTime || '',
+      bestTimeEn: item.bestTimeEn || '',
+      locationDetails: item.locationDetails || '',
+      locationDetailsEn: item.locationDetailsEn || '',
+      philosophy: item.philosophy || '',
+      philosophyEn: item.philosophyEn || '',
+      type: item.type || '',
+      typeEn: item.typeEn || '',
+      flavorProfile: item.flavorProfile || '',
+      flavorProfileEn: item.flavorProfileEn || '',
+      schedule: item.schedule || '',
+      scheduleEn: item.scheduleEn || '',
+      location: item.location || '',
+      locationEn: item.locationEn || '',
+      isKen: Boolean(item.isKen)
+    });
   };
 
   const handleCancelEdit = () => {
@@ -1543,7 +1582,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               </div>
             </div>
           </div>
-        ) : editingId ? (
+        ) : (editingId && formData) ? (
           <div className="bg-gray-50 border border-gray-200 p-4 sm:p-5 rounded-xl space-y-4 shadow-sm">
             <div className="flex items-center justify-between flex-wrap gap-2 border-b border-gray-200 pb-3">
               <h4 className="font-bold text-xs uppercase text-gray-700 flex items-center gap-2">
@@ -1621,19 +1660,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     name="title"
                     value={formData.title || ''}
                     onChange={handleChange}
-                    placeholder={
-                      adminTab === 'destinations'
-                        ? 'e.g. Danau Singkarak / Air Terjun Nyarai'
-                        : adminTab === 'culture'
-                        ? 'e.g. Tari Piring / Tradisi Batagak Pangulu'
-                        : adminTab === 'culinary'
-                        ? 'e.g. Gulai Banak / Sate Danguang-Danguang'
-                        : adminTab === 'souvenirs'
-                        ? 'e.g. Keripik Sanjai Balado / Kaos Minang'
-                        : adminTab === 'events'
-                        ? 'e.g. Sawahlunto International Songket Carnival'
-                        : 'Ketik judul...'
-                    }
+                    placeholder="Ketik judul..."
                     className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                   />
                 </div>
@@ -1664,39 +1691,39 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Tanggal / Waktu (Indonesian)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Tanggal / Waktu Rilis (Indonesian)</label>
                       <input type="text" name="date" value={formData.date || ''} onChange={handleChange} placeholder="e.g. Hari Ini, 16:30 WIB" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Date / Time (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Release Date (English Translation)</label>
                       <input type="text" name="dateEn" value={formData.dateEn || ''} onChange={handleChange} placeholder="e.g. Today, 04:30 PM WIB" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Tag / Label (Indonesian)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Label Tag Badge (Indonesian)</label>
                       <input type="text" name="tag" value={formData.tag || ''} onChange={handleChange} placeholder="e.g. Penting, Festival" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Tag / Label (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Label Tag Badge (English Translation)</label>
                       <input type="text" name="tagEn" value={formData.tagEn || ''} onChange={handleChange} placeholder="e.g. Urgent, Cultural Festival" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Isi Berita (Bahasa Indonesia)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Isi Berita Ringkas (Indonesian)</label>
                       <textarea name="description" value={formData.description || formData.content || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 resize-none" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. News Description (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. News Summary (English Translation)</label>
                       <textarea name="descriptionEn" value={formData.descriptionEn || ''} onChange={handleChange} placeholder="English news summary..." className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-24 resize-none" />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. URL Google Maps / Link Aksi (Alamat Single)</label>
+                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. Link Tindakan / Lokasi Map (Opsional)</label>
                     <input type="text" name="actionUrl" value={formData.actionUrl || formData.locationQuery || ''} onChange={handleChange} placeholder="e.g. Jam Gadang Bukittinggi ATAU https://maps.google.com/..." className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                   </div>
                 </>
@@ -1707,63 +1734,63 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori Asset (Indonesian)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori Unduhan (Indonesian)</label>
                       <input type="text" name="category" value={formData.category || ''} onChange={handleChange} placeholder="e.g. E-Book PDF, Logo Kit" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Asset Category (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Download Category (English Translation)</label>
                       <input type="text" name="categoryEn" value={formData.categoryEn || ''} onChange={handleChange} placeholder="e.g. PDF Guide Booklet" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Format Tipe (Indonesian)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Tipe Berkas (Indonesian)</label>
                       <input type="text" name="type" value={formData.type || ''} onChange={handleChange} placeholder="e.g. Document PDF (24 Halaman)" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Format Type (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. File Type (English Translation)</label>
                       <input type="text" name="typeEn" value={formData.typeEn || ''} onChange={handleChange} placeholder="e.g. Printable PDF Document" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Nama File Unduhan</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Nama File Simpanan</label>
                       <input type="text" name="filename" value={formData.filename || ''} onChange={handleChange} placeholder="e.g. Panduan_Wisata.pdf" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">Ukuran File</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Ukuran File</label>
                       <input type="text" name="size" value={formData.size || ''} onChange={handleChange} placeholder="e.g. 2.4 MB" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Deskripsi Asset (Indonesian)</label>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Deskripsi Berkas (Bahasa Indonesia)</label>
                       <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Asset Description (English Translation)</label>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. Description (English Translation)</label>
                       <textarea name="descriptionEn" value={formData.descriptionEn || ''} onChange={handleChange} placeholder="English asset description..." className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                   </div>
 
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg space-y-2">
-                    <label className="block text-[10px] font-bold uppercase text-blue-800">Upload File / Masukkan Konten Unduhan</label>
-                    <input
-                      type="file"
-                      onChange={handleFileUpload}
-                      className="block w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
-                    />
-                    <div className="pt-1">
-                      <label className="block text-[10px] font-bold uppercase text-gray-600 mb-1">Atau Masukkan Teks / URL / Konten File Langsung:</label>
-                      <textarea
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. Unggah File / Masukkan Link</label>
+                    <div className="space-y-2">
+                      <input
+                        type="file"
+                        onChange={handleFileUpload}
+                        className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
+                      />
+                      <input
+                        type="text"
                         name="content"
                         value={formData.content || ''}
                         onChange={handleChange}
-                        placeholder="Ketik isi materi, tautan Google Drive / Cloud storage, atau SVG file..."
-                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 font-mono text-[11px] resize-none"
+                        placeholder="Atau tempelkan URL file eksternal / teks di sini"
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs"
                       />
                     </div>
                   </div>
@@ -1776,12 +1803,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori (Indonesian)</label>
-                      <select name="category" value={formData.category} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
+                      <select name="category" value={formData.category || 'Alam'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
                         <option>Alam</option>
                         <option>Danau & Gunung</option>
                         <option>Lembah & Geopark</option>
                         <option>Pantai & Bahari</option>
                         <option>Desa Wisata</option>
+                        <option>Sejarah</option>
+                        <option>Air Terjun & Alam</option>
                       </select>
                     </div>
                     <div>
@@ -1793,7 +1822,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Wilayah / Kabupaten (Indonesian)</label>
-                      <input type="text" name="regency" value={formData.regency} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="regency" value={formData.regency || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Regency / City (English Translation)</label>
@@ -1804,7 +1833,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Tag Label (Indonesian)</label>
-                      <input type="text" name="tag" value={formData.tag} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="tag" value={formData.tag || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Tag Label (English Translation)</label>
@@ -1815,7 +1844,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Deskripsi (Bahasa Indonesia)</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 resize-none" />
+                      <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 resize-none" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. Description (English Translation)</label>
@@ -1826,18 +1855,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. Highlights (Bahasa Indonesia - Per Baris)</label>
-                      <textarea value={formData.highlights?.join('\n') || ''} onChange={(e) => handleArrayChange(e, 'highlights')} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
+                      <textarea value={Array.isArray(formData.highlights) ? formData.highlights.join('\n') : (formData.highlights || '')} onChange={(e) => handleArrayChange(e, 'highlights')} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">6. Highlights (English Translation - Per Line)</label>
-                      <textarea value={formData.highlightsEn?.join('\n') || ''} onChange={(e) => handleArrayChange(e, 'highlightsEn')} placeholder="Line 1&#10;Line 2" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-20 resize-none" />
+                      <textarea value={Array.isArray(formData.highlightsEn) ? formData.highlightsEn.join('\n') : (formData.highlightsEn || '')} onChange={(e) => handleArrayChange(e, 'highlightsEn')} placeholder="Line 1&#10;Line 2" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">7. Waktu Terbaik (Indonesian)</label>
-                      <input type="text" name="bestTime" value={formData.bestTime} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="bestTime" value={formData.bestTime || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">7. Best Time (English Translation)</label>
@@ -1848,7 +1877,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">8. Detail Lokasi (Indonesian)</label>
-                      <input type="text" name="locationDetails" value={formData.locationDetails} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="locationDetails" value={formData.locationDetails || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">8. Location Details (English Translation)</label>
@@ -1864,12 +1893,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori (Indonesian)</label>
-                      <select name="category" value={formData.category} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
+                      <select name="category" value={formData.category || 'Arsitektur'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
                         <option>Arsitektur</option>
                         <option>Tari & Musik</option>
                         <option>Seni Beladiri</option>
                         <option>Kain & Kerajinan</option>
                         <option>Tradisi Adat</option>
+                        <option>Sistem Sosial</option>
+                        <option>Upacara Adat</option>
                       </select>
                     </div>
                     <div>
@@ -1881,7 +1912,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Asal Daerah (Indonesian)</label>
-                      <input type="text" name="origin" value={formData.origin} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="origin" value={formData.origin || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Origin / Region (English Translation)</label>
@@ -1892,7 +1923,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Deskripsi (Bahasa Indonesia)</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
+                      <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Description (English Translation)</label>
@@ -1903,7 +1934,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Filosofi / Makna (Bahasa Indonesia)</label>
-                      <textarea name="philosophy" value={formData.philosophy} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-16 resize-none" />
+                      <textarea name="philosophy" value={formData.philosophy || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-16 resize-none" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. Philosophy / Meaning (English Translation)</label>
@@ -1919,7 +1950,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Jenis Makanan (Indonesian)</label>
-                      <select name="type" value={formData.type} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
+                      <select name="type" value={formData.type || 'Makanan Utama'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
                         <option>Makanan Utama</option>
                         <option>Minuman Tradisional</option>
                         <option>Kudapan Khas</option>
@@ -1934,7 +1965,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Asal Daerah (Indonesian)</label>
-                      <input type="text" name="origin" value={formData.origin} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="origin" value={formData.origin || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Origin / Region (English Translation)</label>
@@ -1945,7 +1976,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Deskripsi (Bahasa Indonesia)</label>
-                      <textarea name="description" value={formData.description} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
+                      <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Description (English Translation)</label>
@@ -1956,7 +1987,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Profil Rasa (Indonesian)</label>
-                      <input type="text" name="flavorProfile" value={formData.flavorProfile} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="flavorProfile" value={formData.flavorProfile || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. Flavor Profile (English Translation)</label>
@@ -2182,7 +2213,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                         <input
                           type="text"
                           name="schedule"
-                          value={formData.schedule}
+                          value={formData.schedule || ''}
                           onChange={handleChange}
                           placeholder="Cth: 15 - 20 Agustus 2026 atau 1-10 Muharram"
                           className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta"
