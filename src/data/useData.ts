@@ -306,6 +306,15 @@ export function useData() {
       descriptionEn: item.descriptionEn || item.description,
       flavorProfileEn: item.flavorProfileEn || item.flavorProfile
     }));
+    SOUVENIR_ITEMS.forEach(item => batch.set(doc(db, 'souvenirs', item.id), {
+      ...item,
+      titleEn: item.titleEn || item.title,
+      categoryEn: item.categoryEn || item.category,
+      originEn: item.originEn || item.origin,
+      descriptionEn: item.descriptionEn || item.description,
+      priceRangeEn: item.priceRangeEn || item.priceRange,
+      highlightsEn: item.highlightsEn || item.highlights
+    }));
     EVENTS_SCHEDULE.forEach(item => batch.set(doc(db, 'events', item.id), {
       ...item,
       titleEn: item.titleEn || item.title,

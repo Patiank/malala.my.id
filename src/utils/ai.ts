@@ -821,6 +821,50 @@ export function generateCatalogItemFallback(type: string, name: string, hint?: s
     };
   }
 
+  if (type === 'souvenirs') {
+    let category = 'Kuliner Kemasan';
+    let categoryEn = 'Long-Lasting Culinary';
+    if (lower.includes('kaos') || lower.includes('baju') || lower.includes('songket') || lower.includes('tenun') || lower.includes('mukena') || lower.includes('busana')) {
+      category = 'Fashion & Tenun';
+      categoryEn = 'Fashion & Songket';
+    } else if (lower.includes('kopi') || lower.includes('bumbu') || lower.includes('rempah') || lower.includes('teh') || lower.includes('kawa')) {
+      category = 'Kopi & Rempah';
+      categoryEn = 'Coffee & Spices';
+    } else if (lower.includes('miniatur') || lower.includes('saluang') || lower.includes('kerajinan') || lower.includes('kriya') || lower.includes('ukiran')) {
+      category = 'Kriya & Kerajinan';
+      categoryEn = 'Handicrafts';
+    }
+
+    return {
+      title: cleanName,
+      titleEn: cleanName,
+      category,
+      categoryEn,
+      origin: 'Kota Padang & Ranah Minang',
+      originEn: 'Padang & West Sumatra',
+      description: `${cleanName} adalah produk oleh-oleh dan kerajinan otentik khas Ranah Minang yang diproduksi dengan menjaga kualitas tradisional dan bahan baku terbaik dari Sumatera Barat.\n\nSangat cocok dijadikan buah tangan untuk keluarga dan sahabat, menghadirkan kekayaan rasa dan warisan seni budaya Minangkabau yang berkesan.`,
+      descriptionEn: `${cleanName} is an authentic West Sumatran souvenir and handicraft crafted to preserve traditional quality and prime regional ingredients.\n\nA perfect keepsake for loved ones, celebrating the memorable flavors and rich cultural heritage of Minangkabau.`,
+      priceRange: 'Rp 50.000 - Rp 150.000',
+      priceRangeEn: 'IDR 50,000 - 150,000',
+      shopeeUrl: `https://shopee.co.id/search?keyword=${encodeURIComponent(cleanName)}`,
+      whatsappUrl: lower.includes('minangkaos') ? 'https://wa.me/6281234567890?text=Halo%20Admin%20Minangkaos' : '',
+      isMinangkaos: lower.includes('minangkaos'),
+      imageUrl: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+      highlights: [
+        'Kualitas Asli & Otentik Ranah Minang',
+        'Bahan Baku Pilihan Terbaik',
+        'Oleh-Oleh Khas Favorit Wisatawan'
+      ],
+      highlightsEn: [
+        'Authentic West Sumatran Quality',
+        'Finest Selected Materials & Ingredients',
+        'Must-Have Souvenir for Travelers'
+      ],
+      lat: -0.950000,
+      lng: 100.350000
+    };
+  }
+
   return {
     title: cleanName,
     titleEn: cleanName,
@@ -863,6 +907,8 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
           typePrompt = `Kategori: KEBUDAYAAN & TRADISI MINANGKABAU\nNama Budaya: "${name}" ${hint ? `(${hint})` : ''}`;
         } else if (type === 'culinary') {
           typePrompt = `Kategori: KULINER AUTENTIK MINANGKABAU\nNama Kuliner: "${name}" ${hint ? `(${hint})` : ''}`;
+        } else if (type === 'souvenirs') {
+          typePrompt = `Kategori: OLEH-OLEH & KRIYA KHAS MINANGKABAU\nNama Oleh-Oleh: "${name}" ${hint ? `(${hint})` : ''}`;
         } else if (type === 'events') {
           typePrompt = `Kategori: EVENT & FESTIVAL PARIWISATA SUMBAR 2026\nNama Event: "${name}" ${hint ? `(${hint})` : ''}`;
         }

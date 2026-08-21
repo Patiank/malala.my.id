@@ -10,7 +10,7 @@ interface AdminPanelProps {
 }
 
 
-type TabType = 'destinations' | 'culture' | 'culinary' | 'events' | 'download' | 'hotinfo' | 'settings';
+type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminTab, setAdminTab] = useState<TabType>('destinations');
@@ -19,6 +19,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     destinations,
     cultureItems,
     culinaryItems,
+    souvenirItems,
     eventItems,
     downloadItems,
     hotInfoItems,
@@ -228,6 +229,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       case 'destinations': return destinations;
       case 'culture': return cultureItems;
       case 'culinary': return culinaryItems;
+      case 'souvenirs': return souvenirItems || [];
       case 'events': return eventItems;
       case 'download': return downloadItems || [];
       case 'hotinfo': return hotInfoItems || [];
@@ -245,8 +247,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const handleAiAutoFill = async () => {
     const titleToUse = (formData?.title || '').trim();
     if (!titleToUse) {
-      const typeLabel = adminTab === 'destinations' ? 'Destinasi' : adminTab === 'culture' ? 'Budaya' : adminTab === 'culinary' ? 'Kuliner' : 'Event';
-      const userInput = prompt(`Masukkan Nama ${typeLabel} yang ingin dibuatkan informasinya secara otomatis oleh AI (misal: "Danau Singkarak" / "Gulai Banak"):`);
+      const typeLabel = adminTab === 'destinations' ? 'Destinasi' : adminTab === 'culture' ? 'Budaya' : adminTab === 'culinary' ? 'Kuliner' : adminTab === 'souvenirs' ? 'Oleh-Oleh' : 'Event';
+      const userInput = prompt(`Masukkan Nama ${typeLabel} yang ingin dibuatkan informasinya secara otomatis oleh AI (misal: "Danau Singkarak" / "Kopi Kawa Daun" / "Sanjai Balado"):`);
       if (!userInput || !userInput.trim()) return;
       setFormData((prev: any) => ({ ...prev, title: userInput.trim() }));
       await executeAiGenerate(userInput.trim());
@@ -275,10 +277,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         setFormData((prev: any) => ({
           ...prev,
           ...aiResult,
-          id: prev?.id || (adminTab === 'destinations' ? `d${Date.now().toString().slice(-4)}` : adminTab === 'culture' ? `c${Date.now().toString().slice(-4)}` : adminTab === 'culinary' ? `cul${Date.now().toString().slice(-4)}` : `e${Date.now().toString().slice(-4)}`),
+          id: prev?.id || (adminTab === 'destinations' ? `d${Date.now().toString().slice(-4)}` : adminTab === 'culture' ? `c${Date.now().toString().slice(-4)}` : adminTab === 'culinary' ? `cul${Date.now().toString().slice(-4)}` : adminTab === 'souvenirs' ? `s${Date.now().toString().slice(-4)}` : `e${Date.now().toString().slice(-4)}`),
           imageUrl: prev?.imageUrl || aiResult.imageUrl || '',
           videoUrl: prev?.videoUrl || aiResult.videoUrl || '',
           mapUrl: prev?.mapUrl || aiResult.mapUrl || '',
+          shopeeUrl: prev?.shopeeUrl || aiResult.shopeeUrl || '',
+          whatsappUrl: prev?.whatsappUrl || aiResult.whatsappUrl || '',
         }));
         showSuccess(`✨ Sukses! Seluruh data katalog & terjemahan "${itemName}" berhasil diisi otomatis oleh AI.`);
       }
@@ -544,6 +548,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       case 'destinations': return 'destinations';
       case 'culture': return 'cultures';
       case 'culinary': return 'culinaries';
+      case 'souvenirs': return 'souvenirs';
       case 'events': return 'events';
       case 'download': return 'downloads';
       case 'hotinfo': return 'hotinfo';
@@ -585,6 +590,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         break;
       case 'culinary':
         emptyItem = { id: '', title: '', type: 'Makanan Utama', origin: '', description: '', flavorProfile: '', imageUrl: '', videoUrl: '', mapUrl: '' };
+        break;
+      case 'souvenirs':
+        emptyItem = {
+          id: '',
+          title: '',
+          titleEn: '',
+          category: 'Kuliner Kemasan',
+          categoryEn: 'Long-Lasting Culinary',
+          origin: '',
+          originEn: '',
+          description: '',
+          descriptionEn: '',
+          priceRange: 'Rp 50.000 - Rp 150.000',
+          priceRangeEn: 'IDR 50,000 - 150,000',
+          shopeeUrl: '',
+          whatsappUrl: '',
+          isMinangkaos: false,
+          imageUrl: '',
+          highlights: [],
+          highlightsEn: [],
+          lat: -0.950000,
+          lng: 100.350000
+        };
         break;
       case 'events':
         emptyItem = { id: '', title: '', schedule: '', location: '', description: '', imageUrl: '', videoUrl: '', mapUrl: '', isKen: false };
@@ -801,14 +829,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   return (
     <div className="flex flex-col h-full bg-white relative">
       {/* Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-7 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
+      <div className="grid grid-cols-2 sm:grid-cols-8 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
         <button onClick={() => { setAdminTab('destinations'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'destinations' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Destinasi</button>
         <button onClick={() => { setAdminTab('culture'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culture' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Budaya</button>
         <button onClick={() => { setAdminTab('culinary'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culinary' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Kuliner</button>
+        <button onClick={() => { setAdminTab('souvenirs'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'souvenirs' ? 'bg-rose-600 text-white shadow-xs' : 'text-rose-700 bg-rose-50/50 hover:bg-rose-100'}`}>Oleh-Oleh</button>
         <button onClick={() => { setAdminTab('events'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'events' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Event</button>
         <button onClick={() => { setAdminTab('download'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'download' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Unduhan</button>
         <button onClick={() => { setAdminTab('hotinfo'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'hotinfo' ? 'bg-red-600 text-white shadow-xs' : 'text-red-700 bg-red-50 hover:bg-red-100'}`}>Hot Info</button>
-        <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all col-span-2 sm:col-span-1 ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
+        <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
       </div>
 
       {/* Global Search Bar */}
@@ -819,7 +848,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             type="text"
             value={adminSearchQuery}
             onChange={(e) => setAdminSearchQuery(e.target.value)}
-            placeholder="Cari katalog di semua kategori... (judul, ID, deskripsi)"
+            placeholder="Cari katalog di semua kategori... (judul, ID, deskripsi, oleh-oleh)"
             className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg text-xs font-jakarta focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black transition-all bg-gray-50 placeholder:text-gray-400"
           />
           {adminSearchQuery && (
@@ -839,6 +868,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             { key: 'destinations', label: 'Destinasi', data: destinations, color: 'bg-blue-100 text-blue-800' },
             { key: 'culture', label: 'Budaya', data: cultureItems, color: 'bg-purple-100 text-purple-800' },
             { key: 'culinary', label: 'Kuliner', data: culinaryItems, color: 'bg-orange-100 text-orange-800' },
+            { key: 'souvenirs', label: 'Oleh-Oleh', data: souvenirItems || [], color: 'bg-rose-100 text-rose-800' },
             { key: 'events', label: 'Event', data: eventItems, color: 'bg-green-100 text-green-800' },
             { key: 'hotinfo', label: 'Hot Info', data: hotInfoItems, color: 'bg-red-100 text-red-800' },
           ];
@@ -1521,7 +1551,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 {editingId === 'new' ? 'Tambah Item Baru' : 'Edit Item'}
               </h4>
 
-              {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+              {['destinations', 'culture', 'culinary', 'souvenirs', 'events'].includes(adminTab) && (
                 <button
                   type="button"
                   onClick={handleAiAutoFill}
@@ -1540,7 +1570,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             </div>
 
             {/* Smart AI Auto-Fill Helper Banner */}
-            {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+            {['destinations', 'culture', 'culinary', 'souvenirs', 'events'].includes(adminTab) && (
               <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-amber-500/10 p-3 rounded-lg border border-emerald-300/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div className="space-y-0.5 min-w-0">
                   <div className="flex items-center gap-1.5 font-bold text-[11px] text-emerald-950 uppercase">
@@ -1548,7 +1578,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     <span>Fitur Pintar: Auto-Fill & Translate AI</span>
                   </div>
                   <p className="text-[11px] text-emerald-900/80 leading-tight">
-                    Cukup ketikkan nama {adminTab === 'destinations' ? 'destinasi' : adminTab === 'culture' ? 'kebudayaan' : adminTab === 'culinary' ? 'kuliner' : 'event'} di bawah, lalu klik <span className="font-semibold text-emerald-800">"✨ Isi Otomatis dengan AI"</span> untuk menghasilkan deskripsi naratif, kategori, lokasi, dan terjemahan Bahasa Inggris secara instan.
+                    Cukup ketikkan nama {adminTab === 'destinations' ? 'destinasi' : adminTab === 'culture' ? 'kebudayaan' : adminTab === 'culinary' ? 'kuliner' : adminTab === 'souvenirs' ? 'oleh-oleh / kriya' : 'event'} di bawah, lalu klik <span className="font-semibold text-emerald-800">"✨ Isi Otomatis dengan AI"</span> untuk menghasilkan deskripsi naratif, kategori, lokasi, dan terjemahan Bahasa Inggris secara instan.
                   </p>
                 </div>
 
@@ -1574,7 +1604,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="block text-[10px] font-bold uppercase text-gray-500">1. Judul / Nama (Bahasa Indonesia)</label>
-                    {['destinations', 'culture', 'culinary', 'events'].includes(adminTab) && (
+                    {['destinations', 'culture', 'culinary', 'souvenirs', 'events'].includes(adminTab) && (
                       <button
                         type="button"
                         onClick={handleAiAutoFill}
@@ -1598,6 +1628,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                         ? 'e.g. Tari Piring / Tradisi Batagak Pangulu'
                         : adminTab === 'culinary'
                         ? 'e.g. Gulai Banak / Sate Danguang-Danguang'
+                        : adminTab === 'souvenirs'
+                        ? 'e.g. Keripik Sanjai Balado / Kaos Minang'
                         : adminTab === 'events'
                         ? 'e.g. Sawahlunto International Songket Carnival'
                         : 'Ketik judul...'
@@ -1934,6 +1966,155 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 </>
               )}
 
+              {/* Souvenirs / Oleh-Oleh Tab Fields */}
+              {adminTab === 'souvenirs' && (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori Oleh-Oleh (Indonesian)</label>
+                      <select name="category" value={formData.category || 'Kuliner Kemasan'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-semibold">
+                        <option>Kuliner Kemasan</option>
+                        <option>Fashion & Tenun</option>
+                        <option>Kopi & Rempah</option>
+                        <option>Kriya & Kerajinan</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Category (English Translation)</label>
+                      <input type="text" name="categoryEn" value={formData.categoryEn || ''} onChange={handleChange} placeholder="e.g. Long-Lasting Culinary / Fashion & Merchandise" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">3. Sentra Asal / Toko (Indonesian)</label>
+                      <input type="text" name="origin" value={formData.origin || ''} onChange={handleChange} placeholder="e.g. Kota Padang / Bukittinggi / Payakumbuh" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">3. Origin Center (English Translation)</label>
+                      <input type="text" name="originEn" value={formData.originEn || formData.origin || ''} onChange={handleChange} placeholder="e.g. Padang City / Bukittinggi" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Rentang Harga (Indonesian)</label>
+                      <input type="text" name="priceRange" value={formData.priceRange || ''} onChange={handleChange} placeholder="e.g. Rp 75.000 - Rp 160.000" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Price Range (English Translation)</label>
+                      <input type="text" name="priceRangeEn" value={formData.priceRangeEn || formData.priceRange || ''} onChange={handleChange} placeholder="e.g. IDR 75,000 - 160,000" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+                    </div>
+                  </div>
+
+                  {/* SHOPEE AFFILIATE URL INPUT CARD */}
+                  <div className="bg-orange-50/70 border-2 border-[#EE4D2D]/40 rounded-xl p-3.5 space-y-2.5 shadow-2xs">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <label className="text-xs font-black uppercase text-[#EE4D2D] flex items-center gap-1.5">
+                        <span>🛒</span>
+                        <span>5. Link Shopee Affiliate (Tautan Pembelian)</span>
+                      </label>
+                      {formData.shopeeUrl && (
+                        <a
+                          href={formData.shopeeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#EE4D2D] hover:bg-[#d73211] text-white text-[10px] font-bold px-2.5 py-1 rounded flex items-center gap-1 shadow-2xs"
+                        >
+                          <span>Uji Link Shopee</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-gray-600 leading-tight">
+                      Tempel link affiliate Shopee Anda di bawah ini (misal: <code className="bg-orange-100 text-[#EE4D2D] px-1 py-0.5 rounded font-mono text-[10px]">https://s.shopee.co.id/xxxxxx</code> atau link toko). Tombol <strong>"Beli di Shopee"</strong> di website publik akan otomatis mengarahkan ke link ini.
+                    </p>
+                    <input
+                      type="url"
+                      name="shopeeUrl"
+                      value={formData.shopeeUrl || ''}
+                      onChange={handleChange}
+                      placeholder="https://s.shopee.co.id/..."
+                      className="w-full bg-white border border-[#EE4D2D]/50 rounded-lg p-2.5 text-xs font-mono font-bold text-gray-900 focus:ring-2 focus:ring-[#EE4D2D] focus:border-[#EE4D2D] outline-none shadow-2xs"
+                    />
+                  </div>
+
+                  {/* WHATSAPP DIRECT ORDER & MINANGKAOS BRAND TOGGLE */}
+                  <div className="bg-emerald-50/60 border border-emerald-300/80 rounded-xl p-3.5 space-y-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="space-y-0.5">
+                        <span className="text-xs font-bold uppercase text-emerald-900 flex items-center gap-1.5">
+                          <span>💬</span>
+                          <span>Produk Resmi MINANGKAOS (Direct WhatsApp)</span>
+                        </span>
+                        <p className="text-[10px] text-emerald-800">
+                          Aktifkan jika item ini adalah produk apparel resmi MINANGKAOS dengan tombol order WhatsApp.
+                        </p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer shrink-0">
+                        <input
+                          type="checkbox"
+                          name="isMinangkaos"
+                          checked={Boolean(formData.isMinangkaos)}
+                          onChange={(e) => {
+                            setFormData((prev: any) => ({
+                              ...prev,
+                              isMinangkaos: e.target.checked
+                            }));
+                          }}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-emerald-900 mb-1">Link WhatsApp Pemesanan (Opsional)</label>
+                      <input
+                        type="text"
+                        name="whatsappUrl"
+                        value={formData.whatsappUrl || ''}
+                        onChange={handleChange}
+                        placeholder="e.g. https://wa.me/6281234567890?text=Halo%20Admin%20Minangkaos..."
+                        className="w-full bg-white border border-emerald-200 rounded p-2 text-xs font-mono"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. Deskripsi (Bahasa Indonesia)</label>
+                      <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 resize-none" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">6. Description (English Translation)</label>
+                      <textarea name="descriptionEn" value={formData.descriptionEn || ''} onChange={handleChange} placeholder="English souvenir description..." className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-24 resize-none" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">7. Keunggulan / Highlights (Pisahkan dengan baris baru)</label>
+                      <textarea
+                        value={Array.isArray(formData.highlights) ? formData.highlights.join('\n') : (formData.highlights || '')}
+                        onChange={(e) => handleArrayChange(e, 'highlights')}
+                        placeholder="Kemasan Vakum Tahan 6-12 Bulan&#10;Bahan 100% Rempah Alami&#10;Siap Saji Praktis"
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-20 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">7. Highlights (English Translation)</label>
+                      <textarea
+                        value={Array.isArray(formData.highlightsEn) ? formData.highlightsEn.join('\n') : (formData.highlightsEn || '')}
+                        onChange={(e) => handleArrayChange(e, 'highlightsEn')}
+                        placeholder="Vacuum Packed Lasts 6-12 Months&#10;100% Prime Native Spices&#10;Ready to Eat"
+                        className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-20 resize-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
               {/* Events Tab Fields */}
               {adminTab === 'events' && (
                 <>
@@ -2093,6 +2274,32 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                           Biasa
                         </span>
                       )
+                    )}
+                    {adminTab === 'souvenirs' && (
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">
+                          {item.category}
+                        </span>
+                        {item.priceRange && (
+                          <span className="bg-gray-100 text-gray-700 text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">
+                            {item.priceRange}
+                          </span>
+                        )}
+                        {item.shopeeUrl ? (
+                          <span className="bg-[#EE4D2D]/10 text-[#EE4D2D] border border-[#EE4D2D]/30 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0 flex items-center gap-0.5">
+                            🛒 Shopee Terhubung
+                          </span>
+                        ) : (
+                          <span className="bg-amber-50 text-amber-700 border border-amber-200 text-[9px] font-medium px-1.5 py-0.5 rounded shrink-0">
+                            ⚠️ Belum ada Shopee URL
+                          </span>
+                        )}
+                        {item.isMinangkaos && (
+                          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0">
+                            Official Minangkaos
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1 line-clamp-2">{item.description}</p>
