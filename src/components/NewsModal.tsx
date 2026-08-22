@@ -52,63 +52,29 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
         {/* Modal Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-20"
+          className="absolute top-4 right-4 p-1.5 rounded-full bg-gray-100 text-gray-700 hover:bg-black hover:text-white transition-colors cursor-pointer z-20"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Modal Header Image */}
-        {item.imageUrl && (
-          <div className="-mx-6 -mt-6 mb-4 h-48 overflow-hidden bg-gray-100 relative">
-            <img
-              src={item.imageUrl}
-              alt={title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            
-            <div className="absolute bottom-3 left-4 right-12 text-white space-y-1">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="bg-white text-black font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider shadow-xs">
-                  {category}
-                </span>
-                {tag && (
-                  <span className="bg-red-600 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded shadow-xs tracking-wider flex items-center gap-1">
-                    <Flame className="w-3 h-3 fill-current text-yellow-300" />
-                    {tag}
-                  </span>
-                )}
-              </div>
-              <h3 className="font-orbitron font-bold text-base uppercase text-white pt-1 drop-shadow-xs leading-snug">
-                {title}
-              </h3>
-            </div>
-          </div>
-        )}
-
-        {/* Title if no image */}
-        {!item.imageUrl && (
-          <div className="pt-2">
-            <div className="flex flex-wrap items-center gap-1.5 mb-2">
-              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
-                {category}
+        {/* Modal Editorial Header (Banners hidden) */}
+        <div className="pt-1 pr-8 space-y-2">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md tracking-wider">
+              {category}
+            </span>
+            {tag && (
+              <span className="bg-red-600 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md tracking-wider flex items-center gap-1">
+                <Flame className="w-3 h-3 fill-current text-yellow-300" />
+                {tag}
               </span>
-              {tag && (
-                <span className="bg-red-600 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider flex items-center gap-1">
-                  <Flame className="w-3 h-3 fill-current text-yellow-300" />
-                  {tag}
-                </span>
-              )}
-            </div>
-            <h3 className="font-orbitron font-bold text-base uppercase text-black tracking-wide leading-snug">
-              {title}
-            </h3>
+            )}
           </div>
-        )}
+          <h3 className="font-orbitron font-bold text-base sm:text-lg uppercase text-black tracking-wide leading-snug">
+            {title}
+          </h3>
+        </div>
 
         {/* Meta Info (Date & Location) */}
         <div className="flex flex-wrap items-center justify-between text-xs font-jakarta text-gray-500 gap-2 pb-2 border-b border-gray-100 uppercase tracking-wider font-semibold">

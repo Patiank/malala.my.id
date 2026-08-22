@@ -3322,49 +3322,25 @@ export const Drawers: React.FC<DrawersProps> = ({
                           item.tag === 'Penting' || item.isUrgent ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200'
                         }`}
                       >
-                        {item.imageUrl ? (
-                          <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-gray-100 shrink-0">
-                            <img
-                              src={item.imageUrl}
-                              alt={getNewsDisplayTitle(item, lang)}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              loading="lazy"
-                            />
-                            <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-black/85 text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md backdrop-blur-xs shrink-0 whitespace-nowrap z-10 shadow-xs">
+                        {/* Clean Editorial News Header (Banners hidden as requested) */}
+                        <div className="px-4 pt-3.5 pb-2.5 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/90 shrink-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md shrink-0 whitespace-nowrap">
                               {categoryDisplay}
-                            </div>
+                            </span>
                             {(item.tag === 'Penting' || item.isUrgent) && (
-                              <div className="absolute top-2.5 right-2.5 bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 animate-pulse shadow-xs z-10">
+                              <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1 animate-pulse shadow-2xs">
                                 <Flame className="w-3 h-3 text-yellow-300 fill-current" />
                                 {tagDisplay}
-                              </div>
-                            )}
-                            {item.date && (
-                              <div className="absolute bottom-2.5 left-2.5 bg-black/70 text-gray-200 font-jakarta text-[10px] px-2.5 py-0.5 rounded backdrop-blur-xs z-10 font-medium">
-                                {isEn && item.dateEn ? item.dateEn : item.date}
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="px-4 pt-3.5 pb-2.5 flex items-center justify-between gap-2 border-b border-gray-100 bg-gray-50/80 shrink-0">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="bg-black text-white font-jakarta font-bold text-[9px] uppercase px-2.5 py-1 rounded-md shrink-0 whitespace-nowrap">
-                                {categoryDisplay}
-                              </span>
-                              {(item.tag === 'Penting' || item.isUrgent) && (
-                                <span className="bg-red-600 text-white font-jakarta font-extrabold text-[9px] uppercase px-2.5 py-1 rounded-md flex items-center gap-1">
-                                  <Flame className="w-3 h-3 text-yellow-300 fill-current" />
-                                  {tagDisplay}
-                                </span>
-                              )}
-                            </div>
-                            {item.date && (
-                              <span className="text-gray-500 font-jakarta text-[10px] font-medium whitespace-nowrap">
-                                {isEn && item.dateEn ? item.dateEn : item.date}
                               </span>
                             )}
                           </div>
-                        )}
+                          {item.date && (
+                            <span className="text-gray-500 font-jakarta text-[10px] font-medium whitespace-nowrap">
+                              {isEn && item.dateEn ? item.dateEn : item.date}
+                            </span>
+                          )}
+                        </div>
 
                         <div className="p-4 flex flex-col flex-1 justify-between gap-3">
                           <div className="space-y-2">

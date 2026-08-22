@@ -59,21 +59,21 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ lang }) => {
         </button>
       </div>
 
-      {/* Location Tabs */}
-      <div className="flex gap-1.5 overflow-x-auto pb-2 mb-3 scrollbar-none text-[11px]">
+      {/* Location Tabs - Flex-wrap to ensure NO region name is ever cut off */}
+      <div className="flex flex-wrap gap-1.5 pb-1 mb-3 text-[11px]">
         {weatherData.map((item, idx) => (
           <button
             key={item.locationId}
             onClick={() => setSelectedIdx(idx)}
-            className={`px-2.5 py-1.5 rounded-lg font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5 cursor-pointer text-center ${
               selectedIdx === idx
-                ? 'bg-amber-500 text-black font-bold shadow-sm'
-                : 'bg-white/5 text-gray-300 hover:bg-white/10'
+                ? 'bg-amber-500 text-black font-bold shadow-xs'
+                : 'bg-white/10 text-gray-200 hover:bg-white/20'
             }`}
           >
-            <span>{item.icon}</span>
-            <span>{lang === 'en' ? item.nameEn : item.name}</span>
-            <span className="text-[10px] opacity-80">{item.temp}°C</span>
+            <span className="shrink-0">{item.icon}</span>
+            <span className="whitespace-normal">{lang === 'en' ? item.nameEn : item.name}</span>
+            <span className="text-[10px] opacity-80 shrink-0 font-bold">{item.temp}°C</span>
           </button>
         ))}
       </div>
