@@ -71,7 +71,8 @@ Hasilkan JSON murni tanpa markdown:
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.2 }
+          tools: [{ googleSearch: {} }],
+          generationConfig: { temperature: 0.1 }
         })
       });
 

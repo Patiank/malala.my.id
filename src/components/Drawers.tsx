@@ -3150,54 +3150,65 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Real-time Weather & Marine Wave Live Service */}
-              <div className="space-y-2">
+              {/* Side-by-Side: Real-time Weather & Marine Waves + Travel Advisory */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch font-jakarta">
+                {/* 1. Live Weather & Marine Swell Panel */}
                 <WeatherWidget lang={lang} />
-              </div>
 
-              {/* Smart Travel Advisory & Route Watchdog */}
-              <div className="bg-gradient-to-r from-blue-900/90 via-slate-900 to-indigo-950/95 text-white p-4 rounded-2xl border border-blue-500/20 shadow-lg space-y-3 font-jakarta">
-                <div className="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-white/10">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-blue-300">
-                      {lang === 'en' ? 'Live Travel Advisory & Route Status' : 'Info Jalur Transportasi & Kondisi Wisata'}
-                    </h4>
-                  </div>
-                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black px-2 py-0.5 rounded-full">
-                    {lang === 'en' ? 'ALL MAIN ROUTES OPEN & SAFE' : 'JALUR UTAMA AMAN & NORMAL'}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-[11px]">Jalur Lembah Anai</span>
-                      <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Lancar</span>
+                {/* 2. Smart Travel Advisory & Route Status Panel */}
+                <div className="bg-gradient-to-br from-blue-950/90 via-slate-900/90 to-indigo-950/90 text-white p-4 rounded-2xl border border-blue-500/20 shadow-xl space-y-3 font-jakarta h-full flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-white/10 mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                          <MapPin className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-blue-300 flex items-center gap-1.5">
+                            <span>{lang === 'en' ? 'Live Travel Advisory & Routes' : 'Info Jalur Transportasi & Rute'}</span>
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                          </h4>
+                          <p className="text-[10px] text-gray-400">
+                            {lang === 'en' ? 'West Sumatra Arterial Watchdog' : 'Pantauan Jalur Wisata Utama Sumbar'}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black px-2 py-0.5 rounded-full">
+                        {lang === 'en' ? 'ALL MAIN ROUTES OPEN & SAFE' : 'JALUR UTAMA AMAN & NORMAL'}
+                      </span>
                     </div>
-                    <p className="text-[10px] text-gray-300 leading-tight">
-                      Akses Padang – Bukittinggi beroperasi normal untuk seluruh kendaraan.
-                    </p>
-                  </div>
 
-                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-[11px]">Kelok 9 & Harau</span>
-                      <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Optimal</span>
-                    </div>
-                    <p className="text-[10px] text-gray-300 leading-tight">
-                      Jalur wisata Payakumbuh – Riau lancar dan nyaman untuk perjalanan darat.
-                    </p>
-                  </div>
+                    <div className="space-y-2.5 text-xs">
+                      <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-white text-[11px]">Jalur Lembah Anai</span>
+                          <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Lancar</span>
+                        </div>
+                        <p className="text-[10px] text-gray-300 leading-tight">
+                          Akses Padang – Bukittinggi beroperasi normal untuk seluruh kendaraan roda dua dan empat.
+                        </p>
+                      </div>
 
-                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-[11px]">Status Gunung Api</span>
-                      <span className="text-[9px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded">Level II / Waspada</span>
+                      <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-white text-[11px]">Kelok 9 & Harau</span>
+                          <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Optimal</span>
+                        </div>
+                        <p className="text-[10px] text-gray-300 leading-tight">
+                          Jalur wisata Payakumbuh – Riau lancar dan nyaman untuk perjalanan darat.
+                        </p>
+                      </div>
+
+                      <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-white text-[11px]">Status Gunung Api</span>
+                          <span className="text-[9px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded">Level II / Waspada</span>
+                        </div>
+                        <p className="text-[10px] text-gray-300 leading-tight">
+                          Zona wisata dan kota Bukittinggi/Tanah Datar di luar radius aman 4.5km beroperasi normal.
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-[10px] text-gray-300 leading-tight">
-                      Zona wisata dan kota Bukittinggi/Tanah Datar di luar radius aman 4.5km beroperasi normal.
-                    </p>
                   </div>
                 </div>
               </div>

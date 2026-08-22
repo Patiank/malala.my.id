@@ -50,11 +50,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, Destination>();
-      DESTINATIONS.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setDestinations(merged.length > 0 ? merged : DESTINATIONS);
+      setDestinations(firestoreData.length > 0 ? firestoreData : DESTINATIONS);
     }, (err) => {
       console.warn("Firestore destinations error:", err);
       setDestinations(DESTINATIONS);
@@ -73,11 +69,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, CultureItem>();
-      CULTURE_ITEMS.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setCultureItems(merged.length > 0 ? merged : CULTURE_ITEMS);
+      setCultureItems(firestoreData.length > 0 ? firestoreData : CULTURE_ITEMS);
     }, (err) => {
       console.warn("Firestore cultures error:", err);
       setCultureItems(CULTURE_ITEMS);
@@ -96,11 +88,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, CulinaryItem>();
-      CULINARY_ITEMS.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setCulinaryItems(merged.length > 0 ? merged : CULINARY_ITEMS);
+      setCulinaryItems(firestoreData.length > 0 ? firestoreData : CULINARY_ITEMS);
     }, (err) => {
       console.warn("Firestore culinaries error:", err);
       setCulinaryItems(CULINARY_ITEMS);
@@ -119,11 +107,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, SouvenirItem>();
-      SOUVENIR_ITEMS.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setSouvenirItems(merged.length > 0 ? merged : SOUVENIR_ITEMS);
+      setSouvenirItems(firestoreData.length > 0 ? firestoreData : SOUVENIR_ITEMS);
     }, (err) => {
       console.warn("Firestore souvenirs error:", err);
       setSouvenirItems(SOUVENIR_ITEMS);
@@ -142,11 +126,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, EventItem>();
-      EVENTS_SCHEDULE.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setEventItems(merged.length > 0 ? merged : EVENTS_SCHEDULE);
+      setEventItems(firestoreData.length > 0 ? firestoreData : EVENTS_SCHEDULE);
     }, (err) => {
       console.warn("Firestore events error:", err);
       setEventItems(EVENTS_SCHEDULE);
@@ -165,11 +145,7 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const mergedMap = new Map<string, DownloadItem>();
-      DOWNLOAD_ITEMS.forEach(item => mergedMap.set(item.id, item));
-      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
-      const merged = Array.from(mergedMap.values());
-      setDownloadItems(merged.length > 0 ? merged : DOWNLOAD_ITEMS);
+      setDownloadItems(firestoreData.length > 0 ? firestoreData : DOWNLOAD_ITEMS);
     }, (err) => {
       console.warn("Firestore downloads error:", err);
       setDownloadItems(DOWNLOAD_ITEMS);

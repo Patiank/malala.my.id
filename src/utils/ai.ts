@@ -1879,7 +1879,8 @@ Waktu saat ini: ${nowStr}`;
         model,
         contents: prompt,
         config: {
-          temperature: 0.2,
+          temperature: 0.1,
+          tools: [{ googleSearch: {} } as any]
         }
       });
 

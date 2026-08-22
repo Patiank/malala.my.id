@@ -30,8 +30,9 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ lang }) => {
   const active = weatherData[selectedIdx] || weatherData[0];
 
   return (
-    <div className="bg-gradient-to-br from-neutral-900/90 via-neutral-900/80 to-neutral-950/90 backdrop-blur-md border border-white/10 text-white rounded-2xl p-4 shadow-xl font-jakarta">
-      {/* Header */}
+    <div className="bg-gradient-to-br from-neutral-900/90 via-neutral-900/80 to-neutral-950/90 backdrop-blur-md border border-white/10 text-white rounded-2xl p-4 shadow-xl font-jakarta h-full flex flex-col justify-between">
+      <div>
+        {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
@@ -135,6 +136,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ lang }) => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };
