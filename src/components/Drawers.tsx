@@ -2294,13 +2294,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <p className={`text-xs font-jakarta leading-relaxed ${
                       bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
                     }`}>
-                      {bookingPartner === 'tiket'
-                        ? (lang === 'en'
-                            ? 'Book your hotels, car rental in Padang, flights to BIM Airport, and attractions seamlessly via Tiket.com.'
-                            : 'Wujudkan liburan impian Sumbar dengan pesan hotel, sewa mobil, penerbangan ke BIM, dan tur wisata di Tiket.com.')
-                        : (lang === 'en'
-                            ? 'Ready to make this itinerary a reality? Book your hotels, car rentals, activities, and flights via Traveloka.'
-                            : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil, tur wisata, dan tiket pesawat di Traveloka.')}
+                      {lang === 'en'
+                        ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
+                        : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
                     </p>
 
                     {bookingPartner === 'tiket' ? (
@@ -2728,13 +2724,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <p className={`text-xs font-jakarta leading-relaxed ${
                             bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
                           }`}>
-                            {bookingPartner === 'tiket'
-                              ? (lang === 'en'
-                                  ? 'Book your hotels, car rental in Padang, flights to BIM Airport, and attractions seamlessly via Tiket.com.'
-                                  : 'Wujudkan liburan impian Sumbar dengan pesan hotel, sewa mobil, penerbangan ke BIM, dan tur wisata di Tiket.com.')
-                              : (lang === 'en'
-                                  ? 'Ready to make this itinerary a reality? Book your hotels, car rentals, activities, and flights via Traveloka.'
-                                  : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil, tur wisata, dan tiket pesawat di Traveloka.')}
+                            {lang === 'en'
+                              ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
+                              : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
                           </p>
 
                           {bookingPartner === 'tiket' ? (
