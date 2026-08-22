@@ -3502,13 +3502,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   href={getTiketHotelUrl(selectedDestination, dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#0064D2] hover:bg-[#0050A8] text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:shadow-md transition-all flex items-center justify-between border-l-4 border-[#FEDD00] shadow-xs cursor-pointer text-left"
+                  className="w-full bg-[#0064D2] hover:bg-[#0050A8] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-[#FEDD00] shadow-xs cursor-pointer text-left"
                 >
-                  <span className="flex items-center gap-1.5 truncate">
+                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🏨</span>
-                    <span>{lang === 'en' ? 'Hotels (Tiket.com)' : 'Cari Hotel Dekat Sini'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Hotels (Tiket.com)' : 'Hotel di Tiket.com'}</span>
                   </span>
-                  <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                  <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
                     tiket.com
                   </span>
                 </a>
@@ -3518,13 +3518,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   href={getTravelokaHotelUrl(selectedDestination)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
+                  className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
                 >
-                  <span className="flex items-center gap-1.5 truncate">
+                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🏨</span>
-                    <span>{lang === 'en' ? 'Hotels (Traveloka)' : 'Cari Hotel Dekat Sini'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Hotels (Traveloka)' : 'Hotel di Traveloka'}</span>
                   </span>
-                  <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                  <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
                     traveloka
                   </span>
                 </a>
@@ -3534,13 +3534,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   href={getTiketCarRentalUrl(dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-blue-50/80 hover:bg-blue-100 text-[#0064D2] border border-blue-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
+                  className="w-full bg-blue-50/90 hover:bg-blue-100 text-[#0064D2] border border-blue-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
                 >
-                  <span className="flex items-center gap-1.5 truncate">
+                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🚗</span>
-                    <span>{lang === 'en' ? 'Car Rental Padang' : 'Sewa Mobil di Padang / BIM'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Car Rental Padang' : 'Sewa Mobil Padang'}</span>
                   </span>
-                  <span className="text-[9px] font-black text-[#0064D2] shrink-0 ml-1">
+                  <span className="text-[9px] font-black text-[#0064D2] shrink-0">
                     tiket.com ↗
                   </span>
                 </a>
@@ -3550,13 +3550,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                   href={getTiketActivitiesUrl(selectedDestination, dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-amber-50 hover:bg-amber-100 text-[#002B66] border border-amber-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
+                  className="w-full bg-amber-50 hover:bg-amber-100 text-[#002B66] border border-amber-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
                 >
-                  <span className="flex items-center gap-1.5 truncate">
+                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🎟️</span>
-                    <span>{lang === 'en' ? 'Tours & Attractions' : 'Tiket Atraksi & Tur Wisata'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Tours & Attractions' : 'Tiket Atraksi & Tur'}</span>
                   </span>
-                  <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                  <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
                     To Do ↗
                   </span>
                 </a>
