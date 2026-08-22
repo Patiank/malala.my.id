@@ -87,6 +87,19 @@ export const getGoogleMapsUrl = (input?: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
 };
 
+export const getCulinaryGoogleMapsUrl = (culinary?: CulinaryItem | null): string => {
+  if (!culinary) return 'https://www.google.com/maps/search/?api=1&query=Kuliner+Khas+Minang+Sumatera+Barat';
+  if (culinary.mapUrl && culinary.mapUrl.trim()) {
+    const trimmed = culinary.mapUrl.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+  }
+  const cleanTitle = (culinary.title || '').replace(/[^\w\s\d]/gi, ' ').trim();
+  const cleanOrigin = (culinary.origin || 'Sumatera Barat').replace(/[^\w\s\d]/gi, ' ').trim();
+  const query = encodeURIComponent(`Rumah Makan ${cleanTitle} ${cleanOrigin}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+};
+
 export const getTiketAffiliateId = (appSettings?: any): string => {
   return appSettings?.tiketAffiliateId || '6a893170239c5bf8a8b71930';
 };
@@ -1612,18 +1625,44 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex items-center justify-between">
-                      <div>
-                        <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
-                        <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
+                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <div className="truncate pr-2">
+                          <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
+                          <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
+                        </div>
+                        <button
+                          onClick={() => openSubModal(() => setSelectedCulinary(cul))}
+                          className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
+                        >
+                          {translations[lang].btnDetail}
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => openSubModal(() => setSelectedCulinary(cul))}
-                        className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
-                      >
-                        {translations[lang].btnDetail}
-                        <ChevronRight className="w-3 h-3" />
-                      </button>
+
+                      <div className="flex items-center gap-2 pt-1 border-t border-gray-200/60">
+                        <a
+                          href={getCulinaryGoogleMapsUrl(cul)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                          title={isEn ? "Find Food Places on Google Maps" : "Cari Tempat Kuliner di Google Maps"}
+                        >
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                        </a>
+
+                        <a
+                          href={getSafeYoutubeUrl(cul.title, cul.type || cul.origin, cul.videoUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                          title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                        >
+                          <Youtube className="w-3.5 h-3.5" />
+                          <span>YouTube</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 );
@@ -3892,17 +3931,15 @@ export const Drawers: React.FC<DrawersProps> = ({
               <span className="text-gray-600 font-jakarta text-xs">{lang === 'en' && selectedCulinary.flavorProfileEn ? selectedCulinary.flavorProfileEn : selectedCulinary.flavorProfile}</span>
             </div>
 
-            {getGoogleMapsUrl(selectedCulinary.mapUrl) && (
-              <a
-                href={getGoogleMapsUrl(selectedCulinary.mapUrl)!}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-blue-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-              >
-                <MapPin className="w-4 h-4 text-white" />
-                <span>{translations[lang].btnOpenMap}</span>
-              </a>
-            )}
+            <a
+              href={getCulinaryGoogleMapsUrl(selectedCulinary)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-emerald-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-emerald-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <MapPin className="w-4 h-4 text-white" />
+              <span>{lang === 'en' ? 'Find Food Places on Google Maps' : 'Cari Tempat Kuliner di Google Maps'}</span>
+            </a>
 
             <a
               href={getSafeYoutubeUrl(selectedCulinary.title, selectedCulinary.type || selectedCulinary.origin, selectedCulinary.videoUrl)}
