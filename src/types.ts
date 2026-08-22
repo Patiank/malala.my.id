@@ -126,6 +126,14 @@ export interface EventItem {
   lng?: number;
 }
 
+export interface PendingEventItem extends EventItem {
+  status: 'pending' | 'approved' | 'rejected';
+  discoveredAt?: string;
+  sourceName?: string;
+  changeType?: 'new_event' | 'schedule_update';
+  originalSchedule?: string;
+}
+
 export interface DownloadItem {
   id: string;
   title: string;
@@ -181,6 +189,8 @@ export interface AppSettings {
   tiketAffiliateId?: string;
   travelokaAffiliateId?: string;
   activeBookingPartner?: 'dual' | 'tiket' | 'traveloka';
+  isAutonomousSyncEnabled?: boolean;
+  lastAutonomousSync?: string;
 }
 
 export interface FormAIItineraryActivity {

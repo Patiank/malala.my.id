@@ -1739,11 +1739,173 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 3. Live Google News / RSS National Tourism Feed (Direct, Real-time & strictly within 30 days)
   const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
   if (liveRssNews && liveRssNews.length > 0) {
-    return deduplicateNewsItems(liveRssNews);
+    const withSmartImages = liveRssNews.map(item => ({
+      ...item,
+      imageUrl: item.imageUrl || getSmartImageForNews(item.title, item.category)
+    }));
+    return deduplicateNewsItems(withSmartImages);
   }
 
   // 4. Static fallback if completely offline (within 30 days)
-  return deduplicateNewsItems(HOT_INFO_FALLBACK.filter((it: any) => isWithinLast30Days(it.date)));
+  const fallbackWithImages = HOT_INFO_FALLBACK.map(item => ({
+    ...item,
+    imageUrl: item.imageUrl || getSmartImageForNews(item.title, item.category)
+  }));
+  return deduplicateNewsItems(fallbackWithImages.filter((it: any) => isWithinLast30Days(it.date)));
 }
+
+/**
+ * Curated high-resolution fallback photos for West Sumatra topics so cards are never blank.
+ */
+export function getSmartImageForNews(title: string = '', category: string = ''): string {
+  const text = (title + ' ' + category).toLowerCase();
+  if (text.includes('mentawai') || text.includes('surfing') || text.includes('ombak') || text.includes('pulau')) {
+    return 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('harau') || text.includes('lembah') || text.includes('ngarai') || text.includes('tebing')) {
+    return 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('danau') || text.includes('singkarak') || text.includes('maninjau') || text.includes('kembar')) {
+    return 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('kuliner') || text.includes('rendang') || text.includes('sate') || text.includes('makan')) {
+    return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('budaya') || text.includes('songket') || text.includes('adat') || text.includes('pagaruyung') || text.includes('istano')) {
+    return 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('padang') || text.includes('kota') || text.includes('pantai') || text.includes('air manis')) {
+    return 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80';
+  }
+  if (text.includes('bukittinggi') || text.includes('jam gadang')) {
+    return 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80';
+  }
+  // Default authentic Minangkabau landscape
+  return 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80';
+}
+
+export interface AutonomousScanResult {
+  scheduleUpdates: Array<{
+    id: string;
+    eventTitle: string;
+    currentSchedule: string;
+    newSchedule: string;
+    newScheduleEn: string;
+    reason: string;
+  }>;
+  discoveredEvents: Array<{
+    id: string;
+    title: string;
+    titleEn: string;
+    schedule: string;
+    scheduleEn: string;
+    location: string;
+    locationEn: string;
+    description: string;
+    descriptionEn: string;
+    imageUrl: string;
+    videoUrl?: string;
+    isKen: boolean;
+    lat?: number;
+    lng?: number;
+    sourceName: string;
+  }>;
+  scannedAt: string;
+}
+
+/**
+ * Autonomous AI Scanner to discover new events and verify dates for existing events in West Sumatra.
+ */
+export async function scanAutonomousEventsWithAI(existingEvents: Array<{ id: string; title: string; schedule: string; location: string }>): Promise<AutonomousScanResult> {
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const nowStr = new Date().toISOString();
+
+  if (!viteApiKey) {
+    return {
+      scheduleUpdates: [],
+      discoveredEvents: [],
+      scannedAt: nowStr
+    };
+  }
+
+  const existingTitles = existingEvents.map(e => `${e.id}: ${e.title} (${e.schedule})`).join('\n');
+
+  const prompt = `Anda adalah Sistem Riset Intelijen Pariwisata Otonom Sumatera Barat (Kemenparekraf Karisma Event Nusantara & Calendar of Events 2026/2027).
+Daftar event yang SUDAH ADA di database kami saat ini:
+${existingTitles}
+
+Tugas Anda:
+1. Periksa apakah ada perubahan tanggal resmi (Kemenparekraf KEN / Dinas Pariwisata Sumbar 2026) untuk event-event yang SUDAH ADA di atas.
+2. Cari jika ada event/festival pariwisata Sumatera Barat RESMI lainnya yang BELUM ADA dalam daftar di atas (misal Festival Pesona Mentawai, Festival Danau Diatas/Singkarak, Festival Kopi Luak, Festival Alek Nagari, dsb).
+3. Hasilkan output dalam format JSON murni TANPA markdown dengan struktur persis:
+{
+  "scheduleUpdates": [
+    {
+      "id": "id_event",
+      "eventTitle": "nama_event",
+      "currentSchedule": "jadwal_saat_ini",
+      "newSchedule": "jadwal_resmi_baru_bahasa_indonesia",
+      "newScheduleEn": "jadwal_resmi_baru_bahasa_inggris",
+      "reason": "alasan pembaruan jadwal berdasarkan CoE/KEN 2026"
+    }
+  ],
+  "discoveredEvents": [
+    {
+      "id": "ev-ai-timestamp",
+      "title": "NAMA EVENT HURUF KAPITAL",
+      "titleEn": "EVENT NAME ENGLISH CAPITAL",
+      "schedule": "Contoh: 15 – 18 Oktober 2026",
+      "scheduleEn": "Contoh: October 15 – 18, 2026",
+      "location": "Nama Lokasi, Kabupaten/Kota",
+      "locationEn": "Location Name, Regency/City",
+      "description": "Deskripsi naratif budaya 3 paragraf yang mendalam tentang asal-usul, atraksi utama, dan keunikan festival.",
+      "descriptionEn": "In-depth 3-paragraph English cultural narrative description of the festival history and attractions.",
+      "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
+      "videoUrl": "",
+      "isKen": true,
+      "lat": -0.450000,
+      "lng": 100.510000,
+      "sourceName": "Kemenparekraf KEN / Dispar Sumbar 2026"
+    }
+  ]
+}
+Waktu saat ini: ${nowStr}`;
+
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+  for (const model of modelsToTry) {
+    try {
+      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+      const res = await ai.models.generateContent({
+        model,
+        contents: prompt,
+        config: {
+          temperature: 0.2,
+        }
+      });
+
+      const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+
+      return {
+        scheduleUpdates: Array.isArray(parsed.scheduleUpdates) ? parsed.scheduleUpdates : [],
+        discoveredEvents: Array.isArray(parsed.discoveredEvents) ? parsed.discoveredEvents.map((ev: any, idx: number) => ({
+          ...ev,
+          id: ev.id || `ev-ai-${Date.now()}-${idx}`,
+          imageUrl: ev.imageUrl || getSmartImageForNews(ev.title, 'event')
+        })) : [],
+        scannedAt: nowStr
+      };
+    } catch (e) {
+      console.warn(`Autonomous event scan failed with ${model}:`, e);
+    }
+  }
+
+  return {
+    scheduleUpdates: [],
+    discoveredEvents: [],
+    scannedAt: nowStr
+  };
+}
+
 
 

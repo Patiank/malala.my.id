@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
-import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings } from '../types';
+import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings, PendingEventItem } from '../types';
 import { isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
 
 export function useData() {
@@ -11,6 +11,7 @@ export function useData() {
   const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>(CULINARY_ITEMS);
   const [souvenirItems, setSouvenirItems] = useState<SouvenirItem[]>(SOUVENIR_ITEMS);
   const [eventItems, setEventItems] = useState<EventItem[]>(EVENTS_SCHEDULE);
+  const [pendingEvents, setPendingEvents] = useState<PendingEventItem[]>([]);
   const [downloadItems, setDownloadItems] = useState<DownloadItem[]>(DOWNLOAD_ITEMS);
   const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>(HOT_INFO_ITEMS);
   const [appSettings, setAppSettings] = useState<AppSettings>(() => {
@@ -31,6 +32,7 @@ export function useData() {
       tiketAffiliateId: '6a893170239c5bf8a8b71930',
       travelokaAffiliateId: '',
       activeBookingPartner: 'dual',
+      isAutonomousSyncEnabled: true,
     };
   });
 
@@ -227,6 +229,8 @@ export function useData() {
           tiketAffiliateId: effectiveTiketAffiliateId,
           travelokaAffiliateId: effectiveTravelokaAffiliateId,
           activeBookingPartner: effectiveActiveBookingPartner,
+          isAutonomousSyncEnabled: data.isAutonomousSyncEnabled !== undefined ? data.isAutonomousSyncEnabled : true,
+          lastAutonomousSync: data.lastAutonomousSync || '',
         };
 
         setAppSettings(liveSettings);
@@ -239,6 +243,21 @@ export function useData() {
       }
     }, (err) => console.warn("Firestore settings error:", err));
 
+    // 9. Pending AI Events listener (Autonomous Discovery Queue)
+    const unsubPending = onSnapshot(collection(db, 'pending_events'), (snapshot) => {
+      if (snapshot.empty) {
+        setPendingEvents([]);
+        return;
+      }
+      const data = snapshot.docs
+        .map(doc => {
+          const item = doc.data() as PendingEventItem;
+          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        })
+        .filter(item => item.title && item.status !== 'rejected');
+      setPendingEvents(data);
+    }, (err) => console.warn("Firestore pending_events error:", err));
+
     return () => {
       unsubDest();
       unsubCult();
@@ -248,6 +267,7 @@ export function useData() {
       unsubDl();
       unsubHot();
       unsubSett();
+      unsubPending();
     };
   }, []);
 
@@ -443,12 +463,42 @@ export function useData() {
     }
   };
 
+  const approvePendingEvent = async (item: PendingEventItem) => {
+    try {
+      const { status, discoveredAt, sourceName, changeType, originalSchedule, ...eventData } = item;
+      await setDoc(doc(db, 'events', item.id), eventData, { merge: true });
+      await deleteDoc(doc(db, 'pending_events', item.id));
+    } catch (e) {
+      console.error("Error approving pending event:", e);
+      throw e;
+    }
+  };
+
+  const rejectPendingEvent = async (id: string) => {
+    try {
+      await deleteDoc(doc(db, 'pending_events', id));
+    } catch (e) {
+      console.error("Error rejecting pending event:", e);
+      throw e;
+    }
+  };
+
+  const savePendingEvent = async (item: PendingEventItem) => {
+    try {
+      await setDoc(doc(db, 'pending_events', item.id), item, { merge: true });
+    } catch (e) {
+      console.error("Error saving pending event:", e);
+      throw e;
+    }
+  };
+
   return {
     destinations: destinations.length > 0 ? destinations : getDestinationsWithEn(),
     cultureItems: cultureItems.length > 0 ? cultureItems : getCultureWithEn(),
     culinaryItems: culinaryItems.length > 0 ? culinaryItems : getCulinaryWithEn(),
     souvenirItems: souvenirItems.length > 0 ? souvenirItems : SOUVENIR_ITEMS,
     eventItems: eventItems.length > 0 ? eventItems : getEventsWithEn(),
+    pendingEvents,
     downloadItems: downloadItems.length > 0 ? downloadItems : DOWNLOAD_ITEMS,
     hotInfoItems: hotInfoItems.length > 0 ? hotInfoItems : HOT_INFO_ITEMS,
     appSettings,
@@ -456,7 +506,10 @@ export function useData() {
     saveSettings,
     deleteItem,
     seedData,
-    updateHotInfoItems
+    updateHotInfoItems,
+    approvePendingEvent,
+    rejectPendingEvent,
+    savePendingEvent
   };
 }
 

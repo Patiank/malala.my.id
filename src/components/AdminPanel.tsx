@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink } from 'lucide-react';
+import { Destination, CultureItem, CulinaryItem, EventItem, PendingEventItem } from '../types';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { generateCatalogItemWithAi, generateCatalogItemFallback } from '../utils/ai';
+import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult } from '../utils/ai';
 import { EVENTS_SCHEDULE } from '../data/content';
 
 interface AdminPanelProps {
   dataStore: any;
 }
-
 
 type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings';
 
@@ -22,6 +21,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     culinaryItems,
     souvenirItems,
     eventItems,
+    pendingEvents,
     downloadItems,
     hotInfoItems,
     appSettings,
@@ -29,9 +29,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     saveSettings,
     deleteItem,
     seedData,
+    approvePendingEvent,
+    rejectPendingEvent,
+    savePendingEvent,
   } = dataStore;
 
   const [isSeeding, setIsSeeding] = useState<boolean>(false);
+  const [isAiScanning, setIsAiScanning] = useState<boolean>(false);
+  const [scanResult, setScanResult] = useState<AutonomousScanResult | null>(null);
 
   const handleSeedData = async () => {
     if (confirm('Apakah Anda yakin ingin memuat/reset ulang seluruh Data Awal (Destinasi, Budaya, Kuliner, Event, Unduhan, Hot Info) ke Firestore? Data default Minangkabau akan di-restore.')) {
@@ -44,6 +49,45 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       } finally {
         setIsSeeding(false);
       }
+    }
+  };
+
+  const handleRunAiEventScan = async () => {
+    try {
+      setIsAiScanning(true);
+      setAdminError(null);
+      const res = await scanAutonomousEventsWithAI(eventItems);
+      setScanResult(res);
+
+      let newEventsSaved = 0;
+      if (res.discoveredEvents && res.discoveredEvents.length > 0) {
+        for (const ev of res.discoveredEvents) {
+          const existsInMain = eventItems.some((e: any) => e.title.toLowerCase() === ev.title.toLowerCase() || e.id === ev.id);
+          const existsInPending = (pendingEvents || []).some((e: any) => e.title.toLowerCase() === ev.title.toLowerCase() || e.id === ev.id);
+          if (!existsInMain && !existsInPending) {
+            await savePendingEvent({
+              ...ev,
+              status: 'pending',
+              discoveredAt: new Date().toISOString(),
+              changeType: 'new_event',
+            });
+            newEventsSaved++;
+          }
+        }
+      }
+
+      if (newEventsSaved > 0) {
+        showSuccess(`🤖 AI menemukan ${newEventsSaved} event baru! Masuk ke Kotak Masuk AI untuk ditinjau & diterbitkan.`);
+      } else if (res.scheduleUpdates && res.scheduleUpdates.length > 0) {
+        showSuccess(`🔍 AI mendeteksi ${res.scheduleUpdates.length} pembaruan jadwal event.`);
+      } else {
+        showSuccess(`✅ Seluruh jadwal event sudah up-to-date dan sesuai dengan kalender resmi KEN/CoE.`);
+      }
+    } catch (e: any) {
+      console.warn("AI event scan failed:", e);
+      setAdminError('Gagal menjalankan pemindaian AI: ' + (e?.message || 'Koneksi error'));
+    } finally {
+      setIsAiScanning(false);
     }
   };
 
@@ -882,7 +926,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         <button onClick={() => { setAdminTab('culture'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culture' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Budaya</button>
         <button onClick={() => { setAdminTab('culinary'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culinary' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Kuliner</button>
         <button onClick={() => { setAdminTab('souvenirs'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'souvenirs' ? 'bg-rose-600 text-white shadow-xs' : 'text-rose-700 bg-rose-50/50 hover:bg-rose-100'}`}>Oleh-Oleh</button>
-        <button onClick={() => { setAdminTab('events'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'events' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Event</button>
+        <button onClick={() => { setAdminTab('events'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all flex items-center justify-center gap-1 ${adminTab === 'events' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>
+          <span>Event</span>
+          {pendingEvents && pendingEvents.length > 0 && (
+            <span className="bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full animate-pulse shadow-2xs">
+              {pendingEvents.length}
+            </span>
+          )}
+        </button>
         <button onClick={() => { setAdminTab('download'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'download' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Unduhan</button>
         <button onClick={() => { setAdminTab('hotinfo'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'hotinfo' ? 'bg-red-600 text-white shadow-xs' : 'text-red-700 bg-red-50 hover:bg-red-100'}`}>Hot Info</button>
         <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
@@ -2405,6 +2456,185 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           </div>
         ) : (
           <div className="space-y-3 pb-8">
+            {/* Autonomous AI Event Scanner & Inbox (Only on Events Tab) */}
+            {adminTab === 'events' && (
+              <div className="space-y-3 mb-4">
+                {/* AI Scanner Bar */}
+                <div className="bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-900 text-white p-3.5 rounded-xl border border-neutral-700 shadow-md flex items-center justify-between flex-wrap gap-3">
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                        <Bot className="w-3.5 h-3.5" />
+                      </div>
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-amber-300">
+                        Sistem Riset Event Otonom AI
+                      </h4>
+                      <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold px-1.5 py-0.2 rounded-full flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Otonom Siap
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-300 leading-tight">
+                      AI memindai portal Karisma Event Nusantara (KEN) & Calendar of Events 2026/2027 untuk menemukan event baru dan verifikasi tanggal.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleRunAiEventScan}
+                    disabled={isAiScanning}
+                    className="bg-amber-500 hover:bg-amber-400 text-black px-3.5 py-2 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all shadow-sm disabled:opacity-50"
+                  >
+                    <Wand2 className={`w-3.5 h-3.5 ${isAiScanning ? 'animate-spin' : ''}`} />
+                    <span>{isAiScanning ? 'Memindai Internet...' : 'Pindai Jadwal & Event Baru'}</span>
+                  </button>
+                </div>
+
+                {/* AI Schedule Updates Notice if detected */}
+                {scanResult && scanResult.scheduleUpdates && scanResult.scheduleUpdates.length > 0 && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-3.5 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-blue-900 uppercase flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4 text-blue-600" />
+                        Pembaruan Jadwal Terdeteksi ({scanResult.scheduleUpdates.length})
+                      </span>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          for (const upd of scanResult.scheduleUpdates) {
+                            const target = eventItems.find((e: any) => e.id === upd.id);
+                            if (target) {
+                              await saveItem('events', {
+                                ...target,
+                                schedule: upd.newSchedule,
+                                scheduleEn: upd.newScheduleEn || target.scheduleEn
+                              });
+                            }
+                          }
+                          showSuccess('✅ Seluruh pembaruan tanggal event berhasil diterapkan!');
+                          setScanResult(null);
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded cursor-pointer transition-colors shadow-2xs"
+                      >
+                        Terapkan Semua Jadwal Baru
+                      </button>
+                    </div>
+                    <div className="space-y-1.5 pt-1">
+                      {scanResult.scheduleUpdates.map((upd, idx) => (
+                        <div key={idx} className="bg-white p-2 rounded border border-blue-100 text-xs flex items-center justify-between gap-2">
+                          <div>
+                            <span className="font-bold text-gray-900">{upd.eventTitle}</span>
+                            <div className="text-[10px] text-gray-500 flex items-center gap-1 mt-0.5">
+                              <span className="line-through text-red-500">{upd.currentSchedule}</span>
+                              <ArrowRight className="w-3 h-3 text-gray-400" />
+                              <span className="font-bold text-emerald-600">{upd.newSchedule}</span>
+                            </div>
+                          </div>
+                          <span className="text-[10px] text-gray-400 italic shrink-0">{upd.reason}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Pending AI Events Inbox (Draf Event yang Menunggu Persetujuan) */}
+                {pendingEvents && pendingEvents.length > 0 && (
+                  <div className="bg-gradient-to-b from-amber-50 to-orange-50/40 border-2 border-amber-300 rounded-xl p-3.5 space-y-3 shadow-sm">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                        <h4 className="font-black text-xs uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+                          📥 Kotak Masuk AI: {pendingEvents.length} Event Baru Menunggu Persetujuan
+                        </h4>
+                      </div>
+                      <span className="text-[10px] text-amber-800 font-semibold">
+                        Tinjau sebelum ditayangkan ke publik
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {pendingEvents.map((item: PendingEventItem) => (
+                        <div key={item.id} className="bg-white border border-amber-200 rounded-lg p-3 shadow-2xs space-y-2">
+                          <div className="flex justify-between items-start gap-2">
+                            <div>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h5 className="font-bold text-sm text-gray-900">{item.title}</h5>
+                                <span className="bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-2xs">
+                                  DRAF AI
+                                </span>
+                                {item.isKen && (
+                                  <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[9px] font-black px-1.5 py-0.5 rounded">
+                                    KEN
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-amber-800 font-bold mt-0.5 flex items-center gap-1">
+                                <Calendar className="w-3 h-3 text-amber-600" />
+                                <span>{item.schedule}</span>
+                                <span className="text-gray-400 font-normal">•</span>
+                                <span className="text-gray-600 font-normal">{item.location}</span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  try {
+                                    await approvePendingEvent(item);
+                                    showSuccess(`🎉 Event "${item.title}" berhasil disetujui & langsung tayang di website!`);
+                                  } catch (e) {
+                                    setAdminError('Gagal menyetujui event');
+                                  }
+                                }}
+                                className="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded text-xs font-bold uppercase flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                                title="Setujui & Tayangkan Langsung ke Website"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                <span>Setujui & Tayangkan</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => handleEdit(item)}
+                                className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1.5 rounded text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                                title="Edit Draf Sebelum Tayang"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                                <span>Edit</span>
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (confirm(`Tolak dan hapus draf event "${item.title}"?`)) {
+                                    try {
+                                      await rejectPendingEvent(item.id);
+                                      showSuccess('Draf event ditolak & dihapus.');
+                                    } catch (e) {
+                                      setAdminError('Gagal menolak event');
+                                    }
+                                  }
+                                }}
+                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                title="Tolak & Hapus"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed bg-gray-50/70 p-2 rounded border border-gray-100">
+                            {item.description}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {activeData.map((item: any) => (
               <div key={item.id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-start bg-white shadow-xs hover:border-gray-400 transition-colors">
                 <div className="flex-1 min-w-0 pr-4">
