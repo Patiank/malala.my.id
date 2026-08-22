@@ -452,19 +452,19 @@ export function generateEventHTML(): string {
             <div class="text-[10px] text-gray-300">Direktori Pariwisata & Budaya Digital</div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300">
-            <div>
-              <div class="font-bold text-white uppercase">Instagram:</div>
-              <div class="text-amber-300">@minangkaos</div>
+          <div class="grid grid-cols-2 gap-2.5 text-[10px] text-gray-300 text-center">
+            <div class="text-center p-2 rounded-lg bg-white/5 border border-white/5 space-y-0.5">
+              <div class="font-bold text-white uppercase text-[9px] tracking-wider text-center">Instagram:</div>
+              <div class="text-amber-300 font-semibold text-center">@minangkaos</div>
             </div>
-            <div>
-              <div class="font-bold text-white uppercase">Website:</div>
-              <div class="text-amber-300">malala.my.id</div>
+            <div class="text-center p-2 rounded-lg bg-white/5 border border-white/5 space-y-0.5">
+              <div class="font-bold text-white uppercase text-[9px] tracking-wider text-center">Website:</div>
+              <div class="text-amber-300 font-semibold text-center">malala.my.id</div>
             </div>
             <div class="col-span-2 pt-1 text-center">
-              <div class="font-bold text-white uppercase">Presented By:</div>
-              <div class="text-amber-400 font-orbitron font-bold text-xs">MINANGKAOS</div>
-              <div class="text-[9px] text-gray-400">Sumatera Barat, Indonesia</div>
+              <div class="font-bold text-white uppercase text-[9px] tracking-wider text-center">Presented By:</div>
+              <div class="text-amber-400 font-orbitron font-bold text-xs text-center pt-0.5">MINANGKAOS</div>
+              <div class="text-[9px] text-gray-400 text-center">Sumatera Barat, Indonesia</div>
             </div>
           </div>
         </div>
