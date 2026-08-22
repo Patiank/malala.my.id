@@ -14,22 +14,23 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
   isOpen,
   onClose,
   lang = 'id',
-  dataStore = {}
+  dataStore
 }) => {
   const isEn = lang === 'en';
   const [activeTab, setActiveTab] = useState<'all' | 'destinations' | 'culture' | 'culinary' | 'events'>('all');
 
   if (!isOpen) return null;
 
-  const destinations: Destination[] = (dataStore.destinations && dataStore.destinations.length > 0) ? dataStore.destinations : DESTINATIONS;
-  const cultureItems: CultureItem[] = (dataStore.cultureItems && dataStore.cultureItems.length > 0) ? dataStore.cultureItems : CULTURE_ITEMS;
-  const culinaryItems: CulinaryItem[] = (dataStore.culinaryItems && dataStore.culinaryItems.length > 0) ? dataStore.culinaryItems : CULINARY_ITEMS;
-  const eventItems: EventItem[] = (dataStore.eventItems && dataStore.eventItems.length > 0) ? dataStore.eventItems : EVENTS_SCHEDULE;
+  const ds: any = dataStore || {};
+  const destinations: Destination[] = (ds.destinations && ds.destinations.length > 0) ? ds.destinations : DESTINATIONS;
+  const cultureItems: CultureItem[] = (ds.cultureItems && ds.cultureItems.length > 0) ? ds.cultureItems : CULTURE_ITEMS;
+  const culinaryItems: CulinaryItem[] = (ds.culinaryItems && ds.culinaryItems.length > 0) ? ds.culinaryItems : CULINARY_ITEMS;
+  const eventItems: EventItem[] = (ds.eventItems && ds.eventItems.length > 0) ? ds.eventItems : EVENTS_SCHEDULE;
 
-  const coverImage = (dataStore?.appSettings?.revealImage && dataStore.appSettings.revealImage.trim())
-    ? getDirectDriveUrl(dataStore.appSettings.revealImage)
-    : (dataStore?.appSettings?.baseImage && dataStore.appSettings.baseImage.trim())
-      ? getDirectDriveUrl(dataStore.appSettings.baseImage)
+  const coverImage = (ds?.appSettings?.revealImage && ds.appSettings.revealImage.trim())
+    ? getDirectDriveUrl(ds.appSettings.revealImage)
+    : (ds?.appSettings?.baseImage && ds.appSettings.baseImage.trim())
+      ? getDirectDriveUrl(ds.appSettings.baseImage)
       : BG_IMAGE_2;
 
   // Compress Unsplash images to WebP for fast performance

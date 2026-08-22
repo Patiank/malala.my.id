@@ -181,13 +181,17 @@ export default function App() {
 
   // Listen to browser / smartphone Back button (popstate)
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePopState = (e: PopStateEvent) => {
+      // If we popped back to a drawer state (e.g. from a detail submodal), do not close the drawer!
+      if (e.state?.malalaLayer === 'drawer') {
+        return;
+      }
       // If news modal is open, close it first
       if (selectedNews) {
         setSelectedNews(null);
         return;
       }
-      // If drawer is open, close it to return to main page
+      // If drawer is open and we returned to root, close drawer
       if (activeDrawer) {
         setActiveDrawer(null);
         return;
@@ -292,9 +296,10 @@ export default function App() {
 
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           {(() => {
-            const rawFiltered = (dataStore.hotInfoItems || []).filter((news: any) => isWithinLast30Days(news.date || news.createdAt));
-            const validItems = deduplicateNewsItems(rawFiltered);
-            const displayItems = validItems.length > 0 ? validItems : deduplicateNewsItems(dataStore.hotInfoItems || []);
+            const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
+            const rawFiltered = allHotInfo.filter((news) => isWithinLast30Days(news.date || news.createdAt));
+            const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered);
+            const displayItems: HotInfoItem[] = validItems.length > 0 ? validItems : deduplicateNewsItems<HotInfoItem>(allHotInfo);
             // Ultra-calm tempo: ~35 seconds per item (minimum 160 seconds total) for effortless readability
             const marqueeDuration = Math.max(160, displayItems.length * 35);
 

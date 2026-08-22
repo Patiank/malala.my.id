@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
@@ -6,7 +6,7 @@ import { InteractiveMapModal } from './InteractiveMapModal';
 import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
 import { Language, translations } from '../lib/translations';
-import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 
@@ -207,6 +207,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedCulinary, setSelectedCulinary] = useState<CulinaryItem | null>(null);
   const [selectedSouvenir, setSelectedSouvenir] = useState<SouvenirItem | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+  const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
 
@@ -2492,7 +2493,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         const selectedMonth = monthNamesId[monthIndex];
 
                         const matchedEvents = eventItems.filter((ev: EventItem) => {
-                          const sched = (ev.schedule || ev.date || '').toLowerCase();
+                          const sched = (ev.schedule || (ev as any).date || '').toLowerCase();
                           return sched.includes(selectedMonth.toLowerCase());
                         });
 

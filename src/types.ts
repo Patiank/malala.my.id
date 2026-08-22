@@ -41,7 +41,7 @@ export interface Destination {
   id: string;
   title: string;
   titleEn?: string;
-  category: 'Alam' | 'Danau & Gunung' | 'Lembah & Geopark' | 'Pantai & Bahari' | 'Desa Wisata';
+  category: string;
   categoryEn?: string;
   regency: string; // e.g. Bukittinggi, Tanah Datar, Mentawai, Solok, Limapuluh Kota
   tag: string;
@@ -66,7 +66,7 @@ export interface CultureItem {
   id: string;
   title: string;
   titleEn?: string;
-  category: 'Arsitektur' | 'Tari & Musik' | 'Seni Beladiri' | 'Kain & Kerajinan' | 'Tradisi Adat';
+  category: string;
   categoryEn?: string;
   description: string;
   descriptionEn?: string;
@@ -85,14 +85,22 @@ export interface CulinaryItem {
   id: string;
   title: string;
   titleEn?: string;
-  type: 'Makanan Utama' | 'Minuman Tradisional' | 'Kudapan Khas';
+  type: string;
   typeEn?: string;
+  category?: string;
+  categoryEn?: string;
   origin: string;
   originEn?: string;
   description: string;
   descriptionEn?: string;
-  flavorProfile: string;
+  flavorProfile?: string;
   flavorProfileEn?: string;
+  mainIngredients?: string[];
+  mainIngredientsEn?: string[];
+  tasteProfile?: string;
+  tasteProfileEn?: string;
+  culturalPhilosophy?: string;
+  culturalPhilosophyEn?: string;
   imageUrl: string;
   videoUrl?: string;
   mapUrl?: string;
@@ -154,6 +162,7 @@ export interface HotInfoItem {
   tipsEn?: string;
   locationName?: string;
   locationNameEn?: string;
+  createdAt?: any;
 }
 
 export interface AppSettings {
