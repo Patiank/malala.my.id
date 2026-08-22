@@ -784,7 +784,7 @@ export const Hero: React.FC<HeroProps> = ({
                   <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
                     <div className="flex items-center gap-1.5 font-bold text-amber-900">
                       <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-                      <span>{isEn ? 'Live Ongoing Event' : 'Event Sedang Berlangsung'}</span>
+                      <span>{isEn ? 'Featured Event of the Month' : 'Event Unggulan Bulan Ini'}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5">
