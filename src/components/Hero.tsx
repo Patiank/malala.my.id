@@ -119,26 +119,43 @@ export const Hero: React.FC<HeroProps> = ({
   const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
   const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  // Precise Event Timeline & 2-Week Window Evaluation
+  // Precise Event Timeline & 2-Week Window Evaluation (H-2 to H+2 for Live Video, H-14 to H-2 for Upcoming Image)
   const evaluateEventTimeline = (scheduleStr: string, isKen?: boolean) => {
     const now = new Date();
     const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth(); // 0-11 (7 for August)
+    const currentMonth = now.getMonth(); // 0-11
+    const currentDayOfWeek = now.getDay(); // 0: Sun, 1: Mon, ..., 6: Sat
     const nowMs = now.getTime();
 
     const s = (scheduleStr || '').toLowerCase();
 
-    // 1. Weekly / Routine / Year-round events
+    // 1. Weekly / Weekend / Routine events (e.g. Pacu Jawi every weekend)
     if (s.includes('akhir pekan') || s.includes('mingguan') || s.includes('weekend') || s.includes('sepanjang tahun') || s.includes('bergilir')) {
-      return {
-        isOngoing: true,
-        isWithin2Weeks: true,
-        daysUntil: 0,
-        badgeLabelId: '🔥 Event Rutin Aktif Pekan Ini',
-        badgeLabelEn: '🔥 Active Weekly / Routine Event',
-        isKEN: Boolean(isKen),
-        sortScore: 10
-      };
+      // Weekend is Sat (6) & Sun (0). H-2 to H+2: Thu (4), Fri (5), Sat (6), Sun (0), Mon (1)
+      const isWeekendLiveWindow = [4, 5, 6, 0, 1].includes(currentDayOfWeek);
+      if (isWeekendLiveWindow) {
+        return {
+          isLiveH2Window: true,
+          isUpcoming2Weeks: false,
+          daysUntilStart: 0,
+          badgeLabelId: '🔥 Event Rutin Aktif Pekan Ini',
+          badgeLabelEn: '🔥 Active Routine Event This Week',
+          isKEN: Boolean(isKen),
+          sortScore: 5
+        };
+      } else {
+        // Tuesday (2) or Wednesday (3) -> Upcoming for next weekend (within 2-3 days)
+        const daysToWeekend = currentDayOfWeek === 2 ? 4 : 3;
+        return {
+          isLiveH2Window: false,
+          isUpcoming2Weeks: true,
+          daysUntilStart: daysToWeekend,
+          badgeLabelId: `⏳ Hadir Akhir Pekan Ini (${daysToWeekend} Hari Lagi)`,
+          badgeLabelEn: `⏳ Starts This Weekend (${daysToWeekend} Days)`,
+          isKEN: Boolean(isKen),
+          sortScore: 15 + daysToWeekend
+        };
+      }
     }
 
     const monthMap: { [key: string]: number } = {
@@ -178,46 +195,63 @@ export const Hero: React.FC<HeroProps> = ({
       const startDate = new Date(eventYear, foundMonth, startDay, 0, 0, 0);
       const endDate = new Date(eventYear, foundMonth, endDay, 23, 59, 59);
 
+      // H-2 window starts 2 days before start date (00:00:00)
+      const h2StartDate = new Date(eventYear, foundMonth, startDay - 2, 0, 0, 0);
+      // H+2 window ends 2 days after end date (23:59:59)
+      const h2EndDate = new Date(eventYear, foundMonth, endDay + 2, 23, 59, 59);
+      // H-14 window starts 14 days before start date
+      const h14StartDate = new Date(eventYear, foundMonth, startDay - 14, 0, 0, 0);
+
       const diffToStartMs = startDate.getTime() - nowMs;
-      const diffToEndMs = endDate.getTime() - nowMs;
-
       const daysToStart = Math.ceil(diffToStartMs / (1000 * 60 * 60 * 24));
-      const daysToEnd = Math.ceil(diffToEndMs / (1000 * 60 * 60 * 24));
 
-      // Currently ongoing
-      if (nowMs >= startDate.getTime() && nowMs <= endDate.getTime()) {
+      // CASE A: Within H-2 to H+2 Window (Live Video Eligible)
+      if (nowMs >= h2StartDate.getTime() && nowMs <= h2EndDate.getTime()) {
+        let badgeId = `🔥 Sedang Berlangsung (${startDay}-${endDay} ${monthNamesId[foundMonth]})`;
+        let badgeEn = `🔥 Happening Now (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`;
+
+        if (nowMs < startDate.getTime()) {
+          const daysLeft = Math.max(1, Math.ceil((startDate.getTime() - nowMs) / (1000 * 60 * 60 * 24)));
+          badgeId = `🔥 H-${daysLeft} Menjelang Pembukaan (${startDay} ${monthNamesId[foundMonth]})`;
+          badgeEn = `🔥 Starts in ${daysLeft} Day(s) (${startDay} ${monthNamesEn[foundMonth]})`;
+        } else if (nowMs > endDate.getTime()) {
+          badgeId = `🔥 Highlight Pasca Event (${startDay}-${endDay} ${monthNamesId[foundMonth]})`;
+          badgeEn = `🔥 Post-Event Highlights (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`;
+        }
+
         return {
-          isOngoing: true,
-          isWithin2Weeks: true,
-          daysUntil: 0,
-          badgeLabelId: `🔥 Sedang Berlangsung (${startDay}-${endDay} ${monthNamesId[foundMonth]})`,
-          badgeLabelEn: `🔥 Happening Now (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`,
+          isLiveH2Window: true,
+          isUpcoming2Weeks: false,
+          daysUntilStart: daysToStart,
+          badgeLabelId: badgeId,
+          badgeLabelEn: badgeEn,
           isKEN: Boolean(isKen),
           sortScore: 1
         };
       }
 
-      // Starting within next 14 days (2 weeks)
-      if (daysToStart > 0 && daysToStart <= 14) {
+      // CASE B: 2 Weeks Before Event (H-14 to H-2) (Upcoming Image Banner Eligible)
+      if (daysToStart > 2 && daysToStart <= 14) {
         return {
-          isOngoing: false,
-          isWithin2Weeks: true,
-          daysUntil: daysToStart,
+          isLiveH2Window: false,
+          isUpcoming2Weeks: true,
+          daysUntilStart: daysToStart,
           badgeLabelId: `⏳ Hadir dlm ${daysToStart} Hari (${startDay} ${monthNamesId[foundMonth]})`,
           badgeLabelEn: `⏳ Starts in ${daysToStart} Days (${startDay} ${monthNamesEn[foundMonth]})`,
           isKEN: Boolean(isKen),
-          sortScore: 20 + daysToStart
+          sortScore: 10 + daysToStart
         };
       }
 
+      // CASE C: Farther future schedule
       return {
-        isOngoing: false,
-        isWithin2Weeks: false,
-        daysUntil: daysToStart,
+        isLiveH2Window: false,
+        isUpcoming2Weeks: false,
+        daysUntilStart: daysToStart,
         badgeLabelId: `🗓️ ${startDay} ${monthNamesId[foundMonth]} ${eventYear}`,
         badgeLabelEn: `🗓️ ${monthNamesEn[foundMonth]} ${startDay}, ${eventYear}`,
         isKEN: Boolean(isKen),
-        sortScore: 100 + daysToStart
+        sortScore: 100 + Math.max(0, daysToStart)
       };
     }
 
@@ -225,37 +259,38 @@ export const Hero: React.FC<HeroProps> = ({
     if (foundMonth !== null) {
       if (foundMonth === currentMonth) {
         return {
-          isOngoing: true,
-          isWithin2Weeks: true,
-          daysUntil: 0,
+          isLiveH2Window: true,
+          isUpcoming2Weeks: false,
+          daysUntilStart: 0,
           badgeLabelId: `🔥 Bulan Ini (${monthNamesId[foundMonth]})`,
           badgeLabelEn: `🔥 This Month (${monthNamesEn[foundMonth]})`,
           isKEN: Boolean(isKen),
-          sortScore: 5
+          sortScore: 3
         };
       }
 
-      // Check if next month and within 2 weeks of the 1st of next month
+      // Next month within 14 days of start of that month
       if (foundMonth === (currentMonth + 1) % 12) {
         const daysUntilNextMonth = (new Date(currentYear, currentMonth + 1, 1).getTime() - nowMs) / (1000 * 60 * 60 * 24);
         if (daysUntilNextMonth <= 14) {
+          const daysNum = Math.max(1, Math.ceil(daysUntilNextMonth));
           return {
-            isOngoing: false,
-            isWithin2Weeks: true,
-            daysUntil: Math.max(1, Math.ceil(daysUntilNextMonth)),
+            isLiveH2Window: false,
+            isUpcoming2Weeks: true,
+            daysUntilStart: daysNum,
             badgeLabelId: `⏳ 2 Minggu Ini (${monthNamesId[foundMonth]})`,
-            badgeLabelEn: `⏳ Next 2 Weeks (${monthNamesEn[foundMonth]})`,
+            badgeLabelEn: `⏳ In 2 Weeks (${monthNamesEn[foundMonth]})`,
             isKEN: Boolean(isKen),
-            sortScore: 30
+            sortScore: 25
           };
         }
       }
     }
 
     return {
-      isOngoing: false,
-      isWithin2Weeks: false,
-      daysUntil: 999,
+      isLiveH2Window: false,
+      isUpcoming2Weeks: false,
+      daysUntilStart: 999,
       badgeLabelId: '🗓️ Jadwal CoE Sumbar',
       badgeLabelEn: '🗓️ CoE Event Schedule',
       isKEN: Boolean(isKen),
@@ -265,46 +300,30 @@ export const Hero: React.FC<HeroProps> = ({
 
   const eventsList = eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE;
 
-  // Multi-Event Filter: Strictly Ongoing or starting within the next 2 weeks (14 days)
-  const activeSpotlightEvents = useMemo(() => {
-    if (!eventsList || eventsList.length === 0) return [];
-    
+  const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
+
+  // 1. Video Event: Only displayed if event is in H-2 to H+2 window AND has a valid YouTube video
+  const videoEvent = useMemo(() => {
+    if (spotlightDisplayMode === 'event') return undefined;
+
     const evaluated = eventsList.map(item => ({
       item,
       timeline: evaluateEventTimeline(item.schedule, item.isKen)
     }));
 
-    // Filter strictly for ongoing or starting within 2 weeks
-    const strictlyActive = evaluated.filter(e => e.timeline.isOngoing || e.timeline.isWithin2Weeks);
+    // Find event strictly in H-2 to H+2 with a working YouTube video
+    const liveWithVideo = evaluated.filter(e => 
+      e.timeline.isLiveH2Window && Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl))
+    );
 
-    if (strictlyActive.length > 0) {
-      strictlyActive.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-      return strictlyActive;
+    if (liveWithVideo.length > 0) {
+      liveWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+      return liveWithVideo[0];
     }
 
-    // Fallback: If no event in strict 2 weeks, show top 2 closest upcoming events
-    evaluated.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-    return evaluated.slice(0, 2);
-  }, [eventsList]);
-
-  const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
-
-  // Split into Video Event (if linked with YouTube) and Banner Events (photo banner)
-  const videoEvent = useMemo(() => {
-    if (spotlightDisplayMode === 'event') return undefined;
-
-    // 1. Check in 2-week active events
-    const activeVideo = activeSpotlightEvents.find(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-    if (activeVideo) return activeVideo;
-
-    // 2. If mode is strictly 'video' and 2-week events don't have video, look across all upcoming events
+    // If admin explicitly set mode to 'video', search across all events with video as override
     if (spotlightDisplayMode === 'video') {
-      const allWithVideo = eventsList
-        .filter(item => Boolean(getYoutubeEmbedUrl(item.videoUrl || (item as any).youtubeUrl)))
-        .map(item => ({
-          item,
-          timeline: evaluateEventTimeline(item.schedule, item.isKen)
-        }));
+      const allWithVideo = evaluated.filter(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
       if (allWithVideo.length > 0) {
         allWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
         return allWithVideo[0];
@@ -312,15 +331,29 @@ export const Hero: React.FC<HeroProps> = ({
     }
 
     return undefined;
-  }, [activeSpotlightEvents, eventsList, spotlightDisplayMode]);
+  }, [eventsList, spotlightDisplayMode]);
 
+  // 2. Image Banner Events: Automatically replaces video banner when no H-2 to H+2 video event is active
   const bannerEvents = useMemo(() => {
-    if (spotlightDisplayMode === 'video') return [];
-    if (videoEvent && spotlightDisplayMode === 'both') {
-      return activeSpotlightEvents.filter(e => e !== videoEvent);
+    // If videoEvent is active and display mode is not forcing both, video takes the spotlight
+    if (videoEvent && spotlightDisplayMode !== 'both') return [];
+
+    const evaluated = eventsList.map(item => ({
+      item,
+      timeline: evaluateEventTimeline(item.schedule, item.isKen)
+    }));
+
+    // Prioritize 2-week upcoming events (H-14 to H-2) or any active event without video
+    const upcoming2Weeks = evaluated.filter(e => e.timeline.isUpcoming2Weeks || (e.timeline.isLiveH2Window && !getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+    if (upcoming2Weeks.length > 0) {
+      upcoming2Weeks.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+      return upcoming2Weeks;
     }
-    return activeSpotlightEvents;
-  }, [activeSpotlightEvents, videoEvent, spotlightDisplayMode]);
+
+    // Fallback: Closest upcoming events in the calendar so the banner remains a helpful information hub
+    evaluated.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+    return evaluated.slice(0, 3);
+  }, [eventsList, videoEvent, spotlightDisplayMode]);
 
   // Carousel index for banner events & rotation with pause on hover
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
@@ -859,15 +892,17 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Multi-Event Mini Header with Carousel Controls */}
                   <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
-                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
-                      <span>
-                        {videoEvent ? (isEn ? 'Other Active Events (2 Weeks)' : 'Event Banner 2 Minggu Ini') : (isEn ? 'Live & 2-Week Events' : 'Event Sedang / 2 Minggu Ini')}
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900 truncate">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse shrink-0" />
+                      <span className="truncate">
+                        {timeline.isUpcoming2Weeks
+                          ? (isEn ? 'Upcoming Event (Next 2 Weeks)' : 'Informasi Event (2 Minggu ke Depan)')
+                          : (isEn ? 'West Sumatra Event Spotlight' : 'Informasi Event Pariwisata Sumbar')}
                       </span>
                     </div>
 
                     {bannerEvents.length > 1 && (
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <span className="text-[9px] font-bold text-gray-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
                           {activeBannerIndex + 1}/{bannerEvents.length}
                         </span>
@@ -977,20 +1012,29 @@ export const Hero: React.FC<HeroProps> = ({
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
+                  <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
                     <button
                       onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs truncate"
                     >
-                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-3 h-3" />
+                      <span className="truncate">{isEn ? 'CoE Schedule' : 'Jadwal CoE'}</span>
+                      <ArrowUpRight className="w-3 h-3 shrink-0" />
+                    </button>
+
+                    <button
+                      onClick={() => onOpenDrawer('itinerary')}
+                      className="bg-amber-500 hover:bg-amber-400 text-black py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs shrink-0"
+                      title={isEn ? 'Plan with AI' : 'Susun Rencana AI'}
+                    >
+                      <Sparkles className="w-3 h-3 text-black" />
+                      <span>{isEn ? 'AI Plan' : 'AI Plan'}</span>
                     </button>
 
                     <a
                       href={getGoogleCalUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
                       title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
                     >
                       <Calendar className="w-3 h-3 text-blue-600" />
