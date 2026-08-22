@@ -146,12 +146,57 @@ export default function App() {
   }, []);
 
   const handleOpenDrawer = useCallback((type: DrawerType) => {
+    if (type && typeof window !== 'undefined') {
+      if (activeDrawer) {
+        window.history.replaceState({ malalaLayer: 'drawer', drawer: type }, '');
+      } else {
+        window.history.pushState({ malalaLayer: 'drawer', drawer: type }, '');
+      }
+    }
     setActiveDrawer(type);
-  }, []);
+  }, [activeDrawer]);
 
   const handleCloseDrawer = useCallback(() => {
-    setActiveDrawer(null);
+    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'drawer') {
+      window.history.back();
+    } else {
+      setActiveDrawer(null);
+    }
   }, []);
+
+  const handleOpenNews = useCallback((news: HotInfoItem) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ malalaLayer: 'news', newsId: news.id }, '');
+    }
+    setSelectedNews(news);
+  }, []);
+
+  const handleCloseNews = useCallback(() => {
+    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'news') {
+      window.history.back();
+    } else {
+      setSelectedNews(null);
+    }
+  }, []);
+
+  // Listen to browser / smartphone Back button (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      // If news modal is open, close it first
+      if (selectedNews) {
+        setSelectedNews(null);
+        return;
+      }
+      // If drawer is open, close it to return to main page
+      if (activeDrawer) {
+        setActiveDrawer(null);
+        return;
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [activeDrawer, selectedNews]);
 
   const handleToggleSave = useCallback(
     (id: string, title: string) => {
@@ -304,7 +349,7 @@ export default function App() {
         onToggleSave={handleToggleSave}
         dataStore={dataStore}
         lang={lang}
-        onSelectNews={(news) => setSelectedNews(news)}
+        onSelectNews={handleOpenNews}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
       />
@@ -312,7 +357,7 @@ export default function App() {
       {/* Center News Detail Pop-up Modal */}
       <NewsModal
         item={selectedNews}
-        onClose={() => setSelectedNews(null)}
+        onClose={handleCloseNews}
         lang={lang}
       />
 

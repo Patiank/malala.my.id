@@ -45,6 +45,31 @@ export const Hero: React.FC<HeroProps> = ({
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
 
+  const handleOpenExploreModal = () => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ malalaLayer: 'explore' }, '');
+    }
+    setIsExploreModalOpen(true);
+  };
+
+  const handleCloseExploreModal = () => {
+    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'explore') {
+      window.history.back();
+    } else {
+      setIsExploreModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isExploreModalOpen) {
+        setIsExploreModalOpen(false);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isExploreModalOpen]);
+
   const toggleVideoVolume = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (!videoIframeRef.current?.contentWindow) return;
@@ -1065,7 +1090,7 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
 
               <button
-                onClick={() => setIsExploreModalOpen(false)}
+                onClick={handleCloseExploreModal}
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-black cursor-pointer"
               >
                 <X className="w-5 h-5" />

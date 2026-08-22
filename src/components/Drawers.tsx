@@ -210,6 +210,44 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
 
+  // Sub-modal helpers
+  const openSubModal = useCallback((callback: () => void) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ malalaLayer: 'submodal' }, '');
+    }
+    callback();
+  }, []);
+
+  const closeAllSubModals = useCallback(() => {
+    setSelectedDestination(null);
+    setSelectedCulture(null);
+    setSelectedCulinary(null);
+    setSelectedSouvenir(null);
+    setSelectedEvent(null);
+    setIsBookletModalOpen(false);
+  }, []);
+
+  const handleSubModalClose = useCallback(() => {
+    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'submodal') {
+      window.history.back();
+    } else {
+      closeAllSubModals();
+    }
+  }, [closeAllSubModals]);
+
+  // Synchronize popstate with smartphone hardware / gesture back button
+  useEffect(() => {
+    const handlePopState = () => {
+      // If any submodal is open, close only the submodal so the user remains in the catalog/drawer!
+      if (selectedDestination || selectedCulture || selectedCulinary || selectedSouvenir || selectedEvent || isBookletModalOpen) {
+        closeAllSubModals();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [selectedDestination, selectedCulture, selectedCulinary, selectedSouvenir, selectedEvent, isBookletModalOpen, closeAllSubModals]);
+
   // Calendar of Events helpers
   const [eventViewMode, setEventViewMode] = useState<'calendar' | 'list'>('calendar');
   const [calendarMonth, setCalendarMonth] = useState<number>(new Date().getMonth());
@@ -330,7 +368,6 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
-  const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
 
   const handleRefreshHotInfo = async () => {
     setIsFetchingHotInfo(true);
@@ -853,15 +890,15 @@ export const Drawers: React.FC<DrawersProps> = ({
       return;
     }
     if (item.drawerType === 'destinations') {
-      setSelectedDestination(item.rawItem as Destination);
+      openSubModal(() => setSelectedDestination(item.rawItem as Destination));
     } else if (item.drawerType === 'culture') {
-      setSelectedCulture(item.rawItem as CultureItem);
+      openSubModal(() => setSelectedCulture(item.rawItem as CultureItem));
     } else if (item.drawerType === 'culinary') {
-      setSelectedCulinary(item.rawItem as CulinaryItem);
+      openSubModal(() => setSelectedCulinary(item.rawItem as CulinaryItem));
     } else if (item.drawerType === 'souvenirs') {
-      setSelectedSouvenir(item.rawItem as SouvenirItem);
+      openSubModal(() => setSelectedSouvenir(item.rawItem as SouvenirItem));
     } else if (item.drawerType === 'events') {
-      setSelectedEvent(item.rawItem as EventItem);
+      openSubModal(() => setSelectedEvent(item.rawItem as EventItem));
     } else if (item.drawerType === 'hotinfo') {
       onOpenDrawer?.('hotinfo');
     }
@@ -997,10 +1034,10 @@ export const Drawers: React.FC<DrawersProps> = ({
           cultureItems={cultureItems}
           culinaryItems={culinaryItems}
           eventItems={eventItems}
-          onSelectDestination={(item) => setSelectedDestination(item)}
-          onSelectCulture={(item) => setSelectedCulture(item)}
-          onSelectCulinary={(item) => setSelectedCulinary(item)}
-          onSelectEvent={(item) => setSelectedEvent(item)}
+          onSelectDestination={(item) => openSubModal(() => setSelectedDestination(item))}
+          onSelectCulture={(item) => openSubModal(() => setSelectedCulture(item))}
+          onSelectCulinary={(item) => openSubModal(() => setSelectedCulinary(item))}
+          onSelectEvent={(item) => openSubModal(() => setSelectedEvent(item))}
         />
       ) : (
         <>
@@ -1429,7 +1466,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           {isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime}
                         </span>
                         <button
-                          onClick={() => setSelectedDestination(dest)}
+                          onClick={() => openSubModal(() => setSelectedDestination(dest))}
                           className="font-bold text-black hover:underline uppercase flex items-center gap-0.5 cursor-pointer"
                         >
                           <span>{translations[lang].btnDetail}</span>
@@ -1499,7 +1536,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </p>
                       <div className="flex justify-end pt-2 border-t border-gray-200">
                         <button
-                          onClick={() => setSelectedCulture(item)}
+                          onClick={() => openSubModal(() => setSelectedCulture(item))}
                           className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer"
                         >
                           {translations[lang].btnDetail}
@@ -1558,7 +1595,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
                       </div>
                       <button
-                        onClick={() => setSelectedCulinary(cul)}
+                        onClick={() => openSubModal(() => setSelectedCulinary(cul))}
                         className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
                       >
                         {translations[lang].btnDetail}
@@ -1621,7 +1658,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <div>
                           {/* Image Banner */}
                           <div
-                            onClick={() => setSelectedSouvenir(souv)}
+                            onClick={() => openSubModal(() => setSelectedSouvenir(souv))}
                             className="relative h-44 w-full overflow-hidden bg-gray-100 cursor-pointer"
                           >
                             <img
@@ -1652,7 +1689,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                               <span>{isEn ? 'Origin:' : 'Asal:'} {isEn && souv.originEn ? souv.originEn : souv.origin}</span>
                             </div>
                             <h3
-                              onClick={() => setSelectedSouvenir(souv)}
+                              onClick={() => openSubModal(() => setSelectedSouvenir(souv))}
                               className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm group-hover:text-red-600 transition-colors cursor-pointer line-clamp-1"
                             >
                               {isEn && souv.titleEn ? souv.titleEn : souv.title}
@@ -1698,7 +1735,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                             ) : (
                               <button
                                 type="button"
-                                onClick={() => setSelectedSouvenir(souv)}
+                                onClick={() => openSubModal(() => setSelectedSouvenir(souv))}
                                 className="w-full bg-white hover:bg-gray-100 text-gray-800 border border-gray-200 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 text-center cursor-pointer"
                               >
                                 <span>{translations[lang].btnDetail}</span>
@@ -1882,7 +1919,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </button>
 
                       <button
-                        onClick={() => setSelectedEvent(ev)}
+                        onClick={() => openSubModal(() => setSelectedEvent(ev))}
                         className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                       >
                         <span>{translations[lang].btnDetail}</span>
@@ -3417,7 +3454,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedDestination(null)}
+              onClick={handleSubModalClose}
               className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
@@ -3580,7 +3617,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             )}
 
             <button
-              onClick={() => setSelectedDestination(null)}
+              onClick={handleSubModalClose}
               className="w-full bg-black text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
             >
               {translations[lang].btnClose}
@@ -3594,7 +3631,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedCulture(null)}
+              onClick={handleSubModalClose}
               className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
@@ -3667,7 +3704,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             )}
 
             <button
-              onClick={() => setSelectedCulture(null)}
+              onClick={handleSubModalClose}
               className="w-full bg-black text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
             >
               {translations[lang].btnClose}
@@ -3681,7 +3718,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedCulinary(null)}
+              onClick={handleSubModalClose}
               className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
@@ -3752,7 +3789,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             )}
 
             <button
-              onClick={() => setSelectedCulinary(null)}
+              onClick={handleSubModalClose}
               className="w-full bg-black text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
             >
               {translations[lang].btnClose}
@@ -3766,7 +3803,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedSouvenir(null)}
+              onClick={handleSubModalClose}
               className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
@@ -3858,7 +3895,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </a>
                 ) : (
                   <button
-                    onClick={() => setSelectedSouvenir(null)}
+                    onClick={handleSubModalClose}
                     className="w-full bg-black text-white py-2.5 rounded-lg font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
                   >
                     {translations[lang].btnClose}
@@ -3875,7 +3912,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setSelectedEvent(null)}
+              onClick={handleSubModalClose}
               className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
@@ -3973,7 +4010,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             )}
 
             <button
-              onClick={() => setSelectedEvent(null)}
+              onClick={handleSubModalClose}
               className="w-full bg-black text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
             >
               {translations[lang].btnClose}
@@ -3985,7 +4022,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       {/* E-BOOKLET MAGAZINE READER & PRINT-TO-PDF MODAL */}
       <EBookletModal
         isOpen={isBookletModalOpen}
-        onClose={() => setIsBookletModalOpen(false)}
+        onClose={handleSubModalClose}
         lang={lang}
         dataStore={dataStore}
       />
