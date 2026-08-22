@@ -3,9 +3,7 @@
  */
 
 /**
- * Returns a safe YouTube link:
- * - If customUrl is provided (e.g., custom search query URL or specific approved video), it uses that.
- * - Otherwise, it automatically extracts the clean, primary name/title to generate a 100% copyright-free, high-precision search query on YouTube.
+ * Returns a clean, high-precision YouTube search link using the primary title/name.
  */
 export function getSafeYoutubeUrl(title?: string, contextTag: string = '', customUrl?: string): string {
   if (customUrl && customUrl.trim() !== '') {
@@ -16,7 +14,7 @@ export function getSafeYoutubeUrl(title?: string, contextTag: string = '', custo
     return 'https://www.youtube.com/results?search_query=Pariwisata+Sumatera+Barat';
   }
 
-  // 1. Extract clean primary title, stripping parenthetical descriptors, subtitle brackets, and internal tags
+  // 1. Strip parenthetical explanations, brackets, and secondary tags
   let cleanTitle = title
     .replace(/\s*\(\s*KEN\s*\)/gi, '')
     .replace(/\s*\(\s*Rekor\s*MURI\s*\)/gi, '')
@@ -27,43 +25,65 @@ export function getSafeYoutubeUrl(title?: string, contextTag: string = '', custo
     .replace(/\s+/g, ' ')
     .trim();
 
-  // If title became too short after stripping brackets, fall back to original title cleaned
   if (!cleanTitle || cleanTitle.length < 3) {
     cleanTitle = title.replace(/[^\w\s\d]/gi, ' ').replace(/\s+/g, ' ').trim();
   }
 
-  // 2. Clean contextTag
-  let cleanContext = (contextTag || '')
-    .replace(/\(.*?\)/g, '')
-    .replace(/[^\w\s\d]/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  const query = encodeURIComponent(cleanTitle);
+  return `https://www.youtube.com/results?search_query=${query}`;
+}
 
-  if (cleanContext && cleanTitle.toLowerCase().includes(cleanContext.toLowerCase())) {
-    cleanContext = '';
+/**
+ * Returns a dedicated, highly accurate YouTube search link for Events using ONLY the clean event name.
+ */
+export function getEventYoutubeUrl(event?: { id?: string; title?: string; videoUrl?: string } | null): string {
+  if (!event) return 'https://www.youtube.com/results?search_query=Event+Pariwisata+Sumatera+Barat';
+  if (event.videoUrl && event.videoUrl.trim() !== '') {
+    return event.videoUrl.trim();
   }
 
-  // 3. Build a concise, high-hit-rate search query
-  const queryParts = [cleanTitle];
-  if (cleanContext) {
-    queryParts.push(cleanContext);
+  let name = event.title || '';
+  const titleLower = name.toLowerCase();
+
+  // Specific clean event names for 100% accuracy and highest relevance
+  if (event.id === 'ev1' || titleLower.includes('pacu jawi')) name = 'Pacu Jawi';
+  else if (event.id === 'ev2' || titleLower.includes('tour de singkarak')) name = 'Tour de Singkarak';
+  else if (event.id === 'ev3' || titleLower.includes('tabuik')) name = 'Pesona Budaya Hoyak Tabuik Piaman';
+  else if (event.id === 'ev4' || titleLower.includes('rang solok')) name = 'Festival Rang Solok Baralek Gadang';
+  else if (event.id === 'ev5' || titleLower.includes('songket carnival')) name = 'Sawahlunto International Songket Carnival';
+  else if (event.id === 'ev6' || titleLower.includes('botuang')) name = 'Payakumbuh Botuang Festival';
+  else if (event.id === 'ev7' || titleLower.includes('pesona minangkabau')) name = 'Festival Pesona Minangkabau';
+  else if (event.id === 'ev8' || titleLower.includes('siti nurbaya')) name = 'Festival Siti Nurbaya Padang';
+  else if (event.id === 'ev9' || titleLower.includes('rakik')) name = 'Festival Rakik-Rakik Danau Maninjau';
+  else if (event.id === 'ev10' || titleLower.includes('5 danau')) name = 'Festival 5 Danau Solok';
+  else if (event.id === 'ev11' || titleLower.includes('music festival')) name = 'Sawahlunto International Music Festival';
+  else if (event.id === 'ev12' || titleLower.includes('pesona mentawai')) name = 'Festival Pesona Mentawai';
+  else if (event.id === 'ev13' || titleLower.includes('bakajang') || titleLower.includes('barajang')) name = 'Alek Bakajang Lima Puluh Kota';
+  else if (event.id === 'ev14' || titleLower.includes('langkisau')) name = 'Festival Langkisau Pesisir Selatan';
+  else if (event.id === 'ev15' || titleLower.includes('maapam')) name = 'Festival Tradisi Maapam Pasaman';
+  else if (event.id === 'ev16' || titleLower.includes('pasa harau')) name = 'Pasa Harau Art & Culture Festival';
+  else if (event.id === 'ev17' || titleLower.includes('muaro padang')) name = 'Festival Muaro Padang';
+  else if (event.id === 'ev18' || titleLower.includes('pamalayu')) name = 'Festival Budaya Pamalayu Dharmasraya';
+  else if (event.id === 'ev19' || titleLower.includes('pacu kudo')) name = 'Pacu Kuda Tradisional Minangkabau';
+  else if (event.id === 'ev20' || titleLower.includes('danau maninjau & kelok 44')) name = 'Festival Pesona Danau Maninjau';
+  else {
+    // General clean
+    name = name
+      .replace(/\s*\(\s*KEN\s*\)/gi, '')
+      .replace(/\s*\(\s*Rekor\s*MURI\s*\)/gi, '')
+      .replace(/\s*\/\s*SISSCa/gi, '')
+      .replace(/\s*\/\s*SIMFes/gi, '')
+      .replace(/\(.*?\)/g, '')
+      .replace(/\//g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!name || name.length < 3) {
+      name = (event.title || '').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
   }
 
-  // Add 'Sumatera Barat' only if regional identifier is not already in the query
-  const fullTextLower = `${cleanTitle} ${cleanContext}`.toLowerCase();
-  const regionalKeywords = [
-    'sumatera', 'sumbar', 'padang', 'minang', 'minangkabau',
-    'bukittinggi', 'pariaman', 'solok', 'sawahlunto', 'payakumbuh',
-    'mentawai', 'pasaman', 'maninjau', 'singkarak', 'harau', 'sijunjung',
-    'dharmasraya', 'pesisir selatan', 'tanah datar', 'agam', '50 kota', 'limapuluh kota'
-  ];
-
-  const hasRegionalContext = regionalKeywords.some(keyword => fullTextLower.includes(keyword));
-  if (!hasRegionalContext) {
-    queryParts.push('Sumatera Barat');
-  }
-
-  const query = encodeURIComponent(queryParts.join(' ').trim());
+  const query = encodeURIComponent(name.trim());
   return `https://www.youtube.com/results?search_query=${query}`;
 }
 
