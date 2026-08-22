@@ -44,8 +44,27 @@ export const Hero: React.FC<HeroProps> = ({
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isVolumeControlVisible, setIsVolumeControlVisible] = useState(true);
+  const volumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const toggleVideoVolume = () => {
+  const resetVolumeTimer = () => {
+    setIsVolumeControlVisible(true);
+    if (volumeTimerRef.current) clearTimeout(volumeTimerRef.current);
+    volumeTimerRef.current = setTimeout(() => {
+      setIsVolumeControlVisible(false);
+    }, 3500);
+  };
+
+  useEffect(() => {
+    resetVolumeTimer();
+    return () => {
+      if (volumeTimerRef.current) clearTimeout(volumeTimerRef.current);
+    };
+  }, []);
+
+  const toggleVideoVolume = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    resetVolumeTimer();
     if (!videoIframeRef.current?.contentWindow) return;
     const nextMuted = !isVideoMuted;
     setIsVideoMuted(nextMuted);
@@ -727,29 +746,19 @@ export const Hero: React.FC<HeroProps> = ({
                       <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
                       <span>{isEn ? 'Official Video Event' : 'Video Resmi Event Sumbar'}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={toggleVideoVolume}
-                        className={`px-2 py-0.5 rounded-md flex items-center gap-1 text-[9px] font-bold cursor-pointer transition-all ${
-                          isVideoMuted
-                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                            : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
-                        }`}
-                      >
-                        {isVideoMuted ? <VolumeX className="w-3 h-3 text-gray-500" /> : <Volume2 className="w-3 h-3 text-emerald-600 animate-pulse" />}
-                        <span>{isVideoMuted ? (isEn ? 'Sound: OFF' : 'Suara: MATI') : (isEn ? 'Sound: ON' : 'Suara: HIDUP')}</span>
-                      </button>
-                      {isKEN && (
-                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
-                          KEN
-                        </span>
-                      )}
-                    </div>
+                    {isKEN && (
+                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                        KEN Kemenparekraf
+                      </span>
+                    )}
                   </div>
 
-                  {/* Pure & Clean YouTube Player with Custom Floating Volume Button */}
-                  <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
+                  {/* Pure & Clean YouTube Player with Discreet Auto-Hiding Mini Volume Logo */}
+                  <div 
+                    onClick={resetVolumeTimer}
+                    onMouseEnter={() => setIsVolumeControlVisible(true)}
+                    className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0 group/video"
+                  >
                     <iframe
                       ref={videoIframeRef}
                       src={ytEmbedUrl}
@@ -759,27 +768,26 @@ export const Hero: React.FC<HeroProps> = ({
                       className="w-full h-full border-0 absolute inset-0"
                     />
 
-                    {/* Floating Touch-Friendly Volume Toggle Button (Mobile & Desktop) */}
+                    {/* Discreet Auto-Fading Mini Volume Icon (Fades out automatically so it won't block the video) */}
                     <button
                       type="button"
                       onClick={toggleVideoVolume}
-                      aria-label={isVideoMuted ? 'Nyalakan Suara Video' : 'Matikan Suara Video'}
-                      className={`absolute bottom-2.5 right-2.5 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-xl border backdrop-blur-md transition-all active:scale-90 cursor-pointer select-none ${
+                      aria-label={isVideoMuted ? 'Nyalakan Suara' : 'Matikan Suara'}
+                      className={`absolute bottom-2 right-2 z-20 w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-500 cursor-pointer shadow-lg select-none ${
+                        isVolumeControlVisible
+                          ? 'opacity-85 scale-100 pointer-events-auto'
+                          : 'opacity-0 scale-90 pointer-events-none group-hover/video:opacity-85 group-hover/video:scale-100 group-hover/video:pointer-events-auto'
+                      } ${
                         isVideoMuted
-                          ? 'bg-black/85 hover:bg-black text-white border-white/30 hover:border-white'
-                          : 'bg-emerald-600/90 hover:bg-emerald-600 text-white border-emerald-300 shadow-emerald-900/40'
+                          ? 'bg-black/60 hover:bg-black/90 text-white/90 border-white/20'
+                          : 'bg-emerald-600/80 hover:bg-emerald-600 text-white border-emerald-300/50'
                       }`}
+                      title={isVideoMuted ? (isEn ? 'Unmute' : 'Nyalakan Suara') : (isEn ? 'Mute' : 'Matikan Suara')}
                     >
                       {isVideoMuted ? (
-                        <>
-                          <VolumeX className="w-3.5 h-3.5 text-red-400 shrink-0" />
-                          <span className="text-[10px] font-jakarta font-bold tracking-wide">{isEn ? 'Unmute' : 'Nyalakan Suara'}</span>
-                        </>
+                        <VolumeX className="w-3.5 h-3.5 text-white/90" />
                       ) : (
-                        <>
-                          <Volume2 className="w-3.5 h-3.5 text-white shrink-0 animate-bounce" />
-                          <span className="text-[10px] font-jakarta font-bold tracking-wide">{isEn ? 'Mute' : 'Matikan Suara'}</span>
-                        </>
+                        <Volume2 className="w-3.5 h-3.5 text-white" />
                       )}
                     </button>
                   </div>

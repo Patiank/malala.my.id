@@ -98,7 +98,7 @@ export const getTiketHotelUrl = (dest?: Destination | null, appSettings?: any): 
 
 export const getTiketCarRentalUrl = (appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  return `https://www.tiket.com/sewa-mobil/padang?aff_id=${affId}&tracking_id=malala_sumbar`;
+  return `https://www.tiket.com/sewa-mobil?aff_id=${affId}&tracking_id=malala_sumbar`;
 };
 
 export const getTiketFlightUrl = (appSettings?: any): string => {
