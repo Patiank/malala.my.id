@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
@@ -42,43 +42,6 @@ export const Hero: React.FC<HeroProps> = ({
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
-  const videoIframeRef = useRef<HTMLIFrameElement>(null);
-  const [isVideoMuted, setIsVideoMuted] = useState(true);
-  const [isVolumeControlVisible, setIsVolumeControlVisible] = useState(true);
-  const volumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const resetVolumeTimer = () => {
-    setIsVolumeControlVisible(true);
-    if (volumeTimerRef.current) clearTimeout(volumeTimerRef.current);
-    volumeTimerRef.current = setTimeout(() => {
-      setIsVolumeControlVisible(false);
-    }, 3500);
-  };
-
-  useEffect(() => {
-    resetVolumeTimer();
-    return () => {
-      if (volumeTimerRef.current) clearTimeout(volumeTimerRef.current);
-    };
-  }, []);
-
-  const toggleVideoVolume = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    resetVolumeTimer();
-    if (!videoIframeRef.current?.contentWindow) return;
-    const nextMuted = !isVideoMuted;
-    setIsVideoMuted(nextMuted);
-    try {
-      if (nextMuted) {
-        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
-      } else {
-        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
-        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
-      }
-    } catch (err) {
-      console.warn('Error toggling video audio via postMessage:', err);
-    }
-  };
 
   // Secret Admin Trigger: Clicking Pemprov Sumbar logo 6 times in rapid sequence opens Admin Panel
   const logoClickCountRef = useRef(0);
@@ -753,43 +716,15 @@ export const Hero: React.FC<HeroProps> = ({
                     )}
                   </div>
 
-                  {/* Pure & Clean YouTube Player with Discreet Auto-Hiding Mini Volume Logo */}
-                  <div 
-                    onClick={resetVolumeTimer}
-                    onMouseEnter={() => setIsVolumeControlVisible(true)}
-                    className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0 group/video"
-                  >
+                  {/* Pure & Clean YouTube Player with Native Video Controls */}
+                  <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
                     <iframe
-                      ref={videoIframeRef}
                       src={ytEmbedUrl}
                       title={title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                       className="w-full h-full border-0 absolute inset-0"
                     />
-
-                    {/* Discreet Auto-Fading Mini Volume Icon (Fades out automatically so it won't block the video) */}
-                    <button
-                      type="button"
-                      onClick={toggleVideoVolume}
-                      aria-label={isVideoMuted ? 'Nyalakan Suara' : 'Matikan Suara'}
-                      className={`absolute bottom-2 right-2 z-20 w-7 h-7 rounded-full flex items-center justify-center border transition-all duration-500 cursor-pointer shadow-lg select-none ${
-                        isVolumeControlVisible
-                          ? 'opacity-85 scale-100 pointer-events-auto'
-                          : 'opacity-0 scale-90 pointer-events-none group-hover/video:opacity-85 group-hover/video:scale-100 group-hover/video:pointer-events-auto'
-                      } ${
-                        isVideoMuted
-                          ? 'bg-black/60 hover:bg-black/90 text-white/90 border-white/20'
-                          : 'bg-emerald-600/80 hover:bg-emerald-600 text-white border-emerald-300/50'
-                      }`}
-                      title={isVideoMuted ? (isEn ? 'Unmute' : 'Nyalakan Suara') : (isEn ? 'Mute' : 'Matikan Suara')}
-                    >
-                      {isVideoMuted ? (
-                        <VolumeX className="w-3.5 h-3.5 text-white/90" />
-                      ) : (
-                        <Volume2 className="w-3.5 h-3.5 text-white" />
-                      )}
-                    </button>
                   </div>
 
                   {/* Bottom Info: Title, Schedule & Location */}
