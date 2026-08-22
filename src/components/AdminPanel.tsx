@@ -2594,8 +2594,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">URL Video YouTube (Opsional)</label>
-                    <input type="text" name="videoUrl" value={formData.videoUrl || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" placeholder="https://youtube.com/..." />
+                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">URL Video / Pencarian YouTube (Opsional)</label>
+                    <input type="text" name="videoUrl" value={formData.videoUrl || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" placeholder="https://www.youtube.com/results?search_query=... atau https://youtube.com/watch?v=..." />
+                    <p className="text-[9px] text-gray-500 mt-0.5">💡 100% Bebas Hak Cipta: Anda bisa memasukkan link pencarian YouTube atau mengosongkannya agar sistem otomatis mencarikan video terkini di YouTube.</p>
                   </div>
 
                   <div>

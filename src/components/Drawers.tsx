@@ -11,6 +11,7 @@ import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
+import { getSafeYoutubeUrl } from '../utils/youtube';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -3735,17 +3736,15 @@ export const Drawers: React.FC<DrawersProps> = ({
               </a>
             )}
 
-            {selectedDestination.videoUrl && (
-              <a
-                href={selectedDestination.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2"
-              >
-                <Youtube className="w-4 h-4" />
-                {lang === 'en' ? 'Watch Video (YouTube)' : 'Tonton Video (YouTube)'}
-              </a>
-            )}
+            <a
+              href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <Youtube className="w-4 h-4" />
+              {lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}
+            </a>
 
             <button
               onClick={handleSubModalClose}
@@ -3822,17 +3821,15 @@ export const Drawers: React.FC<DrawersProps> = ({
               </a>
             )}
 
-            {selectedCulture.videoUrl && (
-              <a
-                href={selectedCulture.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2"
-              >
-                <Youtube className="w-4 h-4" />
-                {lang === 'en' ? 'Watch Video (YouTube)' : 'Tonton Video (YouTube)'}
-              </a>
-            )}
+            <a
+              href={getSafeYoutubeUrl(selectedCulture.title, selectedCulture.category || selectedCulture.origin, selectedCulture.videoUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <Youtube className="w-4 h-4" />
+              {lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}
+            </a>
 
             <button
               onClick={handleSubModalClose}
@@ -3907,17 +3904,15 @@ export const Drawers: React.FC<DrawersProps> = ({
               </a>
             )}
 
-            {selectedCulinary.videoUrl && (
-              <a
-                href={selectedCulinary.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2"
-              >
-                <Youtube className="w-4 h-4" />
-                {lang === 'en' ? 'Watch Video (YouTube)' : 'Tonton Video (YouTube)'}
-              </a>
-            )}
+            <a
+              href={getSafeYoutubeUrl(selectedCulinary.title, selectedCulinary.type || selectedCulinary.origin, selectedCulinary.videoUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <Youtube className="w-4 h-4" />
+              {lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}
+            </a>
 
             <button
               onClick={handleSubModalClose}
@@ -4128,17 +4123,15 @@ export const Drawers: React.FC<DrawersProps> = ({
               </a>
             )}
 
-            {selectedEvent.videoUrl && (
-              <a
-                href={selectedEvent.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2"
-              >
-                <Youtube className="w-4 h-4" />
-                {lang === 'en' ? 'Watch Video (YouTube)' : 'Tonton Video (YouTube)'}
-              </a>
-            )}
+            <a
+              href={getSafeYoutubeUrl(selectedEvent.title, selectedEvent.location, selectedEvent.videoUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <Youtube className="w-4 h-4" />
+              {lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}
+            </a>
 
             <button
               onClick={handleSubModalClose}
