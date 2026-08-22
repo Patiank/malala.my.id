@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-08-20T19:20:17.270Z",
+  "timestamp": "2026-08-22T08:50:32.356Z",
   "destinations": [
     {
       "id": "d1",
@@ -1909,7 +1909,7 @@
       "tagEn": "Postponed (Return in 2027)",
       "isKen": false,
       "schedule": "Vakum / Ditunda (Direncanakan Kembali Tahun 2027)",
-      "scheduleEn": "Postponed / Inactive (Scheduled Return in 2027)",
+      "scheduleEn": "On Hiatus / Postponed (Planned Return in 2027)",
       "monthIndex": 9,
       "highlights": [
         "Ajang Balap Sepeda Internasional UCI",
@@ -1939,8 +1939,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "16 – 28 Juni 2026 (Puncak 10 Muharram 1448 H)",
-      "scheduleEn": "June 16 – 28, 2026 (Peak 10 Muharram 1448 H)",
+      "schedule": "16 – 28 Juni 2026 (Puncak 28 Juni, Hoyak & Pelarungan)",
+      "scheduleEn": "June 16 – 28, 2026 (Climax June 28, Hoyak & Sea Ritual)",
       "monthIndex": 5,
       "highlights": [
         "Ritual Maarak & Hoyak Tabuik Spektakuler",
@@ -1970,8 +1970,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "16 – 18 September 2026",
-      "scheduleEn": "September 16 – 18, 2026",
+      "schedule": "September 2026 (Jadwal Pasti Segera Dikonfirmasi)",
+      "scheduleEn": "September 2026 (Exact Dates To Be Confirmed)",
       "monthIndex": 8,
       "highlights": [
         "Hamparan Sawah Solok Organik Kota Solok",
@@ -2032,8 +2032,8 @@
       "tag": "KEN / CoE",
       "tagEn": "KEN / CoE",
       "isKen": true,
-      "schedule": "11 – 13 Juli 2026",
-      "scheduleEn": "July 11 – 13, 2026",
+      "schedule": "Tidak Masuk KEN 2026 (Status Dikonfirmasi Ulang)",
+      "scheduleEn": "Not Listed in KEN 2026 (Status Under Review)",
       "monthIndex": 6,
       "highlights": [
         "Eksplorasi Artistik Bambu (Botuang)",
@@ -2063,8 +2063,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "4 – 7 Desember 2026",
-      "scheduleEn": "December 4 – 7, 2026",
+      "schedule": "25 – 27 Juni 2026 (Sudah Terselenggara)",
+      "scheduleEn": "June 25 – 27, 2026 (Already Held)",
       "monthIndex": 11,
       "highlights": [
         "Pawai Budaya Autentik Istano Pagaruyung",
@@ -2156,8 +2156,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "22 – 25 Oktober 2026",
-      "scheduleEn": "October 22 – 25, 2026",
+      "schedule": "9 – 11 Juli 2026",
+      "scheduleEn": "July 9 – 11, 2026",
       "monthIndex": 9,
       "highlights": [
         "Eksplorasi 5 Danau Alami Kabupaten Solok",
@@ -2187,8 +2187,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "15 – 17 Mei 2026",
-      "scheduleEn": "May 15 – 17, 2026",
+      "schedule": "17 – 18 Juli 2026",
+      "scheduleEn": "July 17 – 18, 2026",
       "monthIndex": 4,
       "highlights": [
         "Panggung Musik Etnik Kontemporer Dunia",
@@ -2218,8 +2218,8 @@
       "tag": "KEN 2026",
       "tagEn": "KEN 2026",
       "isKen": true,
-      "schedule": "4 – 7 Oktober 2026",
-      "scheduleEn": "October 4 – 7, 2026",
+      "schedule": "1 – 3 Oktober 2026",
+      "scheduleEn": "October 1 – 3, 2026",
       "monthIndex": 9,
       "highlights": [
         "Ritual Sakral Sikerei Mentawai",
@@ -2249,8 +2249,8 @@
       "tag": "KEN / Tradisi",
       "tagEn": "KEN / Tradition",
       "isKen": true,
-      "schedule": "Hari ke-3 s.d. ke-7 Syawal 1447 H (Pasca Idul Fitri)",
-      "scheduleEn": "3rd to 7th Day of Shawwal 1447 H (Post-Eid al-Fitr)",
+      "schedule": "24 – 28 Maret 2026 (Sudah Terselenggara)",
+      "scheduleEn": "March 24 – 28, 2026 (Already Held)",
       "monthIndex": 3,
       "highlights": [
         "Tradisi Berlayar Sampan Hias di Batang Kapur",

@@ -66,7 +66,7 @@ Hasilkan JSON murni tanpa markdown:
   "discoveredEvents": []
 }`;
 
-      const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -150,3 +150,4 @@ runAutonomousDailySync().catch(err => {
   console.error("Gagal sinkronisasi otonom:", err);
   process.exit(1);
 });
+

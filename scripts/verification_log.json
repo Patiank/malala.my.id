@@ -1,0 +1,88 @@
+{
+  "runAt": "2026-08-22T08:50:32.356Z",
+  "totalVerified": 20,
+  "totalUpdated": 10,
+  "changes": [
+    {
+      "id": "ev2",
+      "title": "Tour de Singkarak (Balap Sepeda Internasional)",
+      "oldSchedule": "Vakum / Ditunda (Direncanakan Kembali Tahun 2027)",
+      "newSchedule": "Vakum / Ditunda (Direncanakan Kembali Tahun 2027)",
+      "confidence": "high",
+      "source": "Rilis resmi Kemenparekraf & Pemprov Sumbar"
+    },
+    {
+      "id": "ev3",
+      "title": "Pesona Budaya Hoyak Tabuik Piaman (KEN)",
+      "oldSchedule": "16 – 28 Juni 2026 (Puncak 10 Muharram 1448 H)",
+      "newSchedule": "16 – 28 Juni 2026 (Puncak 28 Juni, Hoyak & Pelarungan)",
+      "confidence": "high",
+      "source": "pariamankota.go.id & indonesia.travel"
+    },
+    {
+      "id": "ev4",
+      "title": "Festival Rang Solok Baralek Gadang (KEN)",
+      "oldSchedule": "16 – 18 September 2026",
+      "newSchedule": "September 2026 (Jadwal Pasti Segera Dikonfirmasi)",
+      "confidence": "medium",
+      "source": "kemenpar.go.id (KEN 2026 list) - tanggal pasti belum dipublikasikan"
+    },
+    {
+      "id": "ev5",
+      "title": "Sawahlunto International Songket Carnival / SISSCa (KEN)",
+      "oldSchedule": "4 – 6 September 2026",
+      "newSchedule": "4 – 6 September 2026",
+      "confidence": "high",
+      "source": "tribunnews.com, sawahluntokota.go.id, indonesia.travel"
+    },
+    {
+      "id": "ev6",
+      "title": "Payakumbuh Botuang Festival (KEN)",
+      "oldSchedule": "11 – 13 Juli 2026",
+      "newSchedule": "Tidak Masuk KEN 2026 (Status Dikonfirmasi Ulang)",
+      "confidence": "high",
+      "source": "Kemenparekraf KEN 2026 official list"
+    },
+    {
+      "id": "ev7",
+      "title": "Festival Pesona Minangkabau (KEN)",
+      "oldSchedule": "4 – 7 Desember 2026",
+      "newSchedule": "25 – 27 Juni 2026 (Sudah Terselenggara)",
+      "confidence": "high",
+      "source": "spektroom.co.id, tanahdatar.go.id, indonesia.travel"
+    },
+    {
+      "id": "ev10",
+      "title": "Festival 5 Danau Solok (KEN)",
+      "oldSchedule": "22 – 25 Oktober 2026",
+      "newSchedule": "9 – 11 Juli 2026",
+      "confidence": "high",
+      "source": "indonesia.travel, kemenpar.go.id"
+    },
+    {
+      "id": "ev11",
+      "title": "Sawahlunto International Music Festival / SIMFes (KEN)",
+      "oldSchedule": "15 – 17 Mei 2026",
+      "newSchedule": "17 – 18 Juli 2026",
+      "confidence": "high",
+      "source": "indonesia.travel (Wonderful Indonesia)"
+    },
+    {
+      "id": "ev12",
+      "title": "Festival Pesona Mentawai (KEN)",
+      "oldSchedule": "4 – 7 Oktober 2026",
+      "newSchedule": "1 – 3 Oktober 2026",
+      "confidence": "high",
+      "source": "ayanaon.app, indonesia.travel, kemenpar.go.id"
+    },
+    {
+      "id": "ev13",
+      "title": "Alek Barajang / Alek Bakajang (KEN)",
+      "oldSchedule": "Hari ke-3 s.d. ke-7 Syawal 1447 H (Pasca Idul Fitri)",
+      "newSchedule": "24 – 28 Maret 2026 (Sudah Terselenggara)",
+      "confidence": "high",
+      "source": "limapuluhkotakab.go.id, hops.id"
+    }
+  ],
+  "method": "Google Search Grounding (Gemini API + manual web search)"
+}

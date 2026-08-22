@@ -374,7 +374,7 @@ export async function fetchAiItinerary(params: any) {
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-flash-lite-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -531,7 +531,7 @@ export async function fetchAiChat(message: string) {
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash'];
+    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -542,6 +542,10 @@ Pertanyaan Wisatawan: "${message}"`;
         const response = await ai.models.generateContent({
           model: modelName,
           contents: prompt,
+          config: {
+            temperature: 0.5,
+            tools: [{ googleSearch: {} } as any]
+          }
         });
 
         if (response && response.text && response.text.trim()) {
@@ -895,7 +899,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-2.5-flash'];
+    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -918,6 +922,10 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
         const response = await ai.models.generateContent({
           model: modelName,
           contents: prompt,
+          config: {
+            temperature: 0.2,
+            tools: [{ googleSearch: {} } as any]
+          }
         });
 
         const rawText = response.text || '';
@@ -1707,7 +1715,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 2. Client-side Gemini AI if API key is provided
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-lite-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1721,7 +1729,8 @@ export async function fetchAiHotInfo(language: string = 'id') {
           model: modelName,
           contents: prompt,
           config: {
-            temperature: 0.9,
+            temperature: 0.5,
+            tools: [{ googleSearch: {} } as any]
           }
         });
   
@@ -1871,7 +1880,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-2.5-flash', 'gemini-1.5-flash'];
+  const modelsToTry = ['gemini-flash-latest', 'gemini-flash-lite-latest'];
   for (const model of modelsToTry) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1959,7 +1968,7 @@ Format output JSON murni tanpa markdown:
 }`;
 
     const res = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-flash-latest',
       contents: prompt,
       config: { temperature: 0.7 }
     });
@@ -1980,6 +1989,7 @@ Format output JSON murni tanpa markdown:
     return fallback;
   }
 }
+
 
 
 
