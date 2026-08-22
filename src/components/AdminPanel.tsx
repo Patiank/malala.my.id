@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem, PendingEventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult } from '../utils/ai';
+import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult, generateSocialMediaDigest, SocialMediaDigest } from '../utils/ai';
+import { pingSearchEngineIndexNow } from '../utils/seo';
 import { EVENTS_SCHEDULE } from '../data/content';
 
 interface AdminPanelProps {
   dataStore: any;
 }
 
-type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings';
+type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings' | 'social';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminTab, setAdminTab] = useState<TabType>('destinations');
@@ -37,6 +38,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [isSeeding, setIsSeeding] = useState<boolean>(false);
   const [isAiScanning, setIsAiScanning] = useState<boolean>(false);
   const [scanResult, setScanResult] = useState<AutonomousScanResult | null>(null);
+
+  // Social Media Digest State
+  const [socialDigest, setSocialDigest] = useState<SocialMediaDigest | null>(null);
+  const [isGeneratingDigest, setIsGeneratingDigest] = useState<boolean>(false);
+  const [selectedSpotlightId, setSelectedSpotlightId] = useState<string>('');
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const handleSeedData = async () => {
     if (confirm('Apakah Anda yakin ingin memuat/reset ulang seluruh Data Awal (Destinasi, Budaya, Kuliner, Event, Unduhan, Hot Info) ke Firestore? Data default Minangkabau akan di-restore.')) {
@@ -89,6 +96,38 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     } finally {
       setIsAiScanning(false);
     }
+  };
+
+  const handleGenerateSocialDigest = async () => {
+    try {
+      setIsGeneratingDigest(true);
+      setAdminError(null);
+      
+      // Pick selected destination or pick an iconic one
+      const spotlight = destinations.find((d: any) => d.id === selectedSpotlightId) || destinations[0] || {
+        title: 'Lembah Harau',
+        location: 'Kabupaten Lima Puluh Kota',
+        description: 'Lembah tebing granit menjulang tinggi dengan air terjun alami dan keindahan sawah nan asri.'
+      };
+
+      // Pick nearest upcoming event
+      const upcoming = eventItems[0];
+
+      const digest = await generateSocialMediaDigest(spotlight, upcoming);
+      setSocialDigest(digest);
+      showSuccess(`🎉 Konten Media Sosial untuk "${spotlight.title}" berhasil diracik oleh AI!`);
+    } catch (e: any) {
+      console.warn("Social digest error:", e);
+      setAdminError('Gagal meracik konten media sosial');
+    } finally {
+      setIsGeneratingDigest(false);
+    }
+  };
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2500);
   };
 
   // Settings form state
@@ -921,7 +960,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   return (
     <div className="flex flex-col h-full bg-white relative">
       {/* Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-8 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
+      <div className="grid grid-cols-3 sm:grid-cols-9 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
         <button onClick={() => { setAdminTab('destinations'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'destinations' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Destinasi</button>
         <button onClick={() => { setAdminTab('culture'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culture' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Budaya</button>
         <button onClick={() => { setAdminTab('culinary'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culinary' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Kuliner</button>
@@ -937,6 +976,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         <button onClick={() => { setAdminTab('download'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'download' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Unduhan</button>
         <button onClick={() => { setAdminTab('hotinfo'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'hotinfo' ? 'bg-red-600 text-white shadow-xs' : 'text-red-700 bg-red-50 hover:bg-red-100'}`}>Hot Info</button>
         <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
+        <button onClick={() => { setAdminTab('social'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all flex items-center justify-center gap-1 ${adminTab === 'social' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xs' : 'text-purple-700 bg-purple-50 hover:bg-purple-100'}`}>
+          <span>📱 Sosmed AI</span>
+        </button>
       </div>
 
       {/* Global Search Bar */}
@@ -1747,6 +1789,127 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                 </button>
               </div>
             </div>
+          </div>
+        ) : adminTab === 'social' ? (
+          <div className="space-y-4 font-jakarta">
+            {/* Social Media Studio Header */}
+            <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-pink-900 text-white p-5 rounded-2xl border border-purple-500/30 shadow-lg space-y-3">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-pink-300">
+                    <Share2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm uppercase tracking-wider text-pink-200">
+                      Studio Konten Media Sosial Otonom AI
+                    </h4>
+                    <p className="text-[11px] text-gray-300">
+                      Racik caption Instagram puitis & broadcast WhatsApp viral dalam 1 klik tanpa perlu menulis manual.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleGenerateSocialDigest}
+                  disabled={isGeneratingDigest}
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all shadow-md disabled:opacity-50"
+                >
+                  <Wand2 className={`w-3.5 h-3.5 ${isGeneratingDigest ? 'animate-spin' : ''}`} />
+                  <span>{isGeneratingDigest ? 'Meracik Konten...' : '🤖 Racik Konten Sekarang'}</span>
+                </button>
+              </div>
+
+              {/* Destination Selector */}
+              <div className="pt-2 flex items-center gap-3 flex-wrap bg-black/20 p-3 rounded-xl border border-white/10">
+                <label className="text-xs font-bold text-gray-300 shrink-0">Pilih Destinasi Sorotan:</label>
+                <select
+                  value={selectedSpotlightId}
+                  onChange={(e) => setSelectedSpotlightId(e.target.value)}
+                  className="bg-neutral-800 text-white border border-white/20 rounded-lg px-3 py-1.5 text-xs font-jakarta focus:outline-none focus:border-pink-400 flex-1 min-w-[200px]"
+                >
+                  <option value="">-- Acak Cerdas (Pilihan AI) --</option>
+                  {destinations.map((d: any) => (
+                    <option key={d.id} value={d.id}>
+                      {d.title} ({d.regency || d.category})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Generated Content Output Cards */}
+            {socialDigest ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* 1. Instagram & Facebook Card */}
+                <div className="bg-white border border-purple-200 rounded-2xl p-4 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                    <div className="flex items-center gap-2 text-pink-600 font-bold text-xs uppercase">
+                      <Instagram className="w-4 h-4" />
+                      <span>Caption Instagram & Facebook</span>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(socialDigest.instagramCaption, 'ig')}
+                      className="bg-pink-50 hover:bg-pink-100 text-pink-700 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      {copiedKey === 'ig' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedKey === 'ig' ? 'Tersalin!' : 'Salin Caption'}</span>
+                    </button>
+                  </div>
+                  <pre className="text-xs text-gray-700 whitespace-pre-wrap font-jakarta bg-gray-50 p-3 rounded-xl border border-gray-100 leading-relaxed max-h-72 overflow-y-auto">
+                    {socialDigest.instagramCaption}
+                  </pre>
+                </div>
+
+                {/* 2. WhatsApp Broadcast Card */}
+                <div className="bg-white border border-emerald-200 rounded-2xl p-4 shadow-sm space-y-3">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-2.5">
+                    <div className="flex items-center gap-2 text-emerald-700 font-bold text-xs uppercase">
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Pesan Broadcast WhatsApp / Telegram</span>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(socialDigest.whatsappBroadcast, 'wa')}
+                      className="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      {copiedKey === 'wa' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedKey === 'wa' ? 'Tersalin!' : 'Salin Broadcast'}</span>
+                    </button>
+                  </div>
+                  <pre className="text-xs text-gray-700 whitespace-pre-wrap font-jakarta bg-emerald-50/40 p-3 rounded-xl border border-emerald-100 leading-relaxed max-h-72 overflow-y-auto">
+                    {socialDigest.whatsappBroadcast}
+                  </pre>
+                </div>
+
+                {/* 3. TikTok & Reels Hook Script */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm space-y-2 md:col-span-2">
+                  <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                    <div className="flex items-center gap-2 text-gray-900 font-bold text-xs uppercase">
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <span>Hook Video TikTok / Reels (15 Detik)</span>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(socialDigest.tiktokScriptHook, 'tt')}
+                      className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      {copiedKey === 'tt' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedKey === 'tt' ? 'Tersalin!' : 'Salin Script Hook'}</span>
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-700 font-jakarta bg-amber-50/50 p-3 rounded-xl border border-amber-200 leading-relaxed">
+                    💡 &ldquo;{socialDigest.tiktokScriptHook}&rdquo;
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-purple-50/40 border border-purple-200 rounded-2xl p-8 text-center space-y-2">
+                <span className="text-3xl">✨</span>
+                <h5 className="font-bold text-sm text-purple-950">Belum Ada Konten yang Dirancik</h5>
+                <p className="text-xs text-gray-500 max-w-md mx-auto">
+                  Klik tombol <strong>&quot;🤖 Racik Konten Sekarang&quot;</strong> di atas untuk membiarkan AI menyusun caption Instagram, siaran WhatsApp, dan hook video TikTok secara otomatis.
+                </p>
+              </div>
+            )}
           </div>
         ) : (editingId && formData) ? (
           <div className="bg-gray-50 border border-gray-200 p-4 sm:p-5 rounded-xl space-y-4 shadow-sm">

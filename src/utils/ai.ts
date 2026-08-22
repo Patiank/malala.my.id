@@ -1907,5 +1907,79 @@ Waktu saat ini: ${nowStr}`;
   };
 }
 
+export interface SocialMediaDigest {
+  instagramCaption: string;
+  whatsappBroadcast: string;
+  tiktokScriptHook: string;
+  hashtags: string[];
+  spotlightTitle: string;
+  generatedAt: string;
+}
+
+/**
+ * Autonomous AI Social Media Content Generator
+ * Creates viral, engaging Instagram captions and WhatsApp broadcasts for tourism promotion.
+ */
+export async function generateSocialMediaDigest(
+  spotlightItem: { title: string; category?: string; description?: string; schedule?: string; location?: string },
+  upcomingEvent?: { title: string; schedule: string; location: string }
+): Promise<SocialMediaDigest> {
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const nowStr = new Date().toISOString();
+
+  const fallback: SocialMediaDigest = {
+    spotlightTitle: spotlightItem.title,
+    instagramCaption: `✨ PESONA RANAH MINANG HARI INI: ${spotlightItem.title.toUpperCase()} ✨\n\nTakambang rimbun alam Sumatera Barat menyuguhkan keajaiban yang tak pernah habis untuk dijelajahi. Dari megahnya alam hingga kehangatan budaya, Ranah Minang selalu memanggilmu pulang.\n\n📍 Lokasi: ${spotlightItem.location || 'Sumatera Barat'}\n${upcomingEvent ? `📅 Agenda Terdekat: ${upcomingEvent.title} (${upcomingEvent.schedule})\n` : ''}\nYuk rencanakan liburanmu bersama MALALA — Panduan Wisata Resmi Sumatera Barat!\n\n🌐 Kunjungi: malala.my.id\n\n#WisataSumbar #PesonaIndonesia #MalalaSumbar #WonderfulIndonesia #Minangkabau #PariwisataSumbar #ExploreSumbar`,
+    whatsappBroadcast: `🌟 *KABA WISATA SUMATERA BARAT HARI IKO* 🌟\n\n*Destinasi Pilihan:* ${spotlightItem.title}\n📍 *Lokasi:* ${spotlightItem.location || 'Sumatera Barat'}\n\n${spotlightItem.description ? spotlightItem.description.slice(0, 180) + '...' : ''}\n\n${upcomingEvent ? `🎉 *Event Terdekat:* ${upcomingEvent.title}\n🗓️ *Jadwal:* ${upcomingEvent.schedule}\n` : ''}\n📲 Dapatkan panduan lengkap & itinerary cerdas di: https://malala.my.id\n\n_Bantu bagikan ke sanak famili yang ingin liburan ke Sumbar!_`,
+    tiktokScriptHook: `POV: Kamu lagi liburan ke Sumatera Barat dan nemuin surga tersembunyi bernama ${spotlightItem.title}! Ini dia alasan kenapa kamu wajib ke sini tahun ini...`,
+    hashtags: ['#WisataSumbar', '#PesonaIndonesia', '#MalalaSumbar', '#Minangkabau', '#ExploreSumbar', '#WonderfulIndonesia'],
+    generatedAt: nowStr
+  };
+
+  if (!viteApiKey) return fallback;
+
+  try {
+    const ai = new GoogleGenAI({ apiKey: viteApiKey });
+    const prompt = `Anda adalah Social Media Content Specialist Pariwisata Sumatera Barat (Malala / malala.my.id).
+Buatkan konten media sosial harian yang sangat estetik, menggugah rasa rindu kampung halaman / hasrat berlibur, dan siap posting.
+
+Data Destinasi Hari Ini:
+- Judul: ${spotlightItem.title}
+- Kategori/Lokasi: ${spotlightItem.location || spotlightItem.category || 'Sumatera Barat'}
+- Deskripsi: ${spotlightItem.description || ''}
+${upcomingEvent ? `- Event Terdekat: ${upcomingEvent.title} (${upcomingEvent.schedule} di ${upcomingEvent.location})` : ''}
+
+Format output JSON murni tanpa markdown:
+{
+  "instagramCaption": "teks caption Instagram lengkap dengan emoji, storytelling Minangkabau yang puitis dan ajakan berkunjung",
+  "whatsappBroadcast": "teks pesan broadcast WhatsApp yang rapi dengan format tebal/miring dan link malala.my.id",
+  "tiktokScriptHook": "hook script video pendek 15 detik",
+  "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
+}`;
+
+    const res = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: { temperature: 0.7 }
+    });
+
+    const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+    const parsed = JSON.parse(cleanJson);
+
+    return {
+      spotlightTitle: spotlightItem.title,
+      instagramCaption: parsed.instagramCaption || fallback.instagramCaption,
+      whatsappBroadcast: parsed.whatsappBroadcast || fallback.whatsappBroadcast,
+      tiktokScriptHook: parsed.tiktokScriptHook || fallback.tiktokScriptHook,
+      hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags : fallback.hashtags,
+      generatedAt: nowStr
+    };
+  } catch (e) {
+    console.warn('Social media digest generation fallback:', e);
+    return fallback;
+  }
+}
+
+
 
 

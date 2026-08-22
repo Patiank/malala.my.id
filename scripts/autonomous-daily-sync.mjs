@@ -123,6 +123,24 @@ Hasilkan JSON murni tanpa markdown:
     isAutonomousSyncEnabled: true
   }, { merge: true });
 
+  // 4. Autonomous IndexNow SEO Search Engine Ping (Bing & Google API)
+  try {
+    console.log("⚡ Menjalankan Auto-IndexNow SEO Ping ke Google & Bing...");
+    await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({
+        host: 'malala.my.id',
+        key: 'malala-sumbar-2026-seo-token',
+        keyLocation: 'https://malala.my.id/malala-sumbar-2026-seo-token.txt',
+        urlList: ['https://malala.my.id/', 'https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf']
+      })
+    });
+    console.log("   ✓ IndexNow SEO Ping terkirim!");
+  } catch (e) {
+    console.warn("   ⚠️ IndexNow SEO Ping notice:", e.message);
+  }
+
   console.log("🎉 [MALALA AUTONOMOUS ENGINE] Sinkronisasi harian sukses diselesaikan!");
   process.exit(0);
 }

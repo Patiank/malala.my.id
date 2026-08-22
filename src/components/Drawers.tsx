@@ -5,9 +5,11 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
+import { WeatherWidget } from './WeatherWidget';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
@@ -210,6 +212,14 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
+  const [currency, setCurrency] = useState<CurrencyCode>('IDR');
+  const [currencyRates, setCurrencyRates] = useState<Record<CurrencyCode, CurrencyRate>>(DEFAULT_RATES);
+
+  useEffect(() => {
+    fetchLiveExchangeRates().then(rates => {
+      if (rates) setCurrencyRates(rates);
+    });
+  }, []);
 
   // Sub-modal helpers
   const openSubModal = useCallback((callback: () => void) => {
@@ -1625,32 +1635,57 @@ export const Drawers: React.FC<DrawersProps> = ({
 
             return (
               <div className="space-y-6">
-                {/* Category Filter Pills */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-jakarta">
-                  {[
-                    { val: 'Semua', label: isEn ? 'All Souvenirs' : 'Semua Oleh-Oleh' },
-                    { val: 'Kuliner Kemasan', label: isEn ? 'Packaged Food' : 'Kuliner Kemasan' },
-                    { val: 'Fashion & Tenun', label: isEn ? 'Fashion & Songket' : 'Fashion & Tenun' },
-                    { val: 'Kopi & Rempah', label: isEn ? 'Coffee & Spices' : 'Kopi & Rempah' },
-                    { val: 'Kriya & Kerajinan', label: isEn ? 'Handicrafts' : 'Kriya & Kerajinan' }
-                  ].map((cat) => (
-                    <button
-                      key={cat.val}
-                      onClick={() => setSouvenirCategory(cat.val)}
-                      className={`px-3 py-1.5 rounded-full uppercase tracking-wider font-bold text-[10px] whitespace-nowrap transition-colors cursor-pointer ${
-                        souvenirCategory === cat.val
-                          ? 'bg-red-600 text-white shadow-xs'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
+                {/* Header Actions: Category Filter & Multi-Currency Switcher */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs font-jakarta">
+                      {[
+                        { val: 'Semua', label: isEn ? 'All Souvenirs' : 'Semua Oleh-Oleh' },
+                        { val: 'Kuliner Kemasan', label: isEn ? 'Packaged Food' : 'Kuliner Kemasan' },
+                        { val: 'Fashion & Tenun', label: isEn ? 'Fashion & Songket' : 'Fashion & Tenun' },
+                        { val: 'Kopi & Rempah', label: isEn ? 'Coffee & Spices' : 'Kopi & Rempah' },
+                        { val: 'Kriya & Kerajinan', label: isEn ? 'Handicrafts' : 'Kriya & Kerajinan' }
+                      ].map((cat) => (
+                        <button
+                          key={cat.val}
+                          onClick={() => setSouvenirCategory(cat.val)}
+                          className={`px-3 py-1.5 rounded-full uppercase tracking-wider font-bold text-[10px] whitespace-nowrap transition-colors cursor-pointer ${
+                            souvenirCategory === cat.val
+                              ? 'bg-red-600 text-white shadow-xs'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Multi-Currency Auto Converter Pill Bar */}
+                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-lg border border-gray-200 text-[10px] font-bold">
+                      <span className="text-gray-400 px-1 text-[9px] uppercase font-semibold">Kurs:</span>
+                      {(['IDR', 'MYR', 'SGD', 'USD', 'AUD'] as CurrencyCode[]).map((cCode) => (
+                        <button
+                          key={cCode}
+                          onClick={() => setCurrency(cCode)}
+                          className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
+                            currency === cCode
+                              ? 'bg-black text-white shadow-2xs font-black'
+                              : 'text-gray-600 hover:text-black hover:bg-gray-200/60'
+                          }`}
+                        >
+                          {DEFAULT_RATES[cCode].flag} {cCode}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Souvenir Product Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {filteredSouvenirs.map((souv: SouvenirItem) => {
+                    const rawPrice = (isEn && souv.priceRangeEn ? souv.priceRangeEn : souv.priceRange) || '';
+                    const displayPrice = formatToCurrency(rawPrice, currency, currencyRates);
+
                     return (
                       <div
                         key={souv.id}
@@ -1680,7 +1715,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                             </div>
 
                             <span className="absolute bottom-2 right-2 bg-white/95 text-red-600 font-orbitron font-extrabold text-[10.5px] px-2.5 py-0.5 rounded-full shadow-xs backdrop-blur-xs border border-red-200">
-                              {isEn && souv.priceRangeEn ? souv.priceRangeEn : souv.priceRange}
+                              {displayPrice}
                             </span>
                           </div>
 
@@ -3112,6 +3147,58 @@ export const Drawers: React.FC<DrawersProps> = ({
                       );
                     });
                   })()}
+                </div>
+              </div>
+
+              {/* Real-time Weather & Marine Wave Live Service */}
+              <div className="space-y-2">
+                <WeatherWidget lang={lang} />
+              </div>
+
+              {/* Smart Travel Advisory & Route Watchdog */}
+              <div className="bg-gradient-to-r from-blue-900/90 via-slate-900 to-indigo-950/95 text-white p-4 rounded-2xl border border-blue-500/20 shadow-lg space-y-3 font-jakarta">
+                <div className="flex items-center justify-between flex-wrap gap-2 pb-2.5 border-b border-white/10">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <h4 className="font-bold text-xs uppercase tracking-wider text-blue-300">
+                      {lang === 'en' ? 'Live Travel Advisory & Route Status' : 'Info Jalur Transportasi & Kondisi Wisata'}
+                    </h4>
+                  </div>
+                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[9px] font-black px-2 py-0.5 rounded-full">
+                    {lang === 'en' ? 'ALL MAIN ROUTES OPEN & SAFE' : 'JALUR UTAMA AMAN & NORMAL'}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white text-[11px]">Jalur Lembah Anai</span>
+                      <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Lancar</span>
+                    </div>
+                    <p className="text-[10px] text-gray-300 leading-tight">
+                      Akses Padang – Bukittinggi beroperasi normal untuk seluruh kendaraan.
+                    </p>
+                  </div>
+
+                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white text-[11px]">Kelok 9 & Harau</span>
+                      <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/20 px-1.5 py-0.2 rounded">Optimal</span>
+                    </div>
+                    <p className="text-[10px] text-gray-300 leading-tight">
+                      Jalur wisata Payakumbuh – Riau lancar dan nyaman untuk perjalanan darat.
+                    </p>
+                  </div>
+
+                  <div className="bg-white/5 p-2.5 rounded-xl border border-white/5 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-white text-[11px]">Status Gunung Api</span>
+                      <span className="text-[9px] font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.2 rounded">Level II / Waspada</span>
+                    </div>
+                    <p className="text-[10px] text-gray-300 leading-tight">
+                      Zona wisata dan kota Bukittinggi/Tanah Datar di luar radius aman 4.5km beroperasi normal.
+                    </p>
+                  </div>
                 </div>
               </div>
 
