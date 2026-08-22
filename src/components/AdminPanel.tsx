@@ -4,6 +4,7 @@ import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, C
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { generateCatalogItemWithAi, generateCatalogItemFallback } from '../utils/ai';
+import { EVENTS_SCHEDULE } from '../data/content';
 
 interface AdminPanelProps {
   dataStore: any;
@@ -53,6 +54,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     revealImage: appSettings?.revealImage || '',
     baseVideo: appSettings?.baseVideo || '',
     spotlightDisplayMode: appSettings?.spotlightDisplayMode || 'both',
+    featuredVideoEventId: appSettings?.featuredVideoEventId || 'auto',
     heroTextColor: appSettings?.heroTextColor || '#000000',
     heroTextTheme: appSettings?.heroTextTheme || 'black',
     heroTextShadow: appSettings?.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
@@ -72,6 +74,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         revealImage: appSettings.revealImage || '',
         baseVideo: appSettings.baseVideo || '',
         spotlightDisplayMode: appSettings.spotlightDisplayMode || 'both',
+        featuredVideoEventId: appSettings.featuredVideoEventId || 'auto',
         heroTextColor: appSettings.heroTextColor || '#000000',
         heroTextTheme: appSettings.heroTextTheme || 'black',
         heroTextShadow: appSettings.heroTextShadow !== undefined ? appSettings.heroTextShadow : true,
@@ -1398,6 +1401,41 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                         </div>
                       </div>
                     </button>
+                  </div>
+
+                  {/* Featured Video Event Selection (Manual Admin Choice) */}
+                  <div className="pt-3 mt-3 border-t border-gray-200">
+                    <label className="block text-xs font-bold text-gray-800 mb-1 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-red-500 font-extrabold text-sm">🎬</span>
+                        <span>Pilih Event Unggulan Banner Video (Halaman Utama)</span>
+                      </span>
+                      <span className="text-[10px] bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded">
+                        Pilihan Admin
+                      </span>
+                    </label>
+                    <p className="text-[10px] text-gray-500 mb-2">
+                      Pilih event mana yang akan ditampilkan pada <strong>Banner Video ("Event Unggulan Bulan Ini")</strong> di homepage, atau pilih otomatis.
+                    </p>
+
+                    <select
+                      value={settingsFormData.featuredVideoEventId || 'auto'}
+                      onChange={(e) => setSettingsFormData(prev => ({ ...prev, featuredVideoEventId: e.target.value }))}
+                      className="w-full bg-white border-2 border-gray-300 hover:border-black rounded-lg p-2.5 text-xs font-jakarta font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+                    >
+                      <option value="auto">🤖 Otomatis (Event Terdekat yang Memiliki Video YouTube)</option>
+                      <option value="none">🖼️ Nonaktifkan Video (Tampilkan Banner Gambar Saja)</option>
+                      <optgroup label="── Daftar Event Pariwisata Sumbar ──">
+                        {(eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE).map((ev: any) => {
+                          const hasVideo = Boolean(ev.videoUrl || ev.youtubeUrl);
+                          return (
+                            <option key={ev.id} value={ev.id}>
+                              {hasVideo ? '🎬 ' : '⚠️ (Tanpa Video) '} {ev.title} — [{ev.schedule}]
+                            </option>
+                          );
+                        })}
+                      </optgroup>
+                    </select>
                   </div>
                 </div>
               </div>

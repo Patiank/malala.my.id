@@ -301,39 +301,36 @@ export const Hero: React.FC<HeroProps> = ({
   const eventsList = eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE;
 
   const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
+  const featuredVideoEventId = appSettings?.featuredVideoEventId || 'auto';
 
-  // 1. Video Event: Only displayed if event is in H-2 to H+2 window AND has a valid YouTube video
+  // 1. Video Event Selection: Admin chosen event or smart auto selection
   const videoEvent = useMemo(() => {
-    if (spotlightDisplayMode === 'event') return undefined;
+    if (spotlightDisplayMode === 'event' || featuredVideoEventId === 'none') return undefined;
 
     const evaluated = eventsList.map(item => ({
       item,
       timeline: evaluateEventTimeline(item.schedule, item.isKen)
     }));
 
-    // Find event strictly in H-2 to H+2 with a working YouTube video
-    const liveWithVideo = evaluated.filter(e => 
-      e.timeline.isLiveH2Window && Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl))
-    );
-
-    if (liveWithVideo.length > 0) {
-      liveWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-      return liveWithVideo[0];
-    }
-
-    // If admin explicitly set mode to 'video', search across all events with video as override
-    if (spotlightDisplayMode === 'video') {
-      const allWithVideo = evaluated.filter(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-      if (allWithVideo.length > 0) {
-        allWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-        return allWithVideo[0];
+    // Option A: Admin explicitly selected a specific event ID
+    if (featuredVideoEventId && featuredVideoEventId !== 'auto' && featuredVideoEventId !== 'none') {
+      const selected = evaluated.find(e => e.item.id === featuredVideoEventId);
+      if (selected && Boolean(getYoutubeEmbedUrl(selected.item.videoUrl || (selected.item as any).youtubeUrl))) {
+        return selected;
       }
     }
 
-    return undefined;
-  }, [eventsList, spotlightDisplayMode]);
+    // Option B: Auto Mode — find closest/best scheduled event with a valid YouTube video
+    const allWithVideo = evaluated.filter(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+    if (allWithVideo.length > 0) {
+      allWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+      return allWithVideo[0];
+    }
 
-  // 2. Image Banner Events: Automatically replaces video banner when no H-2 to H+2 video event is active
+    return undefined;
+  }, [eventsList, spotlightDisplayMode, featuredVideoEventId]);
+
+  // 2. Image Banner Events: Automatically displays photo banner if no video is active or in banner mode
   const bannerEvents = useMemo(() => {
     // If videoEvent is active and display mode is not forcing both, video takes the spotlight
     if (videoEvent && spotlightDisplayMode !== 'both') return [];
@@ -343,16 +340,20 @@ export const Hero: React.FC<HeroProps> = ({
       timeline: evaluateEventTimeline(item.schedule, item.isKen)
     }));
 
+    const candidateList = (videoEvent && spotlightDisplayMode === 'both')
+      ? evaluated.filter(e => e.item.id !== videoEvent.item.id)
+      : evaluated;
+
     // Prioritize 2-week upcoming events (H-14 to H-2) or any active event without video
-    const upcoming2Weeks = evaluated.filter(e => e.timeline.isUpcoming2Weeks || (e.timeline.isLiveH2Window && !getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+    const upcoming2Weeks = candidateList.filter(e => e.timeline.isUpcoming2Weeks || (e.timeline.isLiveH2Window && !getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
     if (upcoming2Weeks.length > 0) {
       upcoming2Weeks.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
       return upcoming2Weeks;
     }
 
     // Fallback: Closest upcoming events in the calendar so the banner remains a helpful information hub
-    evaluated.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-    return evaluated.slice(0, 3);
+    candidateList.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+    return candidateList.slice(0, 3);
   }, [eventsList, videoEvent, spotlightDisplayMode]);
 
   // Carousel index for banner events & rotation with pause on hover

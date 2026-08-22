@@ -171,6 +171,7 @@ export interface AppSettings {
   revealImage?: string;
   baseVideo?: string;
   spotlightDisplayMode?: 'both' | 'video' | 'event';
+  featuredVideoEventId?: string;
   allowedAdminEmails?: string[];
   heroTextColor?: string;
   heroTextTheme?: 'black' | 'white' | 'red' | 'gold' | 'custom';
