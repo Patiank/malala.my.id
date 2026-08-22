@@ -100,19 +100,6 @@ export const getDestinationGoogleMapsUrl = (dest?: Destination | null): string =
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
 };
 
-export const getCultureGoogleMapsUrl = (culture?: CultureItem | null): string => {
-  if (!culture) return 'https://www.google.com/maps/search/?api=1&query=Budaya+Minangkabau+Sumatera+Barat';
-  if (culture.mapUrl && culture.mapUrl.trim()) {
-    const trimmed = culture.mapUrl.trim();
-    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
-  }
-  const cleanTitle = (culture.title || '').replace(/[^\w\s\d]/gi, ' ').trim();
-  const cleanOrigin = (culture.origin || 'Sumatera Barat').replace(/[^\w\s\d]/gi, ' ').trim();
-  const query = encodeURIComponent(`Kebudayaan ${cleanTitle} ${cleanOrigin}`);
-  return `https://www.google.com/maps/search/?api=1&query=${query}`;
-};
-
 export const getCulinaryGoogleMapsUrl = (culinary?: CulinaryItem | null): string => {
   if (!culinary) return 'https://www.google.com/maps/search/?api=1&query=Kuliner+Khas+Minang+Sumatera+Barat';
   if (culinary.mapUrl && culinary.mapUrl.trim()) {
@@ -1647,27 +1634,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
-                        <a
-                          href={getCultureGoogleMapsUrl(item)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
-                          title={isEn ? "View on Google Maps" : "Cari di Maps"}
-                        >
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
-                        </a>
-
+                      <div className="pt-1.5 border-t border-gray-200/60">
                         <a
                           href={getSafeYoutubeUrl(item.title, item.category || item.origin, item.videoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                          className="w-full bg-red-600 hover:bg-red-700 text-white py-1.5 px-3 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
                           title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                         >
                           <Youtube className="w-3.5 h-3.5" />
-                          <span>YouTube</span>
+                          <span>{isEn ? "Watch on YouTube" : "Tonton di YouTube"}</span>
                         </a>
                       </div>
                     </div>
@@ -3971,16 +3947,6 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            {/* GOOGLE MAPS CULTURE LOCATION BUTTON */}
-            <a
-              href={getCultureGoogleMapsUrl(selectedCulture)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-            >
-              <MapPin className="w-4 h-4 text-white" />
-              <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
-            </a>
 
             <a
               href={getSafeYoutubeUrl(selectedCulture.title, selectedCulture.category || selectedCulture.origin, selectedCulture.videoUrl)}
