@@ -2241,49 +2241,59 @@ export const Drawers: React.FC<DrawersProps> = ({
                   {/* Dual-Partner Logistics & Booking Suite (Tiket.com & Traveloka) */}
                   <div className={`shrink-0 text-white p-3.5 rounded-xl space-y-2.5 shadow-md transition-all ${
                     bookingPartner === 'tiket'
-                      ? 'bg-gradient-to-br from-[#0052cc] via-[#0064D2] to-[#003d80] border border-blue-400/40'
-                      : 'bg-gradient-to-br from-blue-600 to-indigo-700'
+                      ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
+                      : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
                   }`}>
                     <div className="flex items-center justify-between flex-wrap gap-2">
                       <div className="flex items-center gap-1.5">
-                        <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs ${
-                          bookingPartner === 'tiket' ? 'bg-[#FEDD00] text-blue-950' : 'bg-white text-blue-700'
-                        }`}>
-                          {bookingPartner === 'tiket' ? '🎫 Tiket.com' : '✈️ Traveloka'}
-                        </span>
+                        {bookingPartner === 'tiket' ? (
+                          <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                            <span>tiket.com</span>
+                          </span>
+                        ) : (
+                          <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                            <span>✈️</span>
+                            <span>traveloka</span>
+                          </span>
+                        )}
                         <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
                           {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
                         </span>
                       </div>
 
                       {/* Partner Switcher Tabs */}
-                      <div className="flex items-center bg-black/25 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
+                      <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
                         <button
                           type="button"
                           onClick={() => setBookingPartner('tiket')}
-                          className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
                             bookingPartner === 'tiket'
-                              ? 'bg-white text-[#0064D2] shadow-2xs font-extrabold'
+                              ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
                               : 'text-white/80 hover:text-white'
                           }`}
                         >
-                          Tiket.com
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                          <span>tiket.com</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => setBookingPartner('traveloka')}
-                          className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
                             bookingPartner === 'traveloka'
-                              ? 'bg-white text-blue-700 shadow-2xs font-extrabold'
+                              ? 'bg-white text-[#0194F3] shadow-sm font-black'
                               : 'text-white/80 hover:text-white'
                           }`}
                         >
-                          Traveloka
+                          <span>✈️</span>
+                          <span>Traveloka</span>
                         </button>
                       </div>
                     </div>
 
-                    <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
+                    <p className={`text-xs font-jakarta leading-relaxed ${
+                      bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
+                    }`}>
                       {bookingPartner === 'tiket'
                         ? (lang === 'en'
                             ? 'Book your hotels, car rental in Padang, flights to BIM Airport, and attractions seamlessly via Tiket.com.'
@@ -2299,7 +2309,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href={getTiketHotelUrl(null, dataStore?.appSettings)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-[#FEDD00] text-blue-950 py-2 px-2.5 rounded-lg font-jakarta font-extrabold text-[11px] hover:bg-yellow-300 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
                         >
                           <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2308,7 +2318,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href={getTiketCarRentalUrl(dataStore?.appSettings)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2317,7 +2327,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href={getTiketFlightUrl(dataStore?.appSettings)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2326,7 +2336,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2338,7 +2348,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href="https://www.traveloka.com/id-id/hotel"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white text-blue-700 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
                         >
                           <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2347,7 +2357,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href="https://www.traveloka.com/id-id/car-rental"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2356,7 +2366,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2365,7 +2375,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                           href="https://www.traveloka.com/id-id/activities"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                         >
                           <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
                           <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2665,49 +2675,59 @@ export const Drawers: React.FC<DrawersProps> = ({
                         {/* Dual-Partner Logistics & Booking Suite on Mobile (Tiket.com & Traveloka) */}
                         <div className={`text-white p-3.5 rounded-xl space-y-2.5 shadow-md transition-all ${
                           bookingPartner === 'tiket'
-                            ? 'bg-gradient-to-br from-[#0052cc] via-[#0064D2] to-[#003d80] border border-blue-400/40'
-                            : 'bg-gradient-to-br from-blue-600 to-indigo-700'
+                            ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
+                            : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
                         }`}>
                           <div className="flex items-center justify-between flex-wrap gap-2">
                             <div className="flex items-center gap-1.5">
-                              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs ${
-                                bookingPartner === 'tiket' ? 'bg-[#FEDD00] text-blue-950' : 'bg-white text-blue-700'
-                              }`}>
-                                {bookingPartner === 'tiket' ? '🎫 Tiket.com' : '✈️ Traveloka'}
-                              </span>
+                              {bookingPartner === 'tiket' ? (
+                                <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                                  <span>tiket.com</span>
+                                </span>
+                              ) : (
+                                <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                                  <span>✈️</span>
+                                  <span>traveloka</span>
+                                </span>
+                              )}
                               <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
                                 {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
                               </span>
                             </div>
 
                             {/* Partner Switcher Tabs */}
-                            <div className="flex items-center bg-black/25 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
+                            <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
                               <button
                                 type="button"
                                 onClick={() => setBookingPartner('tiket')}
-                                className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
                                   bookingPartner === 'tiket'
-                                    ? 'bg-white text-[#0064D2] shadow-2xs font-extrabold'
+                                    ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
                                     : 'text-white/80 hover:text-white'
                                 }`}
                               >
-                                Tiket.com
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                                <span>tiket.com</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setBookingPartner('traveloka')}
-                                className={`px-2 py-0.5 rounded-md transition-all cursor-pointer ${
+                                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
                                   bookingPartner === 'traveloka'
-                                    ? 'bg-white text-blue-700 shadow-2xs font-extrabold'
+                                    ? 'bg-white text-[#0194F3] shadow-sm font-black'
                                     : 'text-white/80 hover:text-white'
                                 }`}
                               >
-                                Traveloka
+                                <span>✈️</span>
+                                <span>Traveloka</span>
                               </button>
                             </div>
                           </div>
 
-                          <p className="text-xs text-blue-100 font-jakarta leading-relaxed">
+                          <p className={`text-xs font-jakarta leading-relaxed ${
+                            bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
+                          }`}>
                             {bookingPartner === 'tiket'
                               ? (lang === 'en'
                                   ? 'Book your hotels, car rental in Padang, flights to BIM Airport, and attractions seamlessly via Tiket.com.'
@@ -2723,7 +2743,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href={getTiketHotelUrl(null, dataStore?.appSettings)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-[#FEDD00] text-blue-950 py-2 px-2.5 rounded-lg font-jakarta font-extrabold text-[11px] hover:bg-yellow-300 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
                               >
                                 <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2732,7 +2752,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href={getTiketCarRentalUrl(dataStore?.appSettings)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2741,7 +2761,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href={getTiketFlightUrl(dataStore?.appSettings)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2750,7 +2770,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2762,7 +2782,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href="https://www.traveloka.com/id-id/hotel"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white text-blue-700 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
                               >
                                 <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2771,7 +2791,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href="https://www.traveloka.com/id-id/car-rental"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2780,7 +2800,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -2789,7 +2809,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 href="https://www.traveloka.com/id-id/activities"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/15 text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] hover:bg-white/25 transition-all flex items-center justify-center gap-1 shadow-xs cursor-pointer text-center"
+                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
                               >
                                 <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
                                 <ExternalLink className="w-3 h-3 shrink-0" />
@@ -3477,44 +3497,68 @@ export const Drawers: React.FC<DrawersProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                {/* Tiket.com Hotel */}
                 <a
                   href={getTiketHotelUrl(selectedDestination, dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#0064D2] text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-[#0050a8] transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
+                  className="w-full bg-[#0064D2] hover:bg-[#0050A8] text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:shadow-md transition-all flex items-center justify-between border-l-4 border-[#FEDD00] shadow-xs cursor-pointer text-left"
                 >
-                  <span>🏨 {lang === 'en' ? 'Tiket.com Hotel' : 'Hotel di Tiket.com'}</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" />
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span>🏨</span>
+                    <span>{lang === 'en' ? 'Hotels (Tiket.com)' : 'Cari Hotel Dekat Sini'}</span>
+                  </span>
+                  <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                    tiket.com
+                  </span>
                 </a>
 
+                {/* Traveloka Hotel */}
                 <a
                   href={getTravelokaHotelUrl(selectedDestination)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-700 transition-all flex items-center justify-center gap-1.5 shadow-xs cursor-pointer text-center"
+                  className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
                 >
-                  <span>🏨 {lang === 'en' ? 'Traveloka Hotel' : 'Hotel di Traveloka'}</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" />
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span>🏨</span>
+                    <span>{lang === 'en' ? 'Hotels (Traveloka)' : 'Cari Hotel Dekat Sini'}</span>
+                  </span>
+                  <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                    traveloka
+                  </span>
                 </a>
 
+                {/* Tiket.com Car Rental */}
                 <a
                   href={getTiketCarRentalUrl(dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-white text-[#0064D2] border border-blue-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-blue-50 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer text-center"
+                  className="w-full bg-blue-50/80 hover:bg-blue-100 text-[#0064D2] border border-blue-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
                 >
-                  <span>🚗 {lang === 'en' ? 'Car Rental Padang' : 'Sewa Mobil (Tiket.com)'}</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" />
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span>🚗</span>
+                    <span>{lang === 'en' ? 'Car Rental Padang' : 'Sewa Mobil di Padang / BIM'}</span>
+                  </span>
+                  <span className="text-[9px] font-black text-[#0064D2] shrink-0 ml-1">
+                    tiket.com ↗
+                  </span>
                 </a>
 
+                {/* Tiket.com Activities */}
                 <a
                   href={getTiketActivitiesUrl(selectedDestination, dataStore?.appSettings)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-white text-indigo-700 border border-indigo-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] hover:bg-indigo-50 transition-all flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer text-center"
+                  className="w-full bg-amber-50 hover:bg-amber-100 text-[#002B66] border border-amber-300 py-2 px-3 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
                 >
-                  <span>🎟️ {lang === 'en' ? 'Tours & Tickets' : 'Tiket Wisata & Tur'}</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" />
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span>🎟️</span>
+                    <span>{lang === 'en' ? 'Tours & Attractions' : 'Tiket Atraksi & Tur Wisata'}</span>
+                  </span>
+                  <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0 ml-1">
+                    To Do ↗
+                  </span>
                 </a>
               </div>
             </div>
