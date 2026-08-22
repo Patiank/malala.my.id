@@ -2103,7 +2103,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </a>
 
                       <a
-                        href={getSafeYoutubeUrl(ev.title, ev.location, ev.videoUrl)}
+                        href={getSafeYoutubeUrl(ev.title, ev.regency || ev.locationName, ev.videoUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
@@ -4248,7 +4248,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             </a>
 
             <a
-              href={getSafeYoutubeUrl(selectedEvent.title, selectedEvent.location, selectedEvent.videoUrl)}
+              href={getSafeYoutubeUrl(selectedEvent.title, selectedEvent.regency || selectedEvent.locationName, selectedEvent.videoUrl)}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
