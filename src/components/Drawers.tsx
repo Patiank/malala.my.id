@@ -93,7 +93,7 @@ export const getTiketHotelUrl = (dest?: Destination | null, appSettings?: any): 
   if (dest?.title) {
     return `https://www.tiket.com/hotel/search?q=${encodeURIComponent(dest.title + ' Sumatera Barat')}&aff_id=${affId}&tracking_id=malala_sumbar`;
   }
-  return `https://www.tiket.com/hotel/indonesia/sumatera-barat-108001534490276356?aff_id=${affId}&tracking_id=malala_sumbar`;
+  return `https://www.tiket.com/hotel/search?q=Sumatera%20Barat&aff_id=${affId}&tracking_id=malala_sumbar`;
 };
 
 export const getTiketCarRentalUrl = (appSettings?: any): string => {
@@ -103,15 +103,15 @@ export const getTiketCarRentalUrl = (appSettings?: any): string => {
 
 export const getTiketFlightUrl = (appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  return `https://www.tiket.com/pesawat/to-padang-PDG?aff_id=${affId}&tracking_id=malala_sumbar`;
+  return `https://www.tiket.com/pesawat?aff_id=${affId}&tracking_id=malala_sumbar`;
 };
 
 export const getTiketActivitiesUrl = (dest?: Destination | null, appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
   if (dest?.title) {
-    return `https://www.tiket.com/to-do/search?q=${encodeURIComponent(dest.title)}&aff_id=${affId}&tracking_id=malala_sumbar`;
+    return `https://www.tiket.com/to-do/search?keyword=${encodeURIComponent(dest.title)}&aff_id=${affId}&tracking_id=malala_sumbar`;
   }
-  return `https://www.tiket.com/to-do/indonesia/sumatera-barat?aff_id=${affId}&tracking_id=malala_sumbar`;
+  return `https://www.tiket.com/to-do/search?keyword=Sumatera%20Barat&aff_id=${affId}&tracking_id=malala_sumbar`;
 };
 
 export const getTravelokaHotelUrl = (_dest?: Destination | null): string => {
