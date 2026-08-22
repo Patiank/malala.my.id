@@ -58,7 +58,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Schema.org JSON-LD (Rich Snippets & Generative Engine Optimization / GEO) -->
+    <!-- Schema.org JSON-LD (Rich Snippets, Google Sitelinks, Knowledge Graph & GEO) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -67,9 +67,10 @@
           "@type": "WebSite",
           "@id": "https://malala.my.id/#website",
           "url": "https://malala.my.id/",
-          "name": "MALALA — West Sumatra Tourism Portal",
-          "description": "Portal resmi eksplorasi pariwisata, warisan budaya Minangkabau, kuliner otentik, dan kalender event Sumatera Barat.",
-          "inLanguage": ["id", "en"],
+          "name": "MALALA — Portal Eksplorasi Pariwisata & Budaya Sumatera Barat",
+          "alternateName": ["Malala Minangkabau", "Wisata Sumbar Official", "Malala Sumbar"],
+          "description": "Portal resmi eksplorasi pariwisata, warisan budaya Minangkabau, kuliner otentik, kalender event Karisma Event Nusantara 2026, dan asisten cerdas wisata AI Uni Mala.",
+          "inLanguage": ["id-ID", "en-US"],
           "publisher": {
             "@id": "https://malala.my.id/#organization"
           },
@@ -82,11 +83,18 @@
         {
           "@type": "TouristInformationCenter",
           "@id": "https://malala.my.id/#organization",
-          "name": "MALALA — West Sumatra Tourism Board",
+          "name": "MALALA — West Sumatra Tourism & Cultural Heritage Board",
+          "alternateName": "MALALA.MY.ID",
           "url": "https://malala.my.id/",
           "logo": "https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png",
           "image": "https://res.cloudinary.com/uupbxcw5/image/upload/v1786885123/ea0650d0-224f-4a82-bc7b-4211cbd31df4_oa7jnw.png",
-          "description": "Portal resmi eksplorasi pariwisata, warisan budaya Minangkabau, kuliner otentik, dan kalender event Sumatera Barat dipersembahkan oleh MINANGKAOS.",
+          "description": "Portal resmi pariwisata dan kebudayaan Sumatera Barat yang mengintegrasikan panduan destinasi, kuliner, budaya Minangkabau, kalender event KEN 2026, dan asisten AI.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Padang",
+            "addressRegion": "Sumatera Barat",
+            "addressCountry": "ID"
+          },
           "areaServed": {
             "@type": "AdministrativeArea",
             "name": "Sumatera Barat",
@@ -99,7 +107,52 @@
             "@type": "GeoCoordinates",
             "latitude": -0.94924,
             "longitude": 100.35427
-          }
+          },
+          "sameAs": [
+            "https://www.instagram.com/minangkaos"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://malala.my.id/#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Beranda",
+              "item": "https://malala.my.id/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Destinasi Wisata",
+              "item": "https://malala.my.id/#destinasi"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Warisan Budaya",
+              "item": "https://malala.my.id/#budaya"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Kuliner Otentik",
+              "item": "https://malala.my.id/#kuliner"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Kalender Event 2026",
+              "item": "https://malala.my.id/#event"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Peta Interaktif",
+              "item": "https://malala.my.id/#peta-interaktif"
+            }
+          ]
         },
         {
           "@type": "FAQPage",
@@ -107,34 +160,50 @@
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "Apa saja destinasi wisata terbaik di Sumatera Barat?",
+              "name": "Apa saja tempat wisata paling populer dan wajib dikunjungi di Sumatera Barat?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Destinasi wisata terbaik di Sumatera Barat meliputi Jam Gadang & Ngarai Sianok di Bukittinggi, Lembah Harau di Lima Puluh Kota, Danau Singkarak & Danau Maninjau, Kawasan Wisata Bahari Mandeh di Pesisir Selatan, Istano Basa Pagaruyung di Tanah Datar, Candi Padang Roco di Dharmasraya, Sawahlunto Kota Warisan Dunia UNESCO, dan Kepulauan Mentawai yang terkenal dengan ombak selancar kelas dunia."
+                "text": "Tempat wisata terbaik dan terpopuler di Sumatera Barat meliputi Jam Gadang & Ngarai Sianok di Bukittinggi, Geopark Lembah Harau di Lima Puluh Kota, Danau Singkarak & Danau Maninjau, Kawasan Wisata Bahari Mandeh ('Raja Ampat-nya Ranah Minang') di Pesisir Selatan, Istano Basa Pagaruyung di Tanah Datar, Candi Padang Roco di Dharmasraya, Sawahlunto Kota Warisan Dunia UNESCO, dan Kepulauan Mentawai untuk selancar kelas dunia."
               }
             },
             {
               "@type": "Question",
-              "name": "Apa kuliner khas Minangkabau paling terkenal?",
+              "name": "Apa saja makanan dan kuliner khas Minangkabau yang wajib dicoba?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Kuliner khas Minangkabau paling legendaris antara lain Rendang Daging (makanan terenak di dunia versi CNN & Warisan Budaya Takbenda UNESCO), Nasi Kapau dengan Gulai Tambusu, Sate Padang & Pariaman, Soto Padang berkuah rempah bening, Dendeng Balado & Batokok, Ampiang Dadiah (yoghurt fermentasi susu kerbau), Lamang Tapai, Sala Lauak Pariaman, dan Teh Talua (teh telur berbusa stamina)."
+                "text": "Kuliner otentik Minangkabau yang paling legendaris meliputi Rendang Daging (Warisan Budaya Takbenda UNESCO & makanan terenak di dunia), Nasi Kapau dengan Gulai Tambusu, Sate Padang & Pariaman berkuah kuning pedas gurih, Soto Padang berkuah rempah bening dengan dendeng renyah, Dendeng Balado & Batokok, Ampiang Dadiah (yoghurt susu kerbau dalam tabung bambu), Lamang Tapai, Palai Rinuak Danau Maninjau, Sala Lauak, dan Teh Talua."
               }
             },
             {
               "@type": "Question",
-              "name": "Apa event pariwisata unggulan di Sumatera Barat tahun 2026?",
+              "name": "Apa saja event Karisma Event Nusantara (KEN) dan festival budaya Sumbar tahun 2026?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Event unggulan dalam Karisma Event Nusantara (KEN) dan Calendar of Events (CoE) 2026 Sumatera Barat meliputi Pacu Jawi di Kabupaten Tanah Datar, Festival Tabuik di Kota Pariaman, Rang Solok Baralek Gadang, Sawahlunto International Songket Carnival (SISCa), Payakumbuh Botuang Festival, Festival Pesona Minangkabau, dan Pacu Kuda Tradisional."
+                "text": "Event unggulan dalam Karisma Event Nusantara (KEN) dan Calendar of Events (CoE) 2026 Sumatera Barat antara lain Pacu Jawi di Kabupaten Tanah Datar, Festival Tabuik di Kota Pariaman, Festival Rang Solok Baralek Gadang, Sawahlunto International Songket Carnival (SISCa), Payakumbuh Botuang Festival, Festival Pesona Minangkabau, dan Pacu Kuda Tradisional Open Race."
               }
             },
             {
               "@type": "Question",
-              "name": "Bagaimana filosofi adat dan budaya Minangkabau?",
+              "name": "Bagaimana sistem kekerabatan dan filosofi adat masyarakat Minangkabau?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Budaya Minangkabau berlandaskan falsafah 'Adat Basandi Syarak, Syarak Basandi Kitabullah, Syarak Mangato Adat Mamakai' (Adat berlandaskan syariat Islam yang bersumber pada Al-Quran). Minangkabau juga menganut sistem kekerabatan Matrilineal terbesar di dunia di mana garis keturunan dan harta pusaka diwariskan melalui pihak ibu dengan Bundo Kanduang sebagai figur sentral."
+                "text": "Masyarakat Minangkabau menganut sistem kekerabatan Matrilineal terbesar di dunia, di mana garis keturunan, gelar keluarga, dan harta pusaka tinggi (seperti Rumah Gadang dan sawah ladang) diwariskan dari ibu kepada anak perempuan. Falsafah utama Minangkabau adalah 'Adat Basandi Syarak, Syarak Basandi Kitabullah' (Adat berlandaskan syariat Islam yang bersumber pada Al-Quran)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Bagaimana cara menyusun rencana liburan dan itinerary ke Sumatera Barat secara gratis?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Anda dapat menggunakan fitur AI Itinerary Planner 'Uni Mala' di website Malala (https://malala.my.id/#ai-planner). Uni Mala mampu merancang rencana perjalanan harian yang disesuaikan dengan durasi liburan, preferensi destinasi alam atau budaya, anggaran wisata, serta rekomendasi kuliner halal secara instan dan otomatis."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Di mana saya bisa mengunduh E-Book Panduan Wisata dan Kalender Event Sumbar 2026 resmi?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "E-Book Panduan Wisata Lengkap (113 halaman) dan E-Booklet Kalender Event CoE 2026 (27 halaman) dapat diunduh gratis dalam format PDF siap cetak beresolusi tinggi di https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf dan https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf."
               }
             }
           ]
@@ -144,27 +213,60 @@
     </script>
   </head>
   <body>
-    <!-- Fallback Semantic Content for Search Engine Bots & Generative Engine Crawlers (SEO / GEO) -->
+    <!-- Fallback Semantic HTML for Search Engine Crawlers & LLM Indexers (Googlebot, Bingbot, GPTBot, Perplexity) -->
     <div id="root">
       <noscript>
-        <div style="padding: 2rem; font-family: sans-serif; max-width: 800px; margin: auto;">
-          <h1>MALALA — Eksplorasi Pariwisata, Adat & Kuliner Sumatera Barat</h1>
-          <p>Selamat datang di portal resmi eksplorasi pariwisata Sumatera Barat. Temukan 38 destinasi wisata alam dan sejarah, 22 warisan adat budaya Minangkabau, 26 kuliner otentik, dan 20 kalender festival 2026.</p>
-          <h2>Destinasi Utama:</h2>
-          <ul>
-            <li>Jam Gadang & Ngarai Sianok - Bukittinggi</li>
-            <li>Lembah Harau - Kabupaten Lima Puluh Kota</li>
-            <li>Danau Singkarak & Danau Maninjau</li>
-            <li>Istano Basa Pagaruyung - Tanah Datar</li>
-            <li>Kawasan Wisata Bahari Mandeh & Kepulauan Mentawai</li>
-            <li>Warisan Dunia UNESCO Tambang Batubara Ombilin Sawahlunto</li>
-            <li>Candi Padang Roco & Kompleks Percandian Dharmasraya</li>
-          </ul>
-          <h2>Kuliner Otentik:</h2>
-          <p>Rendang Daging, Nasi Kapau, Gulai Tambusu, Sate Padang, Soto Padang, Ampiang Dadiah, Lamang Tapai, Sala Lauak, Teh Talua.</p>
-          <p><a href="/downloads/malala-panduan-wisata-sumbar-2026.pdf">Unduh E-Book Panduan Wisata Sumbar 2026 (PDF)</a></p>
-          <p><a href="/downloads/kalender-event-sumbar-2026.pdf">Unduh Kalender Event 2026 (PDF)</a></p>
-        </div>
+        <article style="padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 960px; margin: auto; color: #1e293b; line-height: 1.7;">
+          <header style="border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem; margin-bottom: 2rem;">
+            <h1 style="color: #0f172a; font-size: 2rem; margin-bottom: 0.5rem;">MALALA — Eksplorasi Pariwisata, Warisan Budaya & Kuliner Sumatera Barat</h1>
+            <p style="font-size: 1.1rem; color: #475569;">Portal resmi pariwisata dan ensiklopedia digital kebudayaan Minangkabau di Ranah Minang, Sumatera Barat, Indonesia.</p>
+          </header>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="color: #b45309; font-size: 1.5rem;">Ringkasan Informasi Wisata & Budaya</h2>
+            <p>MALALA menghadirkan direktori pariwisata Sumatera Barat terlengkap dengan <strong>38 Destinasi Wisata Pilihan</strong>, <strong>22 Warisan Adat & Seni Budaya Minangkabau</strong>, <strong>26 Kuliner Otentik Legendaris</strong>, serta <strong>20 Kalender Festival Karisma Event Nusantara (KEN) 2026</strong> yang dilengkapi fitur asisten AI pintar Uni Mala dan unduhan buku panduan resmi.</p>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="color: #0f766e; font-size: 1.35rem;">Destinasi Wisata Unggulan Sumatera Barat:</h2>
+            <ul>
+              <li><strong>Jam Gadang & Ngarai Sianok</strong> (Kota Bukittinggi) — Ikon arsitektur bersejarah dengan menara jam antik dan ngarai patahan tektonik megah.</li>
+              <li><strong>Geopark Lembah Harau</strong> (Kabupaten Lima Puluh Kota) — Lembah tebing granit vertikal setinggi ratusan meter dengan air terjun alami.</li>
+              <li><strong>Danau Singkarak & Danau Maninjau</strong> — Danau vulkanik dan tektonik luas dengan panorama Kelok 44 dan ikan bilih endemik.</li>
+              <li><strong>Istano Basa Pagaruyung</strong> (Kabupaten Tanah Datar) — Istana megah kebesaran Kerajaan Minangkabau dengan ukiran bergonjong 11.</li>
+              <li><strong>Kawasan Wisata Bahari Mandeh</strong> (Kabupaten Pesisir Selatan) — Gugusan pulau tropis, terumbu karang dangkal, dan teluk eksotis.</li>
+              <li><strong>Kepulauan Mentawai</strong> — Destinasi kepulauan tropis dengan ombak selancar terbaik dunia dan suku asli Uma Mentawai.</li>
+              <li><strong>Warisan Dunia UNESCO Sawahlunto</strong> — Kota tambang batubara Ombilin dengan terowongan Lubang Mbah Soero dan lokomotif Mak Itam.</li>
+              <li><strong>Candi Padang Roco & Percandian Dharmasraya</strong> — Situs purbakala percandian Buddha Kerajaan Dharmasraya abad ke-13 tujuan Ekspedisi Pamalayu.</li>
+              <li><strong>Puncak Lawang, Danau Kembar, Air Terjun Nyarai, Geopark Silokek, Seribu Rumah Gadang Solok Selatan</strong>, dan puluhan destinasi lainnya.</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="color: #b91c1c; font-size: 1.35rem;">Kuliner Otentik Khas Minangkabau:</h2>
+            <p>Rendang Daging Sapi lambat masak (UNESCO Intangible Cultural Heritage), Nasi Kapau Tilatang Kamang dengan Gulai Tambusu usus isi telur tahu, Sate Padang bumbu kuning kental rempah, Soto Padang kuah kaldu rempah bening dengan perkedel dan kerupuk merah, Lamang Tapai beras ketan bakar bambu, Ampiang Dadiah yoghurt probiotik susu kerbau fermentasi, Sala Lauak goreng gurih renyah Pariaman, dan Teh Talua kocok berbusa.</p>
+          </section>
+
+          <section style="margin-bottom: 2rem;">
+            <h2 style="color: #4338ca; font-size: 1.35rem;">Warisan Adat & Kebudayaan Minangkabau:</h2>
+            <p>Sistem Kekerabatan Matrilineal terbesar di dunia, Rumah Gadang bergonjong anti-gempa, Tradisi Makan Bajamba, Kesenian Teater Randai, Seni Beladiri Silek Minang, Kain Tenun Songket Pandai Sikek & Silungkang, Tradisi Tawar-Menawar Rahasia Marosok, serta Upacara Batagak Penghulu.</p>
+          </section>
+
+          <section style="margin-bottom: 2rem; background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <h2 style="color: #0f172a; font-size: 1.25rem;">Pusat Unduhan Panduan Resmi (PDF Gratis):</h2>
+            <ul>
+              <li><a href="/downloads/malala-panduan-wisata-sumbar-2026.pdf" style="color: #2563eb; font-weight: 600;">Unduh Buku Panduan Wisata Sumatera Barat 2026 (PDF 113 Halaman)</a></li>
+              <li><a href="/downloads/kalender-event-sumbar-2026.pdf" style="color: #2563eb; font-weight: 600;">Unduh E-Booklet Kalender Event & Karisma Event Nusantara 2026 (PDF 27 Halaman)</a></li>
+              <li><a href="/llms.txt" style="color: #2563eb;">Basis Pengetahuan LLM & AI Search Engine (llms.txt)</a></li>
+              <li><a href="/sitemap.xml" style="color: #2563eb;">Peta Situs XML Lengkap (sitemap.xml)</a></li>
+            </ul>
+          </section>
+
+          <footer style="border-top: 1px solid #e2e8f0; padding-top: 1rem; font-size: 0.9rem; color: #64748b; text-align: center;">
+            <p>MALALA 2026 • Dipersembahkan oleh MINANGKAOS & Dinas Pariwisata Sumatera Barat.</p>
+            <p>Hak Cipta Dilindungi Undang-Undang © 2026 MALALA.</p>
+          </footer>
+        </article>
       </noscript>
     </div>
     <script type="module" src="/src/main.tsx"></script>

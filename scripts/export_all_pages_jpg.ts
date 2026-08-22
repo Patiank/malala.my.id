@@ -24,8 +24,9 @@ if (!browserExe) {
   process.exit(1);
 }
 
-// 1. Generate updated HTML templates
-console.log('🔄 Menyiapkan HTML template Panduan Lengkap & Kalender Event...');
+// 1. Generate updated HTML templates & SEO/GEO assets
+console.log('🔄 Menyiapkan HTML template Panduan Lengkap & Kalender Event serta Aset SEO/GEO...');
+execSync('cmd /c npx tsx scripts/generate_seo_geo.ts', { stdio: 'inherit' });
 execSync('cmd /c npx tsx scripts/generate_html_pdf.ts', { stdio: 'inherit' });
 execSync('cmd /c npx tsx scripts/generate_event_pdf.ts', { stdio: 'inherit' });
 
