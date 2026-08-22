@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
@@ -42,6 +42,25 @@ export const Hero: React.FC<HeroProps> = ({
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const videoIframeRef = useRef<HTMLIFrameElement>(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+
+  const toggleVideoVolume = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!videoIframeRef.current?.contentWindow) return;
+    const nextMuted = !isVideoMuted;
+    setIsVideoMuted(nextMuted);
+    try {
+      if (nextMuted) {
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+      } else {
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+      }
+    } catch (err) {
+      console.warn('Error toggling video audio via postMessage:', err);
+    }
+  };
 
   // Secret Admin Trigger: Clicking Pemprov Sumbar logo 6 times in rapid sequence opens Admin Panel
   const logoClickCountRef = useRef(0);
@@ -707,18 +726,37 @@ export const Hero: React.FC<HeroProps> = ({
                   <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
                     <div className="flex items-center gap-1.5 font-bold text-amber-900">
                       <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-                      <span>{isEn ? 'Official Video Event' : 'Video Resmi Event Sumbar'}</span>
+                      <span>{isEn ? 'Live Ongoing Event' : 'Event Sedang Berlangsung'}</span>
                     </div>
-                    {isKEN && (
-                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
-                        KEN Kemenparekraf
-                      </span>
-                    )}
+
+                    <div className="flex items-center gap-1.5">
+                      {/* Touch-Friendly Volume Toggle Button (Never obstructed by video overlays) */}
+                      <button
+                        type="button"
+                        onClick={toggleVideoVolume}
+                        aria-label={isVideoMuted ? 'Nyalakan Suara Video' : 'Matikan Suara Video'}
+                        className={`px-2 py-0.5 rounded-full flex items-center gap-1 text-[9px] font-jakarta font-bold transition-all cursor-pointer shadow-2xs active:scale-95 ${
+                          isVideoMuted
+                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300'
+                            : 'bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-400'
+                        }`}
+                      >
+                        {isVideoMuted ? <VolumeX className="w-3 h-3 text-red-500" /> : <Volume2 className="w-3 h-3 text-white animate-bounce" />}
+                        <span>{isVideoMuted ? (isEn ? 'Unmute' : 'Nyalakan Suara') : (isEn ? 'Mute' : 'Matikan Suara')}</span>
+                      </button>
+
+                      {isKEN && (
+                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-1.5 py-0.5 rounded shadow-2xs">
+                          KEN
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Pure & Clean YouTube Player with Native Video Controls */}
+                  {/* Pure & Clean YouTube Player */}
                   <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
                     <iframe
+                      ref={videoIframeRef}
                       src={ytEmbedUrl}
                       title={title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
