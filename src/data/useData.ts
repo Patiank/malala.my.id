@@ -41,13 +41,18 @@ export function useData() {
         setDestinations(DESTINATIONS);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as Destination;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setDestinations(data.length > 0 ? data : DESTINATIONS);
+
+      const mergedMap = new Map<string, Destination>();
+      DESTINATIONS.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setDestinations(merged.length > 0 ? merged : DESTINATIONS);
     }, (err) => {
       console.warn("Firestore destinations error:", err);
       setDestinations(DESTINATIONS);
@@ -59,13 +64,18 @@ export function useData() {
         setCultureItems(CULTURE_ITEMS);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as CultureItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setCultureItems(data.length > 0 ? data : CULTURE_ITEMS);
+
+      const mergedMap = new Map<string, CultureItem>();
+      CULTURE_ITEMS.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setCultureItems(merged.length > 0 ? merged : CULTURE_ITEMS);
     }, (err) => {
       console.warn("Firestore cultures error:", err);
       setCultureItems(CULTURE_ITEMS);
@@ -77,13 +87,18 @@ export function useData() {
         setCulinaryItems(CULINARY_ITEMS);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as CulinaryItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setCulinaryItems(data.length > 0 ? data : CULINARY_ITEMS);
+
+      const mergedMap = new Map<string, CulinaryItem>();
+      CULINARY_ITEMS.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setCulinaryItems(merged.length > 0 ? merged : CULINARY_ITEMS);
     }, (err) => {
       console.warn("Firestore culinaries error:", err);
       setCulinaryItems(CULINARY_ITEMS);
@@ -95,55 +110,70 @@ export function useData() {
         setSouvenirItems(SOUVENIR_ITEMS);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as SouvenirItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setSouvenirItems(data.length > 0 ? data : SOUVENIR_ITEMS);
+
+      const mergedMap = new Map<string, SouvenirItem>();
+      SOUVENIR_ITEMS.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setSouvenirItems(merged.length > 0 ? merged : SOUVENIR_ITEMS);
     }, (err) => {
       console.warn("Firestore souvenirs error:", err);
       setSouvenirItems(SOUVENIR_ITEMS);
     });
 
-    // 5. Events listener
+    // 5. Events listener (Real-time Cloud Sync with schedule updates)
     const unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
       if (snapshot.empty) {
         setEventItems(EVENTS_SCHEDULE);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as EventItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setEventItems(data.length > 0 ? data : EVENTS_SCHEDULE);
+
+      const mergedMap = new Map<string, EventItem>();
+      EVENTS_SCHEDULE.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setEventItems(merged.length > 0 ? merged : EVENTS_SCHEDULE);
     }, (err) => {
       console.warn("Firestore events error:", err);
       setEventItems(EVENTS_SCHEDULE);
     });
 
-    // 5. Downloads listener
+    // 6. Downloads listener
     const unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
       if (snapshot.empty) {
         setDownloadItems(DOWNLOAD_ITEMS);
         return;
       }
-      const data = snapshot.docs
+      const firestoreData = snapshot.docs
         .map(doc => {
           const item = doc.data() as DownloadItem;
           return { id: doc.id, ...item };
         })
         .filter(item => item.title && item.title.trim().length > 0);
-      setDownloadItems(data.length > 0 ? data : DOWNLOAD_ITEMS);
+
+      const mergedMap = new Map<string, DownloadItem>();
+      DOWNLOAD_ITEMS.forEach(item => mergedMap.set(item.id, item));
+      firestoreData.forEach(item => mergedMap.set(item.id, { ...(mergedMap.get(item.id) || {}), ...item }));
+      const merged = Array.from(mergedMap.values());
+      setDownloadItems(merged.length > 0 ? merged : DOWNLOAD_ITEMS);
     }, (err) => {
       console.warn("Firestore downloads error:", err);
       setDownloadItems(DOWNLOAD_ITEMS);
     });
 
-    // 6. Hot Info listener
+    // 7. Hot Info listener
     const unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
       if (snapshot.empty) {
         setHotInfoItems(deduplicateNewsItems(HOT_INFO_ITEMS));
@@ -166,18 +196,22 @@ export function useData() {
       setHotInfoItems(fallbackSorted);
     });
 
-    // 7. Settings listener (Cloud Firestore is the Master Authority)
+    // 8. Settings listener (Cloud Firestore is the Master Authority)
     const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data() as AppSettings;
-        const effectiveMediaType = data.bgMediaType || 'image';
+        const effectiveMediaType = (data.bgMediaType === 'video' || data.bgMediaType === 'image') ? data.bgMediaType : 'image';
         const effectiveBaseVideo = data.baseVideo || '';
         const effectiveBaseImage = data.baseImage ? getDirectDriveUrl(data.baseImage) : BG_IMAGE_1;
         const effectiveRevealImage = data.revealImage ? getDirectDriveUrl(data.revealImage) : BG_IMAGE_2;
         const effectiveSpotlightDisplayMode = data.spotlightDisplayMode || 'both';
+        const effectiveFeaturedVideoEventId = data.featuredVideoEventId || 'auto';
         const effectiveHeroTextColor = data.heroTextColor || '#000000';
         const effectiveHeroTextTheme = data.heroTextTheme || 'black';
         const effectiveHeroTextShadow = data.heroTextShadow !== undefined ? data.heroTextShadow : true;
+        const effectiveTiketAffiliateId = data.tiketAffiliateId || '6a893170239c5bf8a8b71930';
+        const effectiveTravelokaAffiliateId = data.travelokaAffiliateId || '';
+        const effectiveActiveBookingPartner = data.activeBookingPartner || 'dual';
 
         const liveSettings: AppSettings = {
           bgMediaType: effectiveMediaType,
@@ -185,10 +219,14 @@ export function useData() {
           revealImage: effectiveRevealImage,
           baseVideo: effectiveBaseVideo,
           spotlightDisplayMode: effectiveSpotlightDisplayMode,
+          featuredVideoEventId: effectiveFeaturedVideoEventId,
           allowedAdminEmails: data.allowedAdminEmails && data.allowedAdminEmails.length > 0 ? data.allowedAdminEmails : ['aldoaldiles@gmail.com'],
           heroTextColor: effectiveHeroTextColor,
           heroTextTheme: effectiveHeroTextTheme,
           heroTextShadow: effectiveHeroTextShadow,
+          tiketAffiliateId: effectiveTiketAffiliateId,
+          travelokaAffiliateId: effectiveTravelokaAffiliateId,
+          activeBookingPartner: effectiveActiveBookingPartner,
         };
 
         setAppSettings(liveSettings);
@@ -231,10 +269,14 @@ export function useData() {
         revealImage: newSettings.revealImage ? getDirectDriveUrl(newSettings.revealImage) : BG_IMAGE_2,
         baseVideo: newSettings.baseVideo || '',
         spotlightDisplayMode: newSettings.spotlightDisplayMode || 'both',
+        featuredVideoEventId: newSettings.featuredVideoEventId || 'auto',
         allowedAdminEmails: newSettings.allowedAdminEmails && newSettings.allowedAdminEmails.length > 0 ? newSettings.allowedAdminEmails : ['aldoaldiles@gmail.com'],
         heroTextColor: newSettings.heroTextColor || '#000000',
         heroTextTheme: newSettings.heroTextTheme || 'black',
         heroTextShadow: newSettings.heroTextShadow !== undefined ? newSettings.heroTextShadow : true,
+        tiketAffiliateId: newSettings.tiketAffiliateId || '6a893170239c5bf8a8b71930',
+        travelokaAffiliateId: newSettings.travelokaAffiliateId || '',
+        activeBookingPartner: newSettings.activeBookingPartner || 'dual',
       };
       setAppSettings(formatted);
 
@@ -250,10 +292,14 @@ export function useData() {
       const firestorePayload: any = {
         bgMediaType: formatted.bgMediaType,
         spotlightDisplayMode: formatted.spotlightDisplayMode,
+        featuredVideoEventId: formatted.featuredVideoEventId,
         allowedAdminEmails: formatted.allowedAdminEmails,
         heroTextColor: formatted.heroTextColor,
         heroTextTheme: formatted.heroTextTheme,
         heroTextShadow: formatted.heroTextShadow,
+        tiketAffiliateId: formatted.tiketAffiliateId,
+        travelokaAffiliateId: formatted.travelokaAffiliateId,
+        activeBookingPartner: formatted.activeBookingPartner,
       };
       if (formatted.baseImage && (!formatted.baseImage.startsWith('data:') || formatted.baseImage.length < 800000)) {
         firestorePayload.baseImage = formatted.baseImage;
