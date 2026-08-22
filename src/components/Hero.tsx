@@ -680,18 +680,44 @@ export const Hero: React.FC<HeroProps> = ({
 
               {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
               <div className="flex flex-col space-y-3 w-full">
-            {/* Spotlight 1: Video Event Card (Clean & Minimalist Video Player) */}
+            {/* Spotlight 1: Video Event Card (Clean Video with Structured Top & Bottom Panels) */}
             {videoEvent && (() => {
               const eventItem = videoEvent.item;
-              const title = (lang === 'en' && eventItem.titleEn) ? eventItem.titleEn : eventItem.title;
+              const isEn = lang === 'en';
+              const title = isEn && eventItem.titleEn ? eventItem.titleEn : eventItem.title;
+              const schedule = isEn && eventItem.scheduleEn ? eventItem.scheduleEn : eventItem.schedule;
+              const location = isEn && eventItem.locationEn ? eventItem.locationEn : eventItem.location;
+              const isKEN = Boolean(eventItem.isKen);
               const ytEmbedUrl = getYoutubeEmbedUrl(eventItem.videoUrl || (eventItem as any).youtubeUrl);
 
               if (!ytEmbedUrl) return null;
 
+              const getGoogleCalUrl = () => {
+                const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
+                const d = encodeURIComponent(`${isEn && eventItem.descriptionEn ? eventItem.descriptionEn : eventItem.description}\n\nJadwal: ${schedule}\nLokasi: ${location}`);
+                const l = encodeURIComponent(`${location}, Sumatera Barat`);
+                return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${t}&details=${d}&location=${l}`;
+              };
+
               return (
-                <div className="w-full bg-black/90 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl border border-white/20 transition-all group hover:border-amber-400/60">
-                  {/* Ultra-Clean YouTube Player without overlapping badges, text, or panels */}
-                  <div className="relative w-full aspect-video overflow-hidden bg-black shrink-0">
+                <div className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
+                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+
+                  {/* Top Header */}
+                  <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                      <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
+                      <span>{isEn ? 'Official Video Event' : 'Video Resmi Event Sumbar'}</span>
+                    </div>
+                    {isKEN && (
+                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                        KEN Kemenparekraf
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Pure & Clean YouTube Player (No floating text, record dot, or date badges covering the video) */}
+                  <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
                     <iframe
                       src={ytEmbedUrl}
                       title={title}
@@ -699,6 +725,44 @@ export const Hero: React.FC<HeroProps> = ({
                       allowFullScreen
                       className="w-full h-full border-0 absolute inset-0"
                     />
+                  </div>
+
+                  {/* Bottom Info: Title, Schedule & Location */}
+                  <div className="space-y-0.5">
+                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                      {title}
+                    </h4>
+                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
+                      <span className="flex items-center gap-1 shrink-0">
+                        <Calendar className="w-3 h-3 text-amber-600" />
+                        <span>{schedule}</span>
+                      </span>
+                      <span className="flex items-center gap-1 truncate">
+                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
+                        <span className="truncate">{location}</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
+                    <button
+                      onClick={() => onOpenDrawer('events')}
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+                    >
+                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
+                      <ArrowUpRight className="w-3 h-3" />
+                    </button>
+                    <a
+                      href={getGoogleCalUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                    >
+                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <span>+ Kalender</span>
+                    </a>
                   </div>
                 </div>
               );
