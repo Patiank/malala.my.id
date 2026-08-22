@@ -3506,7 +3506,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 >
                   <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🏨</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Hotels (Tiket.com)' : 'Hotel di Tiket.com'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
                   </span>
                   <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
                     tiket.com
@@ -3522,7 +3522,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 >
                   <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🏨</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Hotels (Traveloka)' : 'Hotel di Traveloka'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
                   </span>
                   <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
                     traveloka
@@ -3538,7 +3538,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 >
                   <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🚗</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Car Rental Padang' : 'Sewa Mobil Padang'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Car Rental Sumbar' : 'Rental Mobil di Sumbar'}</span>
                   </span>
                   <span className="text-[9px] font-black text-[#0064D2] shrink-0">
                     tiket.com ↗
@@ -3554,7 +3554,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 >
                   <span className="flex items-center gap-1.5 min-w-0 pr-1">
                     <span>🎟️</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Tours & Attractions' : 'Tiket Atraksi & Tur'}</span>
+                    <span className="font-semibold">{lang === 'en' ? 'Tours & Packages' : 'Tiket & Paket Wisata'}</span>
                   </span>
                   <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
                     To Do ↗
