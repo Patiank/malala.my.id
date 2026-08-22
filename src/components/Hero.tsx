@@ -22,7 +22,8 @@ function getYoutubeEmbedUrl(url?: string): string | null {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
     const match = trimmed.match(regExp);
     if (match && match[2].length === 11) {
-      return `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1`;
+      const origin = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
+      return `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1${origin}`;
     }
   } catch (e) {
     console.warn('Failed to parse YouTube embed URL:', e);
@@ -44,6 +45,27 @@ export const Hero: React.FC<HeroProps> = ({
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+
+  // Synchronize custom volume toggle button with native YouTube player volume changes
+  useEffect(() => {
+    const handleYoutubeMessage = (event: MessageEvent) => {
+      try {
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (data && data.info) {
+          if (typeof data.info.muted === 'boolean') {
+            setIsVideoMuted(data.info.muted);
+          } else if (typeof data.info.volume === 'number') {
+            setIsVideoMuted(data.info.volume === 0);
+          }
+        }
+      } catch (err) {
+        // Not a JSON message, safely ignore
+      }
+    };
+
+    window.addEventListener('message', handleYoutubeMessage);
+    return () => window.removeEventListener('message', handleYoutubeMessage);
+  }, []);
 
   const handleOpenExploreModal = () => {
     if (typeof window !== 'undefined') {
@@ -78,6 +100,7 @@ export const Hero: React.FC<HeroProps> = ({
     try {
       if (nextMuted) {
         videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [0] }), '*');
       } else {
         videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
         videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
