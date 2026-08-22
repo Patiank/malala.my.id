@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
@@ -42,6 +42,24 @@ export const Hero: React.FC<HeroProps> = ({
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const videoIframeRef = useRef<HTMLIFrameElement>(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+
+  const toggleVideoVolume = () => {
+    if (!videoIframeRef.current?.contentWindow) return;
+    const nextMuted = !isVideoMuted;
+    setIsVideoMuted(nextMuted);
+    try {
+      if (nextMuted) {
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+      } else {
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+        videoIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }), '*');
+      }
+    } catch (err) {
+      console.warn('Error toggling video audio via postMessage:', err);
+    }
+  };
 
   // Secret Admin Trigger: Clicking Pemprov Sumbar logo 6 times in rapid sequence opens Admin Panel
   const logoClickCountRef = useRef(0);
@@ -709,22 +727,61 @@ export const Hero: React.FC<HeroProps> = ({
                       <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
                       <span>{isEn ? 'Official Video Event' : 'Video Resmi Event Sumbar'}</span>
                     </div>
-                    {isKEN && (
-                      <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
-                        KEN Kemenparekraf
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={toggleVideoVolume}
+                        className={`px-2 py-0.5 rounded-md flex items-center gap-1 text-[9px] font-bold cursor-pointer transition-all ${
+                          isVideoMuted
+                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                            : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                        }`}
+                      >
+                        {isVideoMuted ? <VolumeX className="w-3 h-3 text-gray-500" /> : <Volume2 className="w-3 h-3 text-emerald-600 animate-pulse" />}
+                        <span>{isVideoMuted ? (isEn ? 'Sound: OFF' : 'Suara: MATI') : (isEn ? 'Sound: ON' : 'Suara: HIDUP')}</span>
+                      </button>
+                      {isKEN && (
+                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                          KEN
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Pure & Clean YouTube Player (No floating text, record dot, or date badges covering the video) */}
+                  {/* Pure & Clean YouTube Player with Custom Floating Volume Button */}
                   <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
                     <iframe
+                      ref={videoIframeRef}
                       src={ytEmbedUrl}
                       title={title}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                       className="w-full h-full border-0 absolute inset-0"
                     />
+
+                    {/* Floating Touch-Friendly Volume Toggle Button (Mobile & Desktop) */}
+                    <button
+                      type="button"
+                      onClick={toggleVideoVolume}
+                      aria-label={isVideoMuted ? 'Nyalakan Suara Video' : 'Matikan Suara Video'}
+                      className={`absolute bottom-2.5 right-2.5 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-xl border backdrop-blur-md transition-all active:scale-90 cursor-pointer select-none ${
+                        isVideoMuted
+                          ? 'bg-black/85 hover:bg-black text-white border-white/30 hover:border-white'
+                          : 'bg-emerald-600/90 hover:bg-emerald-600 text-white border-emerald-300 shadow-emerald-900/40'
+                      }`}
+                    >
+                      {isVideoMuted ? (
+                        <>
+                          <VolumeX className="w-3.5 h-3.5 text-red-400 shrink-0" />
+                          <span className="text-[10px] font-jakarta font-bold tracking-wide">{isEn ? 'Unmute' : 'Nyalakan Suara'}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="w-3.5 h-3.5 text-white shrink-0 animate-bounce" />
+                          <span className="text-[10px] font-jakarta font-bold tracking-wide">{isEn ? 'Mute' : 'Matikan Suara'}</span>
+                        </>
+                      )}
+                    </button>
                   </div>
 
                   {/* Bottom Info: Title, Schedule & Location */}
