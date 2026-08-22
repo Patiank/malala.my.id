@@ -59,6 +59,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     githubToken: appSettings?.githubToken || '',
     githubRepo: appSettings?.githubRepo || 'Patiank/malala.my.id',
     githubBranch: appSettings?.githubBranch || 'main',
+    tiketAffiliateId: appSettings?.tiketAffiliateId || '6a893170239c5bf8a8b71930',
+    travelokaAffiliateId: appSettings?.travelokaAffiliateId || '',
+    activeBookingPartner: appSettings?.activeBookingPartner || 'dual',
   });
 
   useEffect(() => {
@@ -75,6 +78,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         githubToken: appSettings.githubToken || '',
         githubRepo: appSettings.githubRepo || 'Patiank/malala.my.id',
         githubBranch: appSettings.githubBranch || 'main',
+        tiketAffiliateId: appSettings.tiketAffiliateId || '6a893170239c5bf8a8b71930',
+        travelokaAffiliateId: appSettings.travelokaAffiliateId || '',
+        activeBookingPartner: appSettings.activeBookingPartner || 'dual',
       });
     }
   }, [appSettings]);
@@ -1402,6 +1408,77 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               >
                 <Check className="w-4 h-4" /> Simpan Pengaturan Hero & Spotlight Banner
               </button>
+            </div>
+
+            {/* Tiket.com & Traveloka Affiliate Settings Card */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 p-4 rounded-xl space-y-3.5 mt-4 shadow-xs">
+              <div className="flex items-center justify-between flex-wrap gap-2 border-b border-blue-200/80 pb-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="bg-blue-600 text-white text-xs font-extrabold px-2 py-0.5 rounded-full">
+                    🎫 + ✈️
+                  </span>
+                  <h4 className="font-bold text-xs uppercase text-blue-950 font-jakarta">
+                    Pengaturan Affiliate Tiket.com & Traveloka (Logistik Rute Itinerary)
+                  </h4>
+                </div>
+                <span className="text-[10px] bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded-md">
+                  Dual Partner Aktif
+                </span>
+              </div>
+
+              <p className="text-[11px] text-blue-900/80 leading-relaxed font-jakarta">
+                Kelola ID Affiliate dan platform pemesanan hotel, rental mobil, penerbangan ke Bandara Internasional Minangkabau (BIM), dan tiket tur wisata yang muncul di bawah peta Itinerary AI Uni Mala.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Tiket.com Affiliate ID */}
+                <div className="bg-white p-3 rounded-lg border border-blue-200 space-y-1.5">
+                  <label className="block text-[11px] font-black uppercase text-[#0064D2] flex items-center justify-between">
+                    <span>🎫 Tiket.com Affiliate ID / Token</span>
+                    <span className="text-[9px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-mono font-normal">Aktif</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="tiketAffiliateId"
+                    value={settingsFormData.tiketAffiliateId || ''}
+                    onChange={(e) => setSettingsFormData(prev => ({ ...prev, tiketAffiliateId: e.target.value }))}
+                    placeholder="e.g. 6a893170239c5bf8a8b71930"
+                    className="w-full bg-blue-50/40 border border-blue-300 rounded p-2 text-xs font-mono font-bold text-gray-900"
+                  />
+                  <p className="text-[9px] text-gray-500">
+                    ID ini otomatis disematkan ke URL Hotel, Mobil, Pesawat, dan To Do Tiket.com.
+                  </p>
+                </div>
+
+                {/* Traveloka Affiliate ID / Custom Link */}
+                <div className="bg-white p-3 rounded-lg border border-indigo-200 space-y-1.5">
+                  <label className="block text-[11px] font-black uppercase text-indigo-700 flex items-center justify-between">
+                    <span>✈️ Traveloka Affiliate / Partner ID</span>
+                    <span className="text-[9px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-mono font-normal">Opsional</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="travelokaAffiliateId"
+                    value={settingsFormData.travelokaAffiliateId || ''}
+                    onChange={(e) => setSettingsFormData(prev => ({ ...prev, travelokaAffiliateId: e.target.value }))}
+                    placeholder="e.g. traveloka_partner_id / URL tracking"
+                    className="w-full bg-indigo-50/40 border border-indigo-300 rounded p-2 text-xs font-mono text-gray-900"
+                  />
+                  <p className="text-[9px] text-gray-500">
+                    ID atau parameter tracking kustom untuk pemesanan via Traveloka.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  onClick={handleSaveSettings}
+                  className="w-full bg-[#0064D2] hover:bg-[#0050a8] text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider flex justify-center items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                >
+                  <Check className="w-4 h-4" /> Simpan Pengaturan Affiliate Tiket.com & Traveloka
+                </button>
+              </div>
             </div>
 
             {/* Admin Whitelist Emails Section */}

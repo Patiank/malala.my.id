@@ -166,6 +166,11 @@ export interface AppSettings {
   heroTextColor?: string;
   heroTextTheme?: 'black' | 'white' | 'red' | 'gold' | 'custom';
   heroTextShadow?: boolean;
+  githubToken?: string;
+  githubRepo?: string;
+  tiketAffiliateId?: string;
+  travelokaAffiliateId?: string;
+  activeBookingPartner?: 'dual' | 'tiket' | 'traveloka';
 }
 
 export interface FormAIItineraryActivity {

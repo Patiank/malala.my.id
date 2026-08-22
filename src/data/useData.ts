@@ -28,6 +28,9 @@ export function useData() {
       revealImage: BG_IMAGE_2,
       baseVideo: '',
       spotlightDisplayMode: 'both',
+      tiketAffiliateId: '6a893170239c5bf8a8b71930',
+      travelokaAffiliateId: '',
+      activeBookingPartner: 'dual',
     };
   });
 
