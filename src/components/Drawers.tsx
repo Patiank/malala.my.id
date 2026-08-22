@@ -87,6 +87,32 @@ export const getGoogleMapsUrl = (input?: string) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
 };
 
+export const getDestinationGoogleMapsUrl = (dest?: Destination | null): string => {
+  if (!dest) return 'https://www.google.com/maps/search/?api=1&query=Wisata+Sumatera+Barat';
+  if (dest.mapUrl && dest.mapUrl.trim()) {
+    const trimmed = dest.mapUrl.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+  }
+  const cleanTitle = (dest.title || '').replace(/[^\w\s\d]/gi, ' ').trim();
+  const cleanRegency = (dest.regency || 'Sumatera Barat').replace(/[^\w\s\d]/gi, ' ').trim();
+  const query = encodeURIComponent(`${cleanTitle} ${cleanRegency}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+};
+
+export const getCultureGoogleMapsUrl = (culture?: CultureItem | null): string => {
+  if (!culture) return 'https://www.google.com/maps/search/?api=1&query=Budaya+Minangkabau+Sumatera+Barat';
+  if (culture.mapUrl && culture.mapUrl.trim()) {
+    const trimmed = culture.mapUrl.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+  }
+  const cleanTitle = (culture.title || '').replace(/[^\w\s\d]/gi, ' ').trim();
+  const cleanOrigin = (culture.origin || 'Sumatera Barat').replace(/[^\w\s\d]/gi, ' ').trim();
+  const query = encodeURIComponent(`Kebudayaan ${cleanTitle} ${cleanOrigin}`);
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+};
+
 export const getCulinaryGoogleMapsUrl = (culinary?: CulinaryItem | null): string => {
   if (!culinary) return 'https://www.google.com/maps/search/?api=1&query=Kuliner+Khas+Minang+Sumatera+Barat';
   if (culinary.mapUrl && culinary.mapUrl.trim()) {
@@ -1509,18 +1535,44 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
 
                       {/* Card Footer */}
-                      <div className="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50 flex items-center justify-between text-[10px] font-jakarta">
-                        <span className="flex items-center gap-1 text-gray-500 font-medium">
-                          <Clock className="w-3 h-3 text-gray-400" />
-                          {isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime}
-                        </span>
-                        <button
-                          onClick={() => openSubModal(() => setSelectedDestination(dest))}
-                          className="font-bold text-black hover:underline uppercase flex items-center gap-0.5 cursor-pointer"
-                        >
-                          <span>{translations[lang].btnDetail}</span>
-                          <ChevronRight className="w-3 h-3" />
-                        </button>
+                      <div className="p-3 border-t border-gray-100 bg-gray-50 flex flex-col gap-2 text-[10px] font-jakarta">
+                        <div className="flex items-center justify-between">
+                          <span className="flex items-center gap-1 text-gray-500 font-medium truncate pr-2">
+                            <Clock className="w-3 h-3 text-gray-400 shrink-0" />
+                            <span className="truncate">{isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime}</span>
+                          </span>
+                          <button
+                            onClick={() => openSubModal(() => setSelectedDestination(dest))}
+                            className="font-bold text-black hover:underline uppercase flex items-center gap-0.5 cursor-pointer shrink-0"
+                          >
+                            <span>{translations[lang].btnDetail}</span>
+                            <ChevronRight className="w-3 h-3" />
+                          </button>
+                        </div>
+
+                        <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                          <a
+                            href={getDestinationGoogleMapsUrl(dest)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                            title={isEn ? "View Location on Google Maps" : "Cari Lokasi di Google Maps"}
+                          >
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                          </a>
+
+                          <a
+                            href={getSafeYoutubeUrl(dest.title, dest.regency || dest.category, dest.videoUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                            title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                          >
+                            <Youtube className="w-3.5 h-3.5" />
+                            <span>YouTube</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   );
@@ -1576,21 +1628,47 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 space-y-0.5">
-                      <span className="font-jakarta font-bold text-[9px] text-gray-400 uppercase tracking-widest block">
-                        {isEn ? 'MINANG PHILOSOPHY' : 'FALSAFAH MINANG'}
-                      </span>
-                      <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-2 pb-2">
-                        "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
-                      </p>
-                      <div className="flex justify-end pt-2 border-t border-gray-200">
-                        <button
-                          onClick={() => openSubModal(() => setSelectedCulture(item))}
-                          className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer"
+                    <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-col gap-2">
+                      <div>
+                        <span className="font-jakarta font-bold text-[9px] text-gray-400 uppercase tracking-widest block">
+                          {isEn ? 'MINANG PHILOSOPHY' : 'FALSAFAH MINANG'}
+                        </span>
+                        <div className="flex items-center justify-between gap-2 mt-0.5">
+                          <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-1 truncate">
+                            "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
+                          </p>
+                          <button
+                            onClick={() => openSubModal(() => setSelectedCulture(item))}
+                            className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
+                          >
+                            {translations[lang].btnDetail}
+                            <ChevronRight className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                        <a
+                          href={getCultureGoogleMapsUrl(item)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                          title={isEn ? "View on Google Maps" : "Cari di Maps"}
                         >
-                          {translations[lang].btnDetail}
-                          <ChevronRight className="w-3 h-3" />
-                        </button>
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                        </a>
+
+                        <a
+                          href={getSafeYoutubeUrl(item.title, item.category || item.origin, item.videoUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                          title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                        >
+                          <Youtube className="w-3.5 h-3.5" />
+                          <span>YouTube</span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -1638,18 +1716,44 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
                     </div>
 
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex items-center justify-between">
-                      <div>
-                        <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
-                        <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
+                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <div className="truncate pr-2">
+                          <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
+                          <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
+                        </div>
+                        <button
+                          onClick={() => openSubModal(() => setSelectedCulinary(cul))}
+                          className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
+                        >
+                          {translations[lang].btnDetail}
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
                       </div>
-                      <button
-                        onClick={() => openSubModal(() => setSelectedCulinary(cul))}
-                        className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
-                      >
-                        {translations[lang].btnDetail}
-                        <ChevronRight className="w-3 h-3" />
-                      </button>
+
+                      <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                        <a
+                          href={getCulinaryGoogleMapsUrl(cul)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                          title={isEn ? "Find Food Places on Google Maps" : "Cari Tempat Kuliner di Google Maps"}
+                        >
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                        </a>
+
+                        <a
+                          href={getSafeYoutubeUrl(cul.title, cul.type || cul.origin, cul.videoUrl)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                          title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                        >
+                          <Youtube className="w-3.5 h-3.5" />
+                          <span>YouTube</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 );
@@ -1968,20 +2072,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
 
                   {/* Card Footer & Action Buttons */}
-                  <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {/* 1-Click Google Maps Location button */}
-                      <a
-                        href={getEventGoogleMapsUrl(ev)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-white border border-emerald-300 hover:border-emerald-600 text-emerald-700 hover:text-emerald-900 font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs hover:bg-emerald-50 text-center shrink-0"
-                        title={isEn ? 'View Event Location on Google Maps' : 'Lihat Lokasi Event di Google Maps'}
-                      >
-                        <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
-                        <span className="text-center">{isEn ? 'Maps' : 'Lokasi'}</span>
-                      </a>
-
+                  <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-2">
                       {/* 1-Click Google Calendar button */}
                       <a
                         href={getGoogleCalendarUrl(ev)}
@@ -1993,33 +2085,57 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <Calendar className="w-3 h-3 text-blue-600 shrink-0" />
                         <span className="text-center">{isEn ? '+ Calendar' : '+ Kalender'}</span>
                       </a>
+
+                      <div className="flex items-center gap-1.5 justify-end">
+                        <button
+                          onClick={() => handlePlanEventWithAi(ev)}
+                          className="bg-amber-500 hover:bg-amber-400 text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs text-center"
+                          title={isEn ? 'Plan with AI' : 'Rencanakan dengan AI'}
+                        >
+                          <Sparkles className="w-3 h-3 shrink-0" />
+                          <span className="text-center">{isEn ? 'AI Plan' : 'AI Plan'}</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleShareEvent(ev)}
+                          className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white flex items-center justify-center shrink-0"
+                          title={isEn ? 'Share Event' : 'Bagikan Event'}
+                        >
+                          <Share2 className="w-3 h-3 shrink-0" />
+                        </button>
+
+                        <button
+                          onClick={() => openSubModal(() => setSelectedEvent(ev))}
+                          className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs text-center"
+                        >
+                          <span className="text-center">{translations[lang].btnDetail}</span>
+                          <ChevronRight className="w-3 h-3 shrink-0" />
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 justify-end flex-wrap">
-                      <button
-                        onClick={() => handlePlanEventWithAi(ev)}
-                        className="bg-amber-500 hover:bg-amber-400 text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs text-center"
-                        title={isEn ? 'Plan with AI' : 'Rencanakan dengan AI'}
+                    <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                      <a
+                        href={getEventGoogleMapsUrl(ev)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                        title={isEn ? "View Event Location on Google Maps" : "Cari Lokasi Event di Google Maps"}
                       >
-                        <Sparkles className="w-3 h-3 shrink-0" />
-                        <span className="text-center">{isEn ? 'AI Plan' : 'AI Plan'}</span>
-                      </button>
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                      </a>
 
-                      <button
-                        onClick={() => handleShareEvent(ev)}
-                        className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white flex items-center justify-center shrink-0"
-                        title={isEn ? 'Share Event' : 'Bagikan Event'}
+                      <a
+                        href={getSafeYoutubeUrl(ev.title, ev.location, ev.videoUrl)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                        title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                       >
-                        <Share2 className="w-3 h-3 shrink-0" />
-                      </button>
-
-                      <button
-                        onClick={() => openSubModal(() => setSelectedEvent(ev))}
-                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs text-center"
-                      >
-                        <span className="text-center">{translations[lang].btnDetail}</span>
-                        <ChevronRight className="w-3 h-3 shrink-0" />
-                      </button>
+                        <Youtube className="w-3.5 h-3.5" />
+                        <span>YouTube</span>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -3771,17 +3887,16 @@ export const Drawers: React.FC<DrawersProps> = ({
               </div>
             </div>
 
-            {getGoogleMapsUrl(selectedDestination.mapUrl) && (
-              <a
-                href={getGoogleMapsUrl(selectedDestination.mapUrl)!}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-slate-900 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-black transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-              >
-                <MapPin className="w-4 h-4 text-white" />
-                <span>{translations[lang].btnOpenMap}</span>
-              </a>
-            )}
+            {/* GOOGLE MAPS DESTINATION LOCATION BUTTON */}
+            <a
+              href={getDestinationGoogleMapsUrl(selectedDestination)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <MapPin className="w-4 h-4 text-white" />
+              <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
+            </a>
 
             <a
               href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
@@ -3856,17 +3971,16 @@ export const Drawers: React.FC<DrawersProps> = ({
               </p>
             </div>
 
-            {getGoogleMapsUrl(selectedCulture.mapUrl) && (
-              <a
-                href={getGoogleMapsUrl(selectedCulture.mapUrl)!}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-blue-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-              >
-                <MapPin className="w-4 h-4 text-white" />
-                <span>{translations[lang].btnOpenMap}</span>
-              </a>
-            )}
+            {/* GOOGLE MAPS CULTURE LOCATION BUTTON */}
+            <a
+              href={getCultureGoogleMapsUrl(selectedCulture)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
+            >
+              <MapPin className="w-4 h-4 text-white" />
+              <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
+            </a>
 
             <a
               href={getSafeYoutubeUrl(selectedCulture.title, selectedCulture.category || selectedCulture.origin, selectedCulture.videoUrl)}
