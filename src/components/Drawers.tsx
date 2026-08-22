@@ -317,16 +317,26 @@ export const Drawers: React.FC<DrawersProps> = ({
     const days = getEventDays(ev.schedule, evMonth);
     const day = days.length > 0 ? days[0] : 15;
     const formattedDate = `2026-${String(evMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const evTitle = lang === 'en' && ev.titleEn ? ev.titleEn : ev.title;
+    const evLoc = lang === 'en' && ev.locationNameEn ? ev.locationNameEn : (ev.locationName || ev.location || ev.regency);
     
     setItineraryForm((prev: any) => ({
       ...prev,
+      targetEvent: ev,
+      durasiHari: Math.max(prev.durasiHari || 3, 2),
       waktuKunjungan: {
         tanggalMulai: formattedDate,
         tanggalSelesai: formattedDate
       },
+      kebutuhanKhusus: {
+        ...prev.kebutuhanKhusus,
+        catatanKhusus: lang === 'en'
+          ? `MANDATORY HIGHLIGHT: Attend the "${evTitle}" (${ev.scheduleEn || ev.schedule}) in ${evLoc}. Please schedule attending this event as the primary centerpiece of the itinerary!`
+          : `WAJIB DIHADIRI: Menghadiri "${evTitle}" (${ev.schedule}) di ${evLoc}. Mohon jadwalkan kunjungan ke acara/festival ini sebagai puncak (highlight utama) rencana liburan!`
+      },
       preferensiMinat: {
         ...prev.preferensiMinat,
-        kategoriWisata: Array.from(new Set([...(prev.preferensiMinat?.kategoriWisata || []), 'festival']))
+        kategoriWisata: Array.from(new Set([...(prev.preferensiMinat?.kategoriWisata || []), 'festival', 'budaya']))
       }
     }));
     
@@ -993,6 +1003,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     try {
       const data: FormAIResponse = await fetchAiItinerary({
         ...itineraryForm,
+        targetEvent: itineraryForm.targetEvent || null,
         availableEvents: eventItems,
         availableDestinations: destinations,
         language: lang,
@@ -1923,43 +1934,43 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
 
                   {/* Card Footer & Action Buttons */}
-                  <div className="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-2">
+                  <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
                     {/* 1-Click Google Calendar button */}
                     <a
                       href={getGoogleCalendarUrl(ev)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-white border border-gray-300 hover:border-black text-gray-700 hover:text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-2xs hover:bg-gray-50 shrink-0"
+                      className="bg-white border border-gray-300 hover:border-black text-gray-700 hover:text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs hover:bg-gray-50 text-center shrink-0"
                       title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
                     >
-                      <Calendar className="w-3 h-3 text-blue-600" />
-                      <span>{isEn ? '+ Calendar' : '+ Kalender'}</span>
+                      <Calendar className="w-3 h-3 text-blue-600 shrink-0" />
+                      <span className="text-center">{isEn ? '+ Calendar' : '+ Kalender'}</span>
                     </a>
 
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 justify-end flex-wrap">
                       <button
                         onClick={() => handlePlanEventWithAi(ev)}
-                        className="bg-amber-500 hover:bg-amber-400 text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-2xs"
+                        className="bg-amber-500 hover:bg-amber-400 text-black font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs text-center"
                         title={isEn ? 'Plan with AI' : 'Rencanakan dengan AI'}
                       >
-                        <Sparkles className="w-3 h-3" />
-                        <span>{isEn ? 'AI Plan' : 'AI Plan'}</span>
+                        <Sparkles className="w-3 h-3 shrink-0" />
+                        <span className="text-center">{isEn ? 'AI Plan' : 'AI Plan'}</span>
                       </button>
 
                       <button
                         onClick={() => handleShareEvent(ev)}
-                        className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white"
+                        className="p-1.5 rounded-md border border-gray-200 text-gray-500 hover:text-black hover:border-black transition-colors cursor-pointer bg-white flex items-center justify-center shrink-0"
                         title={isEn ? 'Share Event' : 'Bagikan Event'}
                       >
-                        <Share2 className="w-3 h-3" />
+                        <Share2 className="w-3 h-3 shrink-0" />
                       </button>
 
                       <button
                         onClick={() => openSubModal(() => setSelectedEvent(ev))}
-                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center gap-1 transition-all cursor-pointer shadow-xs"
+                        className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs text-center"
                       >
-                        <span>{translations[lang].btnDetail}</span>
-                        <ChevronRight className="w-3 h-3" />
+                        <span className="text-center">{translations[lang].btnDetail}</span>
+                        <ChevronRight className="w-3 h-3 shrink-0" />
                       </button>
                     </div>
                   </div>
@@ -2460,6 +2471,51 @@ export const Drawers: React.FC<DrawersProps> = ({
               {formAiTab === 'generator' && (
                 <div className="space-y-6">
                   <form onSubmit={handleGenerateItinerary} className="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    {/* Target Event Priority Banner */}
+                    {itineraryForm.targetEvent && (
+                      <div className="p-3 bg-amber-50 border-2 border-amber-400 rounded-xl space-y-2 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-jakarta font-black uppercase text-amber-900 flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4 text-amber-600 animate-pulse" />
+                            {lang === 'en' ? '🎯 Target Event Selected' : '🎯 Event Prioritas Terpilih'}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setItineraryForm((prev: any) => ({ ...prev, targetEvent: null }))}
+                            className="text-[10px] text-red-600 hover:text-red-800 font-bold underline cursor-pointer"
+                          >
+                            {lang === 'en' ? 'Remove' : 'Hapus Event'}
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          {itineraryForm.targetEvent.imageUrl && (
+                            <img
+                              src={itineraryForm.targetEvent.imageUrl}
+                              alt={itineraryForm.targetEvent.title}
+                              className="w-12 h-12 object-cover rounded-lg shrink-0 border border-amber-200"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <h4 className="font-orbitron font-bold text-xs text-black truncate">
+                              {lang === 'en' && itineraryForm.targetEvent.titleEn ? itineraryForm.targetEvent.titleEn : itineraryForm.targetEvent.title}
+                            </h4>
+                            <p className="font-jakarta text-[10px] text-amber-800 font-semibold flex items-center gap-1 truncate">
+                              <Calendar className="w-3 h-3 shrink-0" />
+                              {lang === 'en' && itineraryForm.targetEvent.scheduleEn ? itineraryForm.targetEvent.scheduleEn : itineraryForm.targetEvent.schedule}
+                            </p>
+                            <p className="font-jakarta text-[10px] text-gray-600 truncate">
+                              📍 {lang === 'en' && itineraryForm.targetEvent.locationNameEn ? itineraryForm.targetEvent.locationNameEn : (itineraryForm.targetEvent.locationName || itineraryForm.targetEvent.location || itineraryForm.targetEvent.regency)}
+                            </p>
+                          </div>
+                        </div>
+                        <p className="text-[10px] font-jakarta text-amber-950/80 italic border-t border-amber-200/80 pt-1">
+                          {lang === 'en'
+                            ? '✨ UNI MALA AI will build an itinerary prioritizing this event as the primary highlight.'
+                            : '✨ UNI MALA AI akan menyusun rute perjalanan searah yang memprioritaskan kehadiran Anda pada event ini.'}
+                        </p>
+                      </div>
+                    )}
+
                     <div>
                       <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
                         {translations[lang].fieldDaysForm}
@@ -4056,10 +4112,10 @@ export const Drawers: React.FC<DrawersProps> = ({
               <button
                 type="button"
                 onClick={() => handlePlanEventWithAi(selectedEvent)}
-                className="w-full bg-black hover:bg-neutral-800 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-all cursor-pointer flex justify-center items-center gap-2 shadow-xs"
+                className="w-full bg-black hover:bg-neutral-800 text-white py-3 px-3 rounded-lg font-jakarta font-bold uppercase text-[11px] sm:text-xs transition-all cursor-pointer flex justify-center items-center gap-2 shadow-xs text-center leading-tight"
               >
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>{lang === 'en' ? 'Plan Trip to This Event with AI' : '✨ Susun Rencana Liburan ke Event Ini dengan AI'}</span>
+                <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="text-center">{lang === 'en' ? 'Plan Trip to This Event with AI' : '✨ Susun Rencana Liburan ke Event Ini dengan AI'}</span>
               </button>
 
               <div className="grid grid-cols-2 gap-2">
@@ -4067,19 +4123,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                   href={getGoogleCalendarUrl(selectedEvent)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-2 rounded-lg font-jakarta font-bold uppercase text-[11px] sm:text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs text-center leading-tight"
                 >
-                  <Calendar className="w-4 h-4" />
-                  <span>{lang === 'en' ? 'Add to Calendar' : 'Simpan ke Kalender'}</span>
+                  <Calendar className="w-3.5 h-3.5 shrink-0" />
+                  <span className="text-center">{lang === 'en' ? 'Add to Calendar' : 'Simpan ke Kalender'}</span>
                 </a>
 
                 <button
                   type="button"
                   onClick={() => handleShareEvent(selectedEvent)}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 border border-gray-200"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2.5 px-2 rounded-lg font-jakarta font-bold uppercase text-[11px] sm:text-xs transition-colors cursor-pointer flex justify-center items-center gap-1.5 border border-gray-200 text-center leading-tight"
                 >
-                  <Share2 className="w-4 h-4" />
-                  <span>{lang === 'en' ? 'Share Event' : 'Bagikan Event'}</span>
+                  <Share2 className="w-3.5 h-3.5 shrink-0 text-gray-600" />
+                  <span className="text-center">{lang === 'en' ? 'Share Event' : 'Bagikan Event'}</span>
                 </button>
               </div>
             </div>

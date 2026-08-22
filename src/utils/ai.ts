@@ -328,16 +328,46 @@ export function getItineraryFallback(params: any) {
     }
   ];
 
+  // If targetEvent is provided, inject it as the main highlight into Day 1 or Day 2
+  const targetEv = params?.targetEvent;
+  if (targetEv) {
+    const evTitle = isEnglish && targetEv.titleEn ? targetEv.titleEn : targetEv.title;
+    const evSched = isEnglish && targetEv.scheduleEn ? targetEv.scheduleEn : targetEv.schedule;
+    const evLoc = isEnglish && targetEv.locationNameEn ? targetEv.locationNameEn : (targetEv.locationName || targetEv.location || targetEv.regency);
+    const evDesc = isEnglish && targetEv.descriptionEn ? targetEv.descriptionEn.split('\n\n')[0] : (targetEv.description ? targetEv.description.split('\n\n')[0] : '');
+
+    const targetDayIndex = daysCount > 1 ? 1 : 0;
+    if (masterDays[targetDayIndex]) {
+      masterDays[targetDayIndex].title = isEnglish
+        ? `✨ Festival Spotlight: ${evTitle} & Regional Highlights`
+        : `✨ Puncak Acara: ${evTitle} & Eksplorasi Kawasan Sekitar`;
+      
+      masterDays[targetDayIndex].activities.unshift({
+        time: "09:00 - 12:30",
+        location: `🎪 ${evTitle} [${evLoc}]`,
+        activity: isEnglish
+          ? `Attending the spectacular ${evTitle} (${evSched}). ${evDesc}`
+          : `Menghadiri kemeriahan ${evTitle} (${evSched}). ${evDesc}`,
+        tips: isEnglish
+          ? "Arrive early to witness opening ceremonial rites and enjoy authentic festive atmosphere."
+          : "Tiba lebih awal untuk menyaksikan pembukaan prosesi adat dan mengabadikan momen terbaik."
+      });
+      if (masterDays[targetDayIndex].activities.length > 4) {
+        masterDays[targetDayIndex].activities.pop();
+      }
+    }
+  }
+
   // Slice exactly the number of days requested without any duplicate or repeating content
   const selectedDays = masterDays.slice(0, daysCount);
 
   return {
     title: isEnglish
-      ? `Master Tour Itinerary: Wonderful West Sumatra Grand Exploration (${daysCount} Days${startDate ? ` - Starting ${startDate}` : ''})`
-      : `Rencana Perjalanan Eksklusif: Master Tour Wonderful West Sumatra (${daysCount} Hari${startDate ? ` - Mulai ${startDate}` : ''})`,
+      ? (targetEv ? `Special Event Itinerary: ${targetEv.titleEn || targetEv.title} & West Sumatra Highlights (${daysCount} Days)` : `Master Tour Itinerary: Wonderful West Sumatra Grand Exploration (${daysCount} Days${startDate ? ` - Starting ${startDate}` : ''})`)
+      : (targetEv ? `Rencana Perjalanan Spesial: ${targetEv.title} & Pesona Sumatera Barat (${daysCount} Hari)` : `Rencana Perjalanan Eksklusif: Master Tour Wonderful West Sumatra (${daysCount} Hari${startDate ? ` - Mulai ${startDate}` : ''})`),
     summary: isEnglish
-      ? `A professionally curated, 100% distinct daily travel plan designed by master tour operators. Features seamless corridor routing, realistic drive times, iconic Minangkabau geoparks, UNESCO cultural heritage, and world-class culinary stops.`
-      : `Rencana perjalanan wisata 100% berbeda setiap hari yang dirancang oleh Master Tour Operator profesional. Mengutamakan rute koridor searah tanpa bolak-balik, estimasi waktu tempuh realistis, kepuasan maksimal wisatawan, serta eksplorasi kuliner legendaris khas Minangkabau.`,
+      ? (targetEv ? `A custom travel plan featuring the magnificent ${targetEv.titleEn || targetEv.title} as the centerpiece highlight, seamlessly combined with scenic Minangkabau geoparks, cultural heritage, and legendary gastronomy.` : `A professionally curated, 100% distinct daily travel plan designed by master tour operators. Features seamless corridor routing, realistic drive times, iconic Minangkabau geoparks, UNESCO cultural heritage, and world-class culinary stops.`)
+      : (targetEv ? `Rencana perjalanan wisata istimewa yang dirancang khusus dengan puncak perayaan festival akbar "${targetEv.title}" (${targetEv.schedule || ''}), dipadukan dengan eksplorasi geopark, warisan budaya Minangkabau, serta kuliner legendaris yang searah rute.` : `Rencana perjalanan wisata 100% berbeda setiap hari yang dirancang oleh Master Tour Operator profesional. Mengutamakan rute koridor searah tanpa bolak-balik, estimasi waktu tempuh realistis, kepuasan maksimal wisatawan, serta eksplorasi kuliner legendaris khas Minangkabau.`),
     itinerary: selectedDays,
     localTips: isEnglish
       ? [
@@ -372,9 +402,9 @@ export async function fetchAiItinerary(params: any) {
   }
 
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest', 'gemini-2.0-flash', 'gemini-flash-lite-latest'];
+    const modelsToTry = ['gemini-flash-latest', 'gemini-pro-latest', 'gemini-flash-lite-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -383,14 +413,32 @@ export async function fetchAiItinerary(params: any) {
         const availableDestinations = params?.availableDestinations || [];
         const destSummary = availableDestinations.map((d: any) => `- ${d.title} (${d.category}): ${d.tag}`).join('\n');
         
+        const targetEvent = params?.targetEvent;
+        const eventEmphasisPrompt = targetEvent ? `
+🌟 TARGET EVENT / FESTIVAL UTAMA YANG WAJIB DIHADIRI (MANDATORY TRIP CENTERPIECE):
+Wisatawan ini secara khusus ingin menghadiri acara/festival berikut:
+- Nama Event: ${targetEvent.title} (${targetEvent.titleEn || ''})
+- Jadwal Pelaksanaan: ${targetEvent.schedule} (${targetEvent.scheduleEn || ''})
+- Lokasi Acara: ${targetEvent.locationName || targetEvent.location || targetEvent.regency}
+- Deskripsi Acara: ${targetEvent.description}
+- Status Event: ${targetEvent.isKen ? 'Karisma Event Nusantara (KEN Kemenparekraf)' : 'Event Unggulan Sumatera Barat'}
+
+ATURAN WAJIB PALING UTAMA:
+1. Anda HARUS menjadwalkan kunjungan khusus ke festival "${targetEvent.title}" ini pada salah satu hari (misal Hari 1 atau Hari 2) sebagai AKTIVITAS UTAMA (centerpiece).
+2. Susun seluruh rute hari tersebut dan destinasi di sekitarnya agar SEARAH dan BERDEKATAN secara geografis dengan lokasi event ${targetEvent.locationName || targetEvent.regency}.
+3. Tuliskan nama "${targetEvent.title}" secara eksplisit pada judul hari dan deskripsi aktivitas di hari tersebut!
+` : '';
+
         // Remove large arrays before stringifying to keep prompt clean
         const cleanParams = { ...params };
         delete cleanParams.availableDestinations;
         delete cleanParams.availableEvents;
 
         const prompt = `Anda adalah 'UNI MALA AI', MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK di Sumatera Barat. 
-Tugas Anda merancang itinerary wisata yang SANGAT SPESIFIK dan MEMATUHI SEMUA preferensi pengguna berikut:
+Tugas Anda merancang itinerary wisata yang SANGAT SPESIFIK, NYAMAN, dan MEMATUHI SEMUA preferensi pengguna berikut:
 ${JSON.stringify(cleanParams, null, 2)}
+
+${eventEmphasisPrompt}
 
 Daftar Destinasi & Kategori di Sumatera Barat yang dapat Anda pilih:
 ${destSummary}
