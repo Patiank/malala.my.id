@@ -1,94 +1,132 @@
 /**
  * Utility for generating safe, 100% copyright-free YouTube search links and parsing video URLs.
+ *
+ * PENTING: Semua tombol YouTube di katalog menggunakan LINK PENCARIAN YouTube (search_query),
+ * BUKAN link video langsung. Ini memastikan link tidak pernah mati/error "Video tidak tersedia".
  */
 
 /**
- * Returns a clean, high-precision YouTube search link using the primary title/name.
+ * Membersihkan judul dari tanda kurung, label tag, dan karakter khusus.
+ * Digunakan untuk menghasilkan keyword pencarian YouTube yang bersih dan relevan.
  */
-export function getSafeYoutubeUrl(title?: string, contextTag: string = '', customUrl?: string): string {
-  if (customUrl && customUrl.trim() !== '') {
-    return customUrl.trim();
-  }
-  
+function cleanTitleForSearch(title: string): string {
+  return title
+    .replace(/\s*\(\s*KEN\s*\)/gi, '')
+    .replace(/\s*\(\s*Rekor\s*MURI\s*\)/gi, '')
+    .replace(/\s*\(\s*Heritage\s*&?\s*Waterfront\s*\)/gi, '')
+    .replace(/\s*\(\s*Equestrian\s*Heritage\s*\)/gi, '')
+    .replace(/\s*\(\s*Atraksi[^)]*\)/gi, '')
+    .replace(/\s*\(\s*Balap[^)]*\)/gi, '')
+    .replace(/\s*\/\s*SISSCa/gi, '')
+    .replace(/\s*\/\s*SIMFes/gi, '')
+    .replace(/\(.*?\)/g, '')   // hapus semua tanda kurung yang tersisa
+    .replace(/\//g, ' ')
+    .replace(/&/g, 'dan')
+    .replace(/[^\w\s\d]/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Menghasilkan link PENCARIAN YouTube yang aman dan selalu berfungsi.
+ * Digunakan untuk katalog Destinasi, Kuliner, dan Kebudayaan.
+ *
+ * TIDAK menggunakan videoUrl langsung agar link tidak pernah mati.
+ */
+export function getSafeYoutubeUrl(title?: string, contextTag: string = '', _customUrl?: string): string {
   if (!title || !title.trim()) {
     return 'https://www.youtube.com/results?search_query=Pariwisata+Sumatera+Barat';
   }
 
-  // 1. Strip parenthetical explanations, brackets, and secondary tags
-  let cleanTitle = title
-    .replace(/\s*\(\s*KEN\s*\)/gi, '')
-    .replace(/\s*\(\s*Rekor\s*MURI\s*\)/gi, '')
-    .replace(/\s*\/\s*SISSCa/gi, '')
-    .replace(/\s*\/\s*SIMFes/gi, '')
-    .replace(/\(.*?\)/g, '')
-    .replace(/[^\w\s\d]/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  let cleanTitle = cleanTitleForSearch(title);
 
-  if (!cleanTitle || cleanTitle.length < 3) {
-    cleanTitle = title.replace(/[^\w\s\d]/gi, ' ').replace(/\s+/g, ' ').trim();
-  }
-
-  const query = encodeURIComponent(cleanTitle);
-  return `https://www.youtube.com/results?search_query=${query}`;
-}
-
-/**
- * Returns a dedicated, highly accurate YouTube search link for Events using ONLY the clean event name.
- */
-export function getEventYoutubeUrl(event?: { id?: string; title?: string; videoUrl?: string } | null): string {
-  if (!event) return 'https://www.youtube.com/results?search_query=Event+Pariwisata+Sumatera+Barat';
-  if (event.videoUrl && event.videoUrl.trim() !== '') {
-    return event.videoUrl.trim();
-  }
-
-  let name = event.title || '';
-  const titleLower = name.toLowerCase();
-
-  // Specific clean event names for 100% accuracy and highest relevance
-  if (event.id === 'ev1' || titleLower.includes('pacu jawi')) name = 'Pacu Jawi';
-  else if (event.id === 'ev2' || titleLower.includes('tour de singkarak')) name = 'Tour de Singkarak';
-  else if (event.id === 'ev3' || titleLower.includes('tabuik')) name = 'Pesona Budaya Hoyak Tabuik Piaman';
-  else if (event.id === 'ev4' || titleLower.includes('rang solok')) name = 'Festival Rang Solok Baralek Gadang';
-  else if (event.id === 'ev5' || titleLower.includes('songket carnival')) name = 'Sawahlunto International Songket Carnival';
-  else if (event.id === 'ev6' || titleLower.includes('botuang')) name = 'Payakumbuh Botuang Festival';
-  else if (event.id === 'ev7' || titleLower.includes('pesona minangkabau')) name = 'Festival Pesona Minangkabau';
-  else if (event.id === 'ev8' || titleLower.includes('siti nurbaya')) name = 'Festival Siti Nurbaya Padang';
-  else if (event.id === 'ev9' || titleLower.includes('rakik')) name = 'Festival Rakik-Rakik Danau Maninjau';
-  else if (event.id === 'ev10' || titleLower.includes('5 danau')) name = 'Festival 5 Danau Solok';
-  else if (event.id === 'ev11' || titleLower.includes('music festival')) name = 'Sawahlunto International Music Festival';
-  else if (event.id === 'ev12' || titleLower.includes('pesona mentawai')) name = 'Festival Pesona Mentawai';
-  else if (event.id === 'ev13' || titleLower.includes('bakajang') || titleLower.includes('barajang')) name = 'Alek Bakajang Lima Puluh Kota';
-  else if (event.id === 'ev14' || titleLower.includes('langkisau')) name = 'Festival Langkisau Pesisir Selatan';
-  else if (event.id === 'ev15' || titleLower.includes('maapam')) name = 'Festival Tradisi Maapam Pasaman';
-  else if (event.id === 'ev16' || titleLower.includes('pasa harau')) name = 'Pasa Harau Art & Culture Festival';
-  else if (event.id === 'ev17' || titleLower.includes('muaro padang')) name = 'Festival Muaro Padang';
-  else if (event.id === 'ev18' || titleLower.includes('pamalayu')) name = 'Festival Budaya Pamalayu Dharmasraya';
-  else if (event.id === 'ev19' || titleLower.includes('pacu kudo')) name = 'Pacu Kuda Tradisional Minangkabau';
-  else if (event.id === 'ev20' || titleLower.includes('danau maninjau & kelok 44')) name = 'Festival Pesona Danau Maninjau';
-  else {
-    // General clean
-    name = name
-      .replace(/\s*\(\s*KEN\s*\)/gi, '')
-      .replace(/\s*\(\s*Rekor\s*MURI\s*\)/gi, '')
-      .replace(/\s*\/\s*SISSCa/gi, '')
-      .replace(/\s*\/\s*SIMFes/gi, '')
-      .replace(/\(.*?\)/g, '')
-      .replace(/\//g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-    if (!name || name.length < 3) {
-      name = (event.title || '').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Tambahkan konteks regional jika belum ada dan relevan
+  if (contextTag && cleanTitle.length > 0) {
+    const cleanContext = cleanTitleForSearch(contextTag);
+    const hasRegionalContext = /sumatera barat|sumbar|padang|minang|bukittinggi/i.test(cleanTitle);
+    if (!hasRegionalContext && cleanContext && cleanTitle.toLowerCase().indexOf(cleanContext.toLowerCase()) === -1) {
+      cleanTitle = `${cleanTitle} ${cleanContext}`;
     }
   }
 
-  const query = encodeURIComponent(name.trim());
+  if (!cleanTitle || cleanTitle.length < 3) {
+    cleanTitle = (title || '').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  const query = encodeURIComponent(cleanTitle.trim());
   return `https://www.youtube.com/results?search_query=${query}`;
 }
 
 /**
- * Parses embed URL from YouTube video link (used if direct video is supplied)
+ * Map nama bersih untuk setiap event berdasarkan ID atau kata kunci judul.
+ * Selalu menggunakan link PENCARIAN YouTube, tidak pernah link video langsung.
+ * Ini memastikan link tidak pernah error "Video tidak tersedia".
+ */
+const EVENT_SEARCH_MAP: Array<{
+  match: (id: string, titleLower: string) => boolean;
+  keyword: string;
+}> = [
+  { match: (id, t) => id === 'ev1' || t.includes('pacu jawi'), keyword: 'Pacu Jawi Sumatera Barat' },
+  { match: (id, t) => id === 'ev2' || t.includes('tour de singkarak'), keyword: 'Tour de Singkarak' },
+  { match: (id, t) => id === 'ev3' || t.includes('tabuik'), keyword: 'Hoyak Tabuik Pariaman' },
+  { match: (id, t) => id === 'ev4' || t.includes('rang solok'), keyword: 'Rang Solok Baralek Gadang' },
+  { match: (id, t) => id === 'ev5' || t.includes('songket carnival'), keyword: 'Sawahlunto International Songket Carnival' },
+  { match: (id, t) => id === 'ev6' || t.includes('botuang'), keyword: 'Payakumbuh Botuang Festival' },
+  { match: (id, t) => id === 'ev7' || t.includes('pesona minangkabau'), keyword: 'Festival Pesona Minangkabau' },
+  { match: (id, t) => id === 'ev8' || t.includes('siti nurbaya'), keyword: 'Festival Siti Nurbaya Padang' },
+  { match: (id, t) => id === 'ev9' || t.includes('rakik'), keyword: 'Festival Rakik Rakik Danau Maninjau' },
+  { match: (id, t) => id === 'ev10' || t.includes('5 danau'), keyword: 'Festival Lima Danau Solok' },
+  { match: (id, t) => id === 'ev11' || t.includes('music festival') || t.includes('simfes'), keyword: 'Sawahlunto International Music Festival' },
+  { match: (id, t) => id === 'ev12' || t.includes('pesona mentawai'), keyword: 'Festival Pesona Mentawai' },
+  { match: (id, t) => id === 'ev13' || t.includes('bakajang') || t.includes('barajang'), keyword: 'Alek Bakajang Lima Puluh Kota' },
+  { match: (id, t) => id === 'ev14' || t.includes('langkisau'), keyword: 'Festival Langkisau Painan Pesisir Selatan' },
+  { match: (id, t) => id === 'ev15' || t.includes('maapam'), keyword: 'Festival Tradisi Maapam Pasaman' },
+  { match: (id, t) => id === 'ev16' || t.includes('pasa harau'), keyword: 'Pasa Harau Art Culture Festival' },
+  { match: (id, t) => id === 'ev17' || t.includes('muaro padang'), keyword: 'Festival Muaro Padang' },
+  { match: (id, t) => id === 'ev18' || t.includes('pamalayu'), keyword: 'Festival Budaya Pamalayu Dharmasraya' },
+  { match: (id, t) => id === 'ev19' || t.includes('pacu kudo') || t.includes('pacu kuda'), keyword: 'Pacu Kuda Tradisional Minangkabau' },
+  { match: (id, t) => id === 'ev20' || (t.includes('danau maninjau') && t.includes('kelok')), keyword: 'Festival Pesona Danau Maninjau' },
+];
+
+/**
+ * Menghasilkan link PENCARIAN YouTube khusus untuk item event.
+ *
+ * ⚠️ SELALU menggunakan YouTube search (bukan link video langsung),
+ * bahkan jika event memiliki field videoUrl di Firestore.
+ * Ini mencegah error "Video tidak tersedia" saat video dihapus oleh pemiliknya.
+ */
+export function getEventYoutubeUrl(event?: { id?: string; title?: string; videoUrl?: string } | null): string {
+  if (!event) {
+    return 'https://www.youtube.com/results?search_query=Event+Pariwisata+Sumatera+Barat';
+  }
+
+  // ⛔ JANGAN gunakan event.videoUrl langsung — bisa sudah dihapus di YouTube!
+  // Selalu gunakan link pencarian YouTube agar selalu berfungsi.
+
+  const id = (event.id || '').toLowerCase().trim();
+  const titleLower = (event.title || '').toLowerCase();
+
+  // Cari keyword yang paling tepat dari peta event
+  for (const entry of EVENT_SEARCH_MAP) {
+    if (entry.match(id, titleLower)) {
+      const query = encodeURIComponent(entry.keyword);
+      return `https://www.youtube.com/results?search_query=${query}`;
+    }
+  }
+
+  // Fallback: bersihkan judul dari tag/label dan jadikan keyword pencarian
+  const cleanKeyword = cleanTitleForSearch(event.title || '');
+  if (cleanKeyword && cleanKeyword.length > 2) {
+    const query = encodeURIComponent(cleanKeyword);
+    return `https://www.youtube.com/results?search_query=${query}`;
+  }
+
+  return 'https://www.youtube.com/results?search_query=Festival+Sumatera+Barat';
+}
+
+/**
+ * Mengurai URL YouTube menjadi format embed (hanya untuk fitur preview video internal).
+ * Tidak digunakan untuk tombol YouTube di katalog publik.
  */
 export function getYoutubeEmbedUrl(url?: string): string | null {
   if (!url) return null;
@@ -97,7 +135,9 @@ export function getYoutubeEmbedUrl(url?: string): string | null {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
     const match = trimmed.match(regExp);
     if (match && match[2].length === 11) {
-      const origin = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
+      const origin = typeof window !== 'undefined' && window.location.origin
+        ? `&origin=${encodeURIComponent(window.location.origin)}`
+        : '';
       return `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1${origin}`;
     }
   } catch (e) {
