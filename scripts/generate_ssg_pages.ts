@@ -114,7 +114,7 @@ function generateHtmlPage(
   // Canonical link
   const canonicalTag = `<link rel="canonical" href="${options.canonicalUrl}" />`;
   if (html.includes('<link rel="canonical"')) {
-    html = html.replace(/<link rel="canonical".*?\/>/is, canonicalTag);
+    html = html.replace(/<link rel="canonical"[^>]*>/i, canonicalTag);
   } else {
     html = html.replace('</head>', `  ${canonicalTag}\n</head>`);
   }
