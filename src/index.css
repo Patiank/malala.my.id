@@ -1,23 +1,15 @@
 @import "tailwindcss";
 
-@theme {
-  --font-orbitron: 'Orbitron', sans-serif;
-  --font-jakarta: 'Plus Jakarta Sans', sans-serif;
-  --font-slackside: 'Slackside One', cursive;
-  --font-chakra: 'Chakra Petch', sans-serif;
-}
-
-@utility font-orbitron {
-  font-family: 'Orbitron', sans-serif !important;
-}
-@utility font-jakarta {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-}
-@utility font-slackside {
-  font-family: 'Slackside One', cursive !important;
-}
-@utility font-chakra {
-  font-family: 'Chakra Petch', sans-serif !important;
+@layer utilities {
+  .font-orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+  .font-jakarta {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .font-slackside {
+    font-family: 'Slackside One', cursive;
+  }
 }
 
 :root {
