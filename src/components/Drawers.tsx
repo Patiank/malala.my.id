@@ -236,6 +236,8 @@ export const Drawers: React.FC<DrawersProps> = ({
     culinaryItems, updateCulinaryItems,
     eventItems, updateEventItems
   } = dataStore;
+  const souvenirItems = dataStore?.souvenirItems || [];
+  const hotInfoItems = dataStore?.hotInfoItems || [];
 
   // Category filter state for destinations
   const [destCategory, setDestCategory] = useState<string>('Semua');
