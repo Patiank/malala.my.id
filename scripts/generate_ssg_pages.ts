@@ -24,24 +24,24 @@ function escapeHtml(unsafe: string): string {
 
 const FAQS = [
   {
-    question: "Apa saja tempat wisata paling populer di Sumatera Barat?",
-    answer: "Sumatera Barat memiliki destinasi unggulan kelas dunia seperti Geopark Lembah Harau (tebing granit & air terjun), Danau Singkarak & Danau Maninjau (danau vulkanik & kuliner ikan bilih), Jam Gadang & Ngarai Sianok di Bukittinggi, Kawasan Wisata Bahari Mandeh (Raja Ampat-nya Ranah Minang), Istano Basa Pagaruyung, dan Kepulauan Mentawai untuk selancar kelas dunia."
+    question: "Apa saja tempat wisata hits di Sumbar 2026 yang wajib dikunjungi?",
+    answer: "Untuk rekomendasi tempat wisata hits di Sumbar 2026, Anda wajib mengunjungi surga tersembunyi Mandeh (Raja Ampat-nya Sumatera Barat), pesona wisata Lembah Harau terbaru, menikmati sunset dan mencari info tiket masuk Ngarai Sianok di Bukittinggi, hingga selancar ombak kelas dunia di Kepulauan Mentawai."
   },
   {
-    question: "Kapan waktu terbaik untuk berkunjung dan liburan ke Sumatera Barat?",
-    answer: "Waktu terbaik adalah sepanjang musim kemarau antara bulan Mei hingga September untuk trekking alam dan wisata bahari pulau. Jika ingin menyaksikan festival budaya terbesar seperti Pacu Jawi dan Tabuik Pariaman, kunjungan disarankan pada bulan Juli hingga September."
+    question: "Kapan jadwal Festival Tabuik Pariaman dan jadwal Pacu Jawi 2026 diadakan?",
+    answer: "Jadwal Pacu Jawi 2026 di Tanah Datar biasanya diadakan bergilir setiap akhir pekan pasca-panen raya. Sementara untuk kapan Festival Tabuik Pariaman 2026, acara puncak (Tabuik Naik Pangkek dan Dibuang ke Laut) diselenggarakan bertepatan dengan 10 Muharram kalender Hijriah. Anda juga bisa mengecek jadwal Tour de Singkarak di portal kalender event kami."
   },
   {
-    question: "Apa kuliner khas Minangkabau yang wajib dicoba saat berwisata?",
-    answer: "Kuliner wajib Minang meliputi Rendang Daging (dinobatkan sebagai makanan terlezat di dunia), Sate Padang & Sate Pariaman, Nasi Kapau Tilatang Kamang dengan Gulai Tambusu, Gulai Itiak Lado Mudo Koto Gadang, Soto Padang renyah, Dendeng Batokok, dan minuman stamina khas Teh Talua."
+    question: "Apa saja rekomendasi kuliner khas Padang Bukittinggi yang terenak?",
+    answer: "Rekomendasi kuliner khas Padang Bukittinggi meliputi Rendang Daging autentik, daftar tempat makan Nasi Kapau asli di Pasar Bawah, hingga berburu sate padang terenak di Sumbar (seperti Sate Mak Syukur atau Sate Danguang-Danguang). Jangan lewatkan juga Itiak Lado Mudo Koto Gadang."
   },
   {
     question: "Bagaimana cara transportasi dari Bandara Internasional Minangkabau (BIM) ke destinasi wisata?",
     answer: "Dari Bandara Internasional Minangkabau (BIM), wisatawan dapat menggunakan Kereta Bandara Minangkabau Ekspres ke pusat Kota Padang, layanan Bus Damri, taksi argo resmi, atau sewa mobil wisata untuk rute Padang - Padang Panjang - Bukittinggi - Harau."
   },
   {
-    question: "Di mana saya bisa mengunduh buku panduan wisata dan peta pariwisata Sumbar 2026?",
-    answer: "Anda dapat mengunduh E-Booklet Buku Panduan Wisata Resmi Sumatera Barat 113 Halaman dan Kalender Event 2026 secara gratis dalam format PDF resolusi tinggi langsung di portal https://malala.my.id/unduhan."
+    question: "Di mana link download peta wisata Sumatera Barat PDF gratis?",
+    answer: "Anda bisa download peta wisata Sumatera Barat PDF gratis dan download buku panduan pariwisata Sumbar 2026 PDF (lengkap 113 halaman) resolusi tinggi langsung melalui halaman Unduhan di portal resmi Malala."
   }
 ];
 
@@ -207,7 +207,7 @@ export function generateSsg() {
     {
       route: 'destinasi',
       title: 'Destinasi Wisata Sumatera Barat - Malala',
-      description: 'Jelajahi 38+ destinasi alam unggulan: Geopark Lembah Harau, Danau Singkarak, Danau Maninjau, Jam Gadang, Ngarai Sianok, Mandeh, Mentawai, dan Candi Padang Roco.',
+      description: 'Rekomendasi tempat wisata hits di Sumbar 2026. Jelajahi surga tersembunyi Mandeh, wisata Lembah Harau terbaru, Mentawai, info tiket masuk Ngarai Sianok & Danau Singkarak.',
       h1: 'Katalog Destinasi Wisata Terbaik Sumatera Barat'
     },
     {
@@ -219,13 +219,13 @@ export function generateSsg() {
     {
       route: 'kuliner',
       title: 'Kuliner Autentik Khas Minangkabau - Malala',
-      description: 'Daftar makanan terenak khas Minang: Rendang Daging, Sate Padang, Nasi Kapau Gulai Tambusu, Soto Padang, Gulai Itiak Lado Mudo, Dendeng Batokok, dan Teh Talua.',
+      description: 'Rekomendasi kuliner khas Padang Bukittinggi: berburu sate padang terenak di Sumbar, tempat makan Nasi Kapau asli, Rendang autentik, Itiak Lado Mudo, & Teh Talua.',
       h1: 'Eksplorasi Kuliner Autentik Ranah Minang'
     },
     {
       route: 'event',
       title: 'Kalender Event Pariwisata Sumbar 2026 (CoE) - Malala',
-      description: 'Jadwal lengkap festival budaya KEN 2026: Pacu Jawi, Festival Tabuik Pariaman, Rang Solok Baralek Gadang, SISC Sawahlunto, dan Payakumbuh Botuang Festival.',
+      description: 'Cek jadwal Pacu Jawi 2026 Tanah Datar, info kapan Festival Tabuik Pariaman 2026, jadwal Tour de Singkarak, & kalender event budaya Sumatera Barat KEN 2026 terlengkap.',
       h1: 'Kalender Event & Festival Budaya Sumatera Barat 2026'
     },
     {
@@ -237,7 +237,7 @@ export function generateSsg() {
     {
       route: 'unduhan',
       title: 'Unduh E-Booklet & Peta Wisata Sumbar 2026 - Malala',
-      description: 'Unduh gratis buku panduan wisata resmi 113 halaman dan kalender event 27 halaman format PDF resolusi tinggi.',
+      description: 'Download peta wisata Sumatera Barat PDF gratis, download buku panduan pariwisata Sumbar 2026 PDF (113 halaman), serta kalender event wisata beresolusi tinggi.',
       h1: 'Unduh Gratis E-Booklet & Peta Wisata Sumatera Barat 2026'
     },
     {
