@@ -12,6 +12,7 @@ import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, dedu
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
+import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -261,11 +262,103 @@ export const Drawers: React.FC<DrawersProps> = ({
     });
   }, []);
 
+  // Deep-linking and URL synchronization for Submodals
+  useEffect(() => {
+    if (selectedDestination) {
+      pushRoute(getItemDeepLink('destinasi', selectedDestination), { malalaLayer: 'submodal', category: 'destinasi', id: selectedDestination.id });
+      applyPageSeo({
+        title: `${lang === 'en' && selectedDestination.titleEn ? selectedDestination.titleEn : selectedDestination.title} - Destinasi Wisata Sumatera Barat | Malala`,
+        description: lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description,
+        url: `https://malala.my.id${getItemDeepLink('destinasi', selectedDestination)}`,
+        imageUrl: selectedDestination.imageUrl,
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "TouristDestination",
+          "name": selectedDestination.title,
+          "description": selectedDestination.description,
+          "image": [selectedDestination.imageUrl || "https://malala.my.id/og-image.jpg"],
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": selectedDestination.regency || "Sumatera Barat",
+            "addressCountry": "ID"
+          },
+          "geo": selectedDestination.lat && selectedDestination.lng ? {
+            "@type": "GeoCoordinates",
+            "latitude": selectedDestination.lat,
+            "longitude": selectedDestination.lng
+          } : undefined
+        }
+      });
+    }
+  }, [selectedDestination, lang]);
+
+  useEffect(() => {
+    if (selectedCulture) {
+      pushRoute(getItemDeepLink('kebudayaan', selectedCulture), { malalaLayer: 'submodal', category: 'kebudayaan', id: selectedCulture.id });
+      applyPageSeo({
+        title: `${lang === 'en' && selectedCulture.titleEn ? selectedCulture.titleEn : selectedCulture.title} - Tradisi Budaya Minangkabau | Malala`,
+        description: lang === 'en' && selectedCulture.descriptionEn ? selectedCulture.descriptionEn : selectedCulture.description,
+        url: `https://malala.my.id${getItemDeepLink('kebudayaan', selectedCulture)}`,
+        imageUrl: selectedCulture.imageUrl
+      });
+    }
+  }, [selectedCulture, lang]);
+
+  useEffect(() => {
+    if (selectedCulinary) {
+      pushRoute(getItemDeepLink('kuliner', selectedCulinary), { malalaLayer: 'submodal', category: 'kuliner', id: selectedCulinary.id });
+      applyPageSeo({
+        title: `${lang === 'en' && selectedCulinary.titleEn ? selectedCulinary.titleEn : selectedCulinary.title} - Kuliner Khas Minangkabau | Malala`,
+        description: lang === 'en' && selectedCulinary.descriptionEn ? selectedCulinary.descriptionEn : selectedCulinary.description,
+        url: `https://malala.my.id${getItemDeepLink('kuliner', selectedCulinary)}`,
+        imageUrl: selectedCulinary.imageUrl
+      });
+    }
+  }, [selectedCulinary, lang]);
+
+  useEffect(() => {
+    if (selectedEvent) {
+      pushRoute(getItemDeepLink('event', selectedEvent), { malalaLayer: 'submodal', category: 'event', id: selectedEvent.id });
+      applyPageSeo({
+        title: `${lang === 'en' && selectedEvent.titleEn ? selectedEvent.titleEn : selectedEvent.title} - Kalender Event Pariwisata Sumbar 2026 | Malala`,
+        description: lang === 'en' && selectedEvent.descriptionEn ? selectedEvent.descriptionEn : selectedEvent.description,
+        url: `https://malala.my.id${getItemDeepLink('event', selectedEvent)}`,
+        imageUrl: selectedEvent.imageUrl,
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "name": selectedEvent.title,
+          "description": selectedEvent.description,
+          "startDate": selectedEvent.date,
+          "location": {
+            "@type": "Place",
+            "name": selectedEvent.location || "Sumatera Barat",
+            "address": {
+              "@type": "PostalAddress",
+              "addressRegion": "Sumatera Barat",
+              "addressCountry": "ID"
+            }
+          },
+          "image": [selectedEvent.imageUrl || "https://malala.my.id/og-image.jpg"]
+        }
+      });
+    }
+  }, [selectedEvent, lang]);
+
+  useEffect(() => {
+    if (selectedSouvenir) {
+      pushRoute(getItemDeepLink('oleh-oleh', selectedSouvenir), { malalaLayer: 'submodal', category: 'oleh-oleh', id: selectedSouvenir.id });
+      applyPageSeo({
+        title: `${lang === 'en' && selectedSouvenir.titleEn ? selectedSouvenir.titleEn : selectedSouvenir.title} - Pusat Oleh-Oleh Khas Sumbar | Malala`,
+        description: lang === 'en' && selectedSouvenir.descriptionEn ? selectedSouvenir.descriptionEn : selectedSouvenir.description,
+        url: `https://malala.my.id${getItemDeepLink('oleh-oleh', selectedSouvenir)}`,
+        imageUrl: selectedSouvenir.imageUrl
+      });
+    }
+  }, [selectedSouvenir, lang]);
+
   // Sub-modal helpers
   const openSubModal = useCallback((callback: () => void) => {
-    if (typeof window !== 'undefined') {
-      window.history.pushState({ malalaLayer: 'submodal' }, '');
-    }
     callback();
   }, []);
 
@@ -276,28 +369,60 @@ export const Drawers: React.FC<DrawersProps> = ({
     setSelectedSouvenir(null);
     setSelectedEvent(null);
     setIsBookletModalOpen(false);
-  }, []);
+
+    if (activeDrawer) {
+      pushRoute(getDrawerPath(activeDrawer), { malalaLayer: 'drawer', drawer: activeDrawer });
+    } else {
+      pushRoute('/', { malalaLayer: 'root' });
+    }
+  }, [activeDrawer]);
 
   const handleSubModalClose = useCallback(() => {
-    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'submodal') {
-      window.history.back();
-    } else {
-      closeAllSubModals();
-    }
+    closeAllSubModals();
   }, [closeAllSubModals]);
+
+  // Auto-open matching submodal on deep-linked page load
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const { drawer, itemSlug } = parseRoute(window.location.pathname);
+    if (!itemSlug) return;
+
+    if (drawer === 'destinations' && destinations.length > 0 && !selectedDestination) {
+      const match = findItemBySlugOrId(destinations, itemSlug);
+      if (match) setSelectedDestination(match);
+    } else if (drawer === 'culture' && cultureItems.length > 0 && !selectedCulture) {
+      const match = findItemBySlugOrId(cultureItems, itemSlug);
+      if (match) setSelectedCulture(match);
+    } else if (drawer === 'culinary' && culinaryItems.length > 0 && !selectedCulinary) {
+      const match = findItemBySlugOrId(culinaryItems, itemSlug);
+      if (match) setSelectedCulinary(match);
+    } else if (drawer === 'events' && eventItems.length > 0 && !selectedEvent) {
+      const match = findItemBySlugOrId(eventItems, itemSlug);
+      if (match) setSelectedEvent(match);
+    } else if (drawer === 'souvenirs' && souvenirItems.length > 0 && !selectedSouvenir) {
+      const match = findItemBySlugOrId(souvenirItems, itemSlug);
+      if (match) setSelectedSouvenir(match);
+    }
+  }, [destinations, cultureItems, culinaryItems, eventItems, souvenirItems, selectedDestination, selectedCulture, selectedCulinary, selectedEvent, selectedSouvenir]);
 
   // Synchronize popstate with smartphone hardware / gesture back button
   useEffect(() => {
     const handlePopState = () => {
-      // If any submodal is open, close only the submodal so the user remains in the catalog/drawer!
-      if (selectedDestination || selectedCulture || selectedCulinary || selectedSouvenir || selectedEvent || isBookletModalOpen) {
-        closeAllSubModals();
+      const { itemSlug } = parseRoute(window.location.pathname);
+      // If we popped back and there is no item slug in the URL, close any open submodal
+      if (!itemSlug && (selectedDestination || selectedCulture || selectedCulinary || selectedSouvenir || selectedEvent || isBookletModalOpen)) {
+        setSelectedDestination(null);
+        setSelectedCulture(null);
+        setSelectedCulinary(null);
+        setSelectedSouvenir(null);
+        setSelectedEvent(null);
+        setIsBookletModalOpen(false);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [selectedDestination, selectedCulture, selectedCulinary, selectedSouvenir, selectedEvent, isBookletModalOpen, closeAllSubModals]);
+  }, [selectedDestination, selectedCulture, selectedCulinary, selectedSouvenir, selectedEvent, isBookletModalOpen]);
 
   // Calendar of Events helpers
   const [eventViewMode, setEventViewMode] = useState<'calendar' | 'list'>('calendar');

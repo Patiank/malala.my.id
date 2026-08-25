@@ -12,9 +12,16 @@ import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
 import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
-  const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
+  const [activeDrawer, setActiveDrawer] = useState<DrawerType>(() => {
+    if (typeof window !== 'undefined') {
+      const { drawer } = parseRoute(window.location.pathname);
+      return drawer;
+    }
+    return null;
+  });
   const [selectedNews, setSelectedNews] = useState<HotInfoItem | null>(null);
   const [lang, setLang] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
@@ -145,62 +152,182 @@ export default function App() {
     }, 3000);
   }, []);
 
-  const handleOpenDrawer = useCallback((type: DrawerType) => {
-    if (type && typeof window !== 'undefined') {
-      if (activeDrawer) {
-        window.history.replaceState({ malalaLayer: 'drawer', drawer: type }, '');
-      } else {
-        window.history.pushState({ malalaLayer: 'drawer', drawer: type }, '');
+  // Auto-open news modal if direct URL with news slug is accessed
+  useEffect(() => {
+    if (typeof window !== 'undefined' && dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0) {
+      const { drawer, itemSlug } = parseRoute(window.location.pathname);
+      if (drawer === 'hotinfo' && itemSlug && !selectedNews) {
+        const matched = findItemBySlugOrId(dataStore.hotInfoItems, itemSlug);
+        if (matched) {
+          setSelectedNews(matched);
+        }
       }
     }
+  }, [dataStore.hotInfoItems, selectedNews]);
+
+  // Dynamic SEO & Document Title Manager
+  useEffect(() => {
+    if (selectedNews) {
+      const newsTitle = getNewsDisplayTitle(selectedNews, lang);
+      const isEn = lang === 'en';
+      applyPageSeo({
+        title: `${newsTitle} - Hot Info Pariwisata Sumbar | Malala`,
+        description: selectedNews.content || selectedNews.summary || selectedNews.title,
+        url: `https://malala.my.id${getItemDeepLink('hotinfo', selectedNews)}`,
+        imageUrl: selectedNews.imageUrl,
+        jsonLd: {
+          "@context": "https://schema.org",
+          "@type": "NewsArticle",
+          "headline": newsTitle,
+          "image": [selectedNews.imageUrl || "https://malala.my.id/og-image.jpg"],
+          "datePublished": selectedNews.date || selectedNews.createdAt,
+          "description": selectedNews.summary || selectedNews.title
+        }
+      });
+      return;
+    }
+
+    if (activeDrawer) {
+      const isEn = lang === 'en';
+      const drawerTitles: Record<string, { id: string; en: string; descId: string; descEn: string }> = {
+        destinations: {
+          id: 'Destinasi Wisata Sumatera Barat - Malala',
+          en: 'West Sumatra Tourist Destinations - Malala',
+          descId: 'Jelajahi 38+ destinasi alam, danau vulkanik, lembah ngarai, kepulauan bahari, dan situs warisan dunia di Sumatera Barat.',
+          descEn: 'Explore 38+ nature wonders, volcanic lakes, canyon valleys, marine islands, and UNESCO heritage in West Sumatra.'
+        },
+        culture: {
+          id: 'Warisan Budaya Minangkabau - Malala',
+          en: 'Minangkabau Cultural Heritage - Malala',
+          descId: 'Pelajari falsafah adat basandi syarak, sistem matrilineal, arsitektur Rumah Gadang, dan seni tari pusaka Minangkabau.',
+          descEn: 'Discover Minangkabau matrilineal heritage, Rumah Gadang architecture, philosophy, and traditional arts.'
+        },
+        culinary: {
+          id: 'Kuliner Autentik Khas Minangkabau - Malala',
+          en: 'Authentic Minangkabau Culinary - Malala',
+          descId: 'Daftar makanan khas Minang terenak: Rendang Daging, Sate Padang, Nasi Kapau, Soto Padang, Dendeng Batokok, dan Teh Talua.',
+          descEn: 'Explore world-famous Minangkabau delicacies: Rendang, Padang Satay, Nasi Kapau, Soto Padang, and Teh Talua.'
+        },
+        events: {
+          id: 'Kalender Event Pariwisata Sumbar 2026 (CoE) - Malala',
+          en: 'West Sumatra Calendar of Events 2026 (CoE) - Malala',
+          descId: 'Jadwal lengkap festival budaya, Karisma Event Nusantara (KEN), Pacu Jawi, Tabuik Pariaman, dan Tour de Singkarak 2026.',
+          descEn: 'Official schedule of cultural festivals, KEN national events, Pacu Jawi, and Tour de Singkarak 2026.'
+        },
+        souvenirs: {
+          id: 'Pusat Oleh-Oleh & Kerajinan Khas Sumbar - Malala',
+          en: 'West Sumatra Souvenirs & Crafts Center - Malala',
+          descId: 'Rekomendasi suvenir otentik Minangkabau: Songket Pandai Sikek, Mukena Kerancang, Kaus Minang, dan Keripik Sanjai.',
+          descEn: 'Authentic Minangkabau souvenirs, Pandai Sikek handwoven songket, crafts, and traditional snacks.'
+        },
+        download: {
+          id: 'Unduh E-Booklet & Peta Wisata Sumbar 2026 - Malala',
+          en: 'Download E-Booklet & West Sumatra Tourism Map - Malala',
+          descId: 'Unduh gratis buku panduan wisata resmi 113 halaman dan kalender event 27 halaman format PDF berkualitas tinggi.',
+          descEn: 'Download free official 113-page travel guide booklet and 27-page event calendar in high-res PDF.'
+        },
+        hotinfo: {
+          id: 'Hot Info & Berita Pariwisata Terkini Sumbar - Malala',
+          en: 'Hot Info & Latest Tourism News - Malala',
+          descId: 'Kabar terbaru dan informasi pariwisata real-time seputar Sumatera Barat dan Indonesia.',
+          descEn: 'Real-time breaking news and updates about tourism in West Sumatra and Indonesia.'
+        },
+        formai: {
+          id: 'AI Travel Planner - Rencanakan Liburan Sumbar Cerdas | Malala',
+          en: 'AI Travel Planner - Smart West Sumatra Itinerary | Malala',
+          descId: 'Buat rencana perjalanan wisata ke Sumatera Barat secara instan dan personal dengan asisten AI Malala.',
+          descEn: 'Generate instant personalized travel itineraries across West Sumatra with Malala AI.'
+        },
+        chat: {
+          id: 'Tanya Uni Mala - Asisten Virtual Wisata Sumbar | Malala',
+          en: 'Ask Uni Mala - Virtual Travel Assistant | Malala',
+          descId: 'Konsultasi wisata Sumatera Barat 24/7 bersama Uni Mala, pemandu wisata virtual cerdas berbasis AI.',
+          descEn: 'Consult West Sumatra travel 24/7 with Uni Mala, your intelligent AI tourism guide.'
+        },
+        saved: {
+          id: 'Destinasi & Favorit Tersimpan - Malala',
+          en: 'Saved Favorites & Wishlist - Malala',
+          descId: 'Daftar objek wisata, kuliner, dan event favorit Anda yang siap dikunjungi.',
+          descEn: 'Your personalized wishlist of favorite destinations, dishes, and events in West Sumatra.'
+        },
+        map: {
+          id: 'Peta Interaktif Wisata Sumatera Barat - Malala',
+          en: 'Interactive Map of West Sumatra Tourism - Malala',
+          descId: 'Jelajahi sebaran geografis 38+ destinasi dan lokasi kuliner di 19 kabupaten/kota Sumatera Barat.',
+          descEn: 'Explore 38+ destinations and culinary spots across 19 regencies/cities in West Sumatra.'
+        }
+      };
+
+      const currentInfo = drawerTitles[activeDrawer];
+      if (currentInfo) {
+        applyPageSeo({
+          title: isEn ? currentInfo.en : currentInfo.id,
+          description: isEn ? currentInfo.descEn : currentInfo.descId,
+          url: `https://malala.my.id${getDrawerPath(activeDrawer)}`
+        });
+        return;
+      }
+    }
+
+    // Default Homepage SEO
+    applyPageSeo({
+      title: lang === 'en' ? 'Malala - West Sumatra Tourism Guide | Smart Tourism Portal' : 'Malala - Panduan Wisata Sumatera Barat | Smart Tourism Portal',
+      description: lang === 'en'
+        ? 'Official Smart Tourism Portal of West Sumatra. Explore 38+ destinations, 22+ Minangkabau cultural traditions, 26+ authentic cuisines, and AI travel planner.'
+        : 'Portal Pariwisata Cerdas Resmi Sumatera Barat. Jelajahi 38+ destinasi alam, 22+ tradisi budaya Minangkabau, 26+ kuliner autentik, kalender event 2026, dan asisten AI liburan.',
+      url: 'https://malala.my.id/'
+    });
+  }, [activeDrawer, selectedNews, lang]);
+
+  const handleOpenDrawer = useCallback((type: DrawerType) => {
+    if (type) {
+      pushRoute(getDrawerPath(type), { malalaLayer: 'drawer', drawer: type });
+    }
     setActiveDrawer(type);
-  }, [activeDrawer]);
+  }, []);
 
   const handleCloseDrawer = useCallback(() => {
-    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'drawer') {
-      window.history.back();
-    } else {
-      setActiveDrawer(null);
-    }
+    pushRoute('/', { malalaLayer: 'root' });
+    setActiveDrawer(null);
   }, []);
 
   const handleOpenNews = useCallback((news: HotInfoItem) => {
-    if (typeof window !== 'undefined') {
-      window.history.pushState({ malalaLayer: 'news', newsId: news.id }, '');
-    }
+    pushRoute(getItemDeepLink('hotinfo', news), { malalaLayer: 'news', newsId: news.id });
     setSelectedNews(news);
   }, []);
 
   const handleCloseNews = useCallback(() => {
-    if (typeof window !== 'undefined' && window.history.state?.malalaLayer === 'news') {
-      window.history.back();
-    } else {
-      setSelectedNews(null);
-    }
-  }, []);
+    const parentPath = activeDrawer ? getDrawerPath(activeDrawer) : '/';
+    pushRoute(parentPath, { malalaLayer: activeDrawer ? 'drawer' : 'root', drawer: activeDrawer });
+    setSelectedNews(null);
+  }, [activeDrawer]);
 
   // Listen to browser / smartphone Back button (popstate)
   useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      // If we popped back to a drawer state (e.g. from a detail submodal), do not close the drawer!
-      if (e.state?.malalaLayer === 'drawer') {
-        return;
+    const handlePopState = () => {
+      const { drawer, itemSlug } = parseRoute(window.location.pathname);
+      
+      // If we popped to a news route
+      if (drawer === 'hotinfo' && itemSlug && dataStore.hotInfoItems) {
+        const matched = findItemBySlugOrId(dataStore.hotInfoItems, itemSlug);
+        if (matched) {
+          setSelectedNews(matched);
+          setActiveDrawer('hotinfo');
+          return;
+        }
       }
-      // If news modal is open, close it first
-      if (selectedNews) {
+
+      // If news was open but route is not news, close news
+      if (selectedNews && (!itemSlug || drawer !== 'hotinfo')) {
         setSelectedNews(null);
-        return;
       }
-      // If drawer is open and we returned to root, close drawer
-      if (activeDrawer) {
-        setActiveDrawer(null);
-        return;
-      }
+
+      setActiveDrawer(drawer);
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [activeDrawer, selectedNews]);
+  }, [dataStore.hotInfoItems, selectedNews]);
 
   const handleToggleSave = useCallback(
     (id: string, title: string) => {

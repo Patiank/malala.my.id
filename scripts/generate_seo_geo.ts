@@ -212,37 +212,55 @@ Sitemap: https://malala.my.id/sitemap.xml
 
   <!-- Main Discovery Categories -->
   <url>
-    <loc>https://malala.my.id/#destinasi</loc>
+    <loc>https://malala.my.id/destinasi</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/#budaya</loc>
+    <loc>https://malala.my.id/kebudayaan</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/#kuliner</loc>
+    <loc>https://malala.my.id/kuliner</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/#event</loc>
+    <loc>https://malala.my.id/event</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/#peta-interaktif</loc>
+    <loc>https://malala.my.id/oleh-oleh</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://malala.my.id/unduhan</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://malala.my.id/hotinfo</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://malala.my.id/peta</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/#ai-planner</loc>
+    <loc>https://malala.my.id/rencana-liburan</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -281,10 +299,10 @@ Sitemap: https://malala.my.id/sitemap.xml
   destinations.forEach((d) => {
     const slug = d.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     sitemapXml += `  <url>
-    <loc>https://malala.my.id/#destinasi/${slug}</loc>
+    <loc>https://malala.my.id/destinasi/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>${d.imageUrl ? `
+    <priority>0.85</priority>${d.imageUrl ? `
     <image:image>
       <image:loc>${escapeXml(d.imageUrl)}</image:loc>
       <image:title>${escapeXml(d.title)}</image:title>
@@ -297,10 +315,10 @@ Sitemap: https://malala.my.id/sitemap.xml
   cultureItems.forEach((c) => {
     const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     sitemapXml += `  <url>
-    <loc>https://malala.my.id/#budaya/${slug}</loc>
+    <loc>https://malala.my.id/kebudayaan/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>${c.imageUrl ? `
+    <priority>0.8</priority>${c.imageUrl ? `
     <image:image>
       <image:loc>${escapeXml(c.imageUrl)}</image:loc>
       <image:title>${escapeXml(c.title)}</image:title>
@@ -313,10 +331,10 @@ Sitemap: https://malala.my.id/sitemap.xml
   culinaryItems.forEach((cu) => {
     const slug = cu.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     sitemapXml += `  <url>
-    <loc>https://malala.my.id/#kuliner/${slug}</loc>
+    <loc>https://malala.my.id/kuliner/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>${cu.imageUrl ? `
+    <priority>0.8</priority>${cu.imageUrl ? `
     <image:image>
       <image:loc>${escapeXml(cu.imageUrl)}</image:loc>
       <image:title>${escapeXml(cu.title)}</image:title>
@@ -329,7 +347,7 @@ Sitemap: https://malala.my.id/sitemap.xml
   eventItems.forEach((ev) => {
     const slug = ev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     sitemapXml += `  <url>
-    <loc>https://malala.my.id/#event/${slug}</loc>
+    <loc>https://malala.my.id/event/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>${ev.imageUrl ? `
