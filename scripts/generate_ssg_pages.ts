@@ -185,7 +185,7 @@ export function generateSsg() {
   console.log('📄 Mengoptimasi Homepage dengan FAQPage Schema & Organization JSON-LD...');
   const homeFaqHtml = `
     <header style="display:none;">
-      <h1>MALALA — Panduan Wisata Sumatera Barat & Smart Tourism Portal</h1>
+      <h1>Pariwisata Sumatera Barat — Portal Wisata & Budaya Resmi (Malala)</h1>
       <p>Portal Resmi Eksplorasi 38+ Destinasi Alam, 22+ Tradisi Budaya Minangkabau, 26+ Kuliner Autentik, dan Kalender Event 2026.</p>
     </header>
     <section style="display:none;" aria-label="Tanya Jawab Wisata Sumatera Barat">
@@ -195,8 +195,8 @@ export function generateSsg() {
   `;
 
   const optimizedHome = generateHtmlPage(baseTemplate, {
-    title: 'Malala - Panduan Wisata Sumatera Barat | Smart Tourism Portal',
-    description: 'Portal Pariwisata Cerdas Resmi Sumatera Barat. Jelajahi 38+ destinasi alam, 22+ tradisi budaya Minangkabau, 26+ kuliner autentik, kalender event 2026, dan asisten AI liburan.',
+    title: 'Pariwisata Sumatera Barat - Portal Wisata & Budaya Resmi (Malala)',
+    description: 'Website resmi pariwisata Sumatera Barat (Sumbar). Temukan info lengkap destinasi wisata alam, warisan budaya Minangkabau, kuliner Padang, & kalender event 2026.',
     canonicalUrl: 'https://malala.my.id/',
     jsonLdList: [buildOrganizationJsonLd(), buildWebsiteJsonLd(), buildFaqJsonLd()]
   });
