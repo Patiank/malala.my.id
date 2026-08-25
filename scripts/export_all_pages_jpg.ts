@@ -120,7 +120,7 @@ async function exportAllPDFs() {
   const fileUrl1 = `file:///${htmlPath1.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl1}`);
-  await page1.goto(fileUrl1, { waitUntil: 'load', timeout: 90000 });
+  await page1.goto(fileUrl1, { waitUntil: 'domcontentloaded', timeout: 120000 });
   
   // Preload and decode all images across the 113 cards
   await preloadAndEnsureAllImages(page1);
@@ -210,7 +210,7 @@ async function exportAllPDFs() {
   const fileUrl2 = `file:///${htmlPath2.replace(/\\/g, '/')}`;
 
   console.log(`📄 Memuat halaman: ${fileUrl2}`);
-  await page2.goto(fileUrl2, { waitUntil: 'load', timeout: 90000 });
+  await page2.goto(fileUrl2, { waitUntil: 'domcontentloaded', timeout: 120000 });
   
   // Preload and decode all images across the 27 event cards
   await preloadAndEnsureAllImages(page2);

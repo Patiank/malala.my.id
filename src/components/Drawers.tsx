@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag } from 'lucide-react';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
@@ -1524,40 +1524,42 @@ export const Drawers: React.FC<DrawersProps> = ({
                       {/* Card Footer */}
                       <div className="p-3 border-t border-gray-100 bg-gray-50 flex flex-col gap-2 text-[10px] font-jakarta">
                         <div className="flex items-center justify-between">
-                          <span className="flex items-center gap-1 text-gray-500 font-medium truncate pr-2">
+                          <span className="flex items-center gap-1 text-gray-500 font-medium truncate">
                             <Clock className="w-3 h-3 text-gray-400 shrink-0" />
                             <span className="truncate">{isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime}</span>
                           </span>
-                          <button
-                            onClick={() => openSubModal(() => setSelectedDestination(dest))}
-                            className="font-bold text-black hover:underline uppercase flex items-center gap-0.5 cursor-pointer shrink-0"
-                          >
-                            <span>{translations[lang].btnDetail}</span>
-                            <ChevronRight className="w-3 h-3" />
-                          </button>
                         </div>
 
-                        <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                        <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
+                          <button
+                            onClick={() => openSubModal(() => setSelectedDestination(dest))}
+                            className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={translations[lang].btnDetail}
+                          >
+                            <Info className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{translations[lang].btnDetail}</span>
+                          </button>
+
                           <a
                             href={getDestinationGoogleMapsUrl(dest)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                             title={isEn ? "View Location on Google Maps" : "Cari Lokasi di Google Maps"}
                           >
-                            <MapPin className="w-3.5 h-3.5" />
-                            <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{isEn ? "Maps" : "Maps"}</span>
                           </a>
 
                           <a
                             href={getSafeYoutubeUrl(dest.title, dest.regency || dest.category, dest.videoUrl)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                            className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                             title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                           >
-                            <Youtube className="w-3.5 h-3.5" />
-                            <span>YouTube</span>
+                            <Youtube className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">YouTube</span>
                           </a>
                         </div>
                       </div>
