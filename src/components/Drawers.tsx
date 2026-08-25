@@ -1531,15 +1531,6 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
 
                         <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
-                          <button
-                            onClick={() => openSubModal(() => setSelectedDestination(dest))}
-                            className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                            title={translations[lang].btnDetail}
-                          >
-                            <Info className="w-3.5 h-3.5 shrink-0" />
-                            <span className="truncate">{translations[lang].btnDetail}</span>
-                          </button>
-
                           <a
                             href={getDestinationGoogleMapsUrl(dest)}
                             target="_blank"
@@ -1561,6 +1552,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                             <Youtube className="w-3.5 h-3.5 shrink-0" />
                             <span className="truncate">YouTube</span>
                           </a>
+
+                          <button
+                            onClick={() => openSubModal(() => setSelectedDestination(dest))}
+                            className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={translations[lang].btnDetail}
+                          >
+                            <Info className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{translations[lang].btnDetail}</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1622,31 +1622,31 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span className="font-jakarta font-bold text-[9px] text-gray-400 uppercase tracking-widest block">
                           {isEn ? 'MINANG PHILOSOPHY' : 'FALSAFAH MINANG'}
                         </span>
-                        <div className="flex items-center justify-between gap-2 mt-0.5">
-                          <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-1 truncate">
-                            "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
-                          </p>
-                          <button
-                            onClick={() => openSubModal(() => setSelectedCulture(item))}
-                            className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
-                          >
-                            {translations[lang].btnDetail}
-                            <ChevronRight className="w-3 h-3" />
-                          </button>
-                        </div>
+                        <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-1 truncate mt-0.5">
+                          "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
+                        </p>
                       </div>
 
-                      <div className="pt-1.5 border-t border-gray-200/60">
+                      <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-gray-200/60">
                         <a
                           href={getSafeYoutubeUrl(item.title, item.category || item.origin, item.videoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full bg-red-600 hover:bg-red-700 text-white py-1.5 px-3 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                           title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                         >
-                          <Youtube className="w-3.5 h-3.5" />
-                          <span>{isEn ? "Watch on YouTube" : "Tonton di YouTube"}</span>
+                          <Youtube className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">YouTube</span>
                         </a>
+
+                        <button
+                          onClick={() => openSubModal(() => setSelectedCulture(item))}
+                          className="bg-black hover:bg-amber-600 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                          title={translations[lang].btnDetail}
+                        >
+                          <Info className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{translations[lang].btnDetail}</span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1695,42 +1695,42 @@ export const Drawers: React.FC<DrawersProps> = ({
                     </div>
 
                     <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex flex-col gap-2">
-                      <div className="flex items-center justify-between">
-                        <div className="truncate pr-2">
-                          <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
-                          <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
-                        </div>
-                        <button
-                          onClick={() => openSubModal(() => setSelectedCulinary(cul))}
-                          className="font-bold text-black text-[10px] uppercase flex items-center gap-0.5 hover:underline cursor-pointer shrink-0"
-                        >
-                          {translations[lang].btnDetail}
-                          <ChevronRight className="w-3 h-3" />
-                        </button>
+                      <div className="truncate">
+                        <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
+                        <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                      <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
                         <a
                           href={getCulinaryGoogleMapsUrl(cul)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                           title={isEn ? "Find Food Places on Google Maps" : "Cari Tempat Kuliner di Google Maps"}
                         >
-                          <MapPin className="w-3.5 h-3.5" />
-                          <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                          <MapPin className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{isEn ? "Maps" : "Maps"}</span>
                         </a>
 
                         <a
                           href={getSafeYoutubeUrl(cul.title, cul.type || cul.origin, cul.videoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                           title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                         >
-                          <Youtube className="w-3.5 h-3.5" />
-                          <span>YouTube</span>
+                          <Youtube className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">YouTube</span>
                         </a>
+
+                        <button
+                          onClick={() => openSubModal(() => setSelectedCulinary(cul))}
+                          className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                          title={translations[lang].btnDetail}
+                        >
+                          <Info className="w-3.5 h-3.5 shrink-0" />
+                          <span className="truncate">{translations[lang].btnDetail}</span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -2081,39 +2081,40 @@ export const Drawers: React.FC<DrawersProps> = ({
                         >
                           <Share2 className="w-3 h-3 shrink-0" />
                         </button>
-
-                        <button
-                          onClick={() => openSubModal(() => setSelectedEvent(ev))}
-                          className="bg-black hover:bg-amber-600 text-white font-jakarta font-bold text-[10px] uppercase px-2.5 py-1.5 rounded-md flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs text-center"
-                        >
-                          <span className="text-center">{translations[lang].btnDetail}</span>
-                          <ChevronRight className="w-3 h-3 shrink-0" />
-                        </button>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 pt-1.5 border-t border-gray-200/60">
+                    <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
                       <a
                         href={getEventGoogleMapsUrl(ev)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1.5 shadow-xs"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                         title={isEn ? "View Event Location on Google Maps" : "Cari Lokasi Event di Google Maps"}
                       >
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span>{isEn ? "Google Maps" : "Cari di Maps"}</span>
+                        <MapPin className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{isEn ? "Maps" : "Maps"}</span>
                       </a>
 
                       <a
                         href={getEventYoutubeUrl(ev)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2.5 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs"
+                        className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
                         title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
                       >
-                        <Youtube className="w-3.5 h-3.5" />
-                        <span>YouTube</span>
+                        <Youtube className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">YouTube</span>
                       </a>
+
+                      <button
+                        onClick={() => openSubModal(() => setSelectedEvent(ev))}
+                        className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                        title={translations[lang].btnDetail}
+                      >
+                        <Info className="w-3.5 h-3.5 shrink-0" />
+                        <span className="truncate">{translations[lang].btnDetail}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
