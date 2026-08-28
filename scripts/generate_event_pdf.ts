@@ -94,7 +94,7 @@ export function generateEventHTML(): string {
                     <h4 class="font-bold text-slate-900 text-xs leading-snug break-words">${ev.title}</h4>
                     ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs">KEN 2026</span>' : ''}
                   </div>
-                  <span class="font-black text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded shadow-sm text-[9px] shrink-0 whitespace-nowrap">Hal. ${globalIndex + overviewChunks.length + 2}</span>
+                  <span class="font-black text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded shadow-sm text-[9px] shrink-0 whitespace-nowrap">Hal. ${globalIndex}</span>
                 </div>
                 <div class="text-[10.5px] text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-1">
                   <span class="font-bold text-blue-900">📅 ${ev.schedule}</span>
@@ -174,7 +174,7 @@ export function generateEventHTML(): string {
 
       <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-3">
         <span class="font-semibold text-slate-700 font-orbitron">MINANGKAOS</span>
-        <span class="font-orbitron font-bold text-gray-400">#${String(idx + 1).padStart(2, '0')} / ${eventItems.length}</span>
+        <span class="font-orbitron font-bold text-gray-400">Hal. ${idx + 1} dari ${eventItems.length}</span>
       </div>
     </article>
     `;
