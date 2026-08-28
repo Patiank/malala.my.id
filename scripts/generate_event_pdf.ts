@@ -95,6 +95,8 @@ export function generateEventHTML(): string {
                 </div>
                 <div class="text-[10.5px] text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-1">
                   <span class="font-bold text-blue-900">📅 ${ev.schedule}</span>
+                  <span class="text-gray-300">?</span>
+                  <span class="font-bold text-red-700 bg-red-100 px-1 py-0.5 rounded shadow-xs whitespace-nowrap">Hal. ${globalIndex + overviewChunks.length + 1}</span>
                   <span class="text-gray-300">•</span>
                   <span class="text-gray-700 font-medium break-words">📍 ${ev.location}</span>
                 </div>
