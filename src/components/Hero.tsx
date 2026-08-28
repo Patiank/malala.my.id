@@ -730,7 +730,7 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="hidden lg:flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
-              className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
+              className="cursor-default shrink-0 select-none"
               title="MINANGKAOS"
             >
               <PemprovSumbarLogo size={60} />
@@ -1080,7 +1080,7 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="flex items-center gap-2.5 min-w-0 pl-1">
             <div
               onClick={handlePemprovLogoClick}
-              className="cursor-pointer shrink-0 select-none hover:scale-105 transition-transform"
+              className="cursor-default shrink-0 select-none"
               title="MINANGKAOS"
             >
               <PemprovSumbarLogo size={46} />
