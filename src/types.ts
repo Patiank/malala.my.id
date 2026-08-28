@@ -12,6 +12,7 @@ export type DrawerType =
   | 'map'           // Peta Interaktif Sumatera Barat
   | 'search'        // Panel Pencarian Interaktif dari Samping Kanan
   | 'chat'          // Tanya Uni Mala Guide Chat Box
+  | 'about' | 'privacy' | 'terms' | 'disclaimer' | 'contact'
   | null;
 
 export interface SouvenirItem {
