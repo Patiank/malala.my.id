@@ -89,14 +89,15 @@ export function generateEventHTML(): string {
                 ${String(globalIndex).padStart(2, '0')}
               </div>
               <div class="flex-1 min-w-0">
-                <div class="flex items-start gap-1.5 justify-between">
-                  <h4 class="font-bold text-slate-900 text-xs leading-snug break-words">${ev.title}</h4>
-                  ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs ml-1">KEN 2026</span>' : ''}
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex flex-wrap items-center gap-1.5 flex-1">
+                    <h4 class="font-bold text-slate-900 text-xs leading-snug break-words">${ev.title}</h4>
+                    ${ev.isKen ? '<span class="bg-red-600 text-white font-extrabold text-[8px] uppercase px-1.5 py-0.5 rounded shrink-0 shadow-xs">KEN 2026</span>' : ''}
+                  </div>
+                  <span class="font-black text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded shadow-sm text-[9px] shrink-0 whitespace-nowrap">Hal. ${globalIndex + overviewChunks.length + 2}</span>
                 </div>
                 <div class="text-[10.5px] text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-1">
                   <span class="font-bold text-blue-900">📅 ${ev.schedule}</span>
-                  <span class="text-gray-300">?</span>
-                  <span class="font-bold text-red-700 bg-red-100 px-1 py-0.5 rounded shadow-xs whitespace-nowrap">Hal. ${globalIndex + overviewChunks.length + 1}</span>
                   <span class="text-gray-300">•</span>
                   <span class="text-gray-700 font-medium break-words">📍 ${ev.location}</span>
                 </div>

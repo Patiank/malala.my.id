@@ -419,7 +419,7 @@ function generateFullHTML(): string {
       </div>
     </article>
 
-    <!-- 2. PETA PERSEBARAN 19 KABUPATEN & KOTA (REGIONAL TOURISM & CULTURE MAP) -->
+    \\n\n    <!-- 2. PETA PERSEBARAN 19 KABUPATEN & KOTA (REGIONAL TOURISM & CULTURE MAP) -->
     <article class="page-card bg-slate-950 text-white rounded-2xl overflow-hidden border border-slate-800 p-6 flex flex-col justify-between mb-6 shadow-xl relative">
       <div class="space-y-4">
         <div class="border-b border-white/15 pb-3">
