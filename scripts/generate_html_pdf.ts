@@ -385,7 +385,7 @@ function generateFullHTML(): string {
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
-            <img src="https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png" alt="Logo" class="w-5 h-5 object-contain" />
+            <img src="./minangkaos-logo-compact.png" alt="Logo" class="w-5 h-5 object-contain" />
             <span class="text-amber-400 font-orbitron font-extrabold text-[9px] uppercase tracking-widest">
               MINANGKAOS
             </span>
@@ -411,7 +411,7 @@ function generateFullHTML(): string {
         </p>
         <div class="pt-3 border-t border-white/50 flex items-center justify-between text-[10px] text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
           <div class="flex items-center gap-1.5 font-bold font-orbitron text-amber-300">
-            <img src="https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png" alt="Logo" class="w-4 h-4 object-contain" />
+            <img src="./minangkaos-logo-compact.png" alt="Logo" class="w-4 h-4 object-contain" />
             <span>MINANGKAOS</span>
           </div>
           <span class="font-bold font-orbitron">E-Book Eksklusif</span>

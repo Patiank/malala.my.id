@@ -90,7 +90,7 @@ export const CornerBracket: React.FC<CornerBracketProps> = ({ type, className = 
   );
 };
 
-export const MINANGKAOS_LOGO_URL = 'https://res.cloudinary.com/uupbxcw5/image/upload/v1787206698/minangkaos_logo_t9ozpg.png';
+export const MINANGKAOS_LOGO_URL = '/minangkaos-logo-compact.png';
 
 export const MinangkaosLogo: React.FC<{ className?: string; size?: number | string }> = ({ className = '', size = 48 }) => {
   const widthStyle = typeof size === 'number' ? `${size}px` : size;
