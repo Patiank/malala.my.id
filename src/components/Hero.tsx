@@ -1099,7 +1099,7 @@ export const Hero: React.FC<HeroProps> = ({
             <button
               onClick={() => onOpenDrawer('chat')}
               aria-label="Tanya Uni Mala Guide"
-              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none animate-wobble-rotate"
+              className="group relative flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none animate-chat-bubble-loop hover-elastic-bounce"
             >
               <div className="relative w-28 h-28 sm:w-32 sm:h-32 drop-shadow-2xl">
                 <img
@@ -1120,7 +1120,7 @@ export const Hero: React.FC<HeroProps> = ({
           <button
             onClick={() => onOpenDrawer('chat')}
             aria-label="Tanya Uni Mala Guide"
-            className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none animate-wobble-rotate"
+            className="group relative flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer focus:outline-none animate-chat-bubble-loop hover-elastic-bounce"
           >
             <div className="relative w-32 h-32 drop-shadow-2xl">
               <img
