@@ -555,7 +555,7 @@ export const Hero: React.FC<HeroProps> = ({
             style={{ ...heroTextStyle, fontSize: 'var(--headline)' }}
           >
             <div>DISCOVER</div>
-            <div>WEST SUMATRA</div>
+            <div className='text-red-600'>WEST SUMATRA</div>
             <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
               <span>PARADISE</span>
               <CheckerboardGrid style={{ color: heroTextColor }} className="transition-colors duration-300" />
