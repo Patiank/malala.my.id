@@ -479,7 +479,7 @@ ${eventList}
       });
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-3.7-flash',
         contents: formattedContents,
         config: {
           systemInstruction,
@@ -619,7 +619,7 @@ Formatkan output HANYA dalam format JSON valid Array of Objects:
 Keluarkan HANYA array JSON valid tanpa markdown backticks atau teks pengantar lainnya.`;
 
           const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
+            model: 'gemini-3.7-flash',
             contents: prompt,
             config: {
               tools: [{ googleSearch: {} }],
@@ -769,7 +769,7 @@ ${typePrompt}
 Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.6-flash',
+        model: 'gemini-3.7-flash',
         contents: prompt,
       });
 

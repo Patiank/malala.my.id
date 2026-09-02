@@ -584,7 +584,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+    const modelsToTry = ['gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
