@@ -557,12 +557,17 @@ export function generateSmartUniMalaChatReply(message: string): string {
   return `**Rancak bana!** Menjawab pertanyaan Anda mengenai *"${cleanMsg}"*:\n\nSumatera Barat menyimpan kekayaan pariwisata luar biasa yang memadukan keindahan alam lanskap Bukit Barisan (seperti Geopark Lembah Harau, Danau Singkarak, Ngarai Sianok, dan Kepulauan Mandeh), tradisi budaya Minangkabau yang mendalam (*Adat Basandi Syarak, Syarak Basandi Kitabullah*), serta gastronomi kelas dunia (Rendang, Nasi Kapau, Sate Padang, dan Teh Talua).\n\n💡 **Saran Pemandu:**\n- Untuk efisiensi waktu, gunakan **Menu Rencanakan AI** di samping untuk menyusun rencana perjalanan harian (1–7 hari) otomatis yang disesuaikan dengan minat dan jumlah anggota keluarga Anda.\n- Apakah Anda ingin rekomendasi rute spesifik, tempat makan legendaris, atau pilihan hotel terdekat? Silakan tanyakan pada Uni Mala! 😊`;
 }
 
-export async function fetchAiChat(message: string) {
+export interface ChatMessageItem {
+  sender: 'user' | 'ai';
+  text: string;
+}
+
+export async function fetchAiChat(message: string, history: ChatMessageItem[] = []) {
   try {
     const res = await fetch('/api/ai/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, history }),
     });
 
     const contentType = res.headers.get('content-type') || '';
@@ -579,18 +584,36 @@ export async function fetchAiChat(message: string) {
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
-        const prompt = `Anda adalah 'UNI MALA AI Sumbar' - Pemandu Wisata & Budaya Resmi Sumatera Barat (Wonderful West Sumatra) yang super pintar, ramah, berwawasan luas, dan menyenangkan.
-Jawablah pertanyaan wisatawan berikut dengan akurat, komprehensif, terstruktur (gunakan bullet points, tips, dan emoji), serta dengan kehangatan khas Ranah Minang:
-Pertanyaan Wisatawan: "${message}"`;
+        
+        // Multi-turn context
+        const formattedContents: any[] = [];
+        if (Array.isArray(history) && history.length > 0) {
+          const recent = history.slice(-10);
+          for (const h of recent) {
+            formattedContents.push({
+              role: h.sender === 'user' ? 'user' : 'model',
+              parts: [{ text: h.text }]
+            });
+          }
+        }
+        formattedContents.push({
+          role: 'user',
+          parts: [{ text: message }]
+        });
+
+        const systemInstruction = `Anda adalah 'UNI MALA AI Sumbar' - Asisten Virtual & Pemandu Wisata Resmi Sumatera Barat (Wonderful West Sumatra).
+Karakter: Ramah, anggun, berwawasan luas, membanggakan budaya Minangkabau (Adat Basandi Syarak, Syarak Basandi Kitabullah).
+Panduan: Berikan rekomendasi rute searah per koridor geografis, perhitungkan waktu tempuh realistis antar-kabupaten/kota di Sumbar, serta rekomendasikan kuliner otentik halal.`;
 
         const response = await ai.models.generateContent({
           model: modelName,
-          contents: prompt,
+          contents: formattedContents,
           config: {
+            systemInstruction,
             temperature: 0.5,
             tools: [{ googleSearch: {} } as any]
           }
@@ -600,7 +623,7 @@ Pertanyaan Wisatawan: "${message}"`;
           return { reply: response.text.trim() };
         }
       } catch (err) {
-        console.warn(`Client Gemini API chat with ${modelName} encountered rate-limit / quota, activating Smart Conversational Engine:`, err);
+        console.warn(`Client Gemini API chat with ${modelName} failed, trying next...`, err);
       }
     }
   }

@@ -1193,8 +1193,9 @@ export const Drawers: React.FC<DrawersProps> = ({
     setChatHistory(prev => [...prev, { sender: 'user', text: userText }]);
     setIsChatLoading(true);
 
+    const currentHistory = [...chatHistory];
     try {
-      const data = await fetchAiChat(userText);
+      const data = await fetchAiChat(userText, currentHistory);
       setChatHistory(prev => [...prev, { sender: 'ai', text: data.reply }]);
     } catch (err: any) {
       setChatHistory(prev => [
