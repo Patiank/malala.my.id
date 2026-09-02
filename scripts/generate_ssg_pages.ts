@@ -195,8 +195,8 @@ export function generateSsg() {
   `;
 
   const optimizedHome = generateHtmlPage(baseTemplate, {
-    title: 'Pariwisata Sumatera Barat - Portal Wisata & Budaya Resmi (Malala)',
-    description: 'Website resmi pariwisata Sumatera Barat (Sumbar). Temukan info lengkap destinasi wisata alam, warisan budaya Minangkabau, kuliner Padang, & kalender event 2026.',
+    title: 'Pariwisata Sumatera Barat: 38+ Destinasi, Kuliner, Event & AI Itinerary 2026 | MALALA',
+    description: 'Portal resmi pariwisata Sumatera Barat 2026. Temukan 38+ destinasi hits, rute wisata tanpa bolak-balik, 26 kuliner legendaris, jadwal festival KEN 2026, dan asisten AI cerdas Uni Mala.',
     canonicalUrl: 'https://malala.my.id/',
     jsonLdList: [buildOrganizationJsonLd(), buildWebsiteJsonLd(), buildFaqJsonLd()]
   });
@@ -298,7 +298,7 @@ export function generateSsg() {
     const slug = slugify(dest.title);
     if (!slug) return;
 
-    const pageTitle = `${dest.title} - Destinasi Wisata Sumatera Barat | Malala`;
+    const pageTitle = `${dest.title} (${dest.regency || 'Sumatera Barat'}): Rute, Daya Tarik & Panduan 2026 | MALALA`;
     const pageDesc = dest.description ? dest.description.substring(0, 160) + '...' : `Informasi lengkap mengenai ${dest.title} di ${dest.regency || 'Sumatera Barat'}.`;
     const canonicalUrl = `https://malala.my.id/destinasi/${slug}`;
 
@@ -360,7 +360,7 @@ export function generateSsg() {
     const slug = slugify(cult.title);
     if (!slug) return;
 
-    const pageTitle = `${cult.title} - Tradisi Budaya Minangkabau | Malala`;
+    const pageTitle = `${cult.title} Minangkabau: Makna Filosofis, Sejarah & Tradisi Adat | MALALA`;
     const pageDesc = cult.description ? cult.description.substring(0, 160) + '...' : `Kupas tuntas filosofi dan sejarah ${cult.title} khas Minangkabau.`;
     const canonicalUrl = `https://malala.my.id/kebudayaan/${slug}`;
 
@@ -414,7 +414,7 @@ export function generateSsg() {
     const slug = slugify(cul.title);
     if (!slug) return;
 
-    const pageTitle = `${cul.title} - Kuliner Khas Minangkabau | Malala`;
+    const pageTitle = `${cul.title} Khas Minangkabau: Cita Rasa & Rekomendasi Kuliner Autentik | MALALA`;
     const pageDesc = cul.description ? cul.description.substring(0, 160) + '...' : `Resep dan kelezatan autentik ${cul.title} khas Minang.`;
     const canonicalUrl = `https://malala.my.id/kuliner/${slug}`;
 
