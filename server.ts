@@ -581,37 +581,42 @@ ${eventList}
 
           const currentDateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
 
-          const prompt = `Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita, event, atau informasi terkini mengenai pariwisata di seluruh Indonesia (nasional).
+          const prompt = `Anda adalah LEAD JOURNALIST & EDITOR-IN-CHIEF portal pariwisata nasional dan Sumatera Barat (Malala Newsroom).
+Lakukan pencarian Google (Google Search) untuk mendapatkan 5 berita/informasi pariwisata terkini di Indonesia dan Sumatera Barat yang terbit DALAM 30 HARI TERAKHIR (Per ${currentDateStr} tahun 2026).
 
-SANGAT PENTING & KHUSUS:
-1. Cari HANYA informasi/berita yang DIPUBLIKASIKAN DALAM KURUN WAKTU 1 BULAN TERAKHIR dari hari ini (${currentDateStr}).
-2. JANGAN PERNAH menampilkan berita, artikel, event, atau isu yang sudah lewat lebih dari 1 bulan dari batas waktu tersebut.
-3. Ekstrak 5 informasi paling segar, relevan, dan penting dari berbagai wilayah di Indonesia (bukan hanya 1 provinsi).
-4. Cakupan berita meliputi: Bali, Lombok, Raja Ampat, Labuan Bajo, Yogyakarta, Sumatera Barat, Sulawesi, Kalimantan, Papua, dan destinasi wisata nasional lainnya.
+ATURAN REDAKSI & ANTI-PLAGIARISME MUTLAK:
+1. JUDUL KREATIF & ORIJINAL: JANGAN PERNAH menjiplak judul dari media sumber. Rancang judul baru yang memikat, SEO-friendly, berkelas, dan akurat (contoh: "Pesona Bahari Mandeh: ..." atau "Terobosan Konektivitas: ...").
+2. STRUKTUR TEPA T 3 PARAGRAF (Pisahkan dengan \\n\\n):
+   - Paragraf 1 (Lead 5W+1H): Rangkuman lugas dan komprehensif tentang peristiwa/isu pariwisata terbaru.
+   - Paragraf 2 (Elaborasi & Dampak): Detail daya tarik, kesiapan fasilitas/amenitas, atau dampak ekonomi bagi masyarakat dan UMKM lokal.
+   - Paragraf 3 (Penutup & Proyeksi Khusus): WAJIB UNIK dan disesuaikan spesifik dengan konteks topik berita ini. DILARANG KERAS menggunakan kalimat klise/generik yang sama di semua artikel.
+3. CAKUPAN: Sertakan destinasi Sumatera Barat (Lembah Harau, Bukittinggi, Mentawai, Mandeh, Danau Singkarak) dan destinasi nasional lainnya.
 
-Formatkan output HANYA dalam format JSON valid sebagai Array of Objects dengan struktur berikut untuk SETIAP item:
-{
-  "id": "String unik (misal: news-1)",
-  "title": "Judul berita/event (Bahasa Indonesia)",
-  "titleEn": "Judul berita/event (Terjemahan Bahasa Inggris)",
-  "date": "Tanggal atau periode publikasi (Bahasa Indonesia, Wajib dalam 1 bulan terakhir)",
-  "dateEn": "Date of publication (Bahasa Inggris, Must be within last 1 month)",
-  "category": "Kategori (Pilih salah satu: Event, Berita, Pengumuman, Promo)",
-  "categoryEn": "Kategori (Pilih salah satu: Event, News, Announcement, Promo)",
-  "description": "Deskripsi lengkap berita (Bahasa Indonesia, minimal 2-3 paragraf komprehensif, dipisah dengan \\n\\n)",
-  "descriptionEn": "Deskripsi berita (Bahasa Inggris, minimal 2-3 paragraf komprehensif, dipisah dengan \\n\\n)",
-  "tag": "Tag singkat (misal: Terkini, Baru, Populer)",
-  "tagEn": "Tag singkat (misal: Latest, New, Popular)",
-  "actionUrl": "URL tautan sumber berita asli atau URL terkait",
-  "highlights": ["Poin penting 1", "Poin penting 2"],
-  "highlightsEn": ["Key point 1", "Key point 2"],
-  "tips": "Satu tips terkait untuk wisatawan (Bahasa Indonesia)",
-  "tipsEn": "Satu tips terkait untuk wisatawan (Bahasa Inggris)",
-  "locationName": "Lokasi spesifik (jika ada, misal: 'Bali' atau 'Labuan Bajo, NTT')",
-  "locationNameEn": "Lokasi spesifik (jika ada, misal: 'Bali' atau 'Labuan Bajo, NTT')"
-}
+Formatkan output HANYA dalam format JSON valid Array of Objects:
+[
+  {
+    "id": "news-1",
+    "title": "Judul Baru Kreatif & Orisinal (Bahasa Indonesia)",
+    "titleEn": "Fresh Original Headline in English",
+    "date": "Hari Ini / Minggu Ini / Periode Publikasi",
+    "dateEn": "Today / This Week / Publication Date",
+    "category": "Event | Berita | Pengumuman | Promo",
+    "categoryEn": "Event | News | Announcement | Promo",
+    "description": "Tepat 3 paragraf narasi jurnalistik bermutu tinggi dipisah dengan \\n\\n tanpa kalimat penutup templat generik.",
+    "descriptionEn": "Exact 3-paragraph high quality English journalistic narrative separated by \\n\\n with a context-specific conclusion.",
+    "tag": "Terkini | Baru | Populer",
+    "tagEn": "Latest | New | Popular",
+    "actionUrl": "URL tautan berita asli",
+    "highlights": ["Poin penting 1", "Poin penting 2", "Poin penting 3"],
+    "highlightsEn": ["Key highlight 1", "Key highlight 2", "Key highlight 3"],
+    "tips": "Tips kontekstual bagi wisatawan",
+    "tipsEn": "Contextual tip for travelers",
+    "locationName": "Lokasi Destinasi / Kota / Provinsi",
+    "locationNameEn": "Location in English"
+  }
+]
 
-Keluarkan HANYA array of JSON, tanpa markdown backticks atau teks lain.`;
+Keluarkan HANYA array JSON valid tanpa markdown backticks atau teks pengantar lainnya.`;
 
           const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
