@@ -3370,7 +3370,7 @@
         "Prosesi Batulak Bala & Permainan Tradisional",
         "Masuk Agenda Resmi KEN 2026"
       ],
-      "imageUrl": "https://res.cloudinary.com/uupbxcw5/image/upload/v1787196765/1787196753351_wnl0cn.png",
+      "imageUrl": "https://res.cloudinary.com/uupbxcw5/image/upload/f_auto,q_auto,w_800/v1787196765/1787196753351_wnl0cn.png",
       "lat": -0.798611,
       "scheduleEn": "September 2026 (Exact Dates To Be Confirmed)",
       "description": "Festival Rang Solok Baralek Gadang adalah perayaan agraris akbar yang mengangkat kemasyhuran Beras Solok (Bareh Solok) sebagai warisan pangan terbaik Nusantara dan pilar kebudayaan masyarakat Minangkabau. Festival unggulan Karisma Event Nusantara (KEN) ini dipusatkan langsung di tengah bentangan sawah organik produktif Hamparan Sawah Solok yang berlatar Gunung Talang.\n\nBeragam prosesi adat dan atraksi tradisional digelar di atas tanah sawah berlumpur, termasuk upacara Batulak Bala (ritual tolak bala memohon berkah panen), pawai arak-arakan jamba oleh ratusan Bundo Kanduang, lomba pacu upiah, dan permainan tradisional anak nagari seperti sipak rago dan silat lumpur. Nuansa kebersamaan yang hangat tercermin saat seluruh tamu dan masyarakat duduk bersila menikmati jamuan Makan Bajamba di pematang sawah.\n\nMelalui festival ini, Kota Solok tidak hanya merayakan hasil bumi tetapi juga mengedukasi wisatawan mengenai pentingnya ketahanan pangan, pertanian organik berkelanjutan, dan kearifan lokal sistem pengairan persawahan tradisional. Keindahan visual bentang sawah kuning keemasan menjadikannya destinasi favorit pencinta budaya dan ekowisata.",
@@ -3653,7 +3653,7 @@
         "National Intangible Cultural Heritage of Lima Puluh Kota"
       ],
       "isKen": true,
-      "imageUrl": "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev21-pacu-itiak.jpg",
       "lat": -0.22,
       "lng": 100.63
     },
@@ -3680,7 +3680,7 @@
         "Grand Gastronomy Fair Celebrating Endemic Bilih Delicacies"
       ],
       "isKen": false,
-      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev22-danau-singkarak.jpg",
       "lat": -0.617222,
       "lng": 100.536944
     },
@@ -3707,7 +3707,7 @@
         "Authentic Cross-Cultural Indian-Minang Street Food Fair"
       ],
       "isKen": false,
-      "imageUrl": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev23-serak-gulo.jpg",
       "lat": -0.96,
       "lng": 100.36
     },
@@ -3734,7 +3734,7 @@
         "National Record for Largest Authentic Rendang Showcase"
       ],
       "isKen": true,
-      "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev24-marandang.jpg",
       "lat": -0.304987,
       "lng": 100.369434
     },
@@ -3761,7 +3761,7 @@
         "Island-Hopping Excursions to Pristine Pigago & Panjang Islands"
       ],
       "isKen": false,
-      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev25-air-bangis.jpg",
       "lat": 0.2,
       "lng": 99.38
     },
@@ -3788,7 +3788,7 @@
         "Retro & Minangkabau Cultural Costume Pageant on Bridge"
       ],
       "isKen": true,
-      "imageUrl": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/catalog/ev26-danau-kembar.jpg",
       "lat": -0.963889,
       "lng": 100.354167
     }

@@ -3502,7 +3502,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "National Intangible Cultural Heritage of Lima Puluh Kota"
     ],
     "isKen": true,
-    "imageUrl": "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev21-pacu-itiak.jpg",
     "lat": -0.22,
     "lng": 100.63
   },
@@ -3529,7 +3529,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "Grand Gastronomy Fair Celebrating Endemic Bilih Delicacies"
     ],
     "isKen": false,
-    "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev22-danau-singkarak.jpg",
     "lat": -0.617222,
     "lng": 100.536944
   },
@@ -3556,7 +3556,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "Authentic Cross-Cultural Indian-Minang Street Food Fair"
     ],
     "isKen": false,
-    "imageUrl": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev23-serak-gulo.jpg",
     "lat": -0.96,
     "lng": 100.36
   },
@@ -3583,7 +3583,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "National Record for Largest Authentic Rendang Showcase"
     ],
     "isKen": true,
-    "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev24-marandang.jpg",
     "lat": -0.304987,
     "lng": 100.369434
   },
@@ -3610,7 +3610,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "Island-Hopping Excursions to Pristine Pigago & Panjang Islands"
     ],
     "isKen": false,
-    "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev25-air-bangis.jpg",
     "lat": 0.2,
     "lng": 99.38
   },
@@ -3637,7 +3637,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "Retro & Minangkabau Cultural Costume Pageant on Bridge"
     ],
     "isKen": true,
-    "imageUrl": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "/images/catalog/ev26-danau-kembar.jpg",
     "lat": -0.963889,
     "lng": 100.354167
   }

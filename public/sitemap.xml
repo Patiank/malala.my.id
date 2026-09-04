@@ -1532,7 +1532,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787196765/1787196753351_wnl0cn.png</image:loc>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/f_auto,q_auto,w_800/v1787196765/1787196753351_wnl0cn.png</image:loc>
       <image:title>Festival Rang Solok Baralek Gadang (KEN)</image:title>
       <image:caption>Hamparan Sawah Solok, Kota Solok ()</image:caption>
     </image:image>
@@ -1598,7 +1598,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev21-pacu-itiak.jpg</image:loc>
       <image:title>Pacu Itiak Tradisional Payakumbuh &amp; Limapuluh Kota</image:title>
       <image:caption>Payakumbuh &amp; Kabupaten Lima Puluh Kota ()</image:caption>
     </image:image>
@@ -1609,7 +1609,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev22-danau-singkarak.jpg</image:loc>
       <image:title>Festival Danau Singkarak &amp; Seni Tradisi</image:title>
       <image:caption>Dermaga Danau Singkarak, Solok &amp; Tanah Datar ()</image:caption>
     </image:image>
@@ -1620,7 +1620,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev23-serak-gulo.jpg</image:loc>
       <image:title>Festival Serak Gulo Padang Heritage</image:title>
       <image:caption>Masjid Muhammadan, Kota Padang ()</image:caption>
     </image:image>
@@ -1631,7 +1631,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev24-marandang.jpg</image:loc>
       <image:title>Festival Kuliner Minangkabau Marandang Akbar</image:title>
       <image:caption>Pelataran Jam Gadang Bukittinggi &amp; Padang ()</image:caption>
     </image:image>
@@ -1642,7 +1642,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev25-air-bangis.jpg</image:loc>
       <image:title>Festival Pesona Air Bangis Pasaman Barat</image:title>
       <image:caption>Pelabuhan Teluk Air Bangis, Pasaman Barat ()</image:caption>
     </image:image>
@@ -1653,7 +1653,7 @@
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/catalog/ev26-danau-kembar.jpg</image:loc>
       <image:title>Festival Batang Arau Heritage &amp; Padang Waterfront</image:title>
       <image:caption>Kawasan Kota Tua &amp; Muara Batang Arau, Padang ()</image:caption>
     </image:image>
