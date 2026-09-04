@@ -1159,7 +1159,18 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Filtered destinations
   const filteredDestinations = destCategory === 'Semua'
     ? destinations
-    : destinations.filter((d: Destination) => d.category === destCategory);
+    : destinations.filter((d: Destination) => {
+        if (destCategory === 'Danau & Gunung') {
+          return d.category === 'Danau & Gunung' || d.category === 'Alam';
+        }
+        if (destCategory === 'Air Terjun & Alam') {
+          return d.category === 'Air Terjun & Alam' || d.category.toLowerCase().includes('air terjun');
+        }
+        if (destCategory === 'Sejarah') {
+          return d.category.startsWith('Sejarah');
+        }
+        return d.category === destCategory;
+      });
 
   // Handle FormAI Itinerary Generation
   const handleGenerateItinerary = async (e: React.FormEvent) => {
@@ -1581,6 +1592,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                   { val: 'Danau & Gunung', label: translations[lang].catLakeMountain },
                   { val: 'Lembah & Geopark', label: translations[lang].catValleyGeopark },
                   { val: 'Pantai & Bahari', label: translations[lang].catBeachMarine },
+                  { val: 'Air Terjun & Alam', label: translations[lang].catWaterfallNature },
+                  { val: 'Sejarah', label: translations[lang].catHistoryHeritage },
                   { val: 'Desa Wisata', label: translations[lang].catVillage }
                 ].map(cat => (
                   <button
@@ -2261,10 +2274,12 @@ export const Drawers: React.FC<DrawersProps> = ({
             // Month events
             const eventsInActiveMonth = filteredEvents.filter((ev: EventItem) => parseEventMonth(ev.schedule) === calendarMonth);
             
-            // Events to show in cards below calendar (filtered by day if clicked)
-            const calendarEventsToDisplay = calendarSelectedDate 
-              ? eventsInActiveMonth.filter((ev: EventItem) => getEventDays(ev.schedule, calendarMonth).includes(calendarSelectedDate))
-              : eventsInActiveMonth;
+            // Events to show in cards below calendar (filtered by day if clicked, or showing all events if in list mode)
+            const calendarEventsToDisplay = eventViewMode === 'list'
+              ? filteredEvents
+              : (calendarSelectedDate 
+                ? eventsInActiveMonth.filter((ev: EventItem) => getEventDays(ev.schedule, calendarMonth).includes(calendarSelectedDate))
+                : eventsInActiveMonth);
 
             return (
               <div className="space-y-6 font-jakarta">
@@ -2513,30 +2528,59 @@ export const Drawers: React.FC<DrawersProps> = ({
                   {/* PANEL KANAN: SEMUA EVENT TETAP 2 KOLOM PANEL            */}
                   {/* ======================================================== */}
                   <div className="flex-1 w-full space-y-4">
-                    {/* Header Panel Kanan: Status Bulan / Tanggal Terpilih */}
+                    {/* Header Panel Kanan: Status Bulan / Tanggal Terpilih & View Mode Toggle */}
                     <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-gray-200">
                       <div className="flex items-center gap-2">
                         <h3 className="font-orbitron font-bold text-xs sm:text-sm uppercase text-black">
-                          {calendarSelectedDate
-                            ? (isEn ? `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesEn[calendarMonth]} 2026:` : `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesId[calendarMonth]} 2026:`)
-                            : (isEn ? `🎪 Event Bulan ${monthNamesEn[calendarMonth]} 2026 (${eventsInActiveMonth.length}):` : `🎪 Event Bulan ${monthNamesId[calendarMonth]} 2026 (${eventsInActiveMonth.length}):`)}
+                          {eventViewMode === 'list'
+                            ? (isEn ? `📋 All Scheduled Events (${calendarEventsToDisplay.length}):` : `📋 Seluruh Event Terjadwal (${calendarEventsToDisplay.length}):`)
+                            : (calendarSelectedDate
+                              ? (isEn ? `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesEn[calendarMonth]} 2026:` : `📅 Event Tanggal ${calendarSelectedDate} ${monthNamesId[calendarMonth]} 2026:`)
+                              : (isEn ? `🎪 Event Bulan ${monthNamesEn[calendarMonth]} 2026 (${eventsInActiveMonth.length}):` : `🎪 Event Bulan ${monthNamesId[calendarMonth]} 2026 (${eventsInActiveMonth.length}):`))}
                         </h3>
                       </div>
 
-                      {calendarSelectedDate ? (
-                        <button
-                          onClick={() => setCalendarSelectedDate(null)}
-                          className="text-xs text-amber-700 font-bold hover:underline cursor-pointer bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200"
-                        >
-                          {isEn ? '← Show All Month Events' : '← Tampilkan Seluruh Bulan Ini'}
-                        </button>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] text-gray-500 font-medium font-jakarta">
-                            {isEn ? `Total ${eventItems.length} Annual Events` : `Total ${eventItems.length} Event Tahunan`}
-                          </span>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        {/* Toggle Mode Bulanan vs Semua Event */}
+                        <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200 text-[10px] font-bold">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEventViewMode('calendar');
+                            }}
+                            className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                              eventViewMode === 'calendar'
+                                ? 'bg-black text-white shadow-xs'
+                                : 'text-gray-600 hover:text-black hover:bg-gray-200'
+                            }`}
+                          >
+                            📅 {isEn ? 'Monthly' : 'Per Bulan'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEventViewMode('list');
+                              setCalendarSelectedDate(null);
+                            }}
+                            className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                              eventViewMode === 'list'
+                                ? 'bg-black text-white shadow-xs'
+                                : 'text-gray-600 hover:text-black hover:bg-gray-200'
+                            }`}
+                          >
+                            📋 {isEn ? `All Events (${eventItems.length})` : `Semua Event (${eventItems.length})`}
+                          </button>
                         </div>
-                      )}
+
+                        {eventViewMode === 'calendar' && calendarSelectedDate && (
+                          <button
+                            onClick={() => setCalendarSelectedDate(null)}
+                            className="text-xs text-amber-700 font-bold hover:underline cursor-pointer bg-amber-50 px-2 py-1 rounded-md border border-amber-200"
+                          >
+                            {isEn ? '← Show Month' : '← Bulan Ini'}
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {/* 2 Kolom Event Cards di Sebelah Kanan */}
