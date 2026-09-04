@@ -23,61 +23,177 @@ export const BG_IMAGE_2 = getDirectDriveUrl(RAW_BG_IMAGE_2);
 export const HOT_INFO_ITEMS: HotInfoItem[] = [
   {
     id: 'hi1',
-    title: 'Peringatan Cuaca & Update Jalur Kelok 9',
-    titleEn: 'Weather Update & Kelok 9 Scenic Flyover Status',
+    title: 'Uji Laik Fungsi Tol Padang-Sicincin 36,6 Km: Pangkas Waktu Tempuh Padang ke Bukittinggi Jadi 45 Menit',
+    titleEn: 'Padang-Sicincin 36.6 Km Toll Road Functional Test: Slashes Padang-Bukittinggi Travel Time to 45 Minutes',
     category: 'Pariwisata Sumatera Barat',
     categoryEn: 'West Sumatra Tourism',
-    date: '10 Agustus 2026',
-    dateEn: 'August 10, 2026',
+    date: '04 September 2026',
+    dateEn: 'September 04, 2026',
     imageUrl: '',
-    description: "Jalur utama penghubung Bukittinggi - Payakumbuh via Jembatan Kelok 9 saat ini terpantau sangat kondusif, lancar, dan aman untuk perjalanan wisata keluarga maupun rombongan. Karya arsitektur jembatan layang megah yang membelah tebing-tebing bukit barisan ini tidak hanya menawarkan fungsi vital transportasi, tetapi juga menyajikan panorama alam yang luar biasa memukau bagi setiap pelintas.\n\nBMKG Minangkabau mengonfirmasi bahwa cuaca di kawasan ini diprediksi dominan cerah berawan dengan angin sepoi-sepoi khas pegunungan, sangat ideal bagi wisatawan yang ingin mengambil foto berlatarkan kemegahan Kelok 9. Fasilitas rest area yang dikelola warga lokal beroperasi penuh, menyambut pelancong dengan aroma khas jagung bakar manis dan seduhan kopi hangat yang nikmat.\n\nUntuk menjamin kenyamanan maksimal, petugas gabungan dari Dinas Perhubungan, Satlantas, dan aparat keamanan setempat bersiaga penuh 24 jam. Wisatawan dapat berkendara dengan tenang sambil menikmati udara segar dan keagungan alam Sumatera Barat tanpa perlu khawatir akan kendala perjalanan.",
-    descriptionEn: "The iconic Kelok 9 flyover connecting Bukittinggi and Payakumbuh is currently reported to be highly conducive, safe, and flowing smoothly for all travelers. This majestic architectural marvel seamlessly integrated into the steep cliffs of the Barisan Mountains not only serves as a crucial transport link but also offers an extraordinary panoramic view that captivates every visitor.\n\nAccording to the local meteorology agency, the weather in the area is expected to be mostly clear and pleasant, accompanied by a gentle mountain breeze. This provides perfect conditions for photography enthusiasts wanting to capture the grand scale of the flyover against the lush valley backdrop. Local rest areas are fully operational, welcoming tourists with the inviting aroma of sweet roasted corn and freshly brewed mountain coffee.\n\nTo ensure maximum comfort and safety, a joint task force of transportation officers, traffic police, and local security personnel are on standby 24/7. Tourists can drive with complete peace of mind, savoring the fresh air and the majestic natural beauty of West Sumatra without any travel concerns.",
-    tag: 'Sumbar',
-    tagEn: 'West Sumatra',
-    actionUrl: 'https://maps.google.com/?q=Kelok+9+Sumatera+Barat',
+    description: "PT Hutama Karya (Persero) bersama Balai Pengelola Transportasi Darat (BPTD) Kelas II Sumatera Barat mengonfirmasi bahwa uji laik fungsi fisik Jalan Tol Ruas Padang - Sicincin sepanjang 36,6 kilometer telah rampung dan siap beroperasi penuh untuk mendukung mobilitas wisatawan antarkota. Akses jalan bebas hambatan ini secara signifikan memangkas waktu tempuh dari Kota Padang menuju kawasan Bukittinggi dan Padang Panjang dari sebelumnya 2 hingga 2,5 jam melalui jalur arteri nasional menjadi hanya sekitar 35 hingga 45 menit.\n\nJalur tol pertama di Ranah Minang ini dilengkapi dengan dua gerbang tol utama, yakni Gerbang Tol Kapalo Hilalang dan kawasan Tarok City, serta rest area tipe A bernuansa arsitektur gonjong Rumah Gadang yang mengalokasikan 70 persen ruang usahanya bagi sentra kuliner dan suvenir UMKM lokal Minangkabau. Selain mengurai titik kemacetan kronis di pasar tumpah Lubuk Alung dan Kayu Tanam, jalur ini memberikan kenyamanan ekstra bagi pelancong keluarga dan rombongan bus wisata dengan standar keselamatan modern serta panorama hijau perbukitan kaki Gunung Singgalang di sepanjang koridor perjalanan.\n\nPengelola jalan tol mengimbau seluruh pengguna jalan untuk memastikan saldo kartu uang elektronik (e-toll) mencukupi serta mematuhi batas kecepatan berkendara 60 hingga 80 km/jam. Bagi wisatawan yang keluar melalui Gerbang Tol Kapalo Hilalang, akses langsung tersambung mulus dengan jalan arteri Padang Panjang - Bukittinggi, sehingga memudahkan kelanjutan perjalanan ke destinasi unggulan Lembah Anai, Mifan Waterpark, Pandai Sikek, hingga pelataran Jam Gadang.",
+    descriptionEn: "PT Hutama Karya in coordination with the West Sumatra Land Transportation Management Agency confirms the completion of functional feasibility testing for the 36.6-kilometer Padang-Sicincin Toll Road section, now ready for full operation. This expressway link drastically cuts driving times from Padang City to the highland hubs of Bukittinggi and Padang Panjang from over two hours along congested national highways down to just 35 to 45 minutes.\n\nAs the first highway in the Minang realm, the corridor features dual main toll plazas at Kapalo Hilalang and Tarok City, alongside a Type-A rest area showcasing iconic Rumah Gadang gonjong architecture where 70 percent of retail space is reserved for local culinary and craft MSMEs. In addition to resolving chronic bottleneck congestion at Lubuk Alung and Kayu Tanam markets, the route affords seamless journeys for travel groups with state-of-the-art safety fixtures and emerald vistas of Mount Singgalang foothills.\n\nMotorists are strongly advised to ensure sufficient electronic toll balances and adhere strictly to designated speed limits between 60 and 80 km/h. Travelers exiting at the Kapalo Hilalang interchange gain immediate access to the Padang Panjang-Bukittinggi arterial corridor, facilitating convenient onward travel to Anai Valley, Pandai Sikek weaving village, and the historic Jam Gadang clock plaza.",
+    tag: 'Penting',
+    tagEn: 'Important',
+    actionUrl: 'https://maps.google.com/?q=Tol+Padang+Sicincin',
     highlights: [
-      'Kondisi jalan mulus dan pemandangan lembah memukau',
-      'Rest area kuliner khas Minang beroperasi penuh',
-      'Posko pelayanan informasi dan keamanan wisatawan aktif 24 jam'
+      'Pangkas rute Padang - Bukittinggi dari 2,5 jam menjadi 45 menit',
+      'Rest area arsitektur gonjong dengan 70% gerai UMKM kuliner lokal',
+      'Koneksi langsung ke jalur wisata Lembah Anai dan Pandai Sikek'
     ],
     highlightsEn: [
-      'Smooth road conditions with breathtaking mountain views',
-      'Culinary rest areas operating at full capacity',
-      '24/7 tourist information and assistance posts active'
+      'Travel time slashed from 2.5 hours to 45 minutes',
+      'Minang gonjong-roof rest area with 70% local culinary stalls',
+      'Direct highway interchange to Anai Valley and Pandai Sikek'
     ],
-    tips: 'Disarankan melintas pada pagi hingga siang hari untuk menikmati pemandangan arsitektur mega-jembatan Kelok 9 secara maksimal.',
-    tipsEn: 'Best visited in the morning or early afternoon for unobstructed photography and panoramic views.',
-    locationName: 'Jembatan Kelok 9, Kab. Limapuluh Kota',
-    locationNameEn: 'Kelok 9 Flyover, Limapuluh Kota Regency'
+    tips: 'Pastikan saldo kartu tol terisi minimal Rp50.000 dan periksa kondisi rem kendaraan sebelum melanjutkan tanjakan ke arah Bukittinggi.',
+    tipsEn: 'Ensure your e-toll card has at least IDR 50,000 balance and check vehicle brakes before heading up to Bukittinggi.',
+    locationName: 'Ruas Tol Padang - Sicincin, Padang Pariaman',
+    locationNameEn: 'Padang - Sicincin Toll Road, Padang Pariaman'
   },
   {
     id: 'hi2',
-    title: 'Festival Kuliner Rendang & Pesta Budaya Minang 2026',
-    titleEn: 'Grand Minang Rendang Festival & Cultural Celebration 2026',
+    title: 'Kesiapan Jalur Sitinjau Lauik: BPJN dan Satlantas Siagakan Alat Berat & Posko Terpadu 24 Jam',
+    titleEn: 'Sitinjau Lauik Route Readiness: Road Agency & Police Deploy 24/7 Heavy Machinery and Safety Outposts',
     category: 'Pariwisata Sumatera Barat',
     categoryEn: 'West Sumatra Tourism',
-    date: '09 Agustus 2026',
-    dateEn: 'August 09, 2026',
+    date: '03 September 2026',
+    dateEn: 'September 03, 2026',
     imageUrl: '',
-    description: "Bukittinggi dengan bangga kembali menggelar perhelatan akbar Festival Kuliner Rendang Internasional di pelataran ikonik Jam Gadang. Acara spektakuler ini dirancang khusus untuk memanjakan lidah wisatawan sekaligus melestarikan warisan budaya tak benda UNESCO. Ribuan pengunjung akan disuguhkan dengan lebih dari 100 varian otentik rendang dari 19 Kabupaten/Kota di Sumatera Barat, mulai dari Rendang Daging klasik, Rendang Belut, Rendang Pakis, hingga Rendang Lokan yang langka.\n\nDalam festival ini, pengunjung tidak hanya sekadar mencicipi, tetapi juga berkesempatan langsung menyaksikan atraksi marandang. Bundo Kanduang (tokoh perempuan adat) akan mendemonstrasikan proses panjang memasak rendang secara tradisional menggunakan tungku kayu bakar dan kuali besi besar, menguarkan aroma rempah khas Minangkabau yang menggugah selera ke seluruh penjuru kota.\n\nTidak berhenti pada kuliner, festival ini juga dimeriahkan dengan pesta budaya yang memukau. Sepanjang hari, wisatawan akan dihibur oleh alunan merdu musik Saluang, gemulai Tari Piring yang dinamis, serta atraksi Tari Galombang yang mempresentasikan semangat penyambutan tamu kehormatan. Ini adalah momen emas bagi wisatawan untuk menyelami kekayaan budaya dan kuliner Sumatera Barat dalam satu panggung megah.",
-    descriptionEn: "Bukittinggi proudly hosts the grand International Rendang Culinary Festival at the iconic Jam Gadang plaza. This spectacular event is specially designed to indulge travelers' palates while preserving a UNESCO intangible cultural heritage. Thousands of visitors will be treated to over 100 authentic rendang variations from all 19 regencies and cities of West Sumatra, ranging from the classic beef rendang to unique varieties like eel, fern, and clam rendang.\n\nAt this festival, visitors do more than just taste; they get to witness the captivating marandang attraction firsthand. Bundo Kanduang (traditional female elders) will demonstrate the meticulous, slow-cooking process of traditional rendang using wood-fired stoves and large iron woks, filling the city air with the mouthwatering aroma of Minangkabau spices.\n\nBeyond culinary delights, the festival is enriched with mesmerizing cultural celebrations. Throughout the day, tourists will be entertained by the melodious tunes of Saluang traditional flutes, the dynamic Plate Dance, and the welcoming Galombang Dance. It is a golden opportunity for travelers to immerse themselves in the rich tapestry of West Sumatra's culture and gastronomy on one magnificent stage.",
-    tag: 'Festival',
-    tagEn: 'Festival',
-    actionUrl: 'https://maps.google.com/?q=Jam+Gadang+Bukittinggi',
+    description: "Direktorat Lalu Lintas Polda Sumatera Barat bersama Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III menyiagakan posko tanggap darurat 24 jam dan unit alat berat excavator di kawasan tanjakan ekstrem Sitinjau Lauik, menyusul tingginya intensitas mobilitas angkutan logistik dan bus pariwisata rute Padang - Solok. Pemantauan terpadu difokuskan pada pengamanan lereng tebing di tikungan kritis Panorama 1 dan Panorama 2 guna mengantisipasi kerawanan guguran batuan saat hujan lebat serta menjamin kelancaran arus menuju Danau Singkarak dan Alahan Panjang.\n\nUpaya penguatan infrastruktur keselamatan terus direalisasikan melalui penambahan jaring pengaman batu berkawat baja (wire mesh netting), perbaikan sistem drainase lereng bertingkat, serta pelebaran bahu jalan di sudut belokan tajam. Di lapangan, koordinasi lintas sektor melibatkan relawan pengatur jalan anak nagari yang terhubung langsung dengan petugas Satlantas melalui jaringan radio komunikasi terintegrasi untuk memberlakukan skema buka-tutup darurat manakala terjadi insiden truk mogok atau kabut tebal pegunungan.\n\nPara pengemudi kendaraan pribadi, travel, maupun bus pariwisata sangat disarankan untuk memeriksa fungsi kampas rem, cairan radiator, dan transmisi sebelum melintasi koridor Sitinjau Lauik. Pengemudi wajib mendahulukan kendaraan bermuatan berat yang sedang melaju menanjak, menggunakan transmisi gigi rendah (low gear) saat menurun tajam, serta dilarang menyalip di area tikungan buta (blind spot) demi keselamatan perjalanan bersama.",
+    descriptionEn: "The West Sumatra Traffic Police Directorate in partnership with National Road Implementation Agency III has mobilized a 24/7 emergency response outpost and heavy excavators along the steep Sitinjau Lauik mountain pass, responding to elevated passenger and cargo flows between Padang and Solok. Coordinated monitoring zeroes in on unstable cliff faces near Panorama 1 and Panorama 2 hairpins to preempt rockfall risks during downpours and safeguard access towards Lake Singkarak and Alahan Panjang highland tea estates.\n\nInfrastructure resilience initiatives encompass high-tensile wire mesh rockfall barriers, terraced hillside drainage channels, and expanded paved shoulders across switchback bends to accommodate large-chassis transport. On the ground, inter-agency protocols link local village road marshals directly with highway patrol units via dedicated radio frequencies to manage phased traffic flow during sudden vehicle breakdowns or dense highland fog.\n\nDrivers of private cars, tour vans, and chartered coaches are firmly advised to inspect brake linings, cooling systems, and tire pressure prior to traversing Sitinjau Lauik. Regulations require descending vehicles to yield unconditionally to ascending traffic, engage low gears throughout steep gradients, and refrain from overtaking at blind corners to uphold travel safety.",
+    tag: 'Pantauan Jalur',
+    tagEn: 'Route Watch',
+    actionUrl: 'https://maps.google.com/?q=Sitinjau+Lauik+Padang',
     highlights: [
-      'Pameran 100+ varian rendang asli Minangkabau',
-      'Demonstrasi memasak marandang kayu bakar oleh bundo kanduang',
-      'Atraksi Seni Tari Piring & Pertunjukan Musik Tradisional gratis'
+      'Posko siaga 24 jam dan alat berat di Panorama 1 & 2',
+      'Pemasangan wire mesh baja penahan guguran batu lereng tebing',
+      'Arus lalu lintas lancar dengan panduan relawan dan Satlantas'
     ],
     highlightsEn: [
-      'Exhibition of 100+ authentic Minangkabau rendang recipes',
-      'Live traditional wood-fired rendang cooking demonstrations',
-      'Free traditional Plate Dance and Saluang music performances'
+      '24/7 emergency post and heavy excavators at Panorama bends',
+      'Steel wire mesh rockfall barriers installed along cliffs',
+      'Smooth traffic guided by highway patrol and community marshals'
     ],
-    tips: 'Datanglah sebelum pukul 10 pagi untuk menghindari antrean panjang saat mencicipi taster gratis.',
-    tipsEn: 'Arrive before 10 AM to avoid long lines for the free tasting sessions.',
-    locationName: 'Pelataran Jam Gadang, Bukittinggi',
-    locationNameEn: 'Jam Gadang Plaza, Bukittinggi'
+    tips: 'Gunakan gigi 1 atau 2 saat menanjak maupun menurun, dan selalu berikan prioritas jalan pada kendaraan bermuatan berat yang sedang menanjak.',
+    tipsEn: 'Engage low gears (1st or 2nd) when ascending and descending, and always yield to uphill-climbing heavy vehicles.',
+    locationName: 'Jalan Raya Padang - Solok (Sitinjau Lauik)',
+    locationNameEn: 'Padang - Solok Highway (Sitinjau Lauik Pass)'
+  },
+  {
+    id: 'hi3',
+    title: 'Kemenparekraf Rilis Kalender KEN 2026 Sumbar: Pacu Jawi Tanah Datar dan Tabuik Pariaman Jadi Sorotan Utama',
+    titleEn: 'Ministry Announces 2026 National Event Calendar: Pacu Jawi & Tabuik Festival Highlight West Sumatra',
+    category: 'Pariwisata Sumatera Barat',
+    categoryEn: 'West Sumatra Tourism',
+    date: '01 September 2026',
+    dateEn: 'September 01, 2026',
+    imageUrl: '',
+    description: "Kementerian Pariwisata dan Ekonomi Kreatif secara resmi merilis daftar agenda terpilih Kharisma Event Nusantara (KEN) 2026 untuk Provinsi Sumatera Barat, menempatkan atraksi budaya legendaris Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan festival kolosal Pesona Budaya Tabuik Pariaman sebagai agenda unggulan berskala nasional. Pemprov Sumbar menargetkan rangkaian perhelatan budaya ini mampu menggerakkan lebih dari 400 ribu kunjungan wisatawan domestik dan internasional serta mendorong perputaran ekonomi kreatif nagari hingga miliaran Rupiah.\n\nDalam jadwal resmi, Pacu Jawi akan digelar bergiliran setiap akhir pekan di empat nagari bersejarah Tanah Datar (Sungai Tarab, Pariangan, Rambatan, dan Lima Kaum) di atas bentangan sawah basah berlumpur berlatar megah Gunung Marapi. Di pesisir barat, prosesi akbar Pesta Budaya Tabuik di Kota Pariaman akan menggelar prosesi sakral Maambiak Tanah, Menumbuk Panja, hingga prosesi puncak Tabuik Naiak Pangkek dan pelepasan Tabuik ke Samudra Hindia di Pantai Gandoriah dengan iringan serempak ratusan pemukul Gandang Tasa.\n\nPemerintah daerah bersama asosiasi perhotelan PHRI mengimbau wisatawan yang hendak menyaksikan langsung momentum budaya ini untuk memesan akomodasi di Batusangkar, Bukittinggi, atau Pariaman minimal tiga pekan sebelum tanggal pelaksanaan. Panitia telah menyiapkan kantong parkir terpadu, shuttle bus ramah keluarga, serta area khusus bagi para fotografer profesional guna memastikan kenyamanan dokumentasi tanpa mengganggu jalannya prosesi adat.",
+    descriptionEn: "The Ministry of Tourism and Creative Economy has officially unveiled the 2026 Karisma Event Nusantara (KEN) calendar for West Sumatra, starring the legendary Pacu Jawi mud buffalo race in Tanah Datar Regency and the epic Tabuik Cultural Festival in Pariaman City as premier national attractions. The provincial administration projects over 400,000 domestic and international tourist visits throughout the festival season, driving billions in grassroots creative economy revenues.\n\nPer official itineraries, Pacu Jawi runs on rotating weekends across four heritage nagari in Tanah Datar (Sungai Tarab, Pariangan, Rambatan, and Lima Kaum) amidst wet mud paddies framed by majestic Mount Marapi. Along the coast, Pariaman's Tabuik Festival spans sacred stages from Maambiak Tanah to the spectacular Tabuik Naiak Pangkek finale, culminating in the ocean casting ceremony at Gandoriah Beach accompanied by thunderous Gandang Tasa drum ensembles.\n\nRegional authorities and the Indonesian Hotel Association (PHRI) urge travelers planning to attend these celebrations to book lodging across Batusangkar, Bukittinggi, and Pariaman at least three weeks ahead. Organizers have prepared integrated park-and-ride facilities, dedicated shuttle services, and designated photographer staging areas to deliver an orderly spectator experience that respects traditional proceedings.",
+    tag: 'Event KEN',
+    tagEn: 'KEN Event',
+    actionUrl: 'https://maps.google.com/?q=Tanah+Datar+Sumatera+Barat',
+    highlights: [
+      'Masuk kurasi resmi Kharisma Event Nusantara (KEN) 2026 Kemenparekraf',
+      'Pacu Jawi bergilir di 4 Nagari Tanah Datar berlatar sawah Gunung Marapi',
+      'Prosesi puncak Tabuik Dibuang ka Lauik di Pantai Gandoriah Pariaman'
+    ],
+    highlightsEn: [
+      'Curated into official 2026 Karisma Event Nusantara (KEN) national roster',
+      'Pacu Jawi rotated across 4 Tanah Datar nagari framed by Mount Marapi',
+      'Grand ocean casting ritual at Gandoriah Beach in Pariaman'
+    ],
+    tips: 'Gunakan pakaian kasual yang nyaman dan siap terkena cipratan lumpur saat menonton Pacu Jawi di pematang sawah.',
+    tipsEn: 'Wear comfortable casual clothes and mud-ready footwear when watching Pacu Jawi along paddy ridges.',
+    locationName: 'Tanah Datar & Pantai Gandoriah Pariaman',
+    locationNameEn: 'Tanah Datar & Gandoriah Beach, Pariaman'
+  },
+  {
+    id: 'hi4',
+    title: 'Konektivitas Bahari Mentawai Ditingkatkan: Kapal Cepat Mentawai Fast Buka Rute Tambahan Sambut Musim Surfing',
+    titleEn: 'Mentawai Marine Transit Enhanced: Mentawai Fast Adds Crossings for International Peak Surf Season',
+    category: 'Pariwisata Sumatera Barat',
+    categoryEn: 'West Sumatra Tourism',
+    date: '28 Agustus 2026',
+    dateEn: 'August 28, 2026',
+    imageUrl: '',
+    description: "Dinas Perhubungan Sumatera Barat bersama manajemen PT Mentawai Anugerah Sejahtera mengumumkan penambahan frekuensi pelayaran armada kapal cepat KM Mentawai Fast dari Pelabuhan Muaro Padang menuju Tuapejat (Pulau Sipora) dan Sikabaluan (Pulau Siberut) menjadi empat kali dalam sepekan. Kebijakan peningkatan konektivitas bahari ini diambil guna mengantisipasi lonjakan arus kedatangan peselancar mancanegara dan pelancong ekowisata kepulauan menyambut puncak musim ombak kelas dunia (world-class swell season) di perairan barat Sumatera.\n\nStasiun Meteorologi Maritim BMKG Teluk Bayur melaporkan bahwa tinggi gelombang di perairan Kepulauan Mentawai terpantau stabil pada rentang 1,5 hingga 2,5 meter dengan arah angin timuran yang kondusif, menciptakan formasi gelombang tabung sempurna (barrel waves) di spot legendaris seperti Lance's Right, HT's, Telescopes, dan Macaronis. Di daratan Pulau Siberut, fasilitas homestay tradisional serta program wisata budaya pedalaman hutan hujan bersama Sikerei (tabib adat Mentawai) juga telah menerapkan standar sapta pesona dan pemanduan ramah lingkungan.\n\nBagi calon penumpang kapal penyeberangan, diimbau untuk melakukan reservasi tiket secara daring jauh hari sebelum jadwal keberangkatan serta memastikan papan selancar (surfboard) terdaftar dalam manifes bagasi khusus. Wisatawan mancanegara wajib melunasi retribusi izin wisata selancar resmi (surfing tax) Pemerintah Kabupaten Kepulauan Mentawai melalui loket Pelabuhan Muaro demi mendukung pemeliharaan ekosistem terumbu karang dan pemberdayaan nagari pesisir.",
+    descriptionEn: "The West Sumatra Transportation Agency alongside ferry operator PT Mentawai Anugerah Sejahtera announced expanded sailing frequencies for the KM Mentawai Fast fleet from Muaro Padang Port to Tuapejat (Sipora Island) and Sikabaluan (Siberut Island) up to four times weekly. This marine connectivity upgrade addresses rising arrivals of international wave riders and island ecotourists arriving for the world-class swell season in western Sumatran waters.\n\nBMKG Teluk Bayur Maritime Meteorology Station reports swell heights across Mentawai waters holding steady between 1.5 and 2.5 meters with favorable easterly breezes, generating world-renowned hollow barrel wave conditions at Lance's Right, Telescopes, and Macaronis. On mainland Siberut, traditional jungle homestays and indigenous cultural programs led by Sikerei community healers have instituted enhanced eco-guiding protocols for responsible visitor engagement.\n\nPassengers are advised to secure online ticket reservations well in advance and register surfboards on official cargo manifests. Foreign surfers must also clear the official Mentawai Surfing Retribution fee at Muaro Port prior to embarkation to support marine coral conservation and coastal nagari community programs.",
+    tag: 'Wisata Bahari',
+    tagEn: 'Marine Tourism',
+    actionUrl: 'https://maps.google.com/?q=Pelabuhan+Muaro+Padang',
+    highlights: [
+      'Penambahan frekuensi pelayaran KM Mentawai Fast jadi 4 kali sepekan',
+      'Puncak musim ombak selancar dunia di Sipora, Siberut & Sikakap',
+      'Prakiraan gelombang BMKG Maritim aman dan bersahabat untuk pelayaran'
+    ],
+    highlightsEn: [
+      'Mentawai Fast ferry sailings increased to four times weekly',
+      'Peak international surfing swell season across Sipora & Siberut',
+      'Favorable BMKG maritime weather forecasts for safe crossings'
+    ],
+    tips: 'Datang di Pelabuhan Muaro Padang minimal 1 jam sebelum jadwal boarding pukul 06:30 WIB dan siapkan obat anti-mabuk laut jika rentan berombak.',
+    tipsEn: 'Arrive at Muaro Port at least 1 hour before 06:30 AM boarding and pack seasickness medication if needed.',
+    locationName: 'Pelabuhan Muaro Padang & Kepulauan Mentawai',
+    locationNameEn: 'Muaro Padang Port & Mentawai Islands'
+  },
+  {
+    id: 'hi5',
+    title: 'Rekonstruksi Koridor Cagar Alam Lembah Anai Tuntas: Akses Utama Padang-Bukittinggi Kembali Mulus 100%',
+    titleEn: 'Anai Valley Nature Reserve Corridor Fully Reconstructed: Padang-Bukittinggi Link 100% Operational',
+    category: 'Pariwisata Sumatera Barat',
+    categoryEn: 'West Sumatra Tourism',
+    date: '25 Agustus 2026',
+    dateEn: 'August 25, 2026',
+    imageUrl: '',
+    description: "Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III bersama Kementerian Pekerjaan Umum dan Perumahan Rakyat menyatakan bahwa seluruh pekerjaan penanganan permanen badan jalan nasional di sepanjang cagar alam Lembah Anai telah rampung seratus persen. Koridor vital penghubung Kota Padang dengan Padang Panjang dan Bukittinggi ini kini kembali beroperasi mulus dengan dua lajur penuh beraspal prima, diperkokoh dengan konstruksi dinding penahan tanah bore-pile dan perkuatan bronjong penahan arus Sungai Batang Anai.\n\nSeiring selesainya penataan struktural tebing jalan, kawasan objek wisata Air Terjun Lembah Anai di tepi jalan raya kini hadir dengan wajah baru yang jauh lebih tertata dan ramah pejalan kaki. Pihak pengelola telah membangun jembatan penyeberangan berpagar pengaman kokoh, trotoar pedestrian berpaving block rapi, serta relokasi lapak kuliner jagung rebus manis dan minuman hangat khas nagari yang tertib tanpa mengganggu bahu jalan raya.\n\nPara wisatawan yang singgah beristirahat di Air Terjun Lembah Anai diimbau untuk selalu memarkirkan kendaraan di kantong parkir resmi yang telah dialokasikan demi mencegah kemacetan di mulut jembatan. Pengunjung juga diingatkan untuk mematuhi rambu larangan mandi di kolam air terjun saat debit air meningkat serta senantiasa menjaga kebersihan cagar alam dengan membuang sampah pada tempat yang tersedia.",
+    descriptionEn: "The National Road Implementation Agency III alongside the Ministry of Public Works confirms that permanent structural rehabilitation of the national highway through Anai Valley Nature Reserve is 100 percent complete. This vital transport corridor connecting Padang with Padang Panjang and Bukittinggi is fully restored to smooth dual-lane asphalt traffic, reinforced with heavy-duty bore-pile retaining walls and riverbank gabion revetments along the Batang Anai riverbed.\n\nComplementing the roadworks, the iconic roadside Anai Valley Waterfall scenic stop has been comprehensively upgraded with modern visitor facilities. Upgrades feature a reinforced pedestrian viewing bridge, tidy paved footpaths, and organized local culinary kiosks serving roasted corn and warm regional drinks set back safely from the highway traffic shoulders.\n\nVisitors pausing at Anai Valley Waterfall are reminded to utilize designated parking bays to maintain unobstructed traffic flow near the bridge approaches. Guests are also requested to heed safety signs regarding waterfall pool depths during high water flows and uphold nature reserve conservation rules by disposing of waste responsibly.",
+    tag: 'Akses Wisata',
+    tagEn: 'Travel Access',
+    actionUrl: 'https://maps.google.com/?q=Air+Terjun+Lembah+Anai',
+    highlights: [
+      'Rekonstruksi dinding bore-pile dan bronjong Batang Anai selesai 100%',
+      'Lajur jalan Padang - Padang Panjang kembali mulus dan normal',
+      'Penataan pedestrian dan rest area kuliner Air Terjun Lembah Anai'
+    ],
+    highlightsEn: [
+      'Permanent bore-pile retaining walls and river gabions 100% completed',
+      'Padang - Padang Panjang dual-lane highway fully restored and smooth',
+      'Pedestrian walkway and culinary rest area revamp at Anai Waterfall'
+    ],
+    tips: 'Waktu terbaik singgah di Lembah Anai adalah pagi hari antara pukul 08:00 - 10:30 WIB saat udara masih berkabut sejuk dan matahari mulai menyinari air terjun.',
+    tipsEn: 'Best visited between 08:00 - 10:30 AM when crisp mountain mist lingers and morning sunlight illuminates the cascades.',
+    locationName: 'Cagar Alam Lembah Anai, Kab. Tanah Datar',
+    locationNameEn: 'Anai Valley Nature Reserve, Tanah Datar'
+  },
+  {
+    id: 'hi6',
+    title: 'Penguatan Zonasi Konservasi Ekowisata Tebing Granit Geopark Lembah Harau: Tertib Glamping & Zero Plastic Waste',
+    titleEn: 'Harau Valley Granite Canyon Ecotourism Zoning Strengthened: Regulated Glamping & Zero Plastic Waste',
+    category: 'Pariwisata Sumatera Barat',
+    categoryEn: 'West Sumatra Tourism',
+    date: '20 Agustus 2026',
+    dateEn: 'August 20, 2026',
+    imageUrl: '',
+    description: "Pemerintah Kabupaten Limapuluh Kota bersama Balai Konservasi Sumber Daya Alam (BKSDA) Sumatera Barat dan Lembaga Kerapatan Adat Alam Minangkabau (LKAAM) meresmikan tata kelola zonasi baru kawasan Geopark Lembah Harau. Regulasi terpadu ini menetapkan pemisahan tegas antara zona pemanfaatan wisata keluarga di hamparan lembah persawahan dan zona inti konservasi tebing granit purba setinggi 100 hingga 300 meter guna menjaga kelestarian ekosistem hutan hujan serta habitat satwa endemik seperti siamang dan elang brontok.\n\nDalam skema penataan baru ini, seluruh unit glamping, resort alam, dan homestay diwajibkan menerapkan standar ramah lingkungan bebas sampah plastik sekali pakai (zero single-use plastic) serta menyediakan sistem instalasi pengolahan air limbah (IPAL) mandiri. Sementara itu, aktivitas petualangan panjat tebing (rock climbing) kelas dunia dan penelusuran air terjun Sarasah Murai diwajibkan menggunakan jasa pemandu lokal bersertifikat HPI (Himpunan Pramuwisata Indonesia) yang menguasai mitigasi keselamatan medan perbukitan.\n\nWisatawan yang hendak berlibur ke Lembah Harau disarankan mengatur waktu kunjungan pada pagi hari untuk menikmati fenomena bentangan kabut fajar yang memesona di antara tebing-tebing batu raksasa. Sistem pembayaran retribusi tiket masuk di gerbang nagari kini telah dilengkapi fasilitas nontunai QRIS guna mempercepat antrean dan meningkatkan transparansi tata kelola pariwisata nagari.",
+    descriptionEn: "Limapuluh Kota Regency Government in collaboration with the West Sumatra Natural Resources Conservation Agency (BKSDA) and Minangkabau Customary Council (LKAAM) has enacted a new zoning framework for Harau Valley Geopark. This comprehensive regulation demarcates family recreation zones on the valley floor from core conservation zones along towering 100-to-300-meter vertical granite monoliths, safeguarding pristine rainforest habitats and native wildlife including siamang gibbons and crested serpent eagles.\n\nUnder this ecological policy, all glamping establishments, nature lodges, and village homestays must adhere to zero single-use plastic mandates and operate self-contained wastewater filtration systems. Meanwhile, world-class rock climbing and jungle treks to Sarasah Murai waterfalls must be accompanied by certified guides trained in terrain safety and emergency response.\n\nTravelers heading to Harau Valley are encouraged to plan morning arrivals to experience majestic dawn mist rising between colossal cliff faces. Nagari entrance gates now support cashless QRIS payments, streamlining weekend ticketing and ensuring accountable tourism revenue management for local villages.",
+    tag: 'Konservasi',
+    tagEn: 'Conservation',
+    actionUrl: 'https://maps.google.com/?q=Lembah+Harau+Sumatera+Barat',
+    highlights: [
+      'Pemberlakuan zonasi konservasi tebing granit purba dan kawasan glamping',
+      'Penerapan standar ekowisata bebas sampah plastik sekali pakai',
+      'Pemandu bersertifikat resmi untuk susur tebing dan air terjun alami'
+    ],
+    highlightsEn: [
+      'Distinct zoning separating granite cliff sanctuaries from glamping areas',
+      'Zero single-use plastic environmental standards across accommodations',
+      'Certified local guides mandated for rock climbing and waterfall trails'
+    ],
+    tips: 'Bawa tumbler isi ulang dan sepatu trekking anti-selip jika ingin mengeksplorasi jalan setapak menuju Sarasah Murai.',
+    tipsEn: 'Bring a refillable water bottle and non-slip trekking shoes if exploring the walking trails toward Sarasah Murai.',
+    locationName: 'Kawasan Geopark Lembah Harau, Kab. Limapuluh Kota',
+    locationNameEn: 'Harau Valley Geopark, Limapuluh Kota Regency'
   }
 ];
 
