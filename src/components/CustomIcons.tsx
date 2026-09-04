@@ -93,11 +93,17 @@ export const CornerBracket: React.FC<CornerBracketProps> = ({ type, className = 
 export const MINANGKAOS_LOGO_URL = '/minangkaos-logo-compact.png';
 
 export const MinangkaosLogo: React.FC<{ className?: string; size?: number | string }> = ({ className = '', size = 48 }) => {
+  const numericSize = typeof size === 'number' ? size : 48;
   const widthStyle = typeof size === 'number' ? `${size}px` : size;
+  const calculatedHeight = Math.round(numericSize * (479 / 591));
   return (
     <img
       src={MINANGKAOS_LOGO_URL}
       alt="Logo MINANGKAOS"
+      width={numericSize}
+      height={calculatedHeight}
+      fetchPriority="high"
+      decoding="async"
       style={{ width: widthStyle, height: 'auto', maxHeight: typeof size === 'number' ? `${size * 1.5}px` : 'auto' }}
       className={`inline-block filter drop-shadow-md object-contain select-none transition-all duration-300 ${className}`}
     />

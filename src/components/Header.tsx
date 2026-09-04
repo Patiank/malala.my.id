@@ -206,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-2xs ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
-              : 'bg-emerald-600 text-white border-emerald-600 hover:bg-red-600 hover:border-red-600'
+              : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
           }`}
           style={{ fontSize: 'var(--nav)' }}
         >

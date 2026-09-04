@@ -3219,7 +3219,7 @@ export const EVENTS_SCHEDULE: EventItem[] = [
       "Prosesi Batulak Bala & Permainan Tradisional",
       "Masuk Agenda Resmi KEN 2026"
     ],
-    "imageUrl": "https://res.cloudinary.com/uupbxcw5/image/upload/v1787196765/1787196753351_wnl0cn.png",
+    "imageUrl": "https://res.cloudinary.com/uupbxcw5/image/upload/f_auto,q_auto,w_800/v1787196765/1787196753351_wnl0cn.png",
     "lat": -0.798611,
     "scheduleEn": "September 2026 (Exact Dates To Be Confirmed)",
     "description": "Festival Rang Solok Baralek Gadang adalah perayaan agraris akbar yang mengangkat kemasyhuran Beras Solok (Bareh Solok) sebagai warisan pangan terbaik Nusantara dan pilar kebudayaan masyarakat Minangkabau. Festival unggulan Karisma Event Nusantara (KEN) ini dipusatkan langsung di tengah bentangan sawah organik produktif Hamparan Sawah Solok yang berlatar Gunung Talang.\n\nBeragam prosesi adat dan atraksi tradisional digelar di atas tanah sawah berlumpur, termasuk upacara Batulak Bala (ritual tolak bala memohon berkah panen), pawai arak-arakan jamba oleh ratusan Bundo Kanduang, lomba pacu upiah, dan permainan tradisional anak nagari seperti sipak rago dan silat lumpur. Nuansa kebersamaan yang hangat tercermin saat seluruh tamu dan masyarakat duduk bersila menikmati jamuan Makan Bajamba di pematang sawah.\n\nMelalui festival ini, Kota Solok tidak hanya merayakan hasil bumi tetapi juga mengedukasi wisatawan mengenai pentingnya ketahanan pangan, pertanian organik berkelanjutan, dan kearifan lokal sistem pengairan persawahan tradisional. Keindahan visual bentang sawah kuning keemasan menjadikannya destinasi favorit pencinta budaya dan ekowisata.",

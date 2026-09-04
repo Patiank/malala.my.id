@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX, Play } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
@@ -15,20 +16,28 @@ interface HeroProps {
   eventItems?: EventItem[];
 }
 
-function getYoutubeEmbedUrl(url?: string): string | null {
+function getYoutubeVideoId(url?: string): string | null {
   if (!url) return null;
   try {
     const trimmed = url.trim();
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
     const match = trimmed.match(regExp);
     if (match && match[2].length === 11) {
-      const origin = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
-      return `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&loop=1&playlist=${match[2]}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1${origin}`;
+      return match[2];
     }
   } catch (e) {
-    console.warn('Failed to parse YouTube embed URL:', e);
+    // safely ignore
   }
   return null;
+}
+
+function getYoutubeEmbedUrl(url?: string, autoPlay: boolean = true, mute: boolean = false): string | null {
+  const videoId = getYoutubeVideoId(url);
+  if (!videoId) return null;
+  const origin = typeof window !== 'undefined' && window.location.origin ? `&origin=${encodeURIComponent(window.location.origin)}` : '';
+  const autoPlayStr = autoPlay ? 'autoplay=1&' : 'autoplay=0&';
+  const muteStr = mute ? 'mute=1&' : 'mute=0&';
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${autoPlayStr}${muteStr}loop=1&playlist=${videoId}&playsinline=1&controls=1&modestbranding=1&rel=0&enablejsapi=1${origin}`;
 }
 
 export const Hero: React.FC<HeroProps> = ({
@@ -45,6 +54,7 @@ export const Hero: React.FC<HeroProps> = ({
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isVideoActive, setIsVideoActive] = useState(false);
 
   // Synchronize custom volume toggle button with native YouTube player volume changes
   useEffect(() => {
@@ -789,9 +799,11 @@ export const Hero: React.FC<HeroProps> = ({
               const schedule = isEn && eventItem.scheduleEn ? eventItem.scheduleEn : eventItem.schedule;
               const location = isEn && eventItem.locationEn ? eventItem.locationEn : eventItem.location;
               const isKEN = Boolean(eventItem.isKen);
-              const ytEmbedUrl = getYoutubeEmbedUrl(eventItem.videoUrl || (eventItem as any).youtubeUrl);
+              const rawVidUrl = eventItem.videoUrl || (eventItem as any).youtubeUrl;
+              const videoId = getYoutubeVideoId(rawVidUrl);
+              const ytEmbedUrl = getYoutubeEmbedUrl(rawVidUrl, true, isVideoMuted);
 
-              if (!ytEmbedUrl) return null;
+              if (!rawVidUrl) return null;
 
               const getGoogleCalUrl = () => {
                 const t = encodeURIComponent(`${title} - Wonderful West Sumatra`);
@@ -835,23 +847,53 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   </div>
 
-                  {/* Pure & Clean YouTube Player */}
-                  <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
-                    <iframe
-                      ref={videoIframeRef}
-                      src={ytEmbedUrl}
-                      title={title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      className="w-full h-full border-0 absolute inset-0"
-                    />
-                  </div>
+                  {/* Pure & Clean YouTube Player (Lite Facade - Zero Initial TBT Blocking) */}
+                  {isVideoActive ? (
+                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
+                      <iframe
+                        ref={videoIframeRef}
+                        src={ytEmbedUrl || ''}
+                        title={title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="w-full h-full border-0 absolute inset-0"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => { setIsVideoActive(true); setIsVideoMuted(false); }}
+                      className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0 cursor-pointer group/vid"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={isEn ? `Play ${title} Video` : `Putar Video ${title}`}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setIsVideoActive(true); setIsVideoMuted(false); } }}
+                    >
+                      <img
+                        src={eventItem.imageUrl ? optimizeImageUrl(eventItem.imageUrl, 600) : (videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '')}
+                        alt={title}
+                        width={400}
+                        height={225}
+                        className="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-500 opacity-90 group-hover/vid:opacity-100"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 flex flex-col items-center justify-center gap-2">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-2xl group-hover/vid:scale-110 group-hover/vid:bg-red-600 transition-all">
+                          <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white translate-x-0.5" />
+                        </div>
+                        <span className="bg-black/80 backdrop-blur-xs text-white text-[10px] font-jakarta font-bold px-3 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
+                          <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" />
+                          <span>{isEn ? 'Click to Play Video' : 'Putar Video Sorotan'}</span>
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Bottom Info: Title, Schedule & Location */}
                   <div className="space-y-0.5">
-                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                    <h3 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
                       {title}
-                    </h4>
+                    </h3>
                     <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
                       <span className="flex items-center gap-1 shrink-0">
                         <Calendar className="w-3 h-3 text-amber-600" />
@@ -954,8 +996,12 @@ export const Hero: React.FC<HeroProps> = ({
                   {eventItem.imageUrl ? (
                     <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-gray-900 shrink-0">
                       <img
-                        src={eventItem.imageUrl}
+                        src={optimizeImageUrl(eventItem.imageUrl, 600)}
                         alt={title}
+                        width={400}
+                        height={225}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
                       />
@@ -1020,9 +1066,9 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Title & Info with fixed height */}
                   <div className="space-y-0.5">
-                    <h4 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                    <h3 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
                       {title}
-                    </h4>
+                    </h3>
                     <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
                       <span className="flex items-center gap-1 shrink-0">
                         <Calendar className="w-3 h-3 text-amber-600" />
@@ -1105,6 +1151,10 @@ export const Hero: React.FC<HeroProps> = ({
                 <img
                   src="/chat-bubble-transparent.png"
                   alt="Tanya Uni Mala"
+                  width={128}
+                  height={128}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain drop-shadow-[0_12px_20px_rgba(0,0,0,0.35)] select-none pointer-events-none"
                 />
                 <div className="absolute top-1.5 right-2 sm:top-2 sm:right-3 bg-red-600 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse border-2 border-white shadow-md z-10 select-none">
@@ -1126,6 +1176,10 @@ export const Hero: React.FC<HeroProps> = ({
               <img
                 src="/chat-bubble-transparent.png"
                 alt="Tanya Uni Mala"
+                width={128}
+                height={128}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain drop-shadow-[0_15px_20px_rgba(0,0,0,0.35)] select-none pointer-events-none"
               />
               <div className="absolute top-2 right-3 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse border-2 border-white shadow-md z-10 select-none">

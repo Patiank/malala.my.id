@@ -4,6 +4,7 @@ import { db } from '../lib/firebase';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
 import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings, PendingEventItem } from '../types';
 import { isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 export function useData() {
   const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
@@ -180,8 +181,8 @@ export function useData() {
         const data = docSnap.data() as AppSettings;
         const effectiveMediaType = (data.bgMediaType === 'video' || data.bgMediaType === 'image') ? data.bgMediaType : 'image';
         const effectiveBaseVideo = data.baseVideo || '';
-        const effectiveBaseImage = data.baseImage ? getDirectDriveUrl(data.baseImage) : BG_IMAGE_1;
-        const effectiveRevealImage = data.revealImage ? getDirectDriveUrl(data.revealImage) : BG_IMAGE_2;
+        const effectiveBaseImage = data.baseImage ? optimizeImageUrl(getDirectDriveUrl(data.baseImage), 1920) : BG_IMAGE_1;
+        const effectiveRevealImage = data.revealImage ? optimizeImageUrl(getDirectDriveUrl(data.revealImage), 1920) : BG_IMAGE_2;
         const effectiveSpotlightDisplayMode = data.spotlightDisplayMode || 'both';
         const effectiveFeaturedVideoEventId = data.featuredVideoEventId || 'auto';
         const effectiveHeroTextColor = data.heroTextColor || '#000000';
@@ -261,8 +262,8 @@ export function useData() {
     try {
       const formatted: AppSettings = {
         bgMediaType: newSettings.bgMediaType || 'image',
-        baseImage: newSettings.baseImage ? getDirectDriveUrl(newSettings.baseImage) : BG_IMAGE_1,
-        revealImage: newSettings.revealImage ? getDirectDriveUrl(newSettings.revealImage) : BG_IMAGE_2,
+        baseImage: newSettings.baseImage ? optimizeImageUrl(getDirectDriveUrl(newSettings.baseImage), 1920) : BG_IMAGE_1,
+        revealImage: newSettings.revealImage ? optimizeImageUrl(getDirectDriveUrl(newSettings.revealImage), 1920) : BG_IMAGE_2,
         baseVideo: newSettings.baseVideo || '',
         spotlightDisplayMode: newSettings.spotlightDisplayMode || 'both',
         featuredVideoEventId: newSettings.featuredVideoEventId || 'auto',

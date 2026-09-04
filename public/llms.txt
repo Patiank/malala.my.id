@@ -15,13 +15,13 @@ MALALA adalah platform digital pariwisata Sumatera Barat terlengkap yang mengint
 6. **E-Booklet & Panduan PDF Resmi**: Panduan lengkap pariwisata (113 halaman) dan Kalender Event 2026 (27 halaman) beresolusi tinggi siap cetak dan unduh gratis.
 
 ## Akses Cepat (Key Endpoints)
-- Beranda: https://malala.my.id/
-- Direktori Destinasi: https://malala.my.id/#destinasi
-- Warisan Budaya: https://malala.my.id/#budaya
-- Eksplorasi Kuliner: https://malala.my.id/#kuliner
-- Kalender Event 2026: https://malala.my.id/#event
-- Peta Wisata Interaktif: https://malala.my.id/#peta-interaktif
-- AI Travel Itinerary Planner: https://malala.my.id/#ai-planner
-- Unduh E-Book Panduan Wisata: https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf
-- Unduh E-Book Kalender Event 2026: https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf
-- Database Lengkap untuk LLM (Full Knowledge Base): https://malala.my.id/llms-full.txt
+- [Beranda Utama](https://malala.my.id/): Portal eksplorasi pariwisata resmi Sumatera Barat
+- [Direktori 50 Destinasi Wisata](https://malala.my.id/destinasi): Direktori lengkap 50 destinasi alam, bahari, danau, dan sejarah
+- [Warisan 30 Adat & Budaya Minangkabau](https://malala.my.id/kebudayaan): 30 ensiklopedia budaya, kesenian, dan sistem matrilineal Minangkabau
+- [Eksplorasi 36 Kuliner Otentik](https://malala.my.id/kuliner): 36 ragam kuliner khas, resep legendaris, dan profil rasa
+- [Kalender 26 Event & Festival 2026](https://malala.my.id/event): 26 jadwal resmi Karisma Event Nusantara (KEN) & Calender of Events
+- [Peta Wisata Interaktif](https://malala.my.id/#peta-interaktif): Peta interaktif sebaran destinasi dan koordinat GPS di Ranah Minang
+- [AI Travel Itinerary Planner](https://malala.my.id/#ai-planner): Asisten cerdas Uni Mala untuk rekomendasi perjalanan personal
+- [Unduh E-Book Panduan Wisata PDF](https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf): E-Book panduan resmi pariwisata Sumatera Barat
+- [Unduh E-Book Kalender Event 2026 PDF](https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf): Booklet jadwal event dan festival pariwisata 2026
+- [Basis Pengetahuan Lengkap LLM](https://malala.my.id/llms-full.txt): Full text knowledge base ramah LLM & AI agent
