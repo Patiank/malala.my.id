@@ -25,23 +25,43 @@ function escapeHtml(unsafe: string): string {
 const FAQS = [
   {
     question: "Apa saja tempat wisata hits di Sumbar 2026 yang wajib dikunjungi?",
-    answer: "Untuk rekomendasi tempat wisata hits di Sumbar 2026, Anda wajib mengunjungi surga tersembunyi Mandeh (Raja Ampat-nya Sumatera Barat), pesona wisata Lembah Harau terbaru, menikmati sunset dan mencari info tiket masuk Ngarai Sianok di Bukittinggi, hingga selancar ombak kelas dunia di Kepulauan Mentawai."
+    answer: "Untuk rekomendasi tempat wisata hits di Sumbar 2026, Anda wajib mengunjungi surga tersembunyi Mandeh (Raja Ampat-nya Sumatera Barat), pesona wisata Lembah Harau terbaru, menikmati sunset dan mencari info tiket masuk Ngarai Sianok di Bukittinggi, Danau Singkarak & Maninjau, hingga selancar ombak kelas dunia di Kepulauan Mentawai."
   },
   {
     question: "Kapan jadwal Festival Tabuik Pariaman dan jadwal Pacu Jawi 2026 diadakan?",
-    answer: "Jadwal Pacu Jawi 2026 di Tanah Datar biasanya diadakan bergilir setiap akhir pekan pasca-panen raya. Sementara untuk kapan Festival Tabuik Pariaman 2026, acara puncak (Tabuik Naik Pangkek dan Dibuang ke Laut) diselenggarakan bertepatan dengan 10 Muharram kalender Hijriah. Anda juga bisa mengecek jadwal Tour de Singkarak di portal kalender event kami."
+    answer: "Jadwal Pacu Jawi 2026 di Tanah Datar biasanya diadakan bergilir setiap akhir pekan pasca-panen raya. Sementara untuk festival Tabuik Pariaman 2026, acara puncak (Tabuik Naik Pangkek dan Dibuang ke Laut) diselenggarakan bertepatan dengan 10 Muharram kalender Hijriah (Juni/Juli 2026). Anda juga bisa mengecek jadwal resmi Karisma Event Nusantara (KEN) di portal kalender event Malala."
   },
   {
     question: "Apa saja rekomendasi kuliner khas Padang Bukittinggi yang terenak?",
-    answer: "Rekomendasi kuliner khas Padang Bukittinggi meliputi Rendang Daging autentik, daftar tempat makan Nasi Kapau asli di Pasar Bawah, hingga berburu sate padang terenak di Sumbar (seperti Sate Mak Syukur atau Sate Danguang-Danguang). Jangan lewatkan juga Itiak Lado Mudo Koto Gadang."
+    answer: "Rekomendasi kuliner khas Padang Bukittinggi meliputi Rendang Daging autentik Payakumbuh, daftar tempat makan Nasi Kapau asli di Los Lambuang Pasar Ateh Bukittinggi, Sate Padang Mak Syukur Padang Panjang, Soto Padang legendaris, Gulai Itiak Lado Mudo Koto Gadang, hingga Palai Rinuak Danau Maninjau."
+  },
+  {
+    question: "Berapa estimasi budget liburan ke Sumatera Barat 3 hari 2 malam (3D2N)?",
+    answer: "Estimasi budget liburan 3 hari 2 malam di Sumbar berkisar antara Rp 1.200.000 hingga Rp 2.500.000 per orang untuk kategori medium traveler. Ini mencakup sewa mobil wisata harian (avanza/innova plus supir), penginapan hotel bintang 3 di Bukittinggi/Padang, tiket masuk destinasi wisata, serta berwisata kuliner autentik Minang. Malala juga menyediakan Generator Itinerary AI Uni Mala untuk menghitung rencana budget otomatis."
+  },
+  {
+    question: "Apa perbedaan antara Nasi Kapau dan Nasi Padang biasa?",
+    answer: "Perbedaan utama terletak pada susunan lauk dan bumbu khasnya. Nasi Kapau berasal dari Nagari Kapau di Agam, disajikan di atas meja bertingkat dengan sendok centong kayu panjang khas, menyajikan menu ikonik yang jarang ada di rumah makan Padang biasa seperti Gulai Tambusu (usus sapi isi telur dan tahu), Gulai Tunjang, Sambal Lado Cangkuak, dan Gulai Cubadak (nangka) bercita rasa rebung yang segar."
   },
   {
     question: "Bagaimana cara transportasi dari Bandara Internasional Minangkabau (BIM) ke destinasi wisata?",
-    answer: "Dari Bandara Internasional Minangkabau (BIM), wisatawan dapat menggunakan Kereta Bandara Minangkabau Ekspres ke pusat Kota Padang, layanan Bus Damri, taksi argo resmi, atau sewa mobil wisata untuk rute Padang - Padang Panjang - Bukittinggi - Harau."
+    answer: "Dari Bandara Internasional Minangkabau (BIM), wisatawan dapat menggunakan Kereta Bandara Minangkabau Ekspres ke stasiun pusat Kota Padang, armada Bus Damri, taksi resmi bandara, atau sewa mobil rental wisata untuk langsung menempuh rute Padang - Air Terjun Lembah Anai - Padang Panjang - Bukittinggi - Harau Payakumbuh."
+  },
+  {
+    question: "Bagaimana cara menyeberang menuju Kepulauan Mentawai dari Padang?",
+    answer: "Untuk menuju Kepulauan Mentawai (Tua Pejat/Siberut), wisatawan dapat menaiki kapal cepat Mentawai Fast dari Pelabuhan Muaro Padang dengan waktu tempuh sekitar 3,5 jam, atau menaiki kapal feri ASDP KMP Ambu-Ambu dari Pelabuhan Teluk Bayur/Bungus untuk perjalanan malam hari."
+  },
+  {
+    question: "Apa saja rekomendasi air terjun tersembunyi (hidden gems) di Sumatera Barat?",
+    answer: "Sumatera Barat kaya akan air terjun spektakuler, antara lain Air Terjun Nyarai di Hutan Lindung Gamaran Padang Pariaman (dengan kolam zamrud alami dan cliff jumping), Air Terjun Lembah Anai di tepi jalan lintas, Sarasah Batang Kapur di Lima Puluh Kota, Lubuk Hitam berundak di Padang, dan Air Terjun Proklamator."
+  },
+  {
+    question: "Di mana pusat belanja oleh-oleh dan suvenir khas Minangkabau terlengkap?",
+    answer: "Pusat oleh-oleh khas Sumatera Barat terlengkap dapat ditemukan di Sentra Tenun Songket Pandai Sikek Tanah Datar, Keripik Sanjai Christine Hakim Padang, Sentra Sulam Mukena Bukittinggi, serta suvenir merchandise resmi dan pakaian budaya Minang kreasi MINANGKAOS."
   },
   {
     question: "Di mana link download peta wisata Sumatera Barat PDF gratis?",
-    answer: "Anda bisa download peta wisata Sumatera Barat PDF gratis dan download buku panduan pariwisata Sumbar 2026 PDF (lengkap 113 halaman) resolusi tinggi langsung melalui halaman Unduhan di portal resmi Malala."
+    answer: "Anda bisa download peta wisata Sumatera Barat PDF gratis dan download buku panduan pariwisata Sumbar 2026 PDF (lengkap 149 halaman kartu wisata) resolusi tinggi langsung melalui menu Unduhan di portal resmi Malala tanpa dipungut biaya."
   }
 ];
 
@@ -247,14 +267,14 @@ export function generateSsg() {
   `;
 
   const destinasiPage = generateHtmlPage(baseTemplate, {
-    title: 'Destinasi Wisata Sumatera Barat: 38+ Rekomendasi Hits & Rute 2026 | MALALA',
-    description: 'Katalog resmi 38+ destinasi wisata terbaik di Sumatera Barat. Temukan rute Lembah Harau, Mandeh, Mentawai, Ngarai Sianok, Danau Singkarak, dan desa wisata Ranah Minang.',
+    title: 'Destinasi Wisata Sumatera Barat: 50+ Rekomendasi Hits & Rute 2026 | MALALA',
+    description: 'Katalog resmi 50+ destinasi wisata terbaik di Sumatera Barat. Temukan rute Lembah Harau, Mandeh, Mentawai, Ngarai Sianok, Danau Singkarak, dan desa wisata Ranah Minang.',
     canonicalUrl: 'https://malala.my.id/destinasi',
     jsonLdList: [
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Katalog 38+ Destinasi Wisata Terbaik Sumatera Barat",
+        "name": "Katalog 50+ Destinasi Wisata Terbaik Sumatera Barat",
         "description": "Daftar lengkap objek wisata alam, danau, geopark, dan bahari di Sumatera Barat.",
         "url": "https://malala.my.id/destinasi"
       },

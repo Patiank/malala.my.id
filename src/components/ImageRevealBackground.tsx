@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BG_IMAGE_1, BG_IMAGE_2 } from '../data/content';
+import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 interface ImageRevealBackgroundProps {
   bgMediaType?: 'image' | 'video';
@@ -169,19 +170,24 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
     );
   }
 
+  // Determine screen-appropriate max width (mobile ~960px, desktop ~1600px)
+  const screenWidth = typeof window !== 'undefined' ? (window.innerWidth < 768 ? 960 : 1600) : 1200;
+  const optimizedBase = optimizeImageUrl(baseImage, screenWidth);
+  const optimizedReveal = optimizeImageUrl(revealImage, screenWidth);
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {/* 1. Base Layer */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
-        style={{ backgroundImage: `url(${baseImage})` }}
+        style={{ backgroundImage: `url(${optimizedBase})` }}
       />
 
       {/* 2. Reveal Layer clipped by canvas gradient spotlight */}
       <div
         ref={revealRef}
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
-        style={{ backgroundImage: `url(${revealImage})` }}
+        style={{ backgroundImage: `url(${optimizedReveal})` }}
       />
 
       {/* 3. Subtle Parallax SVG Grid Overlay */}

@@ -18,5 +18,13 @@ export function optimizeImageUrl(url?: string, width?: number): string {
     return trimmed.replace('/upload/', `/upload/${transformParams}/`);
   }
 
+  // If it's a Google Usercontent URL (lh3.googleusercontent.com)
+  if (trimmed.includes('lh3.googleusercontent.com/d/')) {
+    const cleanUrl = trimmed.split('=')[0];
+    const targetWidth = width || (typeof window !== 'undefined' && window.innerWidth < 768 ? 960 : 1600);
+    // =w{width}-rw serves optimized WebP format with resized dimensions directly from Google CDN!
+    return `${cleanUrl}=w${targetWidth}-rw`;
+  }
+
   return trimmed;
 }
