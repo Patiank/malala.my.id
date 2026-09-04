@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX, Play } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
+import ArrowFillButton from '@/components/ui/arrow-fill-button';
 
 import { DrawerType, AppSettings, EventItem } from '../types';
 import { Language, translations } from '../lib/translations';
@@ -590,38 +591,42 @@ export const Hero: React.FC<HeroProps> = ({
             {/* Action Buttons Row */}
             <div className="flex items-center gap-3 flex-wrap">
               {/* UNI MALA AI Assistant Primary CTA */}
-              <button
-                onClick={() => onOpenDrawer('formai')}
-                className="group inline-flex items-center justify-center bg-black text-white border border-black rounded-md font-jakarta font-bold uppercase tracking-[0.16em] hover:bg-gray-800 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
-                style={{
-                  fontSize: 'var(--body)',
-                  paddingInline: 'var(--btn-px)',
-                  paddingBlock: 'var(--btn-py)',
-                  gap: 'var(--btn-gap)',
+              <ArrowFillButton
+                btnText={t.heroBtnAiPlanner}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenDrawer('formai');
                 }}
-              >
-                <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
-                <span>{t.heroBtnAiPlanner}</span>
-                <ArrowUpRight
-                  className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  style={{ width: 'var(--icon)', height: 'var(--icon)' }}
-                />
-              </button>
+                bgColor="#09090b"
+                textColor="#ffffff"
+                fillBgColor="#f59e0b"
+                fillTextColor="#09090b"
+                hoverFillBgColor="#fbbf24"
+                hoverFillTextColor="#09090b"
+                arrowColor="#09090b"
+                hoverArrowColor="#09090b"
+                icon={<Sparkles className="w-4 h-4 text-amber-300 group-hover:text-black transition-colors animate-pulse" />}
+                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-amber-500/20 border-zinc-900"
+              />
 
               {/* Mulai Jelajah Main Button - Opens Destinations Sub-menu directly */}
-              <button
-                onClick={() => onOpenDrawer('destinations')}
-                className="group inline-flex items-center justify-center border border-gray-400 bg-white/90 backdrop-blur-xs rounded-md font-jakarta font-bold uppercase tracking-[0.16em] text-black hover:bg-red-600 hover:text-white hover:border-red-600 transition-all duration-200 cursor-pointer focus:outline-none shadow-sm"
-                style={{
-                  fontSize: 'var(--body)',
-                  paddingInline: 'var(--btn-px)',
-                  paddingBlock: 'var(--btn-py)',
-                  gap: 'var(--btn-gap)',
+              <ArrowFillButton
+                btnText={t.heroBtnExplore}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenDrawer('destinations');
                 }}
-              >
-                <Compass className="w-4.5 h-4.5 text-red-600 group-hover:text-white transition-colors animate-pulse" />
-                <span>{t.heroBtnExplore}</span>
-              </button>
+                bgColor="#ffffff"
+                textColor="#09090b"
+                fillBgColor="#dc2626"
+                fillTextColor="#ffffff"
+                hoverFillBgColor="#b91c1c"
+                hoverFillTextColor="#ffffff"
+                arrowColor="#dc2626"
+                hoverArrowColor="#ffffff"
+                icon={<Compass className="w-4 h-4 text-red-600 group-hover:text-white transition-colors animate-pulse" />}
+                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-red-500/20 border-gray-300"
+              />
             </div>
 
             {/* Premium Search Bar Panel - Width stretches 100% to match exact length of Buttons Row */}
