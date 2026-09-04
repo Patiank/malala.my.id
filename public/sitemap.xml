@@ -438,83 +438,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://malala.my.id/destinasi/istano-basa-pagaruyung</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786863366/1786854207390_neg2ys.png</image:loc>
-      <image:title>Istano Basa Pagaruyung</image:title>
-      <image:caption>Desa Wisata - Kabupaten Tanah Datar</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/puncak-lawang-danau-maninjau</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954350/ChatGPT_Image_Aug_17_2026_03_12_00_PM_t8tir0.png</image:loc>
-      <image:title>Puncak Lawang &amp; Danau Maninjau</image:title>
-      <image:caption>Danau &amp; Gunung - Kabupaten Agam</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/desa-wisata-nagari-pariangan</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954767/ChatGPT_Image_Aug_17_2026_03_18_33_PM_gzgijk.png</image:loc>
-      <image:title>Desa Wisata Nagari Pariangan</image:title>
-      <image:caption>Desa Wisata - Kabupaten Tanah Datar</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/danau-biru-sawahlunto</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787046926/ChatGPT_Image_Aug_18_2026_04_53_03_PM_pryfsu.png</image:loc>
-      <image:title>Danau Biru Sawahlunto</image:title>
-      <image:caption>Lembah &amp; Geopark - Kota Sawahlunto</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/kawasan-wisata-bahari-mandeh</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954765/ChatGPT_Image_Aug_17_2026_03_19_21_PM_t7mphj.png</image:loc>
-      <image:title>Kawasan Wisata Bahari Mandeh</image:title>
-      <image:caption>Pantai &amp; Bahari - Kabupaten Pesisir Selatan</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/ngarai-sianok-lubang-jepang</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786863367/d36f09a6-a14e-473c-85b9-e764b7586e35_mtc6j6.png</image:loc>
-      <image:title>Ngarai Sianok &amp; Lubang Jepang</image:title>
-      <image:caption>Lembah &amp; Geopark - Kota Bukittinggi</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/destinasi/danau-kembar-danau-diatas-danau-dibawah</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786955428/ChatGPT_Image_Aug_17_2026_03_30_24_PM_mgwj4j.png</image:loc>
-      <image:title>Danau Kembar (Danau Diatas &amp; Danau Dibawah)</image:title>
-      <image:caption>Danau &amp; Gunung - Kabupaten Solok</image:caption>
-    </image:image>
-  </url>
-  <url>
     <loc>https://malala.my.id/destinasi/janjang-koto-gadang-great-wall-ngarai-sianok</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -523,6 +446,17 @@
       <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
       <image:title>Janjang Koto Gadang &amp; Great Wall Ngarai Sianok</image:title>
       <image:caption>Sejarah &amp; Petualangan - Kabupaten Agam &amp; Kota Bukittinggi</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/istano-basa-pagaruyung</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786863366/1786854207390_neg2ys.png</image:loc>
+      <image:title>Istano Basa Pagaruyung</image:title>
+      <image:caption>Desa Wisata - Kabupaten Tanah Datar</image:caption>
     </image:image>
   </url>
   <url>
@@ -636,6 +570,17 @@
     </image:image>
   </url>
   <url>
+    <loc>https://malala.my.id/destinasi/puncak-lawang-danau-maninjau</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954350/ChatGPT_Image_Aug_17_2026_03_12_00_PM_t8tir0.png</image:loc>
+      <image:title>Puncak Lawang &amp; Danau Maninjau</image:title>
+      <image:caption>Danau &amp; Gunung - Kabupaten Agam</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://malala.my.id/destinasi/pantai-tiku-tanjung-mutiara-agam</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
@@ -644,6 +589,61 @@
       <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
       <image:title>Pantai Tiku &amp; Tanjung Mutiara Agam</image:title>
       <image:caption>Pantai &amp; Bahari - Kabupaten Agam</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/desa-wisata-nagari-pariangan</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954767/ChatGPT_Image_Aug_17_2026_03_18_33_PM_gzgijk.png</image:loc>
+      <image:title>Desa Wisata Nagari Pariangan</image:title>
+      <image:caption>Desa Wisata - Kabupaten Tanah Datar</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/danau-biru-sawahlunto</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787046926/ChatGPT_Image_Aug_18_2026_04_53_03_PM_pryfsu.png</image:loc>
+      <image:title>Danau Biru Sawahlunto</image:title>
+      <image:caption>Lembah &amp; Geopark - Kota Sawahlunto</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/kawasan-wisata-bahari-mandeh</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786954765/ChatGPT_Image_Aug_17_2026_03_19_21_PM_t7mphj.png</image:loc>
+      <image:title>Kawasan Wisata Bahari Mandeh</image:title>
+      <image:caption>Pantai &amp; Bahari - Kabupaten Pesisir Selatan</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/ngarai-sianok-lubang-jepang</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786863367/d36f09a6-a14e-473c-85b9-e764b7586e35_mtc6j6.png</image:loc>
+      <image:title>Ngarai Sianok &amp; Lubang Jepang</image:title>
+      <image:caption>Lembah &amp; Geopark - Kota Bukittinggi</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/destinasi/danau-kembar-danau-diatas-danau-dibawah</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1786955428/ChatGPT_Image_Aug_17_2026_03_30_24_PM_mgwj4j.png</image:loc>
+      <image:title>Danau Kembar (Danau Diatas &amp; Danau Dibawah)</image:title>
+      <image:caption>Danau &amp; Gunung - Kabupaten Solok</image:caption>
     </image:image>
   </url>
   <url>
@@ -812,83 +812,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://malala.my.id/kebudayaan/kain-songket-pandai-sikek</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787152049/image_5_vsf08c.jpg</image:loc>
-      <image:title>Kain Songket Pandai Sikek</image:title>
-      <image:caption>Kain &amp; Kerajinan - Nagari Pandai Sikek, Tanah Datar</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/seni-beladiri-silek-minang</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787118541/35095f34-8f43-424f-a441-b77242ad7506_dl2upv.png</image:loc>
-      <image:title>Seni Beladiri Silek Minang</image:title>
-      <image:caption>Seni Beladiri - Pesisir &amp; Dataran Tinggi Sumatera Barat</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/upacara-adat-makan-bajamba</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053507/Gemini_Generated_Image_jhqzw8jhqzw8jhqz_stq8pe.jpg</image:loc>
-      <image:title>Upacara Adat Makan Bajamba</image:title>
-      <image:caption>Tradisi Adat - Nagari Minangkabau (Batusangkar, Solok, Bukittinggi)</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/kesenian-randai</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053759/Gemini_Generated_Image_sqwu0rsqwu0rsqwu_rl8x0i.jpg</image:loc>
-      <image:title>Kesenian Randai</image:title>
-      <image:caption>Teater Tradisional - Tersebar di Seluruh Pelosok Sumatera Barat</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/tradisi-pacu-kuda-tradisional</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787195712/1787195693518_nrffs7.png</image:loc>
-      <image:title>Tradisi Pacu Kuda Tradisional</image:title>
-      <image:caption>Olahraga Tradisional - Bukittinggi, Padang Panjang, Payakumbuh, Batusangkar</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/pakaian-adat-bundo-kanduang</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787052753/Gemini_Generated_Image_qktu0gqktu0gqktu_vlfksr.jpg</image:loc>
-      <image:title>Pakaian Adat Bundo Kanduang</image:title>
-      <image:caption>Pakaian Adat - Pagaruyung dan Seluruh Sumatera Barat</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kebudayaan/sistem-matrilineal-minangkabau</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053000/Gemini_Generated_Image_b3n4k0b3n4k0b3n4_o7alct.jpg</image:loc>
-      <image:title>Sistem Matrilineal Minangkabau</image:title>
-      <image:caption>Sistem Sosial - Seluruh Wilayah Alam Minangkabau</image:caption>
-    </image:image>
-  </url>
-  <url>
     <loc>https://malala.my.id/kebudayaan/seni-beladiri-silek-harimau-minangkabau</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -966,6 +889,17 @@
     </image:image>
   </url>
   <url>
+    <loc>https://malala.my.id/kebudayaan/kain-songket-pandai-sikek</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787152049/image_5_vsf08c.jpg</image:loc>
+      <image:title>Kain Songket Pandai Sikek</image:title>
+      <image:caption>Kain &amp; Kerajinan - Nagari Pandai Sikek, Tanah Datar</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-bakajang-sampan-alek-gunuang-malintang</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -974,6 +908,72 @@
       <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
       <image:title>Tradisi Bakajang / Sampan Alek Gunuang Malintang</image:title>
       <image:caption>Tradisi Adat - Nagari Gunuang Malintang, Kab. Lima Puluh Kota</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/seni-beladiri-silek-minang</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787118541/35095f34-8f43-424f-a441-b77242ad7506_dl2upv.png</image:loc>
+      <image:title>Seni Beladiri Silek Minang</image:title>
+      <image:caption>Seni Beladiri - Pesisir &amp; Dataran Tinggi Sumatera Barat</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/upacara-adat-makan-bajamba</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053507/Gemini_Generated_Image_jhqzw8jhqzw8jhqz_stq8pe.jpg</image:loc>
+      <image:title>Upacara Adat Makan Bajamba</image:title>
+      <image:caption>Tradisi Adat - Nagari Minangkabau (Batusangkar, Solok, Bukittinggi)</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/kesenian-randai</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053759/Gemini_Generated_Image_sqwu0rsqwu0rsqwu_rl8x0i.jpg</image:loc>
+      <image:title>Kesenian Randai</image:title>
+      <image:caption>Teater Tradisional - Tersebar di Seluruh Pelosok Sumatera Barat</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/tradisi-pacu-kuda-tradisional</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787195712/1787195693518_nrffs7.png</image:loc>
+      <image:title>Tradisi Pacu Kuda Tradisional</image:title>
+      <image:caption>Olahraga Tradisional - Bukittinggi, Padang Panjang, Payakumbuh, Batusangkar</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/pakaian-adat-bundo-kanduang</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787052753/Gemini_Generated_Image_qktu0gqktu0gqktu_vlfksr.jpg</image:loc>
+      <image:title>Pakaian Adat Bundo Kanduang</image:title>
+      <image:caption>Pakaian Adat - Pagaruyung dan Seluruh Sumatera Barat</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kebudayaan/sistem-matrilineal-minangkabau</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787053000/Gemini_Generated_Image_b3n4k0b3n4k0b3n4_o7alct.jpg</image:loc>
+      <image:title>Sistem Matrilineal Minangkabau</image:title>
+      <image:caption>Sistem Sosial - Seluruh Wilayah Alam Minangkabau</image:caption>
     </image:image>
   </url>
   <url>
@@ -1186,83 +1186,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://malala.my.id/kuliner/teh-talua-teh-telur-khas-minang</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031525/Gemini_Generated_Image_roxcberoxcberoxc_c0v5bm.jpg</image:loc>
-      <image:title>Teh Talua (Teh Telur Khas Minang)</image:title>
-      <image:caption>Minuman Tradisional - Lapau Kedai Tradisional Minangkabau</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/lamang-tapai</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031521/Gemini_Generated_Image_z5mhiwz5mhiwz5mh_mwtt40.jpg</image:loc>
-      <image:title>Lamang Tapai</image:title>
-      <image:caption>Kudapan Khas - Tanah Datar &amp; Payakumbuh</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/dendeng-balado-dendeng-batokok</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031515/Gemini_Generated_Image_qehsoqqehsoqqehs_ictvo9.jpg</image:loc>
-      <image:title>Dendeng Balado &amp; Dendeng Batokok</image:title>
-      <image:caption>Makanan Utama - Bukittinggi &amp; Solok</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/gulai-itiak-lado-mudo</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031517/Gemini_Generated_Image_acu0kjacu0kjacu0_ovmnau.jpg</image:loc>
-      <image:title>Gulai Itiak Lado Mudo</image:title>
-      <image:caption>Makanan Utama - Koto Gadang, Bukittinggi</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/soto-padang</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031517/Gemini_Generated_Image_9r6w169r6w169r6w_mcvqyq.jpg</image:loc>
-      <image:title>Soto Padang</image:title>
-      <image:caption>Makanan Utama - Kota Padang</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/ampiang-dadiah</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031518/Gemini_Generated_Image_9wbmki9wbmki9wbm_wjlu0x.jpg</image:loc>
-      <image:title>Ampiang Dadiah</image:title>
-      <image:caption>Kudapan Khas / Dessert - Bukittinggi &amp; Tanah Datar</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/kuliner/nasi-kapau-gulai-tambusu</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787032702/Gemini_Generated_Image_lly1oslly1oslly1_mgoeii.jpg</image:loc>
-      <image:title>Nasi Kapau &amp; Gulai Tambusu</image:title>
-      <image:caption>Makanan Utama - Nagari Kapau, Kabupaten Agam</image:caption>
-    </image:image>
-  </url>
-  <url>
     <loc>https://malala.my.id/kuliner/asam-padeh-daging-ikan-tongkol</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
@@ -1293,6 +1216,17 @@
       <image:loc>https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
       <image:title>Gulai Banak (Gulai Otak Sapi Rempah)</image:title>
       <image:caption>Makanan Utama - Bukittinggi &amp; Padang Pariaman</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/teh-talua-teh-telur-khas-minang</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031525/Gemini_Generated_Image_roxcberoxcberoxc_c0v5bm.jpg</image:loc>
+      <image:title>Teh Talua (Teh Telur Khas Minang)</image:title>
+      <image:caption>Minuman Tradisional - Lapau Kedai Tradisional Minangkabau</image:caption>
     </image:image>
   </url>
   <url>
@@ -1370,6 +1304,72 @@
       <image:loc>https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
       <image:title>Karupuak Sanjai Batokok &amp; Karupuak Kuah Sate</image:title>
       <image:caption>Kudapan Tradisional &amp; Camilan Pasar - Mandihangin, Kota Bukittinggi</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/lamang-tapai</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031521/Gemini_Generated_Image_z5mhiwz5mhiwz5mh_mwtt40.jpg</image:loc>
+      <image:title>Lamang Tapai</image:title>
+      <image:caption>Kudapan Khas - Tanah Datar &amp; Payakumbuh</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/dendeng-balado-dendeng-batokok</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031515/Gemini_Generated_Image_qehsoqqehsoqqehs_ictvo9.jpg</image:loc>
+      <image:title>Dendeng Balado &amp; Dendeng Batokok</image:title>
+      <image:caption>Makanan Utama - Bukittinggi &amp; Solok</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/gulai-itiak-lado-mudo</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031517/Gemini_Generated_Image_acu0kjacu0kjacu0_ovmnau.jpg</image:loc>
+      <image:title>Gulai Itiak Lado Mudo</image:title>
+      <image:caption>Makanan Utama - Koto Gadang, Bukittinggi</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/soto-padang</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031517/Gemini_Generated_Image_9r6w169r6w169r6w_mcvqyq.jpg</image:loc>
+      <image:title>Soto Padang</image:title>
+      <image:caption>Makanan Utama - Kota Padang</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/ampiang-dadiah</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787031518/Gemini_Generated_Image_9wbmki9wbmki9wbm_wjlu0x.jpg</image:loc>
+      <image:title>Ampiang Dadiah</image:title>
+      <image:caption>Kudapan Khas / Dessert - Bukittinggi &amp; Tanah Datar</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/kuliner/nasi-kapau-gulai-tambusu</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787032702/Gemini_Generated_Image_lly1oslly1oslly1_mgoeii.jpg</image:loc>
+      <image:title>Nasi Kapau &amp; Gulai Tambusu</image:title>
+      <image:caption>Makanan Utama - Nagari Kapau, Kabupaten Agam</image:caption>
     </image:image>
   </url>
   <url>
@@ -1516,6 +1516,72 @@
     </image:image>
   </url>
   <url>
+    <loc>https://malala.my.id/event/pacu-itiak-tradisional-payakumbuh-limapuluh-kota</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev21-pacu-itiak.jpg</image:loc>
+      <image:title>Pacu Itiak Tradisional Payakumbuh &amp; Limapuluh Kota</image:title>
+      <image:caption>Payakumbuh &amp; Kabupaten Lima Puluh Kota ()</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/event/festival-danau-singkarak-seni-tradisi</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev22-danau-singkarak.jpg</image:loc>
+      <image:title>Festival Danau Singkarak &amp; Seni Tradisi</image:title>
+      <image:caption>Dermaga Danau Singkarak, Solok &amp; Tanah Datar ()</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/event/festival-serak-gulo-padang-heritage</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev23-serak-gulo.jpg</image:loc>
+      <image:title>Festival Serak Gulo Padang Heritage</image:title>
+      <image:caption>Masjid Muhammadan, Kota Padang ()</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/event/festival-kuliner-minangkabau-marandang-akbar</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev24-marandang.jpg</image:loc>
+      <image:title>Festival Kuliner Minangkabau Marandang Akbar</image:title>
+      <image:caption>Pelataran Jam Gadang Bukittinggi &amp; Padang ()</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/event/festival-pesona-air-bangis-pasaman-barat</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev25-air-bangis.jpg</image:loc>
+      <image:title>Festival Pesona Air Bangis Pasaman Barat</image:title>
+      <image:caption>Pelabuhan Teluk Air Bangis, Pasaman Barat ()</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://malala.my.id/event/festival-batang-arau-heritage-padang-waterfront</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>/images/catalog/ev26-danau-kembar.jpg</image:loc>
+      <image:title>Festival Batang Arau Heritage &amp; Padang Waterfront</image:title>
+      <image:caption>Kawasan Kota Tua &amp; Muara Batang Arau, Padang ()</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://malala.my.id/event/pesona-budaya-hoyak-tabuik-piaman-ken</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>daily</changefreq>
@@ -1590,72 +1656,6 @@
       <image:loc>https://res.cloudinary.com/uupbxcw5/image/upload/v1787156603/GDLDe_hphc4k.jpg</image:loc>
       <image:title>Festival Rakik-Rakik Danau Maninjau (KEN)</image:title>
       <image:caption>Tepi Danau Maninjau, Kabupaten Agam ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/pacu-itiak-tradisional-payakumbuh-limapuluh-kota</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev21-pacu-itiak.jpg</image:loc>
-      <image:title>Pacu Itiak Tradisional Payakumbuh &amp; Limapuluh Kota</image:title>
-      <image:caption>Payakumbuh &amp; Kabupaten Lima Puluh Kota ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/festival-danau-singkarak-seni-tradisi</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev22-danau-singkarak.jpg</image:loc>
-      <image:title>Festival Danau Singkarak &amp; Seni Tradisi</image:title>
-      <image:caption>Dermaga Danau Singkarak, Solok &amp; Tanah Datar ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/festival-serak-gulo-padang-heritage</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev23-serak-gulo.jpg</image:loc>
-      <image:title>Festival Serak Gulo Padang Heritage</image:title>
-      <image:caption>Masjid Muhammadan, Kota Padang ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/festival-kuliner-minangkabau-marandang-akbar</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev24-marandang.jpg</image:loc>
-      <image:title>Festival Kuliner Minangkabau Marandang Akbar</image:title>
-      <image:caption>Pelataran Jam Gadang Bukittinggi &amp; Padang ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/festival-pesona-air-bangis-pasaman-barat</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev25-air-bangis.jpg</image:loc>
-      <image:title>Festival Pesona Air Bangis Pasaman Barat</image:title>
-      <image:caption>Pelabuhan Teluk Air Bangis, Pasaman Barat ()</image:caption>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://malala.my.id/event/festival-batang-arau-heritage-padang-waterfront</loc>
-    <lastmod>2026-09-04</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
-    <image:image>
-      <image:loc>/images/catalog/ev26-danau-kembar.jpg</image:loc>
-      <image:title>Festival Batang Arau Heritage &amp; Padang Waterfront</image:title>
-      <image:caption>Kawasan Kota Tua &amp; Muara Batang Arau, Padang ()</image:caption>
     </image:image>
   </url>
 </urlset>
