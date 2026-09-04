@@ -45,6 +45,7 @@ export interface Destination {
   category: string;
   categoryEn?: string;
   regency: string; // e.g. Bukittinggi, Tanah Datar, Mentawai, Solok, Limapuluh Kota
+  regencyEn?: string;
   tag: string;
   tagEn?: string;
   description: string;
@@ -59,8 +60,9 @@ export interface Destination {
   isPopular?: boolean;
   videoUrl?: string;
   mapUrl?: string;
-  lat?: number;
-  lng?: number;
+  lat?: number | string;
+  lng?: number | string;
+  [key: string]: any;
 }
 
 export interface CultureItem {
@@ -78,8 +80,9 @@ export interface CultureItem {
   imageUrl: string;
   videoUrl?: string;
   mapUrl?: string;
-  lat?: number;
-  lng?: number;
+  lat?: number | string;
+  lng?: number | string;
+  [key: string]: any;
 }
 
 export interface CulinaryItem {
@@ -105,8 +108,9 @@ export interface CulinaryItem {
   imageUrl: string;
   videoUrl?: string;
   mapUrl?: string;
-  lat?: number;
-  lng?: number;
+  lat?: number | string;
+  lng?: number | string;
+  [key: string]: any;
 }
 
 export interface EventItem {
@@ -117,14 +121,31 @@ export interface EventItem {
   scheduleEn?: string;
   location: string;
   locationEn?: string;
+  locationName?: string;
+  locationNameEn?: string;
+  locationDetails?: string;
+  locationDetailsEn?: string;
+  regency?: string;
+  regencyEn?: string;
+  category?: string;
+  categoryEn?: string;
+  tag?: string;
+  tagEn?: string;
   description: string;
   descriptionEn?: string;
   imageUrl: string;
   videoUrl?: string;
   mapUrl?: string;
   isKen?: boolean;
-  lat?: number;
-  lng?: number;
+  lat?: number | string;
+  lng?: number | string;
+  highlights?: string[];
+  highlightsEn?: string[];
+  priceRange?: string;
+  philosophy?: string;
+  verificationConfidence?: number | string;
+  verifiedAt?: string;
+  [key: string]: any;
 }
 
 export interface PendingEventItem extends EventItem {

@@ -187,9 +187,9 @@ export function generateSsg() {
     <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <header style="margin-bottom: 2.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 2rem;">
         <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat — Portal Wisata & Budaya Resmi (Malala)</h1>
-        <p style="font-size: 1.15rem; color: #475569; max-width: 800px; margin: 0 auto;">Portal resmi eksplorasi 38+ destinasi wisata alam dan geopark, 22+ warisan adat budaya Minangkabau, 26+ kuliner autentik legendaris, serta kalender event Karisma Event Nusantara (KEN) 2026.</p>
+        <p style="font-size: 1.15rem; color: #475569; max-width: 800px; margin: 0 auto;">Portal resmi eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, serta 26+ agenda event Karisma Event Nusantara (KEN) 2026.</p>
         <nav style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">Jelajah 38+ Destinasi &rarr;</a>
+          <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">Jelajah 50+ Destinasi &rarr;</a>
           <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
           <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kuliner Autentik &rarr;</a>
           <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kalender Event 2026 &rarr;</a>
@@ -209,8 +209,8 @@ export function generateSsg() {
   `;
 
   const optimizedHome = generateHtmlPage(baseTemplate, {
-    title: 'Pariwisata Sumatera Barat: 38+ Destinasi, Kuliner, Event & AI Itinerary 2026 | MALALA',
-    description: 'Portal resmi pariwisata Sumatera Barat 2026. Temukan 38+ destinasi hits, rute wisata tanpa bolak-balik, 26 kuliner legendaris, jadwal festival KEN 2026, dan asisten AI cerdas Uni Mala.',
+    title: 'Pariwisata Sumatera Barat: 50+ Destinasi, Kuliner, Event & AI Itinerary 2026 | MALALA',
+    description: 'Portal resmi pariwisata Sumatera Barat 2026. Temukan 50+ destinasi hits, rute wisata tanpa bolak-balik, 36 kuliner legendaris, 26 festival KEN 2026, dan asisten AI cerdas Uni Mala.',
     canonicalUrl: 'https://malala.my.id/',
     jsonLdList: [buildOrganizationJsonLd(), buildWebsiteJsonLd(), buildFaqJsonLd()],
     bodyContent: homeContent
@@ -218,14 +218,14 @@ export function generateSsg() {
   fs.writeFileSync(indexHtmlPath, optimizedHome, 'utf-8');
 
   // 2. GENERATE DESTINASI CATEGORY DIRECTORY PAGE (/destinasi)
-  console.log('📄 Mengoptimasi Halaman Direktori /destinasi dengan Katalog 38 Destinasi Lengkap...');
+  console.log('📄 Mengoptimasi Halaman Direktori /destinasi dengan Katalog 50 Destinasi Lengkap...');
   const destinasiCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
         <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Destinasi</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 38+ Destinasi Wisata Terbaik di Sumatera Barat 2026</h1>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 50+ Destinasi Wisata Terbaik di Sumatera Barat 2026</h1>
         <p style="font-size: 1.15rem; color: #475569;">Jelajahi keindahan alam Bukit Barisan, geopark tebing granit Lembah Harau, danau vulkanik Singkarak & Maninjau, surga bahari Mandeh & Mentawai, serta desa wisata terindah di Ranah Minang.</p>
       </header>
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
@@ -265,14 +265,14 @@ export function generateSsg() {
   writePage(distDir, 'destinasi', destinasiPage);
 
   // 3. GENERATE KEBUDAYAAN CATEGORY DIRECTORY PAGE (/kebudayaan)
-  console.log('📄 Mengoptimasi Halaman Direktori /kebudayaan dengan Katalog 22 Warisan Budaya...');
+  console.log('📄 Mengoptimasi Halaman Direktori /kebudayaan dengan Katalog 30 Warisan Budaya...');
   const kebudayaanCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
         <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kebudayaan</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 22+ Warisan Adat & Seni Budaya Minangkabau</h1>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 30+ Warisan Adat & Seni Budaya Minangkabau</h1>
         <p style="font-size: 1.15rem; color: #475569;">Eksplorasi keluhuran filosofi Adat Basandi Syarak, Syarak Basandi Kitabullah, sistem matrilineal, kemegahan arsitektur Rumah Gadang, Tari Piring, bela diri Silek, dan tenun pusaka Pandai Sikek.</p>
       </header>
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
@@ -295,7 +295,7 @@ export function generateSsg() {
   `;
 
   const kebudayaanPage = generateHtmlPage(baseTemplate, {
-    title: 'Warisan Budaya Minangkabau: 22+ Adat, Falsafah & Seni Tradisi | MALALA',
+    title: 'Warisan Budaya Minangkabau: 30+ Adat, Falsafah & Seni Tradisi | MALALA',
     description: 'Pelajari filosofi adat basandi syarak, sistem kekerabatan matrilineal, arsitektur Rumah Gadang, seni Silek Minang, Tari Piring, dan Songket Pandai Sikek di Sumatera Barat.',
     canonicalUrl: 'https://malala.my.id/kebudayaan',
     jsonLdList: [
@@ -313,14 +313,14 @@ export function generateSsg() {
   writePage(distDir, 'kebudayaan', kebudayaanPage);
 
   // 4. GENERATE KULINER CATEGORY DIRECTORY PAGE (/kuliner)
-  console.log('📄 Mengoptimasi Halaman Direktori /kuliner dengan 26 Kuliner Autentik...');
+  console.log('📄 Mengoptimasi Halaman Direktori /kuliner dengan 36 Kuliner Autentik...');
   const kulinerCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
         <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kuliner</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 26+ Kuliner Autentik Khas Minangkabau</h1>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 36+ Kuliner Autentik Khas Minangkabau</h1>
         <p style="font-size: 1.15rem; color: #475569;">Panduan berburu kuliner legendaris Sumatera Barat: Rendang Daging terlezat di dunia, Nasi Kapau Pasar Ateh, Sate Padang Mak Syukur, Soto Padang, Teh Talua, hingga Palai Rinuak Danau Maninjau.</p>
       </header>
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
@@ -343,7 +343,7 @@ export function generateSsg() {
   `;
 
   const kulinerPage = generateHtmlPage(baseTemplate, {
-    title: 'Kuliner Khas Minangkabau: 26+ Makanan Khas Padang Terenak | MALALA',
+    title: 'Kuliner Khas Minangkabau: 36+ Makanan Khas Padang Terenak | MALALA',
     description: 'Panduan wisata kuliner khas Padang Bukittinggi: Nasi Kapau asli, Rendang daging otentik, Sate Padang terenak, Gulai Itiak Lado Mudo, dan minuman segar Teh Talua.',
     canonicalUrl: 'https://malala.my.id/kuliner',
     jsonLdList: [
@@ -361,7 +361,7 @@ export function generateSsg() {
   writePage(distDir, 'kuliner', kulinerPage);
 
   // 5. GENERATE EVENT CATEGORY DIRECTORY PAGE (/event)
-  console.log('📄 Mengoptimasi Halaman Direktori /event dengan Kalender 20 Event...');
+  console.log('📄 Mengoptimasi Halaman Direktori /event dengan Kalender 26 Event...');
   const eventCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
@@ -391,7 +391,7 @@ export function generateSsg() {
   `;
 
   const eventPage = generateHtmlPage(baseTemplate, {
-    title: 'Kalender Event Sumbar 2026: Jadwal Festival Karisma Event Nusantara | MALALA',
+    title: 'Kalender Event Sumbar 2026: 26+ Festival Karisma Event Nusantara | MALALA',
     description: 'Cek jadwal resmi Pacu Jawi 2026 Tanah Datar, jadwal prosesi Festival Tabuik Pariaman, Tour de Singkarak, dan kalender festival budaya KEN Sumatera Barat 2026.',
     canonicalUrl: 'https://malala.my.id/event',
     jsonLdList: [
