@@ -51,7 +51,11 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      setDestinations(firestoreData.length > 0 ? firestoreData : DESTINATIONS);
+      const firestoreIds = new Set(firestoreData.map(d => d.id));
+      const missingFromFirestore = DESTINATIONS.filter(d => !firestoreIds.has(d.id));
+      const combined = [...firestoreData, ...missingFromFirestore];
+
+      setDestinations(combined.length > 0 ? combined : DESTINATIONS);
     }, (err) => {
       console.warn("Firestore destinations error:", err);
       setDestinations(DESTINATIONS);
@@ -70,7 +74,11 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      setCultureItems(firestoreData.length > 0 ? firestoreData : CULTURE_ITEMS);
+      const firestoreIds = new Set(firestoreData.map(d => d.id));
+      const missingFromFirestore = CULTURE_ITEMS.filter(d => !firestoreIds.has(d.id));
+      const combined = [...firestoreData, ...missingFromFirestore];
+
+      setCultureItems(combined.length > 0 ? combined : CULTURE_ITEMS);
     }, (err) => {
       console.warn("Firestore cultures error:", err);
       setCultureItems(CULTURE_ITEMS);
@@ -89,7 +97,11 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      setCulinaryItems(firestoreData.length > 0 ? firestoreData : CULINARY_ITEMS);
+      const firestoreIds = new Set(firestoreData.map(d => d.id));
+      const missingFromFirestore = CULINARY_ITEMS.filter(d => !firestoreIds.has(d.id));
+      const combined = [...firestoreData, ...missingFromFirestore];
+
+      setCulinaryItems(combined.length > 0 ? combined : CULINARY_ITEMS);
     }, (err) => {
       console.warn("Firestore culinaries error:", err);
       setCulinaryItems(CULINARY_ITEMS);
@@ -127,7 +139,11 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      setEventItems(firestoreData.length > 0 ? firestoreData : EVENTS_SCHEDULE);
+      const firestoreIds = new Set(firestoreData.map(d => d.id));
+      const missingFromFirestore = EVENTS_SCHEDULE.filter(d => !firestoreIds.has(d.id));
+      const combined = [...firestoreData, ...missingFromFirestore];
+
+      setEventItems(combined.length > 0 ? combined : EVENTS_SCHEDULE);
     }, (err) => {
       console.warn("Firestore events error:", err);
       setEventItems(EVENTS_SCHEDULE);
