@@ -515,7 +515,7 @@ export async function fetchAiItinerary(params: any) {
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-flash-latest', 'gemini-pro-latest', 'gemini-flash-lite-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -695,7 +695,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1097,7 +1097,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2071,7 +2071,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 2. Client-side Gemini AI if API key is provided
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
   if (viteApiKey) {
-    const modelsToTry = ['gemini-flash-latest', 'gemini-flash-lite-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2246,7 +2246,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-flash-latest', 'gemini-flash-lite-latest'];
+  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
   for (const model of modelsToTry) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2333,23 +2333,31 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const res = await ai.models.generateContent({
-      model: 'gemini-flash-latest',
-      contents: prompt,
-      config: { temperature: 0.7 }
-    });
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+    for (const model of modelsToTry) {
+      try {
+        const res = await ai.models.generateContent({
+          model,
+          contents: prompt,
+          config: { temperature: 0.7 }
+        });
 
-    const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-    const parsed = JSON.parse(cleanJson);
+        const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(cleanJson);
 
-    return {
-      spotlightTitle: spotlightItem.title,
-      instagramCaption: parsed.instagramCaption || fallback.instagramCaption,
-      whatsappBroadcast: parsed.whatsappBroadcast || fallback.whatsappBroadcast,
-      tiktokScriptHook: parsed.tiktokScriptHook || fallback.tiktokScriptHook,
-      hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags : fallback.hashtags,
-      generatedAt: nowStr
-    };
+        return {
+          spotlightTitle: spotlightItem.title,
+          instagramCaption: parsed.instagramCaption || fallback.instagramCaption,
+          whatsappBroadcast: parsed.whatsappBroadcast || fallback.whatsappBroadcast,
+          tiktokScriptHook: parsed.tiktokScriptHook || fallback.tiktokScriptHook,
+          hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags : fallback.hashtags,
+          generatedAt: nowStr
+        };
+      } catch (err: any) {
+        // try next model
+      }
+    }
+    return fallback;
   } catch (e) {
     console.warn('Social media digest generation fallback:', e);
     return fallback;

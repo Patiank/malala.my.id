@@ -155,8 +155,12 @@ async function exportAllPDFs() {
       quality: 92
     }) as Buffer;
 
-    fs.writeFileSync(targetPath, imgBuffer);
-    fs.copyFileSync(targetPath, publicTargetPath);
+    try {
+      fs.writeFileSync(targetPath, imgBuffer);
+      fs.copyFileSync(targetPath, publicTargetPath);
+    } catch (writeImgErr: any) {
+      // Ignored if temporarily locked by system indexing
+    }
 
     pagesData1.push({
       buffer: imgBuffer,
@@ -188,10 +192,13 @@ async function exportAllPDFs() {
 
     const outPdfPath1 = path.join(pdfOutDir, 'malala-panduan-wisata-sumbar-2026.pdf');
     const pdfArrayBuffer1 = Buffer.from(doc.output('arraybuffer'));
-    fs.writeFileSync(outPdfPath1, pdfArrayBuffer1);
-
-    console.log(`🎉 PDF Panduan Lengkap Selesai: ${outPdfPath1}`);
-    console.log(`⚖️ Ukuran: ${(pdfArrayBuffer1.length / (1024 * 1024)).toFixed(2)} MB (${pagesData1.length} Halaman)`);
+    try {
+      fs.writeFileSync(outPdfPath1, pdfArrayBuffer1);
+      console.log(`🎉 PDF Panduan Lengkap Selesai: ${outPdfPath1}`);
+      console.log(`⚖️ Ukuran: ${(pdfArrayBuffer1.length / (1024 * 1024)).toFixed(2)} MB (${pagesData1.length} Halaman)`);
+    } catch (writeErr: any) {
+      console.warn(`⚠️ Warning: Gagal menulis berkas PDF 1 (mungkin sedang dibuka oleh viewer):`, writeErr?.message);
+    }
   }
 
   await page1.close();
@@ -260,10 +267,13 @@ async function exportAllPDFs() {
 
     const outPdfPath2 = path.join(pdfOutDir, 'kalender-event-sumbar-2026.pdf');
     const pdfArrayBuffer2 = Buffer.from(doc2.output('arraybuffer'));
-    fs.writeFileSync(outPdfPath2, pdfArrayBuffer2);
-
-    console.log(`🎉 PDF Kalender Event 2026 Selesai: ${outPdfPath2}`);
-    console.log(`⚖️ Ukuran: ${(pdfArrayBuffer2.length / (1024 * 1024)).toFixed(2)} MB (${pagesData2.length} Halaman)`);
+    try {
+      fs.writeFileSync(outPdfPath2, pdfArrayBuffer2);
+      console.log(`🎉 PDF Kalender Event 2026 Selesai: ${outPdfPath2}`);
+      console.log(`⚖️ Ukuran: ${(pdfArrayBuffer2.length / (1024 * 1024)).toFixed(2)} MB (${pagesData2.length} Halaman)`);
+    } catch (writeErr2: any) {
+      console.warn(`⚠️ Warning: Gagal menulis berkas PDF 2:`, writeErr2?.message);
+    }
   }
 
   await page2.close();

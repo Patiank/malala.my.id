@@ -359,7 +359,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
   ]
 }`;
 
-      const modelsToTry = ['gemini-flash-latest', 'gemini-pro-latest', 'gemini-flash-lite-latest'];
+      const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
       let parsedData = null;
 
       for (const modelName of modelsToTry) {
@@ -478,17 +478,29 @@ ${eventList}
         parts: [{ text: cleanMsg }]
       });
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: formattedContents,
-        config: {
-          systemInstruction,
-          temperature: 0.5,
-          tools: [{ googleSearch: {} } as any],
+      let reply = '';
+      const chatModelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+      for (const modelName of chatModelsToTry) {
+        try {
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: formattedContents,
+            config: {
+              systemInstruction,
+              temperature: 0.5,
+              tools: [{ googleSearch: {} } as any],
+            }
+          });
+          reply = response.text || '';
+          if (reply) break;
+        } catch (mErr: any) {
+          console.warn(`Chat model ${modelName} failed:`, mErr?.message);
         }
-      });
+      }
 
-      const reply = response.text || 'Maaf Dunsanak, Uni Mala tidak dapat memproses tanggapan saat ini.';
+      if (!reply) {
+        reply = 'Maaf Dunsanak, Uni Mala tidak dapat memproses tanggapan saat ini.';
+      }
       return res.json({ reply });
     } catch (error: any) {
       console.error("AI Chat Server Error:", error);
@@ -621,17 +633,25 @@ Formatkan output HANYA dalam format JSON valid Array of Objects:
 
 Keluarkan HANYA array JSON valid tanpa markdown backticks atau teks pengantar lainnya.`;
 
-          const response = await ai.models.generateContent({
-            model: 'gemini-3.7-flash',
-            contents: prompt,
-            config: {
-              tools: [{ googleSearch: {} }],
+          const hotInfoModels = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+          for (const modelName of hotInfoModels) {
+            try {
+              const response = await ai.models.generateContent({
+                model: modelName,
+                contents: prompt,
+                config: {
+                  tools: [{ googleSearch: {} }],
+                }
+              });
+              const rawText = response.text || '';
+              const jsonMatch = rawText.match(/\[\s*\{[\s\S]*\}\s*\]/);
+              if (jsonMatch) {
+                parsedData = JSON.parse(jsonMatch[0]);
+                if (Array.isArray(parsedData) && parsedData.length > 0) break;
+              }
+            } catch (err: any) {
+              console.log(`AI Hot Info fetch with ${modelName} failed:`, err?.message);
             }
-          });
-          const rawText = response.text || '';
-          const jsonMatch = rawText.match(/\[\s*\{[\s\S]*\}\s*\]/);
-          if (jsonMatch) {
-            parsedData = JSON.parse(jsonMatch[0]);
           }
         } catch (genError: any) {
           console.log("AI Hot Info fetch falling back to default news items:", genError?.message);
@@ -771,18 +791,31 @@ ${typePrompt}
 
 Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt,
-      });
+      const itemModels = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+      let parsedData = null;
 
-      const rawText = response.text || '';
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
+      for (const modelName of itemModels) {
+        try {
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+          });
+
+          const rawText = response.text || '';
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedData = JSON.parse(jsonMatch[0]);
+            if (parsedData) break;
+          }
+        } catch (itemErr: any) {
+          console.warn(`Catalog generator with ${modelName} failed:`, itemErr?.message);
+        }
+      }
+
+      if (!parsedData) {
         throw new Error("Gagal mengurai respon JSON dari AI.");
       }
 
-      const parsedData = JSON.parse(jsonMatch[0]);
       return res.json(parsedData);
     } catch (error: any) {
       console.error("AI Catalog Item Generator error:", error);
