@@ -42,7 +42,7 @@ async function preloadAndEnsureAllImages(page: any) {
       // 1. Scroll through the page to trigger all image requests
       await new Promise((resolve) => {
         let currentPosition = 0;
-        const step = 800;
+        const step = 600;
         const scrollInterval = setInterval(() => {
           const totalHeight = document.body.scrollHeight;
           window.scrollBy(0, step);
@@ -53,7 +53,7 @@ async function preloadAndEnsureAllImages(page: any) {
             window.scrollTo(0, 0);
             resolve();
           }
-        }, 60);
+        }, 50);
       });
 
       // 2. Wait for every <img> element to be complete and decoded
@@ -71,7 +71,7 @@ async function preloadAndEnsureAllImages(page: any) {
             };
             img.addEventListener('load', finish);
             img.addEventListener('error', finish);
-            setTimeout(finish, 10000);
+            setTimeout(finish, 20000);
           });
         })
       );
@@ -80,6 +80,39 @@ async function preloadAndEnsureAllImages(page: any) {
 
   // Extra safety buffer after decoding all images
   await new Promise(r => setTimeout(r, 2000));
+}
+
+async function setupLocalRequestInterception(page: any) {
+  await page.setRequestInterception(true);
+  page.on('request', (req: any) => {
+    const url = req.url();
+    // Intercept local images: /images/... or file:///.../images/...
+    if (url.includes('/images/')) {
+      const parts = url.split('/images/');
+      const relPath = parts[parts.length - 1].split('?')[0];
+      const localFile = path.join(process.cwd(), 'public', 'images', decodeURIComponent(relPath));
+      if (fs.existsSync(localFile)) {
+        const ext = path.extname(localFile).toLowerCase();
+        const contentType = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
+        return req.respond({
+          status: 200,
+          contentType,
+          body: fs.readFileSync(localFile)
+        });
+      }
+    }
+    if (url.includes('minangkaos-logo-compact.png')) {
+      const logoFile = path.join(process.cwd(), 'public', 'minangkaos-logo-compact.png');
+      if (fs.existsSync(logoFile)) {
+        return req.respond({
+          status: 200,
+          contentType: 'image/png',
+          body: fs.readFileSync(logoFile)
+        });
+      }
+    }
+    req.continue();
+  });
 }
 
 async function exportAllPDFs() {
@@ -115,6 +148,7 @@ async function exportAllPDFs() {
 
   const page1 = await browser.newPage();
   await page1.setViewport({ width: 600, height: 900, deviceScaleFactor: 2 });
+  await setupLocalRequestInterception(page1);
 
   const htmlPath1 = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
   const fileUrl1 = `file:///${htmlPath1.replace(/\\/g, '/')}`;
@@ -144,7 +178,22 @@ async function exportAllPDFs() {
 
     // Scroll into view to ensure paint
     await art.scrollIntoView();
-    await new Promise(r => setTimeout(r, 60));
+    await page1.evaluate(async (el: any) => {
+      const img = el.querySelector('img');
+      if (img) {
+        if (!img.complete) {
+          await new Promise((res) => {
+            img.onload = res;
+            img.onerror = res;
+            setTimeout(res, 2500);
+          });
+        }
+        if (img.decode) {
+          await img.decode().catch(() => {});
+        }
+      }
+    }, art);
+    await new Promise(r => setTimeout(r, 70));
 
     const box = await art.boundingBox();
     const width = box ? Math.round(box.width) : 480;
@@ -212,6 +261,7 @@ async function exportAllPDFs() {
 
   const page2 = await browser.newPage();
   await page2.setViewport({ width: 600, height: 900, deviceScaleFactor: 2 });
+  await setupLocalRequestInterception(page2);
 
   const htmlPath2 = path.join(process.cwd(), 'public', 'event_calendar_printable.html');
   const fileUrl2 = `file:///${htmlPath2.replace(/\\/g, '/')}`;
@@ -230,7 +280,22 @@ async function exportAllPDFs() {
   for (let i = 0; i < articles2.length; i++) {
     const art = articles2[i];
     await art.scrollIntoView();
-    await new Promise(r => setTimeout(r, 60));
+    await page2.evaluate(async (el: any) => {
+      const img = el.querySelector('img');
+      if (img) {
+        if (!img.complete) {
+          await new Promise((res) => {
+            img.onload = res;
+            img.onerror = res;
+            setTimeout(res, 2500);
+          });
+        }
+        if (img.decode) {
+          await img.decode().catch(() => {});
+        }
+      }
+    }, art);
+    await new Promise(r => setTimeout(r, 70));
 
     const box = await art.boundingBox();
     const width = box ? Math.round(box.width) : 480;

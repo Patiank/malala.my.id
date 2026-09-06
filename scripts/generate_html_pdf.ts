@@ -740,6 +740,7 @@ function generateFullHTML(): string {
 }
 
 const htmlContent = generateFullHTML();
+const finalHtml = htmlContent.replace(/src="\/images\//g, 'src="./images/');
 const htmlPath = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
-fs.writeFileSync(htmlPath, htmlContent, 'utf-8');
+fs.writeFileSync(htmlPath, finalHtml, 'utf-8');
 console.log('✅ HTML E-Booklet 1:1 berhasil dibuat di:', htmlPath);

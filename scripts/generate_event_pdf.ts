@@ -488,7 +488,8 @@ export function generateEventHTML(): string {
 // If run standalone:
 if (process.argv[1] && process.argv[1].endsWith('generate_event_pdf.ts')) {
   const html = generateEventHTML();
+  const finalHtml = html.replace(/src="\/images\//g, 'src="./images/');
   const outPath = path.join(process.cwd(), 'public', 'event_calendar_printable.html');
-  fs.writeFileSync(outPath, html, 'utf-8');
+  fs.writeFileSync(outPath, finalHtml, 'utf-8');
   console.log(`✅ Event Calendar HTML template berhasil dibuat di: ${outPath}`);
 }
