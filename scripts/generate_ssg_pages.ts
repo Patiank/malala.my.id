@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { HOT_INFO_FALLBACK } from '../src/utils/ai.js';
 
 function slugify(text: string): string {
   if (!text) return '';
@@ -230,9 +231,10 @@ export function generateSsg() {
   const cultureItems: any[] = backupData.cultureItems || [];
   const culinaryItems: any[] = backupData.culinaryItems || [];
   const eventItems: any[] = backupData.eventItems || [];
-  const hotInfoItems: any[] = backupData.hotInfoItems || backupData.hotInfo || [];
+  const hotInfoItems: any[] = (backupData.hotInfoItems && backupData.hotInfoItems.length > 0)
+    ? backupData.hotInfoItems
+    : (backupData.hotInfo && backupData.hotInfo.length > 0 ? backupData.hotInfo : HOT_INFO_FALLBACK);
 
-  // 1. UPDATE HOMEPAGE WITH RICH FAQ & ORG SCHEMAS
   console.log('📄 Mengoptimasi Homepage dengan FAQPage Schema & Organization JSON-LD...');
   const homeContent = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
@@ -934,6 +936,12 @@ export function generateSsg() {
     const pageDesc = (lead.substring(0, 155) + '...').replace(/\n/g, ' ');
     const canonicalUrl = `https://malala.my.id/berita/${slug}`;
     const ogImage = n.imageUrl || 'https://malala.my.id/og-image.jpg';
+    const mapsTargetUrl = n.mapsUrl || (n.actionUrl && (n.actionUrl.includes('google.com/maps') || n.actionUrl.includes('maps.google.com'))
+      ? n.actionUrl
+      : (n.locationName
+        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n.locationName)}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n.title)}`));
+    const originalSourceUrl = n.sourceUrl || (n.actionUrl && !n.actionUrl.includes('maps') ? n.actionUrl : undefined);
 
     const newsJsonLd = {
       "@context": "https://schema.org",
@@ -1021,10 +1029,13 @@ export function generateSsg() {
           </div>
         ` : ''}
 
-        ${n.locationName ? `
-          <div style="background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: #475569;">
-            📍 <strong>Lokasi Terkait:</strong> ${escapeHtml(n.locationName)}
-            ${n.actionUrl ? ` • <a href="${escapeHtml(n.actionUrl)}" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">Buka di Google Maps</a>` : ''}
+        ${(n.locationName || mapsTargetUrl || originalSourceUrl) ? `
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: #475569;">
+            ${n.locationName ? `<div style="margin-bottom: 0.75rem; font-weight: 600; color: #0f172a;">📍 Lokasi Terkait: <span style="font-weight: 400; color: #334155;">${escapeHtml(n.locationName)}</span></div>` : ''}
+            <div style="display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; font-size: 0.9rem;">
+              ${mapsTargetUrl ? `<a href="${escapeHtml(mapsTargetUrl)}" target="_blank" rel="noopener noreferrer" style="color: #059669; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; background: #ecfdf5; padding: 0.4rem 0.85rem; border-radius: 0.375rem; border: 1px solid #a7f3d0;">🗺️ Buka Lokasi di Google Maps &rarr;</a>` : ''}
+              ${originalSourceUrl ? `<a href="${escapeHtml(originalSourceUrl)}" target="_blank" rel="noopener noreferrer nofollow" style="color: #475569; text-decoration: underline; display: inline-flex; align-items: center; gap: 0.35rem;">📰 Baca Sumber Berita Asli ${n.sourceName ? `(${escapeHtml(n.sourceName)})` : ''}</a>` : ''}
+            </div>
           </div>
         ` : ''}
 

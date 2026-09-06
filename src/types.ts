@@ -186,6 +186,9 @@ export interface HotInfoItem {
   tag?: string;
   tagEn?: string;
   actionUrl?: string;
+  mapsUrl?: string;
+  sourceUrl?: string;
+  sourceName?: string;
   highlights?: string[];
   highlightsEn?: string[];
   tips?: string;

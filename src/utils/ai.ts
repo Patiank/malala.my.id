@@ -14,7 +14,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "PADANG PARIAMAN — PT Hutama Karya (Persero) alongside the West Sumatra Land Transportation Management Agency (BPTD II) has officially confirmed the successful completion and operational certification of the 36.6-kilometer Padang - Sicincin Expressway section. As West Sumatra's premier access-controlled highway, this strategic thoroughfare dramatically slashes overland travel time between Padang City and the scenic highland tourist hubs of Bukittinggi and Padang Panjang from over 2.5 hours along congested national arterials down to approximately 35 to 45 minutes.\n\nServing as the inaugural section of the Padang - Pekanbaru Trans-Sumatra Highway corridor, the expressway is engineered for designated cruising speeds up to 80 km/h featuring high-durability pavement and modern road telemetry. Along its alignment, operators have finalized dual main interchanges: Kapalo Hilalang Toll Gate at KM 36 and Tarok City Toll Gate at KM 19, delivering direct connectivity to regional higher education hubs and vital arteries leading directly into the Minangkabau highlands.\n\nA signature feature of the project is the Type-A Service and Rest Area located at STA 23, architecturally inspired by traditional Minangkabau Rumah Gadang gonjong curved gables. The facility dedicates 70 percent of its commercial floor space to regional Micro, Small, and Medium Enterprises (MSMEs) from Padang Pariaman Regency, offering travelers authentic local culinary delights such as crispy Sala Lauak, Nasi Kapau, and traditional sweet Lamang Tapai alongside authentic handwoven songket textiles.\n\nThe commissioning of this highway resolves persistent congestion bottlenecks across Lubuk Alung and Kayu Tanam market thoroughfares, granting visitors unimpeded weekend mobility. Exiting through the Kapalo Hilalang toll plaza, holidaymakers enjoy smooth onward connections directly into the lush Anai Valley waterfall corridor, the artisanal weaving hamlets of Pandai Sikek, and Bukittinggi's landmark Jam Gadang clock tower.\n\nExpressway authorities remind all motorists to verify adequate electronic toll card balances prior to departure, check tire tread depth, and maintain braking systems. Given the valley topography and tropical rainfall patterns, drivers must adhere strictly to speed limits of 60 to 80 km/h, activate headlights during torrential rain, and utilize rest stops whenever signs of driver fatigue appear.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://maps.google.com/?q=Tol+Padang+Sicincin",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Tol+Padang+Sicincin",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Tol+Padang+Sicincin",
+    "sourceUrl": "https://www.antaranews.com/berita/4320491/tol-padang-sicincin-siap-operasi",
+    "sourceName": "LKBN ANTARA",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Uji laik fungsi tuntas, pangkas rute Padang - Bukittinggi jadi 45 menit",
@@ -43,7 +46,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "JAKARTA — The Ministry of Tourism and Creative Economy has officially widened the national implementation of green and sustainable ecotourism standards across Indonesia's prime destination networks. This comprehensive policy framework aims to accelerate tourism decarbonization, enforce zero single-use plastic mandates, and bridge biosphere conservation directly with grassroots economic welfare in tourism villages.\n\nNational ecotourism criteria mandate nature eco-resorts, national parks, and tour operators to transition toward renewable energy, establish on-site closed-loop wastewater treatment, and operate integrated composting systems. The certification initiative is currently rolling out across five National Tourism Strategic Areas (KSPN): Lake Toba in North Sumatra, Borobudur Temple in Central Java, Labuan Bajo in East Nusa Tenggara, Mandalika in West Nusa Tenggara, and Likupang in North Sulawesi.\n\nUnder this regulation, ecotourism authorities must enforce rigorous scientific carrying capacity quotas managed via real-time digital visitation bookings. Such visitation caps prevent ecological strain from overtourism, protect endangered endemic wildlife habitats from vehicular noise and emissions, and safeguard fragile geological formations against erosion.\n\nBeyond environmental metrics, green tourism certification places heavy emphasis on community empowerment. Participating accommodation providers and expedition operators must prioritize the employment of local residents, source zero-kilometer organic farm produce from neighborhood growers, and employ certified local cultural guides steeped in indigenous customary heritage.\n\nThe Ministry appeals to both domestic and international travelers to embrace responsible travel practices throughout Indonesia's natural landscapes. Visitors are strongly encouraged to carry refillable water tumblers, observe strict leave-no-trace ethics on mountain trails and marine coral reefs, and prioritize accredited eco-homestays demonstrating genuine ecological stewardship.",
     "tag": "Nasional",
     "tagEn": "National",
-    "actionUrl": "https://kemenparekraf.go.id",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Kemenparekraf+Gedung+Sapta+Pesona+Jakarta",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Kemenparekraf+Gedung+Sapta+Pesona+Jakarta",
+    "sourceUrl": "https://kemenparekraf.go.id",
+    "sourceName": "Kemenparekraf RI",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Standarisasi pariwisata hijau nasional bebas sampah plastik sekali pakai",
@@ -72,7 +78,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "PADANG — The West Sumatra Traffic Police Directorate in conjunction with the National Road Implementation Agency III has escalated comprehensive safety monitoring along the infamous Sitinjau Lauik pass, the primary arterial mountain highway connecting Padang City and Solok Regency. A 24/7 integrated emergency command outpost operates continuously, stationing heavy hydraulic excavators, wheel loaders, and specialized heavy-tow trucks at critical switchbacks Panorama 1 and 2.\n\nCivil engineering enhancements along these steep slopes include high-tensile rockfall protection wire mesh securely pinned across vulnerable limestone cliffs, reinforced micropile foundations along embankment shoulders, and tiered terraced hillside drainage designed to channel heavy tropical runoff from Mount Gadut away from the asphalt roadway.\n\nTraffic fluidity along this extreme gradient is fortified by active field cooperation between provincial traffic officers and local community road safety volunteers (PKJR). Equipped with two-way radio transceivers and high-visibility illuminated signaling bats, volunteers coordinate turn radii between descending vehicles and ascending articulated transports, preventing gridlocks during peak weekend travel surges.\n\nThe Sitinjau Lauik corridor constitutes an indispensable lifeline for holidaymakers traveling from coastal Padang to highland agrotourism retreats in Alahan Panjang, Mount Talang tea plantations, the twin caldera lakes of Danau Diatas and Danau Dibawah, and scenic Lake Singkarak. The road's dependability directly supports hundreds of mountain homestays, strawberry farm cafes, and regional tour transportation operators.\n\nTraffic police issue strict operating advisories for motorists, tourist vans, and charter buses traversing the mountain pass. Drivers must continuously engage low gear (1st or 2nd gear) during both ascents and descents, verify that total vehicle weight complies with legal ratings, grant right-of-way unconditionally to heavily loaded climbing trucks, and refrain strictly from overtaking on blind hairpins.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://maps.google.com/?q=Sitinjau+Lauik+Padang",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Sitinjau+Lauik+Padang",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Sitinjau+Lauik+Padang",
+    "sourceUrl": "https://padek.jawapos.com",
+    "sourceName": "Padang Ekspres",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Posko pengamanan 24 jam dan alat berat siaga di Panorama 1 & 2 Sitinjau Lauik",
@@ -101,7 +110,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "BANDUNG — PT Kereta Api Indonesia (Persero) has reported remarkable passenger occupancy surges across its luxury thematic tourist trains, anchored by the expansion of Panoramic Carriages, Priority Coaches, and ultra-luxurious Compartment Suites crossing breathtaking scenic mountain passages. This slow rail travel trend has quickly become a premier travel lifestyle for families, landscape photographers, and international tourists seeking serene, first-class journeys through Indonesia's verdant geography.\n\nThe Panoramic Train features floor-to-ceiling panoramic glass panels curving elegantly into the roof, paired with automated touch-controlled smart sunshades. Passengers are treated to unobstructed visual journeys spanning misty Priangan highland valleys, dramatic deep river gorges, century-old historic steel viaducts, and tiered emerald rice terraces gently rolling into the distance.\n\nComplementing the onboard comfort, KAI has revitalized major heritage railway stations along key travel corridors into sophisticated cultural travel hubs. Modern executive waiting lounges now offer historical rail exhibitions, comfortable private nursery rooms, and regional artisanal cafes serving single-origin coffees and authentic local delicacies from stopover destinations.\n\nKAI Tourism has also introduced integrated last-mile connections at destination stations through dedicated executive tourist coach shuttles and licensed ride-hailing hubs. This seamless multimodal network ensures arriving passengers transition directly to renowned regional landmarks—including Mount Tangkuban Parahu in West Java, the Prambanan temple complex in Yogyakarta, and Mount Ijen in Banyuwangi—without transit friction.\n\nRail operators advise travelers that official tourist train bookings open precisely 45 days prior to travel dates through the Access by KAI digital mobile application, kai.id, and accredited online travel agencies. Due to high demand for panoramic window seats, travelers are urged to book in advance, arrive at departure terminals at least 45 minutes ahead of schedule, and strictly avoid unverified third-party ticket scalpers online.",
     "tag": "Nasional",
     "tagEn": "National",
-    "actionUrl": "https://booking.kai.id",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Stasiun+Bandung",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Stasiun+Bandung",
+    "sourceUrl": "https://booking.kai.id",
+    "sourceName": "PT KAI (Persero)",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Kereta Panoramic dan Compartment Suites KAI catat lonjakan minat wisatawan",
@@ -130,7 +142,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "BATUSANGKAR — Two of the Minangkabau heartland's most prestigious customary spectacles—the mud bull-racing Alek Nagari Pacu Jawi in Tanah Datar and the monumental Tabuik Cultural Festival in Pariaman City—have officially been curated once again into the prestigious 2026 Kharisma Event Nusantara (KEN) national roster by the Ministry of Tourism and Creative Economy. This formal recognition cements both celebrations as national cultural tourist flagships expected to generate hundreds of thousands of visitor arrivals.\n\nPacu Jawi in Tanah Datar delivers a pulse-pounding agrarian exhibition where bare-chested village jockeys hold fast to the tails of two speeding bulls charging across mud-flooded terraced rice paddies. Framed against the volcanic backdrop of Mount Marapi and heritage Rumah Gadang residences, this rotating tradition held across four historical nagari (Sungai Tarab, Rambatan, Pariangan, and Lima Kaum) symbolizes post-harvest gratitude and ancestral Minangkabau values of communal harmony between humankind and living nature.\n\nMeanwhile, along West Sumatra's Indian Ocean coastline, Pariaman's Tabuik Festival encompasses ten consecutive days of solemn rituals, tracing stages from Maambiak Tanah (gathering consecrated earth) to Maarak Tabuik (procession of towering memorial effigies). The climax sees two magnificent 12-meter decorative shrines—Tabuik Pasa and Tabuik Subarang—converge upon Gandoriah Beach before being ceremonially cast into the oceanic surf amidst the synchronized thunder of hundreds of Gandang Tasa kettle drummers.\n\nInclusion in the national KEN calendar fuels immense socio-economic vitality for village communities. Local homestays and hotels report total booking capacity, while community craft markets, localized culinary stalls, and artisanal weavers of Pandai Sikek songket and Pariaman embroidery experience high transactional growth.\n\nRegional tourism authorities advise tourists planning to witness these cultural traditions to secure hotel bookings and transport several weeks ahead. Attendees at Pacu Jawi should wear mud-ready casual apparel and equip camera gear with splash shields, while visitors to Tabuik are asked to maintain utmost respect for customary proceedings, follow shoreline safety perimeters during the sea-immersion ceremony, and uphold communal order.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://maps.google.com/?q=Tanah+Datar+Sumatera+Barat",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Istano+Basa+Pagaruyung+Batusangkar",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Istano+Basa+Pagaruyung+Batusangkar",
+    "sourceUrl": "https://kemenparekraf.go.id/agenda-wisata",
+    "sourceName": "Dispar Sumbar & KEN",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman resmi masuk kalender KEN 2026",
@@ -159,7 +174,10 @@ export const HOT_INFO_FALLBACK = [
     "descriptionEn": "JAKARTA — The Government of Indonesia alongside travel and hospitality industry stakeholders has intensified the nationwide 'Proud of Traveling in Indonesia' (BBWI) campaign. This inter-ministerial alliance—uniting state-owned enterprises, hoteliers, domestic airlines, and online travel agencies—targets 1.25 to 1.5 billion domestic trips by placing Indonesia's 5 Super Priority Tourism Destinations (DPSP) at the core of regional travel growth.\n\nThe five Super Priority destinations serving as engines of the initiative include the world's largest volcanic caldera at Lake Toba in North Sumatra, the monumental Buddhist heritage sanctuary of Borobudur in Central Java, the world-class international circuit and pearl-sand bays of Mandalika in Lombok, the ancient Komodo dragon habitats and marine archipelagos of Labuan Bajo in East Nusa Tenggara, and the pristine biodiverse diving sanctuaries of Likupang in North Sulawesi. Each destination features modern connectivity including highway corridors, expanded international runways, and cruise marina terminals.\n\nTo stimulate domestic journeys over outbound travel, BBWI features appealing holiday promotions including airfare flight credits, discounted hotel-plus-tour packages, subsidized entries to national heritage monuments, and inter-island loyalty rewards supported across digital QRIS cashless payment networks.\n\nA central objective of the campaign is the equitable distribution of travel revenues to rural communities. Targeted development funds provide hospitality and CHSE (Cleanliness, Health, Safety, Environment) certification training to thousands of eco-village administrators around key destinations, opening e-commerce marketing channels for local handicraft artisans and specialty gastronomy.\n\nThe Ministry invites families and travelers nationwide to make Indonesian domestic discoveries their primary vacation pursuit. Travelers are encouraged to utilize official accredited travel fairs and licensed mobile booking platforms for verified vacation packages, explore shoulder-season dates for tranquil experiences, and always honor indigenous customs and traditions in every host community.",
     "tag": "Nasional",
     "tagEn": "National",
-    "actionUrl": "https://indonesia.travel",
+    "actionUrl": "https://www.google.com/maps/search/?api=1&query=Danau+Toba+Sumatera+Utara",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Danau+Toba+Sumatera+Utara",
+    "sourceUrl": "https://indonesia.travel",
+    "sourceName": "Pesona Indonesia BBWI",
     "imageUrl": "",
     "highlights": [
       "Fakta Utama: Kolaborasi nasional BBWI memperkuat akses ke 5 Destinasi Super Prioritas",
@@ -1265,6 +1283,9 @@ function buildJournalisticTourismNarrative(cleanTitle: string, source: string, r
   tipsEn: string;
   smartTitleId: string;
   smartTitleEn: string;
+  locationNameId: string;
+  locationNameEn: string;
+  mapsUrl: string;
 } {
   const lowerTitle = cleanTitle.toLowerCase();
   const lowerSnippet = (rawSnippet || '').toLowerCase();
@@ -1278,54 +1299,154 @@ function buildJournalisticTourismNarrative(cleanTitle: string, source: string, r
     .replace(/\.\.\.$/, '.')
     .trim();
 
-  // Determine Location Name and Official Dateline
-  let locId = isSumbar ? 'Sumatera Barat' : 'Indonesia';
-  let locEn = isSumbar ? 'West Sumatra' : 'Indonesia';
+  // 1. Precise Geographic Location & Dateline Extraction
+  let locId = isSumbar ? 'Sumatera Barat, Indonesia' : 'Destinasi Pariwisata Indonesia';
+  let locEn = isSumbar ? 'West Sumatra, Indonesia' : 'Indonesian Tourism Destinations';
   let datelineId = isSumbar ? 'PADANG — ' : 'JAKARTA — ';
   let datelineEn = isSumbar ? 'PADANG — ' : 'JAKARTA — ';
+  let mapsQuery = isSumbar ? 'Sumatera Barat' : 'Indonesia';
 
-  if (combinedText.includes('bukittinggi')) {
-    locId = 'Bukittinggi'; locEn = 'Bukittinggi'; datelineId = 'BUKITTINGGI — '; datelineEn = 'BUKITTINGGI — ';
-  } else if (combinedText.includes('padang pariaman') || combinedText.includes('sicincin')) {
-    locId = 'Padang Pariaman'; locEn = 'Padang Pariaman'; datelineId = 'PADANG PARIAMAN — '; datelineEn = 'PADANG PARIAMAN — ';
-  } else if (combinedText.includes('pariaman')) {
-    locId = 'Kota Pariaman'; locEn = 'Pariaman City'; datelineId = 'PARIAMAN — '; datelineEn = 'PARIAMAN — ';
-  } else if (combinedText.includes('tanah datar') || combinedText.includes('batusangkar')) {
-    locId = 'Tanah Datar'; locEn = 'Tanah Datar'; datelineId = 'BATUSANGKAR — '; datelineEn = 'BATUSANGKAR — ';
-  } else if (combinedText.includes('payakumbuh') || combinedText.includes('harau') || combinedText.includes('limapuluh kota')) {
-    locId = 'Payakumbuh & Lembah Harau'; locEn = 'Payakumbuh & Harau Valley'; datelineId = 'PAYAKUMBUH — '; datelineEn = 'PAYAKUMBUH — ';
+  if (combinedText.includes('anak krakatau') || (combinedText.includes('krakatau') && !combinedText.includes('padang'))) {
+    locId = 'Gunung Anak Krakatau, Selat Sunda'; locEn = 'Mount Anak Krakatau, Sunda Strait';
+    datelineId = 'SELAT SUNDA — '; datelineEn = 'SUNDA STRAIT — ';
+    mapsQuery = 'Gunung Anak Krakatau';
+  } else if (combinedText.includes('bim') || combinedText.includes('bandara internasional minangkabau') || combinedText.includes('bandara minangkabau')) {
+    locId = 'Bandara Internasional Minangkabau (BIM), Padang Pariaman'; locEn = 'Minangkabau International Airport (BIM), Padang Pariaman';
+    datelineId = 'PADANG PARIAMAN — '; datelineEn = 'PADANG PARIAMAN — ';
+    mapsQuery = 'Bandara Internasional Minangkabau';
+  } else if (combinedText.includes('marapi')) {
+    locId = 'Gunung Marapi, Sumatera Barat'; locEn = 'Mount Marapi, West Sumatra';
+    datelineId = 'BUKITTINGGI — '; datelineEn = 'BUKITTINGGI — ';
+    mapsQuery = 'Gunung Marapi Sumatera Barat';
+  } else if (combinedText.includes('singgalang')) {
+    locId = 'Gunung Singgalang, Sumatera Barat'; locEn = 'Mount Singgalang, West Sumatra';
+    datelineId = 'BUKITTINGGI — '; datelineEn = 'BUKITTINGGI — ';
+    mapsQuery = 'Gunung Singgalang';
+  } else if (combinedText.includes('kerinci')) {
+    locId = 'Gunung Kerinci, Solok Selatan & Jambi'; locEn = 'Mount Kerinci, South Solok & Jambi';
+    datelineId = 'SOLOK SELATAN — '; datelineEn = 'SOUTH SOLOK — ';
+    mapsQuery = 'Gunung Kerinci';
+  } else if (combinedText.includes('sitinjau lauik') || combinedText.includes('sitinjau')) {
+    locId = 'Jalan Raya Sitinjau Lauik, Padang - Solok'; locEn = 'Sitinjau Lauik Pass, Padang - Solok';
+    datelineId = 'PADANG — '; datelineEn = 'PADANG — ';
+    mapsQuery = 'Sitinjau Lauik Padang';
+  } else if (combinedText.includes('kelok 9') || combinedText.includes('kelok sembilan')) {
+    locId = 'Jembatan Kelok Sembilan, Lima Puluh Kota'; locEn = 'Kelok 9 Flyover, 50 Kota Regency';
+    datelineId = 'SARILAMAK — '; datelineEn = 'SARILAMAK — ';
+    mapsQuery = 'Kelok 9 Sumatera Barat';
+  } else if (combinedText.includes('lembah anai') || combinedText.includes('anai')) {
+    locId = 'Air Terjun Lembah Anai, Tanah Datar'; locEn = 'Anai Valley Waterfall, Tanah Datar';
+    datelineId = 'PADANG PANJANG — '; datelineEn = 'PADANG PANJANG — ';
+    mapsQuery = 'Air Terjun Lembah Anai';
+  } else if (combinedText.includes('harau') || combinedText.includes('payakumbuh') || combinedText.includes('limapuluh kota') || combinedText.includes('50 kota')) {
+    locId = 'Lembah Harau & Payakumbuh, Lima Puluh Kota'; locEn = 'Harau Valley & Payakumbuh, 50 Kota';
+    datelineId = 'PAYAKUMBUH — '; datelineEn = 'PAYAKUMBUH — ';
+    mapsQuery = 'Lembah Harau Lima Puluh Kota';
+  } else if (combinedText.includes('jam gadang') || combinedText.includes('ngarai sianok') || combinedText.includes('bukittinggi')) {
+    locId = 'Kota Bukittinggi, Sumatera Barat'; locEn = 'Bukittinggi City, West Sumatra';
+    datelineId = 'BUKITTINGGI — '; datelineEn = 'BUKITTINGGI — ';
+    mapsQuery = 'Jam Gadang Bukittinggi';
+  } else if (combinedText.includes('padang pariaman') || combinedText.includes('sicincin') || combinedText.includes('tol padang')) {
+    locId = 'Ruas Tol Padang - Sicincin, Padang Pariaman'; locEn = 'Padang - Sicincin Expressway, Padang Pariaman';
+    datelineId = 'PADANG PARIAMAN — '; datelineEn = 'PADANG PARIAMAN — ';
+    mapsQuery = 'Tol Padang Sicincin';
+  } else if (combinedText.includes('pariaman') || combinedText.includes('gandoriah') || combinedText.includes('tabuik')) {
+    locId = 'Pantai Gandoriah, Kota Pariaman'; locEn = 'Gandoriah Beach, Pariaman City';
+    datelineId = 'PARIAMAN — '; datelineEn = 'PARIAMAN — ';
+    mapsQuery = 'Pantai Gandoriah Pariaman';
+  } else if (combinedText.includes('tanah datar') || combinedText.includes('batusangkar') || combinedText.includes('pagaruyung') || combinedText.includes('pacu jawi')) {
+    locId = 'Istano Basa Pagaruyung & Batusangkar, Tanah Datar'; locEn = 'Pagaruyung Palace & Batusangkar, Tanah Datar';
+    datelineId = 'BATUSANGKAR — '; datelineEn = 'BATUSANGKAR — ';
+    mapsQuery = 'Istano Basa Pagaruyung Tanah Datar';
   } else if (combinedText.includes('solok') || combinedText.includes('singkarak')) {
-    locId = 'Solok & Danau Singkarak'; locEn = 'Solok & Lake Singkarak'; datelineId = 'SOLOK — '; datelineEn = 'SOLOK — ';
+    locId = 'Danau Singkarak, Solok & Tanah Datar'; locEn = 'Lake Singkarak, Solok & Tanah Datar';
+    datelineId = 'SOLOK — '; datelineEn = 'SOLOK — ';
+    mapsQuery = 'Danau Singkarak';
+  } else if (combinedText.includes('danau kembar') || combinedText.includes('alahan panjang') || combinedText.includes('danau diatas') || combinedText.includes('danau dibawah')) {
+    locId = 'Alahan Panjang & Danau Kembar, Solok'; locEn = 'Alahan Panjang & Twin Lakes, Solok';
+    datelineId = 'ALAHAN PANJANG — '; datelineEn = 'ALAHAN PANJANG — ';
+    mapsQuery = 'Danau Diatas Danau Dibawah Solok';
+  } else if (combinedText.includes('maninjau') || combinedText.includes('kelok 44') || combinedText.includes('agam')) {
+    locId = 'Danau Maninjau, Kabupaten Agam'; locEn = 'Lake Maninjau, Agam Regency';
+    datelineId = 'LUBUK BASUNG — '; datelineEn = 'LUBUK BASUNG — ';
+    mapsQuery = 'Danau Maninjau Agam';
   } else if (combinedText.includes('sawahlunto')) {
-    locId = 'Sawahlunto'; locEn = 'Sawahlunto'; datelineId = 'SAWAHLUNTO — '; datelineEn = 'SAWAHLUNTO — ';
-  } else if (combinedText.includes('mentawai')) {
-    locId = 'Kepulauan Mentawai'; locEn = 'Mentawai Islands'; datelineId = 'TUAPEJAT — '; datelineEn = 'TUAPEJAT — ';
-  } else if (combinedText.includes('mandeh') || combinedText.includes('pesisir selatan')) {
-    locId = 'Kawasan Mandeh, Pesisir Selatan'; locEn = 'Mandeh, South Pesisir'; datelineId = 'PAINAN — '; datelineEn = 'PAINAN — ';
+    locId = 'Kota Warisan Budaya Tambang Ombilin Sawahlunto'; locEn = 'Ombilin Coal Mining Heritage of Sawahlunto';
+    datelineId = 'SAWAHLUNTO — '; datelineEn = 'SAWAHLUNTO — ';
+    mapsQuery = 'Kota Sawahlunto';
+  } else if (combinedText.includes('mentawai') || combinedText.includes('siberut') || combinedText.includes('tuapejat')) {
+    locId = 'Kepulauan Mentawai, Sumatera Barat'; locEn = 'Mentawai Islands, West Sumatra';
+    datelineId = 'TUAPEJAT — '; datelineEn = 'TUAPEJAT — ';
+    mapsQuery = 'Kepulauan Mentawai';
+  } else if (combinedText.includes('mandeh') || combinedText.includes('pesisir selatan') || combinedText.includes('painan')) {
+    locId = 'Kawasan Wisata Bahari Mandeh, Pesisir Selatan'; locEn = 'Mandeh Marine Tourism Area, South Pesisir';
+    datelineId = 'PAINAN — '; datelineEn = 'PAINAN — ';
+    mapsQuery = 'Kawasan Mandeh Pesisir Selatan';
   } else if (combinedText.includes('padang')) {
-    locId = 'Kota Padang'; locEn = 'Padang City'; datelineId = 'PADANG — '; datelineEn = 'PADANG — ';
-  } else if (combinedText.includes('bali')) {
-    locId = 'Bali'; locEn = 'Bali'; datelineId = 'DENPASAR — '; datelineEn = 'DENPASAR — ';
-  } else if (combinedText.includes('labuan bajo') || combinedText.includes('komodo')) {
-    locId = 'Labuan Bajo, NTT'; locEn = 'Labuan Bajo, NTT'; datelineId = 'LABUAN BAJO — '; datelineEn = 'LABUAN BAJO — ';
-  } else if (combinedText.includes('danau toba') || combinedText.includes('toba')) {
-    locId = 'Danau Toba, Sumatera Utara'; locEn = 'Lake Toba, North Sumatra'; datelineId = 'PARAPAT — '; datelineEn = 'PARAPAT — ';
+    locId = 'Kota Padang, Sumatera Barat'; locEn = 'Padang City, West Sumatra';
+    datelineId = 'PADANG — '; datelineEn = 'PADANG — ';
+    mapsQuery = 'Kota Padang Sumatera Barat';
+  } else if (combinedText.includes('bali') || combinedText.includes('denpasar') || combinedText.includes('ubud') || combinedText.includes('kuta') || combinedText.includes('sanur')) {
+    locId = 'Bali, Indonesia'; locEn = 'Bali, Indonesia';
+    datelineId = 'DENPASAR — '; datelineEn = 'DENPASAR — ';
+    mapsQuery = 'Bali Indonesia';
+  } else if (combinedText.includes('labuan bajo') || combinedText.includes('komodo') || combinedText.includes('rinca')) {
+    locId = 'Taman Nasional Komodo & Labuan Bajo, NTT'; locEn = 'Komodo National Park & Labuan Bajo, NTT';
+    datelineId = 'LABUAN BAJO — '; datelineEn = 'LABUAN BAJO — ';
+    mapsQuery = 'Labuan Bajo NTT';
+  } else if (combinedText.includes('danau toba') || combinedText.includes('toba') || combinedText.includes('samosir')) {
+    locId = 'Danau Toba, Sumatera Utara'; locEn = 'Lake Toba, North Sumatra';
+    datelineId = 'PARAPAT — '; datelineEn = 'PARAPAT — ';
+    mapsQuery = 'Danau Toba Sumatera Utara';
   } else if (combinedText.includes('borobudur') || combinedText.includes('magelang')) {
-    locId = 'Borobudur, Jawa Tengah'; locEn = 'Borobudur, Central Java'; datelineId = 'MAGELANG — '; datelineEn = 'MAGELANG — ';
+    locId = 'Candi Borobudur, Magelang, Jawa Tengah'; locEn = 'Borobudur Temple, Magelang, Central Java';
+    datelineId = 'MAGELANG — '; datelineEn = 'MAGELANG — ';
+    mapsQuery = 'Candi Borobudur Magelang';
+  } else if (combinedText.includes('prambanan') || combinedText.includes('yogyakarta') || combinedText.includes('jogja')) {
+    locId = 'Yogyakarta, DI Yogyakarta'; locEn = 'Yogyakarta, Special Region of Yogyakarta';
+    datelineId = 'YOGYAKARTA — '; datelineEn = 'YOGYAKARTA — ';
+    mapsQuery = 'Yogyakarta';
   } else if (combinedText.includes('mandalika') || combinedText.includes('lombok')) {
-    locId = 'Mandalika, Lombok'; locEn = 'Mandalika, Lombok'; datelineId = 'PRAYA — '; datelineEn = 'PRAYA — ';
+    locId = 'Kawasan Mandalika, Lombok Tengah, NTB'; locEn = 'Mandalika Resort Area, Central Lombok, NTB';
+    datelineId = 'PRAYA — '; datelineEn = 'PRAYA — ';
+    mapsQuery = 'Mandalika Lombok';
+  } else if (combinedText.includes('bromo') || combinedText.includes('semeru') || combinedText.includes('tengger')) {
+    locId = 'Taman Nasional Bromo Tengger Semeru, Jawa Timur'; locEn = 'Bromo Tengger Semeru National Park, East Java';
+    datelineId = 'MALANG — '; datelineEn = 'MALANG — ';
+    mapsQuery = 'Gunung Bromo Jawa Timur';
+  } else if (combinedText.includes('kawah ijen') || combinedText.includes('ijen') || combinedText.includes('banyuwangi')) {
+    locId = 'Kawah Ijen, Banyuwangi, Jawa Timur'; locEn = 'Ijen Crater, Banyuwangi, East Java';
+    datelineId = 'BANYUWANGI — '; datelineEn = 'BANYUWANGI — ';
+    mapsQuery = 'Kawah Ijen Banyuwangi';
+  } else if (combinedText.includes('raja ampat')) {
+    locId = 'Kepulauan Raja Ampat, Papua Barat Daya'; locEn = 'Raja Ampat Islands, Southwest Papua';
+    datelineId = 'WAISAI — '; datelineEn = 'WAISAI — ';
+    mapsQuery = 'Raja Ampat Papua';
+  } else if (combinedText.includes('wakatobi')) {
+    locId = 'Taman Nasional Wakatobi, Sulawesi Tenggara'; locEn = 'Wakatobi National Park, Southeast Sulawesi';
+    datelineId = 'WAKATOBI — '; datelineEn = 'WAKATOBI — ';
+    mapsQuery = 'Wakatobi';
   } else if (combinedText.includes('bandung')) {
-    locId = 'Bandung, Jawa Barat'; locEn = 'Bandung, West Java'; datelineId = 'BANDUNG — '; datelineEn = 'BANDUNG — ';
+    locId = 'Bandung, Jawa Barat'; locEn = 'Bandung, West Java';
+    datelineId = 'BANDUNG — '; datelineEn = 'BANDUNG — ';
+    mapsQuery = 'Kota Bandung Jawa Barat';
   } else if (combinedText.includes('jakarta')) {
-    locId = 'Jakarta'; locEn = 'Jakarta'; datelineId = 'JAKARTA — '; datelineEn = 'JAKARTA — ';
+    locId = 'Jakarta, Indonesia'; locEn = 'Jakarta, Indonesia';
+    datelineId = 'JAKARTA — '; datelineEn = 'JAKARTA — ';
+    mapsQuery = 'Jakarta Indonesia';
   }
 
-  // Topic classification
-  const isHighwayTransport = combinedText.includes('tol') || combinedText.includes('jalan') || combinedText.includes('rute') || combinedText.includes('kelok') || combinedText.includes('sitinjau') || combinedText.includes('anai') || combinedText.includes('jembatan') || combinedText.includes('bandara') || combinedText.includes('penerbangan') || combinedText.includes('kereta') || combinedText.includes('pelabuhan') || combinedText.includes('kapal') || combinedText.includes('transportasi');
-  const isEvent = combinedText.includes('festival') || combinedText.includes('event') || combinedText.includes('pacu jawi') || combinedText.includes('tabuik') || combinedText.includes('karnaval') || combinedText.includes('pameran') || combinedText.includes('ken') || combinedText.includes('kharisma') || combinedText.includes('agenda');
-  const isNatureGeopark = combinedText.includes('harau') || combinedText.includes('sianok') || combinedText.includes('geopark') || combinedText.includes('danau') || combinedText.includes('air terjun') || combinedText.includes('gunung') || combinedText.includes('marapi') || combinedText.includes('singgalang') || combinedText.includes('bksda') || combinedText.includes('konservasi') || combinedText.includes('alam') || combinedText.includes('taman nasional');
-  const isMarine = combinedText.includes('mentawai') || combinedText.includes('mandeh') || combinedText.includes('surfing') || combinedText.includes('ombak') || combinedText.includes('pantai') || combinedText.includes('pulau') || combinedText.includes('maritim') || combinedText.includes('laut') || combinedText.includes('bahari');
-  const isCulinaryCulture = combinedText.includes('rendang') || combinedText.includes('kuliner') || combinedText.includes('nasi kapau') || combinedText.includes('songket') || combinedText.includes('tenun') || combinedText.includes('kriya') || combinedText.includes('bundo kanduang') || combinedText.includes('silek') || combinedText.includes('warisan') || combinedText.includes('adat');
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`;
+
+  // 2. Exact Domain and Topic Classification
+  const isAviation = combinedText.includes('penerbangan') || combinedText.includes('pesawat') || combinedText.includes('bandara') || combinedText.includes('bim') || combinedText.includes('maskapai') || combinedText.includes('flight') || combinedText.includes('runway') || combinedText.includes('airnav') || combinedText.includes('aviasi');
+  const isVolcano = combinedText.includes('krakatau') || combinedText.includes('marapi') || combinedText.includes('abu vulkanik') || combinedText.includes('gunung api') || combinedText.includes('erupsi') || combinedText.includes('vulkanik') || combinedText.includes('pvmbg') || combinedText.includes('gempa') || combinedText.includes('bencana') || combinedText.includes('banjir lahar');
+  const isRail = (combinedText.includes('kereta') || combinedText.includes('kai') || combinedText.includes('rel') || combinedText.includes('panoramic') || combinedText.includes('stasiun')) && !isAviation;
+  const isRoad = (combinedText.includes('tol') || combinedText.includes('sitinjau') || combinedText.includes('kelok') || combinedText.includes('jalan tol') || combinedText.includes('jalan raya') || combinedText.includes('arteri') || combinedText.includes('aspal') || combinedText.includes('kemacetan') || combinedText.includes('lalu lintas') || combinedText.includes('bpjn') || combinedText.includes('ditlantas')) && !isAviation && !isRail;
+  const isMarine = (combinedText.includes('mentawai') || combinedText.includes('mandeh') || combinedText.includes('surfing') || combinedText.includes('ombak') || combinedText.includes('pantai') || combinedText.includes('pulau') || combinedText.includes('maritim') || combinedText.includes('laut') || combinedText.includes('bahari') || combinedText.includes('kapal') || combinedText.includes('dermaga') || combinedText.includes('pelabuhan') || combinedText.includes('syahbandar')) && !isAviation && !isRoad;
+  const isEvent = combinedText.includes('festival') || combinedText.includes('event') || combinedText.includes('pacu jawi') || combinedText.includes('tabuik') || combinedText.includes('karnaval') || combinedText.includes('pameran') || combinedText.includes('ken') || combinedText.includes('kharisma') || combinedText.includes('agenda') || combinedText.includes('upacara adat') || combinedText.includes('alek');
+  const isCulinary = combinedText.includes('rendang') || combinedText.includes('kuliner') || combinedText.includes('nasi kapau') || combinedText.includes('songket') || combinedText.includes('tenun') || combinedText.includes('kriya') || combinedText.includes('sate') || combinedText.includes('kopi') || combinedText.includes('umkm') || combinedText.includes('cinderamata') || combinedText.includes('makanan');
+  const isNature = combinedText.includes('harau') || combinedText.includes('sianok') || combinedText.includes('geopark') || combinedText.includes('danau') || combinedText.includes('air terjun') || combinedText.includes('gunung') || combinedText.includes('singgalang') || combinedText.includes('bksda') || combinedText.includes('konservasi') || combinedText.includes('alam') || combinedText.includes('taman nasional') || combinedText.includes('hutan') || combinedText.includes('trekking');
 
   const cleanSubject = cleanTitle
     .replace(/^(kemenparekraf|pemprov sumbar|dinas pariwisata|dispar|menteri|kementerian|resmi|terkini|update|breaking news|kabar|info)\s*[-:]?\s*/i, '')
@@ -1334,144 +1455,252 @@ function buildJournalisticTourismNarrative(cleanTitle: string, source: string, r
   let smartTitleId = cleanTitle;
   let smartTitleEn = translateHeadlineIndoToEn(cleanTitle);
 
-  if (isHighwayTransport) {
-    smartTitleId = `Infrastruktur & Akses: ${cleanSubject}`;
-    smartTitleEn = `Infrastructure & Transit: ${translateHeadlineIndoToEn(cleanSubject)}`;
+  if (isAviation) {
+    smartTitleId = `Transportasi & Penerbangan: ${cleanSubject}`;
+    smartTitleEn = `Aviation & Air Transit: ${translateHeadlineIndoToEn(cleanSubject)}`;
+  } else if (isVolcano) {
+    smartTitleId = `Mitigasi & Dinamika Geologis: ${cleanSubject}`;
+    smartTitleEn = `Geological Monitoring & Advisory: ${translateHeadlineIndoToEn(cleanSubject)}`;
+  } else if (isRoad) {
+    smartTitleId = `Infrastruktur & Akses Jalur: ${cleanSubject}`;
+    smartTitleEn = `Infrastructure & Road Access: ${translateHeadlineIndoToEn(cleanSubject)}`;
+  } else if (isRail) {
+    smartTitleId = `Transportasi Rel & Kereta: ${cleanSubject}`;
+    smartTitleEn = `Railway Transit & Tourism: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isEvent) {
-    smartTitleId = `Agenda Budaya & Pariwisata: ${cleanSubject}`;
+    smartTitleId = `Agenda & Festival Budaya: ${cleanSubject}`;
     smartTitleEn = `Cultural Tourism & Events: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isMarine) {
     smartTitleId = `Pariwisata Bahari & Pesisir: ${cleanSubject}`;
     smartTitleEn = `Marine & Coastal Tourism: ${translateHeadlineIndoToEn(cleanSubject)}`;
-  } else if (isNatureGeopark) {
-    smartTitleId = `Konservasi & Wisata Alam: ${cleanSubject}`;
+  } else if (isNature) {
+    smartTitleId = `Konservasi & Ekowisata Alam: ${cleanSubject}`;
     smartTitleEn = `Ecotourism & Nature Conservation: ${translateHeadlineIndoToEn(cleanSubject)}`;
-  } else if (isCulinaryCulture) {
+  } else if (isCulinary) {
     smartTitleId = `Warisan Budaya & Kuliner: ${cleanSubject}`;
     smartTitleEn = `Cultural Heritage & Gastronomy: ${translateHeadlineIndoToEn(cleanSubject)}`;
   }
 
-  // --- Professional Tourism Journalism Narrative (Standard Antara / Kompas) ---
-  // Paragraph 1: 5W+1H Lead with Dateline and Sourced Reporting
+  // 3. Multi-Paragraph Coherent Journalistic Synthesis (Standard Antara / Kompas)
+  // Paragraph 1: Sourced 5W+1H Lead with Dateline
   let p1Id = '';
   let p1En = '';
-  if (cleanedSnippet.length > 50) {
-    p1Id = `${datelineId}Berdasarkan laporan resmi yang dihimpun dari ${source}, ${cleanedSnippet} Perkembangan ini menjadi tonggak penting dalam memperkuat tata kelola kepariwisataan sekaligus meningkatkan mutu pelayanan bagi wisatawan di kawasan ${locId}.`;
-    p1En = `${datelineEn}According to verified reporting from ${source}, ${translateHeadlineIndoToEn(cleanedSnippet)} This milestone marks a significant step forward in elevating tourism governance and visitor hospitality across ${locEn}.`;
+  if (cleanedSnippet.length > 40) {
+    p1Id = `${datelineId}Berdasarkan warta terkini yang dihimpun dari ${source}, ${cleanedSnippet}. Perkembangan informasi ini menjadi catatan penting bagi pemangku kepentingan kepariwisataan dan masyarakat yang tengah merencanakan mobilitas kunjungan di kawasan ${locId}.`;
+    p1En = `${datelineEn}According to recent reporting from ${source}, ${translateHeadlineIndoToEn(cleanedSnippet)}. These developments represent essential guidance for travel stakeholders and holidaymakers traveling across ${locEn}.`;
   } else {
-    p1Id = `${datelineId}Perkembangan sektor kepariwisataan mencatatkan agenda penting terkait ${cleanSubject} di wilayah ${locId}. Laporan terkonfirmasi dari ${source} menegaskan bahwa langkah akselerasi fasilitas dan koordinasi lintas instansi terus digencarkan guna mengoptimalkan kenyamanan dan mobilitas para pelancong.`;
-    p1En = `${datelineEn}Recent developments in tourism spotlight major progress concerning ${translateHeadlineIndoToEn(cleanSubject)} in ${locEn}. Confirmed reporting from ${source} notes that accelerated amenity enhancements and inter-agency coordination remain the top priority to ensure traveler convenience.`;
+    p1Id = `${datelineId}Perkembangan sektor kepariwisataan mencatatkan agenda mutakhir terkait ${cleanSubject} di kawasan ${locId}. Laporan resmi dari ${source} mengonfirmasi bahwa langkah penanganan terpadu dan pemantauan berkala terus dilakukan demi kenyamanan dan keselamatan para pelancong.`;
+    p1En = `${datelineEn}Recent developments in tourism highlight key updates concerning ${translateHeadlineIndoToEn(cleanSubject)} around ${locEn}. Official reporting from ${source} confirms that coordinated measures and regular monitoring remain actively prioritized.`;
   }
 
-  // Paragraph 2: Infrastructure, Route Context & Accessibility
+  // Paragraph 2: Operational & Technical Background strictly matching the topic
   let p2Id = '';
   let p2En = '';
-  if (isHighwayTransport) {
-    p2Id = `Penguatan konektivitas ini mencakup pemeliharaan badan jalan secara berkala, penataan geometrik jalur rawan perlambatan, serta penambahan rambu petunjuk arah dan penerangan jalan umum di sepanjang koridor utama. Kesiapan sarana transportasi darat menjadi faktor krusial guna menjamin kelancaran arus kendaraan pribadi maupun angkutan pariwisata yang melintas antarkota.`;
-    p2En = `Connectivity improvements encompass regular pavement maintenance, geometric realignment along high-friction curves, and the installation of illuminated directional signage across primary corridors. Robust roadway readiness serves as an essential backbone to ensure smooth intercity travel for private motorists and tour coaches alike.`;
+  if (isAviation) {
+    p2Id = `Otoritas penerbangan sipil bersama maskapai dan pengelola bandara segera memberlakukan protokol keselamatan transportasi udara secara ketat menyusul dinamika operasional di kawasan ${locId}. Langkah penghentian sementara, penundaan (delay), maupun pengalihan rute penerbangan dilakukan dengan mengedepankan prinsip 'safety first', guna mencegah risiko keselamatan akibat sebaran partikel debu vulkanik atau gangguan jarak pandang navigasi pesawat.`;
+    p2En = `Civil aviation authorities alongside operating airlines and airport management have enacted strict air safety protocols addressing transit dynamics in ${locEn}. Measures including temporary flight suspensions, delays, and route diversions adhere strictly to 'safety first' standards, safeguarding navigation systems against volcanic ash ingress or low-visibility hazards.`;
+  } else if (isVolcano) {
+    p2Id = `Pusat Vulkanologi dan Mitigasi Bencana Geologi (PVMBG) bersama Badan Penanggulangan Bencana Daerah (BPBD) terus meningkatkan pemantauan aktivitas geologis secara intensif di sekitar ${locId}. Petugas pos pengamatan menyiagakan alat seismograf dan memperbarui rekomendasi batas radius aman agar masyarakat maupun wisatawan tidak beraktivitas di area kawah yang berpotensi membahayakan keselamatan jiwa.`;
+    p2En = `The Center for Volcanology and Geological Hazard Mitigation (PVMBG) together with regional disaster authorities maintains heightened seismic surveillance across ${locEn}. Observation outposts monitor continuous telemetry and establish strict perimeter exclusion zones to prevent travelers and residents from approaching active crater vents.`;
+  } else if (isRoad) {
+    p2Id = `Penguatan konektivitas di koridor ${locId} ini mencakup pemeliharaan perkerasan badan jalan, penataan geometrik jalur rawan perlambatan, serta penambahan rambu petunjuk arah dan penerangan jalan umum. Kesiapan sarana transportasi darat menjadi faktor krusial guna menjamin kelancaran arus kendaraan pribadi maupun angkutan pariwisata yang melintas antarkota.`;
+    p2En = `Connectivity enhancements along ${locEn} encompass regular roadway maintenance, geometric alignment along congestion-prone sectors, and the deployment of illuminated directional signage. Roadway readiness serves as an indispensable foundation ensuring smooth intercity journeys for holidaymakers and tour buses.`;
+  } else if (isRail) {
+    p2Id = `Pengoperasian layanan armada kereta api di koridor ${locId} mengedepankan aspek keandalan prasarana rel, ketepatan waktu keberangkatan, serta integrasi antarmoda transportasi lanjutan di stasiun-stasiun singgah utama guna memberikan pengalaman bepergian yang nyaman dan bebas dari hambatan kemacetan jalan raya.`;
+    p2En = `Railway services across ${locEn} prioritize track infrastructure reliability, precise on-time performance, and seamless multimodal connections at major transfer hubs, providing passengers with scenic, stress-free journeys free from roadway traffic friction.`;
   } else if (isEvent) {
-    p2Id = `Penyelenggaraan agenda kebudayaan ini dirancang untuk menampilkan kekayaan tradisi luhur yang telah diwariskan secara turun-temurun. Harmonisasi antara atraksi seni pertunjukan, busana adat, dan nilai-nilai kearifan lokal disuguhkan secara tertata guna memberikan pengalaman berkesan bagi para penikmat wisata budaya nusantara dan mancanegara.`;
-    p2En = `The staging of this cultural calendar highlights centuries of living heritage passed down across generations. The harmony of traditional performing arts, authentic customary regalia, and indigenous values is curated to deliver an authentic immersive journey for domestic and global travelers.`;
+    p2Id = `Penyelenggaraan agenda kebudayaan di ${locId} ini dirancang untuk menampilkan kekayaan tradisi luhur yang telah diwariskan secara turun-temurun. Harmonisasi antara atraksi seni pertunjukan, busana adat, dan nilai-nilai kearifan lokal disuguhkan secara tertata guna memberikan pengalaman berkesan bagi para penikmat wisata budaya nusantara dan mancanegara.`;
+    p2En = `The staging of this cultural calendar across ${locEn} highlights centuries of living heritage passed down across generations. Authentic customary regalia, indigenous performing arts, and traditional values are curated to deliver an authentic immersive journey for domestic and global travelers.`;
   } else if (isMarine) {
-    p2Id = `Penataan kawasan pesisir dan pulau-pulau wisata dipusatkan pada kelaikan dermaga penyeberangan, penyiagaan kapal motor berstandar keselamatan maritim, serta pemetaan zonasi aktivitas bahari seperti selancar, selam permukaan (snorkeling), dan wisata susur pantai.`;
-    p2En = `Coastal and island destination management focuses on harbor jetty safety, certified passenger boat readiness, and clearly zoned marine activity sectors spanning surfing breaks, snorkeling reefs, and scenic coastal boat cruises.`;
-  } else if (isNatureGeopark) {
-    p2Id = `Kawasan bentang alam ini menyimpan keanekaragaman hayati serta formasi geologis bernilai tinggi yang dikelola dengan pendekatan konservasi terpadu. Pengelola memadukan penataan jalur penjelajahan alam (trekking) yang aman dengan perlindungan vegetasi endemik agar ekosistem alami tetap lestari.`;
-    p2En = `This natural sanctuary encompasses rich biodiversity and ancient geological formations managed under an integrated conservation framework. Authorities balance clearly marked trekking corridors with endemic flora preservation to safeguard ecological vitality.`;
-  } else if (isCulinaryCulture) {
-    p2Id = `Kekayaan kuliner dan tradisi kriya ini berakar dari resep leluhur dan keterampilan perajin nagari yang terus dijaga autentisitasnya. Pemanfaatan rempah-rempah alami lokal serta teknik pembuatan tradisional menjadi daya tarik utama yang membedakannya dengan produk dari daerah lain.`;
-    p2En = `Regional gastronomy and artisan crafts are rooted in time-honored heritage recipes and village craftsmanship preserved with strict authenticity. The use of locally harvested native spices and traditional handcraft methods gives these creations their unique character.`;
+    p2Id = `Penataan kawasan pesisir dan pulau-pulau wisata di ${locId} dipusatkan pada kelaikan dermaga penyeberangan, penyiagaan kapal motor berstandar keselamatan maritim, serta pemantauan dinamika pasang surut laut dan tinggi gelombang oleh stasiun meteorologi perairan BMKG.`;
+    p2En = `Coastal and island destination management in ${locEn} focuses on harbor jetty safety, certified passenger boat readiness, and close coordination with meteorological agencies monitoring marine swell heights and offshore currents.`;
+  } else if (isNature) {
+    p2Id = `Kawasan bentang alam di ${locId} menyimpan keanekaragaman hayati serta formasi geologis bernilai tinggi yang dikelola dengan pendekatan konservasi terpadu. Pengelola memadukan penataan jalur penjelajahan alam (trekking) yang aman dengan perlindungan vegetasi endemik agar ekosistem alami tetap lestari.`;
+    p2En = `This natural landscape across ${locEn} encompasses rich biodiversity and pristine formations managed under an integrated conservation framework. Authorities balance clearly marked trekking corridors with endemic flora preservation to safeguard ecological vitality.`;
+  } else if (isCulinary) {
+    p2Id = `Kekayaan kuliner dan tradisi kriya di ${locId} berakar dari resep leluhur dan keterampilan perajin nagari yang terus dijaga autentisitasnya. Pemanfaatan rempah-rempah alami lokal serta teknik pembuatan tradisional menjadi daya tarik utama yang membedakannya dengan produk dari daerah lain.`;
+    p2En = `Regional gastronomy and artisan crafts in ${locEn} are rooted in time-honored heritage recipes and village craftsmanship preserved with strict authenticity. The use of locally harvested native spices and traditional handcraft methods gives these creations their unique character.`;
   } else {
-    p2Id = `Langkah strategis ini dilaksanakan melalui penyelarasan regulasi antarpemangku kepentingan, pembenahan tata kelola destinasi, serta penguatan promosi terintegrasi guna mendongkrak daya saing pariwisata di tingkat nasional maupun internasional.`;
-    p2En = `This strategic measure aligns inter-agency regulations, enhances destination governance, and strengthens integrated promotional outreach to elevate tourism competitiveness nationally and internationally.`;
+    p2Id = `Langkah strategis di wilayah ${locId} ini dilaksanakan melalui penyelarasan regulasi antarpemangku kepentingan, pembenahan tata kelola destinasi, serta penguatan promosi terintegrasi guna mendongkrak daya saing pariwisata di tingkat nasional maupun internasional.`;
+    p2En = `Strategic measures across ${locEn} align inter-agency regulations, enhance destination governance, and strengthen integrated promotional outreach to elevate tourism competitiveness nationally and internationally.`;
   }
 
-  // Paragraph 3: Facilities, Public Amenities & Grassroots MSME Economic Impact
+  // Paragraph 3: Facilities, Public Amenities & Economic Impact
   let p3Id = '';
   let p3En = '';
-  if (isHighwayTransport) {
+  if (isAviation) {
+    p3Id = `Di area terminal bandara, pengelola membuka posko layanan bantuan pelanggan (help desk) guna memfasilitasi kebutuhan penumpang terkait proses pengembalian dana (refund), penjadwalan ulang tiket (reschedule), maupun penyediaan fasilitas kompensasi keterlambatan. Pihak otoritas bandara juga berkoordinasi dengan pengemudi taksi resmi, angkutan bus DAMRI bandara, serta penyedia akomodasi di sekitar terminal guna memastikan penanganan penumpang terdampak berjalan tertib.`;
+    p3En = `Inside terminal concourses, airport authorities and airline counters have opened dedicated customer help desks to process ticket refunds, rescheduling requests, and statutory delay compensations. Management coordinates closely with airport taxi operators, express shuttle buses, and nearby transit hotels to assist affected travelers efficiently.`;
+  } else if (isVolcano) {
+    p3Id = `Meskipun kewaspadaan geologis ditingkatkan, aktivitas kepariwisataan di luar zona bahaya yang direkomendasikan tetap beroperasi dengan panduan ketat aparat. Pengelola destinasi alternatif di sekitar wilayah ${locId} terus memberdayakan pelaku UMKM lokal dan pemandu wisata nagari agar perputaran ekonomi rakyat tetap berdaya tanpa mengorbankan standar mitigasi bencana.`;
+    p3En = `While geological vigilance remains elevated, tourist activities outside verified safety perimeters continue operating under watchful oversight. Alternative attraction operators around ${locEn} actively support village MSMEs and local guides, sustaining economic activity while honoring safety boundaries.`;
+  } else if (isRoad) {
     p3Id = `Di sepanjang koridor jalur dan titik persinggahan, pengelola mengoptimalkan ketersediaan fasilitas rest area, posko kesehatan, serta gerai bagi pelaku UMKM kuliner dan suvenir lokal. Keberadaan sentra usaha rakyat ini diharapkan mampu mendorong perputaran ekonomi bagi warga nagari di sepanjang perlintasan transportasi.`;
     p3En = `Along transit corridors and rest stops, operators have optimized rest facilities, emergency medical posts, and designated kiosks for local food and souvenir MSMEs. These grassroots commercial spaces stimulate direct economic vitality for surrounding village communities.`;
+  } else if (isRail) {
+    p3Id = `Peningkatan fasilitas gerbong dan stasiun turut menghidupkan ekosistem usaha rakyat, mulai dari pojok kuliner khas daerah di pelataran stasiun hingga kemitraan armada shuttle wisata lanjutan yang mempermudah akses pelancong ke sentra oleh-oleh dan homestay nagari.`;
+    p3En = `Modernized passenger carriages and station halls invigorate local commercial ecosystems, featuring authentic culinary concessions at station plazas and integrated shuttles facilitating direct access to village homestays and souvenir markets.`;
   } else if (isEvent) {
-    p3Id = `Perhelatan ini membuka ruang gerak ekonomi yang luas bagi masyarakat setempat, mulai dari penyedia homestay rumah gadang, pengrajin suvenir tradisional, hingga pedagang kuliner khas nagari yang mencatatkan kenaikan transaksi secara signifikan selama perhelatan berlangsung.`;
-    p3En = `The celebration unlocks extensive economic opportunities for local hosts, ranging from traditional homestay accommodations to heritage handicraft makers and authentic street food stalls experiencing brisk trade throughout the festivities.`;
+    p3Id = `Perhelatan ini membuka ruang gerak ekonomi yang luas bagi masyarakat setempat di ${locId}, mulai dari penyedia homestay rumah gadang, pengrajin suvenir tradisional, hingga pedagang kuliner khas nagari yang mencatatkan kenaikan transaksi secara signifikan selama perhelatan berlangsung.`;
+    p3En = `The celebration unlocks extensive economic opportunities across ${locEn}, ranging from traditional homestay accommodations to heritage handicraft makers and authentic street food stalls experiencing brisk trade throughout the festivities.`;
   } else if (isMarine) {
-    p3Id = `Fasilitas amenitas di kawasan pantai, termasuk sentra bilas air bersih, persewaan alat selam bersertifikat, dan warung kuliner hidangan laut segar milik nelayan lokal, terus dibenahi agar wisatawan memperoleh pengalaman berlibur yang higienis dan nyaman.`;
-    p3En = `Coastal amenities—including fresh-water shower facilities, certified dive rental centers, and local fishermen-run seafood stalls—are maintained to high standards, guaranteeing visitors a clean, comfortable vacation.`;
-  } else if (isNatureGeopark) {
-    p3Id = `Guna mendukung kenyamanan pengunjung tanpa merusak estetika alam, pengelola melengkapi destinasi dengan fasilitas pos pengamatan panorama (viewpoint), sarana sanitasi terpadu, serta posko pemandu wisata lokal yang telah terlatih dalam penanganan pertolongan pertama.`;
-    p3En = `To enhance traveler comfort without compromising pristine landscapes, authorities provide scenic viewing platforms, modern sanitation facilities, and on-site local guide stations staffed by wilderness first-aid responders.`;
-  } else if (isCulinaryCulture) {
-    p3Id = `Penguatan sentra produksi dan gerai cinderamata resmi memberikan kepastian bagi wisatawan untuk memperoleh produk dengan standar mutu terjamin, sekaligus memberikan kepastian pendapatan yang adil bagi para ibu rumah tangga dan perajin lokal di sentra nagari.`;
-    p3En = `Strengthening official culinary markets and craft cooperative galleries ensures tourists receive authentic, quality-guaranteed products while delivering fair economic returns directly to local home-based artisans and women's cooperatives.`;
+    p3Id = `Fasilitas amenitas di kawasan pantai ${locId}, termasuk sentra bilas air bersih, persewaan alat selam bersertifikat, dan warung kuliner hidangan laut segar milik nelayan lokal, terus dibenahi agar wisatawan memperoleh pengalaman berlibur yang higienis dan nyaman.`;
+    p3En = `Coastal amenities in ${locEn}—including fresh-water shower facilities, certified dive rental centers, and local fishermen-run seafood stalls—are maintained to high standards, guaranteeing visitors a clean, comfortable vacation.`;
+  } else if (isNature) {
+    p3Id = `Guna mendukung kenyamanan pengunjung tanpa merusak estetika alam di ${locId}, pengelola melengkapi destinasi dengan fasilitas pos pengamatan panorama (viewpoint), sarana sanitasi terpadu, serta posko pemandu wisata lokal yang telah terlatih dalam penanganan pertolongan pertama.`;
+    p3En = `To enhance traveler comfort without compromising pristine landscapes in ${locEn}, authorities provide scenic viewing platforms, modern sanitation facilities, and on-site local guide stations staffed by wilderness first-aid responders.`;
+  } else if (isCulinary) {
+    p3Id = `Penguatan sentra produksi dan gerai cinderamata resmi di ${locId} memberikan kepastian bagi wisatawan untuk memperoleh produk dengan standar mutu terjamin, sekaligus memberikan kepastian pendapatan yang adil bagi para perajin lokal di sentra nagari.`;
+    p3En = `Strengthening official culinary markets and craft cooperative galleries in ${locEn} ensures tourists receive authentic, quality-guaranteed products while delivering fair economic returns directly to local home-based artisans.`;
   } else {
-    p3Id = `Implementasi program ini turut memberdayakan jaringan desa wisata di sekitar kawasan, memperluas kesempatan kerja bagi pemuda nagari, serta mendorong terwujudnya standar layanan pariwisata yang ramah, higienis, dan profesional.`;
-    p3En = `The initiative empowers neighboring tourism village networks, creates employment opportunities for local youth, and fosters hospitable, hygienic, and professional hospitality benchmarks across the community.`;
+    p3Id = `Implementasi program ini turut memberdayakan jaringan desa wisata di sekitar kawasan ${locId}, memperluas kesempatan kerja bagi pemuda nagari, serta mendorong terwujudnya standar layanan pariwisata yang ramah, higienis, dan profesional.`;
+    p3En = `The initiative empowers neighboring tourism village networks across ${locEn}, creates employment opportunities for local youth, and fosters hospitable, hygienic, and professional hospitality benchmarks.`;
   }
 
-  // Paragraph 4: Field Coordination, Operational Oversight & Official Safety Advisories
+  // Paragraph 4: Field Coordination & Inter-Agency Oversight
   let p4Id = '';
   let p4En = '';
-  if (isHighwayTransport) {
-    p4Id = `Jajaran kepolisian lalu lintas bersama dinas perhubungan menyiagakan petugas pemantau di titik-titik persimpangan vital guna mengantisipasi kepadatan saat akhir pekan atau musim liburan. Para pengendara diimbau untuk senantiasa memeriksa tekanan angin ban, kelaikan rem, memastikan saldo uang elektronik mencukupi, serta mematuhi batas kecepatan demi keselamatan bersama di jalan raya.`;
-    p4En = `Traffic police and regional transport departments station field teams at key junctions to manage weekend and holiday traffic surges. Motorists are advised to verify tire pressure, inspect brake linings, ensure adequate electronic toll funds, and strictly obey speed limits for shared roadway safety.`;
+  if (isAviation) {
+    p4Id = `Otoritas penerbangan, AirNav Indonesia, dan stasiun meteorologi terus memantau pergerakan arah angin dan uji sebaran partikel udara (paper test) secara berkala setiap dua jam. Koordinasi lintas instansi dilaksanakan intensif guna memastikan bahwa begitu ruang udara dan landas pacu dinyatakan steril dan memenuhi standar International Civil Aviation Organization (ICAO), operasional penerbangan dapat segera dinormalisasi secara bertahap.`;
+    p4En = `Aviation authorities, AirNav Indonesia, and meteorological stations conduct periodic two-hour airborne dispersal and runway paper tests. Inter-agency coordination guarantees that the moment airspace and runway surfaces meet International Civil Aviation Organization (ICAO) safety thresholds, regular scheduled flights can resume without delay.`;
+  } else if (isVolcano) {
+    p4Id = `Jajaran gabungan BPBD, aparat TNI-Polri, dan relawan SAR bersiaga penuh di pos-pos komando mitigasi terdekat. Seluruh pihak diinstruksikan untuk selalu merujuk pada kanal komunikasi resmi pemerintah dan mengabaikan kabar burung maupun spekulasi liar yang tidak dapat dipertanggungjawabkan di media sosial.`;
+    p4En = `Joint disaster task forces comprising BPBD, military, police, and SAR volunteer units remain stationed at command outposts. All parties are instructed to rely exclusively on official state bulletins and disregard unverified rumors circulating across social networks.`;
+  } else if (isRoad) {
+    p4Id = `Jajaran kepolisian lalu lintas bersama dinas perhubungan menyiagakan petugas pemantau di titik-titik persimpangan vital guna mengantisipasi kepadatan arus kendaraan. Petugas patroli secara berkala melakukan rekayasa arus buka-tutup manakala terjadi penyempitan lajur atau kendala kendaraan mogok di tanjakan.`;
+    p4En = `Traffic police units and transportation departments station officers at key intersections to regulate vehicle throughput. Patrol marshals implement dynamic lane management whenever roadway bottlenecks or climbing vehicle breakdowns occur.`;
+  } else if (isRail) {
+    p4Id = `Manajemen perkeretaapian dan petugas pengatur perjalanan kereta api (PPKA) terus mengawasi kelaikan wesel, semboyan sinyal rel, serta stabilitas tanggul lintasan di sepanjang rute pegunungan guna memastikan seluruh perjalanan berjalan dengan tingkat ketepatan waktu maksimal.`;
+    p4En = `Railway controllers and dispatch officers continuously monitor switch track alignment, signaling telemetry, and mountain embankment stability to uphold supreme on-time performance and passenger transit safety.`;
   } else if (isEvent) {
-    p4Id = `Panitia pelaksana berkoordinasi secara ketat dengan aparat keamanan dan kerapatan adat nagari dalam menerapkan tata tertib perhelatan. Wisatawan yang hendak hadir diimbau untuk merencanakan waktu kedatangan lebih awal, melakukan reservasi penginapan jauh-jauh hari, serta senantiasa menghormati norma adat setempat selama berada di lokasi acara.`;
-    p4En = `Event organizers coordinate closely with safety authorities and customary village councils to enforce event protocols. Prospective attendees are encouraged to arrive early, secure lodgings well in advance, and observe local cultural customs throughout the celebration.`;
+    p4Id = `Panitia pelaksana berkoordinasi secara ketat dengan aparat keamanan dan kerapatan adat nagari dalam menerapkan tata tertib perhelatan. Pemasangan barikade penonton dan penyiagaan posko medis lapangan diatur sedemikian rupa agar jalannya ritual adat tetap khidmat sekaligus aman bagi penonton.`;
+    p4En = `Organizers coordinate tightly with customary nagari leaders and security forces to enforce festival protocol. Spectator safety barriers and first-aid field posts ensure customary rituals proceed solemnly while keeping spectators safe.`;
   } else if (isMarine) {
-    p4Id = `Otoritas kesyahbandaran dan stasiun maritim BMKG terus memantau dinamika tinggi gelombang laut dan kecepatan angin perairan. Pelancong diimbau untuk menggunakan jaket pelampung (life jacket) selama penyeberangan kapal, mematuhi instruksi nakhoda kapal, serta tidak memaksakan berlayar saat cuaca maritim terpantau kurang kondusif.`;
-    p4En = `Maritime port authorities and meteorological stations monitor swell heights and offshore wind patterns continuously. Travelers are instructed to wear certified life jackets aboard vessels, follow crew directives, and avoid voyages whenever maritime weather alerts are issued.`;
-  } else if (isNatureGeopark) {
-    p4Id = `Balai konservasi dan pengelola cagar alam mengingatkan seluruh pengunjung untuk mengenakan pakaian lapangan dan alas kaki yang sesuai kontur tanah. Wisatawan diwajibkan menaati jalur jelajah yang telah dipatok, tidak membuang sampah sembarangan demi kelestarian satwa, serta melapor ke pos petugas sebelum memulai aktivitas di alam terbuka.`;
-    p4En = `Park conservation officers remind all trekkers to wear sturdy hiking shoes and terrain-appropriate outdoor clothing. Visitors must remain on designated trails, dispose of all trash responsibly to protect wildlife, and check in at ranger stations before embarking on wilderness activities.`;
-  } else if (isCulinaryCulture) {
-    p4Id = `Asosiasi pariwisata dan sentra kuliner daerah mengimbau pengunjung untuk senantiasa memperhatikan informasi kehalalan dan masa kedaluwarsa produk suvenir, serta mendukung keberlangsungan produk khas daerah dengan berbelanja langsung di sentra atau koperasi perajin terverifikasi.`;
-    p4En = `Tourism associations and regional culinary boards advise visitors to check product certifications and packaging dates on souvenirs, while supporting genuine local makers by patronizing verified artisan cooperatives and certified stalls.`;
+    p4Id = `Otoritas kesyahbandaran pelabuhan bersama Polairud secara aktif memeriksa manifest penumpang, sertifikasi nakhoda perahu, serta kelengkapan alat pelampung sebelum kapal diizinkan bertolak dari dermaga penyeberangan menuju pulau-pulau wisata.`;
+    p4En = `Port master authorities and maritime police actively inspect passenger manifests, skipper credentials, and onboard buoyancy gear prior to clearing any vessel departing towards recreational islands.`;
+  } else if (isNature) {
+    p4Id = `Balai konservasi dan petugas jagawana cagar alam secara rutin berpatroli di sepanjang jalur penjelajahan guna mengawasi ketaatan pengunjung pada rambu batas jelajah, mencegah perusakan flora endemik, serta memastikan tidak ada api unggun yang ditinggalkan tanpa pengawasan.`;
+    p4En = `Park rangers and conservation officers conduct regular backcountry patrols along marked trails, monitoring boundary compliance, preventing damage to endemic flora, and ensuring no unattended campfires are lit.`;
+  } else if (isCulinary) {
+    p4Id = `Dinas terkait bersama asosiasi pengusaha kuliner daerah secara berkala menyelenggarakan bimbingan teknis mengenai sertifikasi halal, higienitas pengolahan makanan, serta transparansi penulisan daftar harga menu demi memberikan rasa aman bagi para penikmat kuliner.`;
+    p4En = `Regional trade agencies and culinary associations conduct regular workshops on halal compliance, food sanitation standards, and transparent price menus to guarantee a reassuring dining experience for visitors.`;
   } else {
-    p4Id = `Pemerintah daerah bersama dinas pariwisata mengimbau para pelancong untuk selalu memperbarui informasi perjalanan dari kanal-kanal resmi, mematuhi regulasi di setiap destinasi, serta senantiasa menjaga kebersihan dan kelestarian lingkungan di mana pun berwisata.`;
-    p4En = `Regional administrations and tourism boards urge travelers to stay updated through official destination channels, adhere to local regulations, and practice environmental stewardship wherever they explore.`;
+    p4Id = `Pemerintah daerah bersama dinas pariwisata mengimbau para pemangku kepentingan untuk terus menyelaraskan standar pelayanan hospitality terpadu, menjaga stabilitas harga, serta senantiasa mengedepankan etika pariwisata yang ramah dan inklusif.`;
+    p4En = `Regional administrations and tourism boards urge stakeholders to harmonize hospitality benchmarks, maintain price transparency, and prioritize welcoming, inclusive tourism ethics.`;
   }
 
-  const descId = `${p1Id}\n\n${p2Id}\n\n${p3Id}\n\n${p4Id}`;
-  const descEn = `${p1En}\n\n${p2En}\n\n${p3En}\n\n${p4En}`;
+  // Paragraph 5: Official Travel Guidance & Practical Safety Advisory
+  let p5Id = '';
+  let p5En = '';
+  if (isAviation) {
+    p5Id = `Para calon penumpang diimbau untuk tidak terburu-buru menuju bandara sebelum memastikan konfirmasi terkini dari maskapai melalui aplikasi daring atau layanan kontak resmi. Penumpang juga disarankan membawa masker medis pelindung pernapasan dan memeriksa ketentuan perubahan jadwal tiket yang disediakan oleh pihak maskapai.`;
+    p5En = `Passengers are advised to verify flight status confirmations directly via mobile airline apps or official customer hotlines before heading to airport terminals. Travelers should carry protective medical masks and review reschedule or refund provisions provided by airlines.`;
+  } else if (isVolcano) {
+    p5Id = `Wisatawan diimbau untuk senantiasa mematuhi radius zona aman yang telah ditetapkan otoritas PVMBG, mengenakan masker dan kacamata pelindung jika beraktivitas di kawasan yang terpapar hujan abu tipis, serta memantau pembaruan status resmi melalui aplikasi MAGMA Indonesia.`;
+    p5En = `Travelers are urged to observe official perimeter exclusions designated by volcanology authorities, wear respiratory masks and eye protection during any ashfall exposure, and follow real-time advisories on the MAGMA Indonesia platform.`;
+  } else if (isRoad) {
+    p5Id = `Para pengendara diimbau untuk senantiasa memeriksa tekanan angin ban, kelaikan kampas rem, memastikan saldo uang elektronik mencukupi sebelum masuk tol, serta menggunakan gigi rendah saat menuruni atau mendaki tanjakan curam demi keselamatan berkendara di jalan raya.`;
+    p5En = `Motorists are instructed to check tire pressure, inspect brake linings, maintain adequate electronic toll balances before entering highways, and engage lower gears on steep mountain inclines for road safety.`;
+  } else if (isRail) {
+    p5Id = `Calon penumpang disarankan untuk memesan tiket kereta wisata jauh-jauh hari melalui aplikasi resmi Access by KAI dan tiba di stasiun keberangkatan sekurang-kurangnya 45 menit sebelum jadwal kereta bertolak.`;
+    p5En = `Travelers are advised to book panoramic train tickets well ahead via the official Access by KAI mobile app and arrive at departure terminals at least 45 minutes prior to scheduled departures.`;
+  } else if (isEvent) {
+    p5Id = `Wisatawan yang hendak menghadiri perhelatan diimbau untuk merencanakan waktu kedatangan lebih awal, melakukan reservasi penginapan jauh-jauh hari, serta senantiasa menghormati norma adat dan tata krama masyarakat nagari setempat.`;
+    p5En = `Prospective festival visitors should arrive early, secure nearby accommodations well in advance, and maintain respect for local customary values and village traditions.`;
+  } else if (isMarine) {
+    p5Id = `Pelancong diwajibkan menggunakan jaket pelampung (life jacket) selama penyeberangan kapal, mematuhi arahan awak kapal, serta menunda aktivitas berlayar atau menyelam apabila kondisi cuaca maritim dan tinggi ombak terpantau meningkat.`;
+    p5En = `Travelers must wear certified life jackets aboard vessels, follow crew directives, and postpone open-water sailing or diving if swell conditions escalate.`;
+  } else if (isNature) {
+    p5Id = `Pengunjung diwajibkan mengenakan pakaian lapangan dan sepatu luar ruang yang sesuai, membawa kembali seluruh sampah pribadi (leave no trace), serta senantiasa didampingi pemandu wisata lokal bersertifikat saat menjelajahi alam terbuka.`;
+    p5En = `Visitors must wear terrain-appropriate outdoor clothing and footwear, adhere strictly to leave-no-trace ethics by packing out all trash, and hire certified local guides when exploring wilderness trails.`;
+  } else if (isCulinary) {
+    p5Id = `Pengunjung disarankan untuk berbelanja produk kuliner dan cinderamata langsung di sentra perajin nagari atau gerai resmi terdaftar guna memperoleh produk autentik berkualitas dengan harga yang wajar dan berkeadilan.`;
+    p5En = `Visitors are encouraged to purchase gastronomic specialties and crafts directly from verified artisan cooperatives and registered stalls to enjoy authentic quality at fair prices.`;
+  } else {
+    p5Id = `Masyarakat dan wisatawan diimbau untuk selalu memperbarui informasi perjalanan dari kanal-kanal resmi pemerintah, mematuhi regulasi di destinasi wisata, serta menjaga kelestarian lingkungan di mana pun berwisata.`;
+    p5En = `Travelers and the public are urged to stay informed via official governmental channels, observe local destination regulations, and preserve environmental cleanliness throughout their journeys.`;
+  }
+
+  const descId = `${p1Id}\n\n${p2Id}\n\n${p3Id}\n\n${p4Id}\n\n${p5Id}`;
+  const descEn = `${p1En}\n\n${p2En}\n\n${p3En}\n\n${p4En}\n\n${p5En}`;
 
   const highlightsId = [
     `Fakta Utama: Laporan resmi terkonfirmasi dari sumber tepercaya (${source})`,
-    isHighwayTransport ? 'Infrastruktur & Akses: Kesiapan rute dan pengamanan jalur dipantau secara optimal' :
-    isEvent ? 'Atraksi Budaya: Perhelatan tradisi melibatkan partisipasi aktif komunitas lokal' :
+    isAviation ? 'Mitigasi Aviasi: Prosedur keselamatan dan penyesuaian jadwal penerbangan diberlakukan otoritas' :
+    isVolcano ? 'Mitigasi Bencana: Pemantauan aktivitas geologis ditingkatkan dan radius aman ditetapkan' :
+    isRoad ? 'Infrastruktur & Akses: Kesiapan rute dan rekayasa jalur dipantau secara optimal' :
+    isRail ? 'Transportasi Rel: Peningkatan fasilitas perjalanan kereta api wisata ramah pelancong' :
+    isEvent ? 'Atraksi Budaya: Perhelatan tradisi melibatkan partisipasi aktif komunitas nagari' :
     isMarine ? 'Pariwisata Bahari: Operasional pelayaran dan keselamatan perairan dipantau berkala' :
-    isNatureGeopark ? 'Konservasi Alam: Perlindungan lingkungan diselaraskan dengan kenyamanan wisatawan' :
-    isCulinaryCulture ? 'Kearifan Tradisi: Pelestarian sentra kriya dan kuliner autentik daerah' :
+    isNature ? 'Konservasi Alam: Perlindungan lingkungan diselaraskan dengan kenyamanan wisatawan' :
+    isCulinary ? 'Kearifan Tradisi: Pelestarian sentra kriya dan kuliner autentik daerah' :
     'Tata Kelola Destinasi: Penguatan fasilitas amenitas dan standar pelayanan pariwisata',
+    isAviation ? 'Panduan Penumpang: Cek status penerbangan via kanal resmi maskapai sebelum menuju bandara' :
+    isVolcano ? 'Panduan Keselamatan: Patuhi rekomendasi zona bahaya PVMBG dan gunakan masker pelindung' :
+    isRoad ? 'Panduan Pengendara: Periksa kelaikan rem, tekanan ban, dan pastikan saldo e-toll mencukupi' :
+    isRail ? 'Panduan Perjalanan: Pesan tiket lebih awal melalui aplikasi resmi Access by KAI' :
+    isEvent ? 'Panduan Pengunjung: Pesan akomodasi lebih awal dan hormati norma adat setempat' :
+    isMarine ? 'Panduan Bahari: Wajib kenakan rompi pelampung dan patuhi arahan nakhoda kapal' :
+    isNature ? 'Panduan Wisatawan: Terapkan prinsip leave-no-trace dan ikuti jalur resmi pemandu' :
+    isCulinary ? 'Panduan Konsumen: Kunjungi sentra UMKM dan gerai oleh-oleh resmi terdaftar' :
     'Panduan Perjalanan: Patuhi arahan resmi pengelola serta utamakan keselamatan dan ketertiban'
   ];
 
   const highlightsEn = [
     `Core Fact: Verified reporting from credible news agency (${source})`,
-    isHighwayTransport ? 'Transit Infrastructure: Route readiness and roadway safety actively managed' :
-    isEvent ? 'Cultural Showcase: Traditional celebration engaging grassroots communities' :
+    isAviation ? 'Aviation Safety: Air navigation protocols and schedule adjustments actively enacted' :
+    isVolcano ? 'Geological Vigilance: Continuous seismic monitoring and safety perimeters enforced' :
+    isRoad ? 'Transit Infrastructure: Route readiness and traffic management actively coordinated' :
+    isRail ? 'Scenic Railway: Elevated passenger amenities across thematic tourist rail lines' :
+    isEvent ? 'Cultural Showcase: Traditional celebration engaging grassroots nagari communities' :
     isMarine ? 'Marine Tourism: Ferry operations and aquatic safety monitored routinely' :
-    isNatureGeopark ? 'Nature Conservation: Eco-preservation integrated with visitor hospitality' :
-    isCulinaryCulture ? 'Living Heritage: Sustaining authentic culinary and artisan craft hubs' :
+    isNature ? 'Nature Conservation: Eco-preservation integrated with visitor hospitality' :
+    isCulinary ? 'Living Heritage: Sustaining authentic culinary and artisan craft hubs' :
     'Destination Governance: Elevating visitor facilities and regional service benchmarks',
+    isAviation ? 'Passenger Advisory: Verify flight status via airline apps before departing for terminals' :
+    isVolcano ? 'Safety Advisory: Adhere to PVMBG exclusion zones and wear protective respiratory masks' :
+    isRoad ? 'Motorist Advisory: Inspect brakes, tire pressure, and ensure adequate e-toll balance' :
+    isRail ? 'Traveler Advisory: Book train tickets in advance via the official Access by KAI app' :
+    isEvent ? 'Visitor Advisory: Reserve accommodations early and observe customary etiquette' :
+    isMarine ? 'Marine Advisory: Certified life jackets mandatory aboard all tourist boats' :
+    isNature ? 'Eco Advisory: Practice leave-no-trace ethics and stay on designated marked trails' :
+    isCulinary ? 'Shopper Advisory: Patronize verified artisan cooperatives and registered stalls' :
     'Travel Advisory: Observe official visitor guidance prioritizing safety and order'
   ];
 
-  const tipsId = isHighwayTransport ? 'Periksa tekanan angin ban, fungsi rem, serta saldo uang elektronik sebelum memulai perjalanan.' :
+  const tipsId = isAviation ? 'Pastikan memeriksa status terbaru penerbangan Anda melalui aplikasi resmi maskapai atau call center bandara sebelum berangkat ke terminal.' :
+    isVolcano ? 'Patuhi radius aman yang ditetapkan petugas, kenakan masker pelindung debu, dan pantau rilis berkala MAGMA Indonesia.' :
+    isRoad ? 'Periksa tekanan angin ban, fungsi rem, serta saldo uang elektronik sebelum memulai perjalanan.' :
+    isRail ? 'Pesan tiket sejak H-45 sebelum jadwal keberangkatan untuk mendapatkan tempat duduk di sisi jendela terbaik.' :
     isEvent ? 'Rencanakan kedatangan lebih awal dan pesan penginapan di sekitar lokasi acara dari jauh hari.' :
     isMarine ? 'Pesan tiket kapal resmi H-1 dan pantau rilis berkala prakiraan cuaca maritim BMKG.' :
-    isNatureGeopark ? 'Gunakan alas kaki yang sesuai untuk aktivitas luar ruang dan jaga kebersihan dengan tidak membuang sampah sembarangan.' :
-    isCulinaryCulture ? 'Kunjungi sentra perajin dan kuliner resmi untuk memperoleh produk khas bergaransi keaslian.' :
+    isNature ? 'Gunakan alas kaki yang sesuai untuk aktivitas luar ruang dan jaga kebersihan dengan tidak membuang sampah sembarangan.' :
+    isCulinary ? 'Kunjungi sentra perajin dan kuliner resmi untuk memperoleh produk khas bergaransi keaslian.' :
     'Pastikan jadwal operasional destinasi terverifikasi dan siapkan rencana perjalanan dengan matang.';
 
-  const tipsEn = isHighwayTransport ? 'Inspect tire pressure, brake performance, and electronic toll balance before setting off.' :
+  const tipsEn = isAviation ? 'Verify the latest flight status via official airline mobile apps or customer service before traveling to the airport.' :
+    isVolcano ? 'Observe official safety radiuses, wear respiratory dust masks, and consult official MAGMA Indonesia updates.' :
+    isRoad ? 'Inspect tire pressure, brake performance, and electronic toll balance before setting off.' :
+    isRail ? 'Book tickets 45 days in advance via Access by KAI to secure prime scenic window seating.' :
     isEvent ? 'Plan arrival early and secure nearby accommodations well in advance of the event.' :
     isMarine ? 'Book official vessel crossings a day ahead and check regular BMKG maritime weather bulletins.' :
-    isNatureGeopark ? 'Wear sturdy outdoor footwear and preserve ecological hygiene by carrying out all waste.' :
-    isCulinaryCulture ? 'Visit accredited artisan galleries and authentic culinary stalls to purchase genuine goods.' :
+    isNature ? 'Wear sturdy outdoor footwear and preserve ecological hygiene by carrying out all waste.' :
+    isCulinary ? 'Visit accredited artisan galleries and authentic culinary stalls to purchase genuine goods.' :
     'Verify official destination hours and prepare travel itineraries thoroughly.';
 
-  return { descId, descEn, highlightsId, highlightsEn, tipsId, tipsEn, smartTitleId, smartTitleEn };
+  return {
+    descId,
+    descEn,
+    highlightsId,
+    highlightsEn,
+    tipsId,
+    tipsEn,
+    smartTitleId,
+    smartTitleEn,
+    locationNameId: locId,
+    locationNameEn: locEn,
+    mapsUrl
+  };
 }
 
 const DEDUP_STOP_WORDS = new Set([
@@ -1979,13 +2208,16 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             description: narrative.descId,
             descriptionEn: narrative.descEn,
             imageUrl: '',
-            actionUrl: item.link || '',
+            actionUrl: narrative.mapsUrl,
+            mapsUrl: narrative.mapsUrl,
+            sourceUrl: item.link || '',
+            sourceName: source || 'Media Tepercaya',
             highlights: narrative.highlightsId,
             highlightsEn: narrative.highlightsEn,
             tips: narrative.tipsId,
             tipsEn: narrative.tipsEn,
-            locationName: isSumbarTopicFeed ? 'Sumatera Barat' : 'Pariwisata Indonesia',
-            locationNameEn: isSumbarTopicFeed ? 'West Sumatra' : 'Indonesian Tourism'
+            locationName: narrative.locationNameId,
+            locationNameEn: narrative.locationNameEn
           });
         }
       }
@@ -2061,13 +2293,16 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
             description: narrative.descId,
             descriptionEn: narrative.descEn,
             imageUrl: '',
-            actionUrl: linkUrl,
+            actionUrl: narrative.mapsUrl,
+            mapsUrl: narrative.mapsUrl,
+            sourceUrl: linkUrl || '',
+            sourceName: source || 'Media Tepercaya',
             highlights: narrative.highlightsId,
             highlightsEn: narrative.highlightsEn,
             tips: narrative.tipsId,
             tipsEn: narrative.tipsEn,
-            locationName: 'Sumatera Barat',
-            locationNameEn: 'West Sumatra'
+            locationName: narrative.locationNameId,
+            locationNameEn: narrative.locationNameEn
           });
         }
       }
@@ -2166,7 +2401,18 @@ Variasi Permintaan Seed: ${Math.random()}`;
         const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
         const parsed = JSON.parse(cleanJson);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return deduplicateNewsItems(parsed.filter((it: any) => isWithinLast30Days(it.date)));
+          const mapped = parsed.map((it: any) => {
+            const loc = it.locationName || (it.tag === 'Sumbar' ? 'Sumatera Barat' : 'Indonesia');
+            const maps = it.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`;
+            return {
+              ...it,
+              actionUrl: maps,
+              mapsUrl: maps,
+              sourceUrl: it.sourceUrl || '',
+              sourceName: it.sourceName || 'Kemenparekraf / Media Resmi'
+            };
+          });
+          return deduplicateNewsItems(mapped.filter((it: any) => isWithinLast30Days(it.date)));
         }
       } catch (err) {
         console.warn(`Client Gemini hotinfo generation failed with ${modelName}, trying next...`, err);

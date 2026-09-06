@@ -135,18 +135,51 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
 
         {/* Action Buttons */}
         <div className="space-y-2 pt-2 border-t border-gray-100">
-          {item.actionUrl && (
-            <a
-              href={item.actionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-blue-700 transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
-            >
-              <MapPin className="w-4 h-4 text-white" />
-              <span>{isEn ? 'Open Location on Google Maps' : 'Buka Lokasi di Google Maps'}</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          )}
+          {/* 1. Direct Geographic Google Maps Button */}
+          {(() => {
+            const mapsTargetUrl = item.mapsUrl || (item.actionUrl && (item.actionUrl.includes('google.com/maps') || item.actionUrl.includes('maps.google.com'))
+              ? item.actionUrl
+              : (locationName
+                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(locationName)}`
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(title)}`));
+
+            const originalSourceUrl = item.sourceUrl || (item.actionUrl && !item.actionUrl.includes('maps') ? item.actionUrl : undefined);
+
+            return (
+              <>
+                {mapsTargetUrl && (
+                  <a
+                    href={mapsTargetUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-emerald-600 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-emerald-700 transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
+                  >
+                    <MapPin className="w-4 h-4 text-white shrink-0" />
+                    <span className="truncate">
+                      {isEn ? 'Open Location on Google Maps' : 'Buka Lokasi di Google Maps'}
+                      {locationName ? ` (${locationName.split(',')[0]})` : ''}
+                    </span>
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                  </a>
+                )}
+
+                {originalSourceUrl && (
+                  <a
+                    href={originalSourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-slate-100 text-slate-700 border border-slate-200 py-2 rounded-lg font-jakarta font-semibold text-xs hover:bg-slate-200 transition-colors cursor-pointer flex justify-center items-center gap-2"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                    <span className="truncate">
+                      {isEn ? 'Read Original News Source' : 'Baca Sumber Berita Asli'}
+                      {item.sourceName ? ` (${item.sourceName})` : ''}
+                    </span>
+                  </a>
+                )}
+              </>
+            );
+          })()}
 
           <div className="grid grid-cols-2 gap-2">
             <button

@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { HOT_INFO_FALLBACK } from '../src/utils/ai.js';
 
 interface Destination {
   id: string;
@@ -114,7 +115,9 @@ function main() {
   const cultureItems = backup.cultureItems || [];
   const culinaryItems = backup.culinaryItems || [];
   const eventItems = backup.eventItems || [];
-  const hotInfoItems: any[] = backup.hotInfoItems || backup.hotInfo || [];
+  const hotInfoItems: any[] = (backup.hotInfoItems && backup.hotInfoItems.length > 0)
+    ? backup.hotInfoItems
+    : (backup.hotInfo && backup.hotInfo.length > 0 ? backup.hotInfo : HOT_INFO_FALLBACK);
 
   const today = new Date().toISOString().split('T')[0];
 
