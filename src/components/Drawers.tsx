@@ -1255,7 +1255,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             ? 'w-full md:w-1/2 lg:w-1/2 left-0 border-r border-gray-200 animate-drawer-slide-left'
             : activeDrawer === 'chat'
             ? 'w-full sm:w-[480px] md:w-[520px] right-0 border-l border-gray-200 animate-drawer-slide-right'
-            : activeDrawer === 'events'
+            : ['events', 'destinations', 'culture', 'culinary', 'souvenirs', 'search'].includes(activeDrawer)
             ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'download'
             ? 'w-full md:w-[75vw] lg:w-[65vw] xl:w-[58vw] max-w-5xl right-0 border-l border-gray-200 animate-drawer-slide-right'
@@ -1313,7 +1313,8 @@ export const Drawers: React.FC<DrawersProps> = ({
         <div className={`overflow-y-auto flex-1 ${activeDrawer === 'chat' ? 'p-3.5 flex flex-col overflow-hidden h-full' : 'p-6 space-y-6'} overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
 
           {/* Sub-Menu Navigation Bar across main categories */}
-          {['destinations', 'culture', 'culinary', 'events', 'download'].includes(activeDrawer) && (
+          {/* Sub-Menu Navigation Bar across main categories */}
+          {['destinations', 'culture', 'culinary', 'souvenirs', 'events', 'download'].includes(activeDrawer) && (
             <div className="bg-gray-50/90 border border-gray-200 p-2 rounded-xl shadow-2xs space-y-1.5 font-jakarta mb-5 shrink-0 w-full">
               <div className="flex items-center justify-between px-1">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 flex items-center gap-1">
@@ -1322,8 +1323,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </span>
               </div>
 
-              {/* 6 Category Buttons Fitted Perfectly Without Swipe */}
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 sm:gap-1.5 w-full text-[10px] sm:text-[10.5px]">
+              {/* 7 Category Buttons Fitted Perfectly Without Swipe */}
+              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-1 sm:gap-1.5 w-full text-[10px] sm:text-[10.5px]">
                 <button
                   onClick={() => onOpenDrawer?.('destinations')}
                   className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
@@ -1358,6 +1359,18 @@ export const Drawers: React.FC<DrawersProps> = ({
                 >
                   <span className="text-xs">🍲</span>
                   <span className="truncate">{translations[lang].navCulinary}</span>
+                </button>
+
+                <button
+                  onClick={() => onOpenDrawer?.('souvenirs')}
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                    activeDrawer === 'souvenirs'
+                      ? 'bg-rose-600 text-white shadow-xs font-extrabold'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                  }`}
+                >
+                  <span className="text-xs">🎁</span>
+                  <span className="truncate">{translations[lang].navSouvenirs}</span>
                 </button>
 
                 <button
@@ -1497,9 +1510,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Search Results List (2 Columns Grid) */}
+              {/* Search Results List (3 Columns Grid on Desktop) */}
               {filteredSearchItems.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                   {filteredSearchItems.map((item, idx) => (
                     <div
                       key={`${item.id}-${idx}`}
@@ -1610,8 +1623,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                 ))}
               </div>
 
-              {/* Destination Cards - 2 COLUMN GRID */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Destination Cards - 3 COLUMN GRID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredDestinations.map((dest) => {
                   const isSaved = savedIds.includes(dest.id);
                   const isEn = lang === 'en';
@@ -1715,7 +1728,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 2. SENI & BUDAYA MINANG DRAWER                     */}
           {/* =================================================== */}
           {activeDrawer === 'culture' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {cultureItems.map((item: CultureItem) => {
                 const isSaved = savedIds.includes(item.id);
                 const isEn = lang === 'en';
@@ -1800,7 +1813,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 3. KULINER AUTHENTIC DRAWER                        */}
           {/* =================================================== */}
           {activeDrawer === 'culinary' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {culinaryItems.map((cul: CulinaryItem) => {
                 const isEn = lang === 'en';
                 return (
@@ -1941,8 +1954,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                   </div>
                 </div>
 
-                {/* Souvenir Product Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Souvenir Product Grid - 3 COLUMN GRID */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {filteredSouvenirs.map((souv: SouvenirItem) => {
                     const rawPrice = (isEn && souv.priceRangeEn ? souv.priceRangeEn : souv.priceRange) || '';
                     const displayPrice = formatToCurrency(rawPrice, currency, currencyRates);
