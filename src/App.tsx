@@ -48,6 +48,29 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
 
+  // Smoothly fade out and dismiss the pre-hydration brand splash loader
+  useEffect(() => {
+    const splash = document.getElementById('app-splash-loader');
+    if (splash) {
+      // Small 80ms delay to ensure browser has painted initial React frame
+      const fadeTimer = setTimeout(() => {
+        splash.style.opacity = '0';
+        splash.style.pointerEvents = 'none';
+      }, 80);
+
+      const cleanupTimer = setTimeout(() => {
+        if (splash.parentNode) {
+          splash.parentNode.removeChild(splash);
+        }
+      }, 420);
+
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(cleanupTimer);
+      };
+    }
+  }, []);
+
   // Background translation pre-fetching for instant smooth English experience
   useEffect(() => {
     if (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0) {
