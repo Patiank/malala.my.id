@@ -586,10 +586,10 @@ export const Hero: React.FC<HeroProps> = ({
             <CornerBracket type="BL" />
           </div>
 
-          {/* Combined Action Buttons & Search Panel Container (Matched Exact Width) */}
-          <div className="inline-flex flex-col items-stretch gap-2.5 pt-2 max-w-full">
-            {/* Action Buttons Row */}
-            <div className="flex items-center gap-3 flex-wrap">
+          {/* Combined Action Buttons & Search Panel Container (Matched Exact Width on PC, Full Width on Mobile) */}
+          <div className="w-full sm:w-auto flex sm:inline-flex flex-col items-stretch gap-2.5 pt-2 max-w-full">
+            {/* Action Buttons Row - Stacked full-width on mobile, side-by-side on PC */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
               {/* UNI MALA AI Assistant Primary CTA */}
               <ArrowFillButton
                 btnText={t.heroBtnAiPlanner}
@@ -606,7 +606,7 @@ export const Hero: React.FC<HeroProps> = ({
                 arrowColor="#09090b"
                 hoverArrowColor="#09090b"
                 icon={<Sparkles className="w-4 h-4 text-amber-300 group-hover:text-black transition-colors animate-pulse" />}
-                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-amber-500/20 border-zinc-900"
+                className="w-full sm:w-auto font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-amber-500/20 border-zinc-900 justify-center"
               />
 
               {/* Mulai Jelajah Main Button - Opens Destinations Sub-menu directly */}
@@ -625,7 +625,7 @@ export const Hero: React.FC<HeroProps> = ({
                 arrowColor="#dc2626"
                 hoverArrowColor="#ffffff"
                 icon={<Compass className="w-4 h-4 text-red-600 group-hover:text-white transition-colors animate-pulse" />}
-                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-red-500/20 border-gray-300"
+                className="w-full sm:w-auto font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-red-500/20 border-gray-300 justify-center"
               />
             </div>
 
