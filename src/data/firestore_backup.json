@@ -1170,7 +1170,7 @@
       "bestTimeEn": "Early Morning (06:30 - 09:30 AM)",
       "locationDetails": "Ngarai Sianok, Koto Gadang, Kab. Agam",
       "locationDetailsEn": "Sianok Canyon, Koto Gadang, Agam Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/janjang-koto-gadang.jpg",
       "lat": -0.306944,
       "lng": 100.360556
     },
@@ -1199,7 +1199,7 @@
       "bestTimeEn": "Late Afternoon to Night (04:30 - 09:00 PM)",
       "locationDetails": "Batang Arau, Kota Padang, Sumatera Barat",
       "locationDetailsEn": "Batang Arau, Padang City, West Sumatra",
-      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/pantai-padang-siti-nurbaya.jpg",
       "lat": -0.963889,
       "lng": 100.354167
     },
@@ -1228,7 +1228,7 @@
       "bestTimeEn": "Morning to Afternoon (08:30 AM - 04:00 PM)",
       "locationDetails": "Bukit Jirek, Kota Bukittinggi",
       "locationDetailsEn": "Jirek Hill, Bukittinggi City",
-      "imageUrl": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/fort-de-kock-limpapeh.jpg",
       "lat": -0.301389,
       "lng": 100.368611
     },
@@ -1257,7 +1257,7 @@
       "bestTimeEn": "Midday (10:00 AM - 02:00 PM)",
       "locationDetails": "Kecamatan Bonjol, Kabupaten Pasaman",
       "locationDetailsEn": "Bonjol District, Pasaman Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/tugu-khatulistiwa-bonjol.jpg",
       "lat": 0,
       "lng": 100.221111
     },
@@ -1286,7 +1286,7 @@
       "bestTimeEn": "Morning (07:30 - 11:00 AM)",
       "locationDetails": "Kecamatan Panti, Kabupaten Pasaman",
       "locationDetailsEn": "Panti District, Pasaman Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/cagar-alam-rimbo-panti.jpg",
       "lat": 0.35,
       "lng": 100.08
     },
@@ -1315,7 +1315,7 @@
       "bestTimeEn": "April to October (Calm Sea Season)",
       "locationDetails": "Bungus Teluk Kabung, Kota Padang",
       "locationDetailsEn": "Bungus Teluk Kabung, Padang City",
-      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/pulau-pamutusan-pesisir-selatan.jpg",
       "lat": -1.14,
       "lng": 100.35
     },
@@ -1344,7 +1344,7 @@
       "bestTimeEn": "Early Morning (06:00 - 09:00 AM) & Sunset",
       "locationDetails": "Nagari Aripan, Kec. X Koto Singkarak, Kab. Solok",
       "locationDetailsEn": "Aripan Village, X Koto Singkarak, Solok Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/puncak-gobah-singkarak.jpg",
       "lat": -0.68,
       "lng": 100.59
     },
@@ -1373,7 +1373,7 @@
       "bestTimeEn": "Weekends (Saturday & Sunday 08:00 AM - 03:00 PM)",
       "locationDetails": "Kelurahan Ekor Lubuk, Kota Padang Panjang",
       "locationDetailsEn": "Ekor Lubuk, Padang Panjang City",
-      "imageUrl": "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/desa-wisata-kubu-gadang.jpg",
       "lat": -0.47,
       "lng": 100.41
     },
@@ -1402,7 +1402,7 @@
       "bestTimeEn": "Morning (08:00 AM - 01:00 PM)",
       "locationDetails": "Teluk Kabung Utara, Kota Padang",
       "locationDetailsEn": "North Teluk Kabung, Padang City",
-      "imageUrl": "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/air-terjun-lubuk-hitam.jpg",
       "lat": -1.04,
       "lng": 100.41
     },
@@ -1431,7 +1431,7 @@
       "bestTimeEn": "Dry Season (June to September)",
       "locationDetails": "Kecamatan Talamau, Kab. Pasaman Barat",
       "locationDetailsEn": "Talamau District, West Pasaman Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/danau-laut-tinggal.jpg",
       "lat": 0.17,
       "lng": 99.88
     },
@@ -1460,7 +1460,7 @@
       "bestTimeEn": "Morning (06:30 - 10:00 AM)",
       "locationDetails": "Kecamatan Lembah Segar, Kota Sawahlunto",
       "locationDetailsEn": "Lembah Segar, Sawahlunto City",
-      "imageUrl": "https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/puncak-polan-sawahlunto.jpg",
       "lat": -0.68,
       "lng": 100.77
     },
@@ -1489,7 +1489,7 @@
       "bestTimeEn": "Afternoon to Sunset (03:30 - 06:30 PM)",
       "locationDetails": "Kecamatan Tanjung Mutiara, Kab. Agam",
       "locationDetailsEn": "Tanjung Mutiara District, Agam Regency",
-      "imageUrl": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "/images/pantai-tiku-tanjung-mutiara.jpg",
       "lat": -0.4,
       "lng": 99.92
     }
