@@ -526,7 +526,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/janjang-koto-gadang.jpg</image:loc>
       <image:title>Janjang Koto Gadang &amp; Great Wall Ngarai Sianok</image:title>
       <image:caption>Sejarah &amp; Petualangan - Kabupaten Agam &amp; Kota Bukittinggi</image:caption>
     </image:image>
@@ -537,7 +537,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/pantai-padang-siti-nurbaya.jpg</image:loc>
       <image:title>Pantai Padang &amp; Jembatan Siti Nurbaya</image:title>
       <image:caption>Pantai &amp; Bahari - Kota Padang</image:caption>
     </image:image>
@@ -548,7 +548,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/fort-de-kock-limpapeh.jpg</image:loc>
       <image:title>Benteng Fort de Kock &amp; Jembatan Limpapeh</image:title>
       <image:caption>Sejarah - Kota Bukittinggi</image:caption>
     </image:image>
@@ -559,7 +559,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/tugu-khatulistiwa-bonjol.jpg</image:loc>
       <image:title>Tugu Khatulistiwa Bonjol &amp; Museum Tuanku Imam Bonjol</image:title>
       <image:caption>Sejarah - Kabupaten Pasaman</image:caption>
     </image:image>
@@ -570,7 +570,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/cagar-alam-rimbo-panti.jpg</image:loc>
       <image:title>Cagar Alam Rimbo Panti &amp; Pemandian Air Panas Alami</image:title>
       <image:caption>Danau &amp; Gunung - Kabupaten Pasaman</image:caption>
     </image:image>
@@ -581,7 +581,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/pulau-pamutusan-pesisir-selatan.jpg</image:loc>
       <image:title>Pulau Pamutusan &amp; Spot Snorkeling Pasir Putih</image:title>
       <image:caption>Pantai &amp; Bahari - Kota Padang</image:caption>
     </image:image>
@@ -592,7 +592,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/puncak-gobah-singkarak.jpg</image:loc>
       <image:title>Puncak Gobah &amp; Panorama Danau Singkarak</image:title>
       <image:caption>Danau &amp; Gunung - Kabupaten Solok</image:caption>
     </image:image>
@@ -603,7 +603,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/desa-wisata-kubu-gadang.jpg</image:loc>
       <image:title>Desa Wisata Kubu Gadang Padang Panjang</image:title>
       <image:caption>Sejarah - Kota Padang Panjang</image:caption>
     </image:image>
@@ -614,7 +614,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/air-terjun-lubuk-hitam.jpg</image:loc>
       <image:title>Air Terjun Lubuk Hitam Tiga Tingkat</image:title>
       <image:caption>Air Terjun &amp; Alam - Kota Padang</image:caption>
     </image:image>
@@ -625,7 +625,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/danau-laut-tinggal.jpg</image:loc>
       <image:title>Danau Laut Tinggal Pasaman Barat</image:title>
       <image:caption>Danau &amp; Gunung - Kabupaten Pasaman Barat</image:caption>
     </image:image>
@@ -636,7 +636,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1542385151-efd9000785a0?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/puncak-polan-sawahlunto.jpg</image:loc>
       <image:title>Puncak Polan &amp; Paralayang Sawahlunto</image:title>
       <image:caption>Danau &amp; Gunung - Kota Sawahlunto</image:caption>
     </image:image>
@@ -647,7 +647,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:loc>/images/pantai-tiku-tanjung-mutiara.jpg</image:loc>
       <image:title>Pantai Tiku &amp; Tanjung Mutiara Agam</image:title>
       <image:caption>Pantai &amp; Bahari - Kabupaten Agam</image:caption>
     </image:image>
