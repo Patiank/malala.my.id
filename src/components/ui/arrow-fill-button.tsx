@@ -167,8 +167,6 @@ function ArrowFillButton({
     ? "size-[1.5vw] max-[1025px]:size-[4vw] max-md:size-[5vw]"
     : "size-3.5 sm:size-4";
 
-  const widthClasses = className.includes("w-") ? "" : "w-fit min-w-fit";
-
   return (
     <a
       href={href}
@@ -178,7 +176,7 @@ function ArrowFillButton({
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerCancel}
-      className={`group relative inline-flex ${widthClasses} max-w-none cursor-pointer items-center justify-center overflow-hidden rounded-full border border-(--btn-bg) whitespace-nowrap font-medium leading-none [text-rendering:geometricPrecision] [--circle-inset-y:calc((100%-var(--icon-circle))/2)] ${sizeClasses} ${
+      className={`group relative inline-flex w-fit min-w-fit max-w-none cursor-pointer items-center justify-center overflow-hidden rounded-full border border-(--btn-bg) whitespace-nowrap font-medium leading-none [text-rendering:geometricPrecision] [--circle-inset-y:calc((100%-var(--icon-circle))/2)] ${sizeClasses} ${
         usesUtilityBackground ? "" : "bg-(--btn-bg)"
       } text-(--btn-text) ${className}`}
       style={{
@@ -209,7 +207,7 @@ function ArrowFillButton({
 
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 z-2 flex items-center justify-center ${contentPaddingClasses} text-(--btn-fill-text) [clip-path:inset(var(--circle-inset-y)_var(--icon-right)_var(--circle-inset-y)_calc(100%-var(--icon-right)-var(--icon-circle)))] ${
+        className={`pointer-events-none absolute inset-0 z-2 flex items-center ${contentPaddingClasses} text-(--btn-fill-text) [clip-path:inset(var(--circle-inset-y)_var(--icon-right)_var(--circle-inset-y)_calc(100%-var(--icon-right)-var(--icon-circle)))] ${
           isReady
             ? "transition-all duration-450 ease-[cubic-bezier(0.785,0.135,0.15,0.86)] motion-reduce:transition-none group-hover:text-(--btn-fill-text-hover) group-hover:[clip-path:inset(0_0_0_0)] group-data-[pressed=true]:text-(--btn-fill-text-hover) group-data-[pressed=true]:[clip-path:inset(0_0_0_0)]"
             : ""
