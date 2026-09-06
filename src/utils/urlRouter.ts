@@ -33,7 +33,7 @@ export function getDrawerPath(type: DrawerType): string {
     case 'download':
       return '/unduhan';
     case 'hotinfo':
-      return '/hotinfo';
+      return '/berita';
     case 'formai':
       return '/rencana-liburan';
     case 'chat':
@@ -170,11 +170,12 @@ export function findItemBySlugOrId<T extends { id: string; title?: string; title
  * Generate deep-link URL for an item
  */
 export function getItemDeepLink(
-  category: 'destinasi' | 'kebudayaan' | 'kuliner' | 'event' | 'oleh-oleh' | 'hotinfo',
+  category: 'destinasi' | 'kebudayaan' | 'kuliner' | 'event' | 'oleh-oleh' | 'hotinfo' | 'berita',
   item: { id: string; title?: string; titleEn?: string }
 ): string {
+  const cat = (category === 'hotinfo' || category === 'berita') ? 'berita' : category;
   const slug = item.title ? slugify(item.title) : item.id;
-  return `/${category}/${slug}`;
+  return `/${cat}/${slug}`;
 }
 
 /**

@@ -22,6 +22,9 @@ MALALA adalah platform digital pariwisata Sumatera Barat terlengkap yang mengint
 - [Kalender 26 Event & Festival 2026](https://malala.my.id/event): 26 jadwal resmi Karisma Event Nusantara (KEN) & Calender of Events
 - [Peta Wisata Interaktif](https://malala.my.id/#peta-interaktif): Peta interaktif sebaran destinasi dan koordinat GPS di Ranah Minang
 - [AI Travel Itinerary Planner](https://malala.my.id/#ai-planner): Asisten cerdas Uni Mala untuk rekomendasi perjalanan personal
+- [Hot Info & Berita Terkini](https://malala.my.id/berita): Liputan berita pariwisata real-time, akses jalur transportasi, dan informasi festival
+- [RSS Feed Berita](https://malala.my.id/rss.xml): Feed sindikasi berita pariwisata Sumatera Barat
+- [Google News Sitemap](https://malala.my.id/news-sitemap.xml): XML sitemap Google News
 - [Unduh E-Book Panduan Wisata PDF](https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf): E-Book panduan resmi pariwisata Sumatera Barat
 - [Unduh E-Book Kalender Event 2026 PDF](https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf): Booklet jadwal event dan festival pariwisata 2026
 - [Basis Pengetahuan Lengkap LLM](https://malala.my.id/llms-full.txt): Full text knowledge base ramah LLM & AI agent

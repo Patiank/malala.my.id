@@ -3,14 +3,23 @@
 
 User-agent: *
 Allow: /
+Allow: /berita
+Allow: /berita/
+Allow: /hotinfo
+Allow: /hotinfo/
 Allow: /ads.txt
 Allow: /sitemap.xml
+Allow: /news-sitemap.xml
+Allow: /rss.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /downloads/
 
 # Standard Search Crawlers
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
 Allow: /
 
 User-agent: Googlebot-Image
@@ -66,3 +75,4 @@ User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://malala.my.id/sitemap.xml
+Sitemap: https://malala.my.id/news-sitemap.xml

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, writeBatch } from 'firebase/firestore';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../src/data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../src/data/content';
 
 const firebaseConfig = {
   projectId: 'malala-my-id',
@@ -45,7 +45,14 @@ async function syncCatalog() {
   }
   console.log('\nSelesai: ' + EVENTS_SCHEDULE.length + ' event tersinkron.');
 
-  console.log('\nSINKRONISASI SELESAI: Seluruh 142 item katalog kini LIVE di Firestore!');
+  console.log('Sinkronisasi ' + HOT_INFO_ITEMS.length + ' Hot Info & Berita Terbaru...');
+  for (const item of HOT_INFO_ITEMS) {
+    await setDoc(doc(db, 'hotinfo', item.id), item, { merge: true });
+    process.stdout.write('.');
+  }
+  console.log('\nSelesai: ' + HOT_INFO_ITEMS.length + ' berita tersinkron.');
+
+  console.log('\nSINKRONISASI SELESAI: Seluruh 148 item katalog & berita kini LIVE di Firestore!');
   process.exit(0);
 }
 

@@ -80,6 +80,7 @@ interface BackupData {
   eventItems: EventItem[];
   downloads?: any[];
   hotInfo?: any[];
+  hotInfoItems?: any[];
 }
 
 function escapeXml(unsafe: string): string {
@@ -113,6 +114,7 @@ function main() {
   const cultureItems = backup.cultureItems || [];
   const culinaryItems = backup.culinaryItems || [];
   const eventItems = backup.eventItems || [];
+  const hotInfoItems: any[] = backup.hotInfoItems || backup.hotInfo || [];
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -124,14 +126,23 @@ function main() {
 
 User-agent: *
 Allow: /
+Allow: /berita
+Allow: /berita/
+Allow: /hotinfo
+Allow: /hotinfo/
 Allow: /ads.txt
 Allow: /sitemap.xml
+Allow: /news-sitemap.xml
+Allow: /rss.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /downloads/
 
 # Standard Search Crawlers
 User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
 Allow: /
 
 User-agent: Googlebot-Image
@@ -187,6 +198,7 @@ User-agent: cohere-ai
 Allow: /
 
 Sitemap: https://malala.my.id/sitemap.xml
+Sitemap: https://malala.my.id/news-sitemap.xml
 `;
 
   fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsTxt, 'utf-8');
@@ -246,6 +258,12 @@ Sitemap: https://malala.my.id/sitemap.xml
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://malala.my.id/berita</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo</loc>
@@ -359,9 +377,79 @@ Sitemap: https://malala.my.id/sitemap.xml
   </url>\n`;
   });
 
+  // Append News Articles (Berita Terkini)
+  hotInfoItems.forEach((n: any) => {
+    const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    sitemapXml += `  <url>
+    <loc>https://malala.my.id/berita/${slug}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>${n.imageUrl ? `
+    <image:image>
+      <image:loc>${escapeXml(n.imageUrl)}</image:loc>
+      <image:title>${escapeXml(n.title)}</image:title>
+    </image:image>` : ''}
+  </url>\n`;
+  });
+
   sitemapXml += `</urlset>\n`;
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf-8');
-  console.log('✅ public/sitemap.xml berhasil dibuat.');
+  console.log('✅ public/sitemap.xml berhasil dibuat (termasuk artikel berita).');
+
+  // ==========================================
+  // 2B. GENERATE public/news-sitemap.xml (Google News Protocol)
+  // ==========================================
+  let newsSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+`;
+  hotInfoItems.forEach((n: any) => {
+    const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    newsSitemapXml += `  <url>
+    <loc>https://malala.my.id/berita/${slug}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>MALALA Pariwisata Sumbar</news:name>
+        <news:language>id</news:language>
+      </news:publication>
+      <news:publication_date>${today}T06:00:00+07:00</news:publication_date>
+      <news:title>${escapeXml(n.title)}</news:title>
+    </news:news>
+  </url>\n`;
+  });
+  newsSitemapXml += `</urlset>\n`;
+  fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsSitemapXml, 'utf-8');
+  console.log('✅ public/news-sitemap.xml berhasil dibuat.');
+
+  // ==========================================
+  // 2C. GENERATE public/rss.xml (RSS 2.0 Feed)
+  // ==========================================
+  let rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>MALALA News — Berita &amp; Info Pariwisata Terkini Sumatera Barat</title>
+  <link>https://malala.my.id/berita</link>
+  <description>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, akses jalan raya, dan regulasi pariwisata di Sumatera Barat &amp; Nasional.</description>
+  <language>id-ID</language>
+  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+  <atom:link href="https://malala.my.id/rss.xml" rel="self" type="application/rss+xml" />
+`;
+  hotInfoItems.forEach((n: any) => {
+    const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const url = `https://malala.my.id/berita/${slug}`;
+    const snippet = (n.description || '').substring(0, 300) + '...';
+    rssXml += `  <item>
+    <title>${escapeXml(n.title)}</title>
+    <link>${url}</link>
+    <guid isPermaLink="true">${url}</guid>
+    <description>${escapeXml(snippet)}</description>
+    <category>${escapeXml(n.category || 'Pariwisata')}</category>
+    <pubDate>${new Date().toUTCString()}</pubDate>
+  </item>\n`;
+  });
+  rssXml += `</channel>\n</rss>\n`;
+  fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
+  console.log('✅ public/rss.xml berhasil dibuat.');
 
   // ==========================================
   // 3. GENERATE public/llms.txt (GEO Summary Standard)
@@ -390,6 +478,9 @@ MALALA adalah platform digital pariwisata Sumatera Barat terlengkap yang mengint
 - [Kalender 26 Event & Festival 2026](https://malala.my.id/event): 26 jadwal resmi Karisma Event Nusantara (KEN) & Calender of Events
 - [Peta Wisata Interaktif](https://malala.my.id/#peta-interaktif): Peta interaktif sebaran destinasi dan koordinat GPS di Ranah Minang
 - [AI Travel Itinerary Planner](https://malala.my.id/#ai-planner): Asisten cerdas Uni Mala untuk rekomendasi perjalanan personal
+- [Hot Info & Berita Terkini](https://malala.my.id/berita): Liputan berita pariwisata real-time, akses jalur transportasi, dan informasi festival
+- [RSS Feed Berita](https://malala.my.id/rss.xml): Feed sindikasi berita pariwisata Sumatera Barat
+- [Google News Sitemap](https://malala.my.id/news-sitemap.xml): XML sitemap Google News
 - [Unduh E-Book Panduan Wisata PDF](https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf): E-Book panduan resmi pariwisata Sumatera Barat
 - [Unduh E-Book Kalender Event 2026 PDF](https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf): Booklet jadwal event dan festival pariwisata 2026
 - [Basis Pengetahuan Lengkap LLM](https://malala.my.id/llms-full.txt): Full text knowledge base ramah LLM & AI agent
@@ -489,6 +580,29 @@ SECTION 4: KALENDER EVENT & FESTIVAL (20 CALENDAR OF EVENTS 2026)
 ${ev.description}
 - English Description:
 ${ev.descriptionEn || ev.description}
+`;
+  });
+
+  llmsFullTxt += `
+================================================================================
+SECTION 5: HOT INFO & BERITA TERKINI PARIWISATA (${hotInfoItems.length} ARTIKEL)
+================================================================================
+`;
+
+  hotInfoItems.forEach((n: any, idx: number) => {
+    const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    llmsFullTxt += `
+### ${idx + 1}. ${n.title}
+- URL: https://malala.my.id/berita/${slug}
+- ID: ${n.id}
+- Kategori: ${n.category || 'Pariwisata'}
+- Wilayah: ${n.tag || 'Sumbar'}
+- Tanggal: ${n.date}
+- Poin Utama: ${(n.highlights || []).join(' • ')}
+- Tips: ${n.tips || '-'}
+- Lokasi: ${n.locationName || '-'}
+- Isi Berita Lengkap:
+${n.description}
 `;
   });
 

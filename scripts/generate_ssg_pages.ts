@@ -22,6 +22,36 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, '&#039;');
 }
 
+function injectInternalLinks(text: string): string {
+  const links: [RegExp, string][] = [
+    [/\bLembah Anai\b/g, '<a href="/destinasi/air-terjun-lembah-anai" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Lembah Anai</a>'],
+    [/\bBukittinggi\b/g, '<a href="/destinasi/jam-gadang-bukittinggi" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Bukittinggi</a>'],
+    [/\bJam Gadang\b/g, '<a href="/destinasi/jam-gadang-bukittinggi" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Jam Gadang</a>'],
+    [/\bPandai Sikek\b/g, '<a href="/kebudayaan/songket-pandai-sikek" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Pandai Sikek</a>'],
+    [/\bPacu Jawi\b/g, '<a href="/event/pacu-jawi" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Pacu Jawi</a>'],
+    [/\bFestival Tabuik\b/g, '<a href="/event/pesona-budaya-tabuik" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Festival Tabuik</a>'],
+    [/\bTabuik\b/g, '<a href="/event/pesona-budaya-tabuik" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Tabuik</a>'],
+    [/\bDanau Singkarak\b/g, '<a href="/destinasi/danau-singkarak" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Danau Singkarak</a>'],
+    [/\bNasi Kapau\b/g, '<a href="/kuliner/nasi-kapau" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Nasi Kapau</a>'],
+    [/\bSala Lauak\b/g, '<a href="/kuliner/sala-lauak" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Sala Lauak</a>'],
+    [/\bLamang Tapai\b/g, '<a href="/kuliner/lamang-tapai" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Lamang Tapai</a>'],
+    [/\bSitinjau Lauik\b/g, '<a href="/destinasi/danau-diatas-dan-danau-dibawah" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Sitinjau Lauik</a>']
+  ];
+
+  let result = text;
+  for (const [regex, replacement] of links) {
+    let replaced = false;
+    result = result.replace(regex, (match) => {
+      if (!replaced) {
+        replaced = true;
+        return replacement;
+      }
+      return match;
+    });
+  }
+  return result;
+}
+
 const FAQS = [
   {
     question: "Apa saja tempat wisata hits di Sumbar 2026 yang wajib dikunjungi?",
@@ -163,8 +193,8 @@ function generateHtmlPage(
   // Inject Pre-rendered Body Content inside <div id="root">
   if (options.bodyContent) {
     html = html.replace(
-      '<div id="root"></div>',
-      `<div id="root">${options.bodyContent}</div>`
+      /<div id="root">[\s\S]*?<\/div>/i,
+      `<div id="root">\n${options.bodyContent}\n</div>`
     );
   }
 
@@ -200,6 +230,7 @@ export function generateSsg() {
   const cultureItems: any[] = backupData.cultureItems || [];
   const culinaryItems: any[] = backupData.culinaryItems || [];
   const eventItems: any[] = backupData.eventItems || [];
+  const hotInfoItems: any[] = backupData.hotInfoItems || backupData.hotInfo || [];
 
   // 1. UPDATE HOMEPAGE WITH RICH FAQ & ORG SCHEMAS
   console.log('📄 Mengoptimasi Homepage dengan FAQPage Schema & Organization JSON-LD...');
@@ -213,6 +244,7 @@ export function generateSsg() {
           <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
           <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kuliner Autentik &rarr;</a>
           <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kalender Event 2026 &rarr;</a>
+          <a href="/berita" style="color: #dc2626; font-weight: 600; text-decoration: none;">Berita & Info Terkini &rarr;</a>
           <a href="/unduhan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Download E-Book PDF &rarr;</a>
         </nav>
       </header>
@@ -428,7 +460,68 @@ export function generateSsg() {
   });
   writePage(distDir, 'event', eventPage);
 
-  // 6. GENERATE OTHER MAIN PAGES (oleh-oleh, unduhan, hotinfo, peta, rencana-liburan, tanya-mala)
+  // 5B. GENERATE BERITA & HOT INFO DIRECTORY PAGE (/berita & /hotinfo)
+  console.log('📄 Mengoptimasi Halaman Direktori /berita & /hotinfo dengan ' + hotInfoItems.length + ' Liputan Berita Terkini...');
+  const newsCatalogHtml = `
+    <div style="max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
+      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
+        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Berita Pariwisata</span>
+      </nav>
+      <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+          <span style="background: #fee2e2; color: #dc2626; font-size: 0.85rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 9999px;">HOT INFO &amp; BERITA RESMI</span>
+          <span style="font-size: 0.9rem; color: #64748b;">Update Berkala Real-Time 24 Jam</span>
+        </div>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Kabar &amp; Berita Pariwisata Terkini Sumatera Barat 2026</h1>
+        <p style="font-size: 1.15rem; color: #475569;">Liputan berita terpercaya seputar aksesibilitas jalur transportasi, perhelatan Karisma Event Nusantara (KEN), kebijakan pariwisata nasional, dan panduan liburan di Ranah Minang.</p>
+      </header>
+      <section style="display: flex; flex-direction: column; gap: 2rem;">
+        ${hotInfoItems.map((n: any) => {
+          const slug = slugify(n.title);
+          const paragraphs = (n.description || '').split('\n\n').filter(Boolean);
+          const lead = paragraphs[0] || '';
+          return `
+            <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+              <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                <span style="background: #fee2e2; color: #dc2626; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase;">${escapeHtml(n.category || 'Pariwisata')}</span>
+                <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px;">${escapeHtml(n.tag || 'Sumbar')}</span>
+                <time style="font-size: 0.85rem; color: #64748b; margin-left: auto;">🗓️ ${escapeHtml(n.date || 'Terkini')}</time>
+              </div>
+              <h2 style="font-size: 1.45rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.35;">
+                <a href="/berita/${slug}" style="color: #0f172a; text-decoration: none;">${escapeHtml(n.title)}</a>
+              </h2>
+              <p style="color: #475569; font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.7;">${escapeHtml(lead.substring(0, 250))}...</p>
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                <a href="/berita/${slug}" style="color: #dc2626; font-weight: 700; text-decoration: none; font-size: 0.95rem;">Baca Liputan Lengkap &rarr;</a>
+                <span style="font-size: 0.85rem; color: #94a3b8;">📍 ${escapeHtml(n.locationName || 'Sumatera Barat')}</span>
+              </div>
+            </article>
+          `;
+        }).join('')}
+      </section>
+    </div>
+  `;
+
+  const newsPage = generateHtmlPage(baseTemplate, {
+    title: 'Berita Pariwisata Sumatera Barat Terkini: Info Rute, Event & Regulasi 2026 | MALALA',
+    description: 'Kumpulan berita pariwisata Sumatera Barat dan nasional terpercaya. Info status jalur tol Padang-Sicincin, Sitinjau Lauik, jadwal festival KEN, dan kebijakan ekowisata.',
+    canonicalUrl: 'https://malala.my.id/berita',
+    jsonLdList: [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Kabar & Berita Pariwisata Terkini Sumatera Barat",
+        "description": "Liputan berita terpercaya seputar aksesibilitas jalur transportasi, perhelatan Karisma Event Nusantara (KEN), kebijakan pariwisata nasional, dan panduan liburan di Ranah Minang.",
+        "url": "https://malala.my.id/berita"
+      },
+      buildFaqJsonLd()
+    ],
+    bodyContent: newsCatalogHtml
+  });
+  writePage(distDir, 'berita', newsPage);
+  writePage(distDir, 'hotinfo', newsPage);
+
+  // 6. GENERATE OTHER MAIN PAGES (oleh-oleh, unduhan, peta, rencana-liburan, tanya-mala)
   const otherPages = [
     {
       route: 'oleh-oleh',
@@ -443,13 +536,6 @@ export function generateSsg() {
       description: 'Download peta wisata Sumatera Barat PDF gratis, download buku panduan pariwisata Sumbar 2026 PDF (113 halaman), serta kalender event wisata beresolusi tinggi.',
       h1: 'Unduh Gratis E-Booklet & Peta Wisata Sumatera Barat 2026',
       content: '<p>Unduh gratis e-booklet panduan resmi pariwisata Sumatera Barat 113 halaman beresolusi tinggi dan kalender event 2026 siap cetak.</p>'
-    },
-    {
-      route: 'hotinfo',
-      title: 'Hot Info & Berita Pariwisata Terkini Sumbar 2026 | MALALA',
-      description: 'Kabar dan berita pariwisata real-time seputar destinasi, event, dan akses liburan di Sumatera Barat.',
-      h1: 'Kabar & Berita Pariwisata Terkini Sumatera Barat',
-      content: '<p>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, dan regulasi pariwisata di Sumatera Barat.</p>'
     },
     {
       route: 'peta',
@@ -836,7 +922,135 @@ export function generateSsg() {
   });
   console.log(`✅ ${evCount} Halaman SSG Event Lengkap Berhasil Dibuat.`);
 
-  console.log(`🎉 STATIC SITE GENERATION (SSG) SELESAI: Seluruh 117 Halaman Diperkaya Konten Nyata Tanpa 'display:none' Siap Diindeks Google!`);
+  // 11. GENERATE ALL NEWS ARTICLES (/berita/[slug] and /hotinfo/[slug])
+  let newsCount = 0;
+  hotInfoItems.forEach((n: any) => {
+    const slug = slugify(n.title);
+    if (!slug) return;
+
+    const pageTitle = `${n.title} | Berita Pariwisata MALALA`;
+    const paragraphs = (n.description || '').split('\n\n').filter(Boolean);
+    const lead = paragraphs[0] || n.description || '';
+    const pageDesc = (lead.substring(0, 155) + '...').replace(/\n/g, ' ');
+    const canonicalUrl = `https://malala.my.id/berita/${slug}`;
+    const ogImage = n.imageUrl || 'https://malala.my.id/og-image.jpg';
+
+    const newsJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalUrl
+      },
+      "headline": n.title,
+      "description": pageDesc,
+      "image": [ogImage],
+      "datePublished": "2026-09-06T08:00:00+07:00",
+      "dateModified": "2026-09-06T08:00:00+07:00",
+      "author": {
+        "@type": "Organization",
+        "name": "Redaksi Jurnalistik MALALA",
+        "url": "https://malala.my.id"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MALALA",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://malala.my.id/favicon.png"
+        }
+      },
+      "articleSection": n.category || "Pariwisata",
+      "inLanguage": "id-ID"
+    };
+
+    const breadcrumbJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 2, "name": "Berita Pariwisata", "item": "https://malala.my.id/berita" },
+        { "@type": "ListItem", "position": 3, "name": n.title, "item": canonicalUrl }
+      ]
+    };
+
+    const bodyContent = `
+      <article style="max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.85;">
+        <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
+          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/berita" style="color: #64748b; text-decoration: none;">Berita &amp; Info Terkini</a> &gt; 
+          <span style="color: #0f172a; font-weight: 600;">${escapeHtml(n.title)}</span>
+        </nav>
+
+        <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
+          <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap;">
+            <span style="background: #fee2e2; color: #dc2626; font-size: 0.8rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase;">${escapeHtml(n.category || 'Pariwisata')}</span>
+            <span style="background: #f1f5f9; color: #475569; font-size: 0.8rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 9999px;">Wilayah: ${escapeHtml(n.tag || 'Sumbar')}</span>
+            <time style="font-size: 0.85rem; color: #64748b; margin-left: auto;">🗓️ ${escapeHtml(n.date || 'Terkini')}</time>
+          </div>
+          <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem; line-height: 1.25;">${escapeHtml(n.title)}</h1>
+          <div style="font-size: 0.9rem; color: #64748b; display: flex; align-items: center; gap: 0.5rem;">
+            <span>Liputan: <strong>Redaksi Jurnalistik MALALA</strong></span> • 
+            <span>Informasi Resmi Terverifikasi</span>
+          </div>
+        </header>
+
+        ${n.highlights && n.highlights.length > 0 ? `
+          <div style="background: #f8fafc; border-left: 4px solid #dc2626; padding: 1.25rem 1.5rem; margin-bottom: 2rem; border-radius: 0 0.75rem 0.75rem 0;">
+            <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">Poin Utama Informasi:</h3>
+            <ul style="margin: 0; padding-left: 1.25rem; color: #334155; font-size: 0.95rem;">
+              ${n.highlights.map((h: string) => `<li style="margin-bottom: 0.35rem;">${escapeHtml(h)}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        ${n.imageUrl ? `
+          <div style="margin-bottom: 2rem; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);">
+            <img src="${escapeHtml(n.imageUrl)}" alt="${escapeHtml(n.title)}" style="width: 100%; max-height: 500px; object-fit: cover;" loading="lazy" />
+          </div>
+        ` : ''}
+
+        <section style="font-size: 1.125rem; color: #334155; margin-bottom: 2.5rem;">
+          ${paragraphs.map((p: string) => `<p style="margin-bottom: 1.5rem; text-align: justify;">${injectInternalLinks(escapeHtml(p))}</p>`).join('')}
+        </section>
+
+        ${n.tips ? `
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+            <h3 style="font-size: 1rem; font-weight: 700; color: #1e40af; margin-bottom: 0.35rem;">💡 Imbauan &amp; Panduan Perjalanan:</h3>
+            <p style="color: #1e3a8a; font-size: 0.95rem; margin: 0;">${escapeHtml(n.tips)}</p>
+          </div>
+        ` : ''}
+
+        ${n.locationName ? `
+          <div style="background: #f1f5f9; padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; color: #475569;">
+            📍 <strong>Lokasi Terkait:</strong> ${escapeHtml(n.locationName)}
+            ${n.actionUrl ? ` • <a href="${escapeHtml(n.actionUrl)}" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">Buka di Google Maps</a>` : ''}
+          </div>
+        ` : ''}
+
+        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <a href="/berita" style="color: #dc2626; font-weight: 700; text-decoration: none;">&larr; Indeks Berita Pariwisata</a>
+          <a href="/" style="color: #64748b; font-weight: 600; text-decoration: none;">Kembali ke Beranda Malala &rarr;</a>
+        </footer>
+      </article>
+    `;
+
+    const html = generateHtmlPage(baseTemplate, {
+      title: pageTitle,
+      description: pageDesc,
+      canonicalUrl,
+      imageUrl: ogImage,
+      jsonLdList: [newsJsonLd, breadcrumbJsonLd],
+      bodyContent
+    });
+
+    writePage(distDir, `berita/${slug}`, html);
+    writePage(distDir, `hotinfo/${slug}`, html);
+    newsCount++;
+  });
+  console.log(`✅ ${newsCount} Halaman SSG Berita Lengkap (/berita & /hotinfo) Berhasil Dibuat.`);
+
+  console.log(`🎉 STATIC SITE GENERATION (SSG) SELESAI: Seluruh Halaman Diperkaya Konten Nyata Tanpa 'display:none' Siap Diindeks Google!`);
 }
 
 // Auto-run if executed via CLI
