@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "tsx scripts/export_all_pages_jpg.ts && vite build && tsx scripts/generate_ssg_pages.ts && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "vite build && tsx scripts/generate_ssg_pages.ts && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "export:booklet": "tsx scripts/export_all_pages_jpg.ts",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
     "push:github": "git add . && git commit -m \"Update Malala app\" && git push origin main",
-    "push:firebase": "npm run build && npx firebase-tools deploy",
-    "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && npx firebase-tools deploy",
+    "push:firebase": "npm run build && firebase deploy --only hosting",
+    "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && firebase deploy --only hosting",
     "sync-to-github": "tsx scripts/sync_to_github.ts"
   },
   "dependencies": {

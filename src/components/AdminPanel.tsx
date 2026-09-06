@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem, PendingEventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram, Image as ImageIcon, ImagePlus, Loader2 } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult, generateSocialMediaDigest, SocialMediaDigest } from '../utils/ai';
 import { pingSearchEngineIndexNow } from '../utils/seo';
 import { EVENTS_SCHEDULE } from '../data/content';
+import { uploadCatalogImage } from '../utils/imageOptimizer';
 
 interface AdminPanelProps {
   dataStore: any;
@@ -177,6 +178,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminError, setAdminError] = useState<string | null>(null);
   const [adminSuccess, setAdminSuccess] = useState<string | null>(null);
   const [adminSearchQuery, setAdminSearchQuery] = useState<string>('');
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
+  const handleCatalogImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      setIsUploadingImage(true);
+      setUploadProgress(10);
+      const url = await uploadCatalogImage(file, adminTab, (pct) => setUploadProgress(pct));
+      setFormData((prev: any) => ({ ...prev, imageUrl: url }));
+      showSuccess('📸 Gambar berhasil dioptimasi (WebP) & diunggah!');
+    } catch (err: any) {
+      console.error('Upload catalog image error:', err);
+      setAdminError('Gagal memproses/mengunggah gambar: ' + (err?.message || 'Error'));
+    } finally {
+      setIsUploadingImage(false);
+      setUploadProgress(0);
+    }
+  };
 
   // Date Range Calendar Picker state
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
@@ -2588,9 +2609,142 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
 
               {adminTab !== 'download' && (
                 <>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">URL Gambar (Wajib)</label>
-                    <input type="text" name="imageUrl" value={formData.imageUrl || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                  <div className="bg-neutral-50 rounded-xl p-3.5 border border-neutral-200/90 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
+                        <ImageIcon className="w-3.5 h-3.5 text-black" />
+                        Gambar Item Katalog (Wajib)
+                      </label>
+                      <span className="text-[10px] text-neutral-500 font-medium">
+                        Dukungan: Upload File (WebP Auto-Compress) & URL Langsung
+                      </span>
+                    </div>
+
+                    {/* Image Preview & Upload Controls */}
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
+                      {/* Left: Thumbnail Preview */}
+                      <div className="md:col-span-4 flex flex-col items-center">
+                        <div className="w-full h-36 rounded-lg border-2 border-dashed border-neutral-300 bg-white flex flex-col items-center justify-center overflow-hidden relative group shadow-inner">
+                          {formData.imageUrl ? (
+                            <>
+                              <img
+                                src={formData.imageUrl}
+                                alt="Preview"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                onError={(e) => {
+                                  (e.target as HTMLElement).style.display = 'none';
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => setFormData((prev: any) => ({ ...prev, imageUrl: '' }))}
+                                  className="bg-red-600 text-white p-1.5 rounded-full hover:bg-red-700 shadow-lg text-[10px] flex items-center gap-1 font-bold px-2.5"
+                                >
+                                  <Trash2 className="w-3 h-3" /> Hapus
+                                </button>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-center p-3 text-neutral-400">
+                              <ImageIcon className="w-8 h-8 mx-auto mb-1 opacity-40" />
+                              <p className="text-[10px] font-medium leading-tight">Belum ada gambar</p>
+                              <p className="text-[9px] text-neutral-400 mt-0.5">Pilih berkas atau isi URL</p>
+                            </div>
+                          )}
+
+                          {isUploadingImage && (
+                            <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white p-2">
+                              <Loader2 className="w-6 h-6 animate-spin text-amber-400 mb-1" />
+                              <span className="text-[10px] font-bold">Mengunggah ({uploadProgress}%)</span>
+                              <div className="w-3/4 bg-neutral-700 h-1.5 rounded-full mt-1.5 overflow-hidden">
+                                <div
+                                  className="bg-amber-400 h-full transition-all duration-300"
+                                  style={{ width: `${uploadProgress}%` }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {formData.imageUrl && (
+                          <div className="mt-1 flex items-center justify-between w-full px-1">
+                            <span className="text-[9px] text-emerald-600 font-semibold flex items-center gap-1">
+                              <CheckCircle2 className="w-2.5 h-2.5" /> Gambar Terhubung
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setFormData((prev: any) => ({ ...prev, imageUrl: '' }))}
+                              className="text-[9px] text-red-500 hover:underline font-medium"
+                            >
+                              Ganti / Hapus
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Right: Dual-Mode Input (Upload File + URL Input) */}
+                      <div className="md:col-span-8 space-y-2.5">
+                        {/* Option A: Choose File / Upload */}
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase text-neutral-700 mb-1 flex items-center gap-1">
+                            <ImagePlus className="w-3 h-3 text-neutral-600" />
+                            Opsi 1: Pilih Berkas dari Komputer / HP (Choose File)
+                          </label>
+                          <div className="flex items-center gap-2">
+                            <label className="flex-1 cursor-pointer">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleCatalogImageFile}
+                                disabled={isUploadingImage}
+                                className="hidden"
+                                id="catalog-image-file-input"
+                              />
+                              <div className="w-full bg-white hover:bg-neutral-50 border border-neutral-300 hover:border-neutral-400 text-neutral-700 font-medium px-3 py-2 rounded-lg text-xs flex items-center justify-center gap-2 transition-all shadow-sm">
+                                {isUploadingImage ? (
+                                  <>
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin text-neutral-600" />
+                                    <span>Memproses gambar & WebP...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <UploadCloud className="w-4 h-4 text-neutral-600" />
+                                    <span>Pilih Foto dari Galeri / Berkas</span>
+                                  </>
+                                )}
+                              </div>
+                            </label>
+                          </div>
+                          <p className="text-[9px] text-neutral-500 mt-1">
+                            💡 Foto otomatis dikompres ke format WebP ringan berkualitas tinggi sebelum disimpan.
+                          </p>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="relative flex items-center justify-center py-0.5">
+                          <div className="border-t border-neutral-200 w-full"></div>
+                          <span className="bg-neutral-50 px-2 text-[9px] font-bold text-neutral-400 uppercase tracking-wider absolute">
+                            Atau
+                          </span>
+                        </div>
+
+                        {/* Option B: Direct Image URL */}
+                        <div>
+                          <label className="block text-[10px] font-bold uppercase text-neutral-700 mb-1">
+                            Opsi 2: Tautan URL Gambar (Cloudinary, Google Drive, Unsplash, dll)
+                          </label>
+                          <input
+                            type="text"
+                            name="imageUrl"
+                            value={formData.imageUrl || ''}
+                            onChange={handleChange}
+                            placeholder="https://images.unsplash.com/... atau https://res.cloudinary.com/..."
+                            className="w-full bg-white border border-neutral-300 focus:border-black focus:ring-1 focus:ring-black rounded-lg p-2 text-xs transition-colors font-mono"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div>
