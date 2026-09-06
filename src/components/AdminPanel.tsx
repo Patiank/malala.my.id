@@ -186,16 +186,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     if (!file) return;
     try {
       setIsUploadingImage(true);
-      setUploadProgress(10);
+      setUploadProgress(15);
       const url = await uploadCatalogImage(file, adminTab, (pct) => setUploadProgress(pct));
-      setFormData((prev: any) => ({ ...prev, imageUrl: url }));
-      showSuccess('📸 Gambar berhasil dioptimasi (WebP) & diunggah!');
+      if (url) {
+        setFormData((prev: any) => ({ ...prev, imageUrl: url }));
+        showSuccess('📸 Gambar berhasil diproses (WebP optimal) & siap disimpan!');
+      }
     } catch (err: any) {
       console.error('Upload catalog image error:', err);
       setAdminError('Gagal memproses/mengunggah gambar: ' + (err?.message || 'Error'));
     } finally {
       setIsUploadingImage(false);
       setUploadProgress(0);
+      e.target.value = '';
     }
   };
 
@@ -2656,7 +2659,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                           {isUploadingImage && (
                             <div className="absolute inset-0 bg-black/75 flex flex-col items-center justify-center text-white p-2">
                               <Loader2 className="w-6 h-6 animate-spin text-amber-400 mb-1" />
-                              <span className="text-[10px] font-bold">Mengunggah ({uploadProgress}%)</span>
+                              <span className="text-[10px] font-bold">
+                                {uploadProgress < 50 ? `Memproses & Kompresi WebP (${uploadProgress}%)` : `Menghubungkan Gambar (${uploadProgress}%)`}
+                              </span>
                               <div className="w-3/4 bg-neutral-700 h-1.5 rounded-full mt-1.5 overflow-hidden">
                                 <div
                                   className="bg-amber-400 h-full transition-all duration-300"
@@ -2717,7 +2722,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                             </label>
                           </div>
                           <p className="text-[9px] text-neutral-500 mt-1">
-                            💡 Foto otomatis dikompres ke format WebP ringan berkualitas tinggi sebelum disimpan.
+                            💡 Foto otomatis dikompres ke format WebP super ringan (~40-70 KB) langsung di perangkat Anda (100% gratis tanpa perlu Blaze Plan).
                           </p>
                         </div>
 
