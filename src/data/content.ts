@@ -23,175 +23,175 @@ export const BG_IMAGE_2 = getDirectDriveUrl(RAW_BG_IMAGE_2);
 export const HOT_INFO_ITEMS: HotInfoItem[] = [
   {
     id: 'hi1',
-    title: 'Uji Laik Jalan Tol Padang-Sicincin 36,6 Km Tuntas: Waktu Tempuh Padang ke Bukittinggi Bakal Makin Singkat',
-    titleEn: 'Padang-Sicincin 36.6 Km Toll Road Test Complete: Slashes Padang-Bukittinggi Driving Time',
+    title: 'Uji Laik Fungsi Tol Padang-Sicincin 36,6 Km Tuntas: Waktu Tempuh Padang ke Bukittinggi Terpangkas Jadi 45 Menit',
+    titleEn: 'Padang-Sicincin 36.6 Km Expressway Testing Complete: Slashes Padang-Bukittinggi Travel Time to 45 Minutes',
     category: 'Pariwisata Sumatera Barat',
     categoryEn: 'West Sumatra Tourism',
     date: '06 September 2026',
     dateEn: 'September 06, 2026',
     imageUrl: '',
-    description: "Kabar gembira buat traveler yang sering terjebak macet antara Padang dan Bukittinggi! Berdasarkan laporan resmi dari PT Hutama Karya bersama BPTD Sumatera Barat, fisik jalan tol Padang-Sicincin sepanjang 36,6 km sudah menyelesaikan seluruh rangkaian uji laik fungsi dan bersiap dibuka untuk mobilitas publik. Jika biasanya perjalanan memakan waktu 2 hingga 2,5 jam lewat jalan arteri nasional, lewat jalan tol baru ini jarak tempuh dipangkas drastis menjadi hanya sekitar 35 hingga 45 menit saja.\n\nJalur tol pertama di Ranah Minang ini dilengkapi dua gerbang tol utama (Kapalo Hilalang dan Tarok City) serta rest area beratap gonjong Rumah Gadang yang mengalokasikan 70 persen kiosnya bagi sentra kuliner dan suvenir UMKM lokal.\n\n🔍 Catatan Verifikasi: Sempat beredar rumor di media sosial mengenai tarif tol yang disebut-sebut sangat mahal. Pihak pengelola menegaskan bahwa kabar tersebut tidak berdasar—pada masa awal uji coba operasional, jalur tol ini rencananya akan dibuka secara fungsional dengan tarif Rp 0 alias gratis sementara waktu, sebelum besaran tarif resmi disahkan oleh Kementerian PU.\n\nTips buat kamu: Jika ingin melintas saat uji coba dibuka, pastikan kartu e-toll tetap dibawa untuk tapping di gerbang masuk. Selalu cek kondisi rem dan ban kendaraan sebelum melanjutkan perjalanan menanjak ke arah Padang Panjang atau Bukittinggi.",
-    descriptionEn: "Great news for travelers navigating the Padang-Bukittinggi corridor! According to official updates from PT Hutama Karya and the West Sumatra Land Transport Agency, physical functional testing on the 36.6-kilometer Padang-Sicincin toll expressway is complete and preparing for public traffic. The route slashes driving time from over two hours down to approximately 35-45 minutes.\n\nThe expressway features dual main interchanges at Kapalo Hilalang and Tarok City, complete with gonjong-roof rest areas hosting 70% local culinary and craft artisans.\n\n🔍 Verification Check: Addressing circulating social media claims regarding steep initial toll rates, authorities clarified that during the initial functional opening period, the expressway will operate toll-free (IDR 0) until formal ministerial decrees establish standard tariffs.\n\nTraveler takeaway: Carry an active electronic toll card for gate tapping, and inspect your vehicle's cooling and brake systems before tackling highland gradients toward Bukittinggi.",
+    description: "PADANG PARIAMAN — PT Hutama Karya (Persero) bersama Balai Pengelola Transportasi Darat (BPTD) Kelas II Sumatera Barat mengonfirmasi bahwa seluruh rangkaian uji laik fungsi fisik Jalan Tol Ruas Padang - Sicincin sepanjang 36,6 kilometer telah rampung dan siap dioperasikan. Akses jalan bebas hambatan perdana di Ranah Minang ini secara signifikan memangkas waktu tempuh dari Kota Padang menuju kawasan Bukittinggi dan Padang Panjang dari sebelumnya 2 hingga 2,5 jam melalui jalan arteri nasional menjadi hanya berkisar 35 hingga 45 menit.\n\nKoridor jalan tol ini dilengkapi dua gerbang tol utama, yakni Gerbang Tol Kapalo Hilalang dan Gerbang Tol Tarok City, serta rest area tipe A bernuansa arsitektur gonjong Rumah Gadang yang mengalokasikan 70 persen gerainya bagi sentra kuliner dan kriya UMKM lokal Minangkabau. Kehadiran ruas tol ini dirancang untuk mengurai simpul kemacetan di pasar tumpah Lubuk Alung dan Kayu Tanam, sekaligus meningkatkan kenyamanan mobilitas wisatawan antarkota.\n\nPihak pengelola mengimbau para pengguna jalan untuk memastikan saldo uang elektronik (e-toll) mencukupi serta mematuhi batas kecepatan operasional berkendara 60 hingga 80 km/jam. Wisatawan yang keluar melalui Gerbang Tol Kapalo Hilalang dapat langsung tersambung dengan jalan arteri menuju Lembah Anai, Pandai Sikek, hingga pusat Kota Bukittinggi.",
+    descriptionEn: "PADANG PARIAMAN — PT Hutama Karya in coordination with the West Sumatra Land Transportation Management Agency confirms the completion of physical feasibility testing for the 36.6-kilometer Padang-Sicincin Expressway section, now fully prepared for public traffic. This maiden toll expressway in West Sumatra significantly cuts driving time between Padang City and highland Bukittinggi from over two hours along national arterials down to approximately 35-45 minutes.\n\nThe expressway features dual main interchanges at Kapalo Hilalang and Tarok City, alongside a Type-A rest area showcasing traditional Rumah Gadang gonjong architecture where 70 percent of commercial space is dedicated to local Minangkabau food and craft MSMEs. The route effectively resolves recurring traffic bottlenecks at Lubuk Alung and Kayu Tanam market junctions while elevating regional tourist mobility.\n\nExpressway operators remind motorists to ensure sufficient electronic toll balances and adhere strictly to designated speed limits of 60 to 80 km/h. Travelers exiting at the Kapalo Hilalang interchange enjoy seamless arterial links toward Anai Valley, Pandai Sikek weaving village, and Bukittinggi.",
     tag: 'Sumbar',
     tagEn: 'West Sumatra',
     actionUrl: 'https://maps.google.com/?q=Tol+Padang+Sicincin',
     highlights: [
-      'Fakta Inti: Uji laik fungsi tuntas, pangkas rute Padang - Bukittinggi jadi 45 menit',
-      'Fasilitas: Rest area gonjong ramah UMKM kuliner Minang di Kapalo Hilalang',
-      'Cek Verifikasi: Rumor tarif mahal tidak benar, tahap awal dibuka fungsional gratis'
+      'Fakta Utama: Uji laik fungsi tuntas, pangkas rute Padang - Bukittinggi jadi 45 menit',
+      'Fasilitas Publik: Rest area arsitektur gonjong ramah UMKM kuliner Minang di Kapalo Hilalang',
+      'Panduan Perjalanan: Pastikan saldo e-toll terisi dan patuhi batas kecepatan operasional'
     ],
     highlightsEn: [
-      'Key Takeaway: Functional testing completed, travel time slashed to 45 mins',
-      'Facilities: Traditional gonjong rest area supporting local food & craft artisans',
-      'Verification Note: High tariff rumors debunked; initial opening operates toll-free'
+      'Core Fact: Feasibility testing completed, travel time slashed to 45 minutes',
+      'Public Facilities: Traditional gonjong-roof rest area hosting local culinary MSMEs',
+      'Travel Advisory: Maintain sufficient electronic toll balance and observe speed limits'
     ],
-    tips: 'Bawa kartu e-toll aktif dan periksa kondisi rem kendaraan sebelum melanjutkan tanjakan ke arah Bukittinggi.',
-    tipsEn: 'Keep an active e-toll card ready and inspect vehicle brakes before ascending towards Bukittinggi.',
+    tips: 'Pastikan saldo kartu tol terisi mencukupi dan periksa kondisi rem kendaraan sebelum melanjutkan perjalanan menanjak ke arah Bukittinggi.',
+    tipsEn: 'Ensure adequate electronic toll card balance and inspect vehicle brakes before ascending towards Bukittinggi.',
     locationName: 'Ruas Tol Padang - Sicincin, Padang Pariaman',
     locationNameEn: 'Padang - Sicincin Expressway, Padang Pariaman'
   },
   {
     id: 'hi2',
-    title: 'Tren Wisata Hijau Kemenparekraf: Standar Baru Ekowisata Ramah Lingkungan untuk Destinasi Nasional',
-    titleEn: 'Ministry Drives Green Tourism: New Sustainable Ecotourism Standards for National Destinations',
+    title: 'Kemenparekraf Perluas Standar Wisata Hijau: Dorong Penerapan Ekowisata Berkelanjutan di Destinasi Nasional',
+    titleEn: 'Ministry Expands Green Tourism Standards: Driving Sustainable Ecotourism across National Destinations',
     category: 'Pariwisata Indonesia',
     categoryEn: 'Indonesian Tourism',
     date: '06 September 2026',
     dateEn: 'September 06, 2026',
     imageUrl: '',
-    description: "Buat kamu yang gemar liburan ke alam terbuka, ada arah baru yang sangat positif di sektor wisata nasional kita. Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf) tengah menggencarkan sertifikasi pariwisata hijau dan berkelanjutan (green tourism) di berbagai destinasi unggulan Indonesia, mulai dari desa-desa wisata di Jawa, Danau Toba, hingga Labuan Bajo. Fokus utamanya adalah mengurangi sampah plastik dan memberdayakan komunitas warga lokal.\n\nProgram ini mendorong fasilitas penginapan alam dan operator tur untuk menerapkan energi terbarukan, pengelolaan limbah mandiri, serta membatasi daya dukung pengunjung (carrying capacity) agar keasrian alam tetap terjaga.\n\n🔍 Catatan Verifikasi: Terkait isu yang beredar bahwa program ini akan menaikkan harga tiket masuk ke taman nasional secara drastis, pihak Kemenparekraf mengklarifikasi bahwa regulasi ini menitikberatkan pada standarisasi pengelolaan ramah lingkungan oleh pengelola, bukan kenaikan tarif semena-mena bagi wisatawan umum.\n\nTips buat kamu: Mulai biasakan membawa tumbler minum dan tas belanja kain sendiri saat berwisata ke destinasi alam. Selain lebih hemat, kamu juga ikut menjaga keasrian alam tempat wisata favorit kita bersama.",
-    descriptionEn: "For outdoor and nature enthusiasts, Indonesia's national tourism landscape is embracing an exciting sustainable shift. The Ministry of Tourism and Creative Economy is expanding its Green & Sustainable Ecotourism certification across flagship destinations from Lake Toba to Labuan Bajo, focusing on single-use plastic reduction and village empowerment.\n\nThe framework incentivizes eco-resorts and tour operators to harness renewable power, local composting, and measured visitor quotas to preserve wilderness integrity.\n\n🔍 Verification Check: Addressing circulating online claims regarding sudden massive price hikes at national park entrances, ministry spokespersons clarified that the mandate enforces environmental operational benchmarks for operators rather than arbitrary ticket price increases for travelers.\n\nTraveler takeaway: Carry a reusable water bottle and cloth tote on your outdoor treks. It saves you money while protecting Indonesia's natural heritage.",
+    description: "JAKARTA — Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf) secara resmi memperluas program standardisasi pariwisata hijau dan berkelanjutan (green tourism) di berbagai destinasi unggulan Indonesia. Kebijakan strategis ini menitikberatkan pada percepatan transisi ramah lingkungan, pengurangan sampah plastik sekali pakai, serta pemberdayaan ekonomi masyarakat berbasis desa wisata di seluruh penjuru nusantara.\n\nPenerapan regulasi ekowisata ini mencakup pemanfaatan energi bersih terbarukan, pengelolaan limbah mandiri pada fasilitas akomodasi dan resor alam, serta pemantauan daya dukung lingkungan (carrying capacity) di kawasan cagar alam seperti Danau Toba, Borobudur, hingga Labuan Bajo. Kebijakan ini selaras dengan tren perjalanan global yang menuntut komitmen nyata terhadap kelestarian alam dan keaslian budaya lokal.\n\nKemenparekraf mengimbau para operator tur, perhotelan, dan wisatawan untuk berpartisipasi aktif menjaga kebersihan destinasi dengan membudayakan pemakaian botol minum guna ulang (tumbler) serta mengutamakan pemanfaatan produk dan jasa usaha masyarakat lokal setempat.",
+    descriptionEn: "JAKARTA — The Ministry of Tourism and Creative Economy has officially expanded its sustainable green tourism certification across Indonesia's premier destinations. This policy prioritizes environmental transitions, single-use plastic reduction, and grassroots community empowerment through tourist villages across the archipelago.\n\nEcotourism benchmarks encompass renewable power adoption, self-contained waste management for eco-resorts, and scientific carrying capacity monitoring across heritage landscapes including Lake Toba, Borobudur, and Labuan Bajo. This framework aligns national tourism with global standards that emphasize ecological preservation and authentic cultural respect.\n\nThe Ministry urges tour operators, hospitality providers, and travelers to actively maintain destination cleanliness, use reusable drink containers, and support locally-produced goods and services.",
     tag: 'Nasional',
     tagEn: 'National',
     actionUrl: 'https://kemenparekraf.go.id',
     highlights: [
-      'Fakta Inti: Standarisasi wisata hijau nasional bebas sampah plastik sekali pakai',
-      'Cakupan: Diterapkan bertahap di Danau Toba, Labuan Bajo, Borobudur, dan desa wisata',
-      'Cek Verifikasi: Kemenparekraf pastikan tidak ada lonjakan tarif masuk semena-mena'
+      'Fakta Utama: Standarisasi pariwisata hijau nasional bebas sampah plastik sekali pakai',
+      'Cakupan Kebijakan: Diterapkan bertahap di Danau Toba, Labuan Bajo, Borobudur, dan desa wisata',
+      'Panduan Perjalanan: Utamakan akomodasi ramah lingkungan dan bawa perlengkapan guna ulang'
     ],
     highlightsEn: [
-      'Key Takeaway: National sustainable tourism standards limiting single-use plastics',
-      'Coverage: Rolled out across Lake Toba, Labuan Bajo, Borobudur, and eco-villages',
-      'Verification Note: Ministry affirms policy does not impose sudden ticket fee spikes'
+      'Core Fact: National sustainable tourism framework banning single-use plastics',
+      'Policy Scope: Implemented across Lake Toba, Labuan Bajo, Borobudur, and eco-villages',
+      'Travel Advisory: Prioritize certified eco-lodges and carry reusable travel essentials'
     ],
-    tips: 'Bawa botol minum tumbler sendiri dan utamakan menginap di homestay desa wisata yang ramah lingkungan.',
-    tipsEn: 'Bring a reusable tumbler and support community-run eco-homestays when exploring nature spots.',
+    tips: 'Bawa botol minum isi ulang sendiri dan utamakan menginap di homestay desa wisata yang ramah lingkungan.',
+    tipsEn: 'Carry a reusable water tumbler and support community-run eco-homestays when visiting nature spots.',
     locationName: 'Destinasi Pariwisata Nasional Indonesia',
     locationNameEn: 'Indonesian National Tourism Destinations'
   },
   {
     id: 'hi3',
-    title: 'Pantauan Jalur Wisata Sitinjau Lauik: Petugas dan Alat Berat Siaga 24 Jam di Tikungan Panorama',
-    titleEn: 'Sitinjau Lauik Route Update: Heavy Equipment and Safety Marshals on 24/7 Standby',
+    title: 'Pengamanan Jalur Wisata Sitinjau Lauik: BPJN dan Ditlantas Siagakan Alat Berat & Posko Terpadu 24 Jam',
+    titleEn: 'Sitinjau Lauik Safety Deployment: Road Agency & Traffic Police Station 24/7 Outposts and Heavy Machinery',
     category: 'Pariwisata Sumatera Barat',
     categoryEn: 'West Sumatra Tourism',
     date: '05 September 2026',
     dateEn: 'September 05, 2026',
     imageUrl: '',
-    description: "Bagi kamu yang berencana liburan akhir pekan dari Padang menuju Danau Singkarak atau kebun teh Alahan Panjang, jalur legendaris Sitinjau Lauik terus mendapat pengawalan ketat. Laporan Ditlantas Polda Sumbar dan Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III memastikan posko siaga terpadu 24 jam serta unit alat berat excavator tetap standby di kawasan tikungan Panorama 1 dan Panorama 2.\n\nLangkah pengamanan ini diperkuat dengan perbaikan sistem drainase tebing, pemasangan jaring kawat baja (wire mesh) penahan batu, serta bantuan relawan pengatur jalan anak nagari yang sigap memandu kendaraan pada jam-jam padat.\n\n🔍 Catatan Verifikasi: Sempat beredar video di grup WhatsApp yang menyebutkan Sitinjau Lauik ditutup total akibat longsor besar. Berdasarkan pengecekan langsung pihak kepolisian di lokasi, video tersebut adalah arsip kejadian lama; jalur Padang - Solok saat ini beroperasi normal dan lancar dua arah dengan sistem buka-tutup darurat hanya jika ada truk mogok sesaat.\n\nTips buat kamu: Selalu gunakan gigi rendah (gigi 1 atau 2) saat menanjak maupun menurun curam. Berikan prioritas jalan bagi truk bermuatan berat yang sedang melaju menanjak, dan jangan pernah mendahului di tikungan blind spot.",
-    descriptionEn: "Heading from Padang toward Lake Singkarak or Alahan Panjang tea hills this weekend? The renowned Sitinjau Lauik pass remains under active 24/7 monitoring by West Sumatra Traffic Police and National Road Agency III, with heavy excavators positioned at Panorama bends.\n\nSafety measures include reinforced steel wire rockfall netting, terraced hillside drainage, and local volunteer road marshals coordinating switchback flow during heavy traffic.\n\n🔍 Verification Check: Dismissing viral video clips alleging total road closure from a massive landslide, police field verifications confirmed the footage was an old archive; the Padang-Solok corridor is currently operating smoothly in both directions with temporary stop-and-go only during vehicle breakdowns.\n\nTraveler takeaway: Always engage low gears (1st or 2nd) across steep gradients, yield unconditionally to uphill heavy trucks, and avoid overtaking at blind corners.",
+    description: "PADANG — Direktorat Lalu Lintas Polda Sumatera Barat bersama Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III terus menyiagakan posko pengamanan terpadu 24 jam dan unit alat berat excavator di koridor perbukitan Sitinjau Lauik, ruas vital Padang - Solok. Langkah preventif ini dilakukan guna memastikan kelancaran arus kendaraan wisatawan dan angkutan logistik antardaerah, khususnya di tikungan kritis Panorama 1 dan Panorama 2.\n\nPenguatan infrastruktur keselamatan terus ditingkatkan melalui pemasangan jaring kawat baja penahan guguran batu (wire mesh netting) di dinding tebing, perbaikan sistem drainase lereng bertingkat, serta koordinasi aktif bersama relawan pengatur jalan anak nagari. Sistem pemantauan terpadu ini memungkinkan penanganan cepat manakala terjadi hambatan teknis armada bermuatan besar atau kabut tebal pegunungan.\n\nPara pengemudi kendaraan pribadi maupun bus pariwisata diimbau untuk senantiasa memeriksa kelaikan fungsi rem dan ban sebelum melintasi tanjakan curam Sitinjau Lauik. Pengemudi wajib mendahulukan kendaraan bermuatan yang sedang melaju menanjak serta tidak mendahului di area tikungan blind spot demi keselamatan bersama.",
+    descriptionEn: "PADANG — The West Sumatra Traffic Police Directorate alongside National Road Implementation Agency III continues to deploy 24/7 emergency monitoring outposts and heavy excavators along the steep Sitinjau Lauik highway pass connecting Padang and Solok. This preventive deployment ensures reliable traffic flow for holidaymakers and regional logistics, particularly around the Panorama 1 and 2 switchbacks.\n\nSafety infrastructure upgrades include high-tensile wire mesh rockfall netting on cliff faces, terraced slope drainage channels, and close radio coordination with local nagari road marshals. The integrated response network enables prompt assistance during heavy vehicle breakdowns or dense mountain fog conditions.\n\nMotorists and tour coach drivers are strongly advised to inspect brake linings and tire pressure before negotiating steep Sitinjau Lauik inclines. Descending traffic must yield unconditionally to ascending heavy transports, and overtaking on blind corners is strictly prohibited.",
     tag: 'Sumbar',
     tagEn: 'West Sumatra',
     actionUrl: 'https://maps.google.com/?q=Sitinjau+Lauik+Padang',
     highlights: [
-      'Fakta Inti: Jalur Padang - Solok beroperasi normal dan dipantau posko siaga 24 jam',
-      'Keamanan: Alat berat siaga di Panorama 1 & 2 dengan pengamanan kawat baja tebing',
-      'Cek Verifikasi: Isu penutupan total adalah video hoaks lama, jalur lancar dua arah'
+      'Fakta Utama: Posko pengamanan 24 jam dan alat berat siaga di Panorama 1 & 2 Sitinjau Lauik',
+      'Infrastruktur: Pemasangan wire mesh baja tebing dan sistem drainase lereng bertingkat',
+      'Panduan Perjalanan: Gunakan gigi rendah saat menanjak/menurun dan dahulukan kendaraan menanjak'
     ],
     highlightsEn: [
-      'Key Takeaway: Padang-Solok corridor operates smoothly under 24/7 monitored safety',
-      'Safety: Heavy machinery stationed at Panorama hairpins with cliff barrier nets',
-      'Verification Note: Viral total closure claims debunked as old clips; route is fully open'
+      'Core Fact: 24/7 safety command post and heavy machinery deployed at Panorama bends',
+      'Infrastructure: High-tensile cliff barrier netting and reinforced slope drainage channels',
+      'Travel Advisory: Engage low gears on steep inclines and yield unconditionally to uphill traffic'
     ],
-    tips: 'Gunakan gigi 1 atau 2 saat menanjak maupun menurun curam, dan dahulukan kendaraan yang sedang menanjak.',
-    tipsEn: 'Engage 1st or 2nd gear on steep inclines and always yield to ascending heavy transports.',
+    tips: 'Gunakan transmisi gigi 1 atau 2 saat menanjak maupun menurun curam, dan selalu berikan prioritas bagi kendaraan yang sedang menanjak.',
+    tipsEn: 'Engage low gears (1st or 2nd) across steep inclines and always yield right-of-way to climbing vehicles.',
     locationName: 'Jalan Raya Padang - Solok (Sitinjau Lauik)',
     locationNameEn: 'Padang - Solok Highway (Sitinjau Lauik Pass)'
   },
   {
     id: 'hi4',
-    title: 'Konektivitas Kereta Api Wisata Meningkat: Rute Tematik Panoramic dan Kereta Malam Ramah Pelancong',
-    titleEn: 'Scenic Train Travel Expands: Panoramic Routes and Enhanced Night Travel for Tourists',
+    title: 'Konektivitas Kereta Wisata Meningkat: KAI Hadirkan Rute Tematik Panoramic Lintas Jawa dan Sumatra',
+    titleEn: 'Scenic Rail Transit Expands: KAI Deploys Panoramic Trains across Major Tourism Corridors',
     category: 'Pariwisata Indonesia',
     categoryEn: 'Indonesian Tourism',
     date: '05 September 2026',
     dateEn: 'September 05, 2026',
     imageUrl: '',
-    description: "Traveling naik kereta kini makin digandrungi para pelancong lintas generasi di Indonesia. PT Kereta Api Indonesia (KAI) mencatat lonjakan minat yang signifikan terhadap layanan kereta wisata tematik, khususnya Kereta Panoramic dan Compartment Suites yang menyuguhkan pemandangan bentang alam pegunungan, lembah hijau, serta jembatan meliuk yang spektakuler.\n\nTren slow travel ini didukung oleh peremajaan stasiun-stasiun cagar budaya yang kini dilengkapi ruang tunggu nyaman, sentra kuliner khas daerah, serta integrasi moda angkutan lanjutan ke objek wisata sekitar di Jawa dan Sumatra.\n\n🔍 Catatan Verifikasi: Waspadai tawaran tiket murah atau jasa joki tiket kereta wisata di media sosial yang marak belakangan ini. KAI secara resmi menegaskan bahwa reservasi tiket resmi hanya dapat diakses melalui aplikasi Access by KAI dan mitra resmi berlisensi; jangan pernah mentransfer uang ke rekening perorangan yang tidak jelas keabsahannya.\n\nTips buat kamu: Kursi kereta wisata Panoramic biasanya ludes terjual dalam hitungan menit sejak pembukaan H-45 keberangkatan. Pasang alarm di pagi hari saat jadwal tiket dibuka dan pilih kursi di sisi jendela untuk mendapatkan sudut foto terbaik.",
-    descriptionEn: "Train travel is enjoying a remarkable revival among travelers seeking scenic comfort. PT Kereta Api Indonesia (KAI) reports surging demand for specialty tourist trains, particularly the Panoramic coaches and luxury Compartment Suites offering sweeping vistas of mountains, river gorges, and historical viaducts.\n\nThis slow-travel trend is accompanied by revitalized heritage stations featuring comfortable passenger lounges, regional culinary corners, and direct shuttle links to major tourist hubs.\n\n🔍 Verification Check: Beware of suspicious discount offers or unauthorized booking scalpers on social media. KAI officially warns that valid ticketing is exclusively processed via Access by KAI or authorized partner platforms; never transfer money to unverified personal bank accounts.\n\nTraveler takeaway: Panoramic train seats often sell out quickly upon 45-day advance booking opening. Set a morning reminder and pick window seats for prime landscape photography.",
+    description: "BANDUNG — PT Kereta Api Indonesia (Persero) mencatat kenaikan signifikan volume penumpang pada layanan kereta wisata tematik, terutama rangkaian Kereta Panoramic dan Compartment Suites yang melintasi jalur pegunungan berpemandangan alam spektakuler. Tren wisata berbasis rel (slow rail travel) ini menjadi salah satu alternatif favorit bagi pelancong domestik maupun mancanegara yang mendambakan kenyamanan dan panorama lanskap nusantara.\n\nPeningkatan kenyamanan perjalanan didukung oleh modernisasi stasiun-stasiun cagar budaya yang kini terintegrasi dengan moda transportasi lanjutan ke kawasan objek wisata, ruang tunggu eksekutif, serta sentra kuliner khas daerah. Fasilitas jendela kaca lebar otomatis dan interior ergonomis menyuguhkan pengalaman menikmati pemandangan bentang lembah hijau dan jembatan bersejarah secara optimal.\n\nKAI mengingatkan calon penumpang bahwa pemesanan tiket resmi kereta wisata dapat diakses secara transparan melalui aplikasi Access by KAI dan mitra resmi berlisensi sejak H-45 sebelum tanggal keberangkatan, seraya mengimbau masyarakat untuk menghindari transaksi melalui pihak ketiga yang tidak resmi.",
+    descriptionEn: "BANDUNG — PT Kereta Api Indonesia reports a substantial ridership surge across thematic tourist trains, led by Panoramic coaches and luxury Compartment Suites traversing scenic mountain corridors. This slow rail travel trend has become a preferred holiday choice for domestic and international travelers seeking comfort paired with sweeping archipelago landscapes.\n\nPassenger experience is enhanced by revitalized heritage stations featuring executive lounges, regional culinary centers, and direct connecting shuttles to prime tourism attractions. Panoramic coaches feature expansive automatic glass viewing windows that optimize sightseeing across valleys, river bridges, and forested hills.\n\nKAI advises travelers that official ticket reservations open 45 days in advance via the Access by KAI app and accredited booking partners, cautioning passengers against unauthorized ticket resellers.",
     tag: 'Nasional',
     tagEn: 'National',
     actionUrl: 'https://booking.kai.id',
     highlights: [
-      'Fakta Inti: Kereta Panoramic dan wisata tematik KAI semakin diminati traveler',
-      'Fasilitas: Jendela lebar otomatis, interior nyaman, dan integrasi angkutan wisata',
-      'Cek Verifikasi: KAI imbau hindari joki tiket ilegal, pesan hanya via aplikasi resmi'
+      'Fakta Utama: Kereta Panoramic dan Compartment Suites KAI catat lonjakan minat wisatawan',
+      'Fasilitas: Jendela kaca lebar otomatis terintegrasi moda transportasi wisata lanjutan',
+      'Panduan Perjalanan: Reservasi tiket resmi dibuka H-45 melalui aplikasi Access by KAI'
     ],
     highlightsEn: [
-      'Key Takeaway: Panoramic and thematic tourist trains experience soaring popularity',
-      'Amenities: Expansive glass ceilings, luxury cabins, and integrated local tour shuttles',
-      'Verification Note: KAI urges passengers to avoid unofficial scalpers; book via official app'
+      'Core Fact: Panoramic and luxury rail suites record high visitor occupancy rates',
+      'Amenities: Expansive glass ceilings integrated with connecting destination shuttles',
+      'Travel Advisory: Official bookings open 45 days in advance via Access by KAI app'
     ],
-    tips: 'Pesan tiket H-45 sebelum jadwal keberangkatan untuk mendapatkan kursi jendela terbaik.',
-    tipsEn: 'Book tickets 45 days in advance to secure prime window-side panoramic seats.',
+    tips: 'Lakukan pemesanan tiket sejak H-45 sebelum keberangkatan untuk mendapatkan kursi di sisi jendela dengan sudut pemandangan terbaik.',
+    tipsEn: 'Reserve tickets 45 days in advance to secure window seats offering prime scenic viewpoints.',
     locationName: 'Jaringan Jalur Kereta Api Wisata Indonesia',
     locationNameEn: 'Indonesian Scenic Railway Network'
   },
   {
     id: 'hi5',
-    title: 'Kharisma Event Nusantara: Pesona Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman Jadi Magnet Budaya',
-    titleEn: 'National Cultural Calendar Highlights: Pacu Jawi and Tabuik Festival Draw Global Visitors',
+    title: 'Kharisma Event Nusantara: Atraksi Budaya Pacu Jawi dan Festival Tabuik Masuk Kalender Unggulan Nasional',
+    titleEn: 'National Event Calendar: Pacu Jawi Mud Racing and Tabuik Festival Featured as Flagship Attractions',
     category: 'Pariwisata Sumatera Barat',
     categoryEn: 'West Sumatra Tourism',
     date: '04 September 2026',
     dateEn: 'September 04, 2026',
     imageUrl: '',
-    description: "Siap-siap menikmati keseruan tradisi otentik Ranah Minang! Dua atraksi budaya terkemuka Sumatera Barat, yaitu Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan perhelatan kolosal Pesona Budaya Tabuik di Pantai Gandoriah Kota Pariaman, resmi terpilih kembali dalam kalender Kharisma Event Nusantara (KEN) Kemenparekraf. Agenda ini diprediksi menyedot ratusan ribu wisatawan domestik dan mancanegara.\n\nPacu Jawi menghadirkan aksi menegangkan joki sapi membajak sawah berlumpur dengan latar megah Gunung Marapi, sementara Tabuik menghadirkan rangkaian prosesi adat sakral hingga arak-arakan menara Tabuik setinggi belasan meter menuju Samudra Hindia diiringi tabuhan rancak Gandang Tasa.\n\n🔍 Catatan Verifikasi: Sempat beredar kabar simpang siur mengenai tanggal puncak acara di beberapa forum online. Panitia pelaksana mengonfirmasi bahwa jadwal prosesi adat telah diselaraskan dengan musyawarah kerapatan adat nagari, dan pengumuman resmi berkala dapat dipantau melalui portal Dispar Sumbar agar wisatawan tidak keliru mengatur tanggal tiket kedatangan.\n\nTips buat kamu: Jika berencana memotret atraksi Pacu Jawi dari dekat pematang sawah, kenakan pakaian kasual yang siap terkena cipratan lumpur dan lapisi kamera dengan pelindung debu/air.",
-    descriptionEn: "Get ready for an exhilarating journey into Minangkabau living heritage! Two iconic West Sumatran cultural spectacles—the thrilling Pacu Jawi mud buffalo races in Tanah Datar and the grand Tabuik Festival on Pariaman's Gandoriah Beach—are featured in the national Kharisma Event Nusantara (KEN) roster.\n\nPacu Jawi showcases fearless jockeys gripping speeding bull tails across flooded rice paddies framed by Mount Marapi, while Tabuik culminates in the ceremonial oceanic procession of towering decorative shrines accompanied by synchronized Gandang Tasa drums.\n\n🔍 Verification Check: Addressing conflicting date claims circulating on unofficial social forums, organizers confirmed that customary timelines are coordinated directly with village elders. Official event schedules are updated on the regional tourism portal to ensure visitors plan arrival dates accurately.\n\nTraveler takeaway: When photographing Pacu Jawi near paddy edges, wear mud-ready casual clothing and use protective dust/water coverings on your camera equipment.",
+    description: "BATUSANGKAR — Dua agenda budaya terkemuka Sumatera Barat, yakni atraksi tradisi Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan perhelatan kolosal Pesona Budaya Tabuik di Kota Pariaman, resmi terkurasi kembali dalam kalender Kharisma Event Nusantara (KEN) 2026 Kemenparekraf. Penyelenggaraan kedua agenda ini diproyeksikan menggerakkan ratusan ribu kunjungan wisatawan ke ranah Minang serta memberikan dampak ekonomi langsung bagi masyarakat nagari.\n\nPacu Jawi menampilkan keahlian joki sapi membajak hamparan sawah basah berlumpur berlatar megah Gunung Marapi secara bergilir di empat nagari bersejarah Tanah Datar. Sementara di pesisir barat, prosesi sakral Pesta Budaya Tabuik Kota Pariaman menghadirkan arak-arakan menara Tabuik setinggi belasan meter menuju Samudra Hindia di Pantai Gandoriah diiringi tabuhan serempak ratusan pemukul Gandang Tasa.\n\nPemerintah daerah mengimbau para wisatawan yang hendak menyaksikan puncak perhelatan budaya ini untuk merencanakan pemesanan akomodasi lebih awal, serta senantiasa mematuhi tata tertib panitia dan norma adat nagari selama rangkaian prosesi berlangsung.",
+    descriptionEn: "BATUSANGKAR — Two of West Sumatra's most celebrated cultural traditions—the iconic Alek Nagari Pacu Jawi bull races in Tanah Datar and the grand Tabuik Festival in Pariaman City—have been officially selected for the national 2026 Kharisma Event Nusantara (KEN) roster. The events are projected to attract hundreds of thousands of domestic and global spectators, generating direct grassroots economic vitality.\n\nPacu Jawi showcases fearless jockeys guiding bull pairs across flooded rice paddies framed by Mount Marapi on rotating weekends across four heritage nagari. Along the western coastline, Pariaman's Tabuik Festival culminates in the oceanic casting of multi-tiered wooden shrines at Gandoriah Beach backed by thunderous Gandang Tasa drum ensembles.\n\nRegional tourism agencies urge travelers planning to attend headline ceremonies to reserve accommodations early and observe customary village protocols throughout the festivities.",
     tag: 'Sumbar',
     tagEn: 'West Sumatra',
     actionUrl: 'https://maps.google.com/?q=Tanah+Datar+Sumatera+Barat',
     highlights: [
-      'Fakta Inti: Pacu Jawi dan Festival Tabuik masuk kalender resmi KEN Kemenparekraf',
-      'Atraksi: Sensasi pacuan sawah berlatar Marapi dan prosesi akbar Pantai Gandoriah',
-      'Cek Verifikasi: Tanggal puncak acara telah disahkan musyawarah adat, pantau info resmi'
+      'Fakta Utama: Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman resmi masuk kalender KEN 2026',
+      'Atraksi Budaya: Pacuan sawah berlumpur Gunung Marapi dan prosesi akbar Pantai Gandoriah',
+      'Panduan Perjalanan: Pesan akomodasi jauh hari dan patuhi panduan ketertiban adat nagari'
     ],
     highlightsEn: [
-      'Key Takeaway: Pacu Jawi and Tabuik Festival spotlighted in national KEN calendar',
-      'Attractions: High-adrenaline mud racing and monumental beachfront cultural parades',
-      'Verification Note: Headline ceremony dates confirmed with customary councils'
+      'Core Fact: Pacu Jawi and Tabuik Festival officially curated into national 2026 KEN roster',
+      'Cultural Spectacle: Thrilling muddy paddy races and monumental beachside shrine processions',
+      'Travel Advisory: Book accommodations early and respect customary nagari traditions'
     ],
-    tips: 'Kenakan pakaian kasual yang nyaman dan siapkan pelindung kamera dari cipratan lumpur saat menonton Pacu Jawi.',
-    tipsEn: 'Wear comfortable casual attire and protect camera gear from mud splashes while watching Pacu Jawi.',
+    tips: 'Kenakan pakaian kasual yang nyaman dan siapkan pelindung kamera dari percikan lumpur saat menyaksikan Pacu Jawi di pematang sawah.',
+    tipsEn: 'Wear casual attire and protect photography equipment against mud splashes when viewing Pacu Jawi near paddies.',
     locationName: 'Tanah Datar & Pantai Gandoriah, Kota Pariaman',
     locationNameEn: 'Tanah Datar & Gandoriah Beach, Pariaman'
   },
   {
     id: 'hi6',
-    title: 'Gerakan Bangga Berwisata di Indonesia (BBWI): Promo Paket Liburan Domestik dan Destinasi Super Prioritas',
-    titleEn: 'Proud of Indonesian Travel (BBWI): Domestic Travel Specials and Super Priority Hubs',
+    title: 'Gerakan Bangga Berwisata di Indonesia: Dorong Optimalisasi 5 Destinasi Pariwisata Super Prioritas',
+    titleEn: 'Proud of Indonesian Travel Campaign: Driving Growth across 5 Super Priority Destinations',
     category: 'Pariwisata Indonesia',
     categoryEn: 'Indonesian Tourism',
     date: '04 September 2026',
     dateEn: 'September 04, 2026',
     imageUrl: '',
-    description: "Mengisi masa liburan di dalam negeri kini makin menarik dengan bergulirnya kampanye nasional Bangga Berwisata di Indonesia (BBWI). Kolaborasi antara pemerintah, perhotelan, dan maskapai penerbangan menghadirkan berbagai penawaran paket perjalanan terjangkau menuju 5 Destinasi Pariwisata Super Prioritas (DPSP), mencakup Danau Toba, Borobudur, Mandalika, Labuan Bajo, dan Likupang.\n\nGerakan ini bertujuan mendorong perputaran ekonomi lokal dan memperkenalkan kekayaan pesona kepulauan nusantara kepada masyarakat luas, didukung fasilitas bandara yang terus dipercantik dan desa wisata berbasis kearifan lokal.\n\n🔍 Catatan Verifikasi: Menyikapi maraknya penipuan berkedok voucher diskon hotel hingga 80% yang mengatasnamakan program BBWI di aplikasi perpesanan, kementerian mengimbau masyarakat untuk selalu berhati-hati. Promo resmi program BBWI hanya berlaku melalui mitra online travel agent (OTA), maskapai, dan travel fair terdaftar—jangan pernah mengklik tautan tidak dikenal yang meminta data pribadi atau OTP perbankan.\n\nTips buat kamu: Rencanakan jadwal liburan dari jauh-jauh hari dan manfaatkan promo bundling transportasi plus penginapan resmi untuk menghemat pengeluaran liburan keluargamu.",
-    descriptionEn: "Vacationing domestically across Indonesia is more rewarding than ever with the nationwide Proud of Traveling in Indonesia (BBWI) campaign. Strategic tie-ups between government agencies, hotel groups, and airlines bring accessible travel packages to Indonesia's 5 Super Priority Hubs: Lake Toba, Borobudur, Mandalika, Labuan Bajo, and Likupang.\n\nThe initiative stimulates regional economies and invites domestic explorers to uncover remote archipelago wonders supported by modern airport links and authentic village homestays.\n\n🔍 Verification Check: Responding to circulating social scams promoting fake 80% off hotel discount vouchers claiming BBWI affiliation, the ministry urges travelers to stay vigilant. Authentic promotions run strictly through accredited online travel platforms, licensed airlines, and recognized travel fairs; never click suspicious links requesting banking OTPs.\n\nTraveler takeaway: Plan vacation dates ahead and take advantage of verified transport-plus-stay bundles to maximize savings for your family getaway.",
+    description: "JAKARTA — Pemerintah melalui Kementerian Pariwisata dan Ekonomi Kreatif bersama asosiasi industri perjalanan terus memperkuat kampanye nasional Bangga Berwisata di Indonesia (BBWI). Kolaborasi lintas sektoral ini menghadirkan paket perjalanan terintegrasi menuju 5 Destinasi Pariwisata Super Prioritas (DPSP), meliputi Danau Toba, Borobudur, Mandalika, Labuan Bajo, dan Likupang.\n\nProgram strategis BBWI difokuskan pada penguatan konektivitas penerbangan domestik, keterjangkauan tarif akomodasi wisata, serta pembinaan standar pelayanan amenitas di desa-desa wisata penyangga destinasi. Kebijakan terpadu ini diharapkan mampu mendistribusikan perputaran ekonomi secara merata bagi para pelaku UMKM dan perajin ekonomi kreatif di berbagai daerah.\n\nWisatawan diimbau untuk memanfaatkan promosi resmi paket perjalanan yang terafiliasi dengan maskapai dan platform online travel agent (OTA) berlisensi resmi, serta senantiasa mengutamakan eksplorasi keindahan destinasi wisata domestik nusantara.",
+    descriptionEn: "JAKARTA — The Ministry of Tourism and Creative Economy alongside travel industry associations is accelerating the national Proud of Traveling in Indonesia (BBWI) campaign. This coordinated effort offers integrated travel packages across 5 Super Priority Destinations: Lake Toba, Borobudur, Mandalika, Labuan Bajo, and Likupang.\n\nKey pillars of the initiative focus on expanding domestic air routes, offering accessible lodging packages, and elevating hospitality standards across gateway tourism villages. The policy ensures travel revenues circulate directly into local artisan communities and regional creative enterprises.\n\nTravelers are encouraged to book promotional vacation packages via accredited airlines and licensed online travel agencies while prioritizing domestic destinations for their family getaways.",
     tag: 'Nasional',
     tagEn: 'National',
     actionUrl: 'https://indonesia.travel',
     highlights: [
-      'Fakta Inti: Kampanye nasional BBWI genjot kunjungan ke 5 Destinasi Super Prioritas',
-      'Fasilitas: Kolaborasi paket terjangkau akomodasi dan penerbangan domestik',
-      'Cek Verifikasi: Waspadai link promo palsu; transaksi hanya via mitra OTA resmi berlisensi'
+      'Fakta Utama: Kolaborasi nasional BBWI memperkuat akses ke 5 Destinasi Super Prioritas',
+      'Konektivitas: Penawaran paket perjalanan terpadu transportasi udara dan akomodasi',
+      'Panduan Perjalanan: Transaksi paket perjalanan melalui kanal online travel agent berlisensi'
     ],
     highlightsEn: [
-      'Key Takeaway: National BBWI campaign drives travel across 5 Super Priority Hubs',
-      'Amenities: Coordinated affordable holiday bundles spanning domestic transit and lodging',
-      'Verification Note: Beware of counterfeit voucher links; transact only with licensed OTAs'
+      'Core Fact: National BBWI campaign enhances accessibility to 5 Super Priority Hubs',
+      'Connectivity: Bundled holiday packages combining domestic flights and verified lodging',
+      'Travel Advisory: Book travel packages exclusively through licensed online travel platforms'
     ],
-    tips: 'Pesan tiket dan penginapan jauh hari untuk mendapatkan penawaran promo bundling keluarga terbaik.',
-    tipsEn: 'Book travel packages in advance to secure the best family bundling discounts.',
+    tips: 'Pesan tiket perjalanan dan penginapan lebih awal untuk mendapatkan penawaran promo bundling resmi ke destinasi nusantara.',
+    tipsEn: 'Book travel packages in advance to take advantage of verified domestic holiday promotional rates.',
     locationName: 'Destinasi Super Prioritas Indonesia (DPSP)',
     locationNameEn: 'Indonesian Super Priority Destinations (DPSP)'
   }

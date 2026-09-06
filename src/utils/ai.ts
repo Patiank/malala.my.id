@@ -4,175 +4,175 @@ import { GoogleGenAI } from "@google/genai";
 export const HOT_INFO_FALLBACK = [
   {
     "id": "news-fallback-1",
-    "title": "Uji Laik Jalan Tol Padang-Sicincin 36,6 Km Tuntas: Waktu Tempuh Padang ke Bukittinggi Bakal Makin Singkat",
-    "titleEn": "Padang-Sicincin 36.6 Km Toll Road Test Complete: Slashes Padang-Bukittinggi Driving Time",
+    "title": "Uji Laik Fungsi Tol Padang-Sicincin 36,6 Km Tuntas: Waktu Tempuh Padang ke Bukittinggi Terpangkas Jadi 45 Menit",
+    "titleEn": "Padang-Sicincin 36.6 Km Expressway Testing Complete: Slashes Padang-Bukittinggi Travel Time to 45 Minutes",
     "date": "06 September 2026",
     "dateEn": "September 06, 2026",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
-    "description": "Kabar gembira buat traveler yang sering terjebak macet antara Padang dan Bukittinggi! Berdasarkan laporan resmi dari PT Hutama Karya bersama BPTD Sumatera Barat, fisik jalan tol Padang-Sicincin sepanjang 36,6 km sudah menyelesaikan seluruh rangkaian uji laik fungsi dan bersiap dibuka untuk mobilitas publik. Jika biasanya perjalanan memakan waktu 2 hingga 2,5 jam lewat jalan arteri nasional, lewat jalan tol baru ini jarak tempuh dipangkas drastis menjadi hanya sekitar 35 hingga 45 menit saja.\n\nJalur tol pertama di Ranah Minang ini dilengkapi dua gerbang tol utama (Kapalo Hilalang dan Tarok City) serta rest area beratap gonjong Rumah Gadang yang mengalokasikan 70 persen kiosnya bagi sentra kuliner dan suvenir UMKM lokal.\n\n🔍 Catatan Verifikasi: Sempat beredar rumor di media sosial mengenai tarif tol yang disebut-sebut sangat mahal. Pihak pengelola menegaskan bahwa kabar tersebut tidak berdasar—pada masa awal uji coba operasional, jalur tol ini rencananya akan dibuka secara fungsional dengan tarif Rp 0 alias gratis sementara waktu, sebelum besaran tarif resmi disahkan oleh Kementerian PU.\n\nTips buat kamu: Jika ingin melintas saat uji coba dibuka, pastikan kartu e-toll tetap dibawa untuk tapping di gerbang masuk. Selalu cek kondisi rem dan ban kendaraan sebelum melanjutkan perjalanan menanjak ke arah Padang Panjang atau Bukittinggi.",
-    "descriptionEn": "Great news for travelers navigating the Padang-Bukittinggi corridor! According to official updates from PT Hutama Karya and the West Sumatra Land Transport Agency, physical functional testing on the 36.6-kilometer Padang-Sicincin toll expressway is complete and preparing for public traffic. The route slashes driving time from over two hours down to approximately 35-45 minutes.\n\nThe expressway features dual main interchanges at Kapalo Hilalang and Tarok City, complete with gonjong-roof rest areas hosting 70% local culinary and craft artisans.\n\n🔍 Verification Check: Addressing circulating social media claims regarding steep initial toll rates, authorities clarified that during the initial functional opening period, the expressway will operate toll-free (IDR 0) until formal ministerial decrees establish standard tariffs.\n\nTraveler takeaway: Carry an active electronic toll card for gate tapping, and inspect your vehicle's cooling and brake systems before tackling highland gradients toward Bukittinggi.",
+    "description": "PADANG PARIAMAN — PT Hutama Karya (Persero) bersama Balai Pengelola Transportasi Darat (BPTD) Kelas II Sumatera Barat mengonfirmasi bahwa seluruh rangkaian uji laik fungsi fisik Jalan Tol Ruas Padang - Sicincin sepanjang 36,6 kilometer telah rampung dan siap dioperasikan. Akses jalan bebas hambatan perdana di Ranah Minang ini secara signifikan memangkas waktu tempuh dari Kota Padang menuju kawasan Bukittinggi dan Padang Panjang dari sebelumnya 2 hingga 2,5 jam melalui jalan arteri nasional menjadi hanya berkisar 35 hingga 45 menit.\n\nKoridor jalan tol ini dilengkapi dua gerbang tol utama, yakni Gerbang Tol Kapalo Hilalang dan Gerbang Tol Tarok City, serta rest area tipe A bernuansa arsitektur gonjong Rumah Gadang yang mengalokasikan 70 persen gerainya bagi sentra kuliner dan kriya UMKM lokal Minangkabau. Kehadiran ruas tol ini dirancang untuk mengurai simpul kemacetan di pasar tumpah Lubuk Alung dan Kayu Tanam, sekaligus meningkatkan kenyamanan mobilitas wisatawan antarkota.\n\nPihak pengelola mengimbau para pengguna jalan untuk memastikan saldo uang elektronik (e-toll) mencukupi serta mematuhi batas kecepatan operasional berkendara 60 hingga 80 km/jam. Wisatawan yang keluar melalui Gerbang Tol Kapalo Hilalang dapat langsung tersambung dengan jalan arteri menuju Lembah Anai, Pandai Sikek, hingga pusat Kota Bukittinggi.",
+    "descriptionEn": "PADANG PARIAMAN — PT Hutama Karya in coordination with the West Sumatra Land Transportation Management Agency confirms the completion of physical feasibility testing for the 36.6-kilometer Padang-Sicincin Expressway section, now fully prepared for public traffic. This maiden toll expressway in West Sumatra significantly cuts driving time between Padang City and highland Bukittinggi from over two hours along national arterials down to approximately 35-45 minutes.\n\nThe expressway features dual main interchanges at Kapalo Hilalang and Tarok City, alongside a Type-A rest area showcasing traditional Rumah Gadang gonjong architecture where 70 percent of commercial space is dedicated to local Minangkabau food and craft MSMEs. The route effectively resolves recurring traffic bottlenecks at Lubuk Alung and Kayu Tanam market junctions while elevating regional tourist mobility.\n\nExpressway operators remind motorists to ensure sufficient electronic toll balances and adhere strictly to designated speed limits of 60 to 80 km/h. Travelers exiting at the Kapalo Hilalang interchange enjoy seamless arterial links toward Anai Valley, Pandai Sikek weaving village, and Bukittinggi.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://maps.google.com/?q=Tol+Padang+Sicincin",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Uji laik fungsi tuntas, pangkas rute Padang - Bukittinggi jadi 45 menit",
-      "Fasilitas: Rest area gonjong ramah UMKM kuliner Minang di Kapalo Hilalang",
-      "Cek Verifikasi: Rumor tarif mahal tidak benar, tahap awal dibuka fungsional gratis"
+      "Fakta Utama: Uji laik fungsi tuntas, pangkas rute Padang - Bukittinggi jadi 45 menit",
+      "Fasilitas Publik: Rest area arsitektur gonjong ramah UMKM kuliner Minang di Kapalo Hilalang",
+      "Panduan Perjalanan: Pastikan saldo e-toll terisi dan patuhi batas kecepatan operasional"
     ],
     "highlightsEn": [
-      "Key Takeaway: Functional testing completed, travel time slashed to 45 mins",
-      "Facilities: Traditional gonjong rest area supporting local food & craft artisans",
-      "Verification Note: High tariff rumors debunked; initial opening operates toll-free"
+      "Core Fact: Feasibility testing completed, travel time slashed to 45 minutes",
+      "Public Facilities: Traditional gonjong-roof rest area hosting local culinary MSMEs",
+      "Travel Advisory: Maintain sufficient electronic toll balance and observe speed limits"
     ],
-    "tips": "Bawa kartu e-toll aktif dan periksa kondisi rem kendaraan sebelum melanjutkan tanjakan ke arah Bukittinggi.",
-    "tipsEn": "Keep an active e-toll card ready and inspect vehicle brakes before ascending towards Bukittinggi.",
+    "tips": "Pastikan saldo kartu tol terisi mencukupi dan periksa kondisi rem kendaraan sebelum melanjutkan perjalanan menanjak ke arah Bukittinggi.",
+    "tipsEn": "Ensure adequate electronic toll card balance and inspect vehicle brakes before ascending towards Bukittinggi.",
     "locationName": "Ruas Tol Padang - Sicincin, Padang Pariaman",
     "locationNameEn": "Padang - Sicincin Expressway, Padang Pariaman"
   },
   {
     "id": "news-fallback-2",
-    "title": "Tren Wisata Hijau Kemenparekraf: Standar Baru Ekowisata Ramah Lingkungan untuk Destinasi Nasional",
-    "titleEn": "Ministry Drives Green Tourism: New Sustainable Ecotourism Standards for National Destinations",
+    "title": "Kemenparekraf Perluas Standar Wisata Hijau: Dorong Penerapan Ekowisata Berkelanjutan di Destinasi Nasional",
+    "titleEn": "Ministry Expands Green Tourism Standards: Driving Sustainable Ecotourism across National Destinations",
     "date": "06 September 2026",
     "dateEn": "September 06, 2026",
     "category": "Pariwisata Indonesia",
     "categoryEn": "Indonesian Tourism",
-    "description": "Buat kamu yang gemar liburan ke alam terbuka, ada arah baru yang sangat positif di sektor wisata nasional kita. Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf) tengah menggencarkan sertifikasi pariwisata hijau dan berkelanjutan (green tourism) di berbagai destinasi unggulan Indonesia, mulai dari desa-desa wisata di Jawa, Danau Toba, hingga Labuan Bajo. Fokus utamanya adalah mengurangi sampah plastik dan memberdayakan komunitas warga lokal.\n\nProgram ini mendorong fasilitas penginapan alam dan operator tur untuk menerapkan energi terbarukan, pengelolaan limbah mandiri, serta membatasi daya dukung pengunjung (carrying capacity) agar keasrian alam tetap terjaga.\n\n🔍 Catatan Verifikasi: Terkait isu yang beredar bahwa program ini akan menaikkan harga tiket masuk ke taman nasional secara drastis, pihak Kemenparekraf mengklarifikasi bahwa regulasi ini menitikberatkan pada standarisasi pengelolaan ramah lingkungan oleh pengelola, bukan kenaikan tarif semena-mena bagi wisatawan umum.\n\nTips buat kamu: Mulai biasakan membawa tumbler minum dan tas belanja kain sendiri saat berwisata ke destinasi alam. Selain lebih hemat, kamu juga ikut menjaga keasrian alam tempat wisata favorit kita bersama.",
-    "descriptionEn": "For outdoor and nature enthusiasts, Indonesia's national tourism landscape is embracing an exciting sustainable shift. The Ministry of Tourism and Creative Economy is expanding its Green & Sustainable Ecotourism certification across flagship destinations from Lake Toba to Labuan Bajo, focusing on single-use plastic reduction and village empowerment.\n\nThe framework incentivizes eco-resorts and tour operators to harness renewable power, local composting, and measured visitor quotas to preserve wilderness integrity.\n\n🔍 Verification Check: Addressing circulating online claims regarding sudden massive price hikes at national park entrances, ministry spokespersons clarified that the mandate enforces environmental operational benchmarks for operators rather than arbitrary ticket price increases for travelers.\n\nTraveler takeaway: Carry a reusable water bottle and cloth tote on your outdoor treks. It saves you money while protecting Indonesia's natural heritage.",
+    "description": "JAKARTA — Kementerian Pariwisata dan Ekonomi Kreatif (Kemenparekraf) secara resmi memperluas program standardisasi pariwisata hijau dan berkelanjutan (green tourism) di berbagai destinasi unggulan Indonesia. Kebijakan strategis ini menitikberatkan pada percepatan transisi ramah lingkungan, pengurangan sampah plastik sekali pakai, serta pemberdayaan ekonomi masyarakat berbasis desa wisata di seluruh penjuru nusantara.\n\nPenerapan regulasi ekowisata ini mencakup pemanfaatan energi bersih terbarukan, pengelolaan limbah mandiri pada fasilitas akomodasi dan resor alam, serta pemantauan daya dukung lingkungan (carrying capacity) di kawasan cagar alam seperti Danau Toba, Borobudur, hingga Labuan Bajo. Kebijakan ini selaras dengan tren perjalanan global yang menuntut komitmen nyata terhadap kelestarian alam dan keaslian budaya lokal.\n\nKemenparekraf mengimbau para operator tur, perhotelan, dan wisatawan untuk berpartisipasi aktif menjaga kebersihan destinasi dengan membudayakan pemakaian botol minum guna ulang (tumbler) serta mengutamakan pemanfaatan produk dan jasa usaha masyarakat lokal setempat.",
+    "descriptionEn": "JAKARTA — The Ministry of Tourism and Creative Economy has officially expanded its sustainable green tourism certification across Indonesia's premier destinations. This policy prioritizes environmental transitions, single-use plastic reduction, and grassroots community empowerment through tourist villages across the archipelago.\n\nEcotourism benchmarks encompass renewable power adoption, self-contained waste management for eco-resorts, and scientific carrying capacity monitoring across heritage landscapes including Lake Toba, Borobudur, and Labuan Bajo. This framework aligns national tourism with global standards that emphasize ecological preservation and authentic cultural respect.\n\nThe Ministry urges tour operators, hospitality providers, and travelers to actively maintain destination cleanliness, use reusable drink containers, and support locally-produced goods and services.",
     "tag": "Nasional",
     "tagEn": "National",
     "actionUrl": "https://kemenparekraf.go.id",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Standarisasi wisata hijau nasional bebas sampah plastik sekali pakai",
-      "Cakupan: Diterapkan bertahap di Danau Toba, Labuan Bajo, Borobudur, dan desa wisata",
-      "Cek Verifikasi: Kemenparekraf pastikan tidak ada lonjakan tarif masuk semena-mena"
+      "Fakta Utama: Standarisasi pariwisata hijau nasional bebas sampah plastik sekali pakai",
+      "Cakupan Kebijakan: Diterapkan bertahap di Danau Toba, Labuan Bajo, Borobudur, dan desa wisata",
+      "Panduan Perjalanan: Utamakan akomodasi ramah lingkungan dan bawa perlengkapan guna ulang"
     ],
     "highlightsEn": [
-      "Key Takeaway: National sustainable tourism standards limiting single-use plastics",
-      "Coverage: Rolled out across Lake Toba, Labuan Bajo, Borobudur, and eco-villages",
-      "Verification Note: Ministry affirms policy does not impose sudden ticket fee spikes"
+      "Core Fact: National sustainable tourism framework banning single-use plastics",
+      "Policy Scope: Implemented across Lake Toba, Labuan Bajo, Borobudur, and eco-villages",
+      "Travel Advisory: Prioritize certified eco-lodges and carry reusable travel essentials"
     ],
-    "tips": "Bawa botol minum tumbler sendiri dan utamakan menginap di homestay desa wisata yang ramah lingkungan.",
-    "tipsEn": "Bring a reusable tumbler and support community-run eco-homestays when exploring nature spots.",
+    "tips": "Bawa botol minum isi ulang sendiri dan utamakan menginap di homestay desa wisata yang ramah lingkungan.",
+    "tipsEn": "Carry a reusable water tumbler and support community-run eco-homestays when visiting nature spots.",
     "locationName": "Destinasi Pariwisata Nasional Indonesia",
     "locationNameEn": "Indonesian National Tourism Destinations"
   },
   {
     "id": "news-fallback-3",
-    "title": "Pantauan Jalur Wisata Sitinjau Lauik: Petugas dan Alat Berat Siaga 24 Jam di Tikungan Panorama",
-    "titleEn": "Sitinjau Lauik Route Update: Heavy Equipment and Safety Marshals on 24/7 Standby",
+    "title": "Pengamanan Jalur Wisata Sitinjau Lauik: BPJN dan Ditlantas Siagakan Alat Berat & Posko Terpadu 24 Jam",
+    "titleEn": "Sitinjau Lauik Safety Deployment: Road Agency & Traffic Police Station 24/7 Outposts and Heavy Machinery",
     "date": "05 September 2026",
     "dateEn": "September 05, 2026",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
-    "description": "Bagi kamu yang berencana liburan akhir pekan dari Padang menuju Danau Singkarak atau kebun teh Alahan Panjang, jalur legendaris Sitinjau Lauik terus mendapat pengawalan ketat. Laporan Ditlantas Polda Sumbar dan Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III memastikan posko siaga terpadu 24 jam serta unit alat berat excavator tetap standby di kawasan tikungan Panorama 1 dan Panorama 2.\n\nLangkah pengamanan ini diperkuat dengan perbaikan sistem drainase tebing, pemasangan jaring kawat baja (wire mesh) penahan batu, serta bantuan relawan pengatur jalan anak nagari yang sigap memandu kendaraan pada jam-jam padat.\n\n🔍 Catatan Verifikasi: Sempat beredar video di grup WhatsApp yang menyebutkan Sitinjau Lauik ditutup total akibat longsor besar. Berdasarkan pengecekan langsung pihak kepolisian di lokasi, video tersebut adalah arsip kejadian lama; jalur Padang - Solok saat ini beroperasi normal dan lancar dua arah dengan sistem buka-tutup darurat hanya jika ada truk mogok sesaat.\n\nTips buat kamu: Selalu gunakan gigi rendah (gigi 1 atau 2) saat menanjak maupun menurun curam. Berikan prioritas jalan bagi truk bermuatan berat yang sedang melaju menanjak, dan jangan pernah mendahului di tikungan blind spot.",
-    "descriptionEn": "Heading from Padang toward Lake Singkarak or Alahan Panjang tea hills this weekend? The renowned Sitinjau Lauik pass remains under active 24/7 monitoring by West Sumatra Traffic Police and National Road Agency III, with heavy excavators positioned at Panorama bends.\n\nSafety measures include reinforced steel wire rockfall netting, terraced hillside drainage, and local volunteer road marshals coordinating switchback flow during heavy traffic.\n\n🔍 Verification Check: Dismissing viral video clips alleging total road closure from a massive landslide, police field verifications confirmed the footage was an old archive; the Padang-Solok corridor is currently operating smoothly in both directions with temporary stop-and-go only during vehicle breakdowns.\n\nTraveler takeaway: Always engage low gears (1st or 2nd) across steep gradients, yield unconditionally to uphill heavy trucks, and avoid overtaking at blind corners.",
+    "description": "PADANG — Direktorat Lalu Lintas Polda Sumatera Barat bersama Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III terus menyiagakan posko pengamanan terpadu 24 jam dan unit alat berat excavator di koridor perbukitan Sitinjau Lauik, ruas vital Padang - Solok. Langkah preventif ini dilakukan guna memastikan kelancaran arus kendaraan wisatawan dan angkutan logistik antardaerah, khususnya di tikungan kritis Panorama 1 dan Panorama 2.\n\nPenguatan infrastruktur keselamatan terus ditingkatkan melalui pemasangan jaring kawat baja penahan guguran batu (wire mesh netting) di dinding tebing, perbaikan sistem drainase lereng bertingkat, serta koordinasi aktif bersama relawan pengatur jalan anak nagari. Sistem pemantauan terpadu ini memungkinkan penanganan cepat manakala terjadi hambatan teknis armada bermuatan besar atau kabut tebal pegunungan.\n\nPara pengemudi kendaraan pribadi maupun bus pariwisata diimbau untuk senantiasa memeriksa kelaikan fungsi rem dan ban sebelum melintasi tanjakan curam Sitinjau Lauik. Pengemudi wajib mendahulukan kendaraan bermuatan yang sedang melaju menanjak serta tidak mendahului di area tikungan blind spot demi keselamatan bersama.",
+    "descriptionEn": "PADANG — The West Sumatra Traffic Police Directorate alongside National Road Implementation Agency III continues to deploy 24/7 emergency monitoring outposts and heavy excavators along the steep Sitinjau Lauik highway pass connecting Padang and Solok. This preventive deployment ensures reliable traffic flow for holidaymakers and regional logistics, particularly around the Panorama 1 and 2 switchbacks.\n\nSafety infrastructure upgrades include high-tensile wire mesh rockfall netting on cliff faces, terraced slope drainage channels, and close radio coordination with local nagari road marshals. The integrated response network enables prompt assistance during heavy vehicle breakdowns or dense mountain fog conditions.\n\nMotorists and tour coach drivers are strongly advised to inspect brake linings and tire pressure before negotiating steep Sitinjau Lauik inclines. Descending traffic must yield unconditionally to ascending heavy transports, and overtaking on blind corners is strictly prohibited.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://maps.google.com/?q=Sitinjau+Lauik+Padang",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Jalur Padang - Solok beroperasi normal dan dipantau posko siaga 24 jam",
-      "Keamanan: Alat berat siaga di Panorama 1 & 2 dengan pengamanan kawat baja tebing",
-      "Cek Verifikasi: Isu penutupan total adalah video hoaks lama, jalur lancar dua arah"
+      "Fakta Utama: Posko pengamanan 24 jam dan alat berat siaga di Panorama 1 & 2 Sitinjau Lauik",
+      "Infrastruktur: Pemasangan wire mesh baja tebing dan sistem drainase lereng bertingkat",
+      "Panduan Perjalanan: Gunakan gigi rendah saat menanjak/menurun dan dahulukan kendaraan menanjak"
     ],
     "highlightsEn": [
-      "Key Takeaway: Padang-Solok corridor operates smoothly under 24/7 monitored safety",
-      "Safety: Heavy machinery stationed at Panorama hairpins with cliff barrier nets",
-      "Verification Note: Viral total closure claims debunked as old clips; route is fully open"
+      "Core Fact: 24/7 safety command post and heavy machinery deployed at Panorama bends",
+      "Infrastructure: High-tensile cliff barrier netting and reinforced slope drainage channels",
+      "Travel Advisory: Engage low gears on steep inclines and yield unconditionally to uphill traffic"
     ],
-    "tips": "Gunakan gigi 1 atau 2 saat menanjak maupun menurun curam, dan dahulukan kendaraan yang sedang menanjak.",
-    "tipsEn": "Engage 1st or 2nd gear on steep inclines and always yield to ascending heavy transports.",
+    "tips": "Gunakan transmisi gigi 1 atau 2 saat menanjak maupun menurun curam, dan selalu berikan prioritas bagi kendaraan yang sedang menanjak.",
+    "tipsEn": "Engage low gears (1st or 2nd) across steep inclines and always yield right-of-way to climbing vehicles.",
     "locationName": "Jalan Raya Padang - Solok (Sitinjau Lauik)",
     "locationNameEn": "Padang - Solok Highway (Sitinjau Lauik Pass)"
   },
   {
     "id": "news-fallback-4",
-    "title": "Konektivitas Kereta Api Wisata Meningkat: Rute Tematik Panoramic dan Kereta Malam Ramah Pelancong",
-    "titleEn": "Scenic Train Travel Expands: Panoramic Routes and Enhanced Night Travel for Tourists",
+    "title": "Konektivitas Kereta Wisata Meningkat: KAI Hadirkan Rute Tematik Panoramic Lintas Jawa dan Sumatra",
+    "titleEn": "Scenic Rail Transit Expands: KAI Deploys Panoramic Trains across Major Tourism Corridors",
     "date": "05 September 2026",
     "dateEn": "September 05, 2026",
     "category": "Pariwisata Indonesia",
     "categoryEn": "Indonesian Tourism",
-    "description": "Traveling naik kereta kini makin digandrungi para pelancong lintas generasi di Indonesia. PT Kereta Api Indonesia (KAI) mencatat lonjakan minat yang signifikan terhadap layanan kereta wisata tematik, khususnya Kereta Panoramic dan Compartment Suites yang menyuguhkan pemandangan bentang alam pegunungan, lembah hijau, serta jembatan meliuk yang spektakuler.\n\nTren slow travel ini didukung oleh peremajaan stasiun-stasiun cagar budaya yang kini dilengkapi ruang tunggu nyaman, sentra kuliner khas daerah, serta integrasi moda angkutan lanjutan ke objek wisata sekitar di Jawa dan Sumatra.\n\n🔍 Catatan Verifikasi: Waspadai tawaran tiket murah atau jasa joki tiket kereta wisata di media sosial yang marak belakangan ini. KAI secara resmi menegaskan bahwa reservasi tiket resmi hanya dapat diakses melalui aplikasi Access by KAI dan mitra resmi berlisensi; jangan pernah mentransfer uang ke rekening perorangan yang tidak jelas keabsahannya.\n\nTips buat kamu: Kursi kereta wisata Panoramic biasanya ludes terjual dalam hitungan menit sejak pembukaan H-45 keberangkatan. Pasang alarm di pagi hari saat jadwal tiket dibuka dan pilih kursi di sisi jendela untuk mendapatkan sudut foto terbaik.",
-    "descriptionEn": "Train travel is enjoying a remarkable revival among travelers seeking scenic comfort. PT Kereta Api Indonesia (KAI) reports surging demand for specialty tourist trains, particularly the Panoramic coaches and luxury Compartment Suites offering sweeping vistas of mountains, river gorges, and historical viaducts.\n\nThis slow-travel trend is accompanied by revitalized heritage stations featuring comfortable passenger lounges, regional culinary corners, and direct shuttle links to major tourist hubs.\n\n🔍 Verification Check: Beware of suspicious discount offers or unauthorized booking scalpers on social media. KAI officially warns that valid ticketing is exclusively processed via Access by KAI or authorized partner platforms; never transfer money to unverified personal bank accounts.\n\nTraveler takeaway: Panoramic train seats often sell out quickly upon 45-day advance booking opening. Set a morning reminder and pick window seats for prime landscape photography.",
+    "description": "BANDUNG — PT Kereta Api Indonesia (Persero) mencatat kenaikan signifikan volume penumpang pada layanan kereta wisata tematik, terutama rangkaian Kereta Panoramic dan Compartment Suites yang melintasi jalur pegunungan berpemandangan alam spektakuler. Tren wisata berbasis rel (slow rail travel) ini menjadi salah satu alternatif favorit bagi pelancong domestik maupun mancanegara yang mendambakan kenyamanan dan panorama lanskap nusantara.\n\nPeningkatan kenyamanan perjalanan didukung oleh modernisasi stasiun-stasiun cagar budaya yang kini terintegrasi dengan moda transportasi lanjutan ke kawasan objek wisata, ruang tunggu eksekutif, serta sentra kuliner khas daerah. Fasilitas jendela kaca lebar otomatis dan interior ergonomis menyuguhkan pengalaman menikmati pemandangan bentang lembah hijau dan jembatan bersejarah secara optimal.\n\nKAI mengingatkan calon penumpang bahwa pemesanan tiket resmi kereta wisata dapat diakses secara transparan melalui aplikasi Access by KAI dan mitra resmi berlisensi sejak H-45 sebelum tanggal keberangkatan, seraya mengimbau masyarakat untuk menghindari transaksi melalui pihak ketiga yang tidak resmi.",
+    "descriptionEn": "BANDUNG — PT Kereta Api Indonesia reports a substantial ridership surge across thematic tourist trains, led by Panoramic coaches and luxury Compartment Suites traversing scenic mountain corridors. This slow rail travel trend has become a preferred holiday choice for domestic and international travelers seeking comfort paired with sweeping archipelago landscapes.\n\nPassenger experience is enhanced by revitalized heritage stations featuring executive lounges, regional culinary centers, and direct connecting shuttles to prime tourism attractions. Panoramic coaches feature expansive automatic glass viewing windows that optimize sightseeing across valleys, river bridges, and forested hills.\n\nKAI advises travelers that official ticket reservations open 45 days in advance via the Access by KAI app and accredited booking partners, cautioning passengers against unauthorized ticket resellers.",
     "tag": "Nasional",
     "tagEn": "National",
     "actionUrl": "https://booking.kai.id",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Kereta Panoramic dan wisata tematik KAI semakin diminati traveler",
-      "Fasilitas: Jendela lebar otomatis, interior nyaman, dan integrasi angkutan wisata",
-      "Cek Verifikasi: KAI imbau hindari joki tiket ilegal, pesan hanya via aplikasi resmi"
+      "Fakta Utama: Kereta Panoramic dan Compartment Suites KAI catat lonjakan minat wisatawan",
+      "Fasilitas: Jendela kaca lebar otomatis terintegrasi moda transportasi wisata lanjutan",
+      "Panduan Perjalanan: Reservasi tiket resmi dibuka H-45 melalui aplikasi Access by KAI"
     ],
     "highlightsEn": [
-      "Key Takeaway: Panoramic and thematic tourist trains experience soaring popularity",
-      "Amenities: Expansive glass ceilings, luxury cabins, and integrated local tour shuttles",
-      "Verification Note: KAI urges passengers to avoid unofficial scalpers; book via official app"
+      "Core Fact: Panoramic and luxury rail suites record high visitor occupancy rates",
+      "Amenities: Expansive glass ceilings integrated with connecting destination shuttles",
+      "Travel Advisory: Official bookings open 45 days in advance via Access by KAI app"
     ],
-    "tips": "Pesan tiket H-45 sebelum jadwal keberangkatan untuk mendapatkan kursi jendela terbaik.",
-    "tipsEn": "Book tickets 45 days in advance to secure prime window-side panoramic seats.",
+    "tips": "Lakukan pemesanan tiket sejak H-45 sebelum keberangkatan untuk mendapatkan kursi di sisi jendela dengan sudut pemandangan terbaik.",
+    "tipsEn": "Reserve tickets 45 days in advance to secure window seats offering prime scenic viewpoints.",
     "locationName": "Jaringan Jalur Kereta Api Wisata Indonesia",
     "locationNameEn": "Indonesian Scenic Railway Network"
   },
   {
     "id": "news-fallback-5",
-    "title": "Kharisma Event Nusantara: Pesona Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman Jadi Magnet Budaya",
-    "titleEn": "National Cultural Calendar Highlights: Pacu Jawi and Tabuik Festival Draw Global Visitors",
+    "title": "Kharisma Event Nusantara: Atraksi Budaya Pacu Jawi dan Festival Tabuik Masuk Kalender Unggulan Nasional",
+    "titleEn": "National Event Calendar: Pacu Jawi Mud Racing and Tabuik Festival Featured as Flagship Attractions",
     "date": "04 September 2026",
     "dateEn": "September 04, 2026",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
-    "description": "Siap-siap menikmati keseruan tradisi otentik Ranah Minang! Dua atraksi budaya terkemuka Sumatera Barat, yaitu Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan perhelatan kolosal Pesona Budaya Tabuik di Pantai Gandoriah Kota Pariaman, resmi terpilih kembali dalam kalender Kharisma Event Nusantara (KEN) Kemenparekraf. Agenda ini diprediksi menyedot ratusan ribu wisatawan domestik dan mancanegara.\n\nPacu Jawi menghadirkan aksi menegangkan joki sapi membajak sawah berlumpur dengan latar megah Gunung Marapi, sementara Tabuik menghadirkan rangkaian prosesi adat sakral hingga arak-arakan menara Tabuik setinggi belasan meter menuju Samudra Hindia diiringi tabuhan rancak Gandang Tasa.\n\n🔍 Catatan Verifikasi: Sempat beredar kabar simpang siur mengenai tanggal puncak acara di beberapa forum online. Panitia pelaksana mengonfirmasi bahwa jadwal prosesi adat telah diselaraskan dengan musyawarah kerapatan adat nagari, dan pengumuman resmi berkala dapat dipantau melalui portal Dispar Sumbar agar wisatawan tidak keliru mengatur tanggal tiket kedatangan.\n\nTips buat kamu: Jika berencana memotret atraksi Pacu Jawi dari dekat pematang sawah, kenakan pakaian kasual yang siap terkena cipratan lumpur dan lapisi kamera dengan pelindung debu/air.",
-    "descriptionEn": "Get ready for an exhilarating journey into Minangkabau living heritage! Two iconic West Sumatran cultural spectacles—the thrilling Pacu Jawi mud buffalo races in Tanah Datar and the grand Tabuik Festival on Pariaman's Gandoriah Beach—are featured in the national Kharisma Event Nusantara (KEN) roster.\n\nPacu Jawi showcases fearless jockeys gripping speeding bull tails across flooded rice paddies framed by Mount Marapi, while Tabuik culminates in the ceremonial oceanic procession of towering decorative shrines accompanied by synchronized Gandang Tasa drums.\n\n🔍 Verification Check: Addressing conflicting date claims circulating on unofficial social forums, organizers confirmed that customary timelines are coordinated directly with village elders. Official event schedules are updated on the regional tourism portal to ensure visitors plan arrival dates accurately.\n\nTraveler takeaway: When photographing Pacu Jawi near paddy edges, wear mud-ready casual clothing and use protective dust/water coverings on your camera equipment.",
+    "description": "BATUSANGKAR — Dua agenda budaya terkemuka Sumatera Barat, yakni atraksi tradisi Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan perhelatan kolosal Pesona Budaya Tabuik di Kota Pariaman, resmi terkurasi kembali dalam kalender Kharisma Event Nusantara (KEN) 2026 Kemenparekraf. Penyelenggaraan kedua agenda ini diproyeksikan menggerakkan ratusan ribu kunjungan wisatawan ke ranah Minang serta memberikan dampak ekonomi langsung bagi masyarakat nagari.\n\nPacu Jawi menampilkan keahlian joki sapi membajak hamparan sawah basah berlumpur berlatar megah Gunung Marapi secara bergilir di empat nagari bersejarah Tanah Datar. Sementara di pesisir barat, prosesi sakral Pesta Budaya Tabuik Kota Pariaman menghadirkan arak-arakan menara Tabuik setinggi belasan meter menuju Samudra Hindia di Pantai Gandoriah diiringi tabuhan serempak ratusan pemukul Gandang Tasa.\n\nPemerintah daerah mengimbau para wisatawan yang hendak menyaksikan puncak perhelatan budaya ini untuk merencanakan pemesanan akomodasi lebih awal, serta senantiasa mematuhi tata tertib panitia dan norma adat nagari selama rangkaian prosesi berlangsung.",
+    "descriptionEn": "BATUSANGKAR — Two of West Sumatra's most celebrated cultural traditions—the iconic Alek Nagari Pacu Jawi bull races in Tanah Datar and the grand Tabuik Festival in Pariaman City—have been officially selected for the national 2026 Kharisma Event Nusantara (KEN) roster. The events are projected to attract hundreds of thousands of domestic and global spectators, generating direct grassroots economic vitality.\n\nPacu Jawi showcases fearless jockeys guiding bull pairs across flooded rice paddies framed by Mount Marapi on rotating weekends across four heritage nagari. Along the western coastline, Pariaman's Tabuik Festival culminates in the oceanic casting of multi-tiered wooden shrines at Gandoriah Beach backed by thunderous Gandang Tasa drum ensembles.\n\nRegional tourism agencies urge travelers planning to attend headline ceremonies to reserve accommodations early and observe customary village protocols throughout the festivities.",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://maps.google.com/?q=Tanah+Datar+Sumatera+Barat",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Pacu Jawi dan Festival Tabuik masuk kalender resmi KEN Kemenparekraf",
-      "Atraksi: Sensasi pacuan sawah berlatar Marapi dan prosesi akbar Pantai Gandoriah",
-      "Cek Verifikasi: Tanggal puncak acara telah disahkan musyawarah adat, pantau info resmi"
+      "Fakta Utama: Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman resmi masuk kalender KEN 2026",
+      "Atraksi Budaya: Pacuan sawah berlumpur Gunung Marapi dan prosesi akbar Pantai Gandoriah",
+      "Panduan Perjalanan: Pesan akomodasi jauh hari dan patuhi panduan ketertiban adat nagari"
     ],
     "highlightsEn": [
-      "Key Takeaway: Pacu Jawi and Tabuik Festival spotlighted in national KEN calendar",
-      "Attractions: High-adrenaline mud racing and monumental beachfront cultural parades",
-      "Verification Note: Headline ceremony dates confirmed with customary councils"
+      "Core Fact: Pacu Jawi and Tabuik Festival officially curated into national 2026 KEN roster",
+      "Cultural Spectacle: Thrilling muddy paddy races and monumental beachside shrine processions",
+      "Travel Advisory: Book accommodations early and respect customary nagari traditions"
     ],
-    "tips": "Kenakan pakaian kasual yang nyaman dan siapkan pelindung kamera dari cipratan lumpur saat menonton Pacu Jawi.",
-    "tipsEn": "Wear comfortable casual attire and protect camera gear from mud splashes while watching Pacu Jawi.",
+    "tips": "Kenakan pakaian kasual yang nyaman dan siapkan pelindung kamera dari percikan lumpur saat menyaksikan Pacu Jawi di pematang sawah.",
+    "tipsEn": "Wear casual attire and protect photography equipment against mud splashes when viewing Pacu Jawi near paddies.",
     "locationName": "Tanah Datar & Pantai Gandoriah, Kota Pariaman",
     "locationNameEn": "Tanah Datar & Gandoriah Beach, Pariaman"
   },
   {
     "id": "news-fallback-6",
-    "title": "Gerakan Bangga Berwisata di Indonesia (BBWI): Promo Paket Liburan Domestik dan Destinasi Super Prioritas",
-    "titleEn": "Proud of Indonesian Travel (BBWI): Domestic Travel Specials and Super Priority Hubs",
+    "title": "Gerakan Bangga Berwisata di Indonesia: Dorong Optimalisasi 5 Destinasi Pariwisata Super Prioritas",
+    "titleEn": "Proud of Indonesian Travel Campaign: Driving Growth across 5 Super Priority Destinations",
     "date": "04 September 2026",
     "dateEn": "September 04, 2026",
     "category": "Pariwisata Indonesia",
     "categoryEn": "Indonesian Tourism",
-    "description": "Mengisi masa liburan di dalam negeri kini makin menarik dengan bergulirnya kampanye nasional Bangga Berwisata di Indonesia (BBWI). Kolaborasi antara pemerintah, perhotelan, dan maskapai penerbangan menghadirkan berbagai penawaran paket perjalanan terjangkau menuju 5 Destinasi Pariwisata Super Prioritas (DPSP), mencakup Danau Toba, Borobudur, Mandalika, Labuan Bajo, dan Likupang.\n\nGerakan ini bertujuan mendorong perputaran ekonomi lokal dan memperkenalkan kekayaan pesona kepulauan nusantara kepada masyarakat luas, didukung fasilitas bandara yang terus dipercantik dan desa wisata berbasis kearifan lokal.\n\n🔍 Catatan Verifikasi: Menyikapi maraknya penipuan berkedok voucher diskon hotel hingga 80% yang mengatasnamakan program BBWI di aplikasi perpesanan, kementerian mengimbau masyarakat untuk selalu berhati-hati. Promo resmi program BBWI hanya berlaku melalui mitra online travel agent (OTA), maskapai, dan travel fair terdaftar—jangan pernah mengklik tautan tidak dikenal yang meminta data pribadi atau OTP perbankan.\n\nTips buat kamu: Rencanakan jadwal liburan dari jauh-jauh hari dan manfaatkan promo bundling transportasi plus penginapan resmi untuk menghemat pengeluaran liburan keluargamu.",
-    "descriptionEn": "Vacationing domestically across Indonesia is more rewarding than ever with the nationwide Proud of Traveling in Indonesia (BBWI) campaign. Strategic tie-ups between government agencies, hotel groups, and airlines bring accessible travel packages to Indonesia's 5 Super Priority Hubs: Lake Toba, Borobudur, Mandalika, Labuan Bajo, and Likupang.\n\nThe initiative stimulates regional economies and invites domestic explorers to uncover remote archipelago wonders supported by modern airport links and authentic village homestays.\n\n🔍 Verification Check: Responding to circulating social scams promoting fake 80% off hotel discount vouchers claiming BBWI affiliation, the ministry urges travelers to stay vigilant. Authentic promotions run strictly through accredited online travel platforms, licensed airlines, and recognized travel fairs; never click suspicious links requesting banking OTPs.\n\nTraveler takeaway: Plan vacation dates ahead and take advantage of verified transport-plus-stay bundles to maximize savings for your family getaway.",
+    "description": "JAKARTA — Pemerintah melalui Kementerian Pariwisata dan Ekonomi Kreatif bersama asosiasi industri perjalanan terus memperkuat kampanye nasional Bangga Berwisata di Indonesia (BBWI). Kolaborasi lintas sektoral ini menghadirkan paket perjalanan terintegrasi menuju 5 Destinasi Pariwisata Super Prioritas (DPSP), meliputi Danau Toba, Borobudur, Mandalika, Labuan Bajo, dan Likupang.\n\nProgram strategis BBWI difokuskan pada penguatan konektivitas penerbangan domestik, keterjangkauan tarif akomodasi wisata, serta pembinaan standar pelayanan amenitas di desa-desa wisata penyangga destinasi. Kebijakan terpadu ini diharapkan mampu mendistribusikan perputaran ekonomi secara merata bagi para pelaku UMKM dan perajin ekonomi kreatif di berbagai daerah.\n\nWisatawan diimbau untuk memanfaatkan promosi resmi paket perjalanan yang terafiliasi dengan maskapai dan platform online travel agent (OTA) berlisensi resmi, serta senantiasa mengutamakan eksplorasi keindahan destinasi wisata domestik nusantara.",
+    "descriptionEn": "JAKARTA — The Ministry of Tourism and Creative Economy alongside travel industry associations is accelerating the national Proud of Traveling in Indonesia (BBWI) campaign. This coordinated effort offers integrated travel packages across 5 Super Priority Destinations: Lake Toba, Borobudur, Mandalika, Labuan Bajo, and Likupang.\n\nKey pillars of the initiative focus on expanding domestic air routes, offering accessible lodging packages, and elevating hospitality standards across gateway tourism villages. The policy ensures travel revenues circulate directly into local artisan communities and regional creative enterprises.\n\nTravelers are encouraged to book promotional vacation packages via accredited airlines and licensed online travel agencies while prioritizing domestic destinations for their family getaways.",
     "tag": "Nasional",
     "tagEn": "National",
     "actionUrl": "https://indonesia.travel",
     "imageUrl": "",
     "highlights": [
-      "Fakta Inti: Kampanye nasional BBWI genjot kunjungan ke 5 Destinasi Super Prioritas",
-      "Fasilitas: Kolaborasi paket terjangkau akomodasi dan penerbangan domestik",
-      "Cek Verifikasi: Waspadai link promo palsu; transaksi hanya via mitra OTA resmi berlisensi"
+      "Fakta Utama: Kolaborasi nasional BBWI memperkuat akses ke 5 Destinasi Super Prioritas",
+      "Konektivitas: Penawaran paket perjalanan terpadu transportasi udara dan akomodasi",
+      "Panduan Perjalanan: Transaksi paket perjalanan melalui kanal online travel agent berlisensi"
     ],
     "highlightsEn": [
-      "Key Takeaway: National BBWI campaign drives travel across 5 Super Priority Hubs",
-      "Amenities: Coordinated affordable holiday bundles spanning domestic transit and lodging",
-      "Verification Note: Beware of counterfeit voucher links; transact only with licensed OTAs"
+      "Core Fact: National BBWI campaign enhances accessibility to 5 Super Priority Hubs",
+      "Connectivity: Bundled holiday packages combining domestic flights and verified lodging",
+      "Travel Advisory: Book travel packages exclusively through licensed online travel platforms"
     ],
-    "tips": "Pesan tiket dan penginapan jauh hari untuk mendapatkan penawaran promo bundling keluarga terbaik.",
-    "tipsEn": "Book travel packages in advance to secure the best family bundling discounts.",
+    "tips": "Pesan tiket perjalanan dan penginapan lebih awal untuk mendapatkan penawaran promo bundling resmi ke destinasi nusantara.",
+    "tipsEn": "Book travel packages in advance to take advantage of verified domestic holiday promotional rates.",
     "locationName": "Destinasi Super Prioritas Indonesia (DPSP)",
     "locationNameEn": "Indonesian Super Priority Destinations (DPSP)"
   }
@@ -1256,7 +1256,7 @@ function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWi
   }
 }
 
-function buildSmartNewsletterNarrative(cleanTitle: string, source: string, rawSnippet: string = '', isSumbarExplicit?: boolean): {
+function buildJournalisticTourismNarrative(cleanTitle: string, source: string, rawSnippet: string = '', isSumbarExplicit?: boolean): {
   descId: string;
   descEn: string;
   highlightsId: string[];
@@ -1278,24 +1278,47 @@ function buildSmartNewsletterNarrative(cleanTitle: string, source: string, rawSn
     .replace(/\.\.\.$/, '.')
     .trim();
 
-  // Determine Location Name
+  // Determine Location Name and Official Dateline
   let locId = isSumbar ? 'Sumatera Barat' : 'Indonesia';
   let locEn = isSumbar ? 'West Sumatra' : 'Indonesia';
-  if (combinedText.includes('bukittinggi')) { locId = 'Bukittinggi'; locEn = 'Bukittinggi'; }
-  else if (combinedText.includes('pariaman')) { locId = 'Pariaman'; locEn = 'Pariaman'; }
-  else if (combinedText.includes('tanah datar') || combinedText.includes('batusangkar')) { locId = 'Tanah Datar'; locEn = 'Tanah Datar'; }
-  else if (combinedText.includes('payakumbuh') || combinedText.includes('harau')) { locId = 'Payakumbuh & Lembah Harau'; locEn = 'Payakumbuh & Harau Valley'; }
-  else if (combinedText.includes('solok') || combinedText.includes('singkarak')) { locId = 'Solok & Danau Singkarak'; locEn = 'Solok & Lake Singkarak'; }
-  else if (combinedText.includes('sawahlunto')) { locId = 'Sawahlunto'; locEn = 'Sawahlunto'; }
-  else if (combinedText.includes('mentawai')) { locId = 'Kepulauan Mentawai'; locEn = 'Mentawai Islands'; }
-  else if (combinedText.includes('mandeh') || combinedText.includes('pesisir selatan')) { locId = 'Kawasan Mandeh, Pesisir Selatan'; locEn = 'Mandeh, South Pesisir'; }
-  else if (combinedText.includes('padang')) { locId = 'Kota Padang'; locEn = 'Padang City'; }
-  else if (combinedText.includes('bali')) { locId = 'Bali'; locEn = 'Bali'; }
-  else if (combinedText.includes('labuan bajo') || combinedText.includes('komodo')) { locId = 'Labuan Bajo, NTT'; locEn = 'Labuan Bajo, NTT'; }
-  else if (combinedText.includes('danau toba') || combinedText.includes('toba')) { locId = 'Danau Toba, Sumatera Utara'; locEn = 'Lake Toba, North Sumatra'; }
-  else if (combinedText.includes('borobudur') || combinedText.includes('magelang')) { locId = 'Borobudur, Jawa Tengah'; locEn = 'Borobudur, Central Java'; }
-  else if (combinedText.includes('mandalika') || combinedText.includes('lombok')) { locId = 'Mandalika, Lombok'; locEn = 'Mandalika, Lombok'; }
-  else if (combinedText.includes('jakarta')) { locId = 'Jakarta'; locEn = 'Jakarta'; }
+  let datelineId = isSumbar ? 'PADANG — ' : 'JAKARTA — ';
+  let datelineEn = isSumbar ? 'PADANG — ' : 'JAKARTA — ';
+
+  if (combinedText.includes('bukittinggi')) {
+    locId = 'Bukittinggi'; locEn = 'Bukittinggi'; datelineId = 'BUKITTINGGI — '; datelineEn = 'BUKITTINGGI — ';
+  } else if (combinedText.includes('padang pariaman') || combinedText.includes('sicincin')) {
+    locId = 'Padang Pariaman'; locEn = 'Padang Pariaman'; datelineId = 'PADANG PARIAMAN — '; datelineEn = 'PADANG PARIAMAN — ';
+  } else if (combinedText.includes('pariaman')) {
+    locId = 'Kota Pariaman'; locEn = 'Pariaman City'; datelineId = 'PARIAMAN — '; datelineEn = 'PARIAMAN — ';
+  } else if (combinedText.includes('tanah datar') || combinedText.includes('batusangkar')) {
+    locId = 'Tanah Datar'; locEn = 'Tanah Datar'; datelineId = 'BATUSANGKAR — '; datelineEn = 'BATUSANGKAR — ';
+  } else if (combinedText.includes('payakumbuh') || combinedText.includes('harau') || combinedText.includes('limapuluh kota')) {
+    locId = 'Payakumbuh & Lembah Harau'; locEn = 'Payakumbuh & Harau Valley'; datelineId = 'PAYAKUMBUH — '; datelineEn = 'PAYAKUMBUH — ';
+  } else if (combinedText.includes('solok') || combinedText.includes('singkarak')) {
+    locId = 'Solok & Danau Singkarak'; locEn = 'Solok & Lake Singkarak'; datelineId = 'SOLOK — '; datelineEn = 'SOLOK — ';
+  } else if (combinedText.includes('sawahlunto')) {
+    locId = 'Sawahlunto'; locEn = 'Sawahlunto'; datelineId = 'SAWAHLUNTO — '; datelineEn = 'SAWAHLUNTO — ';
+  } else if (combinedText.includes('mentawai')) {
+    locId = 'Kepulauan Mentawai'; locEn = 'Mentawai Islands'; datelineId = 'TUAPEJAT — '; datelineEn = 'TUAPEJAT — ';
+  } else if (combinedText.includes('mandeh') || combinedText.includes('pesisir selatan')) {
+    locId = 'Kawasan Mandeh, Pesisir Selatan'; locEn = 'Mandeh, South Pesisir'; datelineId = 'PAINAN — '; datelineEn = 'PAINAN — ';
+  } else if (combinedText.includes('padang')) {
+    locId = 'Kota Padang'; locEn = 'Padang City'; datelineId = 'PADANG — '; datelineEn = 'PADANG — ';
+  } else if (combinedText.includes('bali')) {
+    locId = 'Bali'; locEn = 'Bali'; datelineId = 'DENPASAR — '; datelineEn = 'DENPASAR — ';
+  } else if (combinedText.includes('labuan bajo') || combinedText.includes('komodo')) {
+    locId = 'Labuan Bajo, NTT'; locEn = 'Labuan Bajo, NTT'; datelineId = 'LABUAN BAJO — '; datelineEn = 'LABUAN BAJO — ';
+  } else if (combinedText.includes('danau toba') || combinedText.includes('toba')) {
+    locId = 'Danau Toba, Sumatera Utara'; locEn = 'Lake Toba, North Sumatra'; datelineId = 'PARAPAT — '; datelineEn = 'PARAPAT — ';
+  } else if (combinedText.includes('borobudur') || combinedText.includes('magelang')) {
+    locId = 'Borobudur, Jawa Tengah'; locEn = 'Borobudur, Central Java'; datelineId = 'MAGELANG — '; datelineEn = 'MAGELANG — ';
+  } else if (combinedText.includes('mandalika') || combinedText.includes('lombok')) {
+    locId = 'Mandalika, Lombok'; locEn = 'Mandalika, Lombok'; datelineId = 'PRAYA — '; datelineEn = 'PRAYA — ';
+  } else if (combinedText.includes('bandung')) {
+    locId = 'Bandung, Jawa Barat'; locEn = 'Bandung, West Java'; datelineId = 'BANDUNG — '; datelineEn = 'BANDUNG — ';
+  } else if (combinedText.includes('jakarta')) {
+    locId = 'Jakarta'; locEn = 'Jakarta'; datelineId = 'JAKARTA — '; datelineEn = 'JAKARTA — ';
+  }
 
   // Topic classification
   const isHighwayTransport = combinedText.includes('tol') || combinedText.includes('jalan') || combinedText.includes('rute') || combinedText.includes('kelok') || combinedText.includes('sitinjau') || combinedText.includes('anai') || combinedText.includes('jembatan') || combinedText.includes('bandara') || combinedText.includes('penerbangan') || combinedText.includes('kereta') || combinedText.includes('pelabuhan') || combinedText.includes('kapal') || combinedText.includes('transportasi');
@@ -1312,113 +1335,120 @@ function buildSmartNewsletterNarrative(cleanTitle: string, source: string, rawSn
   let smartTitleEn = translateHeadlineIndoToEn(cleanTitle);
 
   if (isHighwayTransport) {
-    smartTitleId = `Info Jalur & Akses: ${cleanSubject}`;
-    smartTitleEn = `Route & Travel Update: ${translateHeadlineIndoToEn(cleanSubject)}`;
+    smartTitleId = `Infrastruktur & Akses: ${cleanSubject}`;
+    smartTitleEn = `Infrastructure & Transit: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isEvent) {
-    smartTitleId = `Agenda Wisata & Festival: ${cleanSubject}`;
-    smartTitleEn = `Festival & Culture Beat: ${translateHeadlineIndoToEn(cleanSubject)}`;
+    smartTitleId = `Agenda Budaya & Pariwisata: ${cleanSubject}`;
+    smartTitleEn = `Cultural Tourism & Events: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isMarine) {
-    smartTitleId = `Kabar Bahari & Pantai: ${cleanSubject}`;
-    smartTitleEn = `Coastal & Island Beat: ${translateHeadlineIndoToEn(cleanSubject)}`;
+    smartTitleId = `Pariwisata Bahari & Pesisir: ${cleanSubject}`;
+    smartTitleEn = `Marine & Coastal Tourism: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isNatureGeopark) {
-    smartTitleId = `Sorotan Alam & Geopark: ${cleanSubject}`;
-    smartTitleEn = `Nature & Ecotourism Watch: ${translateHeadlineIndoToEn(cleanSubject)}`;
+    smartTitleId = `Konservasi & Wisata Alam: ${cleanSubject}`;
+    smartTitleEn = `Ecotourism & Nature Conservation: ${translateHeadlineIndoToEn(cleanSubject)}`;
   } else if (isCulinaryCulture) {
-    smartTitleId = `Pesona Budaya & Kuliner: ${cleanSubject}`;
-    smartTitleEn = `Culture & Culinary Notes: ${translateHeadlineIndoToEn(cleanSubject)}`;
+    smartTitleId = `Warisan Budaya & Kuliner: ${cleanSubject}`;
+    smartTitleEn = `Cultural Heritage & Gastronomy: ${translateHeadlineIndoToEn(cleanSubject)}`;
   }
 
-  // --- Smart Daily Newsletter Narrative in Conversational, Easy-to-read Style ---
-  // Paragraph 1: Conversational, friendly lead summarizing the news directly without boilerplate
+  // --- Professional Tourism Journalism Narrative (Standard Antara / Kompas) ---
+  // Paragraph 1: 5W+1H Lead with Dateline and Sourced Reporting
   let p1Id = '';
   let p1En = '';
   if (cleanedSnippet.length > 50) {
-    p1Id = `Kabar terbaru untuk kamu yang merencanakan liburan di ${locId}! Bersumber dari laporan tepercaya ${source}, ${cleanedSnippet} Perkembangan ini membawa angin segar bagi kenyamanan para traveler yang ingin menjelajahi pesona destinasi wisata kita.`;
-    p1En = `Fresh update for travelers exploring ${locEn}! Sourced from credible reporting by ${source}, ${translateHeadlineIndoToEn(cleanedSnippet)} This development brings positive news for holidaymakers looking for a seamless travel experience.`;
+    p1Id = `${datelineId}Berdasarkan laporan terkini dari ${source}, ${cleanedSnippet} Perkembangan ini menjadi bagian penting dalam penguatan tata kelola dan peningkatan kenyamanan wisatawan yang berkunjung ke kawasan ${locId}.`;
+    p1En = `${datelineEn}According to official reporting from ${source}, ${translateHeadlineIndoToEn(cleanedSnippet)} This development marks a key step in reinforcing tourism governance and visitor hospitality across ${locEn}.`;
   } else {
-    p1Id = `Ada update menarik seputar ${cleanSubject} di kawasan ${locId}. Menurut laporan terkonfirmasi dari ${source}, langkah dan koordinasi lapangan saat ini difokuskan untuk mempermudah akses serta meningkatkan kenyamanan dan keamanan para pengunjung.`;
-    p1En = `An important travel update regarding ${translateHeadlineIndoToEn(cleanSubject)} in ${locEn}. Confirmed reporting from ${source} notes that ongoing field coordination focuses on improving ease of access, visitor comfort, and safety.`;
+    p1Id = `${datelineId}Perkembangan kepariwisataan terkini mencatatkan agenda strategis terkait ${cleanSubject} di wilayah ${locId}. Laporan yang dikonfirmasi oleh ${source} menyebutkan bahwa optimalisasi fasilitas serta peningkatan mutu layanan menjadi fokus utama guna mendukung mobilitas dan kenyamanan para pelancong.`;
+    p1En = `${datelineEn}Recent developments in tourism highlight key progress concerning ${translateHeadlineIndoToEn(cleanSubject)} in ${locEn}. Confirmed reporting from ${source} indicates that service optimization and amenity enhancements remain the primary focus to support traveler convenience.`;
   }
 
-  // Paragraph 2: Elaboration + Explicit Verification Check (calling out rumors vs verified facts)
+  // Paragraph 2: Technical & Operational Field Facts, Infrastructure, Community Impact
   let p2Id = '';
   let p2En = '';
 
   if (isHighwayTransport) {
-    p2Id = `Fasilitas keselamatan dan kelancaran rute terus dipantau secara langsung oleh petugas di titik-titik krusial guna mengantisipasi kepadatan saat akhir pekan atau musim liburan.\n\n🔍 Catatan Verifikasi: Jika sempat beredar kabar atau spekulasi simpang siur di media sosial terkait gangguan rute atau tarif, otoritas terkait menegaskan bahwa jalur dipantau ketat dan beroperasi sesuai arahan petugas di lokasi. Hindari mempercayai rumor yang belum diverifikasi dan selalu rujuk kanal informasi resmi.`;
-    p2En = `Route safety fixtures and traffic flow remain under active field oversight at vital transit checkpoints to prevent peak-hour slowdowns.\n\n🔍 Verification Check: Addressing circulating rumors or unofficial social media claims regarding unexpected road blocks or fee spikes, relevant authorities confirm routes remain coordinated under on-site traffic guidance. Disregard unverified chatter and rely on official road announcements.`;
+    p2Id = `Pihak berwenang dan jajaran pengelola transportasi darat memastikan pemeliharaan infrastruktur jalan, kesiapan rambu lalu lintas, serta penyiagaan personel di simpul-simpul rawan kemacetan terus dioptimalkan. Langkah koordinatif ini bertujuan menjaga kelancaran konektivitas antardaerah sekaligus menjamin keselamatan berkendara bagi masyarakat dan wisatawan.`;
+    p2En = `Regional transportation authorities and road operators continue to prioritize road maintenance, traffic signage readiness, and field personnel deployment along high-density transit corridors. These coordinated measures aim to ensure reliable intercity connectivity and motoring safety for travelers.`;
   } else if (isEvent) {
-    p2Id = `Penyelenggaraan agenda ini melibatkan komunitas warga lokal dan pelaku ekonomi kreatif nagari, menghadirkan kemeriahan atraksi budaya yang ramah untuk dinikmati seluruh anggota keluarga.\n\n🔍 Catatan Verifikasi: Terkait rumor mengenai jadwal atau biaya tiket yang terkadang simpang siur di grup obrolan, panitia pelaksana menegaskan bahwa jadwal resmi serta tata tertib kunjungan telah dikoordinasikan secara matang. Pastikan kamu selalu memverifikasi tanggal agenda lewat pengumuman resmi penyelenggara.`;
-    p2En = `This gathering brings together local artisans and cultural communities, delivering vibrant heritage performances that are fun and family-friendly.\n\n🔍 Verification Check: Regarding unofficial chatter about date shifts or ticket costs circulating in chat groups, organizers emphasize that all schedules are coordinated directly with community elders. Always verify event dates via official committee announcements.`;
+    p2Id = `Pelaksanaan kegiatan budaya ini turut melibatkan partisipasi aktif masyarakat nagari serta para pelaku usaha mikro, kecil, dan menengah (UMKM) setempat. Kolaborasi ini tidak hanya memperkaya atraksi kesenian dan kearifan lokal yang disuguhkan kepada pelancong, melainkan juga menggerakkan perekonomian daerah secara berkesinambungan.`;
+    p2En = `The organization of this cultural event involves active participation from local community artisans and micro-enterprises. This synergy not only showcases vibrant regional heritage to visiting travelers, but also stimulates sustainable economic vitality across surrounding communities.`;
   } else if (isMarine) {
-    p2Id = `Kondisi perairan dan fasilitas penyeberangan dipantau bersama stasiun maritim BMKG demi memastikan aktivitas wisata bahari tetap berjalan nyaman dan aman bagi seluruh pelancong.\n\n🔍 Catatan Verifikasi: Abaikan isu liar atau kabar angin seputar cuaca ekstrem yang tidak bersumber dari rilis resmi BMKG Maritim. Kondisi operasional pelayaran diputuskan secara terukur berdasarkan data meteorologi harian yang kredibel.`;
-    p2En = `Coastal waters and ferry operations are monitored alongside maritime meteorological stations to ensure all aquatic excursions remain safe and enjoyable.\n\n🔍 Verification Check: Disregard sensationalized rumors regarding extreme marine weather not backed by official BMKG bulletins. All sailing decisions are made responsibly based on verified meteorological data.`;
+    p2Id = `Pengawasan operasional pelayaran wisata dan keselamatan bahari dilaksanakan secara berkala bersama otoritas pelabuhan dan stasiun maritim BMKG. Koordinasi terpadu ini ditujukan untuk memantau dinamika pasang surut serta kondisi perairan demi memastikan setiap aktivitas penyeberangan dan rekreasi laut berjalan aman dan tertib.`;
+    p2En = `Maritime tourism operations and coastal safety protocols are regularly coordinated with port authorities and meteorological stations. This integrated monitoring tracks tidal movements and maritime conditions, ensuring that island crossings and marine recreation activities operate smoothly.`;
   } else if (isNatureGeopark) {
-    p2Id = `Pengelolaan kawasan alam ini menitikberatkan pada kenyamanan pengunjung sekaligus menjaga kelestarian alam dan kebersihan lingkungan sekitar destinasi.\n\n🔍 Catatan Verifikasi: Menanggapi kabar yang sempat viral mengenai pembatasan sepihak atau isu tiket liar, pengelola kawasan mengonfirmasi bahwa seluruh aturan dan tarif diterapkan secara resmi dan transparan untuk perlindungan kawasan cagar alam.`;
-    p2En = `Destination management centers on balancing visitor enjoyment with nature conservation and responsible leave-no-trace ethics.\n\n🔍 Verification Check: Addressing viral claims concerning unofficial entry fees or arbitrary closures, park authorities affirm that all regulations and ticketing adhere strictly to transparent conservation rules.`;
+    p2Id = `Pengelolaan kawasan konservasi dan objek wisata alam ini memadukan kenyamanan pengunjung dengan perlindungan ekosistem alami. Penguatan tata kelola mencakup penataan jalur penjelajahan, penyediaan sarana kebersihan terpadu, serta pengawasan daya tampung lingkungan guna mempertahankan kelestarian alam hayati.`;
+    p2En = `Protected area management balances visitor hospitality with active environmental conservation. Governance enhancements include designated trail maintenance, integrated waste management facilities, and visitor capacity oversight to safeguard ecological integrity.`;
   } else if (isCulinaryCulture) {
-    p2Id = `Kekayaan kuliner dan kriya tradisi ini terus dilestarikan oleh komunitas lokal, menyajikan cita rasa autentik dan cerita budaya berharga bagi setiap wisatawan yang singgah.\n\n🔍 Catatan Verifikasi: Pihak asosiasi perajin dan pegiat kuliner menegaskan bahwa informasi produk asli dan rekomendasi sentra resmi dapat diperoleh langsung dari panduan terverifikasi; jangan mudah tergiur tawaran suvenir tidak resmi dari pihak ketiga yang meragukan.`;
-    p2En = `Authentic culinary and craft traditions continue to be nurtured by village artisans, offering visitors genuine flavors and rich cultural stories.\n\n🔍 Verification Check: Craft associations confirm that verified artisan centers and authentic makers are listed in official directories; beware of unauthorized third-party resale claims.`;
+    p2Id = `Pelestarian tradisi dan penguatan sentra kriya kuliner ini didukung oleh pembinaan berkesinambungan bagi komunitas perajin lokal. Pendekatan ini memperkuat jaminan autentisitas produk khas daerah sekaligus memperluas jangkauan pasar suvenir dan gastronomi tradisional kepada wisatawan nusantara maupun mancanegara.`;
+    p2En = `Traditional heritage preservation and culinary craft centers receive ongoing institutional support alongside local maker guilds. This approach safeguards authentic production standards while broadening market access for heritage gastronomy and handicrafts.`;
   } else {
-    p2Id = `Inisiatif ini dirancang untuk memberikan dampak positif langsung bagi masyarakat di sekitar destinasi, membuka ruang usaha yang lebih luas, dan meningkatkan mutu layanan pariwisata.\n\n🔍 Catatan Verifikasi: Berdasarkan konfirmasi dari sumber tepercaya (${source}), laporan ini adalah fakta resmi yang terverifikasi. Jika ada desas-desus atau klaim sepihak di internet, utamakan mengecek konfirmasi dari dinas atau lembaga terkait.`;
-    p2En = `This initiative directly benefits local destination communities by fostering enterprise opportunities and elevating hospitality standards.\n\n🔍 Verification Check: Confirmed by credible reporting from ${source}, this information reflects verified facts. When encountering unverified claims online, always cross-reference with official institutional announcements.`;
+    p2Id = `Inisiatif kebijakan ini dirancang untuk memperkuat ekosistem kepariwisataan secara terpadu, membuka peluang usaha baru bagi komunitas lokal, serta mendorong standarisasi mutu amenitas di seluruh destinasi terkait.`;
+    p2En = `This strategic initiative is designed to strengthen the regional tourism ecosystem, foster economic opportunities for local communities, and elevate amenity standards across destination networks.`;
   }
 
-  // Paragraph 3: Conversational Tips for the reader
-  let p3Id = `Tips buat kamu: Simpan informasi ini untuk rencana jalan-jalanmu berikutnya. Pastikan kamu selalu memantau perkembangan cuaca lokal dan menyiapkan kebutuhan perjalanan dari jauh-jauh hari agar liburanmu tetap santai dan bebas ribet!`;
-  let p3En = `Traveler takeaway: Bookmark this update for your upcoming travel plans. Always check local forecasts and pack essentials ahead of time so your holiday stays relaxed and hassle-free!`;
+  // Paragraph 3: Official Travel Guidance & Advisory (Formal & Authoritative)
+  let p3Id = '';
+  let p3En = '';
 
   if (isHighwayTransport) {
-    p3Id = `Tips buat kamu: Sebelum berangkat, luangkan 5 menit untuk mengecek kondisi tekanan ban, rem kendaraan, serta saldo e-toll kamu. Berkendaralah dengan santai dan patuhi batas kecepatan demi keamanan bersama.`;
-    p3En = `Traveler takeaway: Before setting off, take 5 minutes to check your tires, brake pads, and electronic toll card balance. Drive at a relaxed pace and respect speed advisories.`;
+    p3Id = `Para pengendara dan pelancong diimbau untuk senantiasa memastikan kelaikan teknis kendaraan, memeriksa kecukupan saldo uang elektronik sebelum melintas di jalur tol, serta mematuhi batas kecepatan yang telah ditetapkan demi keselamatan bersama.`;
+    p3En = `Motorists and travelers are advised to verify vehicle roadworthiness, maintain adequate electronic toll card balances prior to departure, and strictly observe speed regulations for shared road safety.`;
   } else if (isEvent) {
-    p3Id = `Tips buat kamu: Jika ingin menyaksikan langsung, datanglah lebih awal sebelum acara dimulai untuk mendapatkan sudut pandang terbaik dan tempat parkir yang nyaman. Kenakan pakaian santai yang menyerap keringat.`;
-    p3En = `Traveler takeaway: If attending in person, arrive early to secure prime viewing spots and convenient parking. Wear light, breathable casual clothing.`;
+    p3Id = `Wisatawan yang berencana menghadiri perhelatan diimbau untuk merencanakan waktu keberangkatan lebih awal, melakukan reservasi akomodasi secara resmi, serta senantiasa mematuhi panduan tata tertib yang diterbitkan oleh panitia pelaksana di lokasi acara.`;
+    p3En = `Visitors planning to attend the festivities are encouraged to schedule travel itineraries early, secure accommodations through verified channels, and adhere to official on-site visitor guidelines.`;
   } else if (isMarine) {
-    p3Id = `Tips buat kamu: Pesan tiket penyeberangan kapal lebih awal dan siapkan kantong anti-air (dry bag) untuk melindungi barang elektronikmu saat menikmati pesona laut.`;
-    p3En = `Traveler takeaway: Reserve ferry tickets early and carry a dry bag to protect phones and electronics while enjoying coastal waters.`;
+    p3Id = `Pelancong diimbau untuk melakukan pemesanan tiket penyeberangan resmi terlebih dahulu, senantiasa menggunakan perlengkapan keselamatan pelampung selama di perairan, serta memantau rilis resmi prakiraan cuaca maritim dari BMKG.`;
+    p3En = `Travelers are urged to book authorized vessel tickets in advance, wear certified life jackets during marine transit, and keep track of updated official marine meteorological bulletins.`;
   } else if (isNatureGeopark) {
-    p3Id = `Tips buat kamu: Datang saat pagi hari untuk menikmati udara segar dan pencahayaan foto terbaik. Bawa botol minum sendiri dan bantu jaga kebersihan alam dengan tidak meninggalkan sampah plastik.`;
-    p3En = `Traveler takeaway: Visit early in the morning for crisp air and golden photography light. Carry a reusable water bottle and help keep nature clean by packing out your trash.`;
+    p3Id = `Pengunjung diimbau untuk mengenakan perlengkapan lapangan yang memadai, menaati jalur jelajah yang telah ditentukan oleh pengelola cagar alam, serta mematuhi prinsip kebersihan dengan tidak meninggalkan sampah di kawasan konservasi.`;
+    p3En = `Visitors are advised to wear suitable outdoor gear, stay on marked conservation trails, and adhere strictly to leave-no-trace ethics by properly disposing of all waste.`;
   } else if (isCulinaryCulture) {
-    p3Id = `Tips buat kamu: Jangan ragu bertanya pada warga lokal atau pemandu untuk rekomendasi kuliner yang paling autentik. Selalu dukung produk perajin lokal sebagai oleh-oleh berharga.`;
-    p3En = `Traveler takeaway: Don't hesitate to ask local hosts for authentic food recommendations. Support community artisans by picking up authentic handmade keepsakes.`;
+    p3Id = `Wisatawan diimbau untuk mengunjungi galeri dan sentra kriya resmi guna memperoleh produk bergaransi keaslian, serta mendukung kelangsungan ekonomi kreatif perajin lokal di daerah.`;
+    p3En = `Travelers are encouraged to visit accredited artisan workshops and official culinary centers to discover genuine regional goods while supporting local craft traditions.`;
+  } else {
+    p3Id = `Wisatawan diimbau untuk selalu memeriksa informasi operasional resmi destinasi sebelum melakukan perjalanan, menjaga etika kebersihan lingkungan, serta mendukung produk dan layanan jasa masyarakat lokal di setiap destinasi yang dikunjungi.`;
+    p3En = `Travelers are advised to verify official operational notices before traveling, practice environmental stewardship, and patronize local community businesses across destinations.`;
   }
 
   const descId = `${p1Id}\n\n${p2Id}\n\n${p3Id}`;
   const descEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
   const highlightsId = [
-    `Fakta Inti: Informasi terkonfirmasi dari sumber tepercaya (${source})`,
-    isHighwayTransport ? 'Mobilitas Wisata: Kesiapan rute dan pengamanan jalur dipantau langsung' :
-    isEvent ? 'Atraksi Budaya: Agenda ramah keluarga melibatkan komunitas lokal' :
-    isMarine ? 'Wisata Bahari: Akses laut dan aktivitas pantai terpantau kondusif' :
-    isNatureGeopark ? 'Wisata Alam: Kelestarian lingkungan dan kenyamanan pelancong dijaga' :
-    'Dampak Destinasi: Memperkuat kenyamanan dan fasilitas bagi wisatawan',
-    'Cek Verifikasi: Informasi resmi terverifikasi, abaikan rumor belum pasti'
+    `Fakta Utama: Laporan resmi terkonfirmasi dari sumber tepercaya (${source})`,
+    isHighwayTransport ? 'Infrastruktur & Akses: Kesiapan rute dan pengamanan jalur dipantau secara optimal' :
+    isEvent ? 'Atraksi Budaya: Perhelatan tradisi melibatkan partisipasi aktif komunitas lokal' :
+    isMarine ? 'Pariwisata Bahari: Operasional pelayaran dan keselamatan perairan dipantau berkala' :
+    isNatureGeopark ? 'Konservasi Alam: Perlindungan lingkungan diselaraskan dengan kenyamanan wisatawan' :
+    isCulinaryCulture ? 'Kearifan Tradisi: Pelestarian sentra kriya dan kuliner autentik daerah' :
+    'Tata Kelola Destinasi: Penguatan fasilitas amenitas dan standar pelayanan pariwisata',
+    'Panduan Perjalanan: Patuhi arahan resmi pengelola serta utamakan keselamatan dan ketertiban'
   ];
 
   const highlightsEn = [
-    `Key Fact: Verified reporting from credible source (${source})`,
-    isHighwayTransport ? 'Travel Mobility: Route readiness and transit safety actively monitored' :
-    isEvent ? 'Cultural Beat: Family-friendly festivities driven by local communities' :
-    isMarine ? 'Marine Travel: Coastal access and open-water activities verified safe' :
-    isNatureGeopark ? 'Nature Watch: Scenic sanctuaries preserved with responsible visiting' :
-    'Destination Impact: Elevating traveler amenities and regional hospitality',
-    'Verification Note: Grounded in verified facts, disregard unverified rumors'
+    `Core Fact: Verified reporting from credible news agency (${source})`,
+    isHighwayTransport ? 'Transit Infrastructure: Route readiness and roadway safety actively managed' :
+    isEvent ? 'Cultural Showcase: Traditional celebration engaging grassroots communities' :
+    isMarine ? 'Marine Tourism: Ferry operations and aquatic safety monitored routinely' :
+    isNatureGeopark ? 'Nature Conservation: Eco-preservation integrated with visitor hospitality' :
+    isCulinaryCulture ? 'Living Heritage: Sustaining authentic culinary and artisan craft hubs' :
+    'Destination Governance: Elevating visitor facilities and regional service benchmarks',
+    'Travel Advisory: Observe official visitor guidance prioritizing safety and order'
   ];
 
-  const tipsId = isHighwayTransport ? 'Cek kondisi kendaraan dan saldo kartu tol elektronik sebelum melintas.' :
-    isEvent ? 'Pesan penginapan lebih awal dan kenakan pakaian yang nyaman untuk berjalan santai.' :
-    isMarine ? 'Pesan tiket kapal penyeberangan H-1 dan pantau prakiraan cuaca maritim BMKG.' :
-    isNatureGeopark ? 'Datang pagi hari untuk suasana paling asri dan gunakan alas kaki yang nyaman.' :
-    'Cek rute dan jam operasional destinasi agar perjalananmu berjalan lancar.';
+  const tipsId = isHighwayTransport ? 'Periksa tekanan angin ban, fungsi rem, serta saldo uang elektronik sebelum memulai perjalanan.' :
+    isEvent ? 'Rencanakan kedatangan lebih awal dan pesan penginapan di sekitar lokasi acara dari jauh hari.' :
+    isMarine ? 'Pesan tiket kapal resmi H-1 dan pantau rilis berkala prakiraan cuaca maritim BMKG.' :
+    isNatureGeopark ? 'Gunakan alas kaki yang sesuai untuk aktivitas luar ruang dan jaga kebersihan dengan tidak membuang sampah sembarangan.' :
+    isCulinaryCulture ? 'Kunjungi sentra perajin dan kuliner resmi untuk memperoleh produk khas bergaransi keaslian.' :
+    'Pastikan jadwal operasional destinasi terverifikasi dan siapkan rencana perjalanan dengan matang.';
 
-  const tipsEn = isHighwayTransport ? 'Inspect vehicle roadworthiness and ensure sufficient electronic toll funds.' :
-    isEvent ? 'Book accommodations ahead and dress in comfortable walking clothes.' :
-    isMarine ? 'Book ferry crossings a day ahead and check official maritime swell reports.' :
-    isNatureGeopark ? 'Arrive in the morning for crisp views and wear sturdy comfortable walking shoes.' :
-    'Verify opening hours and local route conditions for a smooth travel experience.';
+  const tipsEn = isHighwayTransport ? 'Inspect tire pressure, brake performance, and electronic toll balance before setting off.' :
+    isEvent ? 'Plan arrival early and secure nearby accommodations well in advance of the event.' :
+    isMarine ? 'Book official vessel crossings a day ahead and check regular BMKG maritime weather bulletins.' :
+    isNatureGeopark ? 'Wear sturdy outdoor footwear and preserve ecological hygiene by carrying out all waste.' :
+    isCulinaryCulture ? 'Visit accredited artisan galleries and authentic culinary stalls to purchase genuine goods.' :
+    'Verify official destination hours and prepare travel itineraries thoroughly.';
 
   return { descId, descEn, highlightsId, highlightsEn, tipsId, tipsEn, smartTitleId, smartTitleEn };
 }
@@ -1913,7 +1943,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
           if (!isWithin30d) continue;
 
           const snippet = cleanHtml(item.description || item.content || '');
-          const narrative = buildSmartNewsletterNarrative(cleanTitle, source || 'Media Tepercaya', snippet, isSumbarTopicFeed);
+          const narrative = buildJournalisticTourismNarrative(cleanTitle, source || 'Media Tepercaya', snippet, isSumbarTopicFeed);
 
           list.push({
             id: `news-live-${list.length + 1}-${Date.now().toString().slice(-6)}`,
@@ -1995,7 +2025,7 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
           const rawSnippet = it.querySelector('description')?.textContent || '';
           const snippet = cleanHtml(rawSnippet);
           const linkUrl = it.querySelector('link')?.textContent || '';
-          const narrative = buildSmartNewsletterNarrative(cleanTitle, source || 'Media Tepercaya', snippet, true);
+          const narrative = buildJournalisticTourismNarrative(cleanTitle, source || 'Media Tepercaya', snippet, true);
 
           sumbarItems.push({
             id: `news-proxy-${sumbarItems.length + 1}-${Date.now().toString().slice(-6)}`,
@@ -2084,19 +2114,19 @@ export async function fetchAiHotInfo(language: string = 'id') {
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
-        const prompt = `Anda adalah REDAKTUR SMART DAILY TRAVEL NEWSLETTER pariwisata profesional (Sumatera Barat & Indonesia).
-Tugas Anda: Hasilkan 6 butir buletin berita wisata ringkas, cerdas, tidak bias, dan cepat dibaca dalam format JSON array.
+        const prompt = `Anda adalah REDAKTUR JURNALISTIK PARIWISATA PROFESIONAL (standar LKBN Antara / Kompas / Tempo) yang bertugas menyusun warta pariwisata Sumatera Barat dan nasional Indonesia.
+Tugas Anda: Hasilkan 6 butir berita pariwisata resmi, objektif, tidak bias, faktual, dan kredibel dalam format JSON array.
 KOMPOSISI WAJIB: TEPAT 50% Pariwisata Sumatera Barat (3 butir) dan 50% Pariwisata Nasional Indonesia (3 butir). Susun secara berselang-seling [Sumbar, Nasional, Sumbar, Nasional, Sumbar, Nasional].
 
-STANDAR PENULISAN SMART NEWSLETTER (DILARANG MENGGUNAKAN BAHASA TEMPLATE/ROBOTIK):
-1. GAYA BAHASA: Bahasa percakapan yang cerdas, santai, lugas, bersahabat, dan mudah dipahami oleh traveler umum (seperti buletin harian sarapan pagi yang renyah dan berbobot). HINDARI jargon birokratis kaku atau kalimat template pembuka klise seperti "Sektor kepariwisataan terus menunjukkan dinamika kemajuan...".
-2. FAKTA & RUMOR: Ambil fakta aktual dari sumber terpercaya (Kemenparekraf, BPTD, Ditlantas, BMKG Maritim, PHRI, Pemda, media nasional terpercaya). Jika ada hal yang berupa isu viral, spekulasi media sosial, atau rumor yang belum terverifikasi secara resmi, SEBUTKAN SECARA EKSPLISIT dalam blok "🔍 Catatan Verifikasi:".
-3. STRUKTUR DESKRIPSI (3 paragraf terpisah dengan \\n\\n):
-   - Paragraf 1: Pembuka ramah & inti berita aktual secara langsung (siapa yang terlibat, apa yang terjadi, dan manfaat nyata bagi para pelancong).
-   - Paragraf 2: Rincian fakta lapangan + wajib sertakan blok "🔍 Catatan Verifikasi: [sebutkan fakta resmi vs rumor/isu yang belum diverifikasi]".
-   - Paragraf 3: "Tips buat kamu: [rekomendasi praktis, aplikatif, dan bermanfaat saat berwisata]".
+STANDAR JURNALISTIK KEPARIWISATAAN (DILARANG MENGGUNAKAN GAYA BULETIN SANTAI, KOLOKIAL, 'CATATAN VERIFIKASI', ATAU 'TIPS BUAT KAMU'):
+1. GAYA BAHASA: Bahasa Indonesia baku jurnalistik yang lugas, presisi, berwibawa, dan objektif. Gunakan Dateline resmi dengan huruf kapital diikuti tanda strip panjang (misalnya "PADANG — ", "JAKARTA — ", "BUKITTINGGI — ", "BATUSANGKAR — ").
+2. SUMBER & FAKTA: Ambil fakta terverifikasi dari sumber otoritatif (Kemenparekraf, BPTD, Ditlantas, BPJN, BMKG Maritim, PHRI, Dinas Pariwisata, atau pers resmi). Sajikan fakta murni tanpa spekulasi atau desas-desus.
+3. STRUKTUR DESKRIPSI BERITA (Tepat 3 paragraf terpisah dengan \\n\\n):
+   - Paragraf 1 (Lead 5W+1H): Dimulai dengan DATELINE (contoh: "PADANG — ") lalu memuat pokok peristiwa secara komprehensif (siapa pemangku kepentingan yang terlibat, apa kebijakan/peristiwa yang terjadi, di mana lokasi persisnya, kapan berlangsung, dan mengapa/bagaimana implikasinya bagi pariwisata).
+   - Paragraf 2 (Elaborasi Fakta Lapangan): Rincian teknis infrastruktur, fasilitas publik/amenitas, dampak ekonomi bagi masyarakat lokal/UMKM daerah, atau kesiapan operasional destinasi.
+   - Paragraf 3 (Imbauan Resmi & Panduan Pelancong): Arahan resmi, panduan keselamatan berkendara/berwisata, atau regulasi kunjungan yang wajib dipatuhi wisatawan secara formal dan tertib.
 4. PROPERTI WAJIB SETIAP ITEM:
-   id (string unik), title (string santai & memikat), titleEn (string), category ("Pariwisata Sumatera Barat" atau "Pariwisata Indonesia"), categoryEn (string), date (format: "DD MMMM YYYY"), dateEn (string), tag ("Sumbar" atau "Nasional"), tagEn ("West Sumatra" atau "National"), description (3 paragraf newsletter), descriptionEn (3 paragraf newsletter), imageUrl (""), actionUrl (""), highlights (array 3 poin intisari penting), highlightsEn (array 3 poin), tips (string tips santai), tipsEn (string), locationName (string nama lokasi/kota), locationNameEn (string).
+   id (string unik), title (string judul berita jurnalistik yang lugas & informatif), titleEn (string judul bahasa Inggris), category ("Pariwisata Sumatera Barat" atau "Pariwisata Indonesia"), categoryEn ("West Sumatra Tourism" atau "Indonesian Tourism"), date (format: "DD MMMM YYYY"), dateEn (string), tag ("Sumbar" atau "Nasional"), tagEn ("West Sumatra" atau "National"), description (3 paragraf narasi jurnalistik formal), descriptionEn (3 paragraf formal English journalism), imageUrl (""), actionUrl (""), highlights (array 3 butir: "Fakta Utama: ...", "Infrastruktur/Fasilitas: ...", "Panduan Perjalanan: ..."), highlightsEn (array 3 butir formal English highlights), tips (string imbauan praktis resmi untuk wisatawan), tipsEn (string official travel guidance), locationName (string nama lokasi spesifik), locationNameEn (string).
 Hanya kembalikan valid JSON tanpa markdown.
 Waktu saat ini: ${new Date().toISOString()}
 Variasi Permintaan Seed: ${Math.random()}`;
@@ -2121,7 +2151,7 @@ Variasi Permintaan Seed: ${Math.random()}`;
     }
   }
 
-  // 3. Live Google News / RSS National & Local Tourism Feed (50:50 balanced, real-time & newsletter format)
+  // 3. Live Google News / RSS National & Local Tourism Feed (50:50 balanced, real-time & official journalism)
   const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
   if (liveRssNews && liveRssNews.length > 0) {
     const withSmartImages = liveRssNews.map(item => ({
