@@ -172,6 +172,16 @@ export interface DownloadItem {
   mimeType: string;
 }
 
+export interface HotInfoRelatedStory {
+  title: string;
+  titleEn?: string;
+  sourceName: string;
+  sourceDomain?: string;
+  sourceUrl: string;
+  timeAgo?: string;
+  sourceIcon?: string;
+}
+
 export interface HotInfoItem {
   id: string;
   title: string;
@@ -189,6 +199,10 @@ export interface HotInfoItem {
   mapsUrl?: string;
   sourceUrl?: string;
   sourceName?: string;
+  sourceDomain?: string;
+  sourceIcon?: string;
+  timeAgo?: string;
+  relatedStories?: HotInfoRelatedStory[];
   highlights?: string[];
   highlightsEn?: string[];
   tips?: string;

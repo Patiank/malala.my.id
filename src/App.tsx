@@ -464,20 +464,20 @@ export default function App() {
               >
                 {[...displayItems, ...displayItems].map((news, idx) => {
                   const isEn = lang === 'en';
-                  const cat = isEn && news.categoryEn ? news.categoryEn : news.category;
+                  const sourceBrand = news.sourceName || (isEn && news.categoryEn ? news.categoryEn : news.category);
                   const titleText = getNewsDisplayTitle(news, lang);
-                  const dateText = isEn && news.dateEn ? news.dateEn : news.date;
+                  const timeText = news.timeAgo || (isEn && news.dateEn ? news.dateEn : news.date);
                   return (
                     <button
                       key={`${news.id}-${idx}`}
                       onClick={() => {
                         setSelectedNews(news);
                       }}
-                      className="inline-flex items-center gap-2.5 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5"
+                      className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5"
                     >
-                      <span className="font-bold text-red-400 group-hover:text-red-300">[{cat}]</span>
-                      <span className="underline-offset-2 group-hover:underline tracking-wide">{titleText}</span>
-                      <span className="text-gray-400 font-mono text-[10px]">({dateText})</span>
+                      <span className="font-bold text-red-400 group-hover:text-red-300 font-mono text-[10px]">[{sourceBrand}]</span>
+                      <span className="underline-offset-2 group-hover:underline tracking-wide text-xs">{titleText}</span>
+                      <span className="text-gray-400 font-mono text-[10px]">({timeText})</span>
                       <span className="text-gray-600 ml-4 select-none">•</span>
                     </button>
                   );
