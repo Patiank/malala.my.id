@@ -3729,18 +3729,18 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </div>
                         </div>
 
-                        {/* Bottom Blue Action Bar / Column: "Baca Sumber Resmi" */}
+                        {/* Bottom Grey Action Bar / Column: "Baca Sumber Resmi" (matches weather widget theme) */}
                         <div className="pt-2 border-t border-gray-100 mt-auto">
                           <button
                             onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                            className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group"
+                            className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
                             title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
                           >
                             <div className="flex items-center gap-2">
-                              <ExternalLink className="w-3.5 h-3.5 text-blue-200 group-hover:scale-110 transition-transform" />
-                              <span>{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
+                              <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
+                              <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
                             </div>
-                            <span className="text-[11px] font-semibold text-blue-100 bg-blue-700/70 px-2 py-0.5 rounded-md">
+                            <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors">
                               {publisherDomain} ↗
                             </span>
                           </button>

@@ -145,10 +145,10 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           {/* Primary Action: Direct Link to Original News */}
           <button
             onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-bold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
+            className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white py-3 rounded-xl font-bold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-neutral-700/70"
           >
             <span>{isEn ? `Read Full Story on ${publisherName}` : `Buka Berita Lengkap di ${publisherName}`}</span>
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4 text-gray-300" />
           </button>
 
           {/* Secondary Action: Geographic Location Maps Link */}
