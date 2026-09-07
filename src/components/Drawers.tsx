@@ -3617,8 +3617,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* Google News Topic Clusters / Full Coverage Feed */}
-              <div className="grid grid-cols-1 gap-6 items-start">
+              {/* 2-Column News Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
                 {(() => {
                   const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
                     .filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
@@ -3650,7 +3650,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                   if (dedupedList.length === 0) {
                     return (
-                      <div className="text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                      <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
                         {lang === 'en' ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
                       </div>
                     );
@@ -3668,149 +3668,82 @@ export const Drawers: React.FC<DrawersProps> = ({
                       <article
                         key={item.id || idx}
                         style={{ animationDelay: `${idx * 40}ms` }}
-                        className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta animate-content-stagger"
+                        className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta flex flex-col justify-between space-y-3.5 animate-content-stagger"
                       >
-                        {/* 2-Panel Layout: Panel 1 (Left - Berita Utama) & Panel 2 (Right - Liputan & Perspektif Terkait) */}
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
-                          
-                          {/* PANEL 1: Berita Utama */}
-                          <div className="md:col-span-7 space-y-3 flex flex-col justify-between">
-                            <div className="space-y-2.5">
-                              {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT) */}
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <img
-                                  src={mainFavicon}
-                                  alt={item.sourceName || 'Publisher'}
-                                  className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
-                                  onError={(e: any) => { e.target.style.display = 'none'; }}
-                                />
-                                <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
-                                  {publisherDomain}
-                                </span>
+                        {/* Upper Content: Brand, Title, Excerpt, Metadata */}
+                        <div className="space-y-2.5">
+                          {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT) */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <img
+                              src={mainFavicon}
+                              alt={item.sourceName || 'Publisher'}
+                              className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
+                              onError={(e: any) => { e.target.style.display = 'none'; }}
+                            />
+                            <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                              {publisherDomain}
+                            </span>
+                            <span className="text-gray-300">•</span>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
+                              item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
+                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                : 'bg-red-50 text-red-800 border border-red-200'
+                            }`}>
+                              {categoryDisplay}
+                            </span>
+                            {(item.tag === 'Penting' || item.isUrgent) && (
+                              <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
+                                <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                <span>HOT</span>
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Main Headline */}
+                          <h3
+                            onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
+                            className="text-gray-900 font-bold text-base sm:text-lg leading-snug hover:text-blue-600 transition-colors cursor-pointer"
+                          >
+                            {getNewsDisplayTitle(item, lang)}
+                          </h3>
+
+                          {/* Brief Excerpt */}
+                          {item.description && (
+                            <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                              {item.description.split('\n\n')[0]}
+                            </p>
+                          )}
+
+                          {/* Meta Details: Time & Location */}
+                          <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 font-medium pt-1">
+                            <span>{timeAgoText}</span>
+                            {item.locationName && (
+                              <>
                                 <span className="text-gray-300">•</span>
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                                  item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
-                                    ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                    : 'bg-red-50 text-red-800 border border-red-200'
-                                }`}>
-                                  {categoryDisplay}
+                                <span className="flex items-center gap-1 text-gray-600">
+                                  <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                                  {item.locationName.split(',')[0]}
                                 </span>
-                                {(item.tag === 'Penting' || item.isUrgent) && (
-                                  <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
-                                    <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
-                                    <span>HOT</span>
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Main Headline */}
-                              <h3
-                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                className="text-gray-900 font-bold text-base sm:text-lg leading-snug hover:text-blue-600 transition-colors cursor-pointer"
-                              >
-                                {getNewsDisplayTitle(item, lang)}
-                              </h3>
-
-                              {/* Brief Excerpt */}
-                              {item.description && (
-                                <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                                  {item.description.split('\n\n')[0]}
-                                </p>
-                              )}
-                            </div>
-
-                            {/* Panel 1 Footer Meta: Time, Location, Direct Link */}
-                            <div className="pt-2 flex items-center justify-between gap-2 flex-wrap text-xs text-gray-500 font-medium">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span>{timeAgoText}</span>
-                                {item.locationName && (
-                                  <>
-                                    <span className="text-gray-300">•</span>
-                                    <span className="flex items-center gap-1 text-gray-600">
-                                      <MapPin className="w-3 h-3 text-red-500 shrink-0" />
-                                      {item.locationName.split(',')[0]}
-                                    </span>
-                                  </>
-                                )}
-                              </div>
-                              <button
-                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                className="text-blue-600 hover:text-blue-800 hover:underline text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                              >
-                                <span>{isEn ? 'Read at source' : 'Baca sumber resmi'}</span>
-                                <ExternalLink className="w-3 h-3" />
-                              </button>
-                            </div>
+                              </>
+                            )}
                           </div>
+                        </div>
 
-                          {/* PANEL 2: Liputan & Perspektif Media Terkait */}
-                          <div className="md:col-span-5 bg-slate-50/90 p-4 rounded-xl border border-slate-200 space-y-3 flex flex-col justify-between">
-                            <div>
-                              <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-200">
-                                <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                                  <BookOpen className="w-3.5 h-3.5 text-blue-600" />
-                                  <span>{isEn ? 'Related Perspectives' : 'Perspektif Media Lain'}</span>
-                                </span>
-                                {Array.isArray(item.relatedStories) && item.relatedStories.length > 0 && (
-                                  <span className="text-[10px] font-bold bg-white px-2 py-0.5 rounded-full text-slate-600 border border-slate-200 shadow-2xs">
-                                    {item.relatedStories.length} {isEn ? 'sources' : 'sumber'}
-                                  </span>
-                                )}
-                              </div>
-
-                              {Array.isArray(item.relatedStories) && item.relatedStories.length > 0 ? (
-                                <div className="space-y-3">
-                                  {item.relatedStories.map((rel: any, rIdx: number) => {
-                                    const relDomain = rel.sourceDomain || rel.sourceName || 'Media Resmi';
-                                    const relFavicon = rel.sourceIcon || getPublisherFavicon(rel.sourceDomain, rel.sourceName);
-                                    const relUrl = rel.sourceUrl || primaryLink;
-
-                                    return (
-                                      <div
-                                        key={rIdx}
-                                        onClick={() => window.open(relUrl, '_blank', 'noopener,noreferrer')}
-                                        className="group cursor-pointer space-y-1 pb-2.5 border-b border-slate-200/60 last:border-0 last:pb-0"
-                                      >
-                                        <div className="flex items-center gap-1.5">
-                                          <img
-                                            src={relFavicon}
-                                            alt={rel.sourceName}
-                                            className="w-3.5 h-3.5 rounded-xs object-contain shrink-0 bg-white border border-slate-200 p-0.5 shadow-2xs"
-                                            onError={(e: any) => { e.target.style.display = 'none'; }}
-                                          />
-                                          <span className="text-[11px] font-bold text-slate-700 group-hover:text-blue-600 transition-colors">
-                                            {relDomain}
-                                          </span>
-                                          <span className="text-slate-400 text-[10px]">•</span>
-                                          <span className="text-[10px] text-slate-500 font-medium">
-                                            {rel.timeAgo || 'Terkini'}
-                                          </span>
-                                        </div>
-                                        <h4 className="text-xs sm:text-[13px] font-semibold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug">
-                                          {isEn && rel.titleEn ? rel.titleEn : rel.title}
-                                        </h4>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              ) : (
-                                <div className="space-y-2 py-2">
-                                  <p className="text-xs text-slate-600 leading-relaxed">
-                                    {isEn
-                                      ? 'Read the verified original coverage directly from the primary news portal.'
-                                      : 'Akses liputan resmi terverifikasi langsung di portal media penerbit.'}
-                                  </p>
-                                  <button
-                                    onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
-                                  >
-                                    <span>{isEn ? 'Open Original News' : 'Buka Berita Asli'}</span>
-                                    <ExternalLink className="w-3.5 h-3.5" />
-                                  </button>
-                                </div>
-                              )}
+                        {/* Bottom Blue Action Bar / Column: "Baca Sumber Resmi" */}
+                        <div className="pt-2 border-t border-gray-100 mt-auto">
+                          <button
+                            onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
+                            className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group"
+                            title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <ExternalLink className="w-3.5 h-3.5 text-blue-200 group-hover:scale-110 transition-transform" />
+                              <span>{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
                             </div>
-                          </div>
+                            <span className="text-[11px] font-semibold text-blue-100 bg-blue-700/70 px-2 py-0.5 rounded-md">
+                              {publisherDomain} ↗
+                            </span>
+                          </button>
                         </div>
                       </article>
                     );
