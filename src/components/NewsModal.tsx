@@ -88,10 +88,10 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           </span>
         </div>
 
-        {/* Modal Headline Title */}
+        {/* Modal Headline Title (Original Font: Orbitron Uppercase) */}
         <h3 
           onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
-          className="font-bold text-lg sm:text-xl text-gray-900 hover:text-blue-600 transition-colors cursor-pointer leading-snug"
+          className="font-orbitron font-bold text-base sm:text-lg uppercase tracking-wide text-gray-900 hover:text-blue-600 transition-colors cursor-pointer leading-snug"
         >
           {title}
         </h3>

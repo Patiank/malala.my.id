@@ -3699,10 +3699,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                             )}
                           </div>
 
-                          {/* Main Headline */}
+                          {/* Main Headline (Original Font: Orbitron Uppercase) */}
                           <h3
                             onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                            className="text-gray-900 font-bold text-base sm:text-lg leading-snug hover:text-blue-600 transition-colors cursor-pointer"
+                            className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug group-hover:text-blue-600 transition-colors cursor-pointer"
                           >
                             {getNewsDisplayTitle(item, lang)}
                           </h3>
