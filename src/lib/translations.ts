@@ -16,9 +16,9 @@ export const translations = {
     navAdmin: 'Admin',
 
     // Hero Section
-    heroBadge: 'Sistem Rekomendasi Pariwisata Sumbar',
-    heroSubtitle: 'Panduan Pariwisata Sumatera Barat Berbasis AI Interaktif',
-    heroDesc: 'Jelajahi keindahan alam, kekayaan budaya Minangkabau, kelezatan kuliner rendang, serta festival tahunan dengan asisten kecerdasan buatan Uni Mala.',
+    heroBadge: 'Pariwisata Sumatera Barat & Pariwisata Sumbar 2026',
+    heroSubtitle: 'Panduan Pariwisata Sumatera Barat & Pariwisata Sumbar Berbasis AI',
+    heroDesc: 'Portal panduan pariwisata Sumatera Barat & pariwisata Sumbar 2026 terlengkap. Jelajahi 50+ destinasi wisata alam, 30 warisan budaya Minangkabau, 36 kuliner legendaris, serta kalender event KEN dengan asisten AI Uni Mala.',
     heroBtnExplore: 'Mulai Jelajah',
     heroBtnAiPlanner: 'Rencanakan dengan AI',
 

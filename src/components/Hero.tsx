@@ -565,6 +565,7 @@ export const Hero: React.FC<HeroProps> = ({
             className="font-orbitron font-black uppercase tracking-[0.06em] leading-[1.04] select-none pt-1 transition-colors duration-300"
             style={{ ...heroTextStyle, fontSize: 'var(--headline)' }}
           >
+            <span className="sr-only">Pariwisata Sumatera Barat &amp; Pariwisata Sumbar 2026 — </span>
             <div>DISCOVER</div>
             <div className='text-red-600'>WEST SUMATRA</div>
             <div className="flex items-center gap-2 sm:gap-4 flex-wrap">

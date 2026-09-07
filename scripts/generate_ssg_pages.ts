@@ -114,10 +114,12 @@ function buildFaqJsonLd() {
 function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "MALALA - West Sumatra Smart Tourism Portal",
+    "@type": "TouristInformationCenter",
+    "name": "MALALA — Pusat Informasi Pariwisata Sumatera Barat",
+    "alternateName": ["MALALA", "Pariwisata Sumbar Info"],
     "url": "https://malala.my.id",
     "logo": "https://malala.my.id/favicon.png",
+    "description": "Pusat informasi resmi pariwisata Sumatera Barat dan panduan wisata Ranah Minang 2026.",
     "sameAs": [
       "https://www.instagram.com/minangkaos",
       "https://github.com/Patiank/malala.my.id"
@@ -129,7 +131,8 @@ function buildWebsiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "MALALA",
+    "name": "MALALA — Pariwisata Sumatera Barat & Pariwisata Sumbar 2026",
+    "alternateName": ["Pariwisata Sumatera Barat", "Pariwisata Sumbar", "Wisata Sumbar"],
     "url": "https://malala.my.id",
     "potentialAction": {
       "@type": "SearchAction",
@@ -239,19 +242,19 @@ export function generateSsg() {
   const homeContent = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <header style="margin-bottom: 2.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat — Portal Wisata & Budaya Resmi (Malala)</h1>
-        <p style="font-size: 1.15rem; color: #475569; max-width: 800px; margin: 0 auto;">Portal resmi eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, serta 26+ agenda event Karisma Event Nusantara (KEN) 2026.</p>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat &amp; Panduan Pariwisata Sumbar 2026 (MALALA)</h1>
+        <p style="font-size: 1.15rem; color: #475569; max-width: 820px; margin: 0 auto;">Portal resmi panduan pariwisata Sumatera Barat terlengkap: eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, kalender pariwisata Sumbar &amp; Karisma Event Nusantara (KEN) 2026, serta asisten AI Uni Mala.</p>
         <nav style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">Jelajah 50+ Destinasi &rarr;</a>
           <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
           <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kuliner Autentik &rarr;</a>
           <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kalender Event 2026 &rarr;</a>
-          <a href="/berita" style="color: #dc2626; font-weight: 600; text-decoration: none;">Berita & Info Terkini &rarr;</a>
+          <a href="/berita" style="color: #dc2626; font-weight: 600; text-decoration: none;">Berita &amp; Info Terkini &rarr;</a>
           <a href="/unduhan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Download E-Book PDF &rarr;</a>
         </nav>
       </header>
       <section style="margin-top: 3rem; background: #f8fafc; padding: 2rem; border-radius: 1rem; border: 1px solid #e2e8f0;">
-        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1.5rem;">Tanya Jawab Seputar Pariwisata Sumatera Barat (FAQ)</h2>
+        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1.5rem;">Tanya Jawab Seputar Pariwisata Sumatera Barat &amp; Pariwisata Sumbar (FAQ)</h2>
         ${FAQS.map(f => `
           <article style="margin-bottom: 1.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 1rem;">
             <h3 style="font-size: 1.15rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem;">${escapeHtml(f.question)}</h3>
@@ -263,8 +266,8 @@ export function generateSsg() {
   `;
 
   const optimizedHome = generateHtmlPage(baseTemplate, {
-    title: 'Pariwisata Sumatera Barat: 50+ Destinasi, Kuliner, Event & AI Itinerary 2026 | MALALA',
-    description: 'Portal resmi pariwisata Sumatera Barat 2026. Temukan 50+ destinasi hits, rute wisata tanpa bolak-balik, 36 kuliner legendaris, 26 festival KEN 2026, dan asisten AI cerdas Uni Mala.',
+    title: 'Pariwisata Sumatera Barat & Pariwisata Sumbar 2026: Panduan 50 Destinasi, Budaya & Kuliner | MALALA',
+    description: 'Portal resmi pariwisata Sumatera Barat & panduan pariwisata Sumbar 2026. Temukan 50+ destinasi hits, rute keliling Sumbar tanpa bolak-balik, 36 kuliner Minang terenak, jadwal Pacu Jawi & Tabuik KEN 2026, peta wisata gratis, dan asisten AI cerdas Uni Mala.',
     canonicalUrl: 'https://malala.my.id/',
     jsonLdList: [buildOrganizationJsonLd(), buildWebsiteJsonLd(), buildFaqJsonLd()],
     bodyContent: homeContent
@@ -276,7 +279,7 @@ export function generateSsg() {
   const destinasiCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Destinasi</span>
+        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Destinasi</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
         <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 50+ Destinasi Wisata Terbaik di Sumatera Barat 2026</h1>
@@ -323,7 +326,7 @@ export function generateSsg() {
   const kebudayaanCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kebudayaan</span>
+        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kebudayaan</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
         <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 30+ Warisan Adat & Seni Budaya Minangkabau</h1>
@@ -371,7 +374,7 @@ export function generateSsg() {
   const kulinerCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kuliner</span>
+        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kuliner</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
         <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 36+ Kuliner Autentik Khas Minangkabau</h1>
@@ -419,7 +422,7 @@ export function generateSsg() {
   const eventCatalogHtml = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Event & Festival</span>
+        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Event & Festival</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
         <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Kalender Event & Festival Wisata Sumatera Barat 2026</h1>
@@ -467,7 +470,7 @@ export function generateSsg() {
   const newsCatalogHtml = `
     <div style="max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
       <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">Berita Pariwisata</span>
+        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Berita Pariwisata</span>
       </nav>
       <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
@@ -580,7 +583,7 @@ export function generateSsg() {
       bodyContent: `
         <div style="max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
           <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-            <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; <span style="color: #0f172a; font-weight: 600;">${escapeHtml(pg.route)}</span>
+            <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">${escapeHtml(pg.route)}</span>
           </nav>
           <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
             <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">${escapeHtml(pg.h1)}</h1>
@@ -626,7 +629,7 @@ export function generateSsg() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
         { "@type": "ListItem", "position": 2, "name": "Destinasi", "item": "https://malala.my.id/destinasi" },
         { "@type": "ListItem", "position": 3, "name": dest.title, "item": canonicalUrl }
       ]
@@ -637,7 +640,7 @@ export function generateSsg() {
     const bodyContent = `
       <article style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.8;">
         <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; 
           <a href="/destinasi" style="color: #64748b; text-decoration: none;">Destinasi</a> &gt; 
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(dest.title)}</span>
         </nav>
@@ -665,9 +668,14 @@ export function generateSsg() {
           </section>
         ` : ''}
 
-        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog 38 Destinasi</a>
-          <a href="/rencana-liburan" style="background: #dc2626; color: #ffffff; padding: 0.6rem 1.25rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Rancang Rute ke Sini dengan AI &rarr;</a>
+        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+            <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog 50 Destinasi</a>
+            <a href="/rencana-liburan" style="background: #dc2626; color: #ffffff; padding: 0.6rem 1.25rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">Rancang Rute ke Sini dengan AI &rarr;</a>
+          </div>
+          <div style="padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.9rem; color: #64748b; text-align: center;">
+            Eksplorasi panduan lengkap <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumatera Barat</a> &amp; rekomendasi liburan <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumbar 2026</a> di portal resmi MALALA.
+          </div>
         </footer>
       </article>
     `;
@@ -712,7 +720,7 @@ export function generateSsg() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
         { "@type": "ListItem", "position": 2, "name": "Kebudayaan", "item": "https://malala.my.id/kebudayaan" },
         { "@type": "ListItem", "position": 3, "name": cult.title, "item": canonicalUrl }
       ]
@@ -723,7 +731,7 @@ export function generateSsg() {
     const bodyContent = `
       <article style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.8;">
         <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; 
           <a href="/kebudayaan" style="color: #64748b; text-decoration: none;">Kebudayaan</a> &gt; 
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(cult.title)}</span>
         </nav>
@@ -744,7 +752,12 @@ export function generateSsg() {
         </section>
 
         <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
-          <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog Warisan Budaya</a>
+          <div style="margin-bottom: 1.5rem;">
+            <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog Warisan Budaya</a>
+          </div>
+          <div style="padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.9rem; color: #64748b; text-align: center;">
+            Pelajari khazanah adat &amp; tradisi di portal <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumatera Barat</a> &amp; eksplorasi budaya <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumbar 2026</a> di MALALA.
+          </div>
         </footer>
       </article>
     `;
@@ -790,7 +803,7 @@ export function generateSsg() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
         { "@type": "ListItem", "position": 2, "name": "Kuliner", "item": "https://malala.my.id/kuliner" },
         { "@type": "ListItem", "position": 3, "name": cul.title, "item": canonicalUrl }
       ]
@@ -801,7 +814,7 @@ export function generateSsg() {
     const bodyContent = `
       <article style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.8;">
         <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; 
           <a href="/kuliner" style="color: #64748b; text-decoration: none;">Kuliner</a> &gt; 
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(cul.title)}</span>
         </nav>
@@ -822,7 +835,12 @@ export function generateSsg() {
         </section>
 
         <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
-          <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog 26 Kuliner</a>
+          <div style="margin-bottom: 1.5rem;">
+            <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Katalog 36 Kuliner</a>
+          </div>
+          <div style="padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.9rem; color: #64748b; text-align: center;">
+            Jelajahi kelezatan kuliner pusaka di portal <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumatera Barat</a> &amp; rekomendasi <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumbar 2026</a> di MALALA.
+          </div>
         </footer>
       </article>
     `;
@@ -873,7 +891,7 @@ export function generateSsg() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
         { "@type": "ListItem", "position": 2, "name": "Event", "item": "https://malala.my.id/event" },
         { "@type": "ListItem", "position": 3, "name": ev.title, "item": canonicalUrl }
       ]
@@ -884,7 +902,7 @@ export function generateSsg() {
     const bodyContent = `
       <article style="max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.8;">
         <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; 
           <a href="/event" style="color: #64748b; text-decoration: none;">Event</a> &gt; 
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(ev.title)}</span>
         </nav>
@@ -905,7 +923,12 @@ export function generateSsg() {
         </section>
 
         <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
-          <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Kalender Event 2026</a>
+          <div style="margin-bottom: 1.5rem;">
+            <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">&larr; Kembali ke Kalender Event 2026</a>
+          </div>
+          <div style="padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.9rem; color: #64748b; text-align: center;">
+            Agenda festival resmi <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumatera Barat</a> &amp; kalender agenda <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumbar 2026</a> di MALALA.
+          </div>
         </footer>
       </article>
     `;
@@ -976,7 +999,7 @@ export function generateSsg() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://malala.my.id/" },
+        { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
         { "@type": "ListItem", "position": 2, "name": "Berita Pariwisata", "item": "https://malala.my.id/berita" },
         { "@type": "ListItem", "position": 3, "name": n.title, "item": canonicalUrl }
       ]
@@ -985,7 +1008,7 @@ export function generateSsg() {
     const bodyContent = `
       <article style="max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.85;">
         <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-          <a href="/" style="color: #64748b; text-decoration: none;">Beranda</a> &gt; 
+          <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; 
           <a href="/berita" style="color: #64748b; text-decoration: none;">Berita &amp; Info Terkini</a> &gt; 
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(n.title)}</span>
         </nav>
@@ -1039,9 +1062,14 @@ export function generateSsg() {
           </div>
         ` : ''}
 
-        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <a href="/berita" style="color: #dc2626; font-weight: 700; text-decoration: none;">&larr; Indeks Berita Pariwisata</a>
-          <a href="/" style="color: #64748b; font-weight: 600; text-decoration: none;">Kembali ke Beranda Malala &rarr;</a>
+        <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+            <a href="/berita" style="color: #dc2626; font-weight: 700; text-decoration: none;">&larr; Indeks Berita Pariwisata</a>
+            <a href="/" style="color: #64748b; font-weight: 600; text-decoration: none;">Portal Pariwisata Sumatera Barat &rarr;</a>
+          </div>
+          <div style="padding-top: 1.25rem; border-top: 1px dashed #cbd5e1; font-size: 0.9rem; color: #64748b; text-align: center;">
+            Update informasi lalu lintas, cuaca &amp; regulasi resmi <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumatera Barat</a> &amp; panduan <a href="/" style="color: #dc2626; font-weight: 600; text-decoration: none;">Pariwisata Sumbar 2026</a> di MALALA.
+          </div>
         </footer>
       </article>
     `;
