@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info } from 'lucide-react';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info, Star } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
 import { WeatherWidget } from './WeatherWidget';
+import { ReviewSection } from './ReviewSection';
+import { getDestinationRatingSummary } from '../data/reviewsData';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
@@ -287,6 +289,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Deep-linking and URL synchronization for Submodals
   useEffect(() => {
     if (selectedDestination) {
+      const ratingSummary = getDestinationRatingSummary(selectedDestination.id, selectedDestination.title);
       pushRoute(getItemDeepLink('destinasi', selectedDestination), { malalaLayer: 'submodal', category: 'destinasi', id: selectedDestination.id });
       applyPageSeo({
         title: `${lang === 'en' && selectedDestination.titleEn ? selectedDestination.titleEn : selectedDestination.title} - Destinasi Wisata Sumatera Barat | Malala`,
@@ -308,7 +311,30 @@ export const Drawers: React.FC<DrawersProps> = ({
             "@type": "GeoCoordinates",
             "latitude": selectedDestination.lat,
             "longitude": selectedDestination.lng
-          } : undefined
+          } : undefined,
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": ratingSummary.rating.toFixed(1),
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": ratingSummary.reviewCount,
+            "reviewCount": ratingSummary.reviewCount
+          },
+          "review": ratingSummary.reviews.slice(0, 3).map(r => ({
+            "@type": "Review",
+            "author": {
+              "@type": "Person",
+              "name": r.author
+            },
+            "datePublished": r.date,
+            "reviewBody": r.comment,
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": r.rating,
+              "bestRating": "5",
+              "worstRating": "1"
+            }
+          }))
         }
       });
     }
@@ -1682,9 +1708,16 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                         {/* Card Info */}
                         <div className="p-3.5 space-y-2">
-                          <div className="text-gray-400 font-jakarta text-[11px] flex items-center gap-1 font-semibold">
-                            <MapPin className="w-3 h-3 text-black" />
-                            {isEn && dest.regencyEn ? dest.regencyEn : dest.regency}
+                          <div className="flex items-center justify-between gap-1">
+                            <div className="text-gray-400 font-jakarta text-[11px] flex items-center gap-1 font-semibold truncate">
+                              <MapPin className="w-3 h-3 text-black shrink-0" />
+                              <span className="truncate">{isEn && dest.regencyEn ? dest.regencyEn : dest.regency}</span>
+                            </div>
+                            {/* Star Rating Rich Badge */}
+                            <div className="flex items-center gap-1 text-[11px] font-bold text-amber-700 shrink-0 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/80">
+                              <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+                              <span>{getDestinationRatingSummary(dest.id, dest.title).rating.toFixed(1)}</span>
+                            </div>
                           </div>
                           <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm line-clamp-2">
                             {isEn && dest.titleEn ? dest.titleEn : dest.title}
@@ -1701,6 +1734,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <span className="flex items-center gap-1 text-gray-500 font-medium truncate">
                             <Clock className="w-3 h-3 text-gray-400 shrink-0" />
                             <span className="truncate">{isEn && dest.bestTimeEn ? dest.bestTimeEn : dest.bestTime}</span>
+                          </span>
+                          <span className="text-[10px] text-gray-400 font-medium shrink-0">
+                            {getDestinationRatingSummary(dest.id, dest.title).reviewCount} {isEn ? 'reviews' : 'ulasan'}
                           </span>
                         </div>
 
@@ -3997,6 +4033,9 @@ export const Drawers: React.FC<DrawersProps> = ({
               <span className="text-gray-500">{lang === 'en' ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'}</span>
               <span className="font-bold text-black">{lang === 'en' && selectedDestination.bestTimeEn ? selectedDestination.bestTimeEn : selectedDestination.bestTime}</span>
             </div>
+
+            {/* Tourist Reviews & Rating Section (Google Rich Snippets) */}
+            <ReviewSection destId={selectedDestination.id} destTitle={selectedDestination.title} lang={lang} />
 
             {/* Dual-Partner Booking Section (Tiket.com & Traveloka) */}
             <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 p-3.5 rounded-xl border border-blue-200/80 space-y-2.5 mt-3 shadow-2xs">

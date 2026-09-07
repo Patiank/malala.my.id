@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { HOT_INFO_FALLBACK } from '../src/utils/ai.js';
+import { getDestinationRatingSummary } from '../src/data/reviewsData.js';
 
 function slugify(text: string): string {
   if (!text) return '';
@@ -288,12 +289,18 @@ export function generateSsg() {
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
         ${destinations.map(d => {
           const slug = slugify(d.title);
+          const ratingSummary = getDestinationRatingSummary(d.id, d.title);
           return `
             <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
               <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">
                 <a href="/destinasi/${slug}" style="color: #0f172a; text-decoration: none;">${escapeHtml(d.title)}</a>
               </h2>
-              <p style="font-size: 0.875rem; color: #dc2626; font-weight: 600; margin-bottom: 0.75rem;">📍 ${escapeHtml(d.regency || 'Sumatera Barat')} • <span style="color: #64748b;">${escapeHtml(d.category || 'Wisata Alam')}</span></p>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                <p style="font-size: 0.875rem; color: #dc2626; font-weight: 600; margin: 0;">📍 ${escapeHtml(d.regency || 'Sumatera Barat')} • <span style="color: #64748b;">${escapeHtml(d.category || 'Wisata Alam')}</span></p>
+                <span style="background: #fef3c7; color: #b45309; font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.25rem;">
+                  ⭐ ${ratingSummary.rating.toFixed(1)} (${ratingSummary.reviewCount})
+                </span>
+              </div>
               <p style="color: #475569; font-size: 0.95rem; margin-bottom: 1rem;">${escapeHtml((d.description || '').substring(0, 180))}...</p>
               <a href="/destinasi/${slug}" style="display: inline-block; color: #dc2626; font-weight: 600; text-decoration: none; font-size: 0.95rem;">Lihat Panduan & Rute Lengkap &rarr;</a>
             </article>
@@ -606,6 +613,8 @@ export function generateSsg() {
     const pageDesc = dest.description ? dest.description.substring(0, 160) + '...' : `Informasi lengkap mengenai ${dest.title} di ${dest.regency || 'Sumatera Barat'}.`;
     const canonicalUrl = `https://malala.my.id/destinasi/${slug}`;
 
+    const ratingSummary = getDestinationRatingSummary(dest.id, dest.title);
+
     const destJsonLd = {
       "@context": "https://schema.org",
       "@type": "TouristDestination",
@@ -622,7 +631,30 @@ export function generateSsg() {
         "@type": "GeoCoordinates",
         "latitude": dest.lat,
         "longitude": dest.lng
-      } : undefined
+      } : undefined,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": ratingSummary.rating.toFixed(1),
+        "bestRating": "5",
+        "worstRating": "1",
+        "ratingCount": ratingSummary.reviewCount,
+        "reviewCount": ratingSummary.reviewCount
+      },
+      "review": ratingSummary.reviews.slice(0, 3).map(r => ({
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": r.author
+        },
+        "datePublished": r.date,
+        "reviewBody": r.comment,
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": r.rating,
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      }))
     };
 
     const breadcrumbJsonLd = {
@@ -645,8 +677,14 @@ export function generateSsg() {
           <span style="color: #0f172a; font-weight: 600;">${escapeHtml(dest.title)}</span>
         </nav>
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
-          <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem; line-height: 1.2;">${escapeHtml(dest.title)}</h1>
-          <p style="font-size: 1.1rem; color: #dc2626; font-weight: 600;">📍 ${escapeHtml(dest.regency || 'Sumatera Barat')} • <span style="color: #64748b;">Kategori: ${escapeHtml(dest.category || 'Wisata Alam')}</span></p>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2;">${escapeHtml(dest.title)}</h1>
+            <div style="background: #fef3c7; border: 1px solid #fde68a; padding: 0.35rem 0.85rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.95rem; font-weight: 700; color: #b45309;">
+              <span>⭐ ${ratingSummary.rating.toFixed(1)} / 5.0</span>
+              <span style="color: #92400e; font-weight: 500; font-size: 0.85rem;">(${ratingSummary.reviewCount} ulasan)</span>
+            </div>
+          </div>
+          <p style="font-size: 1.1rem; color: #dc2626; font-weight: 600; margin: 0;">📍 ${escapeHtml(dest.regency || 'Sumatera Barat')} • <span style="color: #64748b;">Kategori: ${escapeHtml(dest.category || 'Wisata Alam')}</span></p>
         </header>
 
         ${dest.imageUrl ? `
@@ -667,6 +705,42 @@ export function generateSsg() {
             </ul>
           </section>
         ` : ''}
+
+        <!-- Semantic Tourist Reviews & Rating Section (Google Rich Snippets) -->
+        <section style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.75rem; margin-bottom: 2.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
+            <div>
+              <span style="background: #fef3c7; color: #b45309; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; text-transform: uppercase;">⭐ Ulasan &amp; Rating Wisatawan</span>
+              <h2 style="font-size: 1.35rem; font-weight: 700; color: #0f172a; margin-top: 0.35rem; margin-bottom: 0;">Pengalaman Nyata Wisatawan</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 2.25rem; font-weight: 800; color: #0f172a; line-height: 1;">${ratingSummary.rating.toFixed(1)}</span>
+              <div>
+                <div style="color: #f59e0b; font-size: 1.1rem; line-height: 1;">★★★★★</div>
+                <span style="font-size: 0.8rem; color: #64748b;">${ratingSummary.reviewCount} ulasan • ${ratingSummary.recommendPercentage}% merekomendasikan</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem;">
+            ${ratingSummary.reviews.map(r => `
+              <div style="padding: 1.1rem; background: #f8fafc; border-radius: 0.75rem; border: 1px solid #e2e8f0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                  <div>
+                    <strong style="color: #0f172a; font-size: 0.95rem;">${escapeHtml(r.author)}</strong>
+                    <span style="color: #64748b; font-size: 0.85rem;"> (${escapeHtml(r.originCity || 'Indonesia')})</span>
+                    <span style="display: inline-block; background: #ecfdf5; color: #047857; font-size: 0.75rem; font-weight: 600; padding: 0.1rem 0.5rem; border-radius: 9999px; margin-left: 0.35rem;">✓ Wisatawan Terverifikasi • ${escapeHtml(r.travelerType || 'Keluarga')}</span>
+                  </div>
+                  <div style="text-align: right;">
+                    <span style="color: #f59e0b; font-size: 0.9rem;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    <time style="display: block; font-size: 0.75rem; color: #94a3b8;">${escapeHtml(r.date)}</time>
+                  </div>
+                </div>
+                <p style="color: #334155; font-size: 0.95rem; line-height: 1.6; margin: 0;">"${escapeHtml(r.comment)}"</p>
+              </div>
+            `).join('')}
+          </div>
+        </section>
 
         <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
