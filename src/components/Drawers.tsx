@@ -1084,7 +1084,11 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    (dataStore?.hotInfoItems || []).forEach((h: HotInfoItem) => {
+    const newsList = (dataStore?.hotInfoItems && dataStore.hotInfoItems.length > 0)
+      ? dataStore.hotInfoItems
+      : HOT_INFO_ITEMS;
+
+    newsList.forEach((h: HotInfoItem) => {
       items.push({
         id: h.id,
         title: h.title,
@@ -1095,10 +1099,10 @@ export const Drawers: React.FC<DrawersProps> = ({
         categoryLabel: 'Berita',
         categoryLabelEn: 'News',
         drawerType: 'hotinfo',
-        imageUrl: h.imageUrl,
+        imageUrl: undefined, // Jangan tampilkan gambar pada hasil pencarian berita agar tidak menampilkan gambar yang tidak sesuai
         locationName: h.locationName || h.category,
         subTag: h.date,
-        keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description}`.toLowerCase(),
+        keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description} ${h.sourceName || ''} ${h.sourceDomain || ''}`.toLowerCase(),
         rawItem: h,
       });
     });
@@ -1134,7 +1138,11 @@ export const Drawers: React.FC<DrawersProps> = ({
     } else if (item.drawerType === 'events') {
       openSubModal(() => setSelectedEvent(item.rawItem as EventItem));
     } else if (item.drawerType === 'hotinfo') {
-      onOpenDrawer?.('hotinfo');
+      if (onSelectNews && item.rawItem) {
+        onSelectNews(item.rawItem as HotInfoItem);
+      } else {
+        onOpenDrawer?.('hotinfo');
+      }
     }
   };
 
@@ -1559,67 +1567,112 @@ export const Drawers: React.FC<DrawersProps> = ({
               {/* Search Results List (3 Columns Grid on Desktop) */}
               {filteredSearchItems.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                  {filteredSearchItems.map((item, idx) => (
-                    <div
-                      key={`${item.id}-${idx}`}
-                      onClick={() => handleOpenSearchItemDetail(item)}
-                      className="border border-gray-200 rounded-xl p-3.5 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group space-y-2.5 font-jakarta cursor-pointer"
-                    >
-                      <div className="space-y-2">
-                        {item.imageUrl ? (
-                          <img
-                            src={item.imageUrl}
-                            alt={item.title}
-                            className="w-full h-32 rounded-lg object-cover border border-gray-100 group-hover:scale-102 transition-transform"
-                          />
-                        ) : (
-                          <div className="w-full h-32 rounded-lg bg-gray-100 flex items-center justify-center text-4xl">
-                            {item.icon}
-                          </div>
-                        )}
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
-                              {item.categoryLabel}
-                            </span>
-                            {item.subTag && (
-                              <span className="text-[9.5px] font-semibold text-gray-500 truncate max-w-[120px]">
-                                • {item.subTag}
-                              </span>
+                  {filteredSearchItems.map((item, idx) => {
+                    const isNews = item.drawerType === 'hotinfo' || item.categoryLabel === 'Berita';
+                    const publisherDomain = isNews ? (item.rawItem?.sourceDomain || item.rawItem?.sourceName) : undefined;
+                    const publisherFavicon = isNews ? (item.rawItem?.sourceIcon || getPublisherFavicon(item.rawItem?.sourceDomain, item.rawItem?.sourceName)) : undefined;
+
+                    return (
+                      <div
+                        key={`${item.id}-${idx}`}
+                        onClick={() => handleOpenSearchItemDetail(item)}
+                        className={`border border-gray-200 rounded-xl p-3.5 hover:shadow-lg transition-all bg-white hover:border-red-300 flex flex-col justify-between group font-jakarta cursor-pointer ${
+                          isNews ? 'space-y-3 bg-gradient-to-b from-white to-amber-50/20' : 'space-y-2.5'
+                        }`}
+                      >
+                        <div className="space-y-2">
+                          {/* Hanya tampilkan gambar untuk non-berita (Destinasi, Budaya, Kuliner, Oleh-Oleh, Event) */}
+                          {!isNews && (
+                            item.imageUrl ? (
+                              <img
+                                src={item.imageUrl}
+                                alt={item.title}
+                                className="w-full h-32 rounded-lg object-cover border border-gray-100 group-hover:scale-102 transition-transform"
+                              />
+                            ) : (
+                              <div className="w-full h-32 rounded-lg bg-gray-100 flex items-center justify-center text-4xl">
+                                {item.icon}
+                              </div>
+                            )
+                          )}
+
+                          <div className="space-y-1.5">
+                            {isNews ? (
+                              /* Tampilan header khusus berita: Favicon + Domain + Tag */
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                {publisherFavicon && (
+                                  <img
+                                    src={publisherFavicon}
+                                    alt={publisherDomain || 'Media'}
+                                    className="w-3.5 h-3.5 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5"
+                                    onError={(e: any) => { e.target.style.display = 'none'; }}
+                                  />
+                                )}
+                                {publisherDomain && (
+                                  <span className="text-[11px] font-bold text-gray-700 truncate max-w-[120px]">
+                                    {publisherDomain}
+                                  </span>
+                                )}
+                                <span className="text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
+                                  🔥 {lang === 'en' ? 'News' : 'Berita'}
+                                </span>
+                                {item.subTag && (
+                                  <span className="text-[9.5px] font-semibold text-gray-400 truncate max-w-[110px]">
+                                    • {item.subTag}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              /* Tampilan badge standar untuk non-berita */
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
+                                  {lang === 'en' && item.categoryLabelEn ? item.categoryLabelEn : item.categoryLabel}
+                                </span>
+                                {item.subTag && (
+                                  <span className="text-[9.5px] font-semibold text-gray-500 truncate max-w-[120px]">
+                                    • {item.subTag}
+                                  </span>
+                                )}
+                              </div>
                             )}
+
+                            <h3 className={`font-bold text-gray-900 group-hover:text-red-600 transition-colors ${
+                              isNews ? 'text-xs sm:text-sm leading-snug line-clamp-2' : 'text-xs sm:text-sm line-clamp-1'
+                            }`}>
+                              {lang === 'en' && item.titleEn ? item.titleEn : item.title}
+                            </h3>
+                            <p className={`text-[11px] text-gray-600 leading-relaxed ${
+                              isNews ? 'line-clamp-3' : 'line-clamp-2'
+                            }`}>
+                              {lang === 'en' && item.descEn ? item.descEn : item.desc}
+                            </p>
                           </div>
-                          <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-red-600 transition-colors line-clamp-1">
-                            {lang === 'en' && item.titleEn ? item.titleEn : item.title}
-                          </h3>
-                          <p className="text-[11px] text-gray-600 line-clamp-2 leading-relaxed">
-                            {lang === 'en' && item.descEn ? item.descEn : item.desc}
-                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px]">
+                          <span className="text-gray-500 font-medium flex items-center gap-1 truncate max-w-[120px]">
+                            {item.locationName && (
+                              <>
+                                <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                                <span className="truncate">{item.locationName}</span>
+                              </>
+                            )}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenSearchItemDetail(item);
+                            }}
+                            className="inline-flex items-center gap-0.5 font-bold text-red-600 hover:text-black transition-colors cursor-pointer shrink-0"
+                          >
+                            <span>{isNews ? (lang === 'en' ? 'Read Story' : 'Buka Berita') : (lang === 'en' ? 'View Details' : 'Lihat Detail')}</span>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                          </button>
                         </div>
                       </div>
-
-                      <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-[11px]">
-                        <span className="text-gray-500 font-medium flex items-center gap-1 truncate max-w-[110px]">
-                          {item.locationName && (
-                            <>
-                              <MapPin className="w-3 h-3 text-red-500 shrink-0" />
-                              <span className="truncate">{item.locationName}</span>
-                            </>
-                          )}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenSearchItemDetail(item);
-                          }}
-                          className="inline-flex items-center gap-0.5 font-bold text-red-600 hover:text-black transition-colors cursor-pointer shrink-0"
-                        >
-                          <span>{lang === 'en' ? 'View Details' : 'Lihat Detail'}</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-12 px-4 space-y-3">
