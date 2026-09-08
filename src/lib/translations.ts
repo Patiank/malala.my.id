@@ -10,7 +10,7 @@ export const translations = {
     navSouvenirs: 'Oleh-Oleh',
     navEvents: 'Kalender Event',
     navSaved: 'Simpan',
-    navUniMala: 'UNI MALA AI',
+    navUniMala: 'Rencanakan Liburan Anda dengan AI',
     navDownloads: 'Unduhan',
     navMap: 'Peta Wisata',
     navAdmin: 'Admin',
@@ -20,7 +20,7 @@ export const translations = {
     heroSubtitle: 'Panduan Pariwisata Sumatera Barat & Pariwisata Sumbar Berbasis AI',
     heroDesc: 'Portal panduan pariwisata Sumatera Barat & pariwisata Sumbar 2026 terlengkap. Jelajahi 50+ destinasi wisata alam, 30 warisan budaya Minangkabau, 36 kuliner legendaris, serta kalender event KEN dengan asisten AI Uni Mala.',
     heroBtnExplore: 'Mulai Jelajah',
-    heroBtnAiPlanner: 'Rencanakan dengan AI',
+    heroBtnAiPlanner: 'Rencanakan Liburan Anda dengan AI',
 
     // Uni Mala AI Form & Drawer
     aiTitle: 'UNI MALA AI - Asisten Perencana Wisata',
@@ -114,7 +114,7 @@ export const translations = {
     navSouvenirs: 'Souvenirs',
     navEvents: 'Calendar of Events',
     navSaved: 'Saved',
-    navUniMala: 'UNI MALA AI',
+    navUniMala: 'Plan Your Vacation with Our AI',
     navDownloads: 'Downloads',
     navMap: 'Map View',
     navAdmin: 'Admin',
@@ -124,7 +124,7 @@ export const translations = {
     heroSubtitle: 'Interactive AI-Powered West Sumatra Tourism Guide',
     heroDesc: 'Explore natural wonderlands, rich Minangkabau heritage, authentic rendang culinary delights, and annual vibrant festivals with AI assistant Uni Mala.',
     heroBtnExplore: 'Start Exploring',
-    heroBtnAiPlanner: 'Plan with AI',
+    heroBtnAiPlanner: 'Plan Your Vacation with Our AI',
 
     // Uni Mala AI Form & Drawer
     aiTitle: 'UNI MALA AI - Smart Travel Assistant',
