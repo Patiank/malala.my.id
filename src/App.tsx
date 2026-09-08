@@ -12,7 +12,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -449,8 +449,12 @@ export default function App() {
           {(() => {
             const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
             const rawFiltered = allHotInfo.filter((news) => isWithinLast6Months(news.date || news.createdAt));
-            const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered);
-            const displayItems: HotInfoItem[] = validItems.length > 0 ? validItems : deduplicateNewsItems<HotInfoItem>(allHotInfo);
+            const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered)
+              .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
+            const displayItems: HotInfoItem[] = validItems.length > 0 
+              ? validItems 
+              : deduplicateNewsItems<HotInfoItem>(allHotInfo)
+                  .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
             // Ultra-calm tempo: ~35 seconds per item (minimum 160 seconds total) for effortless readability
             const marqueeDuration = Math.max(160, displayItems.length * 35);
 

@@ -1272,11 +1272,6 @@ export function parseNewsTimestamp(dateStr?: string, createdAt?: any): number {
   if (!dateStr || !dateStr.trim()) return Date.now();
 
   const lower = dateStr.toLowerCase().trim();
-  if (lower === 'hari ini' || lower === 'today' || lower === 'update') return Date.now();
-  if (lower === 'kemarin' || lower === 'yesterday') return Date.now() - 86400000;
-
-  const parsed = Date.parse(dateStr);
-  if (!isNaN(parsed)) return parsed;
 
   const monthsMap: Record<string, number> = {
     'jan': 0, 'januari': 0, 'january': 0,
@@ -1293,16 +1288,52 @@ export function parseNewsTimestamp(dateStr?: string, createdAt?: any): number {
     'des': 11, 'desember': 11, 'dec': 11, 'december': 11,
   };
 
-  const match = lower.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})/);
-  if (match) {
-    const day = parseInt(match[1], 10);
-    const monthName = match[2];
-    const year = parseInt(match[3], 10);
+  // 1. Indonesian / Standard format with Day Month Year and optional time:
+  // e.g. "8 Sep 2026 • 04:17 WIB", "06 September 2026", "7 Sep 2026 13:31"
+  const dmyMatch = lower.match(/(\d{1,2})\s+([a-z]+)\s+(\d{4})(?:[^\d]*(\d{1,2})[:.](\d{2}))?/);
+  if (dmyMatch) {
+    const day = parseInt(dmyMatch[1], 10);
+    const monthName = dmyMatch[2];
+    const year = parseInt(dmyMatch[3], 10);
+    const hour = dmyMatch[4] ? parseInt(dmyMatch[4], 10) : 0;
+    const minute = dmyMatch[5] ? parseInt(dmyMatch[5], 10) : 0;
     const monthIndex = monthsMap[monthName];
     if (monthIndex !== undefined) {
-      return new Date(year, monthIndex, day).getTime();
+      return new Date(year, monthIndex, day, hour, minute).getTime();
     }
   }
+
+  // 2. English format with Month Day, Year and optional time:
+  // e.g. "September 06, 2026", "Sep 8, 2026 04:17"
+  const mdyMatch = lower.match(/([a-z]+)\s+(\d{1,2}),?\s+(\d{4})(?:[^\d]*(\d{1,2})[:.](\d{2}))?/);
+  if (mdyMatch) {
+    const monthName = mdyMatch[1];
+    const day = parseInt(mdyMatch[2], 10);
+    const year = parseInt(mdyMatch[3], 10);
+    const hour = mdyMatch[4] ? parseInt(mdyMatch[4], 10) : 0;
+    const minute = mdyMatch[5] ? parseInt(mdyMatch[5], 10) : 0;
+    const monthIndex = monthsMap[monthName];
+    if (monthIndex !== undefined) {
+      return new Date(year, monthIndex, day, hour, minute).getTime();
+    }
+  }
+
+  // 3. Direct ISO / native parse
+  const parsed = Date.parse(dateStr);
+  if (!isNaN(parsed)) return parsed;
+
+  // 4. Relative time in dateStr: "X jam lalu", "X hari lalu", "hari ini", "kemarin"
+  const minMatch = lower.match(/(\d+)\s*(?:menit|minute|min)\s*(?:lalu|ago)/);
+  if (minMatch) return Date.now() - parseInt(minMatch[1], 10) * 60 * 1000;
+
+  const hrMatch = lower.match(/(\d+)\s*(?:jam|hour|hr)\s*(?:lalu|ago)/);
+  if (hrMatch) return Date.now() - parseInt(hrMatch[1], 10) * 3600 * 1000;
+
+  const dayMatch = lower.match(/(\d+)\s*(?:hari|day)\s*(?:lalu|ago)/);
+  if (dayMatch) return Date.now() - parseInt(dayMatch[1], 10) * 86400 * 1000;
+
+  if (lower.includes('hari ini') || lower.includes('today') || lower.includes('update')) return Date.now();
+  if (lower.includes('kemarin') || lower.includes('yesterday')) return Date.now() - 86400000;
 
   return 0;
 }

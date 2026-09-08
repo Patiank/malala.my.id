@@ -1084,9 +1084,13 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    const newsList = (dataStore?.hotInfoItems && dataStore.hotInfoItems.length > 0)
+    const rawNewsList = (dataStore?.hotInfoItems && dataStore.hotInfoItems.length > 0)
       ? dataStore.hotInfoItems
       : HOT_INFO_ITEMS;
+
+    const newsList = [...rawNewsList].sort((a: any, b: any) => {
+      return parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt);
+    });
 
     newsList.forEach((h: HotInfoItem) => {
       items.push({
@@ -1118,6 +1122,13 @@ export const Drawers: React.FC<DrawersProps> = ({
     }
     if (searchCategory !== 'Semua') {
       result = result.filter(item => item.categoryLabel === searchCategory);
+    }
+    if (searchCategory === 'Berita') {
+      result = [...result].sort((a, b) => {
+        const timeA = parseNewsTimestamp(a.rawItem?.date, a.rawItem?.createdAt);
+        const timeB = parseNewsTimestamp(b.rawItem?.date, b.rawItem?.createdAt);
+        return timeB - timeA;
+      });
     }
     return result;
   }, [searchQuery, searchCategory, searchableIndex]);

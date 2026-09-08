@@ -7,6 +7,7 @@ import { DrawerType, AppSettings, EventItem } from '../types';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
+import { parseNewsTimestamp } from '../utils/ai';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
@@ -500,7 +501,9 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    HOT_INFO_ITEMS.forEach(h => {
+    [...HOT_INFO_ITEMS]
+      .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt))
+      .forEach(h => {
       items.push({
         id: h.id,
         title: h.title,
