@@ -214,16 +214,22 @@ export const Header: React.FC<HeaderProps> = ({
           <span>{t.navMap}</span>
         </button>
 
-        {/* UNI MALA AI Assistant Link */}
+        {/* Rencanakan Liburan Anda - AI Powered */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-2xs ${
+          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-2xs shrink-0 ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
-          style={{ fontSize: 'var(--nav)' }}
         >
-          <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
-          <span>{t.navUniMala}</span>
+          <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse shrink-0" />
+          <div className="flex flex-col items-start text-left leading-tight">
+            <span className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-tight text-white whitespace-nowrap">
+              {t.navUniMala}
+            </span>
+            <span className="text-[7px] sm:text-[7.5px] font-extrabold tracking-widest text-amber-300 uppercase leading-none mt-0.5">
+              {t.navAiPowered}
+            </span>
+          </div>
         </button>
 
         <span className="text-gray-300 font-light select-none hidden md:inline">|</span>
