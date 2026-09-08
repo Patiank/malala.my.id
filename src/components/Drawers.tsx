@@ -4117,177 +4117,203 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR DESTINATIONS */}
       {selectedDestination && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-white max-w-lg md:max-w-3xl lg:max-w-5xl w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up p-5 sm:p-6 relative max-h-[92vh] overflow-y-auto font-jakarta">
+            {/* Floating Close Button Top Right */}
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              className="absolute top-4 right-4 p-1.5 rounded-full bg-black/60 hover:bg-black text-white transition-colors cursor-pointer z-20 shadow-md"
+              title={translations[lang].btnClose}
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Modal Image Header */}
-            <div className="-mx-6 -mt-6 mb-4 h-48 overflow-hidden bg-gray-100 relative">
-              <img
-                src={selectedDestination.imageUrl}
-                alt={selectedDestination.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-4 text-white">
-                <span className="bg-white text-black font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
-                  {lang === 'en' && selectedDestination.categoryEn ? selectedDestination.categoryEn : selectedDestination.category}
-                </span>
-                <h3 className="font-orbitron font-bold text-base uppercase text-white pt-1 drop-shadow-xs">
-                  {lang === 'en' && selectedDestination.titleEn ? selectedDestination.titleEn : selectedDestination.title}
-                </h3>
-              </div>
-            </div>
+            {/* 2-Column Responsive Layout (Left: Media & Narrative, Right: Ratings, Affiliate & Actions) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+              {/* LEFT COLUMN: Media, Details, Description, Highlights, Best Time */}
+              <div className="lg:col-span-7 space-y-4">
+                {/* Image Header with Badge & Title */}
+                <div className="h-56 sm:h-64 rounded-xl overflow-hidden bg-gray-100 relative shadow-sm">
+                  <img
+                    src={selectedDestination.imageUrl}
+                    alt={selectedDestination.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute bottom-3.5 left-4 right-4 text-white">
+                    <span className="bg-white text-black font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider shadow-2xs">
+                      {lang === 'en' && selectedDestination.categoryEn ? selectedDestination.categoryEn : selectedDestination.category}
+                    </span>
+                    <h3 className="font-orbitron font-bold text-base sm:text-lg uppercase text-white pt-1.5 drop-shadow-sm leading-snug">
+                      {lang === 'en' && selectedDestination.titleEn ? selectedDestination.titleEn : selectedDestination.title}
+                    </h3>
+                  </div>
+                </div>
 
-            <div className="space-y-1">
-              <p className="font-jakarta text-xs text-gray-500 flex items-center gap-1 font-semibold">
-                <MapPin className="w-3.5 h-3.5 shrink-0" />
-                {lang === 'en' && selectedDestination.locationDetailsEn ? selectedDestination.locationDetailsEn : selectedDestination.locationDetails}
-              </p>
-            </div>
+                {/* Location Details */}
+                <div className="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+                  <p className="font-jakarta text-xs text-gray-600 flex items-center gap-1.5 font-semibold">
+                    <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                    <span>{lang === 'en' && selectedDestination.locationDetailsEn ? selectedDestination.locationDetailsEn : selectedDestination.locationDetails}</span>
+                  </p>
+                  {selectedDestination.regency && (
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700 font-jakarta border border-gray-200">
+                      {selectedDestination.regency}
+                    </span>
+                  )}
+                </div>
 
-            <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
-              {(lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description)
-                .split('\n\n')
-                .map((paragraph: string, idx: number) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
-            </div>
+                {/* Full Narrative Description */}
+                <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 border-t border-gray-100 space-y-3">
+                  {(lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description)
+                    .split('\n\n')
+                    .map((paragraph: string, idx: number) => (
+                      <p key={idx} className="leading-relaxed">{paragraph}</p>
+                    ))}
+                </div>
 
-            <div className="space-y-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
-              <h4 className="font-jakarta font-bold text-xs uppercase text-black tracking-wider">
-                {lang === 'en' ? 'Highlights' : 'Daya Tarik Utama (Highlights)'}
-              </h4>
-              <ul className="space-y-1 text-xs font-jakarta text-gray-700">
-                {(lang === 'en' && selectedDestination.highlightsEn ? selectedDestination.highlightsEn : selectedDestination.highlights).map((h, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <Check className="w-3.5 h-3.5 text-black shrink-0 mt-0.5" />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-            </div>
+                {/* Highlights */}
+                <div className="space-y-2 bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                  <h4 className="font-jakarta font-bold text-xs uppercase text-black tracking-wider flex items-center gap-1.5">
+                    <span>✨</span>
+                    <span>{lang === 'en' ? 'Highlights' : 'Daya Tarik Utama (Highlights)'}</span>
+                  </h4>
+                  <ul className="space-y-1.5 text-xs font-jakarta text-gray-700">
+                    {(lang === 'en' && selectedDestination.highlightsEn ? selectedDestination.highlightsEn : selectedDestination.highlights).map((h, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-            <div className="flex items-center justify-between text-xs font-jakarta pt-2">
-              <span className="text-gray-500">{lang === 'en' ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'}</span>
-              <span className="font-bold text-black">{lang === 'en' && selectedDestination.bestTimeEn ? selectedDestination.bestTimeEn : selectedDestination.bestTime}</span>
-            </div>
-
-            {/* Tourist Reviews & Rating Section (Google Rich Snippets) */}
-            <ReviewSection destId={selectedDestination.id} destTitle={selectedDestination.title} lang={lang} />
-
-            {/* Dual-Partner Booking Section (Tiket.com & Traveloka) */}
-            <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 p-3.5 rounded-xl border border-blue-200/80 space-y-2.5 mt-3 shadow-2xs">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="bg-[#0064D2] text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full tracking-wider shadow-2xs">
-                    🎫 Tiket.com + ✈️ Traveloka
+                {/* Best Time to Visit */}
+                <div className="flex items-center justify-between text-xs font-jakarta p-3 bg-amber-50/70 border border-amber-200/60 rounded-xl">
+                  <span className="text-amber-900 font-medium flex items-center gap-1.5">
+                    <span>🌤️</span>
+                    <span>{lang === 'en' ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'}</span>
                   </span>
-                  <span className="text-[11px] font-bold text-blue-950 font-jakarta">
-                    {lang === 'en' ? 'Book Hotel & Transport' : 'Pesan Hotel & Transportasi'}
-                  </span>
+                  <span className="font-bold text-amber-950">{lang === 'en' && selectedDestination.bestTimeEn ? selectedDestination.bestTimeEn : selectedDestination.bestTime}</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
-                {/* Tiket.com Hotel */}
+              {/* RIGHT COLUMN: Reviews, Affiliate Booking, Google Maps, YouTube, and Close Button */}
+              <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
+                {/* 1. Tourist Reviews & Rating Section */}
+                <ReviewSection destId={selectedDestination.id} destTitle={selectedDestination.title} lang={lang} />
+
+                {/* 2. Dual-Partner Booking Section (Tiket.com & Traveloka) */}
+                <div className="bg-gradient-to-br from-blue-50/90 to-indigo-50/90 p-3.5 rounded-xl border border-blue-200/80 space-y-2.5 shadow-2xs">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="bg-[#0064D2] text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full tracking-wider shadow-2xs">
+                        🎫 Tiket.com + ✈️ Traveloka
+                      </span>
+                      <span className="text-[11px] font-bold text-blue-950 font-jakarta">
+                        {lang === 'en' ? 'Book Hotel & Transport' : 'Pesan Hotel & Transportasi'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-0.5">
+                    {/* Tiket.com Hotel */}
+                    <a
+                      href={getTiketHotelUrl(selectedDestination, dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-[#0064D2] hover:bg-[#0050A8] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-[#FEDD00] shadow-xs cursor-pointer text-left"
+                    >
+                      <span className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span>🏨</span>
+                        <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
+                      </span>
+                      <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
+                        tiket.com
+                      </span>
+                    </a>
+
+                    {/* Traveloka Hotel */}
+                    <a
+                      href={getTravelokaHotelUrl(selectedDestination)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
+                    >
+                      <span className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span>🏨</span>
+                        <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
+                      </span>
+                      <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
+                        traveloka
+                      </span>
+                    </a>
+
+                    {/* Tiket.com Car Rental */}
+                    <a
+                      href={getTiketCarRentalUrl(dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-blue-50/90 hover:bg-blue-100 text-[#0064D2] border border-blue-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
+                    >
+                      <span className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span>🚗</span>
+                        <span className="font-semibold">{lang === 'en' ? 'Car Rental Sumbar' : 'Rental Mobil di Sumbar'}</span>
+                      </span>
+                      <span className="text-[9px] font-black text-[#0064D2] shrink-0">
+                        tiket.com ↗
+                      </span>
+                    </a>
+
+                    {/* Tiket.com Activities */}
+                    <a
+                      href={getTiketActivitiesUrl(selectedDestination, dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full bg-amber-50 hover:bg-amber-100 text-[#002B66] border border-amber-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
+                    >
+                      <span className="flex items-center gap-1.5 min-w-0 pr-1">
+                        <span>🎟️</span>
+                        <span className="font-semibold">{lang === 'en' ? 'Tours & Packages' : 'Tiket & Paket Wisata'}</span>
+                      </span>
+                      <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
+                        To Do ↗
+                      </span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* 3. GOOGLE MAPS DESTINATION LOCATION BUTTON */}
                 <a
-                  href={getTiketHotelUrl(selectedDestination, dataStore?.appSettings)}
+                  href={getDestinationGoogleMapsUrl(selectedDestination)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#0064D2] hover:bg-[#0050A8] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-[#FEDD00] shadow-xs cursor-pointer text-left"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
                 >
-                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
-                    <span>🏨</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
-                  </span>
-                  <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
-                    tiket.com
-                  </span>
+                  <MapPin className="w-4 h-4 text-white" />
+                  <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
                 </a>
 
-                {/* Traveloka Hotel */}
+                {/* 4. YOUTUBE VIDEO BUTTON */}
                 <a
-                  href={getTravelokaHotelUrl(selectedDestination)}
+                  href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
+                  className="w-full bg-[#FF0000] text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
                 >
-                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
-                    <span>🏨</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
-                  </span>
-                  <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
-                    traveloka
-                  </span>
+                  <Youtube className="w-4 h-4" />
+                  <span>{lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}</span>
                 </a>
 
-                {/* Tiket.com Car Rental */}
-                <a
-                  href={getTiketCarRentalUrl(dataStore?.appSettings)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-blue-50/90 hover:bg-blue-100 text-[#0064D2] border border-blue-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
+                {/* 5. CLOSE BUTTON BAR AT THE BOTTOM OF THE RIGHT COLUMN */}
+                <button
+                  onClick={handleSubModalClose}
+                  className="w-full bg-black hover:bg-gray-800 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer shadow-xs mt-2"
                 >
-                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
-                    <span>🚗</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Car Rental Sumbar' : 'Rental Mobil di Sumbar'}</span>
-                  </span>
-                  <span className="text-[9px] font-black text-[#0064D2] shrink-0">
-                    tiket.com ↗
-                  </span>
-                </a>
-
-                {/* Tiket.com Activities */}
-                <a
-                  href={getTiketActivitiesUrl(selectedDestination, dataStore?.appSettings)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-amber-50 hover:bg-amber-100 text-[#002B66] border border-amber-300 py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs transition-all flex items-center justify-between shadow-2xs cursor-pointer text-left"
-                >
-                  <span className="flex items-center gap-1.5 min-w-0 pr-1">
-                    <span>🎟️</span>
-                    <span className="font-semibold">{lang === 'en' ? 'Tours & Packages' : 'Tiket & Paket Wisata'}</span>
-                  </span>
-                  <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
-                    To Do ↗
-                  </span>
-                </a>
+                  {translations[lang].btnClose}
+                </button>
               </div>
             </div>
-
-            {/* GOOGLE MAPS DESTINATION LOCATION BUTTON */}
-            <a
-              href={getDestinationGoogleMapsUrl(selectedDestination)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-            >
-              <MapPin className="w-4 h-4 text-white" />
-              <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
-            </a>
-
-            <a
-              href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-[#FF0000] text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 mt-2 shadow-xs"
-            >
-              <Youtube className="w-4 h-4" />
-              {lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}
-            </a>
-
-            <button
-              onClick={handleSubModalClose}
-              className="w-full bg-black text-white py-2.5 rounded-lg font-jakarta font-bold uppercase text-xs hover:bg-gray-800 transition-colors cursor-pointer"
-            >
-              {translations[lang].btnClose}
-            </button>
           </div>
         </div>
       )}
