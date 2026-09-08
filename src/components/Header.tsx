@@ -203,7 +203,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         <button
           onClick={() => handleNavClick('map')}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-2xs ${
+          className={`inline-flex items-center justify-center gap-1.5 px-3 h-[34px] rounded-md border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-2xs ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
@@ -217,7 +217,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Rencanakan Liburan Anda - AI Powered */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-2xs shrink-0 ${
+          className={`inline-flex items-center justify-center gap-1.5 px-3 h-[34px] rounded-md border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-2xs shrink-0 ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
