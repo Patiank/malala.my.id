@@ -203,25 +203,25 @@ export const Header: React.FC<HeaderProps> = ({
 
         <button
           onClick={() => handleNavClick('map')}
-          className={`inline-flex items-center justify-center gap-1.5 px-3 h-[34px] rounded-md border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-2xs ${
+          className={`inline-flex items-center justify-center gap-2 px-5 h-[48px] sm:h-[50px] rounded-full border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
           }`}
           style={{ fontSize: 'var(--nav)' }}
         >
-          <Map className="w-3.5 h-3.5 text-white transition-colors" />
+          <Map className="w-4 h-4 text-white transition-colors" />
           <span>{t.navMap}</span>
         </button>
 
         {/* Rencanakan Liburan Anda - AI Powered */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`inline-flex items-center justify-center gap-1.5 px-3 h-[34px] rounded-md border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-2xs shrink-0 ${
+          className={`inline-flex items-center justify-center gap-2 px-5 h-[48px] sm:h-[50px] rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
-          <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse shrink-0" />
+          <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse shrink-0" />
           <div className="flex flex-col items-start text-left leading-tight">
             <span className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-tight text-white whitespace-nowrap">
               {t.navUniMala}
