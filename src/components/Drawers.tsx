@@ -10,7 +10,7 @@ import { ReviewSection } from './ReviewSection';
 import { getDestinationRatingSummary } from '../data/reviewsData';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
@@ -3600,7 +3600,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 <div className="flex flex-wrap items-center gap-2 text-xs font-jakarta w-full">
                   {(() => {
                     const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                      .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
+                      .filter((i: any) => isWithinLast6Months(i.date || i.createdAt));
                     const dedupedList = deduplicateNewsItems(rawList);
                     const dynamicCats = dedupedList.map((i: any) => i.category).filter(Boolean);
                     const uniqueCategories = Array.from(new Set([
@@ -3710,7 +3710,7 @@ export const Drawers: React.FC<DrawersProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
                 {(() => {
                   const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                    .filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
+                    .filter((item: any) => isWithinLast6Months(item.date || item.createdAt));
                   const dedupedList = deduplicateNewsItems(rawList)
                     .filter((item: any) => {
                       if (hotInfoCategory === 'Semua') return true;

@@ -12,7 +12,7 @@ import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 
-import { fetchAiHotInfo, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -448,7 +448,7 @@ export default function App() {
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           {(() => {
             const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
-            const rawFiltered = allHotInfo.filter((news) => isWithinLast30Days(news.date || news.createdAt));
+            const rawFiltered = allHotInfo.filter((news) => isWithinLast6Months(news.date || news.createdAt));
             const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered);
             const displayItems: HotInfoItem[] = validItems.length > 0 ? validItems : deduplicateNewsItems<HotInfoItem>(allHotInfo);
             // Ultra-calm tempo: ~35 seconds per item (minimum 160 seconds total) for effortless readability

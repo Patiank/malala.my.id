@@ -1307,19 +1307,23 @@ export function parseNewsTimestamp(dateStr?: string, createdAt?: any): number {
   return 0;
 }
 
-export function isWithinLast30Days(dateStr?: string): boolean {
+export function isWithinLast6Months(dateStr?: string): boolean {
   if (!dateStr) return true;
   try {
     const timestamp = parseNewsTimestamp(dateStr);
     if (timestamp > 0) {
-      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
-      return (Date.now() - timestamp) <= thirtyDaysInMs && (timestamp <= Date.now() + 86400000);
+      // 180 hari = 6 bulan
+      const sixMonthsInMs = 180 * 24 * 60 * 60 * 1000;
+      return (Date.now() - timestamp) <= sixMonthsInMs && (timestamp <= Date.now() + 86400000);
     }
     return true;
   } catch {
     return true;
   }
 }
+
+// Alias agar kompatibel dengan seluruh pemanggil yang ada
+export const isWithinLast30Days = isWithinLast6Months;
 
 function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWithin30d: boolean } {
   try {
@@ -1328,8 +1332,8 @@ function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWi
       return { dateId: 'Hari Ini', dateEn: 'Today', isWithin30d: true };
     }
     const diffMs = Date.now() - d.getTime();
-    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-    const isWithin30d = diffMs <= thirtyDaysMs && diffMs >= -86400000;
+    const sixMonthsMs = 180 * 24 * 60 * 60 * 1000;
+    const isWithin30d = diffMs <= sixMonthsMs && diffMs >= -86400000;
 
     const monthNamesId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
     const monthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

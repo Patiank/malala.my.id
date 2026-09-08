@@ -179,7 +179,7 @@ export function useData() {
           const item = doc.data() as HotInfoItem;
           return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
         })
-        .filter(item => item.title && item.title.trim().length > 0 && isWithinLast30Days(item.date || item.createdAt));
+        .filter(item => item.title && item.title.trim().length > 0);
 
       const dedupedMerged = deduplicateNewsItems(data.length > 0 ? data : HOT_INFO_ITEMS)
         .sort((a: any, b: any) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
@@ -432,22 +432,14 @@ export function useData() {
   }));
 
   const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
-    const cleanItems = deduplicateNewsItems(
-      newItems.filter(item => isWithinLast30Days(item.date || item.createdAt))
-    );
+    const cleanItems = deduplicateNewsItems(newItems);
     setHotInfoItems(cleanItems);
     try {
-      const snapshot = await getDocs(collection(db, 'hotinfo'));
       const batch = writeBatch(db);
-      // Remove obsolete/duplicate documents from Firestore
-      snapshot.docs.forEach(d => {
-        if (!cleanItems.some(ci => ci.id === d.id)) {
-          batch.delete(d.ref);
-        }
-      });
+      // Simpan berita permanen ke Firestore tanpa menghapus arsip berita historis
       cleanItems.forEach(item => {
         if (item.id) {
-          batch.set(doc(db, 'hotinfo', item.id), item);
+          batch.set(doc(db, 'hotinfo', item.id), item, { merge: true });
         }
       });
       await batch.commit();
