@@ -181,9 +181,9 @@ export function useData() {
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
-      const dedupedMerged = deduplicateNewsItems(data.length > 0 ? data : HOT_INFO_ITEMS)
+      const mergedList = deduplicateNewsItems([...data, ...HOT_INFO_ITEMS])
         .sort((a: any, b: any) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
-      setHotInfoItems(dedupedMerged.length > 0 ? dedupedMerged : deduplicateNewsItems(HOT_INFO_ITEMS));
+      setHotInfoItems(mergedList.length > 0 ? mergedList : deduplicateNewsItems(HOT_INFO_ITEMS));
     }, (err) => {
       console.warn("Firestore hotinfo error:", err);
       const fallbackSorted = deduplicateNewsItems(HOT_INFO_ITEMS)
