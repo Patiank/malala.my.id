@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info, Star } from 'lucide-react';
+import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info, Star, FolderArchive, Archive, ChevronDown, ChevronUp } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
 import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
@@ -599,6 +599,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
   // Hot Info & Download state
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
+  const [showAllNewsArchive, setShowAllNewsArchive] = useState<boolean>(false);
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
@@ -3637,7 +3638,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                       return (
                         <button
                           key={cat}
-                          onClick={() => setHotInfoCategory(cat)}
+                          onClick={() => {
+                            setHotInfoCategory(cat);
+                            setShowAllNewsArchive(false);
+                          }}
                           className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer flex items-center gap-1.5 text-xs ${
                             isSelected
                               ? isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
@@ -3717,139 +3721,215 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* 2-Column News Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
-                {(() => {
-                  const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                    .filter((item: any) => isWithinLast6Months(item.date || item.createdAt));
-                  const dedupedList = deduplicateNewsItems(rawList)
-                    .filter((item: any) => {
-                      if (hotInfoCategory === 'Semua') return true;
-                      
-                      const isExplicitSumbar = item.category === 'Pariwisata Sumatera Barat' || item.tag === 'Sumbar';
-                      const isExplicitNational = item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || item.tag === 'Indonesia';
+              {(() => {
+                const allHotInfo = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS);
+                
+                const categoryFiltered = allHotInfo.filter((item: any) => {
+                  if (hotInfoCategory === 'Semua') return true;
+                  
+                  const isExplicitSumbar = item.category === 'Pariwisata Sumatera Barat' || item.tag === 'Sumbar';
+                  const isExplicitNational = item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || item.tag === 'Indonesia';
 
-                      if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
-                        if (isExplicitNational) return false;
-                        return isExplicitSumbar || isSumbarTopic(item.title);
-                      }
-                      
-                      if (hotInfoCategory === 'Pariwisata Indonesia' || hotInfoCategory === 'Pariwisata Nasional') {
-                        if (isExplicitSumbar) return false;
-                        return isExplicitNational || !isSumbarTopic(item.title);
-                      }
-                      
-                      return item.category === hotInfoCategory;
-                    })
-                    // Sort descending: newest on top, oldest at the bottom
-                    .sort((a: any, b: any) => {
-                      const timeA = parseNewsTimestamp(a.date, a.createdAt);
-                      const timeB = parseNewsTimestamp(b.date, b.createdAt);
-                      return timeB - timeA;
-                    });
-
-                  if (dedupedList.length === 0) {
-                    return (
-                      <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        {lang === 'en' ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
-                      </div>
-                    );
+                  if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
+                    if (isExplicitNational) return false;
+                    return isExplicitSumbar || isSumbarTopic(item.title);
                   }
+                  
+                  if (hotInfoCategory === 'Pariwisata Indonesia' || hotInfoCategory === 'Pariwisata Nasional') {
+                    if (isExplicitSumbar) return false;
+                    return isExplicitNational || !isSumbarTopic(item.title);
+                  }
+                  
+                  return item.category === hotInfoCategory;
+                });
 
-                  return dedupedList.map((item: any, idx: number) => {
-                    const isEn = lang === 'en';
-                    const categoryDisplay = isEn ? (item.categoryEn || (item.category === 'Pariwisata Sumatera Barat' ? 'West Sumatra Tourism' : 'Indonesian Tourism')) : (item.category || 'Pariwisata Indonesia');
-                    const primaryLink = item.sourceUrl || item.actionUrl || '#';
-                    const mainFavicon = item.sourceIcon || getPublisherFavicon(item.sourceDomain, item.sourceName);
-                    const publisherDomain = item.sourceDomain || item.sourceName || (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com');
-                    const timeAgoText = item.timeAgo || (isEn && item.dateEn ? item.dateEn : item.date);
+                const dedupedList = deduplicateNewsItems(categoryFiltered)
+                  .sort((a: any, b: any) => {
+                    const timeA = parseNewsTimestamp(a.date, a.createdAt);
+                    const timeB = parseNewsTimestamp(b.date, b.createdAt);
+                    return timeB - timeA;
+                  });
 
-                    return (
-                      <article
-                        key={item.id || idx}
-                        style={{ animationDelay: `${idx * 40}ms` }}
-                        className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta flex flex-col justify-between space-y-3.5 animate-content-stagger"
-                      >
-                        {/* Upper Content: Brand, Title, Excerpt, Metadata */}
-                        <div className="space-y-2.5">
-                          {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT) */}
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <img
-                              src={mainFavicon}
-                              alt={item.sourceName || 'Publisher'}
-                              className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
-                              onError={(e: any) => { e.target.style.display = 'none'; }}
-                            />
-                            <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
-                              {publisherDomain}
-                            </span>
-                            <span className="text-gray-300">•</span>
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                              item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
-                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                : 'bg-red-50 text-red-800 border border-red-200'
-                            }`}>
-                              {categoryDisplay}
-                            </span>
-                            {(item.tag === 'Penting' || item.isUrgent) && (
-                              <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
-                                <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
-                                <span>HOT</span>
-                              </span>
-                            )}
+                const activeList = showAllNewsArchive
+                  ? dedupedList
+                  : dedupedList.filter((item: any) => isWithinLast6Months(item.date || item.createdAt));
+
+                const totalCount = dedupedList.length;
+                const hasMoreThan10 = totalCount > 10;
+                const displayedList = (hasMoreThan10 && !showAllNewsArchive)
+                  ? activeList.slice(0, 10)
+                  : activeList;
+                const hiddenCount = Math.max(0, totalCount - displayedList.length);
+                const isEn = lang === 'en';
+
+                if (activeList.length === 0) {
+                  return (
+                    <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                      {isEn ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="space-y-6">
+                    {/* 2-Column News Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
+                      {displayedList.map((item: any, idx: number) => {
+                        const categoryDisplay = isEn ? (item.categoryEn || (item.category === 'Pariwisata Sumatera Barat' ? 'West Sumatra Tourism' : 'Indonesian Tourism')) : (item.category || 'Pariwisata Indonesia');
+                        const primaryLink = item.sourceUrl || item.actionUrl || '#';
+                        const mainFavicon = item.sourceIcon || getPublisherFavicon(item.sourceDomain, item.sourceName);
+                        const publisherDomain = item.sourceDomain || item.sourceName || (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com');
+                        const timeAgoText = item.timeAgo || (isEn && item.dateEn ? item.dateEn : item.date);
+                        const isOlderThan6M = !isWithinLast6Months(item.date || item.createdAt);
+
+                        return (
+                          <article
+                            key={item.id || idx}
+                            style={{ animationDelay: `${idx * 40}ms` }}
+                            className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta flex flex-col justify-between space-y-3.5 animate-content-stagger"
+                          >
+                            {/* Upper Content: Brand, Title, Excerpt, Metadata */}
+                            <div className="space-y-2.5">
+                              {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT + Archive Tag) */}
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <img
+                                  src={mainFavicon}
+                                  alt={item.sourceName || 'Publisher'}
+                                  className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
+                                  onError={(e: any) => { e.target.style.display = 'none'; }}
+                                />
+                                <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                                  {publisherDomain}
+                                </span>
+                                <span className="text-gray-300">•</span>
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
+                                  item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
+                                    ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                    : 'bg-red-50 text-red-800 border border-red-200'
+                                }`}>
+                                  {categoryDisplay}
+                                </span>
+                                {(item.tag === 'Penting' || item.isUrgent) && (
+                                  <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
+                                    <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                    <span>HOT</span>
+                                  </span>
+                                )}
+                                {isOlderThan6M && (
+                                  <span className="bg-neutral-100 text-neutral-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-neutral-300 shadow-2xs">
+                                    <Archive className="w-2.5 h-2.5 text-neutral-500" />
+                                    <span>{isEn ? 'Archive' : 'Arsip'}</span>
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Main Headline (Original Font: Orbitron Uppercase) */}
+                              <h3
+                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
+                                className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug group-hover:text-blue-600 transition-colors cursor-pointer"
+                              >
+                                {getNewsDisplayTitle(item, lang)}
+                              </h3>
+
+                              {/* Brief Excerpt */}
+                              {item.description && (
+                                <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
+                                  {item.description.split('\n\n')[0]}
+                                </p>
+                              )}
+
+                              {/* Meta Details: Time & Location */}
+                              <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 font-medium pt-1">
+                                <span>{timeAgoText}</span>
+                                {item.locationName && (
+                                  <>
+                                    <span className="text-gray-300">•</span>
+                                    <span className="flex items-center gap-1 text-gray-600">
+                                      <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                                      {item.locationName.split(',')[0]}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Bottom Grey Action Bar / Column: "Baca Sumber Resmi" (matches weather widget theme) */}
+                            <div className="pt-2 border-t border-gray-100 mt-auto">
+                              <button
+                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
+                                className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
+                                  <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
+                                </div>
+                                <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors">
+                                  {publisherDomain} ↗
+                                </span>
+                              </button>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+
+                    {/* Panel "Tampilkan Semua Arsip Berita" - Muncul jika berita > 10 */}
+                    {hasMoreThan10 && (
+                      <div className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black rounded-2xl p-5 sm:p-6 border border-neutral-700/80 shadow-lg text-white font-jakarta space-y-4 animate-fade-in">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div className="flex items-start gap-3.5">
+                            <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center shrink-0 text-red-400">
+                              <FolderArchive className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h4 className="font-orbitron font-bold text-sm sm:text-base tracking-wide text-white">
+                                  {isEn ? 'Tourism News Archive' : 'Panel Arsip Berita'}
+                                </h4>
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">
+                                  {showAllNewsArchive
+                                    ? (isEn ? 'All Archive Active' : 'Semua Arsip Aktif')
+                                    : `${totalCount} ${isEn ? 'Articles' : 'Berita'}`}
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+                                {showAllNewsArchive
+                                  ? (isEn
+                                      ? `Currently displaying all ${totalCount} articles from the complete tourism archive.`
+                                      : `Sedang menampilkan seluruh ${totalCount} berita dari database arsip pariwisata lengkap.`)
+                                  : (isEn
+                                      ? `Showing top 10 latest news. ${hiddenCount} older articles available in the archive.`
+                                      : `Menampilkan 10 berita teratas. Terdapat ${hiddenCount} berita lainnya yang tersimpan dalam arsip.`)}
+                              </p>
+                            </div>
                           </div>
 
-                          {/* Main Headline (Original Font: Orbitron Uppercase) */}
-                          <h3
-                            onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                            className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug group-hover:text-blue-600 transition-colors cursor-pointer"
+                          <button
+                            onClick={() => setShowAllNewsArchive(prev => !prev)}
+                            className="shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-full font-bold text-xs transition-all cursor-pointer shadow-md active:scale-95 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white border border-red-400/40 hover:shadow-red-500/20"
                           >
-                            {getNewsDisplayTitle(item, lang)}
-                          </h3>
-
-                          {/* Brief Excerpt */}
-                          {item.description && (
-                            <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
-                              {item.description.split('\n\n')[0]}
-                            </p>
-                          )}
-
-                          {/* Meta Details: Time & Location */}
-                          <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 font-medium pt-1">
-                            <span>{timeAgoText}</span>
-                            {item.locationName && (
+                            {showAllNewsArchive ? (
                               <>
-                                <span className="text-gray-300">•</span>
-                                <span className="flex items-center gap-1 text-gray-600">
-                                  <MapPin className="w-3 h-3 text-red-500 shrink-0" />
-                                  {item.locationName.split(',')[0]}
+                                <ChevronUp className="w-4 h-4" />
+                                <span>{isEn ? 'Collapse to Top 10' : 'Sembunyikan Sebagian (10 Teratas)'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <ChevronDown className="w-4 h-4" />
+                                <span>{isEn ? 'Show All News Archive' : 'Tampilkan Semua Arsip Berita'}</span>
+                                <span className="bg-black/25 text-[10px] px-2 py-0.5 rounded-full border border-white/20">
+                                  +{hiddenCount}
                                 </span>
                               </>
                             )}
-                          </div>
-                        </div>
-
-                        {/* Bottom Grey Action Bar / Column: "Baca Sumber Resmi" (matches weather widget theme) */}
-                        <div className="pt-2 border-t border-gray-100 mt-auto">
-                          <button
-                            onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                            className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
-                            title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
-                              <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
-                            </div>
-                            <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors">
-                              {publisherDomain} ↗
-                            </span>
                           </button>
                         </div>
-                      </article>
-                    );
-                  });
-                })()}
-              </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           )}
 
