@@ -164,31 +164,47 @@ export const Hero: React.FC<HeroProps> = ({
 
     const s = (scheduleStr || '').toLowerCase();
 
+    // 0. Explicit past / postponed / concluded status check
+    if (s.includes('sudah terselenggara') || s.includes('vakum') || s.includes('ditunda')) {
+      return {
+        isPast: true,
+        isLiveH2Window: false,
+        isUpcoming2Weeks: false,
+        daysUntilStart: 9999,
+        badgeLabelId: s.includes('ditunda') || s.includes('vakum') ? '⏸️ Ditunda / Vakum' : '✓ Telah Terselenggara',
+        badgeLabelEn: s.includes('ditunda') || s.includes('vakum') ? '⏸️ Postponed' : '✓ Concluded Event',
+        isKEN: Boolean(isKen),
+        sortScore: 9000
+      };
+    }
+
     // 1. Weekly / Weekend / Routine events (e.g. Pacu Jawi every weekend)
     if (s.includes('akhir pekan') || s.includes('mingguan') || s.includes('weekend') || s.includes('sepanjang tahun') || s.includes('bergilir')) {
       // Weekend is Sat (6) & Sun (0). H-2 to H+2: Thu (4), Fri (5), Sat (6), Sun (0), Mon (1)
       const isWeekendLiveWindow = [4, 5, 6, 0, 1].includes(currentDayOfWeek);
       if (isWeekendLiveWindow) {
         return {
+          isPast: false,
           isLiveH2Window: true,
           isUpcoming2Weeks: false,
           daysUntilStart: 0,
           badgeLabelId: '🔥 Event Rutin Aktif Pekan Ini',
           badgeLabelEn: '🔥 Active Routine Event This Week',
           isKEN: Boolean(isKen),
-          sortScore: 5
+          sortScore: 20 // Active routine event; gives room for immediate annual festivals (score 10-19) to lead
         };
       } else {
         // Tuesday (2) or Wednesday (3) -> Upcoming for next weekend (within 2-3 days)
         const daysToWeekend = currentDayOfWeek === 2 ? 4 : 3;
         return {
+          isPast: false,
           isLiveH2Window: false,
           isUpcoming2Weeks: true,
           daysUntilStart: daysToWeekend,
           badgeLabelId: `⏳ Hadir Akhir Pekan Ini (${daysToWeekend} Hari Lagi)`,
           badgeLabelEn: `⏳ Starts This Weekend (${daysToWeekend} Days)`,
           isKEN: Boolean(isKen),
-          sortScore: 15 + daysToWeekend
+          sortScore: 25 + daysToWeekend
         };
       }
     }
@@ -216,17 +232,13 @@ export const Hero: React.FC<HeroProps> = ({
       }
     }
 
-    // 2. Specific day range (e.g. "15 - 20 Agustus", "25 Agustus", "1 - 10 Muharram")
+    // 2. Specific day range (e.g. "17 - 19 September 2026", "4 – 6 September 2026")
     const dateMatch = s.match(/(\d{1,2})\s*(?:-|sampai|hingga|\/)\s*(\d{1,2})?/);
     if (dateMatch && foundMonth !== null) {
       const startDay = parseInt(dateMatch[1], 10);
       const endDay = dateMatch[2] ? parseInt(dateMatch[2], 10) : startDay;
 
-      let eventYear = currentYear;
-      if (foundMonth < currentMonth - 2) {
-        eventYear = currentYear + 1;
-      }
-
+      const eventYear = currentYear;
       const startDate = new Date(eventYear, foundMonth, startDay, 0, 0, 0);
       const endDate = new Date(eventYear, foundMonth, endDay, 23, 59, 59);
 
@@ -234,13 +246,26 @@ export const Hero: React.FC<HeroProps> = ({
       const h2StartDate = new Date(eventYear, foundMonth, startDay - 2, 0, 0, 0);
       // H+2 window ends 2 days after end date (23:59:59)
       const h2EndDate = new Date(eventYear, foundMonth, endDay + 2, 23, 59, 59);
-      // H-14 window starts 14 days before start date
-      const h14StartDate = new Date(eventYear, foundMonth, startDay - 14, 0, 0, 0);
 
       const diffToStartMs = startDate.getTime() - nowMs;
       const daysToStart = Math.ceil(diffToStartMs / (1000 * 60 * 60 * 24));
 
-      // CASE A: Within H-2 to H+2 Window (Live Video Eligible)
+      // CASE A: Concluded / Already Passed
+      if (nowMs > h2EndDate.getTime()) {
+        const daysAgo = Math.max(1, Math.ceil((nowMs - endDate.getTime()) / (1000 * 60 * 60 * 24)));
+        return {
+          isPast: true,
+          isLiveH2Window: false,
+          isUpcoming2Weeks: false,
+          daysUntilStart: -daysAgo,
+          badgeLabelId: `🗓️ Selesai (${startDay}-${endDay} ${monthNamesId[foundMonth]})`,
+          badgeLabelEn: `🗓️ Concluded (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`,
+          isKEN: Boolean(isKen),
+          sortScore: 5000 + daysAgo // Pushed far down; never competes with active events
+        };
+      }
+
+      // CASE B: Within H-2 to H+2 Window (Live Event Eligible)
       if (nowMs >= h2StartDate.getTime() && nowMs <= h2EndDate.getTime()) {
         let badgeId = `🔥 Sedang Berlangsung (${startDay}-${endDay} ${monthNamesId[foundMonth]})`;
         let badgeEn = `🔥 Happening Now (${startDay}-${endDay} ${monthNamesEn[foundMonth]})`;
@@ -255,6 +280,7 @@ export const Hero: React.FC<HeroProps> = ({
         }
 
         return {
+          isPast: false,
           isLiveH2Window: true,
           isUpcoming2Weeks: false,
           daysUntilStart: daysToStart,
@@ -265,9 +291,10 @@ export const Hero: React.FC<HeroProps> = ({
         };
       }
 
-      // CASE B: 2 Weeks Before Event (H-14 to H-2) (Upcoming Image Banner Eligible)
+      // CASE C: 2 Weeks Before Event (H-14 to H-2) (Upcoming Image Banner Eligible)
       if (daysToStart > 2 && daysToStart <= 14) {
         return {
+          isPast: false,
           isLiveH2Window: false,
           isUpcoming2Weeks: true,
           daysUntilStart: daysToStart,
@@ -278,29 +305,46 @@ export const Hero: React.FC<HeroProps> = ({
         };
       }
 
-      // CASE C: Farther future schedule
-      return {
-        isLiveH2Window: false,
-        isUpcoming2Weeks: false,
-        daysUntilStart: daysToStart,
-        badgeLabelId: `🗓️ ${startDay} ${monthNamesId[foundMonth]} ${eventYear}`,
-        badgeLabelEn: `🗓️ ${monthNamesEn[foundMonth]} ${startDay}, ${eventYear}`,
-        isKEN: Boolean(isKen),
-        sortScore: 100 + Math.max(0, daysToStart)
-      };
+      // CASE D: Farther future schedule (H-15 onwards)
+      if (daysToStart > 14) {
+        return {
+          isPast: false,
+          isLiveH2Window: false,
+          isUpcoming2Weeks: false,
+          daysUntilStart: daysToStart,
+          badgeLabelId: `🗓️ ${startDay} ${monthNamesId[foundMonth]} ${eventYear}`,
+          badgeLabelEn: `🗓️ ${monthNamesEn[foundMonth]} ${startDay}, ${eventYear}`,
+          isKEN: Boolean(isKen),
+          sortScore: 100 + daysToStart
+        };
+      }
     }
 
-    // 3. Month-based without specific day (e.g. "Agustus", "Tahunan (Agustus/September)")
+    // 3. Month-based without specific day (e.g. "Agustus", "September 2026 (Jadwal Pasti Segera Dikonfirmasi)")
     if (foundMonth !== null) {
+      if (foundMonth < currentMonth) {
+        return {
+          isPast: true,
+          isLiveH2Window: false,
+          isUpcoming2Weeks: false,
+          daysUntilStart: 9999,
+          badgeLabelId: `🗓️ Selesai (${monthNamesId[foundMonth]} ${currentYear})`,
+          badgeLabelEn: `🗓️ Concluded (${monthNamesEn[foundMonth]} ${currentYear})`,
+          isKEN: Boolean(isKen),
+          sortScore: 6000 + (currentMonth - foundMonth) * 30
+        };
+      }
+
       if (foundMonth === currentMonth) {
         return {
+          isPast: false,
           isLiveH2Window: true,
           isUpcoming2Weeks: false,
           daysUntilStart: 0,
           badgeLabelId: `🔥 Bulan Ini (${monthNamesId[foundMonth]})`,
           badgeLabelEn: `🔥 This Month (${monthNamesEn[foundMonth]})`,
           isKEN: Boolean(isKen),
-          sortScore: 3
+          sortScore: 8
         };
       }
 
@@ -310,19 +354,33 @@ export const Hero: React.FC<HeroProps> = ({
         if (daysUntilNextMonth <= 14) {
           const daysNum = Math.max(1, Math.ceil(daysUntilNextMonth));
           return {
+            isPast: false,
             isLiveH2Window: false,
             isUpcoming2Weeks: true,
             daysUntilStart: daysNum,
             badgeLabelId: `⏳ 2 Minggu Ini (${monthNamesId[foundMonth]})`,
             badgeLabelEn: `⏳ In 2 Weeks (${monthNamesEn[foundMonth]})`,
             isKEN: Boolean(isKen),
-            sortScore: 25
+            sortScore: 28
           };
         }
       }
+
+      // Future month
+      return {
+        isPast: false,
+        isLiveH2Window: false,
+        isUpcoming2Weeks: false,
+        daysUntilStart: 60,
+        badgeLabelId: `🗓️ ${monthNamesId[foundMonth]} ${currentYear}`,
+        badgeLabelEn: `🗓️ ${monthNamesEn[foundMonth]} ${currentYear}`,
+        isKEN: Boolean(isKen),
+        sortScore: 150 + (foundMonth - currentMonth) * 30
+      };
     }
 
     return {
+      isPast: false,
       isLiveH2Window: false,
       isUpcoming2Weeks: false,
       daysUntilStart: 999,
@@ -338,58 +396,80 @@ export const Hero: React.FC<HeroProps> = ({
   const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
   const featuredVideoEventId = appSettings?.featuredVideoEventId || 'auto';
 
-  // 1. Video Event Selection: Admin chosen event or smart auto selection
-  const videoEvent = useMemo(() => {
-    if (spotlightDisplayMode === 'event' || featuredVideoEventId === 'none') return undefined;
-
-    const evaluated = eventsList.map(item => ({
+  // Comprehensive evaluation of all events
+  const evaluatedEvents = useMemo(() => {
+    return eventsList.map(item => ({
       item,
       timeline: evaluateEventTimeline(item.schedule, item.isKen)
     }));
+  }, [eventsList]);
 
-    // Option A: Admin explicitly selected a specific event ID
+  // Active / Upcoming candidates strictly excluding past events
+  const activeCandidates = useMemo(() => {
+    const list = evaluatedEvents.filter(e => !e.timeline.isPast && e.timeline.sortScore < 1000);
+    list.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
+    return list;
+  }, [evaluatedEvents]);
+
+  // Primary event that should lead the spotlight: the closest active/upcoming event
+  const primarySpotlightEvent = useMemo(() => {
+    return activeCandidates[0] || evaluatedEvents.find(e => !e.timeline.isPast) || evaluatedEvents[0];
+  }, [activeCandidates, evaluatedEvents]);
+
+  // 1. Video Event Selection:
+  // Logika: Jika event unggulan terdekat memiliki video, putar videonya.
+  // Namun jika event terdekat TIDAK memiliki video (hanya foto), spotlight TIDAK memaksakan video event lama,
+  // melainkan otomatis hanya menampilkan kartu gambar event tersebut!
+  const videoEvent = useMemo(() => {
+    if (spotlightDisplayMode === 'event' || featuredVideoEventId === 'none') return undefined;
+
+    // Option A: Admin explicitly selected a specific event ID in settings
     if (featuredVideoEventId && featuredVideoEventId !== 'auto' && featuredVideoEventId !== 'none') {
-      const selected = evaluated.find(e => e.item.id === featuredVideoEventId);
+      const selected = evaluatedEvents.find(e => e.item.id === featuredVideoEventId);
       if (selected && Boolean(getYoutubeEmbedUrl(selected.item.videoUrl || (selected.item as any).youtubeUrl))) {
         return selected;
       }
     }
 
-    // Option B: Auto Mode — find closest/best scheduled event with a valid YouTube video
-    const allWithVideo = evaluated.filter(e => Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-    if (allWithVideo.length > 0) {
-      allWithVideo.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-      return allWithVideo[0];
+    // Option B: Auto Mode — periksa event terdekat yang aktif/mendatang
+    if (!primarySpotlightEvent) return undefined;
+
+    const primaryVideo = getYoutubeEmbedUrl(primarySpotlightEvent.item.videoUrl || (primarySpotlightEvent.item as any).youtubeUrl);
+    if (primaryVideo) {
+      return primarySpotlightEvent;
     }
 
+    // Jika event utama terdekat tidak punya video, periksa apakah ada event aktif lain yang SEDANG BERLANGSUNG hari ini yang punya video
+    // Hanya tampilkan jika mode spotlight mengizinkan 'both'
+    if (spotlightDisplayMode === 'both') {
+      const liveWithVideo = activeCandidates.find(e => e.timeline.isLiveH2Window && Boolean(getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
+      if (liveWithVideo && liveWithVideo.item.id !== primarySpotlightEvent.item.id) {
+        return liveWithVideo;
+      }
+    }
+
+    // Jika tidak ada video pada event aktif, spotlight beralih menampilkan gambar event saja
     return undefined;
-  }, [eventsList, spotlightDisplayMode, featuredVideoEventId]);
+  }, [evaluatedEvents, activeCandidates, primarySpotlightEvent, spotlightDisplayMode, featuredVideoEventId]);
 
-  // 2. Image Banner Events: Automatically displays photo banner if no video is active or in banner mode
+  // 2. Image Banner Events:
+  // Menampilkan banner foto event mendatang. Jika tidak ada video, banner ini menjadi kartu utama spotlight.
   const bannerEvents = useMemo(() => {
-    // If videoEvent is active and display mode is not forcing both, video takes the spotlight
-    if (videoEvent && spotlightDisplayMode !== 'both') return [];
+    // If videoEvent is active and display mode is strictly video, hide banner
+    if (videoEvent && spotlightDisplayMode === 'video') return [];
 
-    const evaluated = eventsList.map(item => ({
-      item,
-      timeline: evaluateEventTimeline(item.schedule, item.isKen)
-    }));
-
+    // Filter kandidat yang bukan event yang sudah diputar di kartu video
     const candidateList = (videoEvent && spotlightDisplayMode === 'both')
-      ? evaluated.filter(e => e.item.id !== videoEvent.item.id)
-      : evaluated;
+      ? activeCandidates.filter(e => e.item.id !== videoEvent.item.id)
+      : activeCandidates;
 
-    // Prioritize 2-week upcoming events (H-14 to H-2) or any active event without video
-    const upcoming2Weeks = candidateList.filter(e => e.timeline.isUpcoming2Weeks || (e.timeline.isLiveH2Window && !getYoutubeEmbedUrl(e.item.videoUrl || (e.item as any).youtubeUrl)));
-    if (upcoming2Weeks.length > 0) {
-      upcoming2Weeks.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-      return upcoming2Weeks;
+    if (candidateList.length > 0) {
+      return candidateList.slice(0, 3);
     }
 
-    // Fallback: Closest upcoming events in the calendar so the banner remains a helpful information hub
-    candidateList.sort((a, b) => a.timeline.sortScore - b.timeline.sortScore);
-    return candidateList.slice(0, 3);
-  }, [eventsList, videoEvent, spotlightDisplayMode]);
+    // Fallback: pastikan tidak menampilkan event yang sudah lewat
+    return evaluatedEvents.filter(e => !e.timeline.isPast).slice(0, 3);
+  }, [activeCandidates, evaluatedEvents, videoEvent, spotlightDisplayMode]);
 
   // Carousel index for banner events & rotation with pause on hover
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
