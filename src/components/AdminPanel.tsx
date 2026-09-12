@@ -669,9 +669,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const handleSaveSettings = async () => {
     try {
       await saveSettings(settingsFormData);
-      showSuccess('Pengaturan gambar latar belakang berhasil disimpan!');
-    } catch (e) {
-      setAdminError('Gagal menyimpan pengaturan latar belakang');
+      showSuccess('Pengaturan gambar latar belakang & sistem berhasil disimpan ke Cloud Firestore!');
+    } catch (e: any) {
+      console.error("Save settings error:", e);
+      setAdminError(`Gagal menyimpan pengaturan: ${e?.message || e?.code || 'Periksa koneksi database'}`);
     }
   };
 
@@ -718,11 +719,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       }
       const colName = getCollectionName();
       await saveItem(colName, formData);
-      showSuccess('Perubahan berhasil disimpan');
+      showSuccess('Perubahan katalog berhasil disimpan permanen ke Cloud Firestore!');
       setEditingId(null);
       setFormData(null);
     } catch (e: any) {
-      setAdminError('Error saving data');
+      console.error("Save item error:", e);
+      setAdminError(`Gagal menyimpan data: ${e?.message || e?.code || 'Periksa koneksi atau hak akses database'}`);
     }
   };
 

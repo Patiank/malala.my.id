@@ -118,10 +118,15 @@ export async function uploadCatalogImage(
     // Stage 1: Reading file & starting compression
     if (onProgress) onProgress(25);
 
-    // Stage 2: Client-side WebP compression (1280x960 max, quality 0.82)
-    // Produces crisp retina image of only ~30KB - 70KB!
-    const compressedBlob = await compressImage(file, 1280, 960, 0.82);
-    if (onProgress) onProgress(70);
+    // Stage 2: Client-side WebP compression (1280x960 max, quality 0.80)
+    let compressedBlob = await compressImage(file, 1280, 960, 0.80);
+    if (onProgress) onProgress(60);
+
+    // Safeguard: If still larger than 250KB, compress adaptively to ensure light payload (<100KB)
+    if (compressedBlob.size > 250 * 1024) {
+      compressedBlob = await compressImage(file, 960, 720, 0.72);
+    }
+    if (onProgress) onProgress(85);
 
     // Stage 3: Generate Base64 Data URL for instant preview and Firestore persistence
     const dataUrl = await blobToDataURL(compressedBlob);
@@ -129,8 +134,12 @@ export async function uploadCatalogImage(
 
     return dataUrl;
   } catch (err: any) {
-    console.warn('Image compression fallback to original file:', err);
+    console.warn('Image compression fallback:', err);
     if (onProgress) onProgress(100);
-    return await blobToDataURL(file);
+    // If original file is already small (< 400KB), allow it; otherwise throw error to protect Firestore 1MB quota
+    if (file.size < 400 * 1024) {
+      return await blobToDataURL(file);
+    }
+    throw new Error('Resolusi foto terlalu tinggi dan gagal dikompresi. Silakan gunakan foto berukuran di bawah 5MB atau format JPG/PNG standar.');
   }
 }
