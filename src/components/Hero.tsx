@@ -1083,16 +1083,21 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Photo Banner Image */}
                   {eventItem.imageUrl ? (
-                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-gray-900 shrink-0">
+                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-stone-900 shrink-0">
                       <img
-                        src={optimizeImageUrl(eventItem.imageUrl, 600)}
+                        src={eventItem.imageUrl.startsWith('data:') ? eventItem.imageUrl : optimizeImageUrl(eventItem.imageUrl, 600)}
                         alt={title}
                         width={400}
                         height={225}
-                        loading="lazy"
+                        loading="eager"
                         decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                        onError={(e) => {
+                          const img = e.currentTarget as HTMLImageElement;
+                          if (!img.src.includes('ev26-danau-kembar.jpg')) {
+                            img.src = '/images/catalog/ev26-danau-kembar.jpg';
+                          }
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                       
