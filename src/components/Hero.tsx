@@ -825,7 +825,8 @@ export const Hero: React.FC<HeroProps> = ({
             )}
           </div>
 
-          {/* MINANGKAOS Brand Identity & Text (Desktop: Left-Bottom) */}
+          {/* MINANGKAOS Brand Identity & Text (Desktop: Left-Bottom) - Temporarily hidden */}
+          {/*
           <div className="hidden lg:flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
             <div
               onClick={handlePemprovLogoClick}
@@ -842,6 +843,7 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             </div>
           </div>
+          */}
         </div>
       </div>
 
@@ -1214,9 +1216,10 @@ export const Hero: React.FC<HeroProps> = ({
       );
     })()}
 
-        {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
-        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full select-none z-30">
-          {/* Left: Minangkaos Branding */}
+        {/* Mobile Bottom Footer Row: Tanya Uni Mala Chat Bubble */}
+        <div className="flex lg:hidden items-center justify-end gap-3 transition-colors duration-300 mt-6 sm:mt-8 pb-6 w-full select-none z-30">
+          {/* Left: Minangkaos Branding - Temporarily hidden */}
+          {/*
           <div className="flex items-center gap-2.5 min-w-0 pl-1">
             <div
               onClick={handlePemprovLogoClick}
@@ -1233,8 +1236,9 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             </div>
           </div>
+          */}
 
-          {/* Right: Tanya Uni Mala Chat Bubble inline */}
+          {/* Right: Tanya Uni Mala Chat Bubble */}
           <div className="shrink-0 -mr-2 sm:-mr-1">
             <button
               onClick={() => onOpenDrawer('chat')}

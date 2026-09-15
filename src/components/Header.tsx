@@ -29,6 +29,25 @@ export const Header: React.FC<HeaderProps> = ({
   const t = translations[lang];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Secret Admin Trigger: Clicking website title 6 times in rapid sequence opens Admin Panel
+  const titleClickCountRef = React.useRef(0);
+  const titleClickTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleTitleClick = (e: React.MouseEvent) => {
+    titleClickCountRef.current += 1;
+    if (titleClickTimerRef.current) clearTimeout(titleClickTimerRef.current);
+
+    if (titleClickCountRef.current >= 6) {
+      titleClickCountRef.current = 0;
+      onOpenDrawer('admin');
+    } else {
+      titleClickTimerRef.current = setTimeout(() => {
+        titleClickCountRef.current = 0;
+      }, 2000);
+      onCloseDrawer();
+    }
+  };
+
   const heroTextColor = appSettings?.heroTextColor || '#000000';
   const heroTextShadow = appSettings?.heroTextShadow !== false;
 
@@ -57,16 +76,15 @@ export const Header: React.FC<HeaderProps> = ({
       }}
     >
       <div className="flex items-center justify-between w-full md:w-auto">
-        {/* Logo (Left) */}
+        {/* Logo / Website Title (Left) */}
         <button
-          onClick={onCloseDrawer}
-          className="font-orbitron font-black tracking-[0.12em] sm:tracking-[0.15em] flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity text-left focus:outline-none"
+          onClick={handleTitleClick}
+          className="font-orbitron font-black tracking-[0.12em] sm:tracking-[0.15em] flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity text-left focus:outline-none select-none"
           style={{ fontSize: 'var(--logo)' }}
-          aria-label="WEST SUMATRA TOURISM"
+          aria-label="MALALA - WEST SUMATRA TOURISM"
         >
           <div className="flex items-baseline gap-0.5">
             <span style={headerTextStyle} className="transition-colors duration-300">MALALA</span>
-            <span className="text-red-600 font-extrabold lowercase tracking-tight">.my.id</span>
             <span
               className="font-normal leading-none inline-block -mt-0.5 ml-0.5"
               style={{ fontSize: 'var(--logo-deg)', color: heroTextColor, opacity: 0.7 }}
@@ -79,6 +97,12 @@ export const Header: React.FC<HeaderProps> = ({
             style={{ color: heroTextColor, opacity: 0.75, textShadow: shadowValue }}
           >
             {t.logoTagline}
+          </span>
+          <span
+            className="font-orbitron text-[9px] sm:text-[10px] tracking-[0.22em] sm:tracking-[0.26em] font-black uppercase text-red-600 mt-0.5 transition-colors duration-300"
+            style={{ textShadow: shadowValue }}
+          >
+            SIPESONA SUMBAR
           </span>
         </button>
 
