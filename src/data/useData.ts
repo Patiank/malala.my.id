@@ -194,7 +194,14 @@ export function useData() {
 
           return { id: docSnap.id, ...item, imageUrl: img };
         })
-        .filter(item => item.title && item.title.trim().length > 0);
+        .filter(item => {
+          if (!item.title || !item.title.trim()) return false;
+          const lower = (item.title + ' ' + (item.description || '') + ' ' + item.id).toLowerCase();
+          if (lower.includes('thailand') || lower.includes('bangkok') || lower.includes('phuket') || lower.includes('chiang mai') || item.id.startsWith('th-')) {
+            return false;
+          }
+          return true;
+        });
 
       const mergedList = deduplicateNewsItems([...data, ...HOT_INFO_ITEMS])
         .sort((a: any, b: any) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
@@ -449,18 +456,24 @@ export function useData() {
   }));
 
   const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
-    const cleanItems = deduplicateNewsItems(newItems).map(item => {
-      const img = item.imageUrl ? item.imageUrl.trim() : '';
-      const isUserUploaded = Boolean(
-        (item as any).isUserUploadedImage === true || 
-        (img && img.startsWith('data:image/'))
-      );
-      return {
-        ...item,
-        imageUrl: isUserUploaded ? img : '',
-        isUserUploadedImage: isUserUploaded
-      };
-    });
+    const cleanItems = deduplicateNewsItems(newItems)
+      .filter(item => {
+        if (!item.title || !item.title.trim()) return false;
+        const lower = (item.title + ' ' + (item.description || '') + ' ' + (item.id || '')).toLowerCase();
+        return !(lower.includes('thailand') || lower.includes('bangkok') || lower.includes('phuket') || lower.includes('chiang mai') || item.id?.startsWith('th-'));
+      })
+      .map(item => {
+        const img = item.imageUrl ? item.imageUrl.trim() : '';
+        const isUserUploaded = Boolean(
+          (item as any).isUserUploadedImage === true || 
+          (img && img.startsWith('data:image/'))
+        );
+        return {
+          ...item,
+          imageUrl: isUserUploaded ? img : '',
+          isUserUploadedImage: isUserUploaded
+        };
+      });
     setHotInfoItems(cleanItems);
     try {
       const batch = writeBatch(db);
