@@ -1104,7 +1104,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         categoryLabel: 'Berita',
         categoryLabelEn: 'News',
         drawerType: 'hotinfo',
-        imageUrl: undefined, // Jangan tampilkan gambar pada hasil pencarian berita agar tidak menampilkan gambar yang tidak sesuai
+        imageUrl: h.imageUrl || undefined,
         locationName: h.locationName || h.category,
         subTag: h.date,
         keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description} ${h.sourceName || ''} ${h.sourceDomain || ''}`.toLowerCase(),
@@ -1593,15 +1593,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                         }`}
                       >
                         <div className="space-y-2">
-                          {/* Hanya tampilkan gambar untuk non-berita (Destinasi, Budaya, Kuliner, Oleh-Oleh, Event) */}
-                          {!isNews && (
-                            item.imageUrl ? (
-                              <img
-                                src={item.imageUrl}
-                                alt={item.title}
-                                className="w-full h-32 rounded-lg object-cover border border-gray-100 group-hover:scale-102 transition-transform"
-                              />
-                            ) : (
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.title}
+                              className="w-full h-32 rounded-lg object-cover border border-gray-100 group-hover:scale-102 transition-transform"
+                            />
+                          ) : (
+                            !isNews && (
                               <div className="w-full h-32 rounded-lg bg-gray-100 flex items-center justify-center text-4xl">
                                 {item.icon}
                               </div>
@@ -3776,11 +3775,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
                       {displayedList.map((item: any, idx: number) => {
                         const categoryDisplay = isEn ? (item.categoryEn || (item.category === 'Pariwisata Sumatera Barat' ? 'West Sumatra Tourism' : 'Indonesian Tourism')) : (item.category || 'Pariwisata Indonesia');
-                        const primaryLink = item.sourceUrl || item.actionUrl || '#';
-                        const mainFavicon = item.sourceIcon || getPublisherFavicon(item.sourceDomain, item.sourceName);
-                        const publisherDomain = item.sourceDomain || item.sourceName || (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com');
+                        const hasExternalUrl = Boolean(item.sourceUrl && (item.sourceUrl.startsWith('http://') || item.sourceUrl.startsWith('https://')));
+                        const primaryLink = hasExternalUrl ? item.sourceUrl! : (item.actionUrl?.startsWith('http') ? item.actionUrl : '');
+                        const publisherDomain = item.sourceDomain || item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
+                        const mainFavicon = item.sourceIcon || (hasExternalUrl ? getPublisherFavicon(item.sourceDomain, item.sourceName) : '/favicon.ico');
                         const timeAgoText = item.timeAgo || (isEn && item.dateEn ? item.dateEn : item.date);
                         const isOlderThan6M = !isWithinLast6Months(item.date || item.createdAt);
+                        const displayDescription = isEn && item.descriptionEn ? item.descriptionEn : item.description;
 
                         return (
                           <article
@@ -3788,6 +3789,27 @@ export const Drawers: React.FC<DrawersProps> = ({
                             style={{ animationDelay: `${idx * 40}ms` }}
                             className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta flex flex-col justify-between space-y-3.5 animate-content-stagger"
                           >
+                            {/* News Card Thumbnail Image (if present) */}
+                            {item.imageUrl && (
+                              <div
+                                onClick={() => {
+                                  if (hasExternalUrl && primaryLink) {
+                                    window.open(primaryLink, '_blank', 'noopener,noreferrer');
+                                  } else {
+                                    onSelectNews?.(item);
+                                  }
+                                }}
+                                className="w-full h-40 rounded-xl overflow-hidden bg-gray-100 cursor-pointer -mt-1 shadow-2xs border border-gray-100 group"
+                              >
+                                <img
+                                  src={item.imageUrl}
+                                  alt={getNewsDisplayTitle(item, lang)}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
+                                />
+                              </div>
+                            )}
+
                             {/* Upper Content: Brand, Title, Excerpt, Metadata */}
                             <div className="space-y-2.5">
                               {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT + Archive Tag) */}
@@ -3823,18 +3845,24 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 )}
                               </div>
 
-                              {/* Main Headline (Original Font: Orbitron Uppercase) */}
+                              {/* Main Headline */}
                               <h3
-                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug group-hover:text-blue-600 transition-colors cursor-pointer"
+                                onClick={() => {
+                                  if (hasExternalUrl && primaryLink) {
+                                    window.open(primaryLink, '_blank', 'noopener,noreferrer');
+                                  } else {
+                                    onSelectNews?.(item);
+                                  }
+                                }}
+                                className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer"
                               >
                                 {getNewsDisplayTitle(item, lang)}
                               </h3>
 
                               {/* Brief Excerpt */}
-                              {item.description && (
+                              {displayDescription && (
                                 <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
-                                  {item.description.split('\n\n')[0]}
+                                  {displayDescription.split('\n\n')[0]}
                                 </p>
                               )}
 
@@ -3853,21 +3881,37 @@ export const Drawers: React.FC<DrawersProps> = ({
                               </div>
                             </div>
 
-                            {/* Bottom Grey Action Bar / Column: "Baca Sumber Resmi" (matches weather widget theme) */}
+                            {/* Bottom Grey Action Bar / Column: External Source vs Read Release */}
                             <div className="pt-2 border-t border-gray-100 mt-auto">
-                              <button
-                                onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
-                                title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
-                              >
-                                <div className="flex items-center gap-2">
-                                  <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
-                                  <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
-                                </div>
-                                <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors">
-                                  {publisherDomain} ↗
-                                </span>
-                              </button>
+                              {hasExternalUrl && primaryLink ? (
+                                <button
+                                  onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
+                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                  title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
+                                    <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
+                                  </div>
+                                  <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
+                                    {publisherDomain} ↗
+                                  </span>
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => onSelectNews?.(item)}
+                                  className="w-full bg-gradient-to-r from-emerald-800 to-teal-900 hover:from-emerald-700 hover:to-teal-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-emerald-700/60"
+                                  title={isEn ? 'Read full article' : 'Baca artikel lengkap'}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <BookOpen className="w-3.5 h-3.5 text-emerald-300 group-hover:text-white group-hover:scale-110 transition-transform" />
+                                    <span className="text-white">{isEn ? 'Read Full Article' : 'Baca Rilis Lengkap'}</span>
+                                  </div>
+                                  <span className="text-[10.5px] font-semibold text-emerald-200 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md">
+                                    {isEn ? 'Official Release' : 'Rilis Resmi'}
+                                  </span>
+                                </button>
+                              )}
                             </div>
                           </article>
                         );

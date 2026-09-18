@@ -647,7 +647,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       scheduleEn: item.scheduleEn || '',
       location: item.location || '',
       locationEn: item.locationEn || '',
-      isKen: Boolean(item.isKen)
+      isKen: Boolean(item.isKen),
+      sourceUrl: item.sourceUrl || '',
+      sourceName: item.sourceName || '',
+      sourceDomain: item.sourceDomain || ''
     });
   };
 
@@ -717,6 +720,31 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       if (!formData.id) {
         formData.id = `item_${Date.now()}`;
       }
+      if (adminTab === 'hotinfo') {
+        if (!formData.createdAt) {
+          formData.createdAt = Date.now();
+        }
+        if (formData.sourceUrl && formData.sourceUrl.trim()) {
+          const rawUrl = formData.sourceUrl.trim();
+          formData.sourceUrl = rawUrl.startsWith('http://') || rawUrl.startsWith('https://') ? rawUrl : `https://${rawUrl}`;
+          try {
+            const parsed = new URL(formData.sourceUrl);
+            if (!formData.sourceDomain) {
+              formData.sourceDomain = parsed.hostname.replace(/^www\./, '');
+            }
+          } catch {
+            if (!formData.sourceDomain && formData.sourceUrl.includes('.')) {
+              formData.sourceDomain = formData.sourceUrl.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+            }
+          }
+        } else {
+          formData.sourceUrl = '';
+          formData.sourceDomain = '';
+          if (!formData.sourceName) {
+            formData.sourceName = 'Rilis Resmi Pariwisata Sumbar';
+          }
+        }
+      }
       const colName = getCollectionName();
       await saveItem(colName, formData);
       showSuccess('Perubahan katalog berhasil disimpan permanen ke Cloud Firestore!');
@@ -778,7 +806,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         emptyItem = { id: '', title: '', category: 'E-Book PDF', type: 'Document PDF', size: '2.5 MB', description: '', filename: 'Buku_Panduan.pdf', content: 'Isi Dokumen Resmi Pariwisata Sumbar...', mimeType: 'application/pdf' };
         break;
       case 'hotinfo':
-        emptyItem = { id: '', title: '', category: 'Berita Utama', date: 'Hari Ini', description: '', imageUrl: '', tag: 'Update', actionUrl: '' };
+        emptyItem = {
+          id: '',
+          title: '',
+          titleEn: '',
+          category: 'Berita Utama',
+          categoryEn: 'Main News',
+          date: 'Hari Ini',
+          dateEn: 'Today',
+          description: '',
+          descriptionEn: '',
+          imageUrl: '',
+          tag: 'Update',
+          tagEn: 'Update',
+          actionUrl: '',
+          sourceUrl: '',
+          sourceName: '',
+          sourceDomain: '',
+          createdAt: Date.now(),
+        };
         break;
     }
     setFormData(emptyItem);
@@ -2068,17 +2114,85 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">5. Isi Berita Ringkas (Indonesian)</label>
-                      <textarea name="description" value={formData.description || formData.content || ''} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-24 resize-none" />
+                      <label className="block text-[10px] font-bold uppercase text-gray-700 mb-1">
+                        5. Isi Berita / Deskripsi Lengkap (Indonesian)
+                      </label>
+                      <textarea
+                        name="description"
+                        value={formData.description || formData.content || ''}
+                        onChange={handleChange}
+                        placeholder="Tuliskan isi berita lengkap atau rilis pers di sini..."
+                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs h-36 resize-y focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                      />
+                      <p className="text-[9px] text-gray-500 mt-1">
+                        💡 Jika tautan sumber di bawah dikosongkan, deskripsi ini akan ditampilkan secara utuh/penuh kepada pengunjung.
+                      </p>
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">5. News Summary (English Translation)</label>
-                      <textarea name="descriptionEn" value={formData.descriptionEn || ''} onChange={handleChange} placeholder="English news summary..." className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-24 resize-none" />
+                      <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">
+                        5. News Body / Summary (English Translation)
+                      </label>
+                      <textarea
+                        name="descriptionEn"
+                        value={formData.descriptionEn || ''}
+                        onChange={handleChange}
+                        placeholder="Write English news body or summary here..."
+                        className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs h-36 resize-y outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sumber Berita Eksternal (Opsional) */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                        <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                        Tautan & Sumber Media (Opsional)
+                      </span>
+                      <span className="text-[9px] text-slate-500 font-medium">
+                        Kosongkan jika ini rilis resmi internal
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[9.5px] font-bold uppercase text-gray-600 mb-1">
+                          6. Tautan / Link URL Sumber Berita
+                        </label>
+                        <input
+                          type="url"
+                          name="sourceUrl"
+                          value={formData.sourceUrl || ''}
+                          onChange={handleChange}
+                          placeholder="e.g. https://sumbar.antaranews.com/berita/... atau https://travel.kompas.com/..."
+                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        />
+                        <p className="text-[9px] text-gray-500 mt-1">
+                          Jika diisi, pengunjung dapat mengeklik untuk membaca sumber asli di media tersebut.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-[9.5px] font-bold uppercase text-gray-600 mb-1">
+                          7. Nama Media / Penerbit Berita
+                        </label>
+                        <input
+                          type="text"
+                          name="sourceName"
+                          value={formData.sourceName || ''}
+                          onChange={handleChange}
+                          placeholder="e.g. Antara News Sumbar, Kompas Travel, Dispar Sumbar"
+                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        />
+                        <p className="text-[9px] text-gray-500 mt-1">
+                          Nama penerbit pada badge (Default jika kosong: "Rilis Resmi Pariwisata Sumbar").
+                        </p>
+                      </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">6. Link Tindakan / Lokasi Map (Opsional)</label>
+                    <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">8. Link Tindakan / Lokasi Map (Opsional)</label>
                     <input type="text" name="actionUrl" value={formData.actionUrl || formData.locationQuery || ''} onChange={handleChange} placeholder="e.g. Jam Gadang Bukittinggi ATAU https://maps.google.com/..." className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                   </div>
                 </>
@@ -2618,7 +2732,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     <div className="flex items-center justify-between">
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
                         <ImageIcon className="w-3.5 h-3.5 text-black" />
-                        Gambar Item Katalog (Wajib)
+                        {adminTab === 'hotinfo' ? 'Foto / Ilustrasi Berita (Opsional)' : 'Gambar Item Katalog (Wajib)'}
                       </label>
                       <span className="text-[10px] text-neutral-500 font-medium">
                         Dukungan: Upload File (WebP Auto-Compress) & URL Langsung
@@ -2961,10 +3075,43 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             )}
 
             {activeData.map((item: any) => (
-              <div key={item.id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-start bg-white shadow-xs hover:border-gray-400 transition-colors">
-                <div className="flex-1 min-w-0 pr-4">
+              <div key={item.id} className="border border-gray-200 rounded-lg p-3 flex justify-between items-start bg-white shadow-xs hover:border-gray-400 transition-colors gap-3">
+                {item.imageUrl && (
+                  <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-gray-200 bg-gray-50 shadow-2xs">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0 pr-2">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h4 className="font-bold text-sm truncate">{item.title}</h4>
+                    {adminTab === 'hotinfo' && (
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="bg-red-50 text-red-700 border border-red-200 text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">
+                          {item.category || 'Berita'}
+                        </span>
+                        {item.sourceUrl ? (
+                          <span className="bg-blue-50 text-blue-700 border border-blue-200 text-[9.5px] font-medium px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1">
+                            <ExternalLink className="w-2.5 h-2.5" />
+                            {item.sourceName || item.sourceDomain || 'Link Luar'}
+                          </span>
+                        ) : (
+                          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9.5px] font-bold px-1.5 py-0.5 rounded shrink-0 flex items-center gap-1">
+                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                            Rilis Resmi (Teks Lengkap)
+                          </span>
+                        )}
+                        {item.imageUrl && (
+                          <span className="bg-purple-50 text-purple-700 border border-purple-200 text-[9.5px] font-medium px-1.5 py-0.5 rounded shrink-0">
+                            📷 Foto
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {adminTab === 'events' && (
                       item.isKen ? (
                         <span className="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black px-1.5 py-0.5 rounded flex items-center gap-1 shrink-0">

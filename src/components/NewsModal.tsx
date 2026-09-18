@@ -20,16 +20,19 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   const tag = isEn && item.tagEn ? item.tagEn : item.tag;
   const date = isEn && item.dateEn ? item.dateEn : item.date;
   const timeAgoText = item.timeAgo || date;
-  const primaryUrl = item.sourceUrl || item.actionUrl || '#';
-  const publisherName = item.sourceName || (item.tag === 'Sumbar' ? 'Antara News Sumbar' : 'Media Resmi');
-  const publisherDomain = item.sourceDomain || publisherName;
-  const faviconUrl = item.sourceIcon || getPublisherFavicon(item.sourceDomain, item.sourceName);
+  const hasExternalUrl = Boolean(item.sourceUrl && (item.sourceUrl.startsWith('http://') || item.sourceUrl.startsWith('https://')));
+  const primaryUrl = hasExternalUrl ? item.sourceUrl! : (item.actionUrl?.startsWith('http') ? item.actionUrl : '');
+  const publisherName = item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'Antara News Sumbar' : 'Media Resmi') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
+  const publisherDomain = item.sourceDomain || item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
+  const faviconUrl = item.sourceIcon || (hasExternalUrl ? getPublisherFavicon(item.sourceDomain, item.sourceName) : '/favicon.ico');
 
   const rawLocation = isEn && item.locationNameEn ? item.locationNameEn : item.locationName;
   const locationName = (rawLocation || '')
     .replace(/Liputan\s*(Resmi\s*)?Terverifikasi\s*(\([^)]*\))?/gi, '')
     .replace(/Verified\s*Report\s*(\([^)]*\))?/gi, '')
     .trim();
+
+  const descriptionText = isEn && item.descriptionEn ? item.descriptionEn : item.description;
 
   const handleShare = () => {
     const shareUrl = primaryUrl || window.location.href;
@@ -57,7 +60,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
         {/* Modal Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors cursor-pointer z-20"
+          className="absolute top-4 right-4 p-1.5 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors cursor-pointer z-20 shadow-2xs"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -88,19 +91,41 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           </span>
         </div>
 
-        {/* Modal Headline Title (Original Font: Orbitron Uppercase) */}
+        {/* News Banner Image (if provided) */}
+        {item.imageUrl && (
+          <div className="w-full max-h-60 sm:max-h-72 rounded-xl overflow-hidden shadow-2xs border border-gray-200 bg-gray-50">
+            <img
+              src={item.imageUrl}
+              alt={title}
+              className="w-full h-full object-cover"
+              onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
+            />
+          </div>
+        )}
+
+        {/* Modal Headline Title */}
         <h3 
-          onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
-          className="font-orbitron font-bold text-base sm:text-lg uppercase tracking-wide text-gray-900 hover:text-blue-600 transition-colors cursor-pointer leading-snug"
+          onClick={() => {
+            if (hasExternalUrl && primaryUrl) {
+              window.open(primaryUrl, '_blank', 'noopener,noreferrer');
+            }
+          }}
+          className={`font-orbitron font-bold text-base sm:text-lg uppercase tracking-wide text-gray-900 leading-snug ${
+            hasExternalUrl ? 'hover:text-blue-600 transition-colors cursor-pointer' : 'cursor-default'
+          }`}
         >
           {title}
         </h3>
 
-        {/* Short Excerpt if Available */}
-        {item.description && (
-          <p className="text-xs text-gray-600 leading-relaxed">
-            {item.description.split('\n\n')[0]}
-          </p>
+        {/* Full Article Content or Summary */}
+        {descriptionText && (
+          <div className={`leading-relaxed whitespace-pre-line ${
+            !hasExternalUrl 
+              ? 'bg-slate-50/80 p-4 rounded-xl border border-slate-200/80 text-xs sm:text-sm text-gray-800 shadow-inner' 
+              : 'text-xs text-gray-600'
+          }`}>
+            {descriptionText}
+          </div>
         )}
 
         {/* Related Perspectives List (Google News Cluster) */}
@@ -142,14 +167,16 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
 
         {/* Action Buttons */}
         <div className="space-y-2 pt-3 border-t border-gray-100">
-          {/* Primary Action: Direct Link to Original News */}
-          <button
-            onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
-            className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white py-3 rounded-xl font-bold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-neutral-700/70"
-          >
-            <span>{isEn ? `Read Full Story on ${publisherName}` : `Buka Berita Lengkap di ${publisherName}`}</span>
-            <ExternalLink className="w-4 h-4 text-gray-300" />
-          </button>
+          {/* Primary Action: Direct Link to Original News (Only shown if external link exists) */}
+          {hasExternalUrl && primaryUrl && (
+            <button
+              onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
+              className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white py-3 rounded-xl font-bold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-neutral-700/70"
+            >
+              <span>{isEn ? `Read Full Story on ${publisherName}` : `Buka Berita Lengkap di ${publisherName}`}</span>
+              <ExternalLink className="w-4 h-4 text-gray-300" />
+            </button>
+          )}
 
           {/* Secondary Action: Geographic Location Maps Link */}
           {locationName && (
