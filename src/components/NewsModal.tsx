@@ -117,12 +117,12 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           {title}
         </h3>
 
-        {/* Full Article Content or Summary */}
+        {/* Full Article Content or Summary (Ukuran font persis sama dengan deskripsi item kuliner: text-[11px] font-jakarta leading-relaxed) */}
         {descriptionText && (
-          <div className={`leading-relaxed whitespace-pre-line ${
+          <div className={`font-jakarta text-[11px] leading-relaxed whitespace-pre-line ${
             !hasExternalUrl 
-              ? 'bg-slate-50/80 p-4 rounded-xl border border-slate-200/80 text-xs sm:text-sm text-gray-800 shadow-inner' 
-              : 'text-xs text-gray-600'
+              ? 'bg-slate-50/90 p-4 rounded-xl border border-slate-200/80 text-gray-700 shadow-2xs' 
+              : 'text-gray-600'
           }`}>
             {descriptionText}
           </div>
@@ -155,7 +155,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
                       <span className="text-slate-300 text-[10px]">•</span>
                       <span className="text-[10px] text-slate-500">{rel.timeAgo}</span>
                     </div>
-                    <p className="text-xs font-medium text-slate-800 hover:text-blue-600 leading-snug">
+                    <p className="text-[11px] font-jakarta font-medium text-slate-800 hover:text-blue-600 leading-snug">
                       {isEn && rel.titleEn ? rel.titleEn : rel.title}
                     </p>
                   </div>
@@ -192,19 +192,22 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           )}
 
           <div className="grid grid-cols-2 gap-2 pt-1">
+            {/* Tombol Bagikan (Warna Biru Kontras yang Elegan) */}
             <button
               onClick={handleShare}
-              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 border border-slate-200"
+              className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-blue-600"
             >
-              <Share2 className="w-3.5 h-3.5" />
+              <Share2 className="w-3.5 h-3.5 text-white" />
               <span>{isEn ? 'Share' : 'Bagikan'}</span>
             </button>
 
+            {/* Tombol Tutup (Warna Hitam Solid Sesuai Permintaan) */}
             <button
               onClick={onClose}
-              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-semibold text-xs transition-colors cursor-pointer border border-slate-200"
+              className="w-full bg-black hover:bg-neutral-800 active:bg-neutral-900 text-white py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-black"
             >
-              {isEn ? 'Close' : 'Tutup'}
+              <X className="w-3.5 h-3.5 text-white" />
+              <span>{isEn ? 'Close' : 'Tutup'}</span>
             </button>
           </div>
         </div>

@@ -3787,106 +3787,109 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <article
                             key={item.id || idx}
                             style={{ animationDelay: `${idx * 40}ms` }}
-                            className="bg-white text-gray-900 rounded-2xl p-4 sm:p-5 border border-gray-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all font-jakarta flex flex-col justify-between space-y-3.5 animate-content-stagger"
+                            className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all font-jakarta animate-content-stagger group"
                           >
-                            {/* News Card Thumbnail Image (if present) */}
-                            {item.imageUrl && (
-                              <div
-                                onClick={() => {
-                                  if (hasExternalUrl && primaryLink) {
-                                    window.open(primaryLink, '_blank', 'noopener,noreferrer');
-                                  } else {
-                                    onSelectNews?.(item);
-                                  }
-                                }}
-                                className="w-full h-40 rounded-xl overflow-hidden bg-gray-100 cursor-pointer -mt-1 shadow-2xs border border-gray-100 group"
-                              >
-                                <img
-                                  src={item.imageUrl}
-                                  alt={getNewsDisplayTitle(item, lang)}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                  onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
-                                />
-                              </div>
-                            )}
-
-                            {/* Upper Content: Brand, Title, Excerpt, Metadata */}
-                            <div className="space-y-2.5">
-                              {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT + Archive Tag) */}
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <img
-                                  src={mainFavicon}
-                                  alt={item.sourceName || 'Publisher'}
-                                  className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
-                                  onError={(e: any) => { e.target.style.display = 'none'; }}
-                                />
-                                <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
-                                  {publisherDomain}
-                                </span>
-                                <span className="text-gray-300">•</span>
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                                  item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
-                                    ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                    : 'bg-red-50 text-red-800 border border-red-200'
-                                }`}>
-                                  {categoryDisplay}
-                                </span>
-                                {(item.tag === 'Penting' || item.isUrgent) && (
-                                  <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
-                                    <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
-                                    <span>HOT</span>
-                                  </span>
-                                )}
-                                {isOlderThan6M && (
-                                  <span className="bg-neutral-100 text-neutral-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-neutral-300 shadow-2xs">
-                                    <Archive className="w-2.5 h-2.5 text-neutral-500" />
-                                    <span>{isEn ? 'Archive' : 'Arsip'}</span>
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Main Headline */}
-                              <h3
-                                onClick={() => {
-                                  if (hasExternalUrl && primaryLink) {
-                                    window.open(primaryLink, '_blank', 'noopener,noreferrer');
-                                  } else {
-                                    onSelectNews?.(item);
-                                  }
-                                }}
-                                className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer"
-                              >
-                                {getNewsDisplayTitle(item, lang)}
-                              </h3>
-
-                              {/* Brief Excerpt */}
-                              {displayDescription && (
-                                <p className="text-xs text-gray-600 leading-relaxed line-clamp-3">
-                                  {displayDescription.split('\n\n')[0]}
-                                </p>
+                            <div>
+                              {/* News Card Banner Image: Lebar persis sama dengan banner item katalog kuliner (full width card) */}
+                              {item.imageUrl && (
+                                <div
+                                  onClick={() => {
+                                    if (hasExternalUrl && primaryLink) {
+                                      window.open(primaryLink, '_blank', 'noopener,noreferrer');
+                                    } else {
+                                      onSelectNews?.(item);
+                                    }
+                                  }}
+                                  className="relative h-36 w-full overflow-hidden bg-gray-100 cursor-pointer"
+                                >
+                                  <img
+                                    src={item.imageUrl}
+                                    alt={getNewsDisplayTitle(item, lang)}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                    onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
+                                  />
+                                </div>
                               )}
 
-                              {/* Meta Details: Time & Location */}
-                              <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 font-medium pt-1">
-                                <span>{timeAgoText}</span>
-                                {item.locationName && (
-                                  <>
-                                    <span className="text-gray-300">•</span>
-                                    <span className="flex items-center gap-1 text-gray-600">
-                                      <MapPin className="w-3 h-3 text-red-500 shrink-0" />
-                                      {item.locationName.split(',')[0]}
+                              {/* Card Content: Title, Publisher, Excerpt */}
+                              <div className="p-3.5 space-y-2">
+                                {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT + Archive Tag) */}
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <img
+                                    src={mainFavicon}
+                                    alt={item.sourceName || 'Publisher'}
+                                    className="w-4 h-4 rounded-xs object-contain shrink-0 bg-white border border-gray-200 p-0.5 shadow-2xs"
+                                    onError={(e: any) => { e.target.style.display = 'none'; }}
+                                  />
+                                  <span className="text-xs font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                                    {publisherDomain}
+                                  </span>
+                                  <span className="text-gray-300">•</span>
+                                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
+                                    item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
+                                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                      : 'bg-red-50 text-red-800 border border-red-200'
+                                  }`}>
+                                    {categoryDisplay}
+                                  </span>
+                                  {(item.tag === 'Penting' || item.isUrgent) && (
+                                    <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
+                                      <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                      <span>HOT</span>
                                     </span>
-                                  </>
+                                  )}
+                                  {isOlderThan6M && (
+                                    <span className="bg-neutral-100 text-neutral-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-neutral-300 shadow-2xs">
+                                      <Archive className="w-2.5 h-2.5 text-neutral-500" />
+                                      <span>{isEn ? 'Archive' : 'Arsip'}</span>
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Main Headline */}
+                                <h3
+                                  onClick={() => {
+                                    if (hasExternalUrl && primaryLink) {
+                                      window.open(primaryLink, '_blank', 'noopener,noreferrer');
+                                    } else {
+                                      onSelectNews?.(item);
+                                    }
+                                  }}
+                                  className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer"
+                                >
+                                  {getNewsDisplayTitle(item, lang)}
+                                </h3>
+
+                                {/* Excerpt: Ukuran font persis sama dengan deskripsi item kuliner (text-[11px] font-jakarta text-gray-600 leading-relaxed) */}
+                                {displayDescription && (
+                                  <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
+                                    {displayDescription.split('\n\n')[0]}
+                                  </p>
                                 )}
+
+                                {/* Meta Details: Time & Location */}
+                                <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-400 font-jakarta font-semibold uppercase tracking-wider pt-0.5">
+                                  <span>{timeAgoText}</span>
+                                  {item.locationName && (
+                                    <>
+                                      <span className="text-gray-300">•</span>
+                                      <span className="flex items-center gap-1 text-gray-500">
+                                        <MapPin className="w-3 h-3 text-red-500 shrink-0" />
+                                        {item.locationName.split(',')[0]}
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
                               </div>
                             </div>
 
                             {/* Bottom Grey Action Bar / Column: External Source vs Read Release */}
-                            <div className="pt-2 border-t border-gray-100 mt-auto">
+                            <div className="p-3 bg-gray-50 border-t border-gray-100 mt-auto">
                               {hasExternalUrl && primaryLink ? (
                                 <button
                                   onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
                                   title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
                                 >
                                   <div className="flex items-center gap-2">
@@ -3900,7 +3903,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                               ) : (
                                 <button
                                   onClick={() => onSelectNews?.(item)}
-                                  className="w-full bg-gradient-to-r from-emerald-800 to-teal-900 hover:from-emerald-700 hover:to-teal-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-emerald-700/60"
+                                  className="w-full bg-gradient-to-r from-emerald-800 to-teal-900 hover:from-emerald-700 hover:to-teal-800 text-white px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-emerald-700/60"
                                   title={isEn ? 'Read full article' : 'Baca artikel lengkap'}
                                 >
                                   <div className="flex items-center gap-2">

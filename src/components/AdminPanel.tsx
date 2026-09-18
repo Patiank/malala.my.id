@@ -2732,10 +2732,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     <div className="flex items-center justify-between">
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
                         <ImageIcon className="w-3.5 h-3.5 text-black" />
-                        {adminTab === 'hotinfo' ? 'Foto / Ilustrasi Berita (Opsional)' : 'Gambar Item Katalog (Wajib)'}
+                        {adminTab === 'hotinfo' ? 'Foto / Banner Berita (Opsional — Default Tanpa Gambar)' : 'Gambar Item Katalog (Wajib)'}
                       </label>
                       <span className="text-[10px] text-neutral-500 font-medium">
-                        Dukungan: Upload File (WebP Auto-Compress) & URL Langsung
+                        {adminTab === 'hotinfo' ? 'Kosongkan jika tidak butuh gambar' : 'Dukungan: Upload File (WebP Auto-Compress) & URL Langsung'}
                       </span>
                     </div>
 
@@ -2838,7 +2838,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                             </label>
                           </div>
                           <p className="text-[9px] text-neutral-500 mt-1">
-                            💡 Foto otomatis dikompres ke format WebP super ringan (~40-70 KB) langsung di perangkat Anda (100% gratis tanpa perlu Blaze Plan).
+                            {adminTab === 'hotinfo' 
+                              ? '💡 Secara default berita tidak memerlukan gambar. Unggah foto hanya jika berita ini memerlukan ilustrasi visual khusus.'
+                              : '💡 Foto otomatis dikompres ke format WebP super ringan (~40-70 KB) langsung di perangkat Anda (100% gratis tanpa perlu Blaze Plan).'}
                           </p>
                         </div>
 
