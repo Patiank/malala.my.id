@@ -12,7 +12,7 @@ import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/content';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
-import { generateSumbarBookletPDF } from '../utils/pdfGenerator'; // kept for future use
+import { generateSumbarBookletPDF, generateItineraryPDF } from '../utils/pdfGenerator';
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
 import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
 
@@ -673,277 +673,19 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [aiResponse, setAiResponse] = useState<FormAIResponse | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const handlePrintA4Itinerary = () => {
-    if (!aiResponse) return;
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState<boolean>(false);
 
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-      alert('Gagal membuka jendela cetak. Silakan izinkan pop-up di browser Anda.');
-      return;
+  const handlePrintA4Itinerary = async () => {
+    if (!aiResponse || isDownloadingPdf) return;
+    try {
+      setIsDownloadingPdf(true);
+      await generateItineraryPDF(aiResponse, lang);
+    } catch (err) {
+      console.error('Failed to generate A4 itinerary PDF:', err);
+      alert(lang === 'en' ? 'Failed to download itinerary PDF. Please try again.' : 'Gagal mengunduh file PDF rencana wisata. Silakan coba lagi.');
+    } finally {
+      setIsDownloadingPdf(false);
     }
-
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html lang="id">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Rencana Wisata Sumatera Barat - MALALA.my.id</title>
-        <style>
-          @page {
-            size: A4 portrait;
-            margin: 15mm;
-          }
-          * { box-sizing: border-box; }
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: #18181b;
-            background: #ffffff;
-            line-height: 1.5;
-            margin: 0;
-            padding: 20px;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-          .container {
-            max-width: 800px;
-            margin: 0 auto;
-          }
-          .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #18181b;
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-          }
-          .brand {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-          }
-          .brand span { color: #dc2626; }
-          .tagline {
-            font-size: 11px;
-            color: #52525b;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-            margin-top: 2px;
-          }
-          .official-badge {
-            background-color: #18181b;
-            color: #ffffff;
-            font-size: 9px;
-            font-weight: 800;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-          }
-          .hero-banner {
-            background-color: #f4f4f5;
-            border: 1px solid #e4e4e7;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 20px;
-          }
-          .title {
-            font-size: 18px;
-            font-weight: 800;
-            color: #09090b;
-            margin: 0 0 6px 0;
-            text-transform: uppercase;
-          }
-          .summary {
-            font-size: 12px;
-            color: #3f3f46;
-            margin: 0;
-            line-height: 1.6;
-          }
-          .day-card {
-            border: 1px solid #d4d4d8;
-            border-radius: 8px;
-            padding: 14px;
-            margin-bottom: 16px;
-            page-break-inside: avoid;
-            background: #ffffff;
-          }
-          .day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f4f4f5;
-            padding-bottom: 8px;
-            margin-bottom: 12px;
-          }
-          .day-badge {
-            background: #18181b;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-          }
-          .day-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: #09090b;
-            text-transform: uppercase;
-            margin: 0;
-          }
-          .activity-item {
-            margin-bottom: 10px;
-            font-size: 11px;
-            border-left: 2px solid #e4e4e7;
-            padding-left: 10px;
-          }
-          .activity-time {
-            font-weight: 800;
-            color: #18181b;
-          }
-          .activity-text {
-            color: #27272a;
-            margin-top: 2px;
-          }
-          .activity-tips {
-            font-size: 10px;
-            font-style: italic;
-            background: #f4f4f5;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-top: 4px;
-            color: #52525b;
-          }
-          .culinary-box {
-            background-color: #fefce8;
-            border: 1px solid #fef08a;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: #854d0e;
-            margin-top: 10px;
-            font-weight: 600;
-          }
-          .tips-section {
-            background: #fafafa;
-            border: 1px solid #e4e4e7;
-            border-radius: 8px;
-            padding: 14px;
-            margin-top: 20px;
-            page-break-inside: avoid;
-          }
-          .tips-title {
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin: 0 0 8px 0;
-            color: #09090b;
-          }
-          .tips-list {
-            margin: 0;
-            padding-left: 18px;
-            font-size: 11px;
-            color: #3f3f46;
-          }
-          .tips-list li { margin-bottom: 4px; }
-          .footer {
-            margin-top: 24px;
-            padding-top: 12px;
-            border-top: 1px solid #e4e4e7;
-            text-align: center;
-            font-size: 9px;
-            color: #a1a1aa;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-          }
-          .no-print-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            font-size: 13px;
-            z-index: 9999;
-          }
-          @media print {
-            .no-print-btn { display: none; }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <div class="header">
-            <div>
-              <div class="brand">MALALA<span>.my.id</span></div>
-              <div class="tagline">Panduan Wisata Sumatera Barat Berbasis AI</div>
-            </div>
-            <div class="official-badge">UNI MALA AI ITINERARY</div>
-          </div>
-
-          <div class="hero-banner">
-            <h1 class="title">${aiResponse.title}</h1>
-            <p class="summary">${aiResponse.summary}</p>
-          </div>
-
-          ${aiResponse.itinerary.map(day => `
-            <div class="day-card">
-              <div class="day-header">
-                <span class="day-badge">HARI ${day.day}</span>
-                <h3 class="day-title">${day.title}</h3>
-              </div>
-              <div>
-                ${day.activities.map(act => `
-                  <div class="activity-item">
-                    <div class="activity-time">⏰ ${act.time} — ${act.location}</div>
-                    <div class="activity-text">${act.activity}</div>
-                    ${act.tips ? `<div class="activity-tips">💡 ${act.tips}</div>` : ''}
-                  </div>
-                `).join('')}
-              </div>
-              ${day.culinaryRecommendation ? `
-                <div class="culinary-box">
-                  🍲 <strong>Rekomendasi Kuliner:</strong> ${day.culinaryRecommendation}
-                </div>
-              ` : ''}
-            </div>
-          `).join('')}
-
-          ${aiResponse.localTips && aiResponse.localTips.length > 0 ? `
-            <div class="tips-section">
-              <h4 class="tips-title">Kearifan Lokal & Etika Minangkabau</h4>
-              <ul class="tips-list">
-                ${aiResponse.localTips.map(tip => `<li>${tip}</li>`).join('')}
-              </ul>
-            </div>
-          ` : ''}
-
-          <div class="footer">
-            Dibuat secara otomatis oleh UNI MALA AI pada ${new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} &bull; MALALA.my.id &bull; Ukuran Standar Cetak Kertas A4
-          </div>
-
-          <button class="no-print-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF A4</button>
-        </div>
-
-        <script>
-          setTimeout(() => {
-            window.print();
-          }, 600);
-        </script>
-      </body>
-      </html>
-    `;
-
-    printWindow.document.write(htmlContent);
-    printWindow.document.close();
   };
 
   const updateForm = (path: string[], value: any) => {
@@ -3318,11 +3060,21 @@ export const Drawers: React.FC<DrawersProps> = ({
                           <button
                             type="button"
                             onClick={handlePrintA4Itinerary}
-                            className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white py-1.5 px-3 rounded-lg font-jakarta font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                            disabled={isDownloadingPdf}
+                            className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white py-1.5 px-3 rounded-lg font-jakarta font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all shadow-xs cursor-pointer disabled:opacity-60"
                             title={translations[lang].btnPrintA4}
                           >
-                            <Download className="w-3.5 h-3.5" />
-                            <span>{translations[lang].btnPrintA4}</span>
+                            {isDownloadingPdf ? (
+                              <>
+                                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                <span>{lang === 'en' ? 'Downloading PDF...' : 'Mengunduh PDF...'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <Download className="w-3.5 h-3.5" />
+                                <span>{translations[lang].btnPrintA4}</span>
+                              </>
+                            )}
                           </button>
                         </div>
 
