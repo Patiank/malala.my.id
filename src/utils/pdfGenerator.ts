@@ -11,6 +11,28 @@ interface BookletData {
 }
 
 /**
+ * Strips emojis and unsupported non-Latin1 / WinAnsi characters to prevent mojibake in jsPDF
+ * (e.g. "Ø=Ü¡" from 💡, "Ø<ßr" from 📍, mojibake from •, etc.)
+ */
+export function cleanPdfText(text: string): string {
+  if (!text) return '';
+  return String(text)
+    // Remove emojis and surrogate pairs (Unicode blocks: Emoticons, Misc Symbols, Dingbats, Transport, etc.)
+    .replace(/[\u{1F300}-\u{1FAD6}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{FE00}-\u{FE0F}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]|[\u{D800}-\u{DFFF}]/gu, '')
+    // Replace smart quotes, bullets, and dashes with standard ASCII
+    .replace(/[\u2022\u25CF\u25AA•]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/\u2026/g, '...')
+    // Remove any remaining characters outside ASCII and Latin-1 to prevent jsPDF byte encoding glitches
+    .replace(/[^\x20-\x7E\xA0-\xFF\n\r\t]/g, '')
+    // Clean up excessive whitespace
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+}
+
+/**
  * DIRECT SILENT PDF GENERATOR (Guaranteed 100% Filled Pages, Zero Blank Paper, Zero Canvas Taint)
  */
 export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<void> {
@@ -45,7 +67,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(251, 191, 36); // amber-400
-      doc.text('MALALA 2026 • MINANGKAOS', margin, 7.5);
+      doc.text('MALALA 2026 | MINANGKAOS', margin, 7.5);
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
@@ -61,7 +83,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(7.5);
       doc.setTextColor(100, 116, 139);
-      doc.text('Direktori Wisata & Budaya • https://malala.my.id', margin, pageHeight - 4);
+      doc.text('Direktori Wisata & Budaya | https://malala.my.id', margin, pageHeight - 4);
       doc.setFont('helvetica', 'bold');
       doc.text(`${isEn ? 'Page' : 'Hal.'} ${pageNumber}`, pageWidth - margin, pageHeight - 4, { align: 'right' });
     } catch {}
@@ -120,10 +142,10 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(8.5);
   doc.setTextColor(241, 245, 249);
-  doc.text(`• Bab I   : ${destinations.length} ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 116);
-  doc.text(`• Bab II  : ${cultureItems.length} ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 123);
-  doc.text(`• Bab III : ${culinaryItems.length} ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 130);
-  doc.text(`• Bab IV  : ${eventItems.length} ${isEn ? 'Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Festival & KEN 2026'}`, 32, 137);
+  doc.text(`- Bab I   : ${destinations.length} ${isEn ? 'Iconic Destinations (Geoparks, Lakes, Islands & UNESCO Heritage)' : 'Destinasi Wisata Pilihan (Alam, Geopark, Bahari & UNESCO)'}`, 32, 116);
+  doc.text(`- Bab II  : ${cultureItems.length} ${isEn ? 'Sacred Minangkabau Cultural Traditions & Social Heritage' : 'Warisan Luhur Adat & Kebudayaan Minangkabau'}`, 32, 123);
+  doc.text(`- Bab III : ${culinaryItems.length} ${isEn ? 'Authentic Gastronomic Heritage Culinaries & Signature Dishes' : 'Kuliner & Gastronomi Warisan Leluhur Minangkabau'}`, 32, 130);
+  doc.text(`- Bab IV  : ${eventItems.length} ${isEn ? 'Events & Karisma Event Nusantara (KEN) 2026 Calendar' : 'Kalender Event Festival & KEN 2026'}`, 32, 137);
 
   // Minang Philosophy Box
   doc.setFillColor(220, 38, 38);
@@ -149,7 +171,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFontSize(8.5);
   doc.setTextColor(203, 213, 225);
   doc.text('MINANGKAOS', 25, 261);
-  doc.text('Sumatera Barat, Indonesia • 2026', 25, 266);
+  doc.text('Sumatera Barat, Indonesia | 2026', 25, 266);
   doc.text('Platform: https://malala.my.id', 25, 271);
 
   // ==============================================================
@@ -195,7 +217,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(220, 38, 38);
-      doc.text(`📍 ${location}`, margin, y);
+      doc.text(cleanPdfText(location), margin, y);
 
       y += 3.5;
       doc.setDrawColor(226, 232, 240);
@@ -209,7 +231,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setTextColor(51, 65, 85);
       const paragraphs = desc.split('\n\n').filter(Boolean);
       paragraphs.forEach((p) => {
-        const cleanP = p.replace(/\n/g, ' ').trim();
+        const cleanP = cleanPdfText(p.replace(/\n/g, ' '));
         const splitP = doc.splitTextToSize(cleanP, contentWidth);
         doc.text(splitP, margin, y);
         y += (splitP.length * 3.8) + 3;
@@ -234,7 +256,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
         doc.setTextColor(51, 65, 85);
         let hlY = y + 10.2;
         highlights.forEach((hl) => {
-          doc.text(`✓  ${hl}`, margin + 5, hlY);
+          doc.text(`-  ${cleanPdfText(hl)}`, margin + 5, hlY);
           hlY += 4.8;
         });
 
@@ -248,7 +270,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(7.5);
         doc.setTextColor(180, 83, 9);
-        doc.text(`⏰ ${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${bestTime}`, margin + 4, y + 5.2);
+        doc.text(`${isEn ? 'Best Time to Visit:' : 'Waktu Terbaik Berkunjung:'} ${cleanPdfText(bestTime)}`, margin + 4, y + 5.2);
       }
     } catch {}
   }
@@ -293,7 +315,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(180, 83, 9);
-      doc.text(`🏛️ ${isEn ? 'Origin:' : 'Asal Nagari:'} ${origin}`, margin, y);
+      doc.text(`${isEn ? 'Origin:' : 'Asal Nagari:'} ${cleanPdfText(origin)}`, margin, y);
 
       y += 3.5;
       doc.setDrawColor(253, 230, 138);
@@ -306,7 +328,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setTextColor(68, 64, 60);
       const paragraphs = desc.split('\n\n').filter(Boolean);
       paragraphs.forEach((p) => {
-        const cleanP = p.replace(/\n/g, ' ').trim();
+        const cleanP = cleanPdfText(p.replace(/\n/g, ' '));
         const splitP = doc.splitTextToSize(cleanP, contentWidth);
         doc.text(splitP, margin, y);
         y += (splitP.length * 3.8) + 3;
@@ -327,7 +349,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
         doc.setFont('helvetica', 'italic');
         doc.setFontSize(8);
         doc.setTextColor(120, 53, 15);
-        const splitPhil = doc.splitTextToSize(`"${philosophy}"`, contentWidth - 8);
+        const splitPhil = doc.splitTextToSize(`"${cleanPdfText(philosophy)}"`, contentWidth - 8);
         doc.text(splitPhil, margin + 4, y + 12);
       }
     } catch {}
@@ -368,14 +390,14 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(13);
       doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 21, { align: 'center' });
+      doc.text(cleanPdfText(title), margin + contentWidth / 2, y + 21, { align: 'center' });
 
       y += 42;
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(225, 29, 72);
-      doc.text(`🍲 ${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${origin}`, margin, y);
+      doc.text(`${isEn ? 'Heritage Origin:' : 'Asal Kuliner:'} ${cleanPdfText(origin)}`, margin, y);
 
       y += 3.5;
       doc.setDrawColor(254, 205, 211);
@@ -388,7 +410,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setTextColor(76, 29, 44);
       const paragraphs = desc.split('\n\n').filter(Boolean);
       paragraphs.forEach((p) => {
-        const cleanP = p.replace(/\n/g, ' ').trim();
+        const cleanP = cleanPdfText(p.replace(/\n/g, ' '));
         const splitP = doc.splitTextToSize(cleanP, contentWidth);
         doc.text(splitP, margin, y);
         y += (splitP.length * 3.8) + 3;
@@ -403,13 +425,13 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(159, 18, 57);
-      doc.text(`🥘 ${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 5);
+      doc.text(`${isEn ? 'Main Ingredients & Spices:' : 'Bahan & Rempah Utama:'}`, margin + 4, y + 5);
       doc.setFont('helvetica', 'normal');
-      doc.text(ingredients.join(', '), margin + 4, y + 9.5);
+      doc.text(ingredients.map((ing) => cleanPdfText(ing)).join(', '), margin + 4, y + 9.5);
 
       if (taste) {
         doc.setFont('helvetica', 'bold');
-        doc.text(`👅 ${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${taste}`, margin + 4, y + 14);
+        doc.text(`${isEn ? 'Taste Profile:' : 'Karakter Rasa:'} ${cleanPdfText(taste)}`, margin + 4, y + 14);
       }
     } catch {}
   }
@@ -441,19 +463,19 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7);
       doc.setTextColor(255, 255, 255);
-      doc.text(ev.isKen ? '⭐ OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 29 : 21), y + 8.2, { align: 'center' });
+      doc.text(ev.isKen ? 'OFFICIAL KEN 2026' : 'FESTIVAL RESMI', margin + (ev.isKen ? 29 : 21), y + 8.2, { align: 'center' });
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(12.5);
       doc.setTextColor(255, 255, 255);
-      doc.text(title, margin + contentWidth / 2, y + 21, { align: 'center' });
+      doc.text(cleanPdfText(title), margin + contentWidth / 2, y + 21, { align: 'center' });
 
       y += 42;
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.setTextColor(ev.isKen ? 220 : 71, ev.isKen ? 38 : 85, ev.isKen ? 38 : 105);
-      doc.text(`📅 ${schedule}  •  📍 ${location}`, margin, y);
+      doc.text(`${cleanPdfText(schedule)}  |  ${cleanPdfText(location)}`, margin, y);
 
       y += 3.5;
       doc.setDrawColor(203, 213, 225);
@@ -466,7 +488,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
       doc.setTextColor(51, 65, 85);
       const paragraphs = desc.split('\n\n').filter(Boolean);
       paragraphs.forEach((p) => {
-        const cleanP = p.replace(/\n/g, ' ').trim();
+        const cleanP = cleanPdfText(p.replace(/\n/g, ' '));
         const splitP = doc.splitTextToSize(cleanP, contentWidth);
         doc.text(splitP, margin, y);
         y += (splitP.length * 3.8) + 3;
@@ -482,7 +504,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.setTextColor(185, 28, 28);
-        doc.text(isEn ? '⭐ OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : '⭐ EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 5);
+        doc.text(isEn ? 'OFFICIAL KARISMA EVENT NUSANTARA (KEN) 2026' : 'EVENT UNGGULAN KARISMA EVENT NUSANTARA (KEN) 2026', margin + 4, y + 5);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
@@ -533,7 +555,7 @@ export async function generateSumbarBookletPDF(data: BookletData = {}): Promise<
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(8.5);
   doc.setTextColor(148, 163, 184);
-  doc.text(isEn ? '© 2026 Malala • MINANGKAOS. All rights reserved.' : '© 2026 Malala • MINANGKAOS. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
+  doc.text(isEn ? '© 2026 Malala | MINANGKAOS. All rights reserved.' : '© 2026 Malala | MINANGKAOS. Hak Cipta Dilindungi.', pageWidth / 2, 230, { align: 'center' });
 
   // SAVE FILE DIRECTLY (Zero Popups, Zero Blank Pages)
   const filename = isEn ? 'Master-Booklet-West-Sumatra-Guide-2026.pdf' : 'Master-E-Booklet-Pariwisata-Budaya-Sumbar-2026.pdf';
@@ -583,7 +605,7 @@ export async function generateItineraryPDF(
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(251, 191, 36); // amber-400
-    doc.text('MALALA • PANDUAN WISATA SUMATERA BARAT', margin, 7.2);
+    doc.text('MALALA | PANDUAN WISATA SUMATERA BARAT', margin, 7.2);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
@@ -667,14 +689,16 @@ export async function generateItineraryPDF(
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(13);
   doc.setTextColor(15, 23, 42); // slate-900
-  const titleLines = doc.splitTextToSize(aiResponse.title || 'Rencana Perjalanan Wisata', contentWidth);
+  const rawTitle = cleanPdfText(aiResponse.title || (isEn ? 'AI Travel Itinerary' : 'Rencana Perjalanan Wisata'));
+  const titleLines = doc.splitTextToSize(rawTitle, contentWidth);
   doc.text(titleLines, margin, y);
   y += titleLines.length * 5.5 + 2;
 
   if (aiResponse.summary) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    const summaryLines = doc.splitTextToSize(aiResponse.summary, contentWidth - 8);
+    const cleanSummary = cleanPdfText(aiResponse.summary);
+    const summaryLines = doc.splitTextToSize(cleanSummary, contentWidth - 8);
     const summaryBoxHeight = summaryLines.length * 4.2 + 6;
 
     checkPageBreak(summaryBoxHeight);
@@ -700,10 +724,10 @@ export async function generateItineraryPDF(
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       doc.setTextColor(251, 191, 36); // amber-400
-      doc.text(`HARI ${day.day}`, margin + 3, y + 4.7);
+      doc.text(`${isEn ? 'DAY' : 'HARI'} ${day.day}`, margin + 3, y + 4.7);
 
       doc.setTextColor(255, 255, 255);
-      const dayTitleText = (day.title || '').toUpperCase();
+      const dayTitleText = cleanPdfText(day.title || '').toUpperCase();
       doc.text(dayTitleText, margin + 20, y + 4.7);
       y += 10;
 
@@ -712,13 +736,15 @@ export async function generateItineraryPDF(
         day.activities.forEach((act) => {
           doc.setFont('helvetica', 'bold');
           doc.setFontSize(8);
-          const timeText = act.time ? `[${act.time}]` : '[-]';
-          const locText = act.location ? `📍 ${act.location}` : '';
+          const timeText = cleanPdfText(act.time ? `[${act.time}]` : '[-]');
+          const cleanLoc = cleanPdfText(act.location || '');
+          const locText = cleanLoc ? `Lokasi: ${cleanLoc}` : '';
 
           doc.setFont('helvetica', 'normal');
           doc.setFontSize(7.5);
-          const actLines = doc.splitTextToSize(act.activity || '', contentWidth - 8);
-          const tipLines = act.tips ? doc.splitTextToSize(`💡 ${act.tips}`, contentWidth - 10) : [];
+          const actLines = doc.splitTextToSize(cleanPdfText(act.activity || ''), contentWidth - 8);
+          const cleanTip = act.tips ? cleanPdfText(`Tips: ${act.tips}`) : '';
+          const tipLines = cleanTip ? doc.splitTextToSize(cleanTip, contentWidth - 10) : [];
 
           const actBlockHeight = 4.5 + actLines.length * 3.8 + (tipLines.length > 0 ? tipLines.length * 3.5 + 3 : 0) + 3;
           checkPageBreak(actBlockHeight);
@@ -735,8 +761,10 @@ export async function generateItineraryPDF(
           doc.setTextColor(220, 38, 38);
           doc.text(timeText, margin + 3, y + 4);
 
-          doc.setTextColor(15, 23, 42);
-          doc.text(locText, margin + 32, y + 4);
+          if (locText) {
+            doc.setTextColor(15, 23, 42);
+            doc.text(locText, margin + 32, y + 4);
+          }
 
           // Activity description
           doc.setFont('helvetica', 'normal');
@@ -762,7 +790,7 @@ export async function generateItineraryPDF(
       if (day.culinaryRecommendation) {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(7.5);
-        const culLines = doc.splitTextToSize(day.culinaryRecommendation, contentWidth - 10);
+        const culLines = doc.splitTextToSize(cleanPdfText(day.culinaryRecommendation), contentWidth - 10);
         const culBoxHeight = culLines.length * 3.6 + 8;
 
         checkPageBreak(culBoxHeight + 2);
@@ -776,7 +804,7 @@ export async function generateItineraryPDF(
         doc.setFontSize(7.5);
         doc.setTextColor(146, 64, 14); // amber-800
         doc.text(
-          isEn ? '🍲 Culinary Recommendation:' : '🍲 Rekomendasi Kuliner Minangkabau:',
+          isEn ? 'Culinary Recommendation:' : 'Rekomendasi Kuliner Minangkabau:',
           margin + 3,
           y + 4.5
         );
@@ -802,8 +830,11 @@ export async function generateItineraryPDF(
 
     const tipsFormatted: string[] = [];
     aiResponse.localTips.forEach((tip) => {
-      const splitTip = doc.splitTextToSize(`• ${tip}`, contentWidth - 8);
-      tipsFormatted.push(...splitTip);
+      const cleanTip = cleanPdfText(tip);
+      if (cleanTip) {
+        const splitTip = doc.splitTextToSize(`- ${cleanTip}`, contentWidth - 8);
+        tipsFormatted.push(...splitTip);
+      }
     });
 
     const tipsBoxHeight = tipsFormatted.length * 3.8 + 8;
@@ -819,8 +850,8 @@ export async function generateItineraryPDF(
     doc.setTextColor(15, 23, 42); // slate-900
     doc.text(
       isEn
-        ? '🏛️ Local Wisdom & Cultural Ethics in West Sumatra'
-        : '🏛️ Kearifan Lokal & Etika Berwisata di Ranah Minang',
+        ? 'Local Wisdom & Cultural Ethics in West Sumatra'
+        : 'Kearifan Lokal & Etika Berwisata di Ranah Minang',
       margin + 4,
       y + 5
     );
@@ -844,7 +875,7 @@ export async function generateItineraryPDF(
     doc.setFontSize(7);
     doc.setTextColor(148, 163, 184); // slate-400
     doc.text(
-      'Dibuat otomatis oleh UNI MALA AI • https://malala.my.id • Dokumen Standar A4',
+      'Dibuat otomatis oleh UNI MALA AI | https://malala.my.id | Dokumen Standar A4',
       margin,
       pageHeight - 5.5
     );
