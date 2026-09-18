@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
           <img
             src="/malala-logo.png"
             alt="MALALA Sumatera Barat"
-            className="h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] drop-shadow-xs"
+            className="h-11 sm:h-13 md:h-16 lg:h-[70px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] drop-shadow-xs"
           />
         </button>
 
