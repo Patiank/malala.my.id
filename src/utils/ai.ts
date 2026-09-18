@@ -15,7 +15,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "sumbar.antaranews.com",
     "sourceUrl": "https://sumbar.antaranews.com/berita/777352/kemenpar-pantau-dampak-erupsi-gunung-anak-krakatau-terhadap-pariwisata",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
-    "imageUrl": "https://img.antaranews.com/cache/800x533/2026/09/06/CE592DF3-8C1C-4683-A4E1-60FCA20B7BB8.jpeg",
+    "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://sumbar.antaranews.com/berita/777352/kemenpar-pantau-dampak-erupsi-gunung-anak-krakatau-terhadap-pariwisata",
@@ -67,7 +67,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "padek.jawapos.com",
     "sourceUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=jawapos.com&sz=64",
-    "imageUrl": "/images/fort-de-kock-limpapeh.jpg",
+    "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
@@ -110,7 +110,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "harianhaluan.com",
     "sourceUrl": "https://harianhaluan.com/wisata/festival-budaya-sumbar-ken-2026",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=harianhaluan.com&sz=64",
-    "imageUrl": "/images/culture/c4-pacu-jawi.jpg",
+    "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://harianhaluan.com/wisata/festival-budaya-sumbar-ken-2026",
@@ -153,7 +153,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "kompas.com",
     "sourceUrl": "https://travel.kompas.com/read/2026/09/05/bangga-berwisata-di-indonesia-dpsp",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=kompas.com&sz=64",
-    "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    "imageUrl": "",
     "tag": "Nasional",
     "tagEn": "National",
     "actionUrl": "https://travel.kompas.com/read/2026/09/05/bangga-berwisata-di-indonesia-dpsp",
@@ -196,7 +196,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "sumbar.antaranews.com",
     "sourceUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
-    "imageUrl": "/images/destinations/d14-mentawai.jpg",
+    "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
     "actionUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
@@ -239,7 +239,7 @@ export const HOT_INFO_FALLBACK = [
     "sourceDomain": "travel.detik.com",
     "sourceUrl": "https://travel.detik.com/travel-news/kemenparekraf-sertifikasi-ekowisata-desa-wisata",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=detik.com&sz=64",
-    "imageUrl": "/images/desa-wisata-kubu-gadang.jpg",
+    "imageUrl": "",
     "tag": "Nasional",
     "tagEn": "National",
     "actionUrl": "https://travel.detik.com/travel-news/kemenparekraf-sertifikasi-ekowisata-desa-wisata",
@@ -2533,49 +2533,28 @@ Variasi Permintaan Seed: ${Math.random()}`;
   // 3. Live Google News / RSS National & Local Tourism Feed (50:50 balanced, real-time & official journalism)
   const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
   if (liveRssNews && liveRssNews.length > 0) {
-    const withSmartImages = liveRssNews.map(item => ({
+    const cleanLiveNews = liveRssNews.map(item => ({
       ...item,
-      imageUrl: item.imageUrl || getSmartImageForNews(item.title, item.category)
+      imageUrl: '',
+      isUserUploadedImage: false
     }));
-    return deduplicateNewsItems(withSmartImages);
+    return deduplicateNewsItems(cleanLiveNews);
   }
 
   // 4. Static fallback if completely offline (50:50 balanced, within 30 days)
-  const fallbackWithImages = HOT_INFO_FALLBACK.map(item => ({
+  const fallbackClean = HOT_INFO_FALLBACK.map(item => ({
     ...item,
-    imageUrl: item.imageUrl || getSmartImageForNews(item.title, item.category)
+    imageUrl: '',
+    isUserUploadedImage: false
   }));
-  return deduplicateNewsItems(fallbackWithImages.filter((it: any) => isWithinLast30Days(it.date)));
+  return deduplicateNewsItems(fallbackClean.filter((it: any) => isWithinLast30Days(it.date)));
 }
 
 /**
  * Curated high-resolution fallback photos for West Sumatra topics so cards are never blank.
  */
 export function getSmartImageForNews(title: string = '', category: string = ''): string {
-  const text = (title + ' ' + category).toLowerCase();
-  if (text.includes('mentawai') || text.includes('surfing') || text.includes('ombak') || text.includes('pulau')) {
-    return 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('harau') || text.includes('lembah') || text.includes('ngarai') || text.includes('tebing')) {
-    return 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('danau') || text.includes('singkarak') || text.includes('maninjau') || text.includes('kembar')) {
-    return 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('kuliner') || text.includes('rendang') || text.includes('sate') || text.includes('makan')) {
-    return 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('budaya') || text.includes('songket') || text.includes('adat') || text.includes('pagaruyung') || text.includes('istano')) {
-    return 'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('padang') || text.includes('kota') || text.includes('pantai') || text.includes('air manis')) {
-    return 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80';
-  }
-  if (text.includes('bukittinggi') || text.includes('jam gadang')) {
-    return 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80';
-  }
-  // Default authentic Minangkabau landscape
-  return 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80';
+  return '';
 }
 
 export interface AutonomousScanResult {

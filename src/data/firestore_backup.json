@@ -3571,7 +3571,7 @@
       "sourceDomain": "sumbar.antaranews.com",
       "sourceUrl": "https://sumbar.antaranews.com/berita/777352/kemenpar-pantau-dampak-erupsi-gunung-anak-krakatau-terhadap-pariwisata",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
-      "imageUrl": "https://img.antaranews.com/cache/800x533/2026/09/06/CE592DF3-8C1C-4683-A4E1-60FCA20B7BB8.jpeg",
+      "imageUrl": "",
       "tag": "Sumbar",
       "tagEn": "West Sumatra",
       "actionUrl": "https://sumbar.antaranews.com/berita/777352/kemenpar-pantau-dampak-erupsi-gunung-anak-krakatau-terhadap-pariwisata",
@@ -3608,7 +3608,8 @@
           "timeAgo": "3 jam lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=tribratanews.polri.go.id&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     },
     {
       "id": "hi2",
@@ -3623,7 +3624,7 @@
       "sourceDomain": "padek.jawapos.com",
       "sourceUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=jawapos.com&sz=64",
-      "imageUrl": "/images/fort-de-kock-limpapeh.jpg",
+      "imageUrl": "",
       "tag": "Sumbar",
       "tagEn": "West Sumatra",
       "actionUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
@@ -3651,7 +3652,8 @@
           "timeAgo": "12 jam lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=langgam.id&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     },
     {
       "id": "hi3",
@@ -3666,7 +3668,7 @@
       "sourceDomain": "harianhaluan.com",
       "sourceUrl": "https://harianhaluan.com/wisata/festival-budaya-sumbar-ken-2026",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=harianhaluan.com&sz=64",
-      "imageUrl": "/images/culture/c4-pacu-jawi.jpg",
+      "imageUrl": "",
       "tag": "Sumbar",
       "tagEn": "West Sumatra",
       "actionUrl": "https://harianhaluan.com/wisata/festival-budaya-sumbar-ken-2026",
@@ -3694,7 +3696,8 @@
           "timeAgo": "1 hari lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=kompas.com&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     },
     {
       "id": "hi4",
@@ -3709,7 +3712,7 @@
       "sourceDomain": "kompas.com",
       "sourceUrl": "https://travel.kompas.com/read/2026/09/05/bangga-berwisata-di-indonesia-dpsp",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=kompas.com&sz=64",
-      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+      "imageUrl": "",
       "tag": "Nasional",
       "tagEn": "National",
       "actionUrl": "https://travel.kompas.com/read/2026/09/05/bangga-berwisata-di-indonesia-dpsp",
@@ -3737,7 +3740,8 @@
           "timeAgo": "2 hari lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=cnnindonesia.com&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     },
     {
       "id": "hi5",
@@ -3752,7 +3756,7 @@
       "sourceDomain": "sumbar.antaranews.com",
       "sourceUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
-      "imageUrl": "/images/destinations/d14-mentawai.jpg",
+      "imageUrl": "",
       "tag": "Sumbar",
       "tagEn": "West Sumatra",
       "actionUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
@@ -3780,7 +3784,8 @@
           "timeAgo": "2 hari lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=tempo.co&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     },
     {
       "id": "hi6",
@@ -3795,7 +3800,7 @@
       "sourceDomain": "travel.detik.com",
       "sourceUrl": "https://travel.detik.com/travel-news/kemenparekraf-sertifikasi-ekowisata-desa-wisata",
       "sourceIcon": "https://www.google.com/s2/favicons?domain=detik.com&sz=64",
-      "imageUrl": "/images/desa-wisata-kubu-gadang.jpg",
+      "imageUrl": "",
       "tag": "Nasional",
       "tagEn": "National",
       "actionUrl": "https://travel.detik.com/travel-news/kemenparekraf-sertifikasi-ekowisata-desa-wisata",
@@ -3823,7 +3828,8 @@
           "timeAgo": "3 hari lalu",
           "sourceIcon": "https://www.google.com/s2/favicons?domain=tribratanews.polri.go.id&sz=64"
         }
-      ]
+      ],
+      "isUserUploadedImage": false
     }
   ],
   "appSettings": {

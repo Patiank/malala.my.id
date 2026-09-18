@@ -1104,7 +1104,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         categoryLabel: 'Berita',
         categoryLabelEn: 'News',
         drawerType: 'hotinfo',
-        imageUrl: h.imageUrl || undefined,
+        imageUrl: (h.isUserUploadedImage || (h.imageUrl && h.imageUrl.startsWith('data:image/'))) ? h.imageUrl : undefined,
         locationName: h.locationName || h.category,
         subTag: h.date,
         keywords: `${h.title} ${h.titleEn || ''} ${h.category} ${h.description} ${h.sourceName || ''} ${h.sourceDomain || ''}`.toLowerCase(),
@@ -3743,8 +3743,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                             className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all font-jakarta animate-content-stagger group"
                           >
                             <div>
-                              {/* News Card Banner Image: Lebar persis sama dengan banner item katalog kuliner (full width card) */}
-                              {item.imageUrl && (
+                              {/* News Card Banner Image: Hanya tampil jika memang diupload oleh pengguna */}
+                              {Boolean((item as any).isUserUploadedImage || (item.imageUrl && item.imageUrl.startsWith('data:image/'))) && item.imageUrl && (
                                 <div
                                   onClick={() => {
                                     if (hasExternalUrl && primaryLink) {

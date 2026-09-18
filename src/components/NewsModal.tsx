@@ -91,8 +91,8 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           </span>
         </div>
 
-        {/* News Banner Image (if provided) */}
-        {item.imageUrl && (
+        {/* News Banner Image (hanya tampil jika memang diupload oleh pengguna) */}
+        {Boolean((item as any).isUserUploadedImage || (item.imageUrl && item.imageUrl.startsWith('data:image/'))) && item.imageUrl && (
           <div className="w-full max-h-60 sm:max-h-72 rounded-xl overflow-hidden shadow-2xs border border-gray-200 bg-gray-50">
             <img
               src={item.imageUrl}

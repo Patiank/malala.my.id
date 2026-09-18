@@ -179,25 +179,15 @@ export function useData() {
           const item = docSnap.data() as HotInfoItem;
           let img = item.imageUrl ? getDirectDriveUrl(item.imageUrl).trim() : '';
 
-          // Aturan: Hanya tampilkan gambar jika berita ini memang diupload gambarnya oleh admin
-          // Hilangkan gambar dummy/bawaan lama (/images/..., unsplash placeholder, antaranews cache, atau dummy seed hi1-hi6)
-          const isDummyOrUnuploaded = (
-            !img ||
-            img.startsWith('/images/') ||
-            img.includes('CE592DF3-8C1C') ||
-            img.includes('photo-1506744038136-46273834b3fb') ||
-            (docSnap.id.startsWith('hi') && !img.startsWith('data:image/') && !(item as any).isUserUploadedImage)
+          // Aturan Pasti: HANYA tampilkan gambar jika berita ini memang diupload gambarnya oleh admin
+          const isUserUploaded = Boolean(
+            (item as any).isUserUploadedImage === true || 
+            (img && img.startsWith('data:image/'))
           );
 
-          if (isDummyOrUnuploaded) {
+          if (!isUserUploaded) {
             img = '';
-            // Jika dokumen Firestore masih menyimpan URL dummy lama, bersihkan otomatis di Firestore
-            if (item.imageUrl && (
-              item.imageUrl.startsWith('/images/') ||
-              item.imageUrl.includes('CE592DF3-8C1C') ||
-              item.imageUrl.includes('photo-1506744038136-46273834b3fb') ||
-              docSnap.id.startsWith('hi')
-            )) {
+            if (item.imageUrl) {
               updateDoc(docSnap.ref, { imageUrl: '', isUserUploadedImage: false }).catch(() => {});
             }
           }
@@ -461,16 +451,14 @@ export function useData() {
   const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
     const cleanItems = deduplicateNewsItems(newItems).map(item => {
       const img = item.imageUrl ? item.imageUrl.trim() : '';
-      const isDummyOrUnuploaded = (
-        !img ||
-        img.startsWith('/images/') ||
-        img.includes('CE592DF3-8C1C') ||
-        img.includes('photo-1506744038136-46273834b3fb') ||
-        (item.id.startsWith('hi') && !img.startsWith('data:image/') && !(item as any).isUserUploadedImage)
+      const isUserUploaded = Boolean(
+        (item as any).isUserUploadedImage === true || 
+        (img && img.startsWith('data:image/'))
       );
       return {
         ...item,
-        imageUrl: isDummyOrUnuploaded ? '' : img
+        imageUrl: isUserUploaded ? img : '',
+        isUserUploadedImage: isUserUploaded
       };
     });
     setHotInfoItems(cleanItems);
