@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
 import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings, PendingEventItem } from '../types';
@@ -175,9 +175,34 @@ export function useData() {
         return;
       }
       const data = snapshot.docs
-        .map(doc => {
-          const item = doc.data() as HotInfoItem;
-          return { id: doc.id, ...item, imageUrl: item.imageUrl ? getDirectDriveUrl(item.imageUrl) : '' };
+        .map(docSnap => {
+          const item = docSnap.data() as HotInfoItem;
+          let img = item.imageUrl ? getDirectDriveUrl(item.imageUrl).trim() : '';
+
+          // Aturan: Hanya tampilkan gambar jika berita ini memang diupload gambarnya oleh admin
+          // Hilangkan gambar dummy/bawaan lama (/images/..., unsplash placeholder, antaranews cache, atau dummy seed hi1-hi6)
+          const isDummyOrUnuploaded = (
+            !img ||
+            img.startsWith('/images/') ||
+            img.includes('CE592DF3-8C1C') ||
+            img.includes('photo-1506744038136-46273834b3fb') ||
+            (docSnap.id.startsWith('hi') && !img.startsWith('data:image/') && !(item as any).isUserUploadedImage)
+          );
+
+          if (isDummyOrUnuploaded) {
+            img = '';
+            // Jika dokumen Firestore masih menyimpan URL dummy lama, bersihkan otomatis di Firestore
+            if (item.imageUrl && (
+              item.imageUrl.startsWith('/images/') ||
+              item.imageUrl.includes('CE592DF3-8C1C') ||
+              item.imageUrl.includes('photo-1506744038136-46273834b3fb') ||
+              docSnap.id.startsWith('hi')
+            )) {
+              updateDoc(docSnap.ref, { imageUrl: '', isUserUploadedImage: false }).catch(() => {});
+            }
+          }
+
+          return { id: docSnap.id, ...item, imageUrl: img };
         })
         .filter(item => item.title && item.title.trim().length > 0);
 
@@ -434,7 +459,20 @@ export function useData() {
   }));
 
   const updateHotInfoItems = async (newItems: HotInfoItem[]) => {
-    const cleanItems = deduplicateNewsItems(newItems);
+    const cleanItems = deduplicateNewsItems(newItems).map(item => {
+      const img = item.imageUrl ? item.imageUrl.trim() : '';
+      const isDummyOrUnuploaded = (
+        !img ||
+        img.startsWith('/images/') ||
+        img.includes('CE592DF3-8C1C') ||
+        img.includes('photo-1506744038136-46273834b3fb') ||
+        (item.id.startsWith('hi') && !img.startsWith('data:image/') && !(item as any).isUserUploadedImage)
+      );
+      return {
+        ...item,
+        imageUrl: isDummyOrUnuploaded ? '' : img
+      };
+    });
     setHotInfoItems(cleanItems);
     try {
       const batch = writeBatch(db);

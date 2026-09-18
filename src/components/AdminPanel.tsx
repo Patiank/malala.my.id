@@ -650,7 +650,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       isKen: Boolean(item.isKen),
       sourceUrl: item.sourceUrl || '',
       sourceName: item.sourceName || '',
-      sourceDomain: item.sourceDomain || ''
+      sourceDomain: item.sourceDomain || '',
+      isUserUploadedImage: Boolean(item.isUserUploadedImage || (item.imageUrl && item.imageUrl.startsWith('data:image/')))
     });
   };
 
@@ -723,6 +724,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       if (adminTab === 'hotinfo') {
         if (!formData.createdAt) {
           formData.createdAt = Date.now();
+        }
+        if (formData.imageUrl && formData.imageUrl.trim()) {
+          formData.isUserUploadedImage = true;
+        } else {
+          formData.imageUrl = '';
+          formData.isUserUploadedImage = false;
         }
         if (formData.sourceUrl && formData.sourceUrl.trim()) {
           const rawUrl = formData.sourceUrl.trim();
@@ -817,6 +824,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           description: '',
           descriptionEn: '',
           imageUrl: '',
+          isUserUploadedImage: false,
           tag: 'Update',
           tagEn: 'Update',
           actionUrl: '',

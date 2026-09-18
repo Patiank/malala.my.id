@@ -210,6 +210,7 @@ export interface HotInfoItem {
   locationName?: string;
   locationNameEn?: string;
   createdAt?: any;
+  isUserUploadedImage?: boolean;
 }
 
 export interface AppSettings {
