@@ -3227,9 +3227,28 @@ export const Drawers: React.FC<DrawersProps> = ({
                   /* STATE 2: SETELAH GENERATE -> 3 KOLOM BERDAMPINGAN (DESKTOP)    */
                   /* (KOLOM 1: PREFERENSI, KOLOM 2: HASIL ITINERARY, KOLOM 3: PETA) */
                   /* ============================================================== */
-                  <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 h-full min-h-0">
-                    {/* KOLOM 1 (KIRI): INPUT PREFERENSI WISATAWAN */}
-                    <div className="order-3 lg:order-1 lg:col-span-4 xl:col-span-3 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
+                  <div className="flex flex-col lg:grid lg:grid-cols-[1fr_1fr_1.35fr] gap-4 h-full min-h-0">
+                    {/* KOLOM 1 (PALING KIRI): PETA RUTE INTERAKTIF & LOGISTIK PEMESANAN (LEBAR SAMA DENGAN PREFERENSI) */}
+                    <div className="order-2 lg:order-1 flex flex-col h-full min-h-0 space-y-3">
+                      {/* Peta Rute Interaktif */}
+                      <div className="flex-1 min-h-[300px] overflow-hidden rounded-2xl border border-gray-200 shadow-xs bg-gray-50 flex flex-col">
+                        <ItineraryMap
+                          aiResponse={aiResponse}
+                          destinations={destinations}
+                          cultureItems={cultureItems}
+                          culinaryItems={culinaryItems}
+                          eventItems={eventItems}
+                          lang={lang}
+                          fullHeight={true}
+                        />
+                      </div>
+
+                      {/* Booking Logistics Suite */}
+                      {renderBookingSuite()}
+                    </div>
+
+                    {/* KOLOM 2 (TENGAH): INPUT PREFERENSI WISATAWAN (LEBAR SAMA PERSIS DENGAN PETA) */}
+                    <div className="order-3 lg:order-2 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
                       <div className="px-4 py-3 bg-neutral-900 text-white flex items-center justify-between shrink-0 border-b border-neutral-800">
                         <div className="flex items-center gap-2">
                           <span className="text-sm">⚙️</span>
@@ -3285,8 +3304,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       </div>
                     </div>
 
-                    {/* KOLOM 2 (TENGAH): HASIL ITINERARY RESMI */}
-                    <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-5 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
+                    {/* KOLOM 3 (KANAN): HASIL ITINERARY RESMI */}
+                    <div className="order-1 lg:order-3 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
                       {/* Header Itinerary Title & A4 Print Button */}
                       <div className="p-4 bg-gradient-to-r from-neutral-950 via-black to-neutral-900 text-white shrink-0 space-y-2 border-b border-neutral-800">
                         <div className="flex items-center justify-between flex-wrap gap-2">
@@ -3374,25 +3393,6 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </div>
                         )}
                       </div>
-                    </div>
-
-                    {/* KOLOM 3 (KANAN): PETA RUTE INTERAKTIF & LOGISTIK PEMESANAN */}
-                    <div className="order-2 lg:order-3 lg:col-span-4 xl:col-span-4 flex flex-col h-full min-h-0 space-y-3">
-                      {/* Peta Rute Interaktif */}
-                      <div className="flex-1 min-h-[300px] overflow-hidden rounded-2xl border border-gray-200 shadow-xs bg-gray-50 flex flex-col">
-                        <ItineraryMap
-                          aiResponse={aiResponse}
-                          destinations={destinations}
-                          cultureItems={cultureItems}
-                          culinaryItems={culinaryItems}
-                          eventItems={eventItems}
-                          lang={lang}
-                          fullHeight={true}
-                        />
-                      </div>
-
-                      {/* Booking Logistics Suite */}
-                      {renderBookingSuite()}
                     </div>
                   </div>
                 )}
