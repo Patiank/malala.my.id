@@ -60,20 +60,14 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo (Left) */}
         <button
           onClick={onCloseDrawer}
-          className="flex flex-col items-start cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
-          aria-label="MALALA - WEST SUMATRA TOURISM"
+          className="flex items-center cursor-pointer hover:opacity-90 transition-opacity text-left focus:outline-none group py-0.5"
+          aria-label="MALALA Sumatera Barat - Explore Culture Nature"
         >
           <img
             src="/malala-logo.png"
-            alt="MALALA"
-            className="h-8 sm:h-9 md:h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] drop-shadow-xs"
+            alt="MALALA Sumatera Barat"
+            className="h-9 sm:h-10 md:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] drop-shadow-xs"
           />
-          <span
-            className="font-jakarta text-[8px] sm:text-[8.5px] tracking-[0.18em] sm:tracking-[0.22em] font-semibold mt-0.5 uppercase transition-colors duration-300"
-            style={{ color: heroTextColor, opacity: 0.8, textShadow: shadowValue }}
-          >
-            {t.logoTagline}
-          </span>
         </button>
 
         {/* Mobile Menu Toggle & Essentials */}
