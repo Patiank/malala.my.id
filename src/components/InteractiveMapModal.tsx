@@ -87,7 +87,7 @@ export const InteractiveMapModal: React.FC<InteractiveMapModalProps> = ({
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | MALALA',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | MALALA.my.id',
       }).addTo(map);
 
       markersLayerRef.current = L.layerGroup().addTo(map);

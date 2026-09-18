@@ -131,7 +131,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                 </span>
                 <div className="flex items-center gap-1.5 text-white font-jakarta text-[10px] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                   <BookOpen className="w-3.5 h-3.5 text-red-400" />
-                  <span>MALALA</span>
+                  <span>MALALA.MY.ID</span>
                 </div>
               </div>
 

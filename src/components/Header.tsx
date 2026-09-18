@@ -60,14 +60,26 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo (Left) */}
         <button
           onClick={onCloseDrawer}
-          className="flex items-center cursor-pointer hover:opacity-90 transition-opacity text-left focus:outline-none group py-0.5"
-          aria-label="MALALA Sumatera Barat - Explore Culture Nature"
+          className="font-orbitron font-black tracking-[0.12em] sm:tracking-[0.15em] flex flex-col items-start cursor-pointer hover:opacity-80 transition-opacity text-left focus:outline-none"
+          style={{ fontSize: 'var(--logo)' }}
+          aria-label="WEST SUMATRA TOURISM"
         >
-          <img
-            src="/malala-logo.png"
-            alt="MALALA Sumatera Barat"
-            className="h-11 sm:h-13 md:h-16 lg:h-[70px] w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02] drop-shadow-xs"
-          />
+          <div className="flex items-baseline gap-0.5">
+            <span style={headerTextStyle} className="transition-colors duration-300">MALALA</span>
+            <span className="text-red-600 font-extrabold lowercase tracking-tight">.my.id</span>
+            <span
+              className="font-normal leading-none inline-block -mt-0.5 ml-0.5"
+              style={{ fontSize: 'var(--logo-deg)', color: heroTextColor, opacity: 0.7 }}
+            >
+              ˚
+            </span>
+          </div>
+          <span
+            className="font-jakarta text-[8.5px] sm:text-[9px] tracking-[0.2em] sm:tracking-[0.25em] font-semibold -mt-1 uppercase transition-colors duration-300"
+            style={{ color: heroTextColor, opacity: 0.75, textShadow: shadowValue }}
+          >
+            {t.logoTagline}
+          </span>
         </button>
 
         {/* Mobile Menu Toggle & Essentials */}
