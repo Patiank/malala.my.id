@@ -1325,6 +1325,10 @@ export const Drawers: React.FC<DrawersProps> = ({
             ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'download'
             ? 'w-full md:w-[75vw] lg:w-[65vw] xl:w-[58vw] max-w-5xl right-0 border-l border-gray-200 animate-drawer-slide-right'
+            : (activeDrawer === 'formai' && aiResponse)
+            ? 'w-full md:w-[96vw] lg:w-[95vw] xl:w-[92vw] max-w-[1550px] right-0 border-l border-gray-200 animate-drawer-slide-right'
+            : activeDrawer === 'formai'
+            ? 'w-full sm:w-[540px] md:w-[620px] lg:w-[680px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
         } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
       >
@@ -1376,7 +1380,13 @@ export const Drawers: React.FC<DrawersProps> = ({
         </div>
 
         {/* Scrollable Main Content (Smooth, isolated scrolling) */}
-        <div className={`overflow-y-auto flex-1 ${activeDrawer === 'chat' ? 'p-3.5 flex flex-col overflow-hidden h-full' : 'p-6 space-y-6'} overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
+        <div className={`flex-1 ${
+          activeDrawer === 'chat'
+            ? 'p-3.5 flex flex-col overflow-hidden h-full'
+            : (activeDrawer === 'formai' && aiResponse)
+            ? 'p-3 sm:p-4 md:p-5 overflow-y-auto lg:overflow-hidden flex flex-col lg:h-[calc(100vh-73px)]'
+            : 'p-6 space-y-6 overflow-y-auto'
+        } overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
 
           {/* Sub-Menu Navigation Bar across main categories */}
           {/* Sub-Menu Navigation Bar across main categories */}
@@ -2752,490 +2762,624 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* =================================================== */}
           {/* 5. FORMAI SUMATERA BARAT (AI ITINERARY BUILDER)      */}
           {/* =================================================== */}
-          {activeDrawer === 'formai' && (
-            <div className={`space-y-6 ${aiResponse ? 'md:grid md:grid-cols-2 md:gap-6 md:space-y-0 h-full' : 'flex flex-col'}`}>
-              {/* Left Column: Itinerary Map & Traveloka Booking (Visible on desktop when aiResponse exists) */}
-              {aiResponse && (
-                <div className="hidden md:flex flex-col border-r border-gray-200 pr-6 h-[85vh] justify-between space-y-3">
-                  {/* Interactive Map with proportional height */}
-                  <div className="flex-1 min-h-[280px] overflow-hidden">
-                    <ItineraryMap
-                      aiResponse={aiResponse}
-                      destinations={destinations}
-                      cultureItems={cultureItems}
-                      culinaryItems={culinaryItems}
-                      eventItems={eventItems}
-                      lang={lang}
-                      fullHeight={true}
-                    />
+                    {activeDrawer === 'formai' && (() => {
+            const renderBookingSuite = () => (
+              <div className={`shrink-0 text-white p-3.5 rounded-2xl space-y-2.5 shadow-sm transition-all ${
+                bookingPartner === 'tiket'
+                  ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
+                  : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
+              }`}>
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {bookingPartner === 'tiket' ? (
+                      <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                        <span>tiket.com</span>
+                      </span>
+                    ) : (
+                      <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                        <span>✈️</span>
+                        <span>traveloka</span>
+                      </span>
+                    )}
+                    <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
+                      {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
+                    </span>
                   </div>
 
-                  {/* Dual-Partner Logistics & Booking Suite (Tiket.com & Traveloka) */}
-                  <div className={`shrink-0 text-white p-3.5 rounded-xl space-y-2.5 shadow-md transition-all ${
-                    bookingPartner === 'tiket'
-                      ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
-                      : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
-                  }`}>
-                    <div className="flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex items-center gap-1.5">
-                        {bookingPartner === 'tiket' ? (
-                          <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                            <span>tiket.com</span>
-                          </span>
-                        ) : (
-                          <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                            <span>✈️</span>
-                            <span>traveloka</span>
-                          </span>
-                        )}
-                        <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
-                          {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
-                        </span>
-                      </div>
-
-                      {/* Partner Switcher Tabs */}
-                      <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
-                        <button
-                          type="button"
-                          onClick={() => setBookingPartner('tiket')}
-                          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                            bookingPartner === 'tiket'
-                              ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
-                              : 'text-white/80 hover:text-white'
-                          }`}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                          <span>tiket.com</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setBookingPartner('traveloka')}
-                          className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                            bookingPartner === 'traveloka'
-                              ? 'bg-white text-[#0194F3] shadow-sm font-black'
-                              : 'text-white/80 hover:text-white'
-                          }`}
-                        >
-                          <span>✈️</span>
-                          <span>Traveloka</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    <p className={`text-xs font-jakarta leading-relaxed ${
-                      bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
-                    }`}>
-                      {lang === 'en'
-                        ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
-                        : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
-                    </p>
-
-                    {bookingPartner === 'tiket' ? (
-                      <div className="grid grid-cols-2 gap-2 pt-0.5">
-                        <a
-                          href={getTiketHotelUrl(null, dataStore?.appSettings)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                        >
-                          <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href={getTiketCarRentalUrl(dataStore?.appSettings)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href={getTiketFlightUrl(dataStore?.appSettings)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-2 pt-0.5">
-                        <a
-                          href="https://www.traveloka.com/id-id/hotel"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                        >
-                          <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href="https://www.traveloka.com/id-id/car-rental"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                        <a
-                          href="https://www.traveloka.com/id-id/activities"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                        >
-                          <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
-                          <ExternalLink className="w-3 h-3 shrink-0" />
-                        </a>
-                      </div>
-                    )}
+                  {/* Partner Switcher Tabs */}
+                  <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
+                    <button
+                      type="button"
+                      onClick={() => setBookingPartner('tiket')}
+                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
+                        bookingPartner === 'tiket'
+                          ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
+                      <span>tiket.com</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBookingPartner('traveloka')}
+                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
+                        bookingPartner === 'traveloka'
+                          ? 'bg-white text-[#0194F3] shadow-sm font-black'
+                          : 'text-white/80 hover:text-white'
+                      }`}
+                    >
+                      <span>✈️</span>
+                      <span>Traveloka</span>
+                    </button>
                   </div>
                 </div>
-              )}
-              {/* Right Column: AI Form & Response */}
-              <div className={`flex flex-col space-y-6 ${aiResponse ? 'overflow-y-auto pr-2 custom-scrollbar h-[85vh]' : 'w-full'}`}>
-{/* MODE 1: ITINERARY GENERATOR */}
-              {formAiTab === 'generator' && (
-                <div className="space-y-6">
-                  <form onSubmit={handleGenerateItinerary} className="space-y-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
-                    {/* Target Event Priority Banner */}
-                    {itineraryForm.targetEvent && (
-                      <div className="p-3 bg-amber-50 border-2 border-amber-400 rounded-xl space-y-2 shadow-2xs">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] font-jakarta font-black uppercase text-amber-900 flex items-center gap-1.5">
-                            <Sparkles className="w-4 h-4 text-amber-600 animate-pulse" />
-                            {lang === 'en' ? '🎯 Target Event Selected' : '🎯 Event Prioritas Terpilih'}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => setItineraryForm((prev: any) => ({ ...prev, targetEvent: null }))}
-                            className="text-[10px] text-red-600 hover:text-red-800 font-bold underline cursor-pointer"
-                          >
-                            {lang === 'en' ? 'Remove' : 'Hapus Event'}
-                          </button>
-                        </div>
-                        <div className="flex items-center gap-2.5">
-                          {itineraryForm.targetEvent.imageUrl && (
-                            <img
-                              src={itineraryForm.targetEvent.imageUrl}
-                              alt={itineraryForm.targetEvent.title}
-                              className="w-12 h-12 object-cover rounded-lg shrink-0 border border-amber-200"
-                            />
-                          )}
-                          <div className="min-w-0">
-                            <h4 className="font-orbitron font-bold text-xs text-black truncate">
-                              {lang === 'en' && itineraryForm.targetEvent.titleEn ? itineraryForm.targetEvent.titleEn : itineraryForm.targetEvent.title}
-                            </h4>
-                            <p className="font-jakarta text-[10px] text-amber-800 font-semibold flex items-center gap-1 truncate">
-                              <Calendar className="w-3 h-3 shrink-0" />
-                              {lang === 'en' && itineraryForm.targetEvent.scheduleEn ? itineraryForm.targetEvent.scheduleEn : itineraryForm.targetEvent.schedule}
-                            </p>
-                            <p className="font-jakarta text-[10px] text-gray-600 truncate">
-                              📍 {lang === 'en' && itineraryForm.targetEvent.locationNameEn ? itineraryForm.targetEvent.locationNameEn : (itineraryForm.targetEvent.locationName || itineraryForm.targetEvent.location || itineraryForm.targetEvent.regency)}
-                            </p>
-                          </div>
-                        </div>
-                        <p className="text-[10px] font-jakarta text-amber-950/80 italic border-t border-amber-200/80 pt-1">
-                          {lang === 'en'
-                            ? '✨ UNI MALA AI will build an itinerary prioritizing this event as the primary highlight.'
-                            : '✨ UNI MALA AI akan menyusun rute perjalanan searah yang memprioritaskan kehadiran Anda pada event ini.'}
+
+                <p className={`text-xs font-jakarta leading-relaxed ${
+                  bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
+                }`}>
+                  {lang === 'en'
+                    ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
+                    : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
+                </p>
+
+                {bookingPartner === 'tiket' ? (
+                  <div className="grid grid-cols-2 gap-2 pt-0.5">
+                    <a
+                      href={getTiketHotelUrl(null, dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
+                    >
+                      <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href={getTiketCarRentalUrl(dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href={getTiketFlightUrl(dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2 pt-0.5">
+                    <a
+                      href="https://www.traveloka.com/id-id/hotel"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
+                    >
+                      <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href="https://www.traveloka.com/id-id/car-rental"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                    <a
+                      href="https://www.traveloka.com/id-id/activities"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
+                    >
+                      <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
+                      <ExternalLink className="w-3 h-3 shrink-0" />
+                    </a>
+                  </div>
+                )}
+              </div>
+            );
+
+            const renderItineraryFormFields = () => (
+              <div className="space-y-4">
+                {/* Target Event Priority Banner */}
+                {itineraryForm.targetEvent && (
+                  <div className="p-3 bg-amber-50 border-2 border-amber-400 rounded-xl space-y-2 shadow-2xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-jakarta font-black uppercase text-amber-900 flex items-center gap-1.5">
+                        <Sparkles className="w-4 h-4 text-amber-600 animate-pulse" />
+                        {lang === 'en' ? '🎯 Target Event Selected' : '🎯 Event Prioritas Terpilih'}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setItineraryForm((prev: any) => ({ ...prev, targetEvent: null }))}
+                        className="text-[10px] text-red-600 hover:text-red-800 font-bold underline cursor-pointer"
+                      >
+                        {lang === 'en' ? 'Remove' : 'Hapus Event'}
+                      </button>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      {itineraryForm.targetEvent.imageUrl && (
+                        <img
+                          src={itineraryForm.targetEvent.imageUrl}
+                          alt={itineraryForm.targetEvent.title}
+                          className="w-12 h-12 object-cover rounded-lg shrink-0 border border-amber-200"
+                        />
+                      )}
+                      <div className="min-w-0">
+                        <h4 className="font-orbitron font-bold text-xs text-black truncate">
+                          {lang === 'en' && itineraryForm.targetEvent.titleEn ? itineraryForm.targetEvent.titleEn : itineraryForm.targetEvent.title}
+                        </h4>
+                        <p className="font-jakarta text-[10px] text-amber-800 font-semibold flex items-center gap-1 truncate">
+                          <Calendar className="w-3 h-3 shrink-0" />
+                          {lang === 'en' && itineraryForm.targetEvent.scheduleEn ? itineraryForm.targetEvent.scheduleEn : itineraryForm.targetEvent.schedule}
                         </p>
+                        <p className="font-jakarta text-[10px] text-gray-600 truncate">
+                          📍 {lang === 'en' && itineraryForm.targetEvent.locationNameEn ? itineraryForm.targetEvent.locationNameEn : (itineraryForm.targetEvent.locationName || itineraryForm.targetEvent.location || itineraryForm.targetEvent.regency)}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-[10px] font-jakarta text-amber-950/80 italic border-t border-amber-200/80 pt-1">
+                      {lang === 'en'
+                        ? '✨ UNI MALA AI will build an itinerary prioritizing this event as the primary highlight.'
+                        : '✨ UNI MALA AI akan menyusun rute perjalanan searah yang memprioritaskan kehadiran Anda pada event ini.'}
+                    </p>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                    {translations[lang].fieldDaysForm}
+                  </label>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    {[1, 2, 3, 4, 5, 7].map((num) => (
+                      <button
+                        key={num}
+                        type="button"
+                        onClick={() => updateForm(['durasiHari'], num)}
+                        className={`flex-1 py-1.5 rounded text-xs font-orbitron font-bold transition-all cursor-pointer ${
+                          itineraryForm.durasiHari === num
+                            ? 'bg-black text-white shadow-xs'
+                            : 'bg-white border border-gray-200 text-black hover:border-black'
+                        }`}
+                      >
+                        {num} {lang === 'en' ? 'D' : 'H'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tanggal Mulai Perjalanan (Pilihan) & Deteksi Event Otomatis */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black">
+                      📅 {translations[lang].fieldTravelDate}
+                    </label>
+                    {itineraryForm.waktuKunjungan?.tanggalMulai && (
+                      <button
+                        type="button"
+                        onClick={() => updateForm(['waktuKunjungan'], { tanggalMulai: '', tanggalSelesai: '' })}
+                        className="text-[10px] text-red-500 font-bold hover:underline cursor-pointer"
+                      >
+                        {lang === 'en' ? 'Clear Date' : 'Hapus Tanggal'}
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    type="date"
+                    value={itineraryForm.waktuKunjungan?.tanggalMulai || ''}
+                    onChange={(e) => {
+                      const start = e.target.value;
+                      let end = '';
+                      if (start) {
+                        const d = new Date(start);
+                        d.setDate(d.getDate() + (itineraryForm.durasiHari - 1));
+                        end = d.toISOString().split('T')[0];
+                      }
+                      updateForm(['waktuKunjungan'], { tanggalMulai: start, tanggalSelesai: end });
+                    }}
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black cursor-pointer"
+                  />
+                  <p className="text-[10px] text-gray-500 font-jakarta mt-1">
+                    {translations[lang].fieldTravelDateHint}
+                  </p>
+
+                  {/* Smart Event Matching Notice if date chosen */}
+                  {(() => {
+                    const startStr = itineraryForm.waktuKunjungan?.tanggalMulai;
+                    if (!startStr) return null;
+                    
+                    const dateObj = new Date(startStr);
+                    const monthIndex = dateObj.getMonth();
+                    const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                    const selectedMonth = monthNamesId[monthIndex];
+
+                    const matchedEvents = eventItems.filter((ev: EventItem) => {
+                      const sched = (ev.schedule || (ev as any).date || '').toLowerCase();
+                      return sched.includes(selectedMonth.toLowerCase());
+                    });
+
+                    if (matchedEvents.length === 0) return null;
+
+                    return (
+                      <div className="mt-2 p-2.5 bg-yellow-50 border border-yellow-200 rounded-lg text-xs font-jakarta space-y-1">
+                        <span className="font-bold text-amber-900 text-[11px] flex items-center gap-1">
+                          {translations[lang].badgeEventMatched}
+                        </span>
+                        <div className="flex flex-wrap gap-1 pt-0.5">
+                          {matchedEvents.map((ev: EventItem) => (
+                            <span key={ev.id} className="inline-block bg-white text-slate-800 border border-amber-300 text-[10px] font-semibold px-2 py-0.5 rounded shadow-2xs">
+                              🎪 {ev.title} {ev.isKen ? '⭐ [KEN]' : ''} ({ev.schedule || selectedMonth})
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                      {translations[lang].fieldTravelerType}
+                    </label>
+                    <select
+                      value={itineraryForm.profilWisatawan.kategori}
+                      onChange={(e) => updateForm(['profilWisatawan', 'kategori'], e.target.value)}
+                      className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                    >
+                      <option value="individu">{translations[lang].optSolo}</option>
+                      <option value="pasangan">{translations[lang].optCouple}</option>
+                      <option value="keluarga_anak">{translations[lang].optFamilyKids}</option>
+                      <option value="lansia">{translations[lang].optFamilyElders}</option>
+                      <option value="rombongan">{translations[lang].optGroup}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                      {translations[lang].fieldNumPeople}
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={itineraryForm.profilWisatawan.jumlahOrang}
+                      onChange={(e) => updateForm(['profilWisatawan', 'jumlahOrang'], parseInt(e.target.value) || 1)}
+                      className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                    {translations[lang].fieldInterestsForm}
+                  </label>
+                  <div className="flex flex-wrap gap-1.5 text-xs">
+                    {[
+                      { val: 'pantai', label: lang === 'en' ? 'Beaches' : 'Pantai' },
+                      { val: 'tempat_wisata', label: lang === 'en' ? 'Tourist Attractions' : 'Tempat Wisata' },
+                      { val: 'kuliner_mewah', label: lang === 'en' ? 'Luxury Culinary' : 'Kuliner Mewah' },
+                      { val: 'belanja', label: lang === 'en' ? 'Shopping' : 'Belanja' },
+                      { val: 'festival', label: lang === 'en' ? 'Festivals' : 'Festival' },
+                      { val: 'kuliner', label: lang === 'en' ? 'Culinary' : 'Kuliner' },
+                      { val: 'tur_wisata', label: lang === 'en' ? 'Guided Tours' : 'Tur Wisata' },
+                      { val: 'petualangan_alam', label: lang === 'en' ? 'Nature & Adventure' : 'Petualangan Alam' },
+                      { val: 'hidden_gems', label: lang === 'en' ? 'Hidden Gems' : 'Hidden Gems' },
+                      { val: 'spa_relaksasi', label: lang === 'en' ? 'Spa & Relaxation' : 'Spa dan Relaksasi' },
+                      { val: 'seni_budaya', label: lang === 'en' ? 'Arts & Culture' : 'Seni dan Budaya' },
+                      { val: 'akses_difabel', label: lang === 'en' ? 'Disability Access' : 'Akses Difable' },
+                      { val: 'ramah_anak', label: lang === 'en' ? 'Kid-Friendly' : 'Ramah Anak' }
+                    ].map((minat) => {
+                      const isSelected = itineraryForm.preferensiMinat.kategoriWisata.includes(minat.val);
+                      return (
+                        <button
+                          key={minat.val}
+                          type="button"
+                          onClick={() => {
+                            const list = itineraryForm.preferensiMinat.kategoriWisata;
+                            updateForm(['preferensiMinat', 'kategoriWisata'], isSelected ? list.filter((i: string) => i !== minat.val) : [...list, minat.val]);
+                          }}
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-jakarta transition-all cursor-pointer capitalize ${
+                            isSelected
+                              ? 'bg-black text-white font-bold shadow-2xs'
+                              : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
+                          }`}
+                        >
+                          {isSelected ? `✓ ${minat.label}` : minat.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                      {translations[lang].fieldActivityLevel}
+                    </label>
+                    <select
+                      value={itineraryForm.preferensiMinat.tingkatAktivitas}
+                      onChange={(e) => updateForm(['preferensiMinat', 'tingkatAktivitas'], e.target.value)}
+                      className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                    >
+                      <option value="santai">{translations[lang].optRelaxed}</option>
+                      <option value="sedang">{translations[lang].optModerate}</option>
+                      <option value="ekstrem">{translations[lang].optExtreme}</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                      {translations[lang].fieldBudgetForm}
+                    </label>
+                    <select
+                      value={itineraryForm.anggaran.rentang}
+                      onChange={(e) => updateForm(['anggaran', 'rentang'], e.target.value)}
+                      className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                    >
+                      <option value="hemat">{translations[lang].optBudget}</option>
+                      <option value="menengah">{translations[lang].optStandard}</option>
+                      <option value="mewah">{translations[lang].optPremium}</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Kebutuhan Khusus / Alergi Makanan / Catatan Tambahan */}
+                <div>
+                  <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
+                    {lang === 'en' ? 'Special Needs / Food Allergies / Notes' : 'Kebutuhan Khusus / Alergi Makanan / Catatan'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={lang === 'en' ? 'e.g. Shellfish allergy, wheelchair access, prefer non-spicy food...' : 'Contoh: alergi udang, butuh akses kursi roda, tidak suka pedas...'}
+                    value={itineraryForm.kebutuhanKhusus?.catatanKhusus ?? (itineraryForm.kebutuhanKhusus?.alergiMakanan?.join(', ') || '')}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      updateForm(['kebutuhanKhusus'], {
+                        ...itineraryForm.kebutuhanKhusus,
+                        catatanKhusus: val,
+                        alergiMakanan: val.split(',').map((s: string) => s.trim()).filter(Boolean)
+                      });
+                    }}
+                    className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
+                  />
+                </div>
+              </div>
+            );
+
+            return (
+              <div className="w-full h-full min-h-0">
+                {!aiResponse ? (
+                  /* ============================================================== */
+                  /* STATE 1: SEBELUM GENERATE (Single Column Form Lapang & Elegan) */
+                  /* ============================================================== */
+                  <div className="max-w-2xl mx-auto w-full space-y-5 py-2">
+                    <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black text-white p-5 rounded-2xl shadow-sm space-y-2 border border-neutral-800">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
+                        <span className="font-orbitron font-bold text-xs uppercase tracking-widest text-amber-300">
+                          UNI MALA AI ITINERARY BUILDER
+                        </span>
+                      </div>
+                      <h3 className="font-orbitron font-bold text-base sm:text-lg text-white">
+                        {lang === 'en' ? 'Create Your Personalized West Sumatra Itinerary' : 'Rancang Rencana Liburan Impian di Sumatera Barat'}
+                      </h3>
+                      <p className="font-jakarta text-xs text-gray-300 leading-relaxed">
+                        {lang === 'en'
+                          ? 'Select your duration, dates, travel interests, and budget. UNI MALA AI will craft a smart, directional day-by-day travel plan complete with interactive map routing and authentic culinary tips.'
+                          : 'Pilih durasi liburan, tanggal, preferensi minat, dan estimasi anggaran. UNI MALA AI akan menyusun rute perjalanan searah yang efisien, lengkap dengan peta interaktif dan rekomendasi kuliner khas Minangkabau.'}
+                      </p>
+                    </div>
+
+                    {aiError && (
+                      <div className="p-3 bg-red-50 text-red-700 text-xs font-jakarta rounded-xl border border-red-200">
+                        {aiError}
                       </div>
                     )}
 
-                    <div>
-                      <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                        {translations[lang].fieldDaysForm}
-                      </label>
-                      <div className="flex items-center gap-2">
-                        {[1, 2, 3, 4, 5, 7].map((num) => (
-                          <button
-                            key={num}
-                            type="button"
-                            onClick={() => updateForm(['durasiHari'], num)}
-                            className={`flex-1 py-1.5 rounded text-xs font-orbitron font-bold transition-all cursor-pointer ${
-                              itineraryForm.durasiHari === num
-                                ? 'bg-black text-white'
-                                : 'bg-white border border-gray-200 text-black hover:border-black'
-                            }`}
-                          >
-                            {num} {lang === 'en' ? 'Days' : 'Hari'}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Tanggal Mulai Perjalanan (Pilihan) & Deteksi Event Otomatis */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black">
-                          📅 {translations[lang].fieldTravelDate}
-                        </label>
-                        {itineraryForm.waktuKunjungan?.tanggalMulai && (
-                          <button
-                            type="button"
-                            onClick={() => updateForm(['waktuKunjungan'], { tanggalMulai: '', tanggalSelesai: '' })}
-                            className="text-[10px] text-red-500 font-bold hover:underline cursor-pointer"
-                          >
-                            {lang === 'en' ? 'Clear Date' : 'Hapus Tanggal'}
-                          </button>
+                    <form onSubmit={handleGenerateItinerary} className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-200 shadow-xs">
+                      {renderItineraryFormFields()}
+                      <button
+                        type="submit"
+                        disabled={isGenerating}
+                        className="w-full bg-black text-white py-3 rounded-xl font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+                      >
+                        {isGenerating ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>{translations[lang].btnGenerating}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="w-4 h-4 text-yellow-300" />
+                            <span>{translations[lang].btnGenerate}</span>
+                          </>
                         )}
-                      </div>
-                      <input
-                        type="date"
-                        value={itineraryForm.waktuKunjungan?.tanggalMulai || ''}
-                        onChange={(e) => {
-                          const start = e.target.value;
-                          let end = '';
-                          if (start) {
-                            const d = new Date(start);
-                            d.setDate(d.getDate() + (itineraryForm.durasiHari - 1));
-                            end = d.toISOString().split('T')[0];
-                          }
-                          updateForm(['waktuKunjungan'], { tanggalMulai: start, tanggalSelesai: end });
-                        }}
-                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black cursor-pointer"
-                      />
-                      <p className="text-[10px] text-gray-500 font-jakarta mt-1">
-                        {translations[lang].fieldTravelDateHint}
-                      </p>
-
-                      {/* Smart Event Matching Notice if date chosen */}
-                      {(() => {
-                        const startStr = itineraryForm.waktuKunjungan?.tanggalMulai;
-                        if (!startStr) return null;
-                        
-                        const dateObj = new Date(startStr);
-                        const monthIndex = dateObj.getMonth();
-                        const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                        const selectedMonth = monthNamesId[monthIndex];
-
-                        const matchedEvents = eventItems.filter((ev: EventItem) => {
-                          const sched = (ev.schedule || (ev as any).date || '').toLowerCase();
-                          return sched.includes(selectedMonth.toLowerCase());
-                        });
-
-                        if (matchedEvents.length === 0) return null;
-
-                        return (
-                          <div className="mt-2 p-2.5 bg-yellow-50 border border-yellow-200 rounded-lg text-xs font-jakarta space-y-1">
-                            <span className="font-bold text-amber-900 text-[11px] flex items-center gap-1">
-                              {translations[lang].badgeEventMatched}
-                            </span>
-                            <div className="flex flex-wrap gap-1 pt-0.5">
-                              {matchedEvents.map((ev: EventItem) => (
-                                <span key={ev.id} className="inline-block bg-white text-slate-800 border border-amber-300 text-[10px] font-semibold px-2 py-0.5 rounded shadow-2xs">
-                                  🎪 {ev.title} {ev.isKen ? '⭐ [KEN]' : ''} ({ev.schedule || selectedMonth})
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      })()}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                          {translations[lang].fieldTravelerType}
-                        </label>
-                        <select
-                          value={itineraryForm.profilWisatawan.kategori}
-                          onChange={(e) => updateForm(['profilWisatawan', 'kategori'], e.target.value)}
-                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
-                        >
-                          <option value="individu">{translations[lang].optSolo}</option>
-                          <option value="pasangan">{translations[lang].optCouple}</option>
-                          <option value="keluarga_anak">{translations[lang].optFamilyKids}</option>
-                          <option value="lansia">{translations[lang].optFamilyElders}</option>
-                          <option value="rombongan">{translations[lang].optGroup}</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                          {translations[lang].fieldNumPeople}
-                        </label>
-                        <input
-                          type="number"
-                          min="1"
-                          value={itineraryForm.profilWisatawan.jumlahOrang}
-                          onChange={(e) => updateForm(['profilWisatawan', 'jumlahOrang'], parseInt(e.target.value))}
-                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                        {translations[lang].fieldInterestsForm}
-                      </label>
-                      <div className="flex flex-wrap gap-1.5 text-xs">
-                        {[
-                          { val: 'pantai', label: lang === 'en' ? 'Beaches' : 'Pantai' },
-                          { val: 'tempat_wisata', label: lang === 'en' ? 'Tourist Attractions' : 'Tempat Wisata' },
-                          { val: 'kuliner_mewah', label: lang === 'en' ? 'Luxury Culinary' : 'Kuliner Mewah' },
-                          { val: 'belanja', label: lang === 'en' ? 'Shopping' : 'Belanja' },
-                          { val: 'festival', label: lang === 'en' ? 'Festivals' : 'Festival' },
-                          { val: 'kuliner', label: lang === 'en' ? 'Culinary' : 'Kuliner' },
-                          { val: 'tur_wisata', label: lang === 'en' ? 'Guided Tours' : 'Tur Wisata' },
-                          { val: 'petualangan_alam', label: lang === 'en' ? 'Nature & Adventure' : 'Petualangan Alam' },
-                          { val: 'hidden_gems', label: lang === 'en' ? 'Hidden Gems' : 'Hidden Gems' },
-                          { val: 'spa_relaksasi', label: lang === 'en' ? 'Spa & Relaxation' : 'Spa dan Relaksasi' },
-                          { val: 'seni_budaya', label: lang === 'en' ? 'Arts & Culture' : 'Seni dan Budaya' },
-                          { val: 'akses_difabel', label: lang === 'en' ? 'Disability Access' : 'Akses Difable' },
-                          { val: 'ramah_anak', label: lang === 'en' ? 'Kid-Friendly' : 'Ramah Anak' }
-                        ].map((minat) => {
-                          const isSelected = itineraryForm.preferensiMinat.kategoriWisata.includes(minat.val);
-                          return (
-                            <button
-                              key={minat.val}
-                              type="button"
-                              onClick={() => {
-                                const list = itineraryForm.preferensiMinat.kategoriWisata;
-                                updateForm(['preferensiMinat', 'kategoriWisata'], isSelected ? list.filter((i: string) => i !== minat.val) : [...list, minat.val]);
-                              }}
-                              className={`px-2.5 py-1 rounded-full text-[11px] font-jakarta transition-all cursor-pointer capitalize ${
-                                isSelected
-                                  ? 'bg-black text-white font-bold'
-                                  : 'bg-white border border-gray-200 text-gray-600 hover:border-black'
-                              }`}
-                            >
-                              {isSelected ? `✓ ${minat.label}` : minat.label}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                          {translations[lang].fieldActivityLevel}
-                        </label>
-                        <select
-                          value={itineraryForm.preferensiMinat.tingkatAktivitas}
-                          onChange={(e) => updateForm(['preferensiMinat', 'tingkatAktivitas'], e.target.value)}
-                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
-                        >
-                          <option value="santai">{translations[lang].optRelaxed}</option>
-                          <option value="sedang">{translations[lang].optModerate}</option>
-                          <option value="ekstrem">{translations[lang].optExtreme}</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                          {translations[lang].fieldBudgetForm}
-                        </label>
-                        <select
-                          value={itineraryForm.anggaran.rentang}
-                          onChange={(e) => updateForm(['anggaran', 'rentang'], e.target.value)}
-                          className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
-                        >
-                          <option value="hemat">{translations[lang].optBudget}</option>
-                          <option value="menengah">{translations[lang].optStandard}</option>
-                          <option value="mewah">{translations[lang].optPremium}</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Kebutuhan Khusus / Alergi Makanan / Catatan Tambahan */}
-                    <div>
-                      <label className="block text-xs font-jakarta font-bold uppercase tracking-wider text-black mb-1.5">
-                        {lang === 'en' ? 'Special Needs / Food Allergies / Notes' : 'Kebutuhan Khusus / Alergi Makanan / Catatan'}
-                      </label>
-                      <input
-                        type="text"
-                        placeholder={lang === 'en' ? 'e.g. Shellfish allergy, wheelchair access, prefer non-spicy food...' : 'Contoh: alergi udang, butuh akses kursi roda, tidak suka pedas...'}
-                        value={itineraryForm.kebutuhanKhusus?.catatanKhusus ?? (itineraryForm.kebutuhanKhusus?.alergiMakanan?.join(', ') || '')}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          updateForm(['kebutuhanKhusus'], {
-                            ...itineraryForm.kebutuhanKhusus,
-                            catatanKhusus: val,
-                            alergiMakanan: val.split(',').map((s: string) => s.trim()).filter(Boolean)
-                          });
-                        }}
-                        className="w-full bg-white border border-gray-300 rounded p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isGenerating}
-                      className="w-full bg-black text-white py-3 rounded-lg font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors cursor-pointer disabled:opacity-50"
-                    >
-                      {isGenerating ? (
-                        <>
-                          <RefreshCw className="w-4 h-4 animate-spin" />
-                          <span>{translations[lang].btnGenerating}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="w-4 h-4 text-yellow-300" />
-                          <span>{translations[lang].btnGenerate}</span>
-                        </>
-                      )}
-                    </button>
-                  </form>
-
-                  {/* AI Response Results */}
-                  {aiError && (
-                    <div className="p-3 bg-red-50 text-red-700 text-xs font-jakarta rounded-md border border-red-200">
-                      {aiError}
-                    </div>
-                  )}
-
-                  {aiResponse && (
-                    <div className="space-y-4 border-t border-gray-200 pt-4">
-                      <div className="bg-black text-white p-4 rounded-xl space-y-1">
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  /* ============================================================== */
+                  /* STATE 2: SETELAH GENERATE -> 3 KOLOM BERDAMPINGAN (DESKTOP)    */
+                  /* (KOLOM 1: PREFERENSI, KOLOM 2: HASIL ITINERARY, KOLOM 3: PETA) */
+                  /* ============================================================== */
+                  <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 h-full min-h-0">
+                    {/* KOLOM 1 (KIRI): INPUT PREFERENSI WISATAWAN */}
+                    <div className="order-3 lg:order-1 lg:col-span-4 xl:col-span-3 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
+                      <div className="px-4 py-3 bg-neutral-900 text-white flex items-center justify-between shrink-0 border-b border-neutral-800">
                         <div className="flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-yellow-300" />
-                          <span className="font-orbitron font-bold text-xs uppercase tracking-widest text-gray-300">
-                            {lang === 'en' ? 'UNI MALA AI Official Trip Itinerary' : 'Rencana Wisata Resmi UNI MALA AI'}
-                          </span>
+                          <span className="text-sm">⚙️</span>
+                          <div>
+                            <h4 className="font-orbitron font-bold text-xs uppercase tracking-wider text-white">
+                              {lang === 'en' ? 'Traveler Preferences' : 'Preferensi Wisatawan'}
+                            </h4>
+                            <p className="text-[10px] text-gray-400 font-jakarta">
+                              {lang === 'en' ? 'Adjust parameters & regenerate' : 'Sesuaikan & perbarui rute'}
+                            </p>
+                          </div>
                         </div>
-                        <h3 className="font-orbitron font-bold text-base uppercase text-white">
-                          {aiResponse.title}
-                        </h3>
-                        <p className="font-jakarta text-xs text-gray-300 pt-1">
-                          {aiResponse.summary}
-                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setAiResponse(null)}
+                          className="text-[10px] text-gray-400 hover:text-white underline cursor-pointer font-jakarta"
+                          title={lang === 'en' ? 'Start new plan from scratch' : 'Buat rencana baru dari awal'}
+                        >
+                          {lang === 'en' ? 'Reset' : 'Ulang'}
+                        </button>
+                      </div>
 
-                        <div className="pt-3">
+                      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                        {aiError && (
+                          <div className="p-2.5 bg-red-50 text-red-700 text-xs font-jakarta rounded-lg border border-red-200">
+                            {aiError}
+                          </div>
+                        )}
+                        <form id="itinerary-pref-form-desktop" onSubmit={handleGenerateItinerary} className="space-y-4">
+                          {renderItineraryFormFields()}
+                        </form>
+                      </div>
+
+                      <div className="p-3 bg-gray-50 border-t border-gray-200 shrink-0">
+                        <button
+                          form="itinerary-pref-form-desktop"
+                          type="submit"
+                          disabled={isGenerating}
+                          className="w-full bg-black text-white py-2.5 px-3 rounded-xl font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+                        >
+                          {isGenerating ? (
+                            <>
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                              <span>{translations[lang].btnGenerating}</span>
+                            </>
+                          ) : (
+                            <>
+                              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                              <span>{lang === 'en' ? 'Update Itinerary' : 'Perbarui Rencana Wisata'}</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* KOLOM 2 (TENGAH): HASIL ITINERARY RESMI */}
+                    <div className="order-1 lg:order-2 lg:col-span-4 xl:col-span-5 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
+                      {/* Header Itinerary Title & A4 Print Button */}
+                      <div className="p-4 bg-gradient-to-r from-neutral-950 via-black to-neutral-900 text-white shrink-0 space-y-2 border-b border-neutral-800">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div className="flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                            <span className="font-orbitron font-bold text-[10px] uppercase tracking-widest text-amber-300">
+                              {lang === 'en' ? 'Official Trip Plan' : 'Rencana Wisata Resmi'}
+                            </span>
+                          </div>
                           <button
                             type="button"
                             onClick={handlePrintA4Itinerary}
-                            className="w-full bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                            className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white py-1.5 px-3 rounded-lg font-jakarta font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                            title={translations[lang].btnPrintA4}
                           >
-                            <Download className="w-4 h-4" />
+                            <Download className="w-3.5 h-3.5" />
                             <span>{translations[lang].btnPrintA4}</span>
                           </button>
                         </div>
+
+                        <h3 className="font-orbitron font-bold text-sm sm:text-base uppercase text-white leading-snug">
+                          {aiResponse.title}
+                        </h3>
+                        <p className="font-jakarta text-[11px] text-gray-300 leading-relaxed line-clamp-2">
+                          {aiResponse.summary}
+                        </p>
                       </div>
 
-                      {/* Itinerary Map & Traveloka Booking Suite for Mobile */}
-                      <div className="block md:hidden space-y-3">
+                      {/* Scrollable Schedule & Days */}
+                      <div className="flex-1 overflow-y-auto p-4 space-y-3.5 custom-scrollbar">
+                        <div className="space-y-3.5">
+                          {aiResponse.itinerary.map((day) => (
+                            <div key={day.day} className="p-3.5 border border-gray-200 rounded-xl space-y-2.5 bg-white shadow-2xs hover:border-gray-300 transition-colors">
+                              <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+                                <span className="bg-black text-white font-orbitron font-bold text-[10px] uppercase px-2 py-0.5 rounded">
+                                  HARI {day.day}
+                                </span>
+                                <h4 className="font-orbitron font-bold text-xs uppercase text-black truncate ml-2">
+                                  {day.title}
+                                </h4>
+                              </div>
+
+                              <div className="space-y-2">
+                                {day.activities.map((act, i) => (
+                                  <div key={i} className="text-xs font-jakarta space-y-1 bg-slate-50/70 p-2.5 rounded-lg border border-slate-100">
+                                    <div className="flex items-center justify-between font-bold text-black text-[11px]">
+                                      <span>⏰ {act.time} — {act.location}</span>
+                                    </div>
+                                    <p className="text-gray-600 text-[11px] leading-relaxed">{act.activity}</p>
+                                    {act.tips && (
+                                      <p className="text-[10.5px] text-amber-800 italic bg-amber-50/80 p-1.5 rounded border border-amber-100 flex items-start gap-1">
+                                        <span>💡</span>
+                                        <span>{act.tips}</span>
+                                      </p>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+
+                              {day.culinaryRecommendation && (
+                                <div className="pt-2 border-t border-gray-100 text-[11px] font-jakarta text-amber-950 bg-amber-50/90 p-2.5 rounded-lg flex items-start gap-1.5 border border-amber-200/60">
+                                  <span className="shrink-0">🍲</span>
+                                  <div>
+                                    <strong className="font-bold">Rekomendasi Kuliner: </strong>
+                                    <span>{day.culinaryRecommendation}</span>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Kearifan Lokal & Etika Minangkabau */}
+                        {aiResponse.localTips && aiResponse.localTips.length > 0 && (
+                          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs font-jakarta">
+                            <h4 className="font-bold text-black uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                              <span>🏛️</span>
+                              <span>Kearifan Lokal & Etika Minangkabau</span>
+                            </h4>
+                            <ul className="space-y-1 list-disc list-inside text-gray-700 text-[11px] leading-relaxed">
+                              {aiResponse.localTips.map((tip, idx) => (
+                                <li key={idx}>{tip}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* KOLOM 3 (KANAN): PETA RUTE INTERAKTIF & LOGISTIK PEMESANAN */}
+                    <div className="order-2 lg:order-3 lg:col-span-4 xl:col-span-4 flex flex-col h-full min-h-0 space-y-3">
+                      {/* Peta Rute Interaktif */}
+                      <div className="flex-1 min-h-[300px] overflow-hidden rounded-2xl border border-gray-200 shadow-xs bg-gray-50 flex flex-col">
                         <ItineraryMap
                           aiResponse={aiResponse}
                           destinations={destinations}
@@ -3243,210 +3387,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                           culinaryItems={culinaryItems}
                           eventItems={eventItems}
                           lang={lang}
+                          fullHeight={true}
                         />
-
-                        {/* Dual-Partner Logistics & Booking Suite on Mobile (Tiket.com & Traveloka) */}
-                        <div className={`text-white p-3.5 rounded-xl space-y-2.5 shadow-md transition-all ${
-                          bookingPartner === 'tiket'
-                            ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
-                            : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
-                        }`}>
-                          <div className="flex items-center justify-between flex-wrap gap-2">
-                            <div className="flex items-center gap-1.5">
-                              {bookingPartner === 'tiket' ? (
-                                <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                                  <span>tiket.com</span>
-                                </span>
-                              ) : (
-                                <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                                  <span>✈️</span>
-                                  <span>traveloka</span>
-                                </span>
-                              )}
-                              <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
-                                {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
-                              </span>
-                            </div>
-
-                            {/* Partner Switcher Tabs */}
-                            <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
-                              <button
-                                type="button"
-                                onClick={() => setBookingPartner('tiket')}
-                                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                                  bookingPartner === 'tiket'
-                                    ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
-                                    : 'text-white/80 hover:text-white'
-                                }`}
-                              >
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                                <span>tiket.com</span>
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setBookingPartner('traveloka')}
-                                className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                                  bookingPartner === 'traveloka'
-                                    ? 'bg-white text-[#0194F3] shadow-sm font-black'
-                                    : 'text-white/80 hover:text-white'
-                                }`}
-                              >
-                                <span>✈️</span>
-                                <span>Traveloka</span>
-                              </button>
-                            </div>
-                          </div>
-
-                          <p className={`text-xs font-jakarta leading-relaxed ${
-                            bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
-                          }`}>
-                            {lang === 'en'
-                              ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
-                              : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
-                          </p>
-
-                          {bookingPartner === 'tiket' ? (
-                            <div className="grid grid-cols-2 gap-2 pt-0.5">
-                              <a
-                                href={getTiketHotelUrl(null, dataStore?.appSettings)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                              >
-                                <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href={getTiketCarRentalUrl(dataStore?.appSettings)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href={getTiketFlightUrl(dataStore?.appSettings)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                            </div>
-                          ) : (
-                            <div className="grid grid-cols-2 gap-2 pt-0.5">
-                              <a
-                                href="https://www.traveloka.com/id-id/hotel"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                              >
-                                <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href="https://www.traveloka.com/id-id/car-rental"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                              <a
-                                href="https://www.traveloka.com/id-id/activities"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                              >
-                                <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
-                                <ExternalLink className="w-3 h-3 shrink-0" />
-                              </a>
-                            </div>
-                          )}
-                        </div>
                       </div>
 
-                      {/* Itinerary Days */}
-                      <div className="space-y-4">
-                        {aiResponse.itinerary.map((day) => (
-                          <div key={day.day} className="p-4 border border-gray-200 rounded-lg space-y-3 bg-white">
-                            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                              <span className="bg-black text-white font-orbitron font-bold text-[10px] uppercase px-2 py-0.5 rounded">
-                                HARI {day.day}
-                              </span>
-                              <h4 className="font-orbitron font-bold text-xs uppercase text-black">
-                                {day.title}
-                              </h4>
-                            </div>
-
-                            <div className="space-y-2.5">
-                              {day.activities.map((act, i) => (
-                                <div key={i} className="text-xs font-jakarta space-y-1">
-                                  <div className="flex items-center justify-between font-bold text-black">
-                                    <span>{act.time} — {act.location}</span>
-                                  </div>
-                                  <p className="text-gray-600">{act.activity}</p>
-                                  {act.tips && (
-                                    <p className="text-[11px] text-gray-500 italic bg-gray-50 p-1.5 rounded border border-gray-100">
-                                      💡 {act.tips}
-                                    </p>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-
-                            {day.culinaryRecommendation && (
-                              <div className="pt-2 border-t border-gray-100 text-xs font-jakarta text-black bg-yellow-50 p-2 rounded">
-                                <span className="font-bold">🍲 Kuliner Hari Ini: </span>
-                                <span>{day.culinaryRecommendation}</span>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Local Tips */}
-                      {aiResponse.localTips && aiResponse.localTips.length > 0 && (
-                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2 text-xs font-jakarta">
-                          <h4 className="font-bold text-black uppercase tracking-wider">
-                            Kearifan Lokal & Etika Minangkabau
-                          </h4>
-                          <ul className="space-y-1 list-disc list-inside text-gray-700">
-                            {aiResponse.localTips.map((tip, idx) => (
-                              <li key={idx}>{tip}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                      {/* Booking Logistics Suite */}
+                      {renderBookingSuite()}
                     </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
+
           {/* =================================================== */}
           {/* 5.5 CHATBOT TANYA UNI MALA GUIDE (DEDICATED)       */}
           {/* =================================================== */}
