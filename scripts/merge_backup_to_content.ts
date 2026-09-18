@@ -4,59 +4,47 @@ import * as path from 'path';
 // Load user provided JSON
 const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
 
-// Let's read and merge into content.ts
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../src/data/content';
-
 const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
 
-// Build image map
-const destImageMap = new Map<string, string>();
-if (raw.destinations) {
-  raw.destinations.forEach((d: any) => {
-    if (d.id && d.imageUrl) destImageMap.set(d.id, d.imageUrl);
-  });
-}
+// Build unified image map
+const allItemsMap = new Map<string, string>();
 
-const cultImageMap = new Map<string, string>();
-if (raw.cultureItems) {
-  raw.cultureItems.forEach((c: any) => {
-    if (c.id && c.imageUrl) cultImageMap.set(c.id, c.imageUrl);
-  });
-}
+const checkAndAdd = (list: any[]) => {
+  if (Array.isArray(list)) {
+    list.forEach((item: any) => {
+      if (item.id && item.imageUrl) {
+        allItemsMap.set(item.id, item.imageUrl);
+      }
+    });
+  }
+};
 
-const culImageMap = new Map<string, string>();
-if (raw.culinaryItems) {
-  raw.culinaryItems.forEach((cu: any) => {
-    if (cu.id && cu.imageUrl) culImageMap.set(cu.id, cu.imageUrl);
-  });
-}
-
-const evtImageMap = new Map<string, string>();
-if (raw.eventItems) {
-  raw.eventItems.forEach((e: any) => {
-    if (e.id && e.imageUrl) evtImageMap.set(e.id, e.imageUrl);
-  });
-}
+checkAndAdd(raw.destinations);
+checkAndAdd(raw.cultureItems);
+checkAndAdd(raw.culinaryItems);
+checkAndAdd(raw.souvenirItems);
+checkAndAdd(raw.eventItems);
+checkAndAdd(raw.downloadItems);
 
 let contentStr = fs.readFileSync(path.join(process.cwd(), 'src', 'data', 'content.ts'), 'utf-8');
 
-// Replace imageUrls in content.ts
-destImageMap.forEach((imgUrl, id) => {
-  // Regex to find item by id and update its imageUrl
-  const regex = new RegExp(`(id:\\s*['"]${id}['"][\\s\\S]*?imageUrl:\\s*['"])([^'"]*)(['"])`, 'g');
-  if (regex.test(contentStr)) {
-    contentStr = contentStr.replace(regex, `$1${imgUrl}$3`);
-    console.log(`Updated destination ${id} -> ${imgUrl}`);
+let updatedCount = 0;
+allItemsMap.forEach((imgUrl, id) => {
+  // Pattern 1: id comes before imageUrl
+  const regex1 = new RegExp(`(["']?id["']?\\s*:\\s*["']${id}["'][\\s\\S]*?["']?imageUrl["']?\\s*:\\s*["'])([^"']*)(["'])`);
+  if (regex1.test(contentStr)) {
+    contentStr = contentStr.replace(regex1, `$1${imgUrl}$3`);
+    updatedCount++;
+    return;
   }
-});
-
-cultImageMap.forEach((imgUrl, id) => {
-  const regex = new RegExp(`(id:\\s*['"]${id}['"][\\s\\S]*?imageUrl:\\s*['"])([^'"]*)(['"])`, 'g');
-  if (regex.test(contentStr)) {
-    contentStr = contentStr.replace(regex, `$1${imgUrl}$3`);
-    console.log(`Updated culture ${id} -> ${imgUrl}`);
+  // Pattern 2: imageUrl comes before id
+  const regex2 = new RegExp(`(["']?imageUrl["']?\\s*:\\s*["'])([^"']*)(["'][\\s\\S]*?["']?id["']?\\s*:\\s*["']${id}["'])`);
+  if (regex2.test(contentStr)) {
+    contentStr = contentStr.replace(regex2, `$1${imgUrl}$3`);
+    updatedCount++;
+    return;
   }
 });
 
 fs.writeFileSync(path.join(process.cwd(), 'src', 'data', 'content.ts'), contentStr, 'utf-8');
-console.log("Successfully updated src/data/content.ts with all Cloudinary URLs!");
+console.log(`✅ Berhasil memperbarui ${updatedCount} gambar banner di src/data/content.ts dari backup Firestore!`);
