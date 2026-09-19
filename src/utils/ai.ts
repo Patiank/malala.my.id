@@ -818,7 +818,7 @@ export async function fetchAiItinerary(params: any) {
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   const isValidGeminiKey = Boolean(viteApiKey && viteApiKey.length > 20 && !viteApiKey.includes("Dummy"));
   if (isValidGeminiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1023,7 +1023,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1425,7 +1425,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2711,7 +2711,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 2. Client-side Gemini AI if API key is provided
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2879,7 +2879,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
   for (const model of modelsToTry) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2966,7 +2966,7 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const model of modelsToTry) {
       try {
         const res = await ai.models.generateContent({
