@@ -175,17 +175,12 @@ export const TourismIntelligenceTab: React.FC = () => {
   const [isExportingPdf, setIsExportingPdf] = useState<boolean>(false);
 
   const handleExportPDF = () => {
-    if (signals.length === 0) {
-      alert('Belum ada data sinyal untuk membuat laporan infografis.');
-      return;
-    }
-
     setIsExportingPdf(true);
     try {
       generateTourismIntelligenceReportPDF(signals, stats);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to generate intelligence PDF:', err);
-      alert('Terjadi kesalahan saat merender laporan PDF.');
+      alert('Gagal merender PDF: ' + (err?.message || 'Terjadi kesalahan sistem.'));
     } finally {
       setTimeout(() => setIsExportingPdf(false), 800);
     }

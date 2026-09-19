@@ -2,15 +2,18 @@ import { jsPDF } from 'jspdf';
 import { cleanPdfText } from './pdfGenerator';
 
 export interface IntelligenceStats {
-  totalSignals: number;
-  uniqueVisitors: number;
-  sessionStarts: number;
-  totalBookmarks: number;
-  totalItineraries: number;
-  pdfDownloads: number;
-  topDestinations: Array<{ title: string; count: number }>;
-  durationDistribution: Record<string, number>;
-  deviceDistribution: { mobile: number; desktop: number };
+  totalSignals?: number;
+  uniqueVisitors?: number;
+  sessionStarts?: number;
+  totalBookmarks?: number;
+  totalItineraries?: number;
+  pdfDownloads?: number;
+  topDestinations?: Array<{ title: string; count: number }>;
+  durationCounts?: Record<string | number, number>;
+  durationDistribution?: Record<string | number, number>;
+  mobileCount?: number;
+  desktopCount?: number;
+  deviceDistribution?: { mobile?: number; desktop?: number };
 }
 
 /**
@@ -18,8 +21,8 @@ export interface IntelligenceStats {
  * Menghasilkan dokumen A4 Infografis Resmi untuk Dinas Pariwisata Sumatera Barat
  */
 export function generateTourismIntelligenceReportPDF(
-  signals: any[],
-  stats: IntelligenceStats
+  signals: any[] = [],
+  stats: any = {}
 ): void {
   const doc = new jsPDF({
     orientation: 'portrait',
@@ -31,6 +34,24 @@ export function generateTourismIntelligenceReportPDF(
   const pageHeight = 297;
   const margin = 14;
   const contentWidth = pageWidth - margin * 2; // 182mm
+
+  // Safe Stats extraction with resilient fallbacks
+  const safeTotalSignals = stats?.totalSignals ?? (Array.isArray(signals) ? signals.length : 0);
+  const safeUniqueVisitors = stats?.uniqueVisitors ?? 0;
+  const safeSessionStarts = stats?.sessionStarts ?? 0;
+  const safeTotalBookmarks = stats?.totalBookmarks ?? 0;
+  const safeTotalItineraries = stats?.totalItineraries ?? 0;
+  const safePdfDownloads = stats?.pdfDownloads ?? 0;
+  const topDestinations = Array.isArray(stats?.topDestinations) ? stats.topDestinations : [];
+
+  const durations = stats?.durationCounts || stats?.durationDistribution || {};
+  const durationEntries = Object.entries(durations);
+
+  const mobileCount = stats?.mobileCount ?? stats?.deviceDistribution?.mobile ?? 0;
+  const desktopCount = stats?.desktopCount ?? stats?.deviceDistribution?.desktop ?? 0;
+  const totalDev = (mobileCount + desktopCount) || 1;
+  const mobPct = Math.round((mobileCount / totalDev) * 100);
+  const dskPct = 100 - mobPct;
 
   // =========================================================================
   // 1. HEADER / MASTHEAD INFOGRAFIS EKSEKUTIF
@@ -53,7 +74,7 @@ export function generateTourismIntelligenceReportPDF(
 
   // Main Title
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
+  doc.setFontSize(15.5);
   doc.setTextColor(255, 255, 255);
   doc.text('LAPORAN INFOGRAFIS SINYAL & PREFERENSI WISATAWAN', margin, 20);
 
@@ -85,12 +106,12 @@ export function generateTourismIntelligenceReportPDF(
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7);
   doc.setTextColor(148, 163, 184); // slate-400
-  doc.text(`TANGGAL DITERBITKAN: `, margin + 3, 35.5);
+  doc.text('TANGGAL DITERBITKAN: ', margin + 3, 35.5);
   doc.setTextColor(241, 245, 249);
   doc.text(`${dateFormatted}, ${timeFormatted}`, margin + 35, 35.5);
 
   doc.setTextColor(148, 163, 184);
-  doc.text(`STATUS REGULASI: `, margin + 95, 35.5);
+  doc.text('STATUS REGULASI: ', margin + 95, 35.5);
   doc.setTextColor(52, 211, 153); // emerald-400
   doc.text('UU PDP No. 27/2022 (Anonim & Agregat)', margin + 125, 35.5);
 
@@ -107,57 +128,57 @@ export function generateTourismIntelligenceReportPDF(
 
   currentY += 4;
 
-  const cardW = (contentWidth - 8) / 3; // 3 columns, 4mm gap -> (182 - 8) / 3 = 58mm
+  const cardW = (contentWidth - 8) / 3;
   const cardH = 20;
 
   const kpis = [
     {
       title: 'TOTAL SINYAL TERREKAM',
-      val: stats.totalSignals.toLocaleString(),
+      val: safeTotalSignals.toLocaleString(),
       sub: 'Interaksi digital tercatat',
-      bg: [239, 246, 255], // blue-50
-      border: [191, 219, 254], // blue-200
-      textColor: [30, 64, 175] // blue-800
+      bg: [239, 246, 255],
+      border: [191, 219, 254],
+      textColor: [30, 64, 175]
     },
     {
       title: 'WISATAWAN UNIK (REACH)',
-      val: stats.uniqueVisitors.toLocaleString(),
+      val: safeUniqueVisitors.toLocaleString(),
       sub: 'Perangkat penjelajah unik',
-      bg: [250, 245, 255], // purple-50
-      border: [233, 213, 255], // purple-200
-      textColor: [107, 33, 168] // purple-800
+      bg: [250, 245, 255],
+      border: [233, 213, 255],
+      textColor: [107, 33, 168]
     },
     {
       title: 'SESI KUNJUNGAN COOKIE',
-      val: stats.sessionStarts.toLocaleString(),
+      val: safeSessionStarts.toLocaleString(),
       sub: 'Persetujuan cookie aktif',
-      bg: [254, 252, 232], // amber-50
-      border: [254, 240, 138], // amber-200
-      textColor: [146, 64, 14] // amber-800
+      bg: [254, 252, 232],
+      border: [254, 240, 138],
+      textColor: [146, 64, 14]
     },
     {
       title: 'MINAT DESTINASI (BOOKMARK)',
-      val: stats.totalBookmarks.toLocaleString(),
+      val: safeTotalBookmarks.toLocaleString(),
       sub: 'Objek wisata disimpan',
-      bg: [236, 253, 245], // emerald-50
-      border: [167, 243, 208], // emerald-200
-      textColor: [6, 95, 70] // emerald-800
+      bg: [236, 253, 245],
+      border: [167, 243, 208],
+      textColor: [6, 95, 70]
     },
     {
       title: 'ITINERARY AI DIGENERATE',
-      val: stats.totalItineraries.toLocaleString(),
+      val: safeTotalItineraries.toLocaleString(),
       sub: 'Perencanaan rute dibuat',
-      bg: [238, 242, 255], // indigo-50
-      border: [199, 210, 254], // indigo-200
-      textColor: [55, 48, 163] // indigo-800
+      bg: [238, 242, 255],
+      border: [199, 210, 254],
+      textColor: [55, 48, 163]
     },
     {
       title: 'PANDUAN PDF DIUNDUH',
-      val: stats.pdfDownloads.toLocaleString(),
+      val: safePdfDownloads.toLocaleString(),
       sub: 'Wisatawan siap berangkat',
-      bg: [255, 241, 242], // rose-50
-      border: [254, 205, 211], // rose-200
-      textColor: [159, 18, 57] // rose-800
+      bg: [255, 241, 242],
+      border: [254, 205, 211],
+      textColor: [159, 18, 57]
     }
   ];
 
@@ -167,25 +188,21 @@ export function generateTourismIntelligenceReportPDF(
     const x = margin + col * (cardW + 4);
     const y = currentY + row * (cardH + 3.5);
 
-    // Card Box
     doc.setFillColor(kpi.bg[0], kpi.bg[1], kpi.bg[2]);
     doc.setDrawColor(kpi.border[0], kpi.border[1], kpi.border[2]);
     doc.setLineWidth(0.3);
     doc.roundedRect(x, y, cardW, cardH, 2, 2, 'FD');
 
-    // Title
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(6.8);
-    doc.setTextColor(100, 116, 139); // slate-500
+    doc.setTextColor(100, 116, 139);
     doc.text(kpi.title, x + 3.5, y + 5);
 
-    // Value
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.setTextColor(kpi.textColor[0], kpi.textColor[1], kpi.textColor[2]);
     doc.text(kpi.val, x + 3.5, y + 12.5);
 
-    // Subtitle
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(6.5);
     doc.setTextColor(100, 116, 139);
@@ -205,23 +222,23 @@ export function generateTourismIntelligenceReportPDF(
   currentY += 4;
 
   const topDestBoxH = 50;
-  doc.setFillColor(248, 250, 252); // slate-50
-  doc.setDrawColor(226, 232, 240); // slate-200
+  doc.setFillColor(248, 250, 252);
+  doc.setDrawColor(226, 232, 240);
   doc.roundedRect(margin, currentY, contentWidth, topDestBoxH, 2.5, 2.5, 'FD');
 
-  const maxBookmarks = stats.topDestinations.length > 0
-    ? Math.max(...stats.topDestinations.map(d => d.count), 1)
+  const maxBookmarks = topDestinations.length > 0
+    ? Math.max(...topDestinations.map(d => d.count || 0), 1)
     : 1;
 
-  if (stats.topDestinations.length === 0) {
+  if (topDestinations.length === 0) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
     doc.text('Belum ada sinyal bookmark destinasi yang terekam dalam periode ini.', margin + 10, currentY + 25);
   } else {
-    stats.topDestinations.slice(0, 5).forEach((item, idx) => {
+    topDestinations.slice(0, 5).forEach((item, idx) => {
       const rowY = currentY + 7 + idx * 8.2;
-      const cleanTitle = cleanPdfText(item.title).slice(0, 32);
+      const cleanTitle = cleanPdfText(item.title || 'Destinasi Favorit').slice(0, 32);
 
       // Rank Circle
       doc.setFillColor(idx === 0 ? 217 : 241, idx === 0 ? 119 : 245, idx === 0 ? 6 : 249);
@@ -234,35 +251,32 @@ export function generateTourismIntelligenceReportPDF(
       // Destination Name
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
-      doc.setTextColor(30, 41, 59); // slate-800
+      doc.setTextColor(30, 41, 59);
       doc.text(cleanTitle, margin + 12, rowY);
 
       // Bar Chart visualizer
-      const maxBarWidth = 72; // mm
-      const barWidth = Math.max(6, (item.count / maxBookmarks) * maxBarWidth);
+      const maxBarWidth = 72;
+      const barWidth = Math.max(6, ((item.count || 1) / maxBookmarks) * maxBarWidth);
       const barStartX = margin + 82;
 
-      // Gray track background
-      doc.setFillColor(226, 232, 240); // slate-200
+      doc.setFillColor(226, 232, 240);
       doc.roundedRect(barStartX, rowY - 3.2, maxBarWidth, 4.5, 1, 1, 'F');
 
-      // Filled colored bar
       const barColors = [
-        [16, 185, 129], // emerald-500
-        [14, 165, 233], // sky-500
-        [168, 85, 247], // purple-500
-        [245, 158, 11], // amber-500
-        [239, 68, 68]   // red-500
+        [16, 185, 129],
+        [14, 165, 233],
+        [168, 85, 247],
+        [245, 158, 11],
+        [239, 68, 68]
       ];
       const color = barColors[idx % barColors.length];
       doc.setFillColor(color[0], color[1], color[2]);
       doc.roundedRect(barStartX, rowY - 3.2, barWidth, 4.5, 1, 1, 'F');
 
-      // Value Label
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(7.5);
       doc.setTextColor(15, 23, 42);
-      doc.text(`${item.count} Sinyal`, barStartX + maxBarWidth + 4, rowY);
+      doc.text(`${item.count || 0} Sinyal`, barStartX + maxBarWidth + 4, rowY);
     });
   }
 
@@ -278,7 +292,7 @@ export function generateTourismIntelligenceReportPDF(
 
   currentY += 4;
 
-  const colW = (contentWidth - 5) / 2; // (182 - 5) / 2 = 88.5mm
+  const colW = (contentWidth - 5) / 2;
   const sec3BoxH = 38;
 
   // Left Box: Preferensi Durasi
@@ -291,8 +305,7 @@ export function generateTourismIntelligenceReportPDF(
   doc.setTextColor(71, 85, 105);
   doc.text('⏱️ PREFERENSI DURASI LIBURAN', margin + 4, currentY + 6);
 
-  const durationEntries = Object.entries(stats.durationDistribution);
-  const totalDurations = durationEntries.reduce((acc, [, val]) => acc + val, 0) || 1;
+  const totalDurations = durationEntries.reduce((acc, [, val]) => acc + (Number(val) || 0), 0) || 1;
 
   if (durationEntries.length === 0) {
     doc.setFont('helvetica', 'normal');
@@ -302,7 +315,8 @@ export function generateTourismIntelligenceReportPDF(
   } else {
     durationEntries.slice(0, 3).forEach(([dur, count], i) => {
       const dy = currentY + 13 + i * 7.5;
-      const pct = Math.round((count / totalDurations) * 100);
+      const numCount = Number(count) || 0;
+      const pct = Math.round((numCount / totalDurations) * 100);
       const label = dur === '1' ? '1 Hari (Ekskursi Singkat)' : dur === '2' ? '2-3 Hari (Short Stay)' : dur === '3' ? '4-7 Hari (Eksplorasi Lengkap)' : `${dur} Hari`;
 
       doc.setFont('helvetica', 'normal');
@@ -310,11 +324,10 @@ export function generateTourismIntelligenceReportPDF(
       doc.setTextColor(30, 41, 59);
       doc.text(label, margin + 4, dy);
 
-      // Track & Fill
       const durBarW = 30;
       doc.setFillColor(241, 245, 249);
       doc.roundedRect(margin + colW - durBarW - 14, dy - 2.8, durBarW, 3.5, 0.8, 0.8, 'F');
-      doc.setFillColor(79, 70, 229); // indigo-600
+      doc.setFillColor(79, 70, 229);
       doc.roundedRect(margin + colW - durBarW - 14, dy - 2.8, Math.max(2, (pct / 100) * durBarW), 3.5, 0.8, 0.8, 'F');
 
       doc.setFont('helvetica', 'bold');
@@ -335,22 +348,17 @@ export function generateTourismIntelligenceReportPDF(
   doc.setTextColor(71, 85, 105);
   doc.text('📱 SEBARAN PERANGKAT PENJELAJAH', rightX + 4, currentY + 6);
 
-  const totalDev = (stats.deviceDistribution.mobile + stats.deviceDistribution.desktop) || 1;
-  const mobPct = Math.round((stats.deviceDistribution.mobile / totalDev) * 100);
-  const dskPct = 100 - mobPct;
-
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
   doc.setTextColor(15, 23, 42);
   doc.text(`Mobile (Smartphone): ${mobPct}%`, rightX + 4, currentY + 14);
   doc.text(`Desktop / Laptop: ${dskPct}%`, rightX + 4, currentY + 22);
 
-  // Split Meter bar
   const meterW = colW - 8;
   const mobW = Math.max(3, (mobPct / 100) * meterW);
-  doc.setFillColor(14, 165, 233); // sky-500
+  doc.setFillColor(14, 165, 233);
   doc.roundedRect(rightX + 4, currentY + 26, mobW, 5, 1, 1, 'F');
-  doc.setFillColor(100, 116, 139); // slate-500
+  doc.setFillColor(100, 116, 139);
   doc.roundedRect(rightX + 4 + mobW, currentY + 26, meterW - mobW, 5, 1, 1, 'F');
 
   doc.setFont('helvetica', 'normal');
@@ -371,8 +379,8 @@ export function generateTourismIntelligenceReportPDF(
   currentY += 4;
 
   const policyBoxH = 43;
-  doc.setFillColor(240, 253, 244); // emerald-50
-  doc.setDrawColor(187, 247, 208); // emerald-200
+  doc.setFillColor(240, 253, 244);
+  doc.setDrawColor(187, 247, 208);
   doc.roundedRect(margin, currentY, contentWidth, policyBoxH, 2.5, 2.5, 'FD');
 
   const policies = [
@@ -396,12 +404,12 @@ export function generateTourismIntelligenceReportPDF(
 
   policies.forEach((pol, pIdx) => {
     const py = currentY + 5.5 + pIdx * 9.2;
-    doc.setFillColor(16, 185, 129); // emerald-500
+    doc.setFillColor(16, 185, 129);
     doc.circle(margin + 4.5, py - 1, 1.2, 'F');
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
-    doc.setTextColor(6, 95, 70); // emerald-800
+    doc.setTextColor(6, 95, 70);
     doc.text(pol.label, margin + 8, py);
 
     doc.setFont('helvetica', 'normal');
@@ -411,9 +419,7 @@ export function generateTourismIntelligenceReportPDF(
     doc.text(splitDesc, margin + 8, py + 3.2);
   });
 
-  // =========================================================================
-  // 6. FOOTER RESMI INFOGRAFIS
-  // =========================================================================
+  // Footer
   doc.setDrawColor(226, 232, 240);
   doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
 
@@ -430,23 +436,23 @@ export function generateTourismIntelligenceReportPDF(
   doc.setTextColor(100, 116, 139);
   doc.text('DOKUMEN EKSEKUTIF A4 | INFOGRAFIS RESMI', pageWidth - margin, pageHeight - 7, { align: 'right' });
 
-  // =========================================================================
-  // 7. DOWNLOAD SILENT VIA BLOB
-  // =========================================================================
+  // Download via Blob (Browser environment)
   const filenameDate = now.toISOString().slice(0, 10);
   const filename = `Laporan-Infografis-Intelijen-Wisata-Sumbar-${filenameDate}.pdf`;
 
-  const pdfBlob = doc.output('blob');
-  const blobUrl = URL.createObjectURL(pdfBlob);
-  const downloadAnchor = document.createElement('a');
-  downloadAnchor.href = blobUrl;
-  downloadAnchor.download = filename;
-  downloadAnchor.style.display = 'none';
-  document.body.appendChild(downloadAnchor);
-  downloadAnchor.click();
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const pdfBlob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(pdfBlob);
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.href = blobUrl;
+    downloadAnchor.download = filename;
+    downloadAnchor.style.display = 'none';
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
 
-  setTimeout(() => {
-    document.body.removeChild(downloadAnchor);
-    URL.revokeObjectURL(blobUrl);
-  }, 3000);
+    setTimeout(() => {
+      document.body.removeChild(downloadAnchor);
+      URL.revokeObjectURL(blobUrl);
+    }, 3000);
+  }
 }
