@@ -328,6 +328,36 @@ export default function App() {
     setSelectedNews(null);
   }, [activeDrawer]);
 
+  // Hover Intent for Hot Info & Breaking News Ticker Bar (~300ms)
+  const tickerHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleTickerMouseEnter = useCallback(() => {
+    if (activeDrawer === 'hotinfo' || selectedNews) return;
+
+    if (tickerHoverTimeoutRef.current) {
+      clearTimeout(tickerHoverTimeoutRef.current);
+    }
+    // 300ms smooth hover-intent delay: ensures intentional hover without accidental flickers
+    tickerHoverTimeoutRef.current = setTimeout(() => {
+      handleOpenDrawer('hotinfo');
+    }, 300);
+  }, [activeDrawer, selectedNews, handleOpenDrawer]);
+
+  const handleTickerMouseLeave = useCallback(() => {
+    if (tickerHoverTimeoutRef.current) {
+      clearTimeout(tickerHoverTimeoutRef.current);
+      tickerHoverTimeoutRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (tickerHoverTimeoutRef.current) {
+        clearTimeout(tickerHoverTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Listen to browser / smartphone Back button (popstate)
   useEffect(() => {
     const handlePopState = () => {
@@ -384,11 +414,19 @@ export default function App() {
 
       {/* Fixed Vertical Hot Info Trigger (Far Left - Hidden on mobile) */}
       <button
-        onClick={() => handleOpenDrawer('hotinfo')}
+        onClick={() => {
+          if (tickerHoverTimeoutRef.current) {
+            clearTimeout(tickerHoverTimeoutRef.current);
+            tickerHoverTimeoutRef.current = null;
+          }
+          handleOpenDrawer('hotinfo');
+        }}
+        onMouseEnter={handleTickerMouseEnter}
+        onMouseLeave={handleTickerMouseLeave}
         className={`hidden sm:flex fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-red-600 hover:bg-black text-white transition-all duration-300 py-4 px-2.5 rounded-r-xl flex-col items-center gap-3 shadow-2xl group border border-l-0 border-red-700 hover:border-gray-900 cursor-pointer focus:outline-none select-none ${
           activeDrawer === 'hotinfo' ? 'bg-black ring-2 ring-red-500' : ''
         }`}
-        title={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
+        title={lang === 'en' ? 'Hot Info & Latest News (Hover or click to open)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka)'}
         aria-label={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
       >
         <span className="relative flex items-center justify-center">
@@ -427,11 +465,28 @@ export default function App() {
 
       {/* Breaking News Ticker Bar (Placed at the very bottom) */}
       <div 
-        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-colors shadow-2xl backdrop-blur-md"
+        onMouseEnter={handleTickerMouseEnter}
+        onMouseLeave={handleTickerMouseLeave}
+        onClick={() => {
+          if (tickerHoverTimeoutRef.current) {
+            clearTimeout(tickerHoverTimeoutRef.current);
+            tickerHoverTimeoutRef.current = null;
+          }
+          handleOpenDrawer('hotinfo');
+        }}
+        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 hover:border-red-500/80 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md cursor-pointer group/ticker"
+        title={lang === 'en' ? 'Hot Info & News (Hover or click to open full panel)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka panel lengkap)'}
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
-            onClick={() => handleOpenDrawer('hotinfo')}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (tickerHoverTimeoutRef.current) {
+                clearTimeout(tickerHoverTimeoutRef.current);
+                tickerHoverTimeoutRef.current = null;
+              }
+              handleOpenDrawer('hotinfo');
+            }}
             className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
           >
             <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
@@ -439,7 +494,14 @@ export default function App() {
           </button>
           
           <button
-            onClick={handleRefreshTicker}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (tickerHoverTimeoutRef.current) {
+                clearTimeout(tickerHoverTimeoutRef.current);
+                tickerHoverTimeoutRef.current = null;
+              }
+              handleRefreshTicker();
+            }}
             disabled={isRefreshingTicker}
             title={lang === 'en' ? 'Refresh real-time news' : 'Perbarui berita real-time'}
             className="bg-red-950/80 hover:bg-red-900 border border-red-600/50 text-red-300 p-1 rounded shrink-0 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
@@ -477,7 +539,12 @@ export default function App() {
                   return (
                     <button
                       key={`${news.id}-${idx}`}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (tickerHoverTimeoutRef.current) {
+                          clearTimeout(tickerHoverTimeoutRef.current);
+                          tickerHoverTimeoutRef.current = null;
+                        }
                         setSelectedNews(news);
                       }}
                       className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5"
@@ -495,7 +562,14 @@ export default function App() {
         </div>
 
         <button 
-          onClick={() => handleOpenDrawer('hotinfo')}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (tickerHoverTimeoutRef.current) {
+              clearTimeout(tickerHoverTimeoutRef.current);
+              tickerHoverTimeoutRef.current = null;
+            }
+            handleOpenDrawer('hotinfo');
+          }}
           className="shrink-0 text-[10px] font-jakarta font-bold text-yellow-400 uppercase tracking-wider hidden sm:flex items-center gap-1 hover:underline cursor-pointer ml-1"
         >
           <span>{lang === 'en' ? 'View All' : 'Lihat Semua'}</span>
