@@ -65,15 +65,24 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex flex-col items-start cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
+          {/* Default / Light Background Logo (Red + Black) */}
           <img
             src="/malala-logo.png"
             alt="MALALA"
             className={`h-7 sm:h-8 md:h-9.5 lg:h-11 w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[215px] object-contain transition-all duration-300 ${
-              isWhiteHeroText
-                ? 'md:brightness-0 md:invert md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
-                : 'drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)]'
-            }`}
+              isWhiteHeroText ? 'md:hidden' : 'block'
+            } drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)]`}
           />
+
+          {/* Dark Background Logo for Desktop Hero (Red + White) */}
+          {isWhiteHeroText && (
+            <img
+              src="/malala-logo-white.png"
+              alt="MALALA"
+              className="hidden md:block h-7 sm:h-8 md:h-9.5 lg:h-11 w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[215px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+            />
+          )}
+
           <span
             className="font-jakarta text-[8px] sm:text-[8.5px] md:text-[9px] tracking-[0.2em] sm:tracking-[0.22em] font-semibold mt-0.5 uppercase transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
