@@ -1172,6 +1172,8 @@ export const Drawers: React.FC<DrawersProps> = ({
           />
       {/* Drawer Outer Wrapper */}
       <div
+        onMouseEnter={activeDrawer === 'hotinfo' ? onMouseEnterDrawer : undefined}
+        onMouseLeave={activeDrawer === 'hotinfo' ? onMouseLeaveDrawer : undefined}
         className={`fixed top-0 bottom-0 z-[70] ${
           activeDrawer === 'hotinfo'
             ? 'w-full md:w-1/2 lg:w-1/2 left-0 border-r border-gray-200 animate-drawer-slide-left'
@@ -3775,14 +3777,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                     const dynamicCats = dedupedList.map((i: any) => i.category).filter(Boolean);
                     const uniqueCategories = Array.from(new Set([
                       'Semua',
+                      'Berita Utama',
                       'Pariwisata Sumatera Barat',
                       'Pariwisata Indonesia',
                       ...dynamicCats
                     ]));
 
                     const getCategoryLabel = (cat: string) => {
-                      if (lang !== 'en') return cat;
+                      if (lang !== 'en') {
+                        if (cat === 'Berita Utama') return '⭐ Berita Utama';
+                        return cat;
+                      }
                       if (cat === 'Semua') return 'All Updates';
+                      if (cat === 'Berita Utama') return '⭐ Main Headlines';
                       if (cat === 'Pariwisata Sumatera Barat') return 'West Sumatra Tourism';
                       if (cat === 'Pariwisata Indonesia') return 'Indonesian Tourism';
                       if (cat === 'Pariwisata Nasional') return 'National Tourism';
@@ -3791,6 +3798,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                     return uniqueCategories.map((cat: string) => {
                       const isSelected = hotInfoCategory === cat;
+                      const isMain = cat === 'Berita Utama';
                       const isSumbar = cat === 'Pariwisata Sumatera Barat';
                       const isIndo = cat === 'Pariwisata Indonesia';
                       return (
@@ -3802,8 +3810,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                           }}
                           className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer flex items-center gap-1.5 text-xs ${
                             isSelected
-                              ? isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
-                              : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              ? isMain ? 'bg-red-600 text-white shadow-xs' : isSumbar ? 'bg-amber-600 text-white shadow-xs' : 'bg-red-600 text-white shadow-xs'
+                              : isMain ? 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100' : isSumbar ? 'bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
                           {isSumbar && <span>🏔️</span>}
@@ -3885,16 +3893,21 @@ export const Drawers: React.FC<DrawersProps> = ({
                 const categoryFiltered = allHotInfo.filter((item: any) => {
                   if (hotInfoCategory === 'Semua') return true;
                   
-                  const isExplicitSumbar = item.category === 'Pariwisata Sumatera Barat' || item.tag === 'Sumbar';
+                  const isMainHeadline = item.tag === 'Berita Utama' || item.category === 'Berita Utama' || item.isHeadline || item.isUrgent;
+                  if (hotInfoCategory === 'Berita Utama') {
+                    return isMainHeadline;
+                  }
+
+                  const isExplicitSumbar = item.category === 'Pariwisata Sumatera Barat' || item.tag === 'Sumbar' || item.tag === 'Berita Utama' || item.isHeadline;
                   const isExplicitNational = item.category === 'Pariwisata Indonesia' || item.category === 'Pariwisata Nasional' || item.tag === 'Indonesia';
 
                   if (hotInfoCategory === 'Pariwisata Sumatera Barat') {
-                    if (isExplicitNational) return false;
+                    if (isExplicitNational && !isExplicitSumbar) return false;
                     return isExplicitSumbar || isSumbarTopic(item.title);
                   }
                   
                   if (hotInfoCategory === 'Pariwisata Indonesia' || hotInfoCategory === 'Pariwisata Nasional') {
-                    if (isExplicitSumbar) return false;
+                    if (isExplicitSumbar && !isExplicitNational) return false;
                     return isExplicitNational || !isSumbarTopic(item.title);
                   }
                   
@@ -3903,6 +3916,9 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                 const dedupedList = deduplicateNewsItems(categoryFiltered)
                   .sort((a: any, b: any) => {
+                    const aHeadline = (a.isHeadline || a.tag === 'Berita Utama') ? 1 : 0;
+                    const bHeadline = (b.isHeadline || b.tag === 'Berita Utama') ? 1 : 0;
+                    if (aHeadline !== bHeadline) return bHeadline - aHeadline;
                     const timeA = parseNewsTimestamp(a.date, a.createdAt);
                     const timeB = parseNewsTimestamp(b.date, b.createdAt);
                     return timeB - timeA;
@@ -3992,6 +4008,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                                   }`}>
                                     {categoryDisplay}
                                   </span>
+                                  {(item.tag === 'Berita Utama' || item.isHeadline) && (
+                                    <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs uppercase tracking-wider">
+                                      <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                      <span>{isEn ? 'HEADLINE' : 'BERITA UTAMA'}</span>
+                                    </span>
+                                  )}
                                   {(item.tag === 'Penting' || item.isUrgent) && (
                                     <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
                                       <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />

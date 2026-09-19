@@ -726,6 +726,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         if (!formData.createdAt) {
           formData.createdAt = Date.now();
         }
+        // Berita yang diinput secara manual oleh admin langsung otomatis dikategorikan sebagai Berita Utama & Pariwisata Sumatera Barat
+        formData.isHeadline = true;
+        if (!formData.category || formData.category === 'Berita Utama') {
+          formData.category = 'Pariwisata Sumatera Barat';
+          formData.categoryEn = 'West Sumatra Tourism';
+        }
+        if (!formData.tag) {
+          formData.tag = 'Berita Utama';
+          formData.tagEn = 'Main News';
+        }
         if (formData.imageUrl && formData.imageUrl.trim()) {
           formData.isUserUploadedImage = true;
         } else {
@@ -818,16 +828,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           id: '',
           title: '',
           titleEn: '',
-          category: 'Berita Utama',
-          categoryEn: 'Main News',
+          category: 'Pariwisata Sumatera Barat',
+          categoryEn: 'West Sumatra Tourism',
           date: 'Hari Ini',
           dateEn: 'Today',
           description: '',
           descriptionEn: '',
           imageUrl: '',
           isUserUploadedImage: false,
-          tag: 'Update',
-          tagEn: 'Update',
+          tag: 'Berita Utama',
+          tagEn: 'Main News',
+          isHeadline: true,
           actionUrl: '',
           sourceUrl: '',
           sourceName: '',
@@ -2091,7 +2102,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">2. Kategori Info (Indonesian)</label>
-                      <select name="category" value={formData.category || 'Berita Utama'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
+                      <select name="category" value={formData.category || 'Pariwisata Sumatera Barat'} onChange={handleChange} className="w-full bg-white border border-gray-300 rounded p-2 text-xs">
+                        <option>Pariwisata Sumatera Barat</option>
                         <option>Berita Utama</option>
                         <option>Cuaca & Jalur</option>
                         <option>Event Mendatang</option>
@@ -2100,7 +2112,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">2. Category Info (English Translation)</label>
-                      <input type="text" name="categoryEn" value={formData.categoryEn || ''} onChange={handleChange} placeholder="e.g. Main News / Weather Update" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+                      <input type="text" name="categoryEn" value={formData.categoryEn || ''} onChange={handleChange} placeholder="e.g. West Sumatra Tourism" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 
@@ -2118,11 +2130,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-gray-500 mb-1">4. Label Tag Badge (Indonesian)</label>
-                      <input type="text" name="tag" value={formData.tag || ''} onChange={handleChange} placeholder="e.g. Penting, Festival" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
+                      <input type="text" name="tag" value={formData.tag || 'Berita Utama'} onChange={handleChange} placeholder="e.g. Berita Utama, Penting" className="w-full bg-white border border-gray-300 rounded p-2 text-xs" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold uppercase text-blue-600 mb-1">4. Label Tag Badge (English Translation)</label>
-                      <input type="text" name="tagEn" value={formData.tagEn || ''} onChange={handleChange} placeholder="e.g. Urgent, Cultural Festival" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
+                      <input type="text" name="tagEn" value={formData.tagEn || 'Main News'} onChange={handleChange} placeholder="e.g. Main News, Urgent" className="w-full bg-blue-50/40 border border-blue-200 rounded p-2 text-xs" />
                     </div>
                   </div>
 

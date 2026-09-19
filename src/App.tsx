@@ -328,31 +328,56 @@ export default function App() {
     setSelectedNews(null);
   }, [activeDrawer]);
 
-  // Instant Hover Auto-Open for Hot Info & Breaking News Ticker Bar (No Delay)
-  const tickerHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  // Hover & Auto-Close Handlers for Hot Info Panel
+  const hotInfoCloseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleTickerMouseEnter = useCallback(() => {
-    if (activeDrawer === 'hotinfo' || selectedNews) return;
-
-    if (tickerHoverTimeoutRef.current) {
-      clearTimeout(tickerHoverTimeoutRef.current);
-      tickerHoverTimeoutRef.current = null;
+    // Clear any pending close timeout immediately
+    if (hotInfoCloseTimeoutRef.current) {
+      clearTimeout(hotInfoCloseTimeoutRef.current);
+      hotInfoCloseTimeoutRef.current = null;
     }
-    // Instant trigger: langsung muncul seketika saat kursor mengarah (no delay)
+    if (activeDrawer === 'hotinfo' || selectedNews) return;
+    // Instant open (no delay) when mouse enters the Hot Info button / trigger
     handleOpenDrawer('hotinfo');
   }, [activeDrawer, selectedNews, handleOpenDrawer]);
 
   const handleTickerMouseLeave = useCallback(() => {
-    if (tickerHoverTimeoutRef.current) {
-      clearTimeout(tickerHoverTimeoutRef.current);
-      tickerHoverTimeoutRef.current = null;
+    // When mouse leaves the Hot Info trigger button, give a 350ms window to enter the drawer panel
+    if (activeDrawer === 'hotinfo' && !selectedNews) {
+      if (hotInfoCloseTimeoutRef.current) {
+        clearTimeout(hotInfoCloseTimeoutRef.current);
+      }
+      hotInfoCloseTimeoutRef.current = setTimeout(() => {
+        handleCloseDrawer();
+      }, 350);
+    }
+  }, [activeDrawer, selectedNews, handleCloseDrawer]);
+
+  const handleHotInfoDrawerMouseEnter = useCallback(() => {
+    // Cursor is inside the drawer panel, cancel any auto-close timer
+    if (hotInfoCloseTimeoutRef.current) {
+      clearTimeout(hotInfoCloseTimeoutRef.current);
+      hotInfoCloseTimeoutRef.current = null;
     }
   }, []);
 
+  const handleHotInfoDrawerMouseLeave = useCallback(() => {
+    // Cursor left the drawer panel, auto-close after 300ms
+    if (activeDrawer === 'hotinfo' && !selectedNews) {
+      if (hotInfoCloseTimeoutRef.current) {
+        clearTimeout(hotInfoCloseTimeoutRef.current);
+      }
+      hotInfoCloseTimeoutRef.current = setTimeout(() => {
+        handleCloseDrawer();
+      }, 300);
+    }
+  }, [activeDrawer, selectedNews, handleCloseDrawer]);
+
   useEffect(() => {
     return () => {
-      if (tickerHoverTimeoutRef.current) {
-        clearTimeout(tickerHoverTimeoutRef.current);
+      if (hotInfoCloseTimeoutRef.current) {
+        clearTimeout(hotInfoCloseTimeoutRef.current);
       }
     };
   }, []);
@@ -464,43 +489,22 @@ export default function App() {
 
       {/* Breaking News Ticker Bar (Placed at the very bottom) */}
       <div 
-        onMouseEnter={handleTickerMouseEnter}
-        onMouseLeave={handleTickerMouseLeave}
-        onClick={() => {
-          if (tickerHoverTimeoutRef.current) {
-            clearTimeout(tickerHoverTimeoutRef.current);
-            tickerHoverTimeoutRef.current = null;
-          }
-          handleOpenDrawer('hotinfo');
-        }}
-        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 hover:border-red-500/80 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md cursor-pointer group/ticker"
-        title={lang === 'en' ? 'Hot Info & News (Hover or click to open full panel)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka panel lengkap)'}
+        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              if (tickerHoverTimeoutRef.current) {
-                clearTimeout(tickerHoverTimeoutRef.current);
-                tickerHoverTimeoutRef.current = null;
-              }
-              handleOpenDrawer('hotinfo');
-            }}
+            onMouseEnter={handleTickerMouseEnter}
+            onMouseLeave={handleTickerMouseLeave}
+            onClick={() => handleOpenDrawer('hotinfo')}
             className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
+            title={lang === 'en' ? 'Hot Info & News (Hover or click to open full panel)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka panel lengkap)'}
           >
             <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
             <span>{lang === 'en' ? 'HOT INFO & NEWS' : 'HOT INFO TERKINI'}</span>
           </button>
           
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              if (tickerHoverTimeoutRef.current) {
-                clearTimeout(tickerHoverTimeoutRef.current);
-                tickerHoverTimeoutRef.current = null;
-              }
-              handleRefreshTicker();
-            }}
+            onClick={handleRefreshTicker}
             disabled={isRefreshingTicker}
             title={lang === 'en' ? 'Refresh real-time news' : 'Perbarui berita real-time'}
             className="bg-red-950/80 hover:bg-red-900 border border-red-600/50 text-red-300 p-1 rounded shrink-0 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
@@ -509,6 +513,7 @@ export default function App() {
           </button>
         </div>
 
+        {/* Running News Ticker: Hover pauses scroll for reading, clicking opens specific news (no drawer auto-open) */}
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           {(() => {
             const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
@@ -538,15 +543,9 @@ export default function App() {
                   return (
                     <button
                       key={`${news.id}-${idx}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (tickerHoverTimeoutRef.current) {
-                          clearTimeout(tickerHoverTimeoutRef.current);
-                          tickerHoverTimeoutRef.current = null;
-                        }
-                        setSelectedNews(news);
-                      }}
+                      onClick={() => setSelectedNews(news)}
                       className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5"
+                      title={lang === 'en' ? 'Click to read article' : 'Klik untuk membaca berita'}
                     >
                       <span className="font-bold text-red-400 group-hover:text-red-300 font-mono text-[10px]">[{sourceBrand}]</span>
                       <span className="underline-offset-2 group-hover:underline tracking-wide text-xs">{titleText}</span>
@@ -561,15 +560,11 @@ export default function App() {
         </div>
 
         <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            if (tickerHoverTimeoutRef.current) {
-              clearTimeout(tickerHoverTimeoutRef.current);
-              tickerHoverTimeoutRef.current = null;
-            }
-            handleOpenDrawer('hotinfo');
-          }}
+          onMouseEnter={handleTickerMouseEnter}
+          onMouseLeave={handleTickerMouseLeave}
+          onClick={() => handleOpenDrawer('hotinfo')}
           className="shrink-0 text-[10px] font-jakarta font-bold text-yellow-400 uppercase tracking-wider hidden sm:flex items-center gap-1 hover:underline cursor-pointer ml-1"
+          title={lang === 'en' ? 'View all Hot Info & News (Hover or click to open)' : 'Lihat semua Hot Info & Berita (Arahkan kursor atau klik untuk membuka)'}
         >
           <span>{lang === 'en' ? 'View All' : 'Lihat Semua'}</span>
           <span>→</span>
@@ -585,6 +580,8 @@ export default function App() {
         onToggleSave={handleToggleSave}
         dataStore={dataStore}
         lang={lang}
+        onMouseEnterDrawer={handleHotInfoDrawerMouseEnter}
+        onMouseLeaveDrawer={handleHotInfoDrawerMouseLeave}
         onSelectNews={handleOpenNews}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
