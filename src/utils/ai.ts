@@ -618,6 +618,30 @@ export async function fetchAiItinerary(params: any) {
         const destSummary = availableDestinations.map((d: any) => `- ${d.title} (${d.category}): ${d.tag}`).join('\n');
         
         const targetEvent = params?.targetEvent;
+        const startingPoint = params?.startingPoint;
+
+        const startingPointPrompt = `
+📍 TITIK AWAL KEBERANGKATAN WISATAWAN (STARTING POINT & ROUTING ANCHOR):
+- Tipe Titik Awal: ${startingPoint?.type || 'airport'}
+- Lokasi/Nama: ${startingPoint?.label || 'Bandara Internasional Minangkabau (BIM)'}
+${startingPoint?.details ? `- Keterangan/Detail: ${startingPoint.details}` : ''}
+${startingPoint?.city ? `- Kota/Kabupaten Basis: ${startingPoint.city}` : ''}
+${startingPoint?.coords ? `- Koordinat GPS: Lat ${startingPoint.coords.lat}, Lng ${startingPoint.coords.lng}` : ''}
+
+ATURAN RUTE BERDASARKAN TITIK AWAL:
+${
+  startingPoint?.type === 'current_location'
+    ? '1. Wisatawan SUDAH BERADA di Sumatera Barat pada titik lokasi saat ini (GPS). JANGAN membuat jadwal penjemputan bandara pada Hari 1. Langsung mulai Hari 1 dari lokasi saat ini menuju destinasi terdekat yang searah koridor.'
+    : startingPoint?.type === 'hotel'
+    ? `1. Wisatawan SUDAH MENGINAP di ${startingPoint?.details || startingPoint?.label || 'Hotel/Penginapan'}. Rute Hari 1 TIDAK PERLU penjemputan bandara; langsung jemput dari penginapan ini di pagi hari, dan jadwalkan kembali ke area penginapan di malam hari (circular daily tour).`
+    : startingPoint?.type === 'custom_city'
+    ? `1. Titik tolak utama perjalanan dimulai dari: ${startingPoint?.label || startingPoint?.city || 'kota pilihan'}. Jadwalkan seluruh rute perjalanan dengan pola hub-and-spoke atau loop koridor searah yang berpusat atau berangkat dari kota ini.`
+    : startingPoint?.type === 'must_visit'
+    ? `1. Destinasi impian utama yang WAJIB dikunjungi adalah: "${startingPoint?.label}". Jadwalkan kunjungan ke destinasi ini sebagai highlight utama Hari 1 atau Hari 2, dan atur destinasi pendukung lain di koridor wilayah yang sama secara efisien.`
+    : '1. Wisatawan baru tiba di Bandara Internasional Minangkabau (BIM). Mulai Hari 1 dengan penjemputan di bandara dan akhiri hari terakhir dengan pengantaran ke bandara.'
+}
+`;
+
         const eventEmphasisPrompt = targetEvent ? `
 🌟 TARGET EVENT / FESTIVAL UTAMA YANG WAJIB DIHADIRI (MANDATORY TRIP CENTERPIECE):
 Wisatawan ini secara khusus ingin menghadiri acara/festival berikut:
@@ -642,13 +666,15 @@ ATURAN WAJIB PALING UTAMA:
 Tugas Anda merancang itinerary wisata yang SANGAT SPESIFIK, NYAMAN, dan MEMATUHI SEMUA preferensi pengguna berikut:
 ${JSON.stringify(cleanParams, null, 2)}
 
+${startingPointPrompt}
+
 ${eventEmphasisPrompt}
 
 Daftar Destinasi & Kategori di Sumatera Barat yang dapat Anda pilih:
 ${destSummary}
 
 Aturan Ketat:
-1. Wajib sesuaikan destinasi, ritme, dan aktivitas dengan profil wisatawan (misal: jika bawa lansia/anak, kurangi aktivitas fisik ekstrem, pilih yang mudah diakses).
+1. Wajib sesuaikan destinasi, titik keberangkatan, ritme, dan aktivitas dengan profil wisatawan (misal: jika bawa lansia/anak, kurangi aktivitas fisik ekstrem, pilih yang mudah diakses; jika titik awal bukan bandara, mulai rute langsung dari titik tersebut).
 2. Rute HARUS SEARAH per klaster geografis tiap harinya. JANGAN bolak-balik.
 3. JANGAN mengulang destinasi di hari yang berbeda.
 4. Gunakan bahasa: ${langStr}.

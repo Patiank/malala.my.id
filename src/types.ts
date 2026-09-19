@@ -302,8 +302,20 @@ export interface PreferensiMinat {
   suasanaRamai: boolean;
 }
 
+export type StartingPointType = 'airport' | 'current_location' | 'hotel' | 'custom_city' | 'must_visit';
+
+export interface StartingPointConfig {
+  type: StartingPointType;
+  label: string;
+  details?: string;
+  city?: string;
+  destinationId?: string;
+  coords?: { lat: number; lng: number };
+}
+
 export interface Logistik {
   titikKeberangkatan: string;
+  startingPoint?: StartingPointConfig;
   moda: ModaTransportasi;
   radiusMaksimalKm: number;
 }
@@ -344,9 +356,11 @@ export interface ItineraryFormState {
   profilWisatawan: ProfilWisatawan;
   preferensiMinat: PreferensiMinat;
   logistik: Logistik;
+  startingPoint?: StartingPointConfig;
   anggaran: Anggaran;
   akomodasi: Akomodasi;
   waktuKunjungan: WaktuKunjungan;
   kebutuhanKhusus: KebutuhanKhusus;
   outputPreferensi: OutputPreferensi;
 }
+

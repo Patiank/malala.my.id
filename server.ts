@@ -61,6 +61,7 @@ async function startServer() {
         profilWisatawan, 
         preferensiMinat, 
         logistik, 
+        startingPoint,
         anggaran, 
         akomodasi, 
         waktuKunjungan, 
@@ -195,6 +196,55 @@ async function startServer() {
           }
         ];
 
+        // Adapt Day 1 starting point in fallback mode if not default airport
+        if (startingPoint && startingPoint.type !== 'airport' && masterDays[0]) {
+          if (startingPoint.type === 'current_location') {
+            const locLabel = startingPoint.details || (startingPoint.coords ? `GPS (${startingPoint.coords.lat.toFixed(3)}, ${startingPoint.coords.lng.toFixed(3)})` : (isEnglish ? 'Your Current Location' : 'Lokasi Anda'));
+            masterDays[0].title = isEnglish ? `Scenic Highland & Valley Tour from ${locLabel}` : `Pesona Lembah & Dataran Tinggi dari ${locLabel}`;
+            masterDays[0].activities[0] = {
+              time: "08:30 - 11:30",
+              location: isEnglish ? `${locLabel} → Lembah Anai Waterfall [Scenic Drive]` : `${locLabel} → Air Terjun Lembah Anai [Perjalanan Santai]`,
+              activity: isEnglish
+                ? `Departing directly from ${locLabel} in West Sumatra, heading through lush mountain corridors toward the refreshing Lembah Anai Waterfall.`
+                : `Berangkat langsung dari ${locLabel} di Sumatera Barat, menyusuri koridor alam tropis yang asri menuju Air Terjun Lembah Anai yang sejuk.`,
+              tips: isEnglish ? "Ensure vehicle readiness for scenic mountain pass." : "Pastikan kendaraan siap untuk menyusuri jalur pegunungan yang asri."
+            };
+          } else if (startingPoint.type === 'hotel') {
+            const hName = startingPoint.details || startingPoint.label || (isEnglish ? 'Your Hotel / Accommodation' : 'Hotel / Penginapan');
+            masterDays[0].title = isEnglish ? `Day Tour Excursion Starting from ${hName}` : `Eksplorasi Wisata Harian dari ${hName}`;
+            masterDays[0].activities[0] = {
+              time: "08:30 - 11:00",
+              location: isEnglish ? `Pickup at ${hName} → Highland Route` : `Penjemputan di ${hName} → Jalur Dataran Tinggi`,
+              activity: isEnglish
+                ? `Morning pickup right from your accommodation (${hName}) to commence the daily scenic excursion across iconic Minangkabau landmarks.`
+                : `Penjemputan pagi langsung dari penginapan Anda (${hName}) untuk memulai perjalanan harian menjelajahi panorama dan cagar budaya Ranah Minang.`,
+              tips: isEnglish ? "Have breakfast at your hotel before morning departure." : "Nikmati sarapan di hotel sebelum bersiap memulai petualangan pagi."
+            };
+          } else if (startingPoint.type === 'custom_city') {
+            const cName = startingPoint.label || startingPoint.city || (isEnglish ? 'Selected City Hub' : 'Pusat Kota Pilihan');
+            masterDays[0].title = isEnglish ? `City Hub Tour: ${cName} & Surrounding Geoparks` : `Pusat Eksplorasi: ${cName} & Pesona Alam Sekitar`;
+            masterDays[0].activities[0] = {
+              time: "08:30 - 11:00",
+              location: isEnglish ? `Departure Hub: ${cName} → Scenic Route` : `Titik Keberangkatan: ${cName} → Koridor Wisata`,
+              activity: isEnglish
+                ? `Commencing the journey from ${cName}, exploring nearby natural geoparks and authentic cultural landmarks in an optimized linear flow.`
+                : `Mengawali perjalanan langsung dari ${cName}, mengeksplorasi geopark alam terdekat dan ikon budaya Minangkabau secara efisien dan searah.`,
+              tips: isEnglish ? `Explore morning vibes in ${cName} before heading out.` : `Rasakan suasana pagi khas ${cName} sebelum memulai perjalanan.`
+            };
+          } else if (startingPoint.type === 'must_visit') {
+            const destTitle = startingPoint.label || (isEnglish ? 'Must-Visit Highlight' : 'Destinasi Impian');
+            masterDays[0].title = isEnglish ? `Priority Centerpiece: ${destTitle} & Surrounding Highlights` : `Highlight Utama: ${destTitle} & Koridor Wisata Sekitarnya`;
+            masterDays[0].activities[0] = {
+              time: "08:30 - 11:30",
+              location: `⭐ ${destTitle}`,
+              activity: isEnglish
+                ? `Direct morning excursion dedicated to experiencing ${destTitle} as the anchor highlight of your West Sumatra journey.`
+                : `Perjalanan pagi yang difokuskan langsung untuk mengeksplorasi keindahan ${destTitle} sebagai destinasi impian prioritas Anda di Ranah Minang.`,
+              tips: isEnglish ? "Ideal morning light for photography and relaxed exploration." : "Cahaya pagi sangat sempurna untuk berfoto dan menikmati keasrian destinasi."
+            };
+          }
+        }
+
         if (targetEv) {
           const evTitle = isEnglish && targetEv.titleEn ? targetEv.titleEn : targetEv.title;
           const evSched = isEnglish && targetEv.scheduleEn ? targetEv.scheduleEn : targetEv.schedule;
@@ -281,6 +331,28 @@ ATURAN WAJIB PALING UTAMA:
 3. Tuliskan nama "${targetEv.title}" secara eksplisit pada judul hari dan deskripsi aktivitas di hari tersebut!
 ` : '';
 
+      const startingPointPrompt = `
+📍 TITIK AWAL KEBERANGKATAN WISATAWAN (STARTING POINT & ROUTING ANCHOR):
+- Tipe Titik Awal: ${startingPoint?.type || 'airport'}
+- Lokasi/Nama: ${startingPoint?.label || 'Bandara Internasional Minangkabau (BIM)'}
+${startingPoint?.details ? `- Keterangan/Detail: ${startingPoint.details}` : ''}
+${startingPoint?.city ? `- Kota/Kabupaten Basis: ${startingPoint.city}` : ''}
+${startingPoint?.coords ? `- Koordinat GPS: Lat ${startingPoint.coords.lat}, Lng ${startingPoint.coords.lng}` : ''}
+
+ATURAN RUTE BERDASARKAN TITIK AWAL:
+${
+  startingPoint?.type === 'current_location'
+    ? '1. Wisatawan SUDAH BERADA di Sumatera Barat pada titik lokasi saat ini (GPS). JANGAN membuat jadwal penjemputan bandara pada Hari 1. Langsung mulai Hari 1 dari lokasi saat ini menuju destinasi terdekat yang searah koridor.'
+    : startingPoint?.type === 'hotel'
+    ? `1. Wisatawan SUDAH MENGINAP di ${startingPoint?.details || startingPoint?.label || 'Hotel/Penginapan'}. Rute Hari 1 TIDAK PERLU penjemputan bandara; langsung jemput dari penginapan ini di pagi hari, dan jadwalkan kembali ke area penginapan di malam hari (circular daily tour).`
+    : startingPoint?.type === 'custom_city'
+    ? `1. Titik tolak utama perjalanan dimulai dari: ${startingPoint?.label || startingPoint?.city || 'kota pilihan'}. Jadwalkan seluruh rute perjalanan dengan pola hub-and-spoke atau loop koridor searah yang berpusat atau berangkat dari kota ini.`
+    : startingPoint?.type === 'must_visit'
+    ? `1. Destinasi impian utama yang WAJIB dikunjungi adalah: "${startingPoint?.label}". Jadwalkan kunjungan ke destinasi ini sebagai highlight utama Hari 1 atau Hari 2, dan atur destinasi pendukung lain di koridor wilayah yang sama secara efisien.`
+    : '1. Wisatawan baru tiba di Bandara Internasional Minangkabau (BIM). Mulai Hari 1 dengan penjemputan di bandara dan akhiri hari terakhir dengan pengantaran ke bandara.'
+}
+`;
+
       const prompt = `Anda adalah MASTER TOUR OPERATOR & CHIEF TRAVEL PLANNER TERBAIK & PALING BERPENGALAMAN di Sumatera Barat by MINANGKAOS (malala.my.id).
 ${langInstruction}
 
@@ -296,6 +368,8 @@ DATA PERMINTAAN WISATAWAN:
 - Kelas Anggaran: ${anggaran?.rentang || 'menengah'}
 - Kebutuhan Khusus / Alergi Makanan / Catatan Penting: ${kebutuhanKhusus?.catatanKhusus || (kebutuhanKhusus?.alergiMakanan || []).join(', ') || 'Tidak ada catatan khusus'}
 
+${startingPointPrompt}
+
 ${eventEmphasisPrompt}
 
 KATALOG EVENT & FESTIVAL RESMI SUMBAR 2026:
@@ -305,7 +379,7 @@ ${eventsSummary}
 PANDUAN LOGISTIK & STANDAR MASTER TOUR OPERATOR:
 ============================================================
 1. KLASTER GEOGRAFIS & RUTE SEARAH (STRICT CORRIDOR ROUTING - DILARANG ZIG-ZAG & DILARANG MENGULANG DESTINASI):
-   - Gerbang Masuk & Keluar Utama: Bandara Internasional Minangkabau (BIM) Padang Pariaman / Kota Padang.
+   - Titik Keberangkatan: Sesuaikan secara ketat dengan TITIK AWAL KEBERANGKATAN di atas (Bandara BIM / Lokasi Saat Ini / Hotel / Kota Pilihan / Destinasi Impian). Jangan memaksakan penjemputan bandara jika wisatawan memilih lokasi saat ini, hotel, atau kota lain.
    - PANDUAN KLASTER PER HARI (SETIAP HARI HARUS MENGUNJUNGI DESTINASI BERBEDA SECARA 100% UNIK SESUAI JUMLAH HARI ${durasiHari || 3} HARI):
      * HARI 1 (Upward Flow): BIM / Padang → Air Terjun Lembah Anai (Rehat) → Sentra Tenun Pandai Sikek → Bukittinggi (Check-in, Jam Gadang, Ngarai Sianok Sunset, Nasi Kapau Pasar Atas).
      * HARI 2 (Geopark & Megaproyek): Bukittinggi → Payakumbuh → Lembah Harau (Tebing Granit 300m & Air Terjun) → Jembatan Kelok 9 → Kuliner Payakumbuh (Gulai Itiak Lado Mudo / Sate Danguang-Danguang).
