@@ -2,10 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { logTourismSignal } from '../utils/telemetry';
+import { generateTourismIntelligenceReportPDF } from '../utils/intelligencePdfGenerator';
 import { 
   BarChart3, Download, RefreshCw, Users, Compass, 
   BookmarkCheck, Calendar, FileText, Smartphone, Monitor, 
-  Sparkles, FileSpreadsheet, Activity, Layers
+  Sparkles, FileSpreadsheet, Activity, Layers, Printer
 } from 'lucide-react';
 
 interface TourismSignalItem {
@@ -170,6 +171,26 @@ export const TourismIntelligenceTab: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  // Export Infographic PDF
+  const [isExportingPdf, setIsExportingPdf] = useState<boolean>(false);
+
+  const handleExportPDF = () => {
+    if (signals.length === 0) {
+      alert('Belum ada data sinyal untuk membuat laporan infografis.');
+      return;
+    }
+
+    setIsExportingPdf(true);
+    try {
+      generateTourismIntelligenceReportPDF(signals, stats);
+    } catch (err) {
+      console.error('Failed to generate intelligence PDF:', err);
+      alert('Terjadi kesalahan saat merender laporan PDF.');
+    } finally {
+      setTimeout(() => setIsExportingPdf(false), 800);
+    }
+  };
+
   // Test Simulation Signal
   const handleSimulateSignal = async () => {
     setIsSimulating(true);
@@ -221,6 +242,17 @@ export const TourismIntelligenceTab: React.FC = () => {
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>{isSimulating ? 'Mengirim...' : 'Tes Sinyal'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleExportPDF}
+              disabled={isExportingPdf}
+              className="bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:to-rose-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-md active:scale-95 disabled:opacity-50"
+              title="Unduh Dokumen Laporan Infografis A4 Siap Cetak untuk Pimpinan Dinas Pariwisata"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>{isExportingPdf ? 'Merender PDF...' : '📄 Unduh Infografis (PDF)'}</span>
             </button>
 
             <button
