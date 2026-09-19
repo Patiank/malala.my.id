@@ -705,31 +705,34 @@ export const Drawers: React.FC<DrawersProps> = ({
 
   const handleDetectLocation = () => {
     if (typeof window === 'undefined' || !navigator.geolocation) {
-      setLocationStatus(lang === 'en' ? 'Geolocation is not supported by your browser' : 'Browser tidak mendukung GPS');
+      setLocationStatus(lang === 'en' ? '⚠️ Geolocation not supported' : '⚠️ Browser tidak mendukung GPS');
       return;
     }
     setIsDetectingLocation(true);
-    setLocationStatus(lang === 'en' ? 'Detecting your GPS position in West Sumatra...' : 'Mendeteksi posisi GPS Anda di Sumatera Barat...');
+    setLocationStatus(null);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
-        const coordsText = `Lat ${latitude.toFixed(4)}, Lng ${longitude.toFixed(4)}`;
         setItineraryForm((prev: any) => ({
           ...prev,
           startingPoint: {
             ...prev.startingPoint,
             type: 'current_location',
-            label: lang === 'en' ? `Current Location (${coordsText})` : `Lokasi Saat Ini (${coordsText})`,
+            label: lang === 'en' ? 'My Current Location (GPS)' : 'Lokasi Saya Saat Ini (GPS)',
             coords: { lat: latitude, lng: longitude },
-            details: coordsText,
+            details: `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}`,
+          },
+          logistik: {
+            ...prev.logistik,
+            titikKeberangkatan: 'Lokasi Saat Ini',
           }
         }));
-        setLocationStatus(lang === 'en' ? `✅ Location locked: ${coordsText}` : `✅ Titik lokasi terkunci: ${coordsText}`);
+        setLocationStatus(lang === 'en' ? '✓ Current location locked automatically' : '✓ Lokasi Anda berhasil terkunci otomatis');
         setIsDetectingLocation(false);
       },
       (err) => {
         console.warn('Geolocation error:', err);
-        setLocationStatus(lang === 'en' ? 'GPS permission denied or unavailable. You can enter your location manually below.' : 'Izin GPS belum aktif. Silakan ketik nama lokasi/daerah Anda di bawah.');
+        setLocationStatus(lang === 'en' ? '⚠️ Location access disabled in browser' : '⚠️ Izin lokasi belum diaktifkan di browser');
         setIsDetectingLocation(false);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
@@ -2851,18 +2854,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                           ...prev,
                           startingPoint: {
                             type: 'current_location',
-                            label: prev.startingPoint?.coords ? prev.startingPoint.label : (lang === 'en' ? 'Current GPS Location' : 'Lokasi Saat Ini (GPS)'),
+                            label: prev.startingPoint?.coords ? prev.startingPoint.label : (lang === 'en' ? 'My Current Location (GPS)' : 'Lokasi Saat Ini (GPS)'),
                             details: prev.startingPoint?.details || '',
                             coords: prev.startingPoint?.coords || null,
                           },
                           logistik: {
                             ...prev.logistik,
-                            titikKeberangkatan: prev.startingPoint?.details || (lang === 'en' ? 'Current GPS Location' : 'Lokasi Saat Ini (GPS)'),
+                            titikKeberangkatan: 'Lokasi Saat Ini',
                           }
                         }));
-                        if (!itineraryForm.startingPoint?.coords) {
-                          handleDetectLocation();
-                        }
+                        handleDetectLocation();
                       }}
                       className={`p-2 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                         itineraryForm.startingPoint?.type === 'current_location'
@@ -2871,11 +2872,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                       }`}
                     >
                       <div className="flex items-center gap-1.5 mb-1">
-                        <LocateFixed className={`w-3.5 h-3.5 ${itineraryForm.startingPoint?.type === 'current_location' ? 'text-cyan-300 animate-pulse' : 'text-gray-600'}`} />
+                        <LocateFixed className={`w-3.5 h-3.5 ${itineraryForm.startingPoint?.type === 'current_location' ? (isDetectingLocation ? 'text-cyan-300 animate-spin' : 'text-cyan-300') : 'text-gray-600'}`} />
                         <span className="text-[11px] font-orbitron font-bold">{lang === 'en' ? 'Current GPS' : 'Lokasi GPS'}</span>
                       </div>
                       <span className={`text-[9px] font-jakarta line-clamp-1 ${itineraryForm.startingPoint?.type === 'current_location' ? 'text-gray-300' : 'text-gray-500'}`}>
-                        {lang === 'en' ? 'Live browser position' : 'Posisi saat ini di Sumbar'}
+                        {isDetectingLocation
+                          ? (lang === 'en' ? 'Detecting...' : 'Mendeteksi...')
+                          : itineraryForm.startingPoint?.coords
+                            ? (lang === 'en' ? '✓ Locked automatically' : '✓ Terkunci otomatis')
+                            : (lang === 'en' ? 'Live GPS detection' : 'Deteksi otomatis')}
                       </span>
                     </button>
 
@@ -2979,126 +2984,54 @@ export const Drawers: React.FC<DrawersProps> = ({
                     </button>
                   </div>
 
-                  {/* Sub-panel: Airport */}
-                  {(!itineraryForm.startingPoint?.type || itineraryForm.startingPoint.type === 'airport') && (
-                    <div className="p-2.5 bg-gray-50 border border-gray-200 rounded-xl flex items-center gap-2.5">
-                      <Plane className="w-4 h-4 text-black shrink-0" />
-                      <div className="text-[11px] font-jakarta text-gray-700">
-                        <span className="font-bold text-black">{lang === 'en' ? 'Minangkabau International Airport (BIM):' : 'Bandara Internasional Minangkabau (BIM):'}</span>{' '}
-                        {lang === 'en'
-                          ? 'Day 1 starts with airport pickup, progressing linearly along mountain scenic corridors.'
-                          : 'Hari 1 dimulai dengan penjemputan dari Bandara BIM dan rute searah koridor wisata.'}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Sub-panel: Current Location (GPS) */}
+                  {/* Sub-panel: Current Location (GPS) - Minimal 1-line badge */}
                   {itineraryForm.startingPoint?.type === 'current_location' && (
-                    <div className="p-3 bg-cyan-50/70 border border-cyan-200 rounded-xl space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-jakarta font-bold text-cyan-900 flex items-center gap-1.5">
-                          <LocateFixed className="w-3.5 h-3.5 text-cyan-600" />
-                          {lang === 'en' ? 'Live GPS Geolocation' : 'Deteksi Lokasi GPS Pengunjung'}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={handleDetectLocation}
-                          disabled={isDetectingLocation}
-                          className="px-2 py-1 bg-cyan-600 hover:bg-cyan-700 text-white rounded text-[10px] font-jakarta font-semibold flex items-center gap-1 cursor-pointer disabled:opacity-50"
-                        >
-                          <RefreshCw className={`w-3 h-3 ${isDetectingLocation ? 'animate-spin' : ''}`} />
-                          {isDetectingLocation ? (lang === 'en' ? 'Detecting...' : 'Mendeteksi...') : (lang === 'en' ? 'Refresh GPS' : 'Deteksi Ulang GPS')}
-                        </button>
-                      </div>
-                      {locationStatus && (
-                        <p className="text-[10px] font-jakarta text-cyan-950 font-medium">
-                          {locationStatus}
-                        </p>
-                      )}
-                      <div>
-                        <label className="block text-[10px] font-jakarta font-semibold text-cyan-950 mb-1">
-                          {lang === 'en' ? 'Place name / street / district (optional):' : 'Nama tempat / daerah saat ini (opsional jika ingin lebih rinci):'}
-                        </label>
-                        <input
-                          type="text"
-                          placeholder={lang === 'en' ? 'e.g., Near Jam Gadang Bukittinggi or Cafe in Padang' : 'cth. Dekat Jam Gadang Bukittinggi atau Area Batang Arau Padang'}
-                          value={itineraryForm.startingPoint?.details || ''}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            setItineraryForm((prev: any) => ({
-                              ...prev,
-                              startingPoint: {
-                                ...prev.startingPoint,
-                                details: val,
-                                label: val ? `${val} (Lokasi Saat Ini)` : (prev.startingPoint?.coords ? `Lokasi Saat Ini (${prev.startingPoint.coords.lat.toFixed(3)}, ${prev.startingPoint.coords.lng.toFixed(3)})` : 'Lokasi Saat Ini')
-                              },
-                              logistik: {
-                                ...prev.logistik,
-                                titikKeberangkatan: val || 'Lokasi Saat Ini',
-                              }
-                            }));
-                          }}
-                          className="w-full bg-white border border-cyan-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-cyan-600"
-                        />
-                      </div>
-                      <p className="text-[10px] font-jakarta text-cyan-800">
-                        💡 {lang === 'en'
-                          ? 'AI will directly start Day 1 from your current position without airport pickup.'
-                          : 'AI langsung menyusun rute Hari 1 dari titik lokasi Anda tanpa perlu penjemputan bandara.'}
-                      </p>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-50 border border-cyan-200 rounded-lg text-[11px] font-jakarta text-cyan-900">
+                      <LocateFixed className={`w-3.5 h-3.5 text-cyan-600 shrink-0 ${isDetectingLocation ? 'animate-spin' : ''}`} />
+                      <span className="font-medium">
+                        {isDetectingLocation
+                          ? (lang === 'en' ? 'Detecting GPS position in background...' : 'Mendeteksi posisi GPS di latar belakang...')
+                          : locationStatus || (lang === 'en' ? '✓ Location locked automatically in background' : '✓ Lokasi Anda terkunci otomatis di latar belakang')}
+                      </span>
                     </div>
                   )}
 
                   {/* Sub-panel: Hotel */}
                   {itineraryForm.startingPoint?.type === 'hotel' && (
-                    <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-2">
-                      <div className="flex items-center gap-1.5 text-[11px] font-jakarta font-bold text-emerald-900">
-                        <Building2 className="w-3.5 h-3.5 text-emerald-600" />
-                        {lang === 'en' ? 'Hotel / Accommodation Details' : 'Detail Hotel / Penginapan Anda'}
-                      </div>
-                      <div className="space-y-1.5">
-                        <div>
-                          <label className="block text-[10px] font-jakarta font-semibold text-emerald-950 mb-1">
-                            {lang === 'en' ? 'Hotel Name or Area:' : 'Nama Hotel / Penginapan:'}
-                          </label>
-                          <input
-                            type="text"
-                            placeholder={lang === 'en' ? 'e.g., The Balcone Hotel Bukittinggi / Hotel Santika Padang' : 'cth. The Balcone Hotel Bukittinggi, Hotel Santika Padang, Homestay Harau'}
-                            value={itineraryForm.startingPoint?.details || ''}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setItineraryForm((prev: any) => ({
-                                ...prev,
-                                startingPoint: {
-                                  ...prev.startingPoint,
-                                  details: val,
-                                  label: val || 'Hotel / Penginapan'
-                                },
-                                logistik: {
-                                  ...prev.logistik,
-                                  titikKeberangkatan: val || 'Hotel Penginapan',
-                                }
-                              }));
-                            }}
-                            className="w-full bg-white border border-emerald-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-emerald-600"
-                          />
-                        </div>
-                        <p className="text-[10px] font-jakarta text-emerald-800">
-                          💡 {lang === 'en' 
-                            ? 'AI will design daily circular routes with morning pickups and evening returns to your accommodation.' 
-                            : 'AI akan menyusun rute wisata harian yang berangkat dari penginapan di pagi hari dan kembali ke hotel di malam hari.'}
-                        </p>
-                      </div>
+                    <div className="p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-1">
+                      <label className="block text-[10px] font-jakarta font-bold text-emerald-950">
+                        🏨 {lang === 'en' ? 'Hotel / Accommodation Name:' : 'Nama Hotel / Penginapan Anda:'}
+                      </label>
+                      <input
+                        type="text"
+                        placeholder={lang === 'en' ? 'e.g. The Balcone Hotel Bukittinggi, Santika Padang' : 'cth. The Balcone Hotel Bukittinggi, Hotel Santika Padang, Homestay Harau'}
+                        value={itineraryForm.startingPoint?.details || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setItineraryForm((prev: any) => ({
+                            ...prev,
+                            startingPoint: {
+                              ...prev.startingPoint,
+                              details: val,
+                              label: val || 'Hotel / Penginapan'
+                            },
+                            logistik: {
+                              ...prev.logistik,
+                              titikKeberangkatan: val || 'Hotel Penginapan',
+                            }
+                          }));
+                        }}
+                        className="w-full bg-white border border-emerald-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-emerald-600"
+                      />
                     </div>
                   )}
 
                   {/* Sub-panel: Custom City Hub */}
                   {itineraryForm.startingPoint?.type === 'custom_city' && (
-                    <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2">
-                      <div className="flex items-center gap-1.5 text-[11px] font-jakarta font-bold text-amber-900">
-                        <MapPin className="w-3.5 h-3.5 text-amber-600" />
-                        {lang === 'en' ? 'Choose Starting City / Regency Hub' : 'Pilih Kota / Kabupaten Basis Titik Awal'}
-                      </div>
+                    <div className="p-2.5 bg-amber-50/70 border border-amber-200 rounded-xl space-y-1">
+                      <label className="block text-[10px] font-jakarta font-bold text-amber-950">
+                        🏙️ {lang === 'en' ? 'Select Hub City / Regency:' : 'Pilih Kota / Kabupaten Basis Titik Awal:'}
+                      </label>
                       <select
                         value={itineraryForm.startingPoint?.city || 'Kota Bukittinggi'}
                         onChange={(e) => {
@@ -3124,21 +3057,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </option>
                         ))}
                       </select>
-                      <p className="text-[10px] font-jakarta text-amber-800">
-                        💡 {lang === 'en' 
-                          ? 'AI will center the daily itinerary around this regional hub.' 
-                          : 'AI akan menjadikan kota pilihan ini sebagai titik tolak utama eksplorasi harian tanpa bolak-balik.'}
-                      </p>
                     </div>
                   )}
 
                   {/* Sub-panel: Must-Visit / Dream Destination */}
                   {itineraryForm.startingPoint?.type === 'must_visit' && (
-                    <div className="p-3 bg-rose-50/70 border border-rose-200 rounded-xl space-y-2">
-                      <div className="flex items-center gap-1.5 text-[11px] font-jakarta font-bold text-rose-900">
-                        <Target className="w-3.5 h-3.5 text-rose-600" />
-                        {lang === 'en' ? 'Choose Dream / Must-Visit Destination' : 'Pilih Destinasi Tertentu / Impian Utama'}
-                      </div>
+                    <div className="p-2.5 bg-rose-50/70 border border-rose-200 rounded-xl space-y-1">
+                      <label className="block text-[10px] font-jakarta font-bold text-rose-950">
+                        🎯 {lang === 'en' ? 'Select Dream / Must-Visit Destination:' : 'Pilih Destinasi Tertentu / Impian Utama:'}
+                      </label>
                       <select
                         value={itineraryForm.startingPoint?.destinationId || ''}
                         onChange={(e) => {
@@ -3168,11 +3095,6 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </option>
                         ))}
                       </select>
-                      <p className="text-[10px] font-jakarta text-rose-800">
-                        💡 {lang === 'en' 
-                          ? 'AI will anchor this destination as the mandatory centerpiece highlight and build the surrounding route.' 
-                          : 'AI akan menempatkan destinasi ini sebagai highlight utama perjalanan dan menyusun koridor destinasi pendukung di sekitarnya.'}
-                      </p>
                     </div>
                   )}
                 </div>
