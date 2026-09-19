@@ -328,59 +328,7 @@ export default function App() {
     setSelectedNews(null);
   }, [activeDrawer]);
 
-  // Hover & Auto-Close Handlers for Hot Info Panel
-  const hotInfoCloseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleTickerMouseEnter = useCallback(() => {
-    // Clear any pending close timeout immediately
-    if (hotInfoCloseTimeoutRef.current) {
-      clearTimeout(hotInfoCloseTimeoutRef.current);
-      hotInfoCloseTimeoutRef.current = null;
-    }
-    if (activeDrawer === 'hotinfo' || selectedNews) return;
-    // Instant open (no delay) when mouse enters the Hot Info button / trigger
-    handleOpenDrawer('hotinfo');
-  }, [activeDrawer, selectedNews, handleOpenDrawer]);
-
-  const handleTickerMouseLeave = useCallback(() => {
-    // When mouse leaves the Hot Info trigger button, give a 350ms window to enter the drawer panel
-    if (activeDrawer === 'hotinfo' && !selectedNews) {
-      if (hotInfoCloseTimeoutRef.current) {
-        clearTimeout(hotInfoCloseTimeoutRef.current);
-      }
-      hotInfoCloseTimeoutRef.current = setTimeout(() => {
-        handleCloseDrawer();
-      }, 350);
-    }
-  }, [activeDrawer, selectedNews, handleCloseDrawer]);
-
-  const handleHotInfoDrawerMouseEnter = useCallback(() => {
-    // Cursor is inside the drawer panel, cancel any auto-close timer
-    if (hotInfoCloseTimeoutRef.current) {
-      clearTimeout(hotInfoCloseTimeoutRef.current);
-      hotInfoCloseTimeoutRef.current = null;
-    }
-  }, []);
-
-  const handleHotInfoDrawerMouseLeave = useCallback(() => {
-    // Cursor left the drawer panel, auto-close after 300ms
-    if (activeDrawer === 'hotinfo' && !selectedNews) {
-      if (hotInfoCloseTimeoutRef.current) {
-        clearTimeout(hotInfoCloseTimeoutRef.current);
-      }
-      hotInfoCloseTimeoutRef.current = setTimeout(() => {
-        handleCloseDrawer();
-      }, 300);
-    }
-  }, [activeDrawer, selectedNews, handleCloseDrawer]);
-
-  useEffect(() => {
-    return () => {
-      if (hotInfoCloseTimeoutRef.current) {
-        clearTimeout(hotInfoCloseTimeoutRef.current);
-      }
-    };
-  }, []);
 
   // Listen to browser / smartphone Back button (popstate)
   useEffect(() => {
@@ -438,19 +386,11 @@ export default function App() {
 
       {/* Fixed Vertical Hot Info Trigger (Far Left - Hidden on mobile) */}
       <button
-        onClick={() => {
-          if (tickerHoverTimeoutRef.current) {
-            clearTimeout(tickerHoverTimeoutRef.current);
-            tickerHoverTimeoutRef.current = null;
-          }
-          handleOpenDrawer('hotinfo');
-        }}
-        onMouseEnter={handleTickerMouseEnter}
-        onMouseLeave={handleTickerMouseLeave}
+        onClick={() => handleOpenDrawer('hotinfo')}
         className={`hidden sm:flex fixed left-0 top-1/2 -translate-y-1/2 z-40 bg-red-600 hover:bg-black text-white transition-all duration-300 py-4 px-2.5 rounded-r-xl flex-col items-center gap-3 shadow-2xl group border border-l-0 border-red-700 hover:border-gray-900 cursor-pointer focus:outline-none select-none ${
           activeDrawer === 'hotinfo' ? 'bg-black ring-2 ring-red-500' : ''
         }`}
-        title={lang === 'en' ? 'Hot Info & Latest News (Hover or click to open)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka)'}
+        title={lang === 'en' ? 'Hot Info & Latest News (Click to open)' : 'Hot Info & Berita Terbaru (Klik untuk membuka)'}
         aria-label={lang === 'en' ? 'Hot Info & Latest News' : 'Hot Info & Berita Terbaru'}
       >
         <span className="relative flex items-center justify-center">
@@ -493,11 +433,9 @@ export default function App() {
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
-            onMouseEnter={handleTickerMouseEnter}
-            onMouseLeave={handleTickerMouseLeave}
             onClick={() => handleOpenDrawer('hotinfo')}
             className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
-            title={lang === 'en' ? 'Hot Info & News (Hover or click to open full panel)' : 'Hot Info & Berita Terbaru (Arahkan kursor atau klik untuk membuka panel lengkap)'}
+            title={lang === 'en' ? 'Hot Info & News (Click to open full panel)' : 'Hot Info & Berita Terbaru (Klik untuk membuka panel lengkap)'}
           >
             <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
             <span>{lang === 'en' ? 'HOT INFO & NEWS' : 'HOT INFO TERKINI'}</span>
@@ -560,11 +498,9 @@ export default function App() {
         </div>
 
         <button 
-          onMouseEnter={handleTickerMouseEnter}
-          onMouseLeave={handleTickerMouseLeave}
           onClick={() => handleOpenDrawer('hotinfo')}
           className="shrink-0 text-[10px] font-jakarta font-bold text-yellow-400 uppercase tracking-wider hidden sm:flex items-center gap-1 hover:underline cursor-pointer ml-1"
-          title={lang === 'en' ? 'View all Hot Info & News (Hover or click to open)' : 'Lihat semua Hot Info & Berita (Arahkan kursor atau klik untuk membuka)'}
+          title={lang === 'en' ? 'View all Hot Info & News (Click to open)' : 'Lihat semua Hot Info & Berita (Klik untuk membuka)'}
         >
           <span>{lang === 'en' ? 'View All' : 'Lihat Semua'}</span>
           <span>→</span>
@@ -580,8 +516,6 @@ export default function App() {
         onToggleSave={handleToggleSave}
         dataStore={dataStore}
         lang={lang}
-        onMouseEnterDrawer={handleHotInfoDrawerMouseEnter}
-        onMouseLeaveDrawer={handleHotInfoDrawerMouseLeave}
         onSelectNews={handleOpenNews}
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}

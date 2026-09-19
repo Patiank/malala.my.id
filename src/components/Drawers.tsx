@@ -779,7 +779,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     if (!aiResponse || isDownloadingPdf) return;
     try {
       setIsDownloadingPdf(true);
-      await generateItineraryPDF(aiResponse, lang);
+      await generateItineraryPDF(aiResponse, (lang as 'id' | 'en') || 'id');
       logTourismSignal('download_pdf', { type: 'itinerary_a4', title: aiResponse.title });
     } catch (err) {
       console.error('Failed to generate A4 itinerary PDF:', err);
@@ -1172,8 +1172,6 @@ export const Drawers: React.FC<DrawersProps> = ({
           />
       {/* Drawer Outer Wrapper */}
       <div
-        onMouseEnter={activeDrawer === 'hotinfo' ? onMouseEnterDrawer : undefined}
-        onMouseLeave={activeDrawer === 'hotinfo' ? onMouseLeaveDrawer : undefined}
         className={`fixed top-0 bottom-0 z-[70] ${
           activeDrawer === 'hotinfo'
             ? 'w-full md:w-1/2 lg:w-1/2 left-0 border-r border-gray-200 animate-drawer-slide-left'
