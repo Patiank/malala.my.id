@@ -532,6 +532,215 @@ export function getItineraryFallback(params: any) {
     }
   ];
 
+  // Adapt starting point and routes if user chose a non-airport starting point
+  const startingPoint = params?.startingPoint;
+  if (startingPoint && startingPoint.type !== 'airport' && masterDays[0]) {
+    if (startingPoint.type === 'custom_city') {
+      const cName = startingPoint.label || startingPoint.city || (isEnglish ? 'Selected City' : 'Kota Pilihan');
+      const cLower = cName.toLowerCase();
+
+      if (cLower.includes('bukittinggi') || cLower.includes('agam')) {
+        masterDays[0].title = isEnglish ? `Bukittinggi Highland Charm & Sianok Canyon Geopark` : `Pesona Dataran Tinggi Bukittinggi & Geopark Ngarai Sianok`;
+        masterDays[0].activities = [
+          {
+            time: "08:30 - 11:00",
+            location: isEnglish ? "Bukittinggi Plaza → Jam Gadang & Ngarai Sianok Panorama" : "Pusat Kota Bukittinggi → Taman Jam Gadang & Panorama Ngarai Sianok",
+            activity: isEnglish
+              ? "Starting the tour right from central Bukittinggi, enjoying the crisp mountain breeze at historic 1926 Jam Gadang clock tower and panoramic canyon sunset views."
+              : "Memulai penjelajahan langsung dari pusat Kota Bukittinggi, menikmati sejuknya udara pelataran Jam Gadang 1926 dan panorama tebing terjal 100m Ngarai Sianok.",
+            tips: isEnglish ? "Departure directly from Bukittinggi saves 2 hours compared to airport transfers." : "Berangkat langsung dari Bukittinggi menghemat 2 jam perjalanan dibanding rute bandara."
+          },
+          {
+            time: "11:30 - 13:30",
+            location: isEnglish ? "Koto Gadang Silver Craft Village & Janjang Koto Gadang" : "Desa Kerajinan Perak Koto Gadang & Janjang Koto Gadang",
+            activity: isEnglish
+              ? "Visit master silversmiths crafting delicate filigree jewelry and walk the Great Wall of Minangkabau trail across Sianok gorge."
+              : "Mengunjungi perajin perak filigri tertua di Koto Gadang dan melintasi Janjang Koto Gadang (Great Wall Minang) dengan latar tebing spektakuler.",
+            tips: isEnglish ? "Handcrafted filigree silver jewelry makes a precious heirloom gift." : "Perhiasan perak halus buatan tangan pengrajin Koto Gadang sangat bernilai seni tinggi."
+          },
+          {
+            time: "14:00 - 16:30",
+            location: isEnglish ? "Pandai Sikek Songket Weaving Village [Drive ±20 mins]" : "Sentra Tenun Songket Pandai Sikek [Perjalanan ±20 menit]",
+            activity: isEnglish
+              ? "Observe master weavers creating authentic gold-threaded Songket and wood carvings at the foot of Mount Singgalang."
+              : "Menyaksikan kemahiran perajin tenun Songket Pandai Sikek benang emas dan ukiran kayu tradisional Minangkabau di lereng Gunung Singgalang.",
+            tips: isEnglish ? "Taste warm Kawa Daun coffee brewed in coconut shells." : "Nikmati seduhan kopi Kawa Daun hangat di batok kelapa."
+          },
+          {
+            time: "18:00 - 20:00",
+            location: isEnglish ? "Los Lambuang Pasar Atas Bukittinggi" : "Los Lambuang Pasar Atas Bukittinggi",
+            activity: isEnglish
+              ? "Authentic dinner savoring legendary Nasi Kapau Uni Lis with spicy Gulai Tambusu, Dendeng Batokok, and Rendang."
+              : "Makan malam Nasi Kapau legendaris Uni Lis di Los Lambuang Pasar Atas Bukittinggi dengan Gulai Tambusu dan Dendeng Batokok.",
+            tips: isEnglish ? "Wear a jacket; evening highland temperature drops to 17-19°C." : "Gunakan jaket; udara malam Bukittinggi sejuk berkisar 17-19°C."
+          }
+        ];
+        masterDays[0].culinaryRecommendation = isEnglish
+          ? "Bukittinggi Specialty: Nasi Kapau Uni Lis & Gulai Tambusu at Los Lambuang Pasar Atas."
+          : "Kuliner Khas Bukittinggi: Nasi Kapau Uni Lis & Gulai Tambusu di Los Lambuang Pasar Atas.";
+      } else if (cLower.includes('padang') && !cLower.includes('padang panjang')) {
+        masterDays[0].title = isEnglish ? `Padang Coastal Capital, Old Town Heritage & Grand Mosque` : `Ibukota Pesisir Padang, Kota Tua Muaro & Kemegahan Arsitektur`;
+        masterDays[0].activities = [
+          {
+            time: "08:30 - 11:00",
+            location: isEnglish ? "Padang City Center → Old Town Muaro & Siti Nurbaya Bridge" : "Pusat Kota Padang → Kawasan Kota Tua Muaro & Jembatan Siti Nurbaya",
+            activity: isEnglish
+              ? "Commencing the tour from central Padang, strolling through Dutch colonial heritage buildings, See Hin Kiong temple, and scenic riverside views from Siti Nurbaya bridge."
+              : "Mengawali tur dari pusat Kota Padang menyusuri cagar budaya gedung kolonial Muaro, Klenteng See Hin Kiong, dan pemandangan muara dari Jembatan Siti Nurbaya.",
+            tips: isEnglish ? "Great morning photo opportunities with colorful riverboats." : "Spot foto pagi yang cantik dengan perahu warna-warni di muara sungai."
+          },
+          {
+            time: "11:30 - 13:30",
+            location: isEnglish ? "Pantai Air Manis & Malin Kundang Stone [Drive ±20 mins]" : "Pantai Air Manis & Relief Batu Malin Kundang [Perjalanan ±20 menit]",
+            activity: isEnglish
+              ? "Witnessing the iconic cursed stone ship of Malin Kundang with crashing Indian Ocean waves and ocean view cafe dining."
+              : "Menyaksikan langsung relief batu kapal terdampar legenda Malin Kundang di tepi pantai Samudra Hindia.",
+            tips: isEnglish ? "Beach ATV rentals available along the shore." : "Sewa ATV pantai tersedia untuk menyusuri tepian pantai berpasir."
+          },
+          {
+            time: "14:30 - 16:30",
+            location: isEnglish ? "Grand Mosque of West Sumatra (Masjid Raya Sumbar)" : "Masjid Raya Sumatera Barat",
+            activity: isEnglish
+              ? "Touring the world-renowned dome-less Grand Mosque with a swooping Rumah Gadang gonjong roof design and intricate Minang calligraphy."
+              : "Mengagumi kemegahan arsitektur bentang atap gonjong Rumah Gadang tanpa kubah Masjid Raya Sumbar yang memenangkan penghargaan internasional.",
+            tips: isEnglish ? "Modest clothing required; photography permitted in designated areas." : "Kenakan pakaian sopan dan nikmati ketenangan interior megah masjid."
+          },
+          {
+            time: "18:00 - 20:00",
+            location: isEnglish ? "Padang Beach Sunset Dining (RM Nelayan / Sate Ajo Ramon)" : "Restoran Seafood Pantai Padang & Sate Padang Ajo Ramon",
+            activity: isEnglish
+              ? "Sunset dinner overlooking the Indian Ocean tasting fresh grilled reef fish and savory Sate Padang with legendary Es Durian Ganti Nan Jano."
+              : "Makan malam sunset tepi laut menikmati olahan ikan karang segar, Sate Padang Ajo Ramon, dan hidangan penutup Es Durian Ganti Nan Jano.",
+            tips: isEnglish ? "Best sunset golden hour occurs around 18:15 WIB." : "Momen golden hour matahari terbenam terbaik sekitar pukul 18:15 WIB."
+          }
+        ];
+        masterDays[0].culinaryRecommendation = isEnglish
+          ? "Padang City Delicacy: Grilled Fish with Sambal Dabu-Dabu & Es Durian Ganti Nan Jano."
+          : "Kuliner Khas Padang: Ikan Karang Bakar Balado & Es Durian Iko Gantinyo / Ganti Nan Jano.";
+      } else if (cLower.includes('payakumbuh') || cLower.includes('lima puluh kota') || cLower.includes('50 kota')) {
+        masterDays[0].title = isEnglish ? `Payakumbuh Hub: Lembah Harau Granite Canyon & Kelok 9` : `Pusat Payakumbuh: Geopark Lembah Harau & Jembatan Kelok 9`;
+        masterDays[0].activities = [
+          {
+            time: "08:30 - 11:30",
+            location: isEnglish ? "Payakumbuh → Lembah Harau Granite Cliffs [Drive ±30 mins]" : "Kota Payakumbuh → Geopark Tebing Granit Lembah Harau [Perjalanan ±30 menit]",
+            activity: isEnglish
+              ? "Starting directly from Payakumbuh heading into the breathtaking 300m vertical granite cliffs of Harau and visiting Sarasah Murai waterfall."
+              : "Mengawali perjalanan dari Payakumbuh langsung menuju tebing granit tegak 300 meter Lembah Harau dan Air Terjun Sarasah Murai yang asri.",
+            tips: isEnglish ? "Rent a local safari jeep or stroll through emerald rice fields." : "Sewa safari jeep terbuka untuk spot foto tebing granit paling epik."
+          },
+          {
+            time: "12:00 - 13:30",
+            location: isEnglish ? "Harau Countryside Dining (RM Pondok Flora / Pongek Situjuah)" : "Restoran Tepi Sawah Harau (RM Pondok Flora / Pongek Situjuah)",
+            activity: isEnglish
+              ? "Authentic Payakumbuh lunch savoring Gulai Itiak Lado Mudo (green chili smoked duck) and fresh fried river fish."
+              : "Makan siang kuliner legendaris Payakumbuh: Gulai Itiak Lado Mudo empuk dan Pongek Cubadak.",
+            tips: isEnglish ? "Duck is cooked slowly for hours with aromatic herbs." : "Itik dimasak berjam-jam sehingga sangat empuk dan bumbu meresap."
+          },
+          {
+            time: "14:30 - 17:00",
+            location: isEnglish ? "Kelok 9 Mega Flyover Bridge" : "Kemegahan Jembatan Layang Kelok 9",
+            activity: isEnglish
+              ? "Marveling at the iconic Kelok 9 serpentine flyover bridge spanning deep tropical valley gorge with mountain coffee break."
+              : "Menyaksikan kemegahan jembatan layang Kelok 9 yang meliuk di antara perbukitan tropis yang spektakuler.",
+            tips: isEnglish ? "Enjoy roasted corn with cliffside views." : "Nikmati jagung bakar manis di gardu pandang Kelok 9."
+          }
+        ];
+        masterDays[0].culinaryRecommendation = isEnglish
+          ? "Payakumbuh Specialty: Gulai Itiak Lado Mudo & Sate Danguang-Danguang."
+          : "Kuliner Khas Payakumbuh: Gulai Itiak Lado Mudo & Sate Danguang-Danguang berkuah santan wangi.";
+      } else if (cLower.includes('tanah datar') || cLower.includes('batusangkar')) {
+        masterDays[0].title = isEnglish ? `Luhak Nan Tuo Batusangkar, Royal Palace & Ancient Village` : `Luhak Nan Tuo Batusangkar: Istano Pagaruyung & Pariangan`;
+        masterDays[0].activities = [
+          {
+            time: "08:30 - 11:00",
+            location: isEnglish ? "Batusangkar Hub → Istano Basa Pagaruyung" : "Pusat Batusangkar → Istano Basa Pagaruyung",
+            activity: isEnglish
+              ? "Direct morning visit to the grand 3-storey Minangkabau Royal Palace with 11 gonjong roof tiers, trying on royal ceremonial attire."
+              : "Mengawali tur langsung dari Batusangkar ke Istano Basa Pagaruyung 3 lantai beratap 11 gonjong dan mencoba busana adat Minangkabau.",
+            tips: isEnglish ? "Royal costume photo session highly recommended." : "Sewa busana adat Bundo Kanduang dan Raja sangat disarankan untuk kenang-kenangan."
+          },
+          {
+            time: "11:30 - 13:30",
+            location: isEnglish ? "Nagari Pariangan Heritage Village [Drive ±25 mins]" : "Desa Terindah Dunia Nagari Pariangan [Perjalanan ±25 menit]",
+            activity: isEnglish
+              ? "Exploring the oldest Minangkabau settlement on Mount Marapi slopes with century-old wooden architecture and hot springs."
+              : "Menyusuri desa tertua Minangkabau di lereng Gunung Marapi, Rumah Gadang kayu berusia ratusan tahun, dan mata air panas alami.",
+            tips: isEnglish ? "Sip traditional Kawa Daun coffee from coconut shells." : "Cicipi tradisi minum seduhan kopi Kawa Daun dari tempurung kelapa."
+          },
+          {
+            time: "14:00 - 16:30",
+            location: isEnglish ? "Lake Singkarak Lakeside Resto" : "Tepian Danau Singkarak & Kuliner Ikan Bilih",
+            activity: isEnglish
+              ? "Scenic drive along Lake Singkarak shoreline tasting endemic crispy fried Bilih fish with Sambal Lado Mudo."
+              : "Makan siang santai di tepi Danau Singkarak menikmati hidangan Ikan Bilih goreng balado renyah khas danau.",
+            tips: isEnglish ? "Packaged crispy Bilih makes unique local souvenirs." : "Beli oleh-oleh Ikan Bilih krispi kemasan langsung dari nelayan danau."
+          }
+        ];
+        masterDays[0].culinaryRecommendation = isEnglish
+          ? "Tanah Datar Specialty: Crispy Fried Ikan Bilih & Rendang Belut Batusangkar."
+          : "Kuliner Khas Tanah Datar: Ikan Bilih Goreng Balado Renyah Danau Singkarak & Rendang Belut Batusangkar.";
+      } else {
+        masterDays[0].title = isEnglish ? `Regional Tour Starting from ${cName}` : `Pusat Eksplorasi: ${cName} & Koridor Wisata Sekitar`;
+        masterDays[0].activities[0] = {
+          time: "08:30 - 11:00",
+          location: isEnglish ? `Departure Hub: ${cName} → Scenic Corridor` : `Titik Keberangkatan: ${cName} → Koridor Wisata`,
+          activity: isEnglish
+            ? `Commencing the journey directly from ${cName}, exploring nearby geoparks and cultural landmarks in an optimized linear flow.`
+            : `Memulai hari pertama penjelajahan langsung dari ${cName}, bergerak menuju cagar alam dan destinasi budaya terdekat yang searah koridor tanpa penjemputan bandara.`,
+          tips: isEnglish ? `Starting from ${cName} ensures an efficient and relaxed regional trip.` : `Keberangkatan langsung dari ${cName} menghemat waktu tempuh dan memaksimalkan waktu di destinasi.`
+        };
+      }
+    } else if (startingPoint.type === 'current_location') {
+      masterDays[0].title = isEnglish ? `Scenic Exploration from Your Current Location` : `Eksplorasi Alam & Geopark dari Titik Lokasi Anda`;
+      masterDays[0].activities[0] = {
+        time: "08:30 - 11:30",
+        location: isEnglish ? "Your Current Position → Nearest Scenic Corridor" : "Titik Lokasi Saat Ini → Koridor Destinasi Terdekat",
+        activity: isEnglish
+          ? "Commencing the journey directly from your current position in West Sumatra, heading seamlessly towards the nearest iconic geoparks without airport pickup."
+          : "Memulai perjalanan langsung dari posisi Anda saat ini di Sumatera Barat, meluncur menuju geopark alam dan cagar budaya terdekat secara efisien tanpa penjemputan bandara.",
+        tips: isEnglish ? "Starting directly from your location saves at least 1.5-2 hours." : "Keberangkatan langsung dari lokasi Anda menghemat 1.5 - 2 jam perjalanan."
+      };
+    } else if (startingPoint.type === 'hotel') {
+      const hName = startingPoint.details || startingPoint.label || (isEnglish ? 'Your Hotel' : 'Hotel Penginapan Anda');
+      masterDays[0].title = isEnglish ? `Daily Tour Excursion from ${hName}` : `Eksplorasi Harian Berangkat dari ${hName}`;
+      masterDays[0].activities[0] = {
+        time: "08:30 - 11:00",
+        location: isEnglish ? `Morning Pickup at ${hName} → Highland Route` : `Penjemputan di ${hName} → Jalur Wisata Dataran Tinggi`,
+        activity: isEnglish
+          ? `Morning pickup right from your accommodation (${hName}) to commence the daily scenic excursion across iconic Minangkabau landmarks.`
+          : `Penjemputan pagi langsung di lobi penginapan Anda (${hName}) untuk memulai perjalanan harian menjelajahi panorama alam dan budaya Ranah Minang.`,
+        tips: isEnglish ? "Have breakfast at your hotel before morning pickup." : "Nikmati sarapan di hotel sebelum kendaraan tur menjemput di lobi."
+      };
+    } else if (startingPoint.type === 'must_visit') {
+      const destTitle = startingPoint.label || (isEnglish ? 'Dream Destination' : 'Destinasi Impian');
+      masterDays[0].title = isEnglish ? `Priority Centerpiece: ${destTitle} & Scenic Corridor` : `Highlight Utama: ${destTitle} & Koridor Sekitarnya`;
+      masterDays[0].activities[0] = {
+        time: "08:30 - 11:30",
+        location: `⭐ ${destTitle} [Destinasi Impian Utama]`,
+        activity: isEnglish
+          ? `Direct morning excursion dedicated to experiencing ${destTitle} as the anchor centerpiece highlight of your West Sumatra journey.`
+          : `Perjalanan pagi yang difokuskan langsung untuk mengeksplorasi ${destTitle} sebagai poros destinasi impian prioritas Anda di Ranah Minang.`,
+        tips: isEnglish ? "Optimal morning light for photography and relaxed pacing." : "Cahaya pagi sangat sempurna untuk berfoto dan menikmati keasrian destinasi tanpa terburu-buru."
+      };
+    }
+
+    // Also adjust the final day departure so it does not drop off at airport if user did not choose airport
+    const lastDayIdx = daysCount - 1;
+    if (masterDays[lastDayIdx] && masterDays[lastDayIdx].activities.length > 0) {
+      const lastActIdx = masterDays[lastDayIdx].activities.length - 1;
+      const lastAct = masterDays[lastDayIdx].activities[lastActIdx];
+      if (lastAct.location.includes('Bandara BIM') || lastAct.location.includes('BIM Airport')) {
+        const destCity = startingPoint.city || startingPoint.label || (isEnglish ? 'Your Base Location' : 'Kota Asal / Penginapan');
+        lastAct.location = isEnglish
+          ? `Grand Mosque of West Sumatra & Souvenir Shopping [End of Tour in ${destCity}]`
+          : `Masjid Raya Sumatera Barat & Belanja Oleh-Oleh [Akhir Tur di ${destCity}]`;
+        lastAct.activity = isEnglish
+          ? `Touring the magnificent Grand Mosque of West Sumatra, shopping for authentic Balado Chips and vacuum-packed Rendang, concluding your journey in ${destCity}.`
+          : `Mengagumi kemegahan Masjid Raya Sumatera Barat, berbelanja oleh-oleh Keripik Balado Sanjai dan Rendang kemasan vakum, serta menutup rangkaian liburan di ${destCity}.`;
+      }
+    }
+  }
+
   // If targetEvent is provided, inject it as the main highlight into Day 1 or Day 2
   const targetEv = params?.targetEvent;
   if (targetEv) {
@@ -605,10 +814,11 @@ export async function fetchAiItinerary(params: any) {
     console.warn("Server API itinerary endpoint unavailable, using fallback AI response", e);
   }
 
-  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
-  if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+  // Client side Gemini API fallback if a valid VITE_GEMINI_API_KEY is available
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "";
+  const isValidGeminiKey = viteApiKey && !viteApiKey.startsWith("AQ.") && viteApiKey.length > 20;
+  if (isValidGeminiKey) {
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
