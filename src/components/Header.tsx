@@ -68,14 +68,14 @@ export const Header: React.FC<HeaderProps> = ({
           <img
             src="/malala-logo.png"
             alt="MALALA"
-            className={`h-9 sm:h-11 md:h-14 lg:h-16 w-auto max-w-[200px] sm:max-w-[240px] md:max-w-[290px] object-contain transition-all duration-300 ${
+            className={`h-7 sm:h-8 md:h-9.5 lg:h-11 w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[215px] object-contain transition-all duration-300 ${
               isWhiteHeroText
-                ? 'md:brightness-0 md:invert md:drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]'
-                : 'drop-shadow-[0_1px_4px_rgba(255,255,255,0.7)]'
+                ? 'md:brightness-0 md:invert md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]'
+                : 'drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)]'
             }`}
           />
           <span
-            className="font-jakarta text-[8.5px] sm:text-[9.5px] md:text-[10px] tracking-[0.2em] sm:tracking-[0.25em] font-bold mt-1 uppercase transition-colors duration-300"
+            className="font-jakarta text-[8px] sm:text-[8.5px] md:text-[9px] tracking-[0.2em] sm:tracking-[0.22em] font-semibold mt-0.5 uppercase transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
           >
             {t.logoTagline}
