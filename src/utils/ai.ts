@@ -815,10 +815,10 @@ export async function fetchAiItinerary(params: any) {
   }
 
   // Client side Gemini API fallback if a valid VITE_GEMINI_API_KEY is available
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "";
-  const isValidGeminiKey = viteApiKey && !viteApiKey.startsWith("AQ.") && viteApiKey.length > 20;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
+  const isValidGeminiKey = Boolean(viteApiKey && viteApiKey.length > 20 && !viteApiKey.includes("Dummy"));
   if (isValidGeminiKey) {
-    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -829,25 +829,24 @@ export async function fetchAiItinerary(params: any) {
         
         const targetEvent = params?.targetEvent;
         const startingPoint = params?.startingPoint;
+        const isNonAirport = startingPoint && startingPoint.type !== 'airport';
+        const startingPointLabel = startingPoint?.label || startingPoint?.city || startingPoint?.details || (startingPoint?.type === 'airport' ? 'Bandara Internasional Minangkabau (BIM)' : 'Titik Lokasi Terpilih');
 
         const startingPointPrompt = `
 📍 TITIK AWAL KEBERANGKATAN WISATAWAN (STARTING POINT & ROUTING ANCHOR):
 - Tipe Titik Awal: ${startingPoint?.type || 'airport'}
-- Lokasi/Nama: ${startingPoint?.label || 'Bandara Internasional Minangkabau (BIM)'}
+- Lokasi/Nama: ${startingPointLabel}
 ${startingPoint?.details ? `- Keterangan/Detail: ${startingPoint.details}` : ''}
 ${startingPoint?.city ? `- Kota/Kabupaten Basis: ${startingPoint.city}` : ''}
 ${startingPoint?.coords ? `- Koordinat GPS: Lat ${startingPoint.coords.lat}, Lng ${startingPoint.coords.lng}` : ''}
 
-ATURAN RUTE BERDASARKAN TITIK AWAL:
+ATURAN RUTE MUTLAK BERDASARKAN TITIK AWAL:
 ${
-  startingPoint?.type === 'current_location'
-    ? '1. Wisatawan SUDAH BERADA di Sumatera Barat pada titik lokasi saat ini (GPS). JANGAN membuat jadwal penjemputan bandara pada Hari 1. Langsung mulai Hari 1 dari lokasi saat ini menuju destinasi terdekat yang searah koridor.'
-    : startingPoint?.type === 'hotel'
-    ? `1. Wisatawan SUDAH MENGINAP di ${startingPoint?.details || startingPoint?.label || 'Hotel/Penginapan'}. Rute Hari 1 TIDAK PERLU penjemputan bandara; langsung jemput dari penginapan ini di pagi hari, dan jadwalkan kembali ke area penginapan di malam hari (circular daily tour).`
-    : startingPoint?.type === 'custom_city'
-    ? `1. Titik tolak utama perjalanan dimulai dari: ${startingPoint?.label || startingPoint?.city || 'kota pilihan'}. Jadwalkan seluruh rute perjalanan dengan pola hub-and-spoke atau loop koridor searah yang berpusat atau berangkat dari kota ini.`
-    : startingPoint?.type === 'must_visit'
-    ? `1. Destinasi impian utama yang WAJIB dikunjungi adalah: "${startingPoint?.label}". Jadwalkan kunjungan ke destinasi ini sebagai highlight utama Hari 1 atau Hari 2, dan atur destinasi pendukung lain di koridor wilayah yang sama secara efisien.`
+  isNonAirport
+    ? `⚠️ PERINGATAN WAJIB & MUTLAK: Wisatawan TIDAK BERANGKAT DARI BANDARA! Titik keberangkatan adalah: "${startingPointLabel}".
+1. DILARANG KERAS membuat jadwal penjemputan bandara atau kedatangan Bandara BIM pada Hari 1!
+2. Hari 1 HARUS dimulai langsung dari ${startingPointLabel} menuju destinasi terdekat di sekitarnya.
+3. Hari terakhir juga TIDAK mengantar ke Bandara BIM, melainkan diakhiri di ${startingPointLabel}.`
     : '1. Wisatawan baru tiba di Bandara Internasional Minangkabau (BIM). Mulai Hari 1 dengan penjemputan di bandara dan akhiri hari terakhir dengan pengantaran ke bandara.'
 }
 `;
@@ -884,7 +883,7 @@ Daftar Destinasi & Kategori di Sumatera Barat yang dapat Anda pilih:
 ${destSummary}
 
 Aturan Ketat:
-1. Wajib sesuaikan destinasi, titik keberangkatan, ritme, dan aktivitas dengan profil wisatawan (misal: jika bawa lansia/anak, kurangi aktivitas fisik ekstrem, pilih yang mudah diakses; jika titik awal bukan bandara, mulai rute langsung dari titik tersebut).
+1. Wajib sesuaikan destinasi, titik keberangkatan, ritme, dan aktivitas dengan profil wisatawan (${isNonAirport ? `DILARANG KERAS memasukkan penjemputan Bandara BIM di Hari 1 karena titik awal adalah ${startingPointLabel}; rute Hari 1 HARUS dimulai langsung dari ${startingPointLabel}` : 'mulai Hari 1 dari Bandara BIM'}).
 2. Rute HARUS SEARAH per klaster geografis tiap harinya. JANGAN bolak-balik.
 3. JANGAN mengulang destinasi di hari yang berbeda.
 4. Gunakan bahasa: ${langStr}.
@@ -1024,7 +1023,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -1424,9 +1423,9 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   }
 
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2710,9 +2709,9 @@ export async function fetchAiHotInfo(language: string = 'id') {
   }
 
   // 2. Client-side Gemini AI if API key is provided
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2880,7 +2879,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-flash-lite-latest'];
+  const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
   for (const model of modelsToTry) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2967,7 +2966,7 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const model of modelsToTry) {
       try {
         const res = await ai.models.generateContent({

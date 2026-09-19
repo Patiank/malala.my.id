@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -80,7 +81,7 @@ async function startServer() {
       const targetEv = targetEvent;
       const daysCountClamped = Math.min(Math.max(Number(durasiHari) || 3, 1), 7);
 
-      const isValidGeminiKey = apiKey && !apiKey.startsWith('AQ.') && apiKey.length > 20;
+      const isValidGeminiKey = Boolean(apiKey && apiKey.length > 20 && !apiKey.includes('Dummy'));
 
       if (!isValidGeminiKey) {
         return res.json(getItineraryFallback(req.body));
@@ -118,24 +119,24 @@ ATURAN WAJIB PALING UTAMA:
 3. Tuliskan nama "${targetEv.title}" secara eksplisit pada judul hari dan deskripsi aktivitas di hari tersebut!
 ` : '';
 
+      const isNonAirport = startingPoint && startingPoint.type !== 'airport';
+      const startingPointLabel = startingPoint?.label || startingPoint?.city || startingPoint?.details || (startingPoint?.type === 'airport' ? 'Bandara Internasional Minangkabau (BIM)' : 'Titik Lokasi Terpilih');
+
       const startingPointPrompt = `
 📍 TITIK AWAL KEBERANGKATAN WISATAWAN (STARTING POINT & ROUTING ANCHOR):
 - Tipe Titik Awal: ${startingPoint?.type || 'airport'}
-- Lokasi/Nama: ${startingPoint?.label || 'Bandara Internasional Minangkabau (BIM)'}
+- Lokasi/Nama: ${startingPointLabel}
 ${startingPoint?.details ? `- Keterangan/Detail: ${startingPoint.details}` : ''}
 ${startingPoint?.city ? `- Kota/Kabupaten Basis: ${startingPoint.city}` : ''}
 ${startingPoint?.coords ? `- Koordinat GPS: Lat ${startingPoint.coords.lat}, Lng ${startingPoint.coords.lng}` : ''}
 
-ATURAN RUTE BERDASARKAN TITIK AWAL:
+ATURAN RUTE MUTLAK BERDASARKAN TITIK AWAL:
 ${
-  startingPoint?.type === 'current_location'
-    ? '1. Wisatawan SUDAH BERADA di Sumatera Barat pada titik lokasi saat ini (GPS). JANGAN membuat jadwal penjemputan bandara pada Hari 1. Langsung mulai Hari 1 dari lokasi saat ini menuju destinasi terdekat yang searah koridor.'
-    : startingPoint?.type === 'hotel'
-    ? `1. Wisatawan SUDAH MENGINAP di ${startingPoint?.details || startingPoint?.label || 'Hotel/Penginapan'}. Rute Hari 1 TIDAK PERLU penjemputan bandara; langsung jemput dari penginapan ini di pagi hari, dan jadwalkan kembali ke area penginapan di malam hari (circular daily tour).`
-    : startingPoint?.type === 'custom_city'
-    ? `1. Titik tolak utama perjalanan dimulai dari: ${startingPoint?.label || startingPoint?.city || 'kota pilihan'}. Jadwalkan seluruh rute perjalanan dengan pola hub-and-spoke atau loop koridor searah yang berpusat atau berangkat dari kota ini.`
-    : startingPoint?.type === 'must_visit'
-    ? `1. Destinasi impian utama yang WAJIB dikunjungi adalah: "${startingPoint?.label}". Jadwalkan kunjungan ke destinasi ini sebagai highlight utama Hari 1 atau Hari 2, dan atur destinasi pendukung lain di koridor wilayah yang sama secara efisien.`
+  isNonAirport
+    ? `⚠️ PERINGATAN WAJIB & MUTLAK: Wisatawan TIDAK BERANGKAT DARI BANDARA! Titik keberangkatan adalah: "${startingPointLabel}".
+1. DILARANG KERAS membuat aktivitas penjemputan atau kedatangan di Bandara Internasional Minangkabau (BIM) pada Hari 1!
+2. Hari 1 HARUS dimulai langsung dari ${startingPointLabel} mengeksplorasi destinasi ikonik di sekitar ${startingPointLabel}.
+3. Hari terakhir juga TIDAK mengantar ke Bandara BIM, melainkan diakhiri di ${startingPointLabel} atau pusat oleh-oleh di kota tersebut.`
     : '1. Wisatawan baru tiba di Bandara Internasional Minangkabau (BIM). Mulai Hari 1 dengan penjemputan di bandara dan akhiri hari terakhir dengan pengantaran ke bandara.'
 }
 `;
@@ -166,15 +167,19 @@ ${eventsSummary}
 PANDUAN LOGISTIK & STANDAR MASTER TOUR OPERATOR:
 ============================================================
 1. KLASTER GEOGRAFIS & RUTE SEARAH (STRICT CORRIDOR ROUTING - DILARANG ZIG-ZAG & DILARANG MENGULANG DESTINASI):
-   - Titik Keberangkatan: Sesuaikan secara ketat dengan TITIK AWAL KEBERANGKATAN di atas (Bandara BIM / Lokasi Saat Ini / Hotel / Kota Pilihan / Destinasi Impian). Jangan memaksakan penjemputan bandara jika wisatawan memilih lokasi saat ini, hotel, atau kota lain.
+   - Titik Keberangkatan: Sesuaikan secara ketat dengan TITIK AWAL KEBERANGKATAN di atas (${startingPointLabel}). ${isNonAirport ? `JANGAN PERNAH membuat penjemputan bandara karena wisatawan sudah berada di ${startingPointLabel}.` : ''}
    - PANDUAN KLASTER PER HARI (SETIAP HARI HARUS MENGUNJUNGI DESTINASI BERBEDA SECARA 100% UNIK SESUAI JUMLAH HARI ${durasiHari || 3} HARI):
-     * HARI 1 (Upward Flow): BIM / Padang → Air Terjun Lembah Anai (Rehat) → Sentra Tenun Pandai Sikek → Bukittinggi (Check-in, Jam Gadang, Ngarai Sianok Sunset, Nasi Kapau Pasar Atas).
+${
+  isNonAirport
+    ? `     * HARI 1: Mulai LANGSUNG dari ${startingPointLabel} mengeksplorasi destinasi ikonik terdekat di sekitarnya TANPA penjemputan bandara.`
+    : `     * HARI 1 (Upward Flow): BIM / Padang → Air Terjun Lembah Anai (Rehat) → Sentra Tenun Pandai Sikek → Bukittinggi (Check-in, Jam Gadang, Ngarai Sianok Sunset, Nasi Kapau Pasar Atas).`
+}
      * HARI 2 (Geopark & Megaproyek): Bukittinggi → Payakumbuh → Lembah Harau (Tebing Granit 300m & Air Terjun) → Jembatan Kelok 9 → Kuliner Payakumbuh (Gulai Itiak Lado Mudo / Sate Danguang-Danguang).
      * HARI 3 (Luhak Nan Tuo Heritage): Bukittinggi → Desa Terindah Dunia Nagari Pariangan → Istano Basa Pagaruyung (Batusangkar) → Makan Ikan Bilih tepi Danau Singkarak.
      * HARI 4 (Maninjau & Danau Vulkanik): Janjang Koto Gadang → Puncak Lawang (Samudra Awan) → Menuruni Kelok 44 → Danau Maninjau & Museum Rumah Buya Hamka → Kuliner Palai Rinuak.
      * HARI 5 (Warisan Dunia UNESCO): Kota Tambang Bersejarah Ombilin Sawahlunto (Lubang Mbah Soero & Museum Kereta Api Mak Itam) → Geopark Silokek Sijunjung → Tenun Silungkang.
      * HARI 6 (Highland & Saribu Rumah Gadang): Dataran Tinggi Solok → Danau Kembar (Danau Diatas & Danau Dibawah) → Kebun Teh Alahan Panjang → Kawasan Saribu Rumah Gadang Solok Selatan → Goa Batu Kapal.
-     * HARI 7 (Bahari, Kota Padang & Kepulangan): Kawasan Wisata Bahari Mandeh (Pulau Setan & Sironjong) → Pantai Air Manis (Batu Malin Kundang) → Masjid Raya Sumatera Barat → Sentra Oleh-oleh Christine Hakim → Drop-off Bandara BIM.
+     * HARI 7 (Bahari, Kota Padang & Kepulangan): Kawasan Wisata Bahari Mandeh (Pulau Setan & Sironjong) → Pantai Air Manis (Batu Malin Kundang) → Masjid Raya Sumatera Barat → Sentra Oleh-oleh Christine Hakim${isNonAirport ? ` → Selesai di ${startingPointLabel}` : ` → Drop-off Bandara BIM`}.
    - PASTIKAN JUMLAH HARI PADA ARRAY ITINERARY TEPAT SEBANYAK ${durasiHari || 3} HARI DAN TIDAK ADA SATUPUN HARI YANG MENGULANG TEMPAT/KULINER YANG SAMA!
 
 2. PACING MANUSIAWI & ESTIMASI WAKTU TEMPUH RIIL:
@@ -220,7 +225,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
   ]
 }`;
 
-      const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
+      const modelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
       let parsedData = null;
 
       for (const modelName of modelsToTry) {
@@ -264,7 +269,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
       }
 
       const cleanMsg = message.trim();
-      const isValidGeminiKey = apiKey && !apiKey.startsWith('AQ.') && apiKey.length > 20;
+      const isValidGeminiKey = Boolean(apiKey && apiKey.length > 20 && !apiKey.includes('Dummy'));
 
       if (!isValidGeminiKey) {
         return res.json({
@@ -342,7 +347,7 @@ ${eventList}
       });
 
       let reply = '';
-      const chatModelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+      const chatModelsToTry = ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
       for (const modelName of chatModelsToTry) {
         try {
           const response = await ai.models.generateContent({
