@@ -15,6 +15,7 @@ import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, form
 import { generateSumbarBookletPDF, generateItineraryPDF } from '../utils/pdfGenerator';
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
 import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
+import { logTourismSignal } from '../utils/telemetry';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -680,6 +681,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     try {
       setIsDownloadingPdf(true);
       await generateItineraryPDF(aiResponse, lang);
+      logTourismSignal('download_pdf', { type: 'itinerary_a4', title: aiResponse.title });
     } catch (err) {
       console.error('Failed to generate A4 itinerary PDF:', err);
       alert(lang === 'en' ? 'Failed to download itinerary PDF. Please try again.' : 'Gagal mengunduh file PDF rencana wisata. Silakan coba lagi.');
@@ -995,6 +997,13 @@ export const Drawers: React.FC<DrawersProps> = ({
         language: lang,
       });
       setAiResponse(data);
+      logTourismSignal('generate_itinerary', {
+        durationDays: itineraryForm.durasiHari || 3,
+        travelerCategory: itineraryForm.profilWisatawan?.kategori || 'umum',
+        originType: itineraryForm.profilWisatawan?.asal || 'domestik',
+        targetEvent: itineraryForm.targetEvent?.title || null,
+        title: data.title || 'Itinerary Sumbar',
+      });
     } catch (err: any) {
       setAiError(err.message || 'Terjadi kesalahan saat memanggil UNI MALA AI.');
     } finally {

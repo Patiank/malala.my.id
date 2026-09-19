@@ -7,10 +7,12 @@ import { Drawers } from './components/Drawers';
 import { Toast } from './components/Toast';
 import { NewsModal } from './components/NewsModal';
 import { LegalModal } from './components/LegalModal';
+import { CookieBanner } from './components/CookieBanner';
 import { DrawerType, ToastNotice } from './types';
 import { HotInfoItem } from './types';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
+import { logTourismSignal } from './utils/telemetry';
 
 import { fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
@@ -362,6 +364,7 @@ export default function App() {
           return prev.filter((item) => item !== id);
         } else {
           showToast(lang === 'en' ? `Saved to Favorites: "${title}"` : `Disimpan ke Favorit: "${title}"`);
+          logTourismSignal('save_bookmark', { targetId: id, title });
           return [...prev, id];
         }
       });
@@ -538,6 +541,12 @@ export default function App() {
         <button onClick={() => handleOpenDrawer('disclaimer')} className="hover:text-white/80 transition-colors">Disclaimer</button>
         <button onClick={() => handleOpenDrawer('contact')} className="hover:text-white/80 transition-colors">Contact</button>
       </div>
+
+      {/* Cookie Consent Banner */}
+      <CookieBanner
+        onOpenPrivacy={() => handleOpenDrawer('privacy')}
+        lang={lang}
+      />
 
       {/* Toast Notifications */}
       <Toast
