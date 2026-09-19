@@ -7,12 +7,13 @@ import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousE
 import { pingSearchEngineIndexNow } from '../utils/seo';
 import { EVENTS_SCHEDULE } from '../data/content';
 import { uploadCatalogImage } from '../utils/imageOptimizer';
+import { TourismIntelligenceTab } from './TourismIntelligenceTab';
 
 interface AdminPanelProps {
   dataStore: any;
 }
 
-type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings' | 'social';
+type TabType = 'destinations' | 'culture' | 'culinary' | 'souvenirs' | 'events' | 'download' | 'hotinfo' | 'settings' | 'social' | 'intelligence';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminTab, setAdminTab] = useState<TabType>('destinations');
@@ -1040,7 +1041,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   return (
     <div className="flex flex-col h-full bg-white relative">
       {/* Tabs */}
-      <div className="grid grid-cols-3 sm:grid-cols-9 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
+      <div className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-10 gap-1 bg-gray-100 p-1.5 rounded-lg shrink-0 mb-4 text-[11px] font-jakarta">
         <button onClick={() => { setAdminTab('destinations'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'destinations' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Destinasi</button>
         <button onClick={() => { setAdminTab('culture'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culture' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Budaya</button>
         <button onClick={() => { setAdminTab('culinary'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'culinary' ? 'bg-black text-white shadow-xs' : 'text-gray-600 hover:text-black'}`}>Kuliner</button>
@@ -1058,6 +1059,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         <button onClick={() => { setAdminTab('settings'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all ${adminTab === 'settings' ? 'bg-amber-600 text-white shadow-xs' : 'text-amber-800 bg-amber-50 hover:bg-amber-100'}`}>Settings Latar</button>
         <button onClick={() => { setAdminTab('social'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all flex items-center justify-center gap-1 ${adminTab === 'social' ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-xs' : 'text-purple-700 bg-purple-50 hover:bg-purple-100'}`}>
           <span>📱 Sosmed AI</span>
+        </button>
+        <button onClick={() => { setAdminTab('intelligence'); handleCancelEdit(); }} className={`py-2 px-1 rounded-md font-bold uppercase transition-all flex items-center justify-center gap-1 ${adminTab === 'intelligence' ? 'bg-blue-600 text-white shadow-xs' : 'text-blue-700 bg-blue-50 hover:bg-blue-100'}`}>
+          <span>📊 Intelijen Sinyal</span>
         </button>
       </div>
 
@@ -1991,6 +1995,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
               </div>
             )}
           </div>
+        ) : adminTab === 'intelligence' ? (
+          <TourismIntelligenceTab />
         ) : (editingId && formData) ? (
           <div className="bg-gray-50 border border-gray-200 p-4 sm:p-5 rounded-xl space-y-4 shadow-sm">
             <div className="flex items-center justify-between flex-wrap gap-2 border-b border-gray-200 pb-3">
