@@ -300,10 +300,14 @@ export function generateTourismIntelligenceReportPDF(
   doc.setDrawColor(226, 232, 240);
   doc.roundedRect(margin, currentY, colW, sec3BoxH, 2, 2, 'FD');
 
+  // Decorative Accent Pill
+  doc.setFillColor(79, 70, 229); // indigo-600
+  doc.roundedRect(margin + 4, currentY + 4, 2, 3.5, 0.5, 0.5, 'F');
+
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
+  doc.setFontSize(7.8);
   doc.setTextColor(71, 85, 105);
-  doc.text('⏱️ PREFERENSI DURASI LIBURAN', margin + 4, currentY + 6);
+  doc.text('PREFERENSI DURASI LIBURAN (TRIP DAYS)', margin + 8, currentY + 6.5);
 
   const totalDurations = durationEntries.reduce((acc, [, val]) => acc + (Number(val) || 0), 0) || 1;
 
@@ -343,10 +347,14 @@ export function generateTourismIntelligenceReportPDF(
   doc.setDrawColor(226, 232, 240);
   doc.roundedRect(rightX, currentY, colW, sec3BoxH, 2, 2, 'FD');
 
+  // Decorative Accent Pill
+  doc.setFillColor(14, 165, 233); // sky-500
+  doc.roundedRect(rightX + 4, currentY + 4, 2, 3.5, 0.5, 0.5, 'F');
+
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
+  doc.setFontSize(7.8);
   doc.setTextColor(71, 85, 105);
-  doc.text('📱 SEBARAN PERANGKAT PENJELAJAH', rightX + 4, currentY + 6);
+  doc.text('SEBARAN PERANGKAT PENJELAJAH (DEVICE SPLIT)', rightX + 8, currentY + 6.5);
 
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(7.5);
