@@ -1,6 +1,6 @@
 # MALALA — FULL KNOWLEDGE BASE: WEST SUMATRA TOURISM, CULTURE, CULINARY & EVENTS
 Domain: https://malala.my.id
-Last Updated: 2026-09-07
+Last Updated: 2026-09-19
 Publisher: MINANGKAOS (Official West Sumatra Creative Apparel & Culture Brand)
 
 ================================================================================
@@ -249,7 +249,29 @@ This ebb and flow phenomenon originates from underground rivers flowing through 
 
 For visitors, witnessing this natural wonder is a rare experience. Locals offer bamboo raft rentals for those wanting to navigate the waters. Its cool, peaceful, and untouched ambiance makes Tarusan Kamang a truly compelling hidden gem of West Sumatra.
 
-### 12. Air Terjun Nyarai (Nyarai Waterfall)
+### 12. Desa Wisata Simarosok (Simarasok Cultural & Eco-Tourism Village)
+- ID: d1857
+- Kategori: Alam | Nature & Ecotourism
+- Wilayah / Regency: Kabupaten Agam
+- Koordinat: Latitude -0.305, Longitude 100.37
+- Waktu Terbaik: Pagi Hari (07:00 - 11:00 WIB) & Menjelang Senja (Morning (07:00 - 11:00 AM) & Golden Sunset Hours)
+- Lokasi Spesifik: Desa Wisata Simarosok, Kabupaten Agam, Sumatera Barat
+- Tag: Eksotis
+- Highlights: Panorama visual autentik khas Kabupaten Agam • Spot fotografi lanskap alam yang sangat instagramable • Udara bersih alami dan keasrian lingkungan yang terjaga
+- Deskripsi:
+Diapit oleh keandalan alam Kecamatan Baso, Kabupaten Agam, Simarasok berdiri anggun di ketinggian 800 hingga 1.200 meter di atas permukaan laut. Terbagi dalam empat jorong—Simarasok, Koto Tuo, Kampeh, dan Sungai Angek—nagari berudara sejuk ini menyimpan bentang alam menawan serta jejak sejarah yang memikat. Nama "Simarasok" sendiri berakar dari istilah Sei Marasok, mengisahkan fenomena unik sungai yang meresap dan menerobos masuk ke dalam perut bukit di barat Pintu Angin, sebuah kawasan bersejarah tempat ditemukannya pemukiman awal Ranah Kubuang Tigo Baleh.
+
+Bagi pencinta petualangan dan rekreasi alam, Simarasok menyuguhkan beragam atraksi seru yang siap memacu adrenalin sekaligus memanjakan pancaindra. Pengunjung dapat menyusuri keajaiban geologis Gua Ngalau Nan Panjang yang terbentuk selama ribuan tahun, menaklukkan derasnya arus Sungai Batang Agam melalui olahraga arung jeram, hingga melakukan trekking menuju Puncak Bukit Karang untuk menikmati pemandangan panoramik nagari dari titik tertinggi. Kesegaran alami juga dapat dirasakan langsung dengan menikmati jernihnya aliran Batu Putiah yang kaya akan kandungan mineral alami.
+
+Lebih dari sekadar bentang alam yang memukau, kehangatan masyarakat dan kekayaan budaya Minangkabau di Simarasok melengkapi pengalaman berkunjung menjadi begitu berkesan. Berpadu dengan kuliner khas lokal dan wisata edukasi geologi yang kaya, destinasi ini menawarkan paket liburan yang utuh: perpaduan harmonis antara keindahan lanskap pegunungan, jejak sejarah yang berharga, serta keramahan otentik khas ranah Minang.
+- English Description:
+Nestled in the lush landscapes of Baso District, Agam Regency, Simarasok stands gracefully at an elevation of 800 to 1,200 meters above sea level. Divided into four traditional hamlets (jorong)—Simarasok, Koto Tuo, Kampeh, and Sungai Angek—this cool-climate village boasts captivating natural scenery and a rich history. The name "Simarasok" originates from Sei Marasok, which describes the unique phenomenon of a river seeping and disappearing directly into the cavernous hills west of Pintu Angin, a historical site linked to the ancient settlements of Ranah Kubuang Tigo Baleh.
+
+For adventure seekers and nature enthusiasts, Simarasok offers a dynamic array of outdoor activities designed to thrill and inspire. Visitors can explore the geological wonder of the Ngalau Nan Panjang cave, formed over thousands of years, conquer the exciting rapids of the Batang Agam River through white-water rafting, or trek up to the summit of Bukit Karang for panoramic high-altitude views of the village. Refreshment awaits at the clear streams of Batu Putiah, renowned for its naturally high mineral content.
+
+Beyond its striking topography, the genuine warmth of the local community and the depth of Minangkabau traditions make every visit truly memorable. Paired with authentic traditional culinary offerings and insightful educational tours, Simarasok delivers a complete travel experience—a harmonious blend of mountain landscapes, historical roots, and authentic Minang hospitality.
+
+### 13. Air Terjun Nyarai (Nyarai Waterfall)
 - ID: d19
 - Kategori: Air Terjun & Alam | Waterfall & Ecotourism
 - Wilayah / Regency: Kabupaten Padang Pariaman
@@ -271,7 +293,7 @@ Formed over millions of years by breccia rock erosion from swirling river curren
 
 The highlight of Nyarai is the cliff jumping and traditional spearfishing experience for native river fish (ikan garing). The thrill of leaping from rock ledges into the cold, refreshing emerald pool makes Nyarai a paradise for wilderness adventure seekers.
 
-### 13. Lembah Harau (Harau Valley)
+### 14. Lembah Harau (Harau Valley)
 - ID: d2
 - Kategori: Lembah & Geopark | Valley & Geopark
 - Wilayah / Regency: Kabupaten Limapuluh Kota
@@ -293,7 +315,7 @@ Behind its soaring granite walls, Harau Valley harbors a collection of pristine 
 
 Today, Harau Valley features modern ecotourism amenities including cliffside glamping sites, countryside cycling routes, and eco-friendly thematic parks. It stands as an ideal destination for family holidays, outdoor adventure, and world-class rock climbing.
 
-### 14. Jembatan Akar Bayang (Bayang Living Root Bridge)
+### 15. Jembatan Akar Bayang (Bayang Living Root Bridge)
 - ID: d20
 - Kategori: Alam | Natural Heritage
 - Wilayah / Regency: Kabupaten Pesisir Selatan
@@ -315,7 +337,7 @@ Over more than a century, the living roots grew and naturally bound together, fo
 
 The Bayang Root Bridge is a living embodiment of the Minangkabau philosophy 'Alam Takambang Jadi Guru' (Nature is the greatest teacher). This symbiosis of human ingenuity and natural growth attracts both domestic tourists and international researchers.
 
-### 15. Candi Padang Roco & Percandian Dharmasraya (Padang Roco Temple & Dharmasraya Heritage)
+### 16. Candi Padang Roco & Percandian Dharmasraya (Padang Roco Temple & Dharmasraya Heritage)
 - ID: d21
 - Kategori: Sejarah | History & Archaeology
 - Wilayah / Regency: Kabupaten Dharmasraya
@@ -337,7 +359,29 @@ The complex comprises four red-brick temple structures (Padang Roco I through IV
 
 Situated along the Batanghari River basin, the site reflects the glory of ancient Malay river and maritime trade routes. For history and archaeology enthusiasts, Padang Roco offers a rare window into pre-Islamic Nusantara civilization.
 
-### 16. Goa Batu Kapal (Batu Kapal Cave (Ship Rock Cave))
+### 17. Desa Wisata Tapian Tabiang Barasok (Tapian Tabiang Barasok Tourism Village)
+- ID: d2160
+- Kategori: Alam | Nature & Ecotourism
+- Wilayah / Regency: Kota Bukittinggi
+- Koordinat: Latitude -0.305, Longitude 100.37
+- Waktu Terbaik: Pagi Hari (07:00 - 11:00 WIB) & Menjelang Senja (Morning (07:00 - 11:00 AM) & Golden Sunset Hours)
+- Lokasi Spesifik: Desa Wisata Tapian Tabiang Barasok, Kota Bukittinggi
+- Tag: Eksotis
+- Highlights: Panorama visual autentik khas • Spot fotografi lanskap alam yang sangat instagramable • Udara bersih alami dan keasrian lingkungan yang terjaga
+- Deskripsi:
+Tersembunyi di balik sejuknya perbukitan Kelurahan Bukik Apik Puhun, Kota Bukittinggi, Kampung Wisata Tapian Tabiang Barasok berdiri anggun di tepian Ngarai Sianok. Destinasi yang lahir dari semangat gotong royong warga lokal sejak akhir 2024 ini menawarkan panorama alam yang luar biasa, terutama saat kabut tipis—atau barasok—menyelimuti lembah di pagi hari. Aksesnya yang sangat dekat dari pusat kota membuat kampung ini menjadi pelarian sempurna bagi siapa saja yang merindukan kedamaian lanskap Minangkabau yang otentik.
+
+Bukan sekadar menawarkan keindahan visual, Tapian Tabiang Barasok mengusung konsep living culture yang mengajak wisatawan menyatu langsung dengan kehidupan lokal. Melalui deretan homestay rumah warga dan hangatnya keramahan khas Minang, pengunjung dapat menikmati kelezatan kuliner tradisional, menyimak keagungan seni Silek Tuo Siriah Langkok, hingga berpartisipasi dalam aktivitas harian masyarakat. Seluruh pengalaman ini dikelola secara terpadu oleh warga sekitar, menjadikan setiap momen liburan terasa personal, bermakna, sekaligus edukatif.
+
+Sebagai wajah baru pariwisata berkelanjutan, kampung wisata ini membuktikan bahwa pemberdayaan masyarakat mampu melahirkan destinasi kelas dunia. Dengan mengedepankan pelestarian lingkungan, pengelolaan sampah mandiri, serta pengembangan UMKM lokal, setiap kunjungan Anda tidak hanya menciptakan kenangan indah, tetapi juga memberi dampak positif yang nyata bagi kelestarian budaya dan kesejahteraan warga setempat.
+- English Description:
+Hidden behind the cool, lush hills of Bukik Apik Puhun Village in Bukittinggi City, Tapian Tabiang Barasok Tourism Village stands gracefully on the edge of the majestic Sianok Canyon. Born from the collective spirit of community collaboration in late 2024, this destination offers breathtaking natural panoramas—especially in the early morning when a soft blanket of mist (barasok) gently wraps around the valley floor. Conveniently accessible from the heart of the city, it serves as an ideal sanctuary for anyone seeking the peace and serenity of an authentic Minangkabau landscape.
+
+Beyond its striking visual beauty, Tapian Tabiang Barasok embraces an immersive "living culture" concept that invites travelers to step directly into the rhythms of local life. Through warm, family-style homestays and signature Minangkabau hospitality, guests can savor traditional culinary delights, witness the graceful mastery of Silek Tuo Siriah Langkok martial arts, and partake in daily community activities. Thoughtfully managed by the locals themselves, every experience feels deeply personal, enriching, and educational.
+
+As a rising beacon of sustainable tourism, this village proves that community empowerment can shape a world-class destination. By prioritizing environmental conservation, eco-friendly waste management, and the growth of local small businesses, every visit not only crafts unforgettable memories but also makes a meaningful contribution to preserving cultural heritage and empowering the local community.
+
+### 18. Goa Batu Kapal (Batu Kapal Cave (Ship Rock Cave))
 - ID: d22
 - Kategori: Lembah & Geopark | Geological Wonder
 - Wilayah / Regency: Kabupaten Solok Selatan
@@ -359,7 +403,7 @@ The cave features four main chambers whose towering karst walls remarkably resem
 
 The most spectacular phenomenon occurs at midday when overhead roof openings allow dramatic sunbeams to illuminate the underground river and cavern floors in a highly photogenic 'Light of Heaven' effect.
 
-### 17. Sawahlunto Warisan Dunia UNESCO (Sawahlunto UNESCO World Heritage City)
+### 19. Sawahlunto Warisan Dunia UNESCO (Sawahlunto UNESCO World Heritage City)
 - ID: d23
 - Kategori: Sejarah | History & Heritage
 - Wilayah / Regency: Kota Sawahlunto
@@ -381,7 +425,7 @@ Key attractions include Lubang Mbah Soero, a preserved 185-meter underground coa
 
 Old town Sawahlunto has transformed into a vast open-air museum where 19th-century European colonial buildings stand alongside art galleries, vintage cafes, and Silungkang Songket weaving centers.
 
-### 18. Gunung Talamau & 13 Telaga (Mount Talamau & 13 Summit Lakes)
+### 20. Gunung Talamau & 13 Telaga (Mount Talamau & 13 Summit Lakes)
 - ID: d24
 - Kategori: Danau & Gunung | Mountain & Volcanic Lakes
 - Wilayah / Regency: Kabupaten Pasaman Barat
@@ -403,7 +447,7 @@ Near its summit lies a remarkable cluster of 13 natural volcanic crater lakes (t
 
 The trekking trail to Talamau's peak offers an adventure through dense primary montane rainforest, passing multi-tiered Sarasah Murai waterfalls, eventually emerging onto edelweiss meadows and summit savannas with 360-degree panoramas across western Sumatra.
 
-### 19. Pulau Sirandah & Pulau Pagang (Sirandah & Pagang Islands)
+### 21. Pulau Sirandah & Pulau Pagang (Sirandah & Pagang Islands)
 - ID: d25
 - Kategori: Pantai & Bahari | Marine & Island
 - Wilayah / Regency: Kota Padang
@@ -425,7 +469,7 @@ The iconic feature of Sirandah Island is Batu Sirandah, a giant natural sea stac
 
 The waters between both islands are ideal for snorkeling, freediving, and kayaking over crystal-clear waters. Visitors can camp on the beach, grill freshly caught fish, and enjoy starry nights free from city light pollution.
 
-### 20. Gunung Talang & Danau Talang (Mount Talang & Talang Crater Lake)
+### 22. Gunung Talang & Danau Talang (Mount Talang & Talang Crater Lake)
 - ID: d26
 - Kategori: Danau & Gunung | Volcano & Crater Lake
 - Wilayah / Regency: Kabupaten Solok
@@ -447,7 +491,7 @@ Unlike the popular Twin Lakes, Talang Lake offers a far more isolated and pristi
 
 The trekking trail up Mount Talang passes active sulfur vents, steam fumaroles, and lush highland tea plantations. The summit offers stunning panoramas spanning the Twin Lakes, Lake Singkarak, and the vast Indian Ocean in the distance.
 
-### 21. Jembatan Kelok 9 (Kelok 9 Scenic Flyover)
+### 23. Jembatan Kelok 9 (Kelok 9 Scenic Flyover)
 - ID: d27
 - Kategori: Sejarah & Bangunan | Engineering Heritage
 - Wilayah / Regency: Kabupaten Lima Puluh Kota
@@ -469,7 +513,7 @@ The six-curved elevated bridge rests on towering concrete pillars soaring over l
 
 Along well-organized roadside rest areas, travelers can savor local delicacies such as Sweet Durian Sticky Rice, Roasted Corn, and warm Kawa Daun coffee while capturing iconic photographs of this engineering wonder harmonizing with nature.
 
-### 22. Pantai Carocok & Pulau Cingkuak (Carocok Beach & Cingkuak Historic Island)
+### 24. Pantai Carocok & Pulau Cingkuak (Carocok Beach & Cingkuak Historic Island)
 - ID: d28
 - Kategori: Pantai & Bahari | Beach & Marine Heritage
 - Wilayah / Regency: Kabupaten Pesisir Selatan
@@ -491,7 +535,7 @@ Cingkuak Island holds immense colonial historical significance. In 1660, the Dut
 
 Visitors can enjoy thrilling water sports such as banana boating, jet skiing, shallow reef snorkeling, or simply basking in golden sunsets over the Indian Ocean framed by lush coastal headlands.
 
-### 23. Gua Ngalau Indah Payakumbuh (Ngalau Indah Cave & Highlands)
+### 25. Gua Ngalau Indah Payakumbuh (Ngalau Indah Cave & Highlands)
 - ID: d29
 - Kategori: Lembah & Geopark | Karst Cave & Highlands
 - Wilayah / Regency: Kota Payakumbuh
@@ -513,7 +557,7 @@ Inside the cave, visitors can discover the unique Batu Goncang—a suspended roc
 
 Above the cave, the summit park features viewing decks offering 180-degree panoramic vistas across Payakumbuh City, emerald rice paddies, and the imposing silhouettes of Mount Marapi and Mount Sago.
 
-### 24. Jam Gadang & Kota Bukittinggi (Jam Gadang & Bukittinggi City)
+### 26. Jam Gadang & Kota Bukittinggi (Jam Gadang & Bukittinggi City)
 - ID: d3
 - Kategori: Alam | History & Landmark
 - Wilayah / Regency: Kota Bukittinggi
@@ -535,7 +579,7 @@ The architectural uniqueness of Jam Gadang shines in its rooftop structure, whic
 
 Visiting Jam Gadang grants immediate access to authentic Nasi Kapau eateries at Pasar Lereng, souvenir shopping at Pasar Atas, and scenic walking routes to historical spots including Sianok Canyon, the Japanese Tunnel, and Fort de Kock.
 
-### 25. Gunung Marapi (Mount Marapi (Sacred Minang Volcano))
+### 27. Gunung Marapi (Mount Marapi (Sacred Minang Volcano))
 - ID: d30
 - Kategori: Danau & Gunung | Mountain & Sacred Volcano
 - Wilayah / Regency: Kabupaten Agam & Tanah Datar
@@ -557,7 +601,7 @@ Marapi features a rugged active volcanic crater complex emitting thick sulfur pl
 
 Along its upper ridges, trekkers encounter extensive meadows of Sumatran Edelweiss flowers (Anaphalis javanica) alongside sweeping views of neighboring Mount Singgalang, Lake Singkarak, and the sea of clouds over Agam Valley.
 
-### 26. Pulau Cubadak (Cubadak Island Sanctuary)
+### 28. Pulau Cubadak (Cubadak Island Sanctuary)
 - ID: d31
 - Kategori: Pantai & Bahari | Island Sanctuary & Diving
 - Wilayah / Regency: Kabupaten Pesisir Selatan
@@ -579,7 +623,7 @@ The island gained international acclaim through its eco-resort developed to pres
 
 The waters surrounding Cubadak offer world-class diving and snorkeling conditions featuring vibrant coral gardens, clownfish anemones, sea turtles, and extraordinary underwater visibility reaching up to 20 meters.
 
-### 27. Museum Adityawarman (Adityawarman State Museum)
+### 29. Museum Adityawarman (Adityawarman State Museum)
 - ID: d32
 - Kategori: Sejarah | State Cultural Museum
 - Wilayah / Regency: Kota Padang
@@ -601,7 +645,7 @@ The main building is a grand embodiment of the traditional Rumah Gadang Gajah Ma
 
 The collection houses over 6,000 precious artifacts, ranging from golden Suntiang bridal crowns, customary regalia of 19 nagari regions, antique 18th-century gold-threaded songket textiles, ancient stone inscriptions from Dharmasraya, to full-scale bridal bed chamber replicas.
 
-### 28. Museum Rumah Kelahiran Bung Hatta (Bung Hatta Birthplace Memorial House)
+### 30. Museum Rumah Kelahiran Bung Hatta (Bung Hatta Birthplace Memorial House)
 - ID: d33
 - Kategori: Sejarah | National Heritage & History
 - Wilayah / Regency: Kota Bukittinggi
@@ -623,7 +667,7 @@ The structure reflects a harmonious blend of traditional Minangkabau timber cons
 
 Visitors can observe authentic teak furniture, the curtained canopy bed where Hatta was born, childhood study desks, antique books, vintage family photographs, and the original horse-drawn carriage (bendi) used by his grandfather.
 
-### 29. Bukit Langkisau Painan (Langkisau Hill Panoramic Viewpoint)
+### 31. Bukit Langkisau Painan (Langkisau Hill Panoramic Viewpoint)
 - ID: d34
 - Kategori: Danau & Gunung | Panoramic Hill & Paragliding
 - Wilayah / Regency: Kabupaten Pesisir Selatan
@@ -645,7 +689,7 @@ From the summit, visitors enjoy dramatic views spanning the curving white sands 
 
 Equipped with viewing gazebos, fresh coconut cafes, and paved vehicle access, Langkisau peak is celebrated for its magical sunsets, when the western sky transforms into fiery crimson as the sun dips beneath the Indian Ocean horizon.
 
-### 30. Pantai Gandoriah & Pulau Angso Duo (Gandoriah Beach & Angso Duo Sacred Island)
+### 32. Pantai Gandoriah & Pulau Angso Duo (Gandoriah Beach & Angso Duo Sacred Island)
 - ID: d35
 - Kategori: Pantai & Bahari | Coastal Heritage & Marine
 - Wilayah / Regency: Kota Pariaman
@@ -667,7 +711,7 @@ A short 15-minute boat ride brings visitors to Angso Duo Island, a tiny white-sa
 
 The pairing of coastal snacks like hot Sala Lauak and Nasi Sek, boat excursions, and cultural pilgrimage makes Gandoriah Beach a beloved year-round family attraction.
 
-### 31. Air Terjun Lubuak Tampuruang (Lubuak Tampuruang Waterfall)
+### 33. Air Terjun Lubuak Tampuruang (Lubuak Tampuruang Waterfall)
 - ID: d36
 - Kategori: Air Terjun & Alam | Waterfall & Natural Basin
 - Wilayah / Regency: Kota Padang
@@ -689,161 +733,7 @@ This 15-meter waterfall cascades clear, refreshing mountain water over terraced 
 
 Visitors can swim in the natural pool, leap from low rock ledges, or unwind on riverside boulders serenaded by rushing waters and tropical birdsong.
 
-### 32. Istano Basa Pagaruyung (Istano Basa Pagaruyung Palace)
-- ID: d4
-- Kategori: Desa Wisata | Culture & Heritage
-- Wilayah / Regency: Kabupaten Tanah Datar
-- Koordinat: Latitude -0.471111, Longitude 100.621111
-- Waktu Terbaik: Pagi dan Siang Hari (Morning and Midday)
-- Lokasi Spesifik: Batusangkar, Kabupaten Tanah Datar
-- Tag: Budaya
-- Highlights: Arsitektur Kayu 3 Tingkat 72 Tiang • Penyewaan Baju Kerajaan Minangkabau • Koleksi Benda Pusaka Kerajaan Pagaruyung
-- Deskripsi:
-Istano Basa Pagaruyung adalah replika kemegahan istana Kerajaan Pagaruyung yang berdiri anggun di Batusangkar, Kabupaten Tanah Datar. Istana kayu tiga tingkat ini dibangun penuh dengan teknik konstruksi kayu tradisional tanpa paku besi, dihiasi dengan 72 tiang penyangga utama serta ukiran motif alam kayu (ukia) berwarna-warni yang kaya filosofi adat Minangkabau.
-
-Di dalam istana, pengunjung disuguhkan dengan museum budaya yang memamerkan koleksi pakaian kebesaran raja, benda pusaka kerajaan, bedil meriam antik, hingga bilik-bilik putri istana yang dihiasi tirai tenun songket warna-warni yang sangat mewah. Wisatawan juga dapat menyewa pakaian adat lengkap kerajaan Minangkabau untuk berfoto di ruang singgasana maupun di pelataran istana.
-
-Halaman depan istana dipenuhi dengan deretan rangkiang (lumbung padi tradisional) serta taman bunga yang tertata rapi. Didampingi pemandu lokal berpengalaman, kunjungan ke Istano Basa Pagaruyung memberikan pemahaman mendalam tentang sejarah peradaban sistem matrilineal Minangkabau.
-- English Description:
-Istano Basa Pagaruyung is a grand replica of the Pagaruyung Royal Palace located in Batusangkar, Tanah Datar Regency. This impressive three-story timber palace was constructed using traditional joinery without metal nails, supported by 72 main wooden pillars and decorated with colorful wood carvings reflecting Minangkabau cultural wisdom.
-
-Inside, visitors can explore a cultural museum exhibiting royal regalia, ancient heirlooms, historic cannons, and royal princess chambers draped in luxurious handwoven songket textiles. Guests can rent authentic Minangkabau royal costumes to take memorable photographs on the royal throne or across the palace lawns.
-
-The front grounds feature traditional rangkiang rice barns set amid manicured gardens. Guided by knowledgeable local historians, a visit to Istano Basa Pagaruyung offers a deep understanding of Minangkabau's matrilineal royal heritage.
-
-### 33. Puncak Lawang & Danau Maninjau (Puncak Lawang & Lake Maninjau)
-- ID: d5
-- Kategori: Danau & Gunung | Lake & Mountain
-- Wilayah / Regency: Kabupaten Agam
-- Koordinat: Latitude -0.28, Longitude 100.23
-- Waktu Terbaik: Pagi Hari (08:00 - 12:00 WIB) (Morning (08:00 AM - 12:00 PM))
-- Lokasi Spesifik: Kecamatan Matur, Kabupaten Agam
-- Tag: Petualangan
-- Highlights: Spot Paralayang Terbaik Asia Tenggara • Panorama 360° Danau & Kaldera Maninjau • Area Hutan Pinus & Kafe Kawa Daun
-- Deskripsi:
-Puncak Lawang adalah titik pandang dataran tinggi di Kabupaten Agam pada ketinggian 1.210 mdpl yang menawarkan lanskap udara paling memukau menuju Danau Maninjau. Dari dataran tinggi ini, hamparan danau tekto-vulkanik berair biru jernih yang dipagari oleh Kaldera Maninjau dapat terlihat secara utuh dalam sudut pandang 360 derajat yang sangat dramatis.
-
-Puncak Lawang diakui secara internasional sebagai salah satu lokasi olahraga paralayang (paragliding) terbaik di Asia Tenggara karena memiliki embusan angin bukit yang sangat stabil. Wisatawan dapat merasakan sensasi terbang tandem melayang di udara bersama instruktur profesional berlisensi untuk menikmati keindahan Danau Maninjau dari angkasa.
-
-Kawasan Puncak Lawang dilengkapi dengan hutan pinus asri, jalur trekking, wahana outbound, serta kafe-kafe panorama yang menyajikan hidangan Kopi Kawa Daun dan Teh Talua hangat. Tempat ini sangat populer sebagai spot berfoto matahari terbit dan tujuan rekreasi keluarga yang menyegarkan.
-- English Description:
-Puncak Lawang is a scenic highland viewpoint in Agam Regency situated 1,210 meters above sea level, offering an unmatched aerial vista overlooking Lake Maninjau. From this ridge, the blue techto-volcanic lake enclosed by steep caldera walls can be appreciated in a breathtaking 360-degree panorama.
-
-Puncak Lawang is globally acclaimed as one of Southeast Asia's premier paragliding flight spots owing to its exceptionally stable thermal winds. Travelers can experience tandem paragliding flights alongside certified instructors, soaring freely over Lake Maninjau.
-
-The area is enhanced by pine forests, trekking trails, adventure courses, and panoramic cafes serving warm Kawa Daun tea and Teh Talua. It stands as a top choice for sunrise photography and refreshing family getaways.
-
-### 34. Desa Wisata Nagari Pariangan (Nagari Pariangan Tourism Village)
-- ID: d6
-- Kategori: Desa Wisata | Heritage Village
-- Wilayah / Regency: Kabupaten Tanah Datar
-- Koordinat: Latitude -0.45, Longitude 100.51
-- Waktu Terbaik: Pagi Hari (07:00 - 11:00 WIB) (Morning (07:00 - 11:00 AM))
-- Lokasi Spesifik: Lereng Gunung Marapi, Kabupaten Tanah Datar
-- Tag: Terindah
-- Highlights: Desa Terindah di Dunia Versi Media Internasional • Masjid Tua Pariangan & Air Panas Gunung Marapi • Sawah Terasering & Kopi Kawa Daun
-- Deskripsi:
-Nagari Pariangan di Kabupaten Tanah Datar terletak anggun di lereng Gunung Marapi pada ketinggian 700 mdpl dan telah dinobatkan oleh media internasional Budget Travel sebagai salah satu desa terindah di dunia. Desa bersejarah ini diyakini oleh masyarakat Minangkabau sebagai nagari tertua tempat asal mula peradaban dan kebudayaan adat Minang dilahirkan.
-
-Tata ruang desa didominasi oleh deretan Rumah Gadang kayu berusia ratusan tahun yang berdiri harmonis di antara lorong batu bertingkat dan hamparan sawah terasering yang hijau. Di tengah desa berdiri Masjid Tua Pariangan bertiang kayu jati antik serta sumber pemandian air panas alami berair hangat yang bersumber langsung dari Gunung Marapi.
-
-Wisatawan dapat menikmati ketenangan hidup pedesaan yang asli, belajar proses pembuatan teh daun kawa bakar tradisional, serta merasakan kehangatan keramahan masyarakat lokal. Nagari Pariangan menawarkan pengalaman wisata budaya dan sejarah Minangkabau yang sangat otentik.
-- English Description:
-Nagari Pariangan in Tanah Datar Regency rests gracefully on the slopes of Mount Marapi at 700 meters above sea level and was named by Budget Travel media as one of the most beautiful villages in the world. This historic village is revered as the oldest nagari in Minangkabau, the birthplace of Minang culture.
-
-The village layout features centuries-old wooden Rumah Gadang structures set along stone pathways and lush terraced rice fields. At its center stands the historic wooden Pariangan Mosque alongside natural hot springs fed directly by Mount Marapi.
-
-Visitors can experience tranquil rural life, observe traditional roasted kawa leaf tea brewing, and enjoy genuine local hospitality. Nagari Pariangan offers an authentic journey into Minangkabau cultural heritage.
-
-### 35. Danau Biru Sawahlunto (Sawahlunto Blue Lake (Danau Biru))
-- ID: d6540
-- Kategori: Lembah & Geopark | Geological & Mining Wonder
-- Wilayah / Regency: Kota Sawahlunto
-- Koordinat: Latitude -0.628056, Longitude 100.806944
-- Waktu Terbaik: Pagi Hari (07:30 - 10:30 WIB) & Siang Cerah (Morning (07:30 - 10:30 AM) & Bright Midday)
-- Lokasi Spesifik: Nagari Parambahan, Kec. Talawi, Kota Sawahlunto
-- Tag: Hidden Gem
-- Highlights: Air Danau Berwarna Biru Safir & Toska Alami • Lanskap Tebing Batuan Eksotis Bekas Tambang Ombilin • Spot Fotografi Lanskap Ikonik di Sawahlunto
-- Deskripsi:
-Danau Biru Sawahlunto adalah danau kawah buatan eksotis yang terbentuk di bekas area penambangan batu bara terbuka (open-pit mining) di kawasan Parambahan, Kecamatan Talawi, Kota Sawahlunto. Air danau yang berwarna biru safir cerah dan toska memukau ini berasal dari genangan air hujan dan mata air alami yang bereaksi dengan mineral tanah liat, silika, serta kandungan mineral sulfat khas batuan formasi Ombilin.
-
-Dikelilingi oleh perbukitan batu kapur putih gersang, vegetasi semak alami, dan jajaran pepohonan pinus, kontras warna antara birunya air dan tebing batuan menciptakan lanskap pemandangan yang sangat dramatis dan menyerupai kawah vulkanik alami di luar negeri.
-
-Danau Biru menjadi salah satu destinasi wisata alam geologi paling populer di Sawahlunto bagi para fotografer lanskap dan wisatawan yang mencari panorama alam unik dan belum banyak terjamah komersialisasi berlebih.
-- English Description:
-Sawahlunto Blue Lake is an exotic artificial basin lake formed within a former open-pit coal mining concession in Parambahan, Talawi District, Sawahlunto City. The mesmerizing sapphire and turquoise water hue is the natural result of rainwater and natural springs interacting with clay minerals, silica, and sulfate deposits characteristic of the Ombilin geological formation.
-
-Enclosed by chalky white rock ridges, wild brush, and pine groves, the stark contrast between the vivid blue waters and the arid rocky cliffs yields a dramatic, photogenic landscape reminiscent of natural volcanic craters abroad.
-
-Danau Biru has evolved into one of the most celebrated geological wonders in Sawahlunto, captivating landscape photographers and nature enthusiasts seeking rare, off-the-beaten-path vistas.
-
-### 36. Kawasan Wisata Bahari Mandeh (Mandeh Marine Tourism Estate)
-- ID: d7
-- Kategori: Pantai & Bahari | Marine Tourism
-- Wilayah / Regency: Kabupaten Pesisir Selatan
-- Koordinat: Latitude -1.133333, Longitude 100.416667
-- Waktu Terbaik: Pagi hingga Sore Hari (Morning to Late Afternoon)
-- Lokasi Spesifik: Kecamatan Koto XI Tarusan, Pesisir Selatan
-- Tag: Trending
-- Highlights: Gugusan Pulau Eksotis Berair Toska • Spot Diving Wreck Kapal MV Boelongan • Sunset Spektakuler dari Puncak Paku
-- Deskripsi:
-Kawasan Wisata Bahari Mandeh di Kabupaten Pesisir Selatan merupakan surga bahari tropis seluas 18.000 hektar yang dijuluki sebagai 'Raja Ampat-nya Sumatera Barat'. Teluk tenang berair bening toska ini dihiasi oleh gugusan pulau-pulau kecil berhutan lebat seperti Pulau Setan, Pulau Cubadak, Pulau Sironjong, dan Pulau Kapo-Kapo.
-
-Bawah laut Mandeh menyimpan kekayaan terumbu karang yang masih sangat perawan, habitat kawanan ikan tropis warna-warni, hingga bangkai kapal bersejarah MV Boelongan Nederland yang karam di dasar laut dan menjadi spot favorit penyelam internasional. Wisatawan dapat menikmati wahana olahraga air lengkap mulai dari jet ski, banana boat, hingga snorkeling.
-
-Puncak Paku di jalur jalan darat Mandeh menawarkan spot gardu pandang terbaik untuk menyaksikan keindahan matahari terbenam (sunset) yang perlahan tenggelam di balik siluet pulau-pulau kecil Mandeh. Kawasan ini merupakan destinasi wisata bahari unggulan berstandar internasional.
-- English Description:
-Mandeh Marine Tourism Estate in Pesisir Selatan Regency is an 18,000-hectare tropical marine paradise dubbed the 'Raja Ampat of West Sumatra'. This tranquil turquoise bay is studded with lush green islets including Pulau Setan, Pulau Cubadak, Pulau Sironjong, and Pulau Kapo-Kapo.
-
-Mandeh's underwater world features pristine coral reefs, abundant tropical fish, and the historic MV Boelongan Nederland shipwreck favored by international scuba divers. Tourists can enjoy water sports including jet skiing, banana boating, and snorkeling.
-
-Puncak Paku along the Mandeh coastal highway offers the premier viewpoint to witness golden sunsets dipping behind island silhouettes. Mandeh represents a world-class tropical marine destination.
-
-### 37. Ngarai Sianok & Lubang Jepang (Sianok Canyon & Japanese Tunnel)
-- ID: d8
-- Kategori: Lembah & Geopark | Valley & Geopark
-- Wilayah / Regency: Kota Bukittinggi
-- Koordinat: Latitude -0.308, Longitude 100.364
-- Waktu Terbaik: Pagi dan Sore Hari (Morning and Late Afternoon)
-- Lokasi Spesifik: Taman Panorama, Kota Bukittinggi
-- Tag: Populer
-- Highlights: Lembah Patahan Tektonik 100 Meter • Kompleks Terowongan Bawah Tanah 1942 • Janjang Koto Gadang (Great Wall Minang)
-- Deskripsi:
-Ngarai Sianok adalah lembah curam memukau setinggi 100 meter yang membentang sepanjang 15 kilometer membelah perbatasan Kota Bukittinggi dan Kabupaten Agam. Lembah patahan tektonik ini menyajikan pemandangan tebing-tebing kapur terjal berhiaskan aliran sungai jernih di dasarnya yang menjadi habitat alami bagi fauna langka seperti monyet ekor panjang dan burung enggang.
-
-Tepat di atas tebing Ngarai Sianok terdapat Taman Panorama yang dilengkapi dengan pintu masuk menuju Lubang Jepang, sebuah kompleks terowongan militer bawah tanah sepanjang 1.400 meter yang dibangun pada masa pendudukan Jepang tahun 1942. Terowongan bawah tanah ini memiliki puluhan ruangan seperti ruang amunisi, penjara, hingga ruang pengintaian.
-
-Wisatawan dapat menikmati pemandangan senja Ngarai Sianok sambil bersantai di kafe-kafe tebing, menyusuri Janjang Koto Gadang (Great Wall Minangkabau), serta mempelajari sejarah perjuangan bangsa melalui tur panduan terowongan Lubang Jepang.
-- English Description:
-Sianok Canyon is a breathtaking 100-meter deep gorge stretching 15 kilometers along the border of Bukittinggi City and Agam Regency. This tectonic fault line features vertical cliff walls cradling a meandering stream, serving as a sanctuary for wildlife including macaque monkeys and hornbills.
-
-Perched atop the canyon lies Panorama Park, providing entrance to the Japanese Tunnel (Lubang Jepang), a 1,400-meter underground military bunker constructed during World War II in 1942. The subterranean complex includes ammunition rooms, holding cells, and observation posts.
-
-Visitors can savor sunset canyon views from cliffside cafes, hike the Janjang Koto Gadang (Minangkabau Great Wall), and explore wartime history through guided underground tunnel tours.
-
-### 38. Danau Kembar (Danau Diatas & Danau Dibawah) (Twin Lakes (Danau Diatas & Danau Dibawah))
-- ID: d9
-- Kategori: Danau & Gunung | Lake & Mountain
-- Wilayah / Regency: Kabupaten Solok
-- Koordinat: Latitude -1.066667, Longitude 100.75
-- Waktu Terbaik: Pagi dan Siang Hari (Morning and Midday)
-- Lokasi Spesifik: Kecamatan Lembah Gumanti, Kabupaten Solok
-- Tag: Alam
-- Highlights: Dua Danau Vulkanik Berdampingan • Udara Dingin Alahan Panjang 1.531 mdpl • Kebun Teh & Agrowisata Petik Buah
-- Deskripsi:
-Danau Kembar adalah sebutan ikonik untuk dua danau vulkanik memukau yang berdampingan di Kecamatan Lembah Gumanti, Kabupaten Solok, yaitu Danau Diatas dan Danau Dibawah. Terletak di dataran tinggi dingin Alahan Panjang pada ketinggian 1.531 mdpl, kawasan ini dikelilingi oleh hamparan kebun teh yang hijau dan perkebunan sayur-mayur subur.
-
-Keunikan nama Danau Kembar ini terletak pada letak geografisnya yang kontradiktif: Danau Diatas justru berada di tempat yang lebih rendah dari jalan raya, sedangkan Danau Dibawah berada di posisi bukit yang lebih tinggi. Lanskap air danau yang sangat jernih dan berudara dingin menciptakan atmosfer udara sejuk layaknya iklim pegunungan Eropa.
-
-Wisatawan dapat menyewa perahu kayu untuk menjelajahi perairan Danau Diatas, mengunjungi dermaga spot foto Instagramable, atau memetik buah markisa dan stroberi segar langsung di kebun petani lokal. Kawasan ini merupakan tempat favorit untuk tempat beristirahat dan rekreasi keluarga.
-- English Description:
-Twin Lakes (Danau Kembar) is the iconic name for two breathtaking volcanic lakes located side-by-side in Lembah Gumanti District, Solok Regency: Danau Diatas and Danau Dibawah. Situated on the chilly highlands of Alahan Panjang at 1,531 meters above sea level, the area is enclosed by green tea estates and fertile vegetable farms.
-
-The unique naming of the Twin Lakes stems from a geographical irony: Danau Diatas ('Upper Lake') actually sits lower than the main road, while Danau Dibawah ('Lower Lake') rests higher on the hills. Pristine waters paired with chilly air create a cool mountain atmosphere resembling European climates.
-
-Visitors can rent wooden boats to navigate Danau Diatas, pose on picturesque wooden photo piers, or pick fresh passionfruit and strawberries at local farms. It serves as a top retreat for family relaxation and mountain photography.
-
-### 39. Janjang Koto Gadang & Great Wall Ngarai Sianok (Janjang Koto Gadang (Great Wall of West Sumatra))
+### 34. Janjang Koto Gadang & Great Wall Ngarai Sianok (Janjang Koto Gadang (Great Wall of West Sumatra))
 - ID: d39
 - Kategori: Sejarah & Petualangan | History & Adventure
 - Wilayah / Regency: Kabupaten Agam & Kota Bukittinggi
@@ -865,7 +755,29 @@ The prominent feature of Janjang Koto Gadang is its meandering path cascading do
 
 For adventurers undertaking this walk, wearing comfortable trekking shoes and carrying adequate water is strongly recommended as the route comprises hundreds of steps with varying inclines. The journey typically culminates in exploring the tranquil heritage silver workshops of Koto Gadang and indulging in the legendary Itiak Lado Mudo spiced duck near the lower canyon exit.
 
-### 40. Pantai Padang & Jembatan Siti Nurbaya (Padang Beach & Siti Nurbaya Bridge)
+### 35. Istano Basa Pagaruyung (Istano Basa Pagaruyung Palace)
+- ID: d4
+- Kategori: Desa Wisata | Culture & Heritage
+- Wilayah / Regency: Kabupaten Tanah Datar
+- Koordinat: Latitude -0.471111, Longitude 100.621111
+- Waktu Terbaik: Pagi dan Siang Hari (Morning and Midday)
+- Lokasi Spesifik: Batusangkar, Kabupaten Tanah Datar
+- Tag: Budaya
+- Highlights: Arsitektur Kayu 3 Tingkat 72 Tiang • Penyewaan Baju Kerajaan Minangkabau • Koleksi Benda Pusaka Kerajaan Pagaruyung
+- Deskripsi:
+Istano Basa Pagaruyung adalah replika kemegahan istana Kerajaan Pagaruyung yang berdiri anggun di Batusangkar, Kabupaten Tanah Datar. Istana kayu tiga tingkat ini dibangun penuh dengan teknik konstruksi kayu tradisional tanpa paku besi, dihiasi dengan 72 tiang penyangga utama serta ukiran motif alam kayu (ukia) berwarna-warni yang kaya filosofi adat Minangkabau.
+
+Di dalam istana, pengunjung disuguhkan dengan museum budaya yang memamerkan koleksi pakaian kebesaran raja, benda pusaka kerajaan, bedil meriam antik, hingga bilik-bilik putri istana yang dihiasi tirai tenun songket warna-warni yang sangat mewah. Wisatawan juga dapat menyewa pakaian adat lengkap kerajaan Minangkabau untuk berfoto di ruang singgasana maupun di pelataran istana.
+
+Halaman depan istana dipenuhi dengan deretan rangkiang (lumbung padi tradisional) serta taman bunga yang tertata rapi. Didampingi pemandu lokal berpengalaman, kunjungan ke Istano Basa Pagaruyung memberikan pemahaman mendalam tentang sejarah peradaban sistem matrilineal Minangkabau.
+- English Description:
+Istano Basa Pagaruyung is a grand replica of the Pagaruyung Royal Palace located in Batusangkar, Tanah Datar Regency. This impressive three-story timber palace was constructed using traditional joinery without metal nails, supported by 72 main wooden pillars and decorated with colorful wood carvings reflecting Minangkabau cultural wisdom.
+
+Inside, visitors can explore a cultural museum exhibiting royal regalia, ancient heirlooms, historic cannons, and royal princess chambers draped in luxurious handwoven songket textiles. Guests can rent authentic Minangkabau royal costumes to take memorable photographs on the royal throne or across the palace lawns.
+
+The front grounds feature traditional rangkiang rice barns set amid manicured gardens. Guided by knowledgeable local historians, a visit to Istano Basa Pagaruyung offers a deep understanding of Minangkabau's matrilineal royal heritage.
+
+### 36. Pantai Padang & Jembatan Siti Nurbaya (Padang Beach & Siti Nurbaya Bridge)
 - ID: d40
 - Kategori: Pantai & Bahari | Coastal & Waterfront Heritage
 - Wilayah / Regency: Kota Padang
@@ -887,7 +799,7 @@ The unique appeal lies in the seamless juxtaposition between the open expanse of
 
 Extremely accessible just 10 minutes from downtown Padang, the site connects effortlessly to traditional boat docks heading toward offshore tropical isles. The optimal time to explore is from 04:30 PM into the evening when traditional fishing boat lanterns illuminate the bustling estuary.
 
-### 41. Benteng Fort de Kock & Jembatan Limpapeh (Fort de Kock & Limpapeh Suspension Bridge)
+### 37. Benteng Fort de Kock & Jembatan Limpapeh (Fort de Kock & Limpapeh Suspension Bridge)
 - ID: d41
 - Kategori: Sejarah | Colonial History & Culture
 - Wilayah / Regency: Kota Bukittinggi
@@ -909,7 +821,7 @@ Today, the historical fort complex has been revitalized into a leafy urban park 
 
 Ideal for families and history enthusiasts, this complex provides insightful educational narratives regarding colonial campaigns in West Sumatra alongside direct access to the Baanjuang Traditional Heritage Museum. Located conveniently in the city center, it is reachable via an easy stroll from the Jam Gadang clock tower.
 
-### 42. Tugu Khatulistiwa Bonjol & Museum Tuanku Imam Bonjol (Bonjol Equator Monument & Tuanku Imam Bonjol Museum)
+### 38. Tugu Khatulistiwa Bonjol & Museum Tuanku Imam Bonjol (Bonjol Equator Monument & Tuanku Imam Bonjol Museum)
 - ID: d42
 - Kategori: Sejarah | Geographical Landmark & Heritage
 - Wilayah / Regency: Kabupaten Pasaman
@@ -931,7 +843,7 @@ The standout attraction features an equatorial globe monument spanning across th
 
 Every March 21-23 and September 21-23, visitors and astronomy enthusiasts gather to observe the rare Equinox solar culmination phenomenon, where vertical objects cast zero shadow at precisely 12:00 PM solar noon. Visitors can enjoy the rare thrill of hopping between the Northern and Southern Hemispheres in a single stride.
 
-### 43. Cagar Alam Rimbo Panti & Pemandian Air Panas Alami (Rimbo Panti Nature Reserve & Natural Hot Springs)
+### 39. Cagar Alam Rimbo Panti & Pemandian Air Panas Alami (Rimbo Panti Nature Reserve & Natural Hot Springs)
 - ID: d43
 - Kategori: Danau & Gunung | Botanical Reserve & Thermal Springs
 - Wilayah / Regency: Kabupaten Pasaman
@@ -953,7 +865,7 @@ The most fascinating highlight hidden within the dense wilderness is a cluster o
 
 Within designated visitor zones, natural thermal mineral pools rich in restorative sulfur compounds are available for therapeutic bathing believed to alleviate fatigue and rejuvenate skin. Travelers can also indulge in the fun tradition of boiling fresh eggs directly inside the bubbling thermal vents until perfectly cooked within minutes.
 
-### 44. Pulau Pamutusan & Spot Snorkeling Pasir Putih (Pamutusan Island & Coral Reef Haven)
+### 40. Pulau Pamutusan & Spot Snorkeling Pasir Putih (Pamutusan Island & Coral Reef Haven)
 - ID: d44
 - Kategori: Pantai & Bahari | Marine & Tropical Island
 - Wilayah / Regency: Kota Padang
@@ -975,7 +887,7 @@ Covering approximately 8 hectares, the island is enveloped by sparkling turquois
 
 Reaching Pamutusan Island requires a 45 to 60-minute speedboat cruise embarking from Sungai Pisang dock or Muaro Padang Harbor. The island features a gentle trekking trail leading to a rocky summit viewpoint granting breathtaking 360-degree panoramas across surrounding emerald tropical isles.
 
-### 45. Puncak Gobah & Panorama Danau Singkarak (Puncak Gobah & Lake Singkarak Panorama)
+### 41. Puncak Gobah & Panorama Danau Singkarak (Puncak Gobah & Lake Singkarak Panorama)
 - ID: d45
 - Kategori: Danau & Gunung | Lakeside Highland Vantage
 - Wilayah / Regency: Kabupaten Solok
@@ -997,7 +909,7 @@ The standout highlight is its series of artistic wooden viewing decks shaped lik
 
 The ridge serves as a premier launch point for paragliding enthusiasts soaring through the thermal winds above Lake Singkarak. The crisp mountain breeze and local hilltop open-air stalls serving hot fried bananas and indigenous Kawa Daun coffee make Puncak Gobah an ideal rest stop on the Padang-Solok-Bukittinggi circuit.
 
-### 46. Desa Wisata Kubu Gadang Padang Panjang (Kubu Gadang Cultural Tourism Village)
+### 42. Desa Wisata Kubu Gadang Padang Panjang (Kubu Gadang Cultural Tourism Village)
 - ID: d46
 - Kategori: Sejarah | Living Heritage & Agrarian Culture
 - Wilayah / Regency: Kota Padang Panjang
@@ -1019,7 +931,7 @@ The village's signature cultural spectacle is 'Silek Lanyah', an authentic Minan
 
 Beyond Silek Lanyah, visitors can partake in communal Makan Bajamba banquets, learn traditional Minang batik making, plant rice seedlings with local farmers, and trade in the village traditional Sunday food market using novelty wooden coins. The crisp cool mountain atmosphere and hospitable local folk make Kubu Gadang a must-visit cultural immersion.
 
-### 47. Air Terjun Lubuk Hitam Tiga Tingkat (Lubuk Hitam Three-Tiered Waterfall)
+### 43. Air Terjun Lubuk Hitam Tiga Tingkat (Lubuk Hitam Three-Tiered Waterfall)
 - ID: d47
 - Kategori: Air Terjun & Alam | Waterfall & Forest Trek
 - Wilayah / Regency: Kota Padang
@@ -1041,7 +953,7 @@ Reaching the falls involves a scenic trek through local clove and nutmeg groves 
 
 The natural environment remains impeccably preserved, serenaded by the roar of rushing mountain streams and calls of exotic jungle birds. Visitors are advised to wear sturdy non-slip trekking footwear, carry dry clothes, and exercise care when navigating the moist mossy rock trails leading to the upper cascade.
 
-### 48. Danau Laut Tinggal Pasaman Barat (Danau Laut Tinggal (The Solitary Crater Lake))
+### 44. Danau Laut Tinggal Pasaman Barat (Danau Laut Tinggal (The Solitary Crater Lake))
 - ID: d48
 - Kategori: Danau & Gunung | Volcanic Crater & Wilderness Trek
 - Wilayah / Regency: Kabupaten Pasaman Barat
@@ -1063,7 +975,7 @@ The name 'Laut Tinggal' stems from indigenous lore recounting an ancient primord
 
 The atmosphere along the lakeshore is hauntingly serene, where the glassy surface mirrors towering emerald crater ramparts in total silence. Travelers venturing on this expedition must be accompanied by indigenous mountain guides knowledgeable in ancestral trail systems and customary codes of forest preservation.
 
-### 49. Puncak Polan & Paralayang Sawahlunto (Puncak Polan & Sawahlunto Heritage Paragliding)
+### 45. Puncak Polan & Paralayang Sawahlunto (Puncak Polan & Sawahlunto Heritage Paragliding)
 - ID: d49
 - Kategori: Danau & Gunung | Heritage Hilltop & Aerial Sports
 - Wilayah / Regency: Kota Sawahlunto
@@ -1085,7 +997,29 @@ Today, Puncak Polan has evolved into one of the premier paragliding and hang-gli
 
 For non-flyers, the summit offers landscaped viewing pavilions, photography decks, and scenic walking trails ideal for morning jogs in crisp highland air. The prime visiting window is early morning when sunrise mist gradually lifts to unveil the historic colonial city nestled below.
 
-### 50. Pantai Tiku & Tanjung Mutiara Agam (Tiku Coastal Beach & Tanjung Mutiara)
+### 46. Puncak Lawang & Danau Maninjau (Puncak Lawang & Lake Maninjau)
+- ID: d5
+- Kategori: Danau & Gunung | Lake & Mountain
+- Wilayah / Regency: Kabupaten Agam
+- Koordinat: Latitude -0.28, Longitude 100.23
+- Waktu Terbaik: Pagi Hari (08:00 - 12:00 WIB) (Morning (08:00 AM - 12:00 PM))
+- Lokasi Spesifik: Kecamatan Matur, Kabupaten Agam
+- Tag: Petualangan
+- Highlights: Spot Paralayang Terbaik Asia Tenggara • Panorama 360° Danau & Kaldera Maninjau • Area Hutan Pinus & Kafe Kawa Daun
+- Deskripsi:
+Puncak Lawang adalah titik pandang dataran tinggi di Kabupaten Agam pada ketinggian 1.210 mdpl yang menawarkan lanskap udara paling memukau menuju Danau Maninjau. Dari dataran tinggi ini, hamparan danau tekto-vulkanik berair biru jernih yang dipagari oleh Kaldera Maninjau dapat terlihat secara utuh dalam sudut pandang 360 derajat yang sangat dramatis.
+
+Puncak Lawang diakui secara internasional sebagai salah satu lokasi olahraga paralayang (paragliding) terbaik di Asia Tenggara karena memiliki embusan angin bukit yang sangat stabil. Wisatawan dapat merasakan sensasi terbang tandem melayang di udara bersama instruktur profesional berlisensi untuk menikmati keindahan Danau Maninjau dari angkasa.
+
+Kawasan Puncak Lawang dilengkapi dengan hutan pinus asri, jalur trekking, wahana outbound, serta kafe-kafe panorama yang menyajikan hidangan Kopi Kawa Daun dan Teh Talua hangat. Tempat ini sangat populer sebagai spot berfoto matahari terbit dan tujuan rekreasi keluarga yang menyegarkan.
+- English Description:
+Puncak Lawang is a scenic highland viewpoint in Agam Regency situated 1,210 meters above sea level, offering an unmatched aerial vista overlooking Lake Maninjau. From this ridge, the blue techto-volcanic lake enclosed by steep caldera walls can be appreciated in a breathtaking 360-degree panorama.
+
+Puncak Lawang is globally acclaimed as one of Southeast Asia's premier paragliding flight spots owing to its exceptionally stable thermal winds. Travelers can experience tandem paragliding flights alongside certified instructors, soaring freely over Lake Maninjau.
+
+The area is enhanced by pine forests, trekking trails, adventure courses, and panoramic cafes serving warm Kawa Daun tea and Teh Talua. It stands as a top choice for sunrise photography and refreshing family getaways.
+
+### 47. Pantai Tiku & Tanjung Mutiara Agam (Tiku Coastal Beach & Tanjung Mutiara)
 - ID: d50
 - Kategori: Pantai & Bahari | Coastal Heritage & Marine Culture
 - Wilayah / Regency: Kabupaten Agam
@@ -1106,6 +1040,116 @@ Tiku Beach is a historic coastal gem stretching across Tanjung Mutiara District 
 Today, the chief allure of Tiku Beach lies in its expansive gently sloping shoreline bordered by thousands of shaded coastal whispering pines (Casuarina equisetifolia). Along the beach, travelers witness vibrant traditional fishing communities with colorful outrigger wooden boats returning ashore laden with fresh oceanic fish, prawns, crabs, and traditional coastal Sala snacks.
 
 Off the coast lie two uninhabited coral islets, Pulau Tangah and Pulau Ujuang, crowned with historic navigational lighthouses and fringing coral reefs accessible via local motorized wooden boats. Savoring fresh young coconuts beneath the pine breeze while watching the ocean sunset makes Tiku a beloved coastal family getaway.
+
+### 48. Desa Wisata Nagari Pariangan (Nagari Pariangan Tourism Village)
+- ID: d6
+- Kategori: Desa Wisata | Heritage Village
+- Wilayah / Regency: Kabupaten Tanah Datar
+- Koordinat: Latitude -0.45, Longitude 100.51
+- Waktu Terbaik: Pagi Hari (07:00 - 11:00 WIB) (Morning (07:00 - 11:00 AM))
+- Lokasi Spesifik: Lereng Gunung Marapi, Kabupaten Tanah Datar
+- Tag: Terindah
+- Highlights: Desa Terindah di Dunia Versi Media Internasional • Masjid Tua Pariangan & Air Panas Gunung Marapi • Sawah Terasering & Kopi Kawa Daun
+- Deskripsi:
+Nagari Pariangan di Kabupaten Tanah Datar terletak anggun di lereng Gunung Marapi pada ketinggian 700 mdpl dan telah dinobatkan oleh media internasional Budget Travel sebagai salah satu desa terindah di dunia. Desa bersejarah ini diyakini oleh masyarakat Minangkabau sebagai nagari tertua tempat asal mula peradaban dan kebudayaan adat Minang dilahirkan.
+
+Tata ruang desa didominasi oleh deretan Rumah Gadang kayu berusia ratusan tahun yang berdiri harmonis di antara lorong batu bertingkat dan hamparan sawah terasering yang hijau. Di tengah desa berdiri Masjid Tua Pariangan bertiang kayu jati antik serta sumber pemandian air panas alami berair hangat yang bersumber langsung dari Gunung Marapi.
+
+Wisatawan dapat menikmati ketenangan hidup pedesaan yang asli, belajar proses pembuatan teh daun kawa bakar tradisional, serta merasakan kehangatan keramahan masyarakat lokal. Nagari Pariangan menawarkan pengalaman wisata budaya dan sejarah Minangkabau yang sangat otentik.
+- English Description:
+Nagari Pariangan in Tanah Datar Regency rests gracefully on the slopes of Mount Marapi at 700 meters above sea level and was named by Budget Travel media as one of the most beautiful villages in the world. This historic village is revered as the oldest nagari in Minangkabau, the birthplace of Minang culture.
+
+The village layout features centuries-old wooden Rumah Gadang structures set along stone pathways and lush terraced rice fields. At its center stands the historic wooden Pariangan Mosque alongside natural hot springs fed directly by Mount Marapi.
+
+Visitors can experience tranquil rural life, observe traditional roasted kawa leaf tea brewing, and enjoy genuine local hospitality. Nagari Pariangan offers an authentic journey into Minangkabau cultural heritage.
+
+### 49. Danau Biru Sawahlunto (Sawahlunto Blue Lake (Danau Biru))
+- ID: d6540
+- Kategori: Lembah & Geopark | Geological & Mining Wonder
+- Wilayah / Regency: Kota Sawahlunto
+- Koordinat: Latitude -0.628056, Longitude 100.806944
+- Waktu Terbaik: Pagi Hari (07:30 - 10:30 WIB) & Siang Cerah (Morning (07:30 - 10:30 AM) & Bright Midday)
+- Lokasi Spesifik: Nagari Parambahan, Kec. Talawi, Kota Sawahlunto
+- Tag: Hidden Gem
+- Highlights: Air Danau Berwarna Biru Safir & Toska Alami • Lanskap Tebing Batuan Eksotis Bekas Tambang Ombilin • Spot Fotografi Lanskap Ikonik di Sawahlunto
+- Deskripsi:
+Danau Biru Sawahlunto adalah danau kawah buatan eksotis yang terbentuk di bekas area penambangan batu bara terbuka (open-pit mining) di kawasan Parambahan, Kecamatan Talawi, Kota Sawahlunto. Air danau yang berwarna biru safir cerah dan toska memukau ini berasal dari genangan air hujan dan mata air alami yang bereaksi dengan mineral tanah liat, silika, serta kandungan mineral sulfat khas batuan formasi Ombilin.
+
+Dikelilingi oleh perbukitan batu kapur putih gersang, vegetasi semak alami, dan jajaran pepohonan pinus, kontras warna antara birunya air dan tebing batuan menciptakan lanskap pemandangan yang sangat dramatis dan menyerupai kawah vulkanik alami di luar negeri.
+
+Danau Biru menjadi salah satu destinasi wisata alam geologi paling populer di Sawahlunto bagi para fotografer lanskap dan wisatawan yang mencari panorama alam unik dan belum banyak terjamah komersialisasi berlebih.
+- English Description:
+Sawahlunto Blue Lake is an exotic artificial basin lake formed within a former open-pit coal mining concession in Parambahan, Talawi District, Sawahlunto City. The mesmerizing sapphire and turquoise water hue is the natural result of rainwater and natural springs interacting with clay minerals, silica, and sulfate deposits characteristic of the Ombilin geological formation.
+
+Enclosed by chalky white rock ridges, wild brush, and pine groves, the stark contrast between the vivid blue waters and the arid rocky cliffs yields a dramatic, photogenic landscape reminiscent of natural volcanic craters abroad.
+
+Danau Biru has evolved into one of the most celebrated geological wonders in Sawahlunto, captivating landscape photographers and nature enthusiasts seeking rare, off-the-beaten-path vistas.
+
+### 50. Kawasan Wisata Bahari Mandeh (Mandeh Marine Tourism Estate)
+- ID: d7
+- Kategori: Pantai & Bahari | Marine Tourism
+- Wilayah / Regency: Kabupaten Pesisir Selatan
+- Koordinat: Latitude -1.133333, Longitude 100.416667
+- Waktu Terbaik: Pagi hingga Sore Hari (Morning to Late Afternoon)
+- Lokasi Spesifik: Kecamatan Koto XI Tarusan, Pesisir Selatan
+- Tag: Trending
+- Highlights: Gugusan Pulau Eksotis Berair Toska • Spot Diving Wreck Kapal MV Boelongan • Sunset Spektakuler dari Puncak Paku
+- Deskripsi:
+Kawasan Wisata Bahari Mandeh di Kabupaten Pesisir Selatan merupakan surga bahari tropis seluas 18.000 hektar yang dijuluki sebagai 'Raja Ampat-nya Sumatera Barat'. Teluk tenang berair bening toska ini dihiasi oleh gugusan pulau-pulau kecil berhutan lebat seperti Pulau Setan, Pulau Cubadak, Pulau Sironjong, dan Pulau Kapo-Kapo.
+
+Bawah laut Mandeh menyimpan kekayaan terumbu karang yang masih sangat perawan, habitat kawanan ikan tropis warna-warni, hingga bangkai kapal bersejarah MV Boelongan Nederland yang karam di dasar laut dan menjadi spot favorit penyelam internasional. Wisatawan dapat menikmati wahana olahraga air lengkap mulai dari jet ski, banana boat, hingga snorkeling.
+
+Puncak Paku di jalur jalan darat Mandeh menawarkan spot gardu pandang terbaik untuk menyaksikan keindahan matahari terbenam (sunset) yang perlahan tenggelam di balik siluet pulau-pulau kecil Mandeh. Kawasan ini merupakan destinasi wisata bahari unggulan berstandar internasional.
+- English Description:
+Mandeh Marine Tourism Estate in Pesisir Selatan Regency is an 18,000-hectare tropical marine paradise dubbed the 'Raja Ampat of West Sumatra'. This tranquil turquoise bay is studded with lush green islets including Pulau Setan, Pulau Cubadak, Pulau Sironjong, and Pulau Kapo-Kapo.
+
+Mandeh's underwater world features pristine coral reefs, abundant tropical fish, and the historic MV Boelongan Nederland shipwreck favored by international scuba divers. Tourists can enjoy water sports including jet skiing, banana boating, and snorkeling.
+
+Puncak Paku along the Mandeh coastal highway offers the premier viewpoint to witness golden sunsets dipping behind island silhouettes. Mandeh represents a world-class tropical marine destination.
+
+### 51. Ngarai Sianok & Lubang Jepang (Sianok Canyon & Japanese Tunnel)
+- ID: d8
+- Kategori: Lembah & Geopark | Valley & Geopark
+- Wilayah / Regency: Kota Bukittinggi
+- Koordinat: Latitude -0.308, Longitude 100.364
+- Waktu Terbaik: Pagi dan Sore Hari (Morning and Late Afternoon)
+- Lokasi Spesifik: Taman Panorama, Kota Bukittinggi
+- Tag: Populer
+- Highlights: Lembah Patahan Tektonik 100 Meter • Kompleks Terowongan Bawah Tanah 1942 • Janjang Koto Gadang (Great Wall Minang)
+- Deskripsi:
+Ngarai Sianok adalah lembah curam memukau setinggi 100 meter yang membentang sepanjang 15 kilometer membelah perbatasan Kota Bukittinggi dan Kabupaten Agam. Lembah patahan tektonik ini menyajikan pemandangan tebing-tebing kapur terjal berhiaskan aliran sungai jernih di dasarnya yang menjadi habitat alami bagi fauna langka seperti monyet ekor panjang dan burung enggang.
+
+Tepat di atas tebing Ngarai Sianok terdapat Taman Panorama yang dilengkapi dengan pintu masuk menuju Lubang Jepang, sebuah kompleks terowongan militer bawah tanah sepanjang 1.400 meter yang dibangun pada masa pendudukan Jepang tahun 1942. Terowongan bawah tanah ini memiliki puluhan ruangan seperti ruang amunisi, penjara, hingga ruang pengintaian.
+
+Wisatawan dapat menikmati pemandangan senja Ngarai Sianok sambil bersantai di kafe-kafe tebing, menyusuri Janjang Koto Gadang (Great Wall Minangkabau), serta mempelajari sejarah perjuangan bangsa melalui tur panduan terowongan Lubang Jepang.
+- English Description:
+Sianok Canyon is a breathtaking 100-meter deep gorge stretching 15 kilometers along the border of Bukittinggi City and Agam Regency. This tectonic fault line features vertical cliff walls cradling a meandering stream, serving as a sanctuary for wildlife including macaque monkeys and hornbills.
+
+Perched atop the canyon lies Panorama Park, providing entrance to the Japanese Tunnel (Lubang Jepang), a 1,400-meter underground military bunker constructed during World War II in 1942. The subterranean complex includes ammunition rooms, holding cells, and observation posts.
+
+Visitors can savor sunset canyon views from cliffside cafes, hike the Janjang Koto Gadang (Minangkabau Great Wall), and explore wartime history through guided underground tunnel tours.
+
+### 52. Danau Kembar (Danau Diatas & Danau Dibawah) (Twin Lakes (Danau Diatas & Danau Dibawah))
+- ID: d9
+- Kategori: Danau & Gunung | Lake & Mountain
+- Wilayah / Regency: Kabupaten Solok
+- Koordinat: Latitude -1.066667, Longitude 100.75
+- Waktu Terbaik: Pagi dan Siang Hari (Morning and Midday)
+- Lokasi Spesifik: Kecamatan Lembah Gumanti, Kabupaten Solok
+- Tag: Alam
+- Highlights: Dua Danau Vulkanik Berdampingan • Udara Dingin Alahan Panjang 1.531 mdpl • Kebun Teh & Agrowisata Petik Buah
+- Deskripsi:
+Danau Kembar adalah sebutan ikonik untuk dua danau vulkanik memukau yang berdampingan di Kecamatan Lembah Gumanti, Kabupaten Solok, yaitu Danau Diatas dan Danau Dibawah. Terletak di dataran tinggi dingin Alahan Panjang pada ketinggian 1.531 mdpl, kawasan ini dikelilingi oleh hamparan kebun teh yang hijau dan perkebunan sayur-mayur subur.
+
+Keunikan nama Danau Kembar ini terletak pada letak geografisnya yang kontradiktif: Danau Diatas justru berada di tempat yang lebih rendah dari jalan raya, sedangkan Danau Dibawah berada di posisi bukit yang lebih tinggi. Lanskap air danau yang sangat jernih dan berudara dingin menciptakan atmosfer udara sejuk layaknya iklim pegunungan Eropa.
+
+Wisatawan dapat menyewa perahu kayu untuk menjelajahi perairan Danau Diatas, mengunjungi dermaga spot foto Instagramable, atau memetik buah markisa dan stroberi segar langsung di kebun petani lokal. Kawasan ini merupakan tempat favorit untuk tempat beristirahat dan rekreasi keluarga.
+- English Description:
+Twin Lakes (Danau Kembar) is the iconic name for two breathtaking volcanic lakes located side-by-side in Lembah Gumanti District, Solok Regency: Danau Diatas and Danau Dibawah. Situated on the chilly highlands of Alahan Panjang at 1,531 meters above sea level, the area is enclosed by green tea estates and fertile vegetable farms.
+
+The unique naming of the Twin Lakes stems from a geographical irony: Danau Diatas ('Upper Lake') actually sits lower than the main road, while Danau Dibawah ('Lower Lake') rests higher on the hills. Pristine waters paired with chilly air create a cool mountain atmosphere resembling European climates.
+
+Visitors can rent wooden boats to navigate Danau Diatas, pose on picturesque wooden photo piers, or pick fresh passionfruit and strawberries at local farms. It serves as a top retreat for family relaxation and mountain photography.
 
 ================================================================================
 SECTION 2: WARISAN ADAT & BUDAYA MINANGKABAU (22 CULTURAL HERITAGES)
@@ -1396,140 +1440,7 @@ This is followed by Batimbang Tando (exchanging heirloom pledges), where both fa
 
 This tradition honors democratic consensus, eloquent customary rhetoric (petatah-petitih), and formalizes the enduring alliance between two matrilineal clans.
 
-### 16. Kain Songket Pandai Sikek (Songket Pandai Sikek Handwoven Textile)
-- ID: c3
-- Kategori: Kain & Kerajinan | Textile & Crafts
-- Asal Nagari / Wilayah: Nagari Pandai Sikek, Tanah Datar
-- Filosofi Inti: Setitik Benang Ditenun Sabar, Menjadi Keagungan Adat (Lambang kesabaran dan martabat tinggi)
-- Philosophy (EN): Woven with Patience for Cultural Splendor (Symbol of meticulous patience and noble dignity)
-- Deskripsi:
-Songket Pandai Sikek adalah kain tenun tradisional mewah warisan leluhur Nagari Pandai Sikek, Kabupaten Tanah Datar, yang telah diakui secara resmi sebagai Warisan Budaya Takbenda Indonesia. Ditenun secara manual menggunakan Alat Tenun Bukan Mesin (ATBM), kain ini menggunakan benang emas dan perak murni yang ditenun saksama di atas bahan kain sutra halus.
-
-Proses pengerjaan satu lembar kain Songket Pandai Sikek membutuhkan waktu pembuatan selama berbulan-bulan dengan tingkat ketelitian dan kesabaran yang sangat tinggi. Motif ukiran kain seperti saik kalam, batang pinang, dan pucuk rebung mengandung filosofi tentang doa keselamatan, kesabaran, dan martabat tinggi bagi pemakainya.
-
-Kain Songket Pandai Sikek dikenakan pada momen-momen adat agung seperti upacara batagak penghulu (pengangkatan kepala adat), pernikahan adat, dan perayaan besar agama. Memiliki dan mengenakan Songket Pandai Sikek merupakan kebanggaan tertinggi bagi masyarakat Minangkabau.
-- English Description:
-Songket Pandai Sikek is a luxurious traditional handwoven textile from Nagari Pandai Sikek, Tanah Datar Regency, recognized as an Indonesian Intangible Cultural Heritage. Woven manually on non-machine looms, it features premium gold and silver threads woven intricately into silk or cotton fabrics.
-
-Crafting a single piece of Songket Pandai Sikek takes months of painstaking dedication and precision. Carved textile motifs such as saik kalam and bamboo shoots carry deep proverbs about patience, cultural dignity, and blessings for the wearer.
-
-Songket textiles are worn during major traditional ceremonies including weddings, tribal chief inaugurations, and religious festivals. Owning and wearing Songket Pandai Sikek is a source of immense pride due to its timeless elegance and high artistic value.
-
-### 17. Seni Beladiri Silek Minang (Silek Minang Martial Arts)
-- ID: c4
-- Kategori: Seni Beladiri | Martial Arts
-- Asal Nagari / Wilayah: Pesisir & Dataran Tinggi Sumatera Barat
-- Filosofi Inti: Lahir Silek Mencari Kawan, Batin Silek Mencari Tuhan (Ketangkasan fisik untuk persaudaraan)
-- Philosophy (EN): Outer Silek Seeks Friends, Inner Silek Seeks God (Physical agility dedicated to harmony)
-- Deskripsi:
-Silek Minangkabau adalah seni beladiri tradisional warisan leluhur masyarakat Minang yang memadukan ketangkasan olah fisik, olah rasa, serta kedalaman batin spiritual. Silek bukan sekadar sarana untuk membela diri, melainkan pilar utama dalam pembentukan karakter pemuda Minang yang diajarkan secara turun-temurun di sasaran (padepokan silat).
-
-Falsafah utama Silek Minangkabau berbunyi 'Lahir Silek Mencari Kawan, Batin Silek Mencari Tuhan'. Prinsip luhur ini mengajarkan bahwa gerakan silat digunakan untuk merangkul persaudaraan dan menghindari pertikaian, sedangkan dimensi batinnya mengarahkan pesilat untuk selalu mendekatkan diri kepada Sang Pencipta.
-
-Gerakan Silek Minang dikenal sangat fleksibel, mengalir rendah, dan memanfaatkan tumpuan kaki yang kokoh seperti gerakan Harimau (Silek Harimau). Silek kerap ditampilkan dalam seni pertunjukan Randai dan Tari Pasambahan sebagai simbol ketangkasan dan perlindungan bagi nagari.
-- English Description:
-Silek Minangkabau is a traditional martial art inherited from Minang ancestors that fuses physical conditioning, sensory awareness, and spiritual depth. More than self-defense, Silek forms an integral part of character building for young Minang men taught in traditional sasaran (dojos).
-
-The core philosophy of Silek states 'Physical Silek Seeks Friends, Inner Silek Seeks God'. This principle teaches that physical moves aim to foster brotherhood and avoid conflict, while inner practice directs martial artists toward spiritual closeness with the Creator.
-
-Silek movements are fluid, low-grounded, and rely on powerful footwork reminiscent of tiger movements (Silek Harimau). Silek is frequently featured in Randai folk theater and Pasambahan welcome dances as a symbol of agility, honor, and community protection.
-
-### 18. Upacara Adat Makan Bajamba (Makan Bajamba Mass Dining Tradition)
-- ID: c5
-- Kategori: Tradisi Adat | Customary Ritual
-- Asal Nagari / Wilayah: Nagari Minangkabau (Batusangkar, Solok, Bukittinggi)
-- Filosofi Inti: Duduk Sama Rendah, Berdiri Sama Tinggi (Simbol kebersamaan & kesetaraan derajat manusia)
-- Philosophy (EN): Sit at Equal Levels, Stand at Equal Heights (Symbol of unity and social equality)
-- Deskripsi:
-Makan Bajamba (disebut juga Makan Barapak) adalah tradisi ritual makan bersama secara lesehan dalam adat Minangkabau yang dilakukan dengan duduk melingkar mengelilingi satu nampan besar berisi makanan. Tradisi ini telah berlangsung sejak abad ke-7 dan digelar pada perayaan hari besar keagamaan, upacara adat, serta penyambutan tamu kehormatan.
-
-Satu jamba (nampan makanan) biasanya diperuntukkan untuk 3 hingga 6 orang yang duduk bersila bagi laki-laki dan bersimpuh bagi perempuan. Di tengah nampan disajikan aneka masakan khas seperti Rendang, Gulai Ayam, Sambal Lado Tanak, dan Nasi Padeh, ditutup dengan kudapan manis Lamang Tapai.
-
-Nilai filosofis utama dari Makan Bajamba adalah mengajarkan kesetaraan tanpa memandang status sosial, memupuk kebersamaan dan persaudaraan yang erat, serta melatih kedisiplinan tatakrama adat saat mengambil hidangan makanan secara sopan.
-- English Description:
-Makan Bajamba (also known as Makan Barapak) is a traditional Minangkabau communal dining ritual where participants sit on the floor in circles sharing a large tray laden with food. Originating in the 7th century, it takes place during major religious festivals, tribal ceremonies, and state receptions.
-
-Each jamba tray serves 3 to 6 people, with men sitting cross-legged and women kneeling gracefully. The tray offers a feast of Rendang, Chicken Gulai, Sambal Lado, and rice, finished with sweet Lamang Tapai dessert.
-
-The core philosophy of Makan Bajamba promotes social equality regardless of background, fosters deep brotherhood, and instills refined dining etiquette when partaking in shared meals.
-
-### 19. Kesenian Randai (Randai Folk Theater)
-- ID: c6
-- Kategori: Teater Tradisional | Traditional Theater
-- Asal Nagari / Wilayah: Tersebar di Seluruh Pelosok Sumatera Barat
-- Filosofi Inti: Malingka Nagari, Mambantuak Budi (Kebersamaan menjaga nagari dan budi pekerti)
-- Philosophy (EN): Circling the Village, Shaping the Mind (Unity in guarding the village and moral character)
-- Deskripsi:
-Randai adalah seni pertunjukan teater tradisional khas Minangkabau yang memadukan berbagai unsur seni, mulai dari seni bela diri (silek), seni tari, seni drama, hingga seni vokal (dendang) dan musik. Dalam pertunjukannya, puluhan pemain berdiri melingkar lalu melangkah secara dinamis sambil menepuk celana gelombang mereka, menghasilkan suara tepakan ritmis yang sangat ikonik.
-
-Dialog dalam Randai tidak diucapkan secara biasa, melainkan didendangkan atau dinyanyikan dengan gurindam dan kaba (cerita rakyat). Cerita yang diangkat biasanya berkisar pada legenda-legenda pahlawan atau kisah romansa klasik Minangkabau seperti Malin Kundang, Sabai nan Aluih, atau Cindua Mato.
-
-Kesenian komunal ini menjadi wadah berkumpulnya masyarakat nagari di lapangan terbuka pada malam hari. Randai sarat akan pesan moral dan pepatah-petitih adat yang diajarkan secara menghibur kepada generasi muda.
-- English Description:
-Randai is a traditional Minangkabau folk theater performance that brilliantly integrates various art forms, including martial arts (silek), dance, drama, vocal chanting (dendang), and music. In the performance, dozens of actors stand in a large circle, stepping dynamically while slapping their baggy traditional trousers, creating an iconic, rhythmic clapping sound.
-
-Dialogues in Randai are not simply spoken; they are chanted or sung in rhythmic poems (gurindam) telling local folktales (kaba). The stories typically revolve around heroic legends or classic Minangkabau romances, such as Malin Kundang, Sabai nan Aluih, or Cindua Mato.
-
-This communal art form serves as a central gathering event in open village squares at night. Randai is heavily laden with moral lessons and customary proverbs, entertainingly imparted to the younger generation.
-
-### 20. Tradisi Pacu Kuda Tradisional (Traditional Minang Horse Racing)
-- ID: c7
-- Kategori: Olahraga Tradisional | Traditional Sport
-- Asal Nagari / Wilayah: Bukittinggi, Padang Panjang, Payakumbuh, Batusangkar
-- Filosofi Inti: Mambangkik Batang Tarandam (Membangkitkan semangat juang dan kebanggaan nagari)
-- Philosophy (EN): Awakening the Submerged Trunk (Reviving fighting spirit and village pride)
-- Deskripsi:
-Pacu Kuda adalah tradisi olahraga rakyat Minangkabau yang sangat meriah dan telah diwariskan sejak awal abad ke-20. Berbeda dengan pacuan kuda modern, pacu kuda tradisional Sumatera Barat memiliki aturan unik di mana jokinya adalah pemuda lokal yang menunggang kuda balap tanpa menggunakan pelana (bareback) demi menunjukkan ketangkasan dan keberanian absolut.
-
-Kuda-kuda yang dipertandingkan merupakan hasil persilangan antara kuda lokal dan ras kuda unggul, dilatih secara khusus dengan asupan pakan bernutrisi tradisional. Gelanggang pacu kuda seperti Gelanggang Bancah Laweh di Padang Panjang atau Bukit Ambacang di Bukittinggi selalu dipenuhi oleh puluhan ribu penonton dari berbagai daerah.
-
-Acara pacu kuda bukan hanya tentang balapan, melainkan merupakan alek nagari (pesta rakyat) besar-besaran. Di sekitar arena, pengunjung dapat menikmati aneka kuliner lokal, pasar malam, serta menjadi ajang silaturahmi akbar bagi para perantau yang sengaja pulang kampung.
-- English Description:
-Pacu Kuda is a highly festive Minangkabau traditional sports event that has been passed down since the early 20th century. Unlike modern horse racing, West Sumatra's traditional racing features a unique rule where local young jockeys ride the racehorses entirely bareback (without saddles), demonstrating absolute agility and courage.
-
-The competing horses are crossbreeds between local and superior racing breeds, specifically trained with traditional nutritional diets. Racing arenas, such as Bancah Laweh in Padang Panjang or Bukit Ambacang in Bukittinggi, are consistently packed with tens of thousands of spectators from all regions.
-
-The horse racing event is more than a sport; it is a massive alek nagari (folk festival). Surrounding the track, visitors can indulge in local culinary delights and night markets, serving as a grand reunion for Minang diasporas returning home.
-
-### 21. Pakaian Adat Bundo Kanduang (Bundo Kanduang Traditional Attire)
-- ID: c8
-- Kategori: Pakaian Adat | Traditional Attire
-- Asal Nagari / Wilayah: Pagaruyung dan Seluruh Sumatera Barat
-- Filosofi Inti: Limpapeh Rumah Nan Gadang (Wanita sebagai tiang penopang keharmonisan kaum dan adat)
-- Philosophy (EN): The Central Pillar of the House (Women as the core pillar of clan and cultural harmony)
-- Deskripsi:
-Pakaian Bundo Kanduang adalah busana kebesaran adat perempuan Minangkabau yang merepresentasikan keluhuran martabat wanita sebagai 'Limpapeh Rumah Nan Gadang' (Pilar Utama Rumah Gadang). Ciri paling ikonik dari busana ini adalah penutup kepala yang disebut Tingkuluak, dilipat membentuk dua ujung runcing menyerupai tanduk kerbau atau atap gonjong.
-
-Busana ini terdiri dari baju kurung basiba longgar yang sangat sopan dan sesuai dengan syariat Islam, kain sarung tenun songket mewah bertabur benang emas sebagai bawahan, serta selempang bersulam emas (salempang) yang dikalungkan di bahu sebagai simbol tanggung jawab mengayomi keluarga dan nagari.
-
-Selain itu, Bundo Kanduang memakai aksesoris perhiasan emas berlapis-lapis seperti kalung gadang, gelang, dan cincin bermotif kuno. Setiap detail lipatan, warna, dan perhiasan memiliki makna kiasan dalam tatanan sistem kekerabatan matrilineal yang menjunjung tinggi kehormatan perempuan Minang.
-- English Description:
-The Bundo Kanduang attire is the grand traditional dress of Minangkabau women, representing their noble dignity as 'Limpapeh Rumah Nan Gadang' (The Central Pillar of the Big House). The most iconic feature is the headdress known as Tingkuluak, folded with two pointed ends mimicking buffalo horns or the sweeping gonjong roofs.
-
-The outfit consists of a loose-fitting 'baju kurung basiba' tunic adhering modestly to Islamic principles, paired with a luxurious handwoven songket sarong gleaming with gold threads, and a gold-embroidered sash (salempang) draped over the shoulder symbolizing the responsibility of nurturing the family and village.
-
-Additionally, the Bundo Kanduang adorns herself with layers of traditional gold jewelry, including grand necklaces, bracelets, and antique-motif rings. Every pleat, color choice, and ornament carries metaphorical meaning within the matrilineal kinship system that highly reveres Minang women.
-
-### 22. Sistem Matrilineal Minangkabau (Minangkabau Matrilineal System)
-- ID: c9
-- Kategori: Sistem Sosial | Social System
-- Asal Nagari / Wilayah: Seluruh Wilayah Alam Minangkabau
-- Filosofi Inti: Garis Keturunan Menurut Ibu, Harta Pusaka Milik Kaum Perempuan
-- Philosophy (EN): Maternal Lineage & Female Property Ownership (World Largest Matrilineal Society)
-- Deskripsi:
-Sistem Matrilineal Minangkabau merupakan sistem kekerabatan terbesar di dunia yang menarik garis keturunan dan pewarisan harta pusaka melalui jalur ibu. Dalam tatanan ini, garis keturunan, afiliasi suku, gelar kehormatan, serta tanah pusaka tinggi (harta pusako tinggi) diwariskan secara ketat dari ibu kepada anak perempuan secara turun-temurun.
-
-Peran sentral perempuan sebagai Bundo Kanduang menjadikan mereka pemilik utama dan penjaga Rumah Gadang, lahan pertanian, serta aset-aset nenek moyang. Sementara itu, laki-laki Minang sebagai mamak (paman dari pihak ibu) bertanggung jawab mengelola harta kaum dan menegakkan hukum adat untuk keponakan mereka (kemenakan), bukan untuk anak kandung mereka sendiri.
-
-Filosofi mendalam di balik sistem ini adalah menjamin keamanan ekonomi struktural bagi perempuan, mencegah kemiskinan atau kehilangan tempat tinggal pasca perceraian atau menjanda, serta menyeimbangkan otoritas antara kepemilikan properti perempuan dan tata kelola adat laki-laki.
-- English Description:
-The Minangkabau Matrilineal System is the world's largest matrilineal society, tracing lineage and inheritance through the maternal line. Within this framework, descent, clan affiliation (suku), honorary titles, and ancestral high property (harta pusako tinggi) pass strictly from mother to daughter across generations.
-
-Women's central role as Bundo Kanduang makes them the primary owners and custodians of the Rumah Gadang, farmland, and ancestral assets. Meanwhile, Minang men serve as mamak (maternal uncles), managing clan properties and governing customary law for their nieces and nephews (kemenakan), rather than their biological children.
-
-The profound philosophy behind this system ensures structural economic security for women, prevents poverty or homelessness after divorce or widowhood, and balances authority between female property ownership and male customary governance.
-
-### 23. Seni Beladiri Silek Harimau Minangkabau (Silek Harimau (Tiger Martial Arts of Minangkabau))
+### 16. Seni Beladiri Silek Harimau Minangkabau (Silek Harimau (Tiger Martial Arts of Minangkabau))
 - ID: c23
 - Kategori: Seni Bela Diri | Martial Arts & Indigenous Warfare
 - Asal Nagari / Wilayah: Luhak Agam, Tanah Datar & Lima Puluh Kota
@@ -1548,7 +1459,7 @@ The technical hallmark of Silek Harimau is its extremely low, ground-hugging sta
 
 In modern times, Silek Harimau is frequently showcased during grand ceremonial welcoming processions and studied by international martial artists who travel to traditional village training halls (sasaran) across West Sumatra. It stands as a living embodiment of the Minang aphorism: 'The outer art seeks fellowship; the inner art seeks the Divine.'
 
-### 24. Kesenian Rabab Pasisie (Rebab Pesisir Minang) (Rabab Pasisie (Bowed Lute Oral Literature))
+### 17. Kesenian Rabab Pasisie (Rebab Pesisir Minang) (Rabab Pasisie (Bowed Lute Oral Literature))
 - ID: c24
 - Kategori: Tari & Musik | Traditional Music & Oral Narrative
 - Asal Nagari / Wilayah: Kabupaten Pesisir Selatan
@@ -1567,7 +1478,7 @@ A Rabab Pasisie performance is spearheaded by a master oral bard (Tukang Rabab) 
 
 This performing art is customarily staged during grand communal village ceremonies, wedding feasts (baralek), and harvest celebrations upon the verandas of Rumah Gadang. For coastal Minang society, Rabab Pasisie transcends mere entertainment, serving as a revered ancestral conduit that preserves oral history and awakens nostalgic longing for the motherland.
 
-### 25. Tradisi Batagak Kudo-Kudo (Gotong Royong Atap Rumah) (Batagak Kudo-Kudo (Communal Roof Truss Raising))
+### 18. Tradisi Batagak Kudo-Kudo (Gotong Royong Atap Rumah) (Batagak Kudo-Kudo (Communal Roof Truss Raising))
 - ID: c25
 - Kategori: Tradisi Adat | Communal Solidarity & Architecture
 - Asal Nagari / Wilayah: Seluruh Luhak & Rantau Minangkabau
@@ -1586,7 +1497,7 @@ The hallmark of this ceremony is the spontaneous collective participation of the
 
 The milestone concludes with an expansive feast featuring rich curries, rendang, and fragrant sambals prepared by the village women. Batagak Kudo-Kudo stands as a testament to the core Minangkabau societal doctrine: 'Heavy burdens are carried together on shoulders, light burdens are lifted together in hands.'
 
-### 26. Tradisi Serak Gulo Padang (Hujan Gula Akulturasi) (Serak Gulo (Rain of Sugar Heritage Festival))
+### 19. Tradisi Serak Gulo Padang (Hujan Gula Akulturasi) (Serak Gulo (Rain of Sugar Heritage Festival))
 - ID: c26
 - Kategori: Tradisi Adat | Multicultural Islamic Heritage
 - Asal Nagari / Wilayah: Kampung Batipuh, Kota Padang
@@ -1605,7 +1516,7 @@ Celebrated every 1st of Jumada al-Thani in the Islamic lunar calendar, the festi
 
 The philosophy underlying the dispersal of tons of sugar is the communal sharing of life's sweetness, the purity of anonymous charitable giving, and the affirmation of inter-ethnic brotherhood in Padang. Serak Gulo has officially earned recognition as an Indonesian National Intangible Cultural Heritage.
 
-### 27. Alat Musik Tradisional Bansi Minangkabau (Bansi (Traditional 7-Hole Minangkabau Bamboo Flute))
+### 20. Alat Musik Tradisional Bansi Minangkabau (Bansi (Traditional 7-Hole Minangkabau Bamboo Flute))
 - ID: c27
 - Kategori: Tari & Musik | Traditional Music Instrument
 - Asal Nagari / Wilayah: Pesisir Selatan & Seluruh Alam Minangkabau
@@ -1624,7 +1535,7 @@ The acoustic signature of the Bansi is melodious, bright, and agile, effortlessl
 
 Historically, the Bansi was serenaded by young Minang youths tending water buffalo across lush terraced rice paddies or unwinding on village surau porches after evening prayers. Today, the Bansi is passionately taught in music academies across West Sumatra as a cornerstone of Indonesia's living sonic heritage.
 
-### 28. Tradisi Manyerak Bareh Kunik (Beras Kunyit Sakral) (Manyerak Bareh Kunik (Sacred Turmeric Rice Sowing))
+### 21. Tradisi Manyerak Bareh Kunik (Beras Kunyit Sakral) (Manyerak Bareh Kunik (Sacred Turmeric Rice Sowing))
 - ID: c28
 - Kategori: Tradisi Adat | Sacred Ritual & Blessing Rite
 - Asal Nagari / Wilayah: Seluruh Wilayah Luhak Nan Tigo Sumatera Barat
@@ -1643,7 +1554,7 @@ Within Minangkabau cosmology, the golden yellow hue symbolizes royal dignity, th
 
 During the procession, the golden rice is gently showered over guests of honor or newlyweds accompanied by the recitation of eloquent pasambahan poetic oaths delivered by clan elders (Datuak). Manyerak Bareh Kunik affirms the elevated etiquette of Minangkabau hospitality in honoring visitors and blessing life journeys with auspicious grace.
 
-### 29. Kesenian Gandang Tambua & Gandang Tasa (Gandang Tambua & Tasa (Percussive Thunder of Minangkabau))
+### 22. Kesenian Gandang Tambua & Gandang Tasa (Gandang Tambua & Tasa (Percussive Thunder of Minangkabau))
 - ID: c29
 - Kategori: Tari & Musik | Traditional Percussion & Processional Music
 - Asal Nagari / Wilayah: Kabupaten Agam, Padang Pariaman & Seluruh Sumbar
@@ -1662,7 +1573,26 @@ The electrifying allure of a Gandang Tambua Tasa performance lies in its earth-s
 
 The reverberating thunder of Gandang Tambua Tasa carries across valleys for miles, historically functioning as ancestral heraldic drums rallying villagers together. Today, it stands as the vibrant sonic herald of Minangkabau public celebrations, instantly captivating festival audiences.
 
-### 30. Tradisi Bakajang / Sampan Alek Gunuang Malintang (Bakajang Tradition (Gunuang Malintang Royal Boat Pageant))
+### 23. Kain Songket Pandai Sikek (Songket Pandai Sikek Handwoven Textile)
+- ID: c3
+- Kategori: Kain & Kerajinan | Textile & Crafts
+- Asal Nagari / Wilayah: Nagari Pandai Sikek, Tanah Datar
+- Filosofi Inti: Setitik Benang Ditenun Sabar, Menjadi Keagungan Adat (Lambang kesabaran dan martabat tinggi)
+- Philosophy (EN): Woven with Patience for Cultural Splendor (Symbol of meticulous patience and noble dignity)
+- Deskripsi:
+Songket Pandai Sikek adalah kain tenun tradisional mewah warisan leluhur Nagari Pandai Sikek, Kabupaten Tanah Datar, yang telah diakui secara resmi sebagai Warisan Budaya Takbenda Indonesia. Ditenun secara manual menggunakan Alat Tenun Bukan Mesin (ATBM), kain ini menggunakan benang emas dan perak murni yang ditenun saksama di atas bahan kain sutra halus.
+
+Proses pengerjaan satu lembar kain Songket Pandai Sikek membutuhkan waktu pembuatan selama berbulan-bulan dengan tingkat ketelitian dan kesabaran yang sangat tinggi. Motif ukiran kain seperti saik kalam, batang pinang, dan pucuk rebung mengandung filosofi tentang doa keselamatan, kesabaran, dan martabat tinggi bagi pemakainya.
+
+Kain Songket Pandai Sikek dikenakan pada momen-momen adat agung seperti upacara batagak penghulu (pengangkatan kepala adat), pernikahan adat, dan perayaan besar agama. Memiliki dan mengenakan Songket Pandai Sikek merupakan kebanggaan tertinggi bagi masyarakat Minangkabau.
+- English Description:
+Songket Pandai Sikek is a luxurious traditional handwoven textile from Nagari Pandai Sikek, Tanah Datar Regency, recognized as an Indonesian Intangible Cultural Heritage. Woven manually on non-machine looms, it features premium gold and silver threads woven intricately into silk or cotton fabrics.
+
+Crafting a single piece of Songket Pandai Sikek takes months of painstaking dedication and precision. Carved textile motifs such as saik kalam and bamboo shoots carry deep proverbs about patience, cultural dignity, and blessings for the wearer.
+
+Songket textiles are worn during major traditional ceremonies including weddings, tribal chief inaugurations, and religious festivals. Owning and wearing Songket Pandai Sikek is a source of immense pride due to its timeless elegance and high artistic value.
+
+### 24. Tradisi Bakajang / Sampan Alek Gunuang Malintang (Bakajang Tradition (Gunuang Malintang Royal Boat Pageant))
 - ID: c30
 - Kategori: Tradisi Adat | Maritime Riverine Pageant & Kinship
 - Asal Nagari / Wilayah: Nagari Gunuang Malintang, Kab. Lima Puluh Kota
@@ -1680,6 +1610,120 @@ The Bakajang Tradition is a spectacular riverine maritime pageant celebrated ann
 During this celebration, five customary clans within the nagari construct and meticulously adorn colossal wooden river vessels up to 10 meters long called 'Kajang'. Each vessel is decorated to resemble an imperial floating Rumah Gadang or royal flagship adorned with intricate wood carvings, sacred Marawa battle standards, and multi-tiered gonjong roofs, navigated by dozens of young men in regal customary attire.
 
 The decorated Kajang vessels sail together down the Batang Mahat River to exchange customary greetings, reciprocal poetry pantuns, and festive kinship across riverbank villages. Bakajang is officially celebrated under Indonesia's national Karisma Event Nusantara (KEN) calendar for its peerless maritime heritage and communal solidarity.
+
+### 25. Seni Beladiri Silek Minang (Silek Minang Martial Arts)
+- ID: c4
+- Kategori: Seni Beladiri | Martial Arts
+- Asal Nagari / Wilayah: Pesisir & Dataran Tinggi Sumatera Barat
+- Filosofi Inti: Lahir Silek Mencari Kawan, Batin Silek Mencari Tuhan (Ketangkasan fisik untuk persaudaraan)
+- Philosophy (EN): Outer Silek Seeks Friends, Inner Silek Seeks God (Physical agility dedicated to harmony)
+- Deskripsi:
+Silek Minangkabau adalah seni beladiri tradisional warisan leluhur masyarakat Minang yang memadukan ketangkasan olah fisik, olah rasa, serta kedalaman batin spiritual. Silek bukan sekadar sarana untuk membela diri, melainkan pilar utama dalam pembentukan karakter pemuda Minang yang diajarkan secara turun-temurun di sasaran (padepokan silat).
+
+Falsafah utama Silek Minangkabau berbunyi 'Lahir Silek Mencari Kawan, Batin Silek Mencari Tuhan'. Prinsip luhur ini mengajarkan bahwa gerakan silat digunakan untuk merangkul persaudaraan dan menghindari pertikaian, sedangkan dimensi batinnya mengarahkan pesilat untuk selalu mendekatkan diri kepada Sang Pencipta.
+
+Gerakan Silek Minang dikenal sangat fleksibel, mengalir rendah, dan memanfaatkan tumpuan kaki yang kokoh seperti gerakan Harimau (Silek Harimau). Silek kerap ditampilkan dalam seni pertunjukan Randai dan Tari Pasambahan sebagai simbol ketangkasan dan perlindungan bagi nagari.
+- English Description:
+Silek Minangkabau is a traditional martial art inherited from Minang ancestors that fuses physical conditioning, sensory awareness, and spiritual depth. More than self-defense, Silek forms an integral part of character building for young Minang men taught in traditional sasaran (dojos).
+
+The core philosophy of Silek states 'Physical Silek Seeks Friends, Inner Silek Seeks God'. This principle teaches that physical moves aim to foster brotherhood and avoid conflict, while inner practice directs martial artists toward spiritual closeness with the Creator.
+
+Silek movements are fluid, low-grounded, and rely on powerful footwork reminiscent of tiger movements (Silek Harimau). Silek is frequently featured in Randai folk theater and Pasambahan welcome dances as a symbol of agility, honor, and community protection.
+
+### 26. Upacara Adat Makan Bajamba (Makan Bajamba Mass Dining Tradition)
+- ID: c5
+- Kategori: Tradisi Adat | Customary Ritual
+- Asal Nagari / Wilayah: Nagari Minangkabau (Batusangkar, Solok, Bukittinggi)
+- Filosofi Inti: Duduk Sama Rendah, Berdiri Sama Tinggi (Simbol kebersamaan & kesetaraan derajat manusia)
+- Philosophy (EN): Sit at Equal Levels, Stand at Equal Heights (Symbol of unity and social equality)
+- Deskripsi:
+Makan Bajamba (disebut juga Makan Barapak) adalah tradisi ritual makan bersama secara lesehan dalam adat Minangkabau yang dilakukan dengan duduk melingkar mengelilingi satu nampan besar berisi makanan. Tradisi ini telah berlangsung sejak abad ke-7 dan digelar pada perayaan hari besar keagamaan, upacara adat, serta penyambutan tamu kehormatan.
+
+Satu jamba (nampan makanan) biasanya diperuntukkan untuk 3 hingga 6 orang yang duduk bersila bagi laki-laki dan bersimpuh bagi perempuan. Di tengah nampan disajikan aneka masakan khas seperti Rendang, Gulai Ayam, Sambal Lado Tanak, dan Nasi Padeh, ditutup dengan kudapan manis Lamang Tapai.
+
+Nilai filosofis utama dari Makan Bajamba adalah mengajarkan kesetaraan tanpa memandang status sosial, memupuk kebersamaan dan persaudaraan yang erat, serta melatih kedisiplinan tatakrama adat saat mengambil hidangan makanan secara sopan.
+- English Description:
+Makan Bajamba (also known as Makan Barapak) is a traditional Minangkabau communal dining ritual where participants sit on the floor in circles sharing a large tray laden with food. Originating in the 7th century, it takes place during major religious festivals, tribal ceremonies, and state receptions.
+
+Each jamba tray serves 3 to 6 people, with men sitting cross-legged and women kneeling gracefully. The tray offers a feast of Rendang, Chicken Gulai, Sambal Lado, and rice, finished with sweet Lamang Tapai dessert.
+
+The core philosophy of Makan Bajamba promotes social equality regardless of background, fosters deep brotherhood, and instills refined dining etiquette when partaking in shared meals.
+
+### 27. Kesenian Randai (Randai Folk Theater)
+- ID: c6
+- Kategori: Teater Tradisional | Traditional Theater
+- Asal Nagari / Wilayah: Tersebar di Seluruh Pelosok Sumatera Barat
+- Filosofi Inti: Malingka Nagari, Mambantuak Budi (Kebersamaan menjaga nagari dan budi pekerti)
+- Philosophy (EN): Circling the Village, Shaping the Mind (Unity in guarding the village and moral character)
+- Deskripsi:
+Randai adalah seni pertunjukan teater tradisional khas Minangkabau yang memadukan berbagai unsur seni, mulai dari seni bela diri (silek), seni tari, seni drama, hingga seni vokal (dendang) dan musik. Dalam pertunjukannya, puluhan pemain berdiri melingkar lalu melangkah secara dinamis sambil menepuk celana gelombang mereka, menghasilkan suara tepakan ritmis yang sangat ikonik.
+
+Dialog dalam Randai tidak diucapkan secara biasa, melainkan didendangkan atau dinyanyikan dengan gurindam dan kaba (cerita rakyat). Cerita yang diangkat biasanya berkisar pada legenda-legenda pahlawan atau kisah romansa klasik Minangkabau seperti Malin Kundang, Sabai nan Aluih, atau Cindua Mato.
+
+Kesenian komunal ini menjadi wadah berkumpulnya masyarakat nagari di lapangan terbuka pada malam hari. Randai sarat akan pesan moral dan pepatah-petitih adat yang diajarkan secara menghibur kepada generasi muda.
+- English Description:
+Randai is a traditional Minangkabau folk theater performance that brilliantly integrates various art forms, including martial arts (silek), dance, drama, vocal chanting (dendang), and music. In the performance, dozens of actors stand in a large circle, stepping dynamically while slapping their baggy traditional trousers, creating an iconic, rhythmic clapping sound.
+
+Dialogues in Randai are not simply spoken; they are chanted or sung in rhythmic poems (gurindam) telling local folktales (kaba). The stories typically revolve around heroic legends or classic Minangkabau romances, such as Malin Kundang, Sabai nan Aluih, or Cindua Mato.
+
+This communal art form serves as a central gathering event in open village squares at night. Randai is heavily laden with moral lessons and customary proverbs, entertainingly imparted to the younger generation.
+
+### 28. Tradisi Pacu Kuda Tradisional (Traditional Minang Horse Racing)
+- ID: c7
+- Kategori: Olahraga Tradisional | Traditional Sport
+- Asal Nagari / Wilayah: Bukittinggi, Padang Panjang, Payakumbuh, Batusangkar
+- Filosofi Inti: Mambangkik Batang Tarandam (Membangkitkan semangat juang dan kebanggaan nagari)
+- Philosophy (EN): Awakening the Submerged Trunk (Reviving fighting spirit and village pride)
+- Deskripsi:
+Pacu Kuda adalah tradisi olahraga rakyat Minangkabau yang sangat meriah dan telah diwariskan sejak awal abad ke-20. Berbeda dengan pacuan kuda modern, pacu kuda tradisional Sumatera Barat memiliki aturan unik di mana jokinya adalah pemuda lokal yang menunggang kuda balap tanpa menggunakan pelana (bareback) demi menunjukkan ketangkasan dan keberanian absolut.
+
+Kuda-kuda yang dipertandingkan merupakan hasil persilangan antara kuda lokal dan ras kuda unggul, dilatih secara khusus dengan asupan pakan bernutrisi tradisional. Gelanggang pacu kuda seperti Gelanggang Bancah Laweh di Padang Panjang atau Bukit Ambacang di Bukittinggi selalu dipenuhi oleh puluhan ribu penonton dari berbagai daerah.
+
+Acara pacu kuda bukan hanya tentang balapan, melainkan merupakan alek nagari (pesta rakyat) besar-besaran. Di sekitar arena, pengunjung dapat menikmati aneka kuliner lokal, pasar malam, serta menjadi ajang silaturahmi akbar bagi para perantau yang sengaja pulang kampung.
+- English Description:
+Pacu Kuda is a highly festive Minangkabau traditional sports event that has been passed down since the early 20th century. Unlike modern horse racing, West Sumatra's traditional racing features a unique rule where local young jockeys ride the racehorses entirely bareback (without saddles), demonstrating absolute agility and courage.
+
+The competing horses are crossbreeds between local and superior racing breeds, specifically trained with traditional nutritional diets. Racing arenas, such as Bancah Laweh in Padang Panjang or Bukit Ambacang in Bukittinggi, are consistently packed with tens of thousands of spectators from all regions.
+
+The horse racing event is more than a sport; it is a massive alek nagari (folk festival). Surrounding the track, visitors can indulge in local culinary delights and night markets, serving as a grand reunion for Minang diasporas returning home.
+
+### 29. Pakaian Adat Bundo Kanduang (Bundo Kanduang Traditional Attire)
+- ID: c8
+- Kategori: Pakaian Adat | Traditional Attire
+- Asal Nagari / Wilayah: Pagaruyung dan Seluruh Sumatera Barat
+- Filosofi Inti: Limpapeh Rumah Nan Gadang (Wanita sebagai tiang penopang keharmonisan kaum dan adat)
+- Philosophy (EN): The Central Pillar of the House (Women as the core pillar of clan and cultural harmony)
+- Deskripsi:
+Pakaian Bundo Kanduang adalah busana kebesaran adat perempuan Minangkabau yang merepresentasikan keluhuran martabat wanita sebagai 'Limpapeh Rumah Nan Gadang' (Pilar Utama Rumah Gadang). Ciri paling ikonik dari busana ini adalah penutup kepala yang disebut Tingkuluak, dilipat membentuk dua ujung runcing menyerupai tanduk kerbau atau atap gonjong.
+
+Busana ini terdiri dari baju kurung basiba longgar yang sangat sopan dan sesuai dengan syariat Islam, kain sarung tenun songket mewah bertabur benang emas sebagai bawahan, serta selempang bersulam emas (salempang) yang dikalungkan di bahu sebagai simbol tanggung jawab mengayomi keluarga dan nagari.
+
+Selain itu, Bundo Kanduang memakai aksesoris perhiasan emas berlapis-lapis seperti kalung gadang, gelang, dan cincin bermotif kuno. Setiap detail lipatan, warna, dan perhiasan memiliki makna kiasan dalam tatanan sistem kekerabatan matrilineal yang menjunjung tinggi kehormatan perempuan Minang.
+- English Description:
+The Bundo Kanduang attire is the grand traditional dress of Minangkabau women, representing their noble dignity as 'Limpapeh Rumah Nan Gadang' (The Central Pillar of the Big House). The most iconic feature is the headdress known as Tingkuluak, folded with two pointed ends mimicking buffalo horns or the sweeping gonjong roofs.
+
+The outfit consists of a loose-fitting 'baju kurung basiba' tunic adhering modestly to Islamic principles, paired with a luxurious handwoven songket sarong gleaming with gold threads, and a gold-embroidered sash (salempang) draped over the shoulder symbolizing the responsibility of nurturing the family and village.
+
+Additionally, the Bundo Kanduang adorns herself with layers of traditional gold jewelry, including grand necklaces, bracelets, and antique-motif rings. Every pleat, color choice, and ornament carries metaphorical meaning within the matrilineal kinship system that highly reveres Minang women.
+
+### 30. Sistem Matrilineal Minangkabau (Minangkabau Matrilineal System)
+- ID: c9
+- Kategori: Sistem Sosial | Social System
+- Asal Nagari / Wilayah: Seluruh Wilayah Alam Minangkabau
+- Filosofi Inti: Garis Keturunan Menurut Ibu, Harta Pusaka Milik Kaum Perempuan
+- Philosophy (EN): Maternal Lineage & Female Property Ownership (World Largest Matrilineal Society)
+- Deskripsi:
+Sistem Matrilineal Minangkabau merupakan sistem kekerabatan terbesar di dunia yang menarik garis keturunan dan pewarisan harta pusaka melalui jalur ibu. Dalam tatanan ini, garis keturunan, afiliasi suku, gelar kehormatan, serta tanah pusaka tinggi (harta pusako tinggi) diwariskan secara ketat dari ibu kepada anak perempuan secara turun-temurun.
+
+Peran sentral perempuan sebagai Bundo Kanduang menjadikan mereka pemilik utama dan penjaga Rumah Gadang, lahan pertanian, serta aset-aset nenek moyang. Sementara itu, laki-laki Minang sebagai mamak (paman dari pihak ibu) bertanggung jawab mengelola harta kaum dan menegakkan hukum adat untuk keponakan mereka (kemenakan), bukan untuk anak kandung mereka sendiri.
+
+Filosofi mendalam di balik sistem ini adalah menjamin keamanan ekonomi struktural bagi perempuan, mencegah kemiskinan atau kehilangan tempat tinggal pasca perceraian atau menjanda, serta menyeimbangkan otoritas antara kepemilikan properti perempuan dan tata kelola adat laki-laki.
+- English Description:
+The Minangkabau Matrilineal System is the world's largest matrilineal society, tracing lineage and inheritance through the maternal line. Within this framework, descent, clan affiliation (suku), honorary titles, and ancestral high property (harta pusako tinggi) pass strictly from mother to daughter across generations.
+
+Women's central role as Bundo Kanduang makes them the primary owners and custodians of the Rumah Gadang, farmland, and ancestral assets. Meanwhile, Minang men serve as mamak (maternal uncles), managing clan properties and governing customary law for their nieces and nephews (kemenakan), rather than their biological children.
+
+The profound philosophy behind this system ensures structural economic security for women, prevents poverty or homelessness after divorce or widowhood, and balances authority between female property ownership and male customary governance.
 
 ================================================================================
 SECTION 3: KULINER OTENTIK RANAH MINANG (26 AUTHENTIC CULINARY ITEMS)
@@ -2046,140 +2090,7 @@ The recipe combines pure sago flour, coarsely mashed ripe bananas, grated young 
 
 Lompong Sagu offers an irresistible chewy texture, warm pockets of melted palm sugar, sweet banana richness, and the rustic fragrance of roasted banana leaves.
 
-### 20. Teh Talua (Teh Telur Khas Minang) (Teh Talua (Traditional Minang Egg Tea))
-- ID: cu3
-- Jenis: Minuman Tradisional | Traditional Drink
-- Asal: Lapau Kedai Tradisional Minangkabau
-- Profil Rasa: Creamy, manis hangat, sedikit asam zesty jeruk nipis
-- Flavor Profile (EN): Creamy, sweet warm, lightly tangy with fresh lime
-- Deskripsi:
-Teh Talua (Teh Telur) adalah minuman hangat khas Minangkabau yang legendaris, dikenal sebagai peningkat stamina dan minuman kebanggaan para pria Minang saat berkumpul di lapau (kedai kopi tradisional). Minuman unik ini mengombinasikan kocokan kuning telur ayam kampung atau telur bebek dengan seduhan teh hitam pekat yang mendidih.
-
-Proses pembuatannya membutuhkan keahlian khusus: kuning telur dikocok bersama gula pasir menggunakan lidi hingga mengembang halus dan berwarna krem pucat. Ketika teko berisi teh hitam pekat mendidih disiramkan ke dalam gelas, kocokan telur secara ajaib membentuk empat tingkatan lapisan warna cantik yang menggugah selera.
-
-Teh Talua disajikan hangat dengan perasan jeruk nipis segar yang berfungsi menghilangkan bau amis telur sekaligus memberikan sentuhan rasa segar. Sensasi rasa creamy, manis, gurih, dan sedikit asam hangat menjadikan Teh Talua minuman penutup malam yang sempurna saat menikmati dinginnya udara Sumatera Barat.
-- English Description:
-Teh Talua (Minang Egg Tea) is a legendary warm beverage from West Sumatra celebrated for boosting stamina and serving as the signature drink enjoyed at traditional lapau (coffee shops). This unique drink combines whisked egg yolk with boiling, concentrated black tea.
-
-Preparing it requires practiced technique: free-range chicken or duck egg yolk is vigorously whisked with sugar using a wooden whisk until forming a light, creamy foam. When scalding hot black tea is poured into the glass, the mixture magically separates into distinct, eye-catching layers.
-
-Teh Talua is served hot with a squeeze of fresh lime juice to neutralize any egginess while adding a bright zest. The combination of creamy, sweet, savory, and zesty warm flavors makes Teh Talua the ultimate cozy nightcap in West Sumatra.
-
-### 21. Lamang Tapai (Lamang Tapai)
-- ID: cu4
-- Jenis: Kudapan Khas | Traditional Snack
-- Asal: Tanah Datar & Payakumbuh
-- Profil Rasa: Gurih santan beraroma bambu dipadu manis-asam segar ketan hitam
-- Flavor Profile (EN): Savory coconut bamboo scent fused with sweet-tangy fermented rice
-- Deskripsi:
-Lamang Tapai adalah kombinasi kudapan tradisional Minangkabau yang menyajikan perpaduan rasa gurih dan manis-asam yang sangat unik dan lezat. Lamang terbuat dari beras ketan putih yang dimasak bersama santan kelapa di dalam ruas bambu muda yang dilapisi daun pisang, lalu dipanggang perlahan di atas bara api kayu bakar.
-
-Sementara itu, Tapai adalah beras ketan hitam yang difermentasi menggunakan ragi tradisional hingga menghasilkan tekstur lembut berair dengan rasa manis-asam segar yang khas. Saat disajikan, potongan lamang gurih beraroma bambu disiram dengan beberapa sendok tapai ketan hitam berkuah manis.
-
-Kudapan legendaris ini selalu hadir pada perayaan hari besar keagamaan seperti Idul Fitri, Idul Adha, serta dalam acara-acara adat pernikahan Minangkabau. Lamang Tapai bukan sekadar kuliner lezat, melainkan simbol kehangatan silaturahmi dan kebersamaan keluarga di Ranah Minang.
-- English Description:
-Lamang Tapai is a traditional Minangkabau snack combination offering a delightfully unique blend of savory and sweet-sour flavors. Lamang is made from white glutinous rice cooked with coconut milk inside young bamboo tubes lined with banana leaves, slowly roasted over wood fire coals.
-
-Tapai is fermented black glutinous rice prepared with traditional yeast, resulting in a soft, juicy texture with a refreshing sweet-tangy taste. To serve, slices of savory, bamboo-scented lamang are generously topped with spoonfuls of juicy black tapai.
-
-This cherished delicacy is an indispensable treat during Eid celebrations and Minangkabau wedding ceremonies. Lamang Tapai represents more than great taste; it symbolizes warm hospitality and family togetherness in West Sumatra.
-
-### 22. Dendeng Balado & Dendeng Batokok (Dendeng Balado & Dendeng Batokok)
-- ID: cu5
-- Jenis: Makanan Utama | Main Course
-- Asal: Bukittinggi & Solok
-- Profil Rasa: Krispy daging gurih dipadu pedas manis asam sambal balado & lado mudo
-- Flavor Profile (EN): Crispy savory beef paired with vibrant red and green chili sambal
-- Deskripsi:
-Dendeng Balado dan Dendeng Batokok adalah hidangan daging sapi khas Minangkabau yang sangat populer karena kerenyahan dan tekstur dagingnya yang empuk bersambal segar. Dendeng Balado dibuat dari irisan tipis daging sapi yang digoreng kering renyah lalu disiram sambal cabai merah giling kasar dengan aroma minyak kelapa yang menggugah selera.
-
-Sementara Dendeng Batokok memiliki teknik pengolahan unik di mana daging sapi yang telah direbus dengan bumbu rempah dipukul-pukul (batokok) menggunakan batu gilingan hingga serat dagingnya memar lembut, lalu dipanggang di atas bara api dan disiram sambal lado mudo (cabai hijau) tumis bawang merah yang gurih pedas.
-
-Kedua variasi dendeng ini merupakan lauk utama favorit di Rumah Makan Padang di seluruh Indonesia. Perpaduan gurih gurihnya daging sapi dengan rasa pedas pedas manis asam sambal balado menghadirkan kenikmatan menyantap nasi hangat yang tiada tara.
-- English Description:
-Dendeng Balado and Dendeng Batokok are iconic Minangkabau beef specialties celebrated for their crispy or tender textures paired with vibrant chili sambal. Dendeng Balado features paper-thin slices of beef fried crisp and generously coated in coarse red chili sambal infused with coconut oil aromas.
-
-In contrast, Dendeng Batokok uses boiled spiced beef that is tenderly pounded (batokok) with a stone pestle to loosen the meat fibers, then flame-grilled and topped with tangy green chili (lado mudo) sambal and fried shallots.
-
-Both dendeng varieties stand as flagship dishes in Padang restaurants nationwide. The marriage of savory beef with vibrant chili sambal provides an unforgettable dining experience over warm steamed rice.
-
-### 23. Gulai Itiak Lado Mudo (Green Chili Duck Curry (Gulai Itiak))
-- ID: cu6
-- Jenis: Makanan Utama | Main Course
-- Asal: Koto Gadang, Bukittinggi
-- Profil Rasa: Sangat pedas, gurih santan kental, daging bebek empuk tanpa amis
-- Flavor Profile (EN): Extremely spicy, rich coconut savory, tender duck without gamey odor
-- Deskripsi:
-Gulai Itiak Lado Mudo adalah kuliner khas dan legendaris dari wilayah Ngarai Sianok dan Koto Gadang, Bukittinggi. Hidangan ini menggunakan daging itik (bebek) muda segar yang dimasak menggunakan bumbu gulai sangat kental dan didominasi oleh lumatan cabai hijau (lado mudo) dalam jumlah yang sangat banyak.
-
-Proses memasaknya membutuhkan teknik khusus untuk menghilangkan bau amis khas bebek, yaitu dengan memanggang bebek sebentar di atas perapian sebelum direbus perlahan (slow-cooked) bersama santan dan racikan bumbu rempah daun kunyit, serai, serta lengkuas. Hasilnya, daging bebek menjadi sangat empuk (mropol) dan bumbunya meresap hingga ke tulang.
-
-Rasa pedas menyengat dari lado mudo yang berpadu dengan gurihnya santan kental menciptakan sensasi panas dan nikmat di lidah. Hidangan ini paling sempurna disantap bersama nasi putih hangat dan kerupuk jangek, sangat populer bagi wisatawan pencinta kuliner pedas ekstrem.
-- English Description:
-Gulai Itiak Lado Mudo is a legendary specialty dish hailing from the Sianok Canyon and Koto Gadang area in Bukittinggi. The dish features fresh young duck cooked in an extremely rich curry sauce dominated by massive amounts of crushed green chilies (lado mudo).
-
-The cooking process requires specific techniques to eliminate the duck's gamey scent, usually by briefly roasting it over an open fire before slow-cooking it with coconut milk and herbs like turmeric leaves, lemongrass, and galangal. The result is fall-off-the-bone tender duck meat perfectly infused with spices down to the bone.
-
-The piercing heat from the green chilies combined with the rich, savory coconut cream creates a hot and delightful sensation on the palate. Best enjoyed with steaming white rice and cow skin crackers, it is highly sought after by tourists seeking extreme spicy culinary thrills.
-
-### 24. Soto Padang (Soto Padang)
-- ID: cu7
-- Jenis: Makanan Utama | Main Course
-- Asal: Kota Padang
-- Profil Rasa: Kuah bening berempah rempah hangat, renyahnya daging sapi goreng
-- Flavor Profile (EN): Clear warm spiced broth, crunchy fried beef textures
-- Deskripsi:
-Soto Padang merupakan hidangan sup kaldu sapi berempah yang menghangatkan perut dan populer di seluruh penjuru kota. Ciri khas utama Soto Padang adalah kuah kaldunya yang bening namun sangat kaya akan aroma rempah kapulaga, cengkeh, kayu manis, dan bunga lawang, berbeda dengan soto dari pulau Jawa yang umumnya berkuah kuning keruh.
-
-Isian Soto Padang sangat menggugah selera, terdiri dari soun (bihun kristal), perkedel kentang yang lembut, serta potongan daging sapi yang sudah digoreng kering renyah (dendeng). Tekstur garing dari daging goreng inilah yang memberikan sensasi unik saat disantap bersama kuah hangat.
-
-Soto Padang selalu disajikan dengan taburan daun bawang, seledri, dan kerupuk merah khas Minang yang renyah. Ditambah dengan sambal lado dan perasan jeruk nipis, semangkuk Soto Padang adalah pilihan sarapan atau makan malam yang luar biasa menyegarkan.
-- English Description:
-Soto Padang is a spiced beef broth soup that warms the soul and is popular throughout the city. The main characteristic of Soto Padang is its clear broth which is incredibly rich in aromatic spices like cardamom, cloves, cinnamon, and star anise, distinguishing it from the often turbid yellow sotos of Java.
-
-The fillings of Soto Padang are highly appetizing, consisting of glass noodles (soun), soft potato croquettes (perkedel), and slices of beef that have been deep-fried to a crisp (dendeng). The crunchiness of the fried beef provides a unique textural sensation when eaten with the hot broth.
-
-Soto Padang is always garnished with scallions, celery, and the signature crunchy pink Minang crackers. Accompanied by a dollop of chili sambal and a squeeze of fresh lime juice, a bowl of Soto Padang makes for an extraordinarily refreshing breakfast or dinner choice.
-
-### 25. Ampiang Dadiah (Ampiang Dadiah (Minang Yogurt))
-- ID: cu8
-- Jenis: Kudapan Khas / Dessert | Traditional Dessert
-- Asal: Bukittinggi & Tanah Datar
-- Profil Rasa: Asam segar probiotik, manis legit gula aren, kenyal beras merah
-- Flavor Profile (EN): Fresh probiotic tang, sweet palm sugar caramel, chewy red rice
-- Deskripsi:
-Ampiang Dadiah adalah kuliner penutup atau dessert tradisional Minangkabau yang sangat sehat dan unik, sering dijuluki sebagai 'Yoghurt-nya Sumatera Barat'. Dadiah sendiri merupakan susu kerbau murni yang difermentasi secara alami di dalam ruas tabung bambu dan ditutup dengan daun pisang selama berhari-hari, hingga mengental menyerupai tekstur panna cotta.
-
-Dalam penyajiannya, Dadiah yang asam segar ini dipadukan dengan Ampiang, yaitu beras ketan merah yang ditumbuk pipih. Campuran ini kemudian diguyur dengan cairan gula aren cair yang legit, serta taburan kelapa parut segar.
-
-Perpaduan rasa asam probiotik dari susu kerbau fermentasi, tekstur kenyal dari ampiang ketan merah, serta rasa manis legit dari gula aren menghasilkan harmoni rasa penutup yang sangat kompleks dan menyehatkan pencernaan.
-- English Description:
-Ampiang Dadiah is a unique and incredibly healthy traditional Minangkabau dessert, often dubbed the 'Yogurt of West Sumatra'. Dadiah itself is pure buffalo milk naturally fermented inside fresh bamboo tubes covered with banana leaves for several days, thickening into a panna cotta-like texture.
-
-To serve, this tangy and refreshing Dadiah is combined with Ampiang, which are flattened red glutinous rice flakes. The mixture is then generously drizzled with thick, sweet liquid palm sugar and sprinkled with freshly grated coconut.
-
-The combination of probiotic tanginess from the fermented buffalo milk, the chewy texture of the red rice flakes, and the deep caramel sweetness of the palm sugar creates a highly complex flavor harmony that is also excellent for digestion.
-
-### 26. Nasi Kapau & Gulai Tambusu (Nasi Kapau & Stuffed Intestine Curry)
-- ID: cu9
-- Jenis: Makanan Utama | Main Course
-- Asal: Nagari Kapau, Kabupaten Agam
-- Profil Rasa: Gurih creamy santan kental, isian telur lembut custard, pedas rempah hangat
-- Flavor Profile (EN): Rich creamy coconut, soft custard egg filling, warm spicy herbs
-- Deskripsi:
-Nasi Kapau berasal dari Nagari Kapau di Tilatang Kamang, Kabupaten Agam, dan telah ada sejak abad ke-19. Saat era merantau, para istri yang tetap tinggal di Nagari Kapau membuka warung di pinggir jalan (lapau) untuk memberi makan para pelancong dan menopang ekonomi rumah tangga. Hidangan khas yang paling legendaris adalah Gulai Tambusu.
-
-Gulai Tambusu terbuat dari usus sapi yang telah dibersihkan, lalu diisi dengan campuran telur bebek/ayam yang dikocok, tahu yang dihancurkan halus, bawang putih, bawang merah, ketumbar, dan pala. Usus yang sudah diisi kemudian direbus perlahan dalam kuah gulai santan yang sangat kental dan kaya rempah seperti kunyit, lengkuas, serai, cabai merah, dan asam kandis.
-
-Warung Nasi Kapau memiliki ciri khas tersendiri berupa meja pajangan kayu lebar bertingkat-tingkat di mana penjual duduk di balik barisan pot-pot besar berisi berbagai macam gulai dan lauk. Penjual menyendok lauk menggunakan sendok kayu panjang yang ikonik.
-- English Description:
-Nasi Kapau originates from Nagari Kapau in Tilatang Kamang, Agam Regency, dating back to the 19th century. During the merantau migration era, wives remaining in the village opened roadside eateries to feed travelers and support their households. The most legendary dish is Gulai Tambusu.
-
-Gulai Tambusu is made from cleaned cow intestine stuffed with a mixture of whisked duck/chicken eggs, finely crushed tofu, garlic, shallots, coriander, and nutmeg. The stuffed intestine is then slowly simmered in an extremely rich coconut curry broth with turmeric, galangal, lemongrass, red chilies, and asam kandis.
-
-Nasi Kapau stalls are distinctive for their wide, multi-tiered wooden display tables where the seller sits behind rows of large pots filled with various curries and side dishes, served using iconic long wooden ladles.
-
-### 27. Asam Padeh Daging & Ikan Tongkol (Asam Padeh (Spicy Sour Braised Beef & Tuna))
+### 20. Asam Padeh Daging & Ikan Tongkol (Asam Padeh (Spicy Sour Braised Beef & Tuna))
 - ID: cu27
 - Jenis: Makanan Utama | Main Course
 - Asal: Pesisir Pantai & Ranah Minang
@@ -2198,7 +2109,7 @@ The principal protein ranges from tender beef brisket to fresh oceanic fish such
 
 Asam Padeh is an everyday staple cherished across West Sumatra and a sought-after staple at Padang eateries owing to its light yet intensely aromatic broth. Savored over steaming white rice with crispy jangek crackers, it offers an unforgettable, palate-cleansing gastronomic adventure.
 
-### 28. Samba Lado Tanak Minang (Samba Lado Tanak (Slow-Simmered Coconut Chili Relish))
+### 21. Samba Lado Tanak Minang (Samba Lado Tanak (Slow-Simmered Coconut Chili Relish))
 - ID: cu28
 - Jenis: Lauk Pelengkap Tradisional | Traditional Side Dish / Sambal
 - Asal: Nagari-nagari di Tanah Datar & Agam
@@ -2217,7 +2128,7 @@ The dish features an opulent array of ingredients, uniting dried anchovies (ikan
 
 The flavor balances unctuous coconut creaminess with fiery chili depth and earthy petai aromatics. Across traditional West Sumatran villages, this heritage relish remains an irresistible meal centerpiece that effortlessly compels second and third helpings of steaming rice.
 
-### 29. Gulai Banak (Gulai Otak Sapi Rempah) (Gulai Banak (Minang Spiced Beef Brain Curry))
+### 22. Gulai Banak (Gulai Otak Sapi Rempah) (Gulai Banak (Minang Spiced Beef Brain Curry))
 - ID: cu29
 - Jenis: Makanan Utama | Delicacy Main Course
 - Asal: Bukittinggi & Padang Pariaman
@@ -2236,7 +2147,26 @@ Cooking Gulai Banak demands culinary finesse to keep the brain intact and achiev
 
 On the palate, Gulai Banak offers a decadent, melt-in-the-mouth creamy texture bathed in warm, spiced savory coconut broth. For adventurous culinary travelers, sampling Gulai Banak at Bukittinggi's Los Lambuang market represents a peak authentic gastronomic indulgence.
 
-### 30. Rendang Lokan Pesisir Selatan (Rendang Lokan (Slow-Cooked Estuary Clam Rendang))
+### 23. Teh Talua (Teh Telur Khas Minang) (Teh Talua (Traditional Minang Egg Tea))
+- ID: cu3
+- Jenis: Minuman Tradisional | Traditional Drink
+- Asal: Lapau Kedai Tradisional Minangkabau
+- Profil Rasa: Creamy, manis hangat, sedikit asam zesty jeruk nipis
+- Flavor Profile (EN): Creamy, sweet warm, lightly tangy with fresh lime
+- Deskripsi:
+Teh Talua (Teh Telur) adalah minuman hangat khas Minangkabau yang legendaris, dikenal sebagai peningkat stamina dan minuman kebanggaan para pria Minang saat berkumpul di lapau (kedai kopi tradisional). Minuman unik ini mengombinasikan kocokan kuning telur ayam kampung atau telur bebek dengan seduhan teh hitam pekat yang mendidih.
+
+Proses pembuatannya membutuhkan keahlian khusus: kuning telur dikocok bersama gula pasir menggunakan lidi hingga mengembang halus dan berwarna krem pucat. Ketika teko berisi teh hitam pekat mendidih disiramkan ke dalam gelas, kocokan telur secara ajaib membentuk empat tingkatan lapisan warna cantik yang menggugah selera.
+
+Teh Talua disajikan hangat dengan perasan jeruk nipis segar yang berfungsi menghilangkan bau amis telur sekaligus memberikan sentuhan rasa segar. Sensasi rasa creamy, manis, gurih, dan sedikit asam hangat menjadikan Teh Talua minuman penutup malam yang sempurna saat menikmati dinginnya udara Sumatera Barat.
+- English Description:
+Teh Talua (Minang Egg Tea) is a legendary warm beverage from West Sumatra celebrated for boosting stamina and serving as the signature drink enjoyed at traditional lapau (coffee shops). This unique drink combines whisked egg yolk with boiling, concentrated black tea.
+
+Preparing it requires practiced technique: free-range chicken or duck egg yolk is vigorously whisked with sugar using a wooden whisk until forming a light, creamy foam. When scalding hot black tea is poured into the glass, the mixture magically separates into distinct, eye-catching layers.
+
+Teh Talua is served hot with a squeeze of fresh lime juice to neutralize any egginess while adding a bright zest. The combination of creamy, sweet, savory, and zesty warm flavors makes Teh Talua the ultimate cozy nightcap in West Sumatra.
+
+### 24. Rendang Lokan Pesisir Selatan (Rendang Lokan (Slow-Cooked Estuary Clam Rendang))
 - ID: cu30
 - Jenis: Makanan Utama | Coastal Heritage Main Course
 - Asal: Painan & Inderapura, Kabupaten Pesisir Selatan
@@ -2255,7 +2185,7 @@ Fresh clams retrieved from riverbed mud are meticulously purged and cleaned, the
 
 The chewy, savory-sweet texture of coastal clams marries flawlessly with the fiery, umami-laden rendang spices and smoky firewood aroma. Rendang Lokan has become a sought-after culinary souvenir among food connoisseurs seeking West Sumatra's marine heritage.
 
-### 31. Teh Kawa Daun Tradisional (Kawa Daun (Traditional Roasted Coffee Leaf Tea))
+### 25. Teh Kawa Daun Tradisional (Kawa Daun (Traditional Roasted Coffee Leaf Tea))
 - ID: cu31
 - Jenis: Minuman Khas Tradisional | Traditional Herbal Beverage
 - Asal: Tanah Datar & Agam
@@ -2274,7 +2204,7 @@ Hand-selected coffee leaves are slowly smoked and toasted over firewood until cr
 
 The most distinctive feature is its traditional presentation served in polished natural coconut half-shells (sayak) resting on bamboo pedestals. Kawa Daun can be enjoyed black, sweetened with native palm sugar, or whipped with egg yolks and condensed milk (Kawa Talua), paired with hot banana fritters in scenic roadside stalls overlooking Mount Marapi.
 
-### 32. Kipang Kacang Pariaman (Kipang Kacang (Caramelized Peanut Brittle of Pariaman))
+### 26. Kipang Kacang Pariaman (Kipang Kacang (Caramelized Peanut Brittle of Pariaman))
 - ID: cu32
 - Jenis: Kudapan Tradisional & Oleh-Oleh | Traditional Snack & Confectionery
 - Asal: Kota Pariaman & Padang Pariaman
@@ -2293,7 +2223,7 @@ The preparation begins by dry-roasting selected peanuts until exceptionally cris
 
 Kipang Kacang delivers a deeply satisfying crunch balancing the nutty richness of toasted peanuts with the deep aromatic caramel sweetness of pure palm sugar. Packaged in nostalgic paper wraps, it remains an indispensable edible souvenir for travelers visiting the western coast of Sumatra.
 
-### 33. Dadiah Minangkabau Murni (Yoghurt Susu Kerbau Tabung Bambu) (Pure Dadiah (Traditional Water Buffalo Milk Curd))
+### 27. Dadiah Minangkabau Murni (Yoghurt Susu Kerbau Tabung Bambu) (Pure Dadiah (Traditional Water Buffalo Milk Curd))
 - ID: cu33
 - Jenis: Pangan Tradisional Fermentasi | Fermented Artisan Superfood
 - Asal: Bukittinggi, Agam, Solok & Tanah Datar
@@ -2312,7 +2242,7 @@ Its production relies on pure spontaneous fermentation without artificial starte
 
 Pure Dadiah possesses a delicate tartness underpinned by rich, velvety dairy creaminess. Traditionally, it is enjoyed either as a morning breakfast tossed with toasted red rice flakes and molten palm sugar (Ampiang Dadiah) or savory-style whipped with spicy sambal and sliced shallots (Dadiah Sambalado).
 
-### 34. Gulai Kurma Daging Minang (Gulai Kurma (Aromatic White Spiced Beef Curry))
+### 28. Gulai Kurma Daging Minang (Gulai Kurma (Aromatic White Spiced Beef Curry))
 - ID: cu34
 - Jenis: Makanan Utama | Ceremonial Main Course
 - Asal: Padang Pariaman & Seluruh Luhak Minang
@@ -2331,7 +2261,7 @@ The visual hallmark of Gulai Kurma is its pale ivory-golden hue, cooked entirely
 
 The flavor profile is lavishly savory, mildly aromatic, and comforting with zero chili heat, making it an absolute favorite among travelers who adore complex Indonesian spices without extreme spiciness. Gulai Kurma pairs exquisitely with fern leaf curries and fragrant rice.
 
-### 35. Pangek Masin Ikan Mas Ranah Minang (Pangek Masin (Minang Simmered Fish with Turmeric & Lemongrass))
+### 29. Pangek Masin Ikan Mas Ranah Minang (Pangek Masin (Minang Simmered Fish with Turmeric & Lemongrass))
 - ID: cu35
 - Jenis: Makanan Utama | Main Course
 - Asal: Danau Singkarak & Danau Maninjau
@@ -2350,7 +2280,7 @@ The centerpiece protein typically features freshly harvested freshwater carp, ti
 
 The reduced gravy radiates a vibrant golden-yellow hue with a rich glaze consistency. The luscious coconut richness balances effortlessly against the tart brightness of bilimbi fruit and wild basil, delivering an extraordinary freshwater fish delicacy celebrated across the Minangkabau heartland.
 
-### 36. Karupuak Sanjai Batokok & Karupuak Kuah Sate (Karupuak Sanjai Batokok & Sate-Sauced Crackers)
+### 30. Karupuak Sanjai Batokok & Karupuak Kuah Sate (Karupuak Sanjai Batokok & Sate-Sauced Crackers)
 - ID: cu36
 - Jenis: Kudapan Tradisional & Camilan Pasar | Traditional Street Snack & Souvenir
 - Asal: Mandihangin, Kota Bukittinggi
@@ -2368,6 +2298,120 @@ Karupuak Sanjai Batokok and Karupuak Kuah Sate represent two quintessential stre
 'Sanjai Batokok' is crafted from choice cassava slices manually tenderized and pounded with wooden mallets (*ditokok*) before deep-frying to ethereal crispness, then glazed in glistening spicy-sweet palm sugar balado sambal. Meanwhile, 'Karupuak Kuah' features a broad plate-sized circular red cassava cracker drenched in rich, piping-hot spiced yellow sate gravy and garnished with savory fried vermicelli noodles.
 
 Enjoying Karupuak Kuah right beside the Jam Gadang plaza or upon the historic Janjang 40 stone stairs delivers a joyous contrast of shattering cracker crunch and soothingly warm, spiced peanut curry. Inexpensive and profoundly addictive, it stands as an unmissable West Sumatran street food ritual.
+
+### 31. Lamang Tapai (Lamang Tapai)
+- ID: cu4
+- Jenis: Kudapan Khas | Traditional Snack
+- Asal: Tanah Datar & Payakumbuh
+- Profil Rasa: Gurih santan beraroma bambu dipadu manis-asam segar ketan hitam
+- Flavor Profile (EN): Savory coconut bamboo scent fused with sweet-tangy fermented rice
+- Deskripsi:
+Lamang Tapai adalah kombinasi kudapan tradisional Minangkabau yang menyajikan perpaduan rasa gurih dan manis-asam yang sangat unik dan lezat. Lamang terbuat dari beras ketan putih yang dimasak bersama santan kelapa di dalam ruas bambu muda yang dilapisi daun pisang, lalu dipanggang perlahan di atas bara api kayu bakar.
+
+Sementara itu, Tapai adalah beras ketan hitam yang difermentasi menggunakan ragi tradisional hingga menghasilkan tekstur lembut berair dengan rasa manis-asam segar yang khas. Saat disajikan, potongan lamang gurih beraroma bambu disiram dengan beberapa sendok tapai ketan hitam berkuah manis.
+
+Kudapan legendaris ini selalu hadir pada perayaan hari besar keagamaan seperti Idul Fitri, Idul Adha, serta dalam acara-acara adat pernikahan Minangkabau. Lamang Tapai bukan sekadar kuliner lezat, melainkan simbol kehangatan silaturahmi dan kebersamaan keluarga di Ranah Minang.
+- English Description:
+Lamang Tapai is a traditional Minangkabau snack combination offering a delightfully unique blend of savory and sweet-sour flavors. Lamang is made from white glutinous rice cooked with coconut milk inside young bamboo tubes lined with banana leaves, slowly roasted over wood fire coals.
+
+Tapai is fermented black glutinous rice prepared with traditional yeast, resulting in a soft, juicy texture with a refreshing sweet-tangy taste. To serve, slices of savory, bamboo-scented lamang are generously topped with spoonfuls of juicy black tapai.
+
+This cherished delicacy is an indispensable treat during Eid celebrations and Minangkabau wedding ceremonies. Lamang Tapai represents more than great taste; it symbolizes warm hospitality and family togetherness in West Sumatra.
+
+### 32. Dendeng Balado & Dendeng Batokok (Dendeng Balado & Dendeng Batokok)
+- ID: cu5
+- Jenis: Makanan Utama | Main Course
+- Asal: Bukittinggi & Solok
+- Profil Rasa: Krispy daging gurih dipadu pedas manis asam sambal balado & lado mudo
+- Flavor Profile (EN): Crispy savory beef paired with vibrant red and green chili sambal
+- Deskripsi:
+Dendeng Balado dan Dendeng Batokok adalah hidangan daging sapi khas Minangkabau yang sangat populer karena kerenyahan dan tekstur dagingnya yang empuk bersambal segar. Dendeng Balado dibuat dari irisan tipis daging sapi yang digoreng kering renyah lalu disiram sambal cabai merah giling kasar dengan aroma minyak kelapa yang menggugah selera.
+
+Sementara Dendeng Batokok memiliki teknik pengolahan unik di mana daging sapi yang telah direbus dengan bumbu rempah dipukul-pukul (batokok) menggunakan batu gilingan hingga serat dagingnya memar lembut, lalu dipanggang di atas bara api dan disiram sambal lado mudo (cabai hijau) tumis bawang merah yang gurih pedas.
+
+Kedua variasi dendeng ini merupakan lauk utama favorit di Rumah Makan Padang di seluruh Indonesia. Perpaduan gurih gurihnya daging sapi dengan rasa pedas pedas manis asam sambal balado menghadirkan kenikmatan menyantap nasi hangat yang tiada tara.
+- English Description:
+Dendeng Balado and Dendeng Batokok are iconic Minangkabau beef specialties celebrated for their crispy or tender textures paired with vibrant chili sambal. Dendeng Balado features paper-thin slices of beef fried crisp and generously coated in coarse red chili sambal infused with coconut oil aromas.
+
+In contrast, Dendeng Batokok uses boiled spiced beef that is tenderly pounded (batokok) with a stone pestle to loosen the meat fibers, then flame-grilled and topped with tangy green chili (lado mudo) sambal and fried shallots.
+
+Both dendeng varieties stand as flagship dishes in Padang restaurants nationwide. The marriage of savory beef with vibrant chili sambal provides an unforgettable dining experience over warm steamed rice.
+
+### 33. Gulai Itiak Lado Mudo (Green Chili Duck Curry (Gulai Itiak))
+- ID: cu6
+- Jenis: Makanan Utama | Main Course
+- Asal: Koto Gadang, Bukittinggi
+- Profil Rasa: Sangat pedas, gurih santan kental, daging bebek empuk tanpa amis
+- Flavor Profile (EN): Extremely spicy, rich coconut savory, tender duck without gamey odor
+- Deskripsi:
+Gulai Itiak Lado Mudo adalah kuliner khas dan legendaris dari wilayah Ngarai Sianok dan Koto Gadang, Bukittinggi. Hidangan ini menggunakan daging itik (bebek) muda segar yang dimasak menggunakan bumbu gulai sangat kental dan didominasi oleh lumatan cabai hijau (lado mudo) dalam jumlah yang sangat banyak.
+
+Proses memasaknya membutuhkan teknik khusus untuk menghilangkan bau amis khas bebek, yaitu dengan memanggang bebek sebentar di atas perapian sebelum direbus perlahan (slow-cooked) bersama santan dan racikan bumbu rempah daun kunyit, serai, serta lengkuas. Hasilnya, daging bebek menjadi sangat empuk (mropol) dan bumbunya meresap hingga ke tulang.
+
+Rasa pedas menyengat dari lado mudo yang berpadu dengan gurihnya santan kental menciptakan sensasi panas dan nikmat di lidah. Hidangan ini paling sempurna disantap bersama nasi putih hangat dan kerupuk jangek, sangat populer bagi wisatawan pencinta kuliner pedas ekstrem.
+- English Description:
+Gulai Itiak Lado Mudo is a legendary specialty dish hailing from the Sianok Canyon and Koto Gadang area in Bukittinggi. The dish features fresh young duck cooked in an extremely rich curry sauce dominated by massive amounts of crushed green chilies (lado mudo).
+
+The cooking process requires specific techniques to eliminate the duck's gamey scent, usually by briefly roasting it over an open fire before slow-cooking it with coconut milk and herbs like turmeric leaves, lemongrass, and galangal. The result is fall-off-the-bone tender duck meat perfectly infused with spices down to the bone.
+
+The piercing heat from the green chilies combined with the rich, savory coconut cream creates a hot and delightful sensation on the palate. Best enjoyed with steaming white rice and cow skin crackers, it is highly sought after by tourists seeking extreme spicy culinary thrills.
+
+### 34. Soto Padang (Soto Padang)
+- ID: cu7
+- Jenis: Makanan Utama | Main Course
+- Asal: Kota Padang
+- Profil Rasa: Kuah bening berempah rempah hangat, renyahnya daging sapi goreng
+- Flavor Profile (EN): Clear warm spiced broth, crunchy fried beef textures
+- Deskripsi:
+Soto Padang merupakan hidangan sup kaldu sapi berempah yang menghangatkan perut dan populer di seluruh penjuru kota. Ciri khas utama Soto Padang adalah kuah kaldunya yang bening namun sangat kaya akan aroma rempah kapulaga, cengkeh, kayu manis, dan bunga lawang, berbeda dengan soto dari pulau Jawa yang umumnya berkuah kuning keruh.
+
+Isian Soto Padang sangat menggugah selera, terdiri dari soun (bihun kristal), perkedel kentang yang lembut, serta potongan daging sapi yang sudah digoreng kering renyah (dendeng). Tekstur garing dari daging goreng inilah yang memberikan sensasi unik saat disantap bersama kuah hangat.
+
+Soto Padang selalu disajikan dengan taburan daun bawang, seledri, dan kerupuk merah khas Minang yang renyah. Ditambah dengan sambal lado dan perasan jeruk nipis, semangkuk Soto Padang adalah pilihan sarapan atau makan malam yang luar biasa menyegarkan.
+- English Description:
+Soto Padang is a spiced beef broth soup that warms the soul and is popular throughout the city. The main characteristic of Soto Padang is its clear broth which is incredibly rich in aromatic spices like cardamom, cloves, cinnamon, and star anise, distinguishing it from the often turbid yellow sotos of Java.
+
+The fillings of Soto Padang are highly appetizing, consisting of glass noodles (soun), soft potato croquettes (perkedel), and slices of beef that have been deep-fried to a crisp (dendeng). The crunchiness of the fried beef provides a unique textural sensation when eaten with the hot broth.
+
+Soto Padang is always garnished with scallions, celery, and the signature crunchy pink Minang crackers. Accompanied by a dollop of chili sambal and a squeeze of fresh lime juice, a bowl of Soto Padang makes for an extraordinarily refreshing breakfast or dinner choice.
+
+### 35. Ampiang Dadiah (Ampiang Dadiah (Minang Yogurt))
+- ID: cu8
+- Jenis: Kudapan Khas / Dessert | Traditional Dessert
+- Asal: Bukittinggi & Tanah Datar
+- Profil Rasa: Asam segar probiotik, manis legit gula aren, kenyal beras merah
+- Flavor Profile (EN): Fresh probiotic tang, sweet palm sugar caramel, chewy red rice
+- Deskripsi:
+Ampiang Dadiah adalah kuliner penutup atau dessert tradisional Minangkabau yang sangat sehat dan unik, sering dijuluki sebagai 'Yoghurt-nya Sumatera Barat'. Dadiah sendiri merupakan susu kerbau murni yang difermentasi secara alami di dalam ruas tabung bambu dan ditutup dengan daun pisang selama berhari-hari, hingga mengental menyerupai tekstur panna cotta.
+
+Dalam penyajiannya, Dadiah yang asam segar ini dipadukan dengan Ampiang, yaitu beras ketan merah yang ditumbuk pipih. Campuran ini kemudian diguyur dengan cairan gula aren cair yang legit, serta taburan kelapa parut segar.
+
+Perpaduan rasa asam probiotik dari susu kerbau fermentasi, tekstur kenyal dari ampiang ketan merah, serta rasa manis legit dari gula aren menghasilkan harmoni rasa penutup yang sangat kompleks dan menyehatkan pencernaan.
+- English Description:
+Ampiang Dadiah is a unique and incredibly healthy traditional Minangkabau dessert, often dubbed the 'Yogurt of West Sumatra'. Dadiah itself is pure buffalo milk naturally fermented inside fresh bamboo tubes covered with banana leaves for several days, thickening into a panna cotta-like texture.
+
+To serve, this tangy and refreshing Dadiah is combined with Ampiang, which are flattened red glutinous rice flakes. The mixture is then generously drizzled with thick, sweet liquid palm sugar and sprinkled with freshly grated coconut.
+
+The combination of probiotic tanginess from the fermented buffalo milk, the chewy texture of the red rice flakes, and the deep caramel sweetness of the palm sugar creates a highly complex flavor harmony that is also excellent for digestion.
+
+### 36. Nasi Kapau & Gulai Tambusu (Nasi Kapau & Stuffed Intestine Curry)
+- ID: cu9
+- Jenis: Makanan Utama | Main Course
+- Asal: Nagari Kapau, Kabupaten Agam
+- Profil Rasa: Gurih creamy santan kental, isian telur lembut custard, pedas rempah hangat
+- Flavor Profile (EN): Rich creamy coconut, soft custard egg filling, warm spicy herbs
+- Deskripsi:
+Nasi Kapau berasal dari Nagari Kapau di Tilatang Kamang, Kabupaten Agam, dan telah ada sejak abad ke-19. Saat era merantau, para istri yang tetap tinggal di Nagari Kapau membuka warung di pinggir jalan (lapau) untuk memberi makan para pelancong dan menopang ekonomi rumah tangga. Hidangan khas yang paling legendaris adalah Gulai Tambusu.
+
+Gulai Tambusu terbuat dari usus sapi yang telah dibersihkan, lalu diisi dengan campuran telur bebek/ayam yang dikocok, tahu yang dihancurkan halus, bawang putih, bawang merah, ketumbar, dan pala. Usus yang sudah diisi kemudian direbus perlahan dalam kuah gulai santan yang sangat kental dan kaya rempah seperti kunyit, lengkuas, serai, cabai merah, dan asam kandis.
+
+Warung Nasi Kapau memiliki ciri khas tersendiri berupa meja pajangan kayu lebar bertingkat-tingkat di mana penjual duduk di balik barisan pot-pot besar berisi berbagai macam gulai dan lauk. Penjual menyendok lauk menggunakan sendok kayu panjang yang ikonik.
+- English Description:
+Nasi Kapau originates from Nagari Kapau in Tilatang Kamang, Agam Regency, dating back to the 19th century. During the merantau migration era, wives remaining in the village opened roadside eateries to feed travelers and support their households. The most legendary dish is Gulai Tambusu.
+
+Gulai Tambusu is made from cleaned cow intestine stuffed with a mixture of whisked duck/chicken eggs, finely crushed tofu, garlic, shallots, coriander, and nutmeg. The stuffed intestine is then slowly simmered in an extremely rich coconut curry broth with turmeric, galangal, lemongrass, red chilies, and asam kandis.
+
+Nasi Kapau stalls are distinctive for their wide, multi-tiered wooden display tables where the seller sits behind rows of large pots filled with various curries and side dishes, served using iconic long wooden ladles.
 
 ================================================================================
 SECTION 4: KALENDER EVENT & FESTIVAL (20 CALENDAR OF EVENTS 2026)
@@ -2620,144 +2664,11 @@ Key attractions include the grueling Kelok 44 uphill mountain race challenging r
 
 Visitors are treated to breathtaking 360-degree vistas of the crater lake from Puncak Lawang, cultural tours to the historic birthplace of renowned scholar and novelist Buya Hamka in Sungai Batang, and authentic culinary tastings of crisp endemic Rinuak fish and savory Bada Masiak dishes.
 
-### 14. Pesona Budaya Hoyak Tabuik Piaman (KEN) (Hoyak Tabuik Cultural Festival (KEN))
-- ID: ev3
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Kota Pariaman & Pantai Gandoriah
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
-- Kategori: Budaya & Tradisi
-- Deskripsi:
-Pesona Budaya Hoyak Tabuik Piaman merupakan salah satu festival budaya kolosal tertua dan paling spektakuler di pesisir barat Pulau Sumatera yang diselenggarakan setiap tanggal 1 hingga 10 Muharram di Kota Pariaman. Tradisi ini telah berakar sejak awal abad ke-19 dan secara resmi dinobatkan ke dalam agenda utama Karisma Event Nusantara (KEN) oleh Kementerian Pariwisata dan Ekonomi Kreatif.
-
-Rangkaian ritual adat Tabuik berlangsung selama sepuluh hari penuh melalui tahapan sakral yang sarat makna filosofis, mulai dari prosesi Maambiak Tanah (mengambil tanah), Manabang Batang Pisang (menebang batang pisang), Maatam, Maarak Jari-Jari, hingga Maarak Saroban. Puncaknya ditandai dengan pembuatan dua menara Tabuik megah setinggi 12 meter—Tabuik Pasa dan Tabuik Subarang—yang diarak serta digoyangkan (dihoyak) oleh puluhan ribu warga diiringi tabuhan gandang tasa yang bertalu-talu.
-
-Menjelang senja di Pantai Gandoriah, kedua struktur Tabuik diusung menuju bibir pantai dan dilarung ke tengah Samudra Hindia saat matahari terbenam, melambangkan pelepasan duka dan pembersihan diri menyongsong tahun baru Hijriah. Keagungan visual pelarungan berlatar lembayung senja menjadikan festival ini daya tarik wisata internasional yang tak tertandingi.
-- English Description:
-Hoyak Tabuik Cultural Festival is one of the oldest and most colossal coastal heritage spectacles in Western Sumatra, held annually from the 1st to the 10th of Muharram in Pariaman City. Rooted in traditions dating back to the early 19th century, this iconic festival is officially recognized in the prestigious Karisma Event Nusantara (KEN) calendar by the Ministry of Tourism and Creative Economy.
-
-The ten-day ritual sequence unfolds through a series of sacred symbolic stages: Maambiak Tanah (gathering sacred soil), Manabang Batang Pisang (cleaving the banana stalk), Maatam, and Maarak Saroban. The monumental climax features two towering 12-meter effigies—Tabuik Pasa and Tabuik Subarang—paraded, danced, and energetically hoisted (dihoyak) by tens of thousands of participants to the thunderous, hypnotic beats of gandang tasa drums.
-
-At dusk on Gandoriah Beach, both massive Tabuik towers are carried into the crashing waves of the Indian Ocean and cast into the sea against a fiery sunset, symbolizing spiritual catharsis and communal renewal for the Islamic New Year. The awe-inspiring maritime ritual stands as an internationally renowned cultural tourism landmark.
-
-### 15. Festival Rang Solok Baralek Gadang (KEN) (Rang Solok Baralek Gadang Festival (KEN))
-- ID: ev4
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Hamparan Sawah Solok, Kota Solok
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
-- Kategori: Festival Seni & Budaya
-- Deskripsi:
-Festival Rang Solok Baralek Gadang adalah perayaan agraris akbar yang mengangkat kemasyhuran Beras Solok (Bareh Solok) sebagai warisan pangan terbaik Nusantara dan pilar kebudayaan masyarakat Minangkabau. Festival unggulan Karisma Event Nusantara (KEN) ini dipusatkan langsung di tengah bentangan sawah organik produktif Hamparan Sawah Solok yang berlatar Gunung Talang.
-
-Beragam prosesi adat dan atraksi tradisional digelar di atas tanah sawah berlumpur, termasuk upacara Batulak Bala (ritual tolak bala memohon berkah panen), pawai arak-arakan jamba oleh ratusan Bundo Kanduang, lomba pacu upiah, dan permainan tradisional anak nagari seperti sipak rago dan silat lumpur. Nuansa kebersamaan yang hangat tercermin saat seluruh tamu dan masyarakat duduk bersila menikmati jamuan Makan Bajamba di pematang sawah.
-
-Melalui festival ini, Kota Solok tidak hanya merayakan hasil bumi tetapi juga mengedukasi wisatawan mengenai pentingnya ketahanan pangan, pertanian organik berkelanjutan, dan kearifan lokal sistem pengairan persawahan tradisional. Keindahan visual bentang sawah kuning keemasan menjadikannya destinasi favorit pencinta budaya dan ekowisata.
-- English Description:
-Rang Solok Baralek Gadang Festival is a grand agrarian cultural celebration honoring the legendary Solok Rice (Bareh Solok) as one of the archipelago's finest heritage grains and a cultural cornerstone of Minangkabau society. Selected for the national Karisma Event Nusantara (KEN) roster, the festival takes place directly within the sprawling organic paddy fields of Hamparan Sawah Solok facing Mount Talang.
-
-A rich variety of ancestral ceremonies and lively folk games take center stage in the muddy fields, including the sacred Batulak Bala blessing rite, ceremonial jamba food tray processions by hundreds of Bundo Kanduang elders, upiah palm leaf racing, and mud martial arts (silek lumpur). The spirit of communal solidarity culminates in a massive open-air Makan Bajamba communal banquet on the field dykes.
-
-Beyond celebrating agricultural bounty, the festival actively educates visitors on food sovereignty, sustainable organic farming practices, and centuries-old traditional irrigation wisdom. The breathtaking visual panorama of golden paddy fields makes it a premier destination for cultural and eco-tourism enthusiasts alike.
-
-### 16. Sawahlunto International Songket Carnival / SISSCa (KEN) (Sawahlunto Int. Songket Silungkang Carnival (KEN))
-- ID: ev5
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Kota Warisan Dunia Sawahlunto
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
-- Kategori: Festival Seni & Budaya
-- Deskripsi:
-Sawahlunto International Songket Silungkang Carnival (SISSCa) adalah festival adibusana dan karnaval jalanan bertaraf internasional yang diselenggarakan di Kota Sawahlunto, kota tambang batu bara bersejarah yang dinobatkan sebagai Situs Warisan Dunia UNESCO. Festival ini secara konsisten terpilih dalam jajaran Karisma Event Nusantara (KEN) sebagai wadah pelestarian dan diplomasi tenun Songket Silungkang ke kancah global.
-
-Selama karnaval berlangsung, jalanan kota tua peninggalan era kolonial Belanda disulap menjadi panggung catwalk terbuka terpanjang di Sumatera Barat. Ratusan desainer lokal, nasional, dan internasional berkolaborasi menampilkan kostum karnaval spektakuler dan busana kontemporer bertema modern yang memadukan kemilau motif benang emas Songket Silungkang dengan kreativitas tanpa batas.
-
-Selain parade kostum, SISSCa dimeriahkan dengan pameran kriya tenun langsung dari pengrajin nagari, simposium fashion warisan budaya, expo kuliner kota tua, dan tur terowongan tambang bersejarah Lubang Mbah Soero. Perpaduan pesona arsitektur Eropa abad ke-19 dan kemegahan kain tenun warisan leluhur menciptakan atmosfer magis yang memikat wisatawan mancanegara.
-- English Description:
-Sawahlunto International Songket Silungkang Carnival (SISSCa) is an internationally acclaimed street couture and heritage textile festival held in the historic mining city of Sawahlunto, a designated UNESCO World Heritage site. Consistently curated within the national Karisma Event Nusantara (KEN) program, SISSCa serves as a premier global platform for celebrating and preserving authentic Silungkang Songket weaves.
-
-Throughout the festival, the cobblestone streets and Dutch colonial avenues of the old town transform into the longest open-air runway in West Sumatra. Hundreds of visionary designers from across Indonesia and abroad showcase breathtaking avant-garde carnival costumes that integrate intricate gold-threaded Songket motifs with modern artistic creativity.
-
-Complementing the grand street parade, SISSCa features live artisan weaving demonstrations, heritage fashion symposiums, old-town culinary fairs, and guided tours of historic coal-mining sites like Lubang Mbah Soero. The captivating juxtaposition of 19th-century European industrial architecture and glittering heritage textiles delivers an unforgettable travel experience.
-
-### 17. Payakumbuh Botuang Festival (Payakumbuh Botuang Festival)
-- ID: ev6
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Ampangan, Kota Payakumbuh
-- Status KEN: Event Unggulan Daerah
-- Kategori: Festival Seni & Budaya
-- Deskripsi:
-Payakumbuh Botuang Festival adalah perhelatan seni dan ekologi inovatif yang mengeksplorasi tanaman botuang (bambu) sebagai unsur vital dalam kebudayaan masyarakat Luak Limopuluah. Diselenggarakan di kawasan perbukitan hijau Panorama Ampangan, festival ini menggabungkan kesenian tradisional Minangkabau dengan eksplorasi artistik kontemporer berwawasan lingkungan.
-
-Seniman musik, perajin kriya, arsitek, dan koreografer dari berbagai penjuru tanah air berkumpul untuk menciptakan instalasi megah dari bambu, memainkan alat musik bambu langka seperti talempong botuang dan sampelong, serta menggelar pertunjukan teater alam. Pengunjung juga disuguhi tradisi kuliner lamang tapai dan aneka masakan nagari yang dimasak langsung di dalam bilah bambu segar.
-
-Festival ini menjadi ruang edukasi penting tentang pelestarian ekosistem rumpun bambu serta potensi ekonominya bagi pemberdayaan masyarakat pedesaan. Di malam hari, tata lampu artistik yang menyinari instalasi bambu raksasa berpadu dengan udara sejuk pegunungan, menghadirkan pesona magis yang memanjakan panca indera wisatawan.
-- English Description:
-Payakumbuh Botuang Festival is an innovative arts and ecological celebration that explores the multifaceted significance of botuang (bamboo) in the cultural fabric of the Luak Limopuluah region. Staged amidst the verdant highlands of Panorama Ampangan, the festival bridges ancient Minangkabau heritage with eco-conscious contemporary artistic expression.
-
-Master musicians, artisans, architects, and choreographers from across the nation gather to craft monumental bamboo sculptures, perform on rare ethnic bamboo instruments such as talempong botuang and sampelong flutes, and present immersive open-air nature theatricals. Visitors are also treated to traditional lamang tapai and authentic dishes slow-cooked inside freshly harvested bamboo tubes.
-
-The festival serves as an invaluable platform for environmental education, highlighting bamboo conservation and its vast potential for rural community empowerment. As night falls, artistic illuminations cast a warm glow over massive bamboo installations against the crisp mountain air, offering an enchanting visual and acoustic sanctuary.
-
-### 18. Festival Pesona Minangkabau (KEN) (Festival Pesona Minangkabau (KEN))
-- ID: ev7
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Istano Basa Pagaruyung, Batusangkar, Tanah Datar
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
-- Kategori: Festival Seni & Budaya
-- Deskripsi:
-Festival Pesona Minangkabau adalah mahakarya perayaan kebudayaan terbesar di Sumatera Barat yang digelar secara megah di pelataran bersejarah Istano Basa Pagaruyung, Kabupaten Tanah Datar. Sebagai ajang puncak dalam kalender Karisma Event Nusantara (KEN), festival ini menjadi etalase utama yang merepresentasikan seluruh spektrum adat, seni pertunjukan, dan nilai-nilai luhur Alam Minangkabau.
-
-Perhelatan akbar ini menampilkan ragam prosesi spektakuler, termasuk pawai budaya ribuan Bundo Kanduang dengan busana adat kebesaran dari 19 kabupaten/kota, pemecahan rekor MURI prosesi Makan Bajamba terpanjang, festival tari piring di atas pecahan kaca, pertunjukan silat tradisi (silek tuo), dan pagelaran musik tradisi Minang klasik.
-
-Pengunjung festival dapat berinteraksi langsung dengan para tetua adat, menikmati pameran kriya dan artefak kerajaan Minangkabau kuno, serta mencicipi aneka kuliner langka yang disajikan secara otentik. Dengan latar kemegahan Istano Basa Pagaruyung beratap gonjong bertingkat tiga, festival ini menawarkan pengalaman budaya yang tak terlupakan bagi wisatawan nusantara maupun mancanegara.
-- English Description:
-Festival Pesona Minangkabau is the crowning cultural extravaganza in West Sumatra, staged against the majestic historical backdrop of Istano Basa Pagaruyung Palace in Tanah Datar Regency. As a flagship event within the national Karisma Event Nusantara (KEN) calendar, it serves as the ultimate showcase representing the full spectrum of Minangkabau customs, performing arts, and philosophical values.
-
-The grand festival features awe-inspiring spectacles including a grand cultural parade of thousands of Bundo Kanduang matriarchs in regal traditional attire from all 19 cities and regencies, MURI record-breaking Makan Bajamba communal feasts, plate-dancing feats over shattered glass, ancient silek tuo martial arts exhibitions, and classical orchestral performances.
-
-Visitors can engage directly with traditional clan elders, admire historical artifact exhibitions from the ancient Minangkabau kingdom, and savor rare heirloom culinary recipes. Framed by the three-tiered gonjong roofs of Pagaruyung Palace, this festival delivers an immersive cultural journey of unmatched authenticity.
-
-### 19. Festival Siti Nurbaya (KEN) (Siti Nurbaya Cultural Festival (KEN))
-- ID: ev8
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Kota Tua Padang, Muaro Padang & Gunung Padang
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
-- Kategori: Festival Seni & Budaya
-- Deskripsi:
-Festival Siti Nurbaya adalah perhelatan seni, budaya, dan sejarah pesisir yang diselenggarakan setiap tahun bertepatan dengan peringatan Hari Jadi Kota Padang. Mengangkat mahakarya sastra klasik novel Roman Siti Nurbaya karya Marah Rusli, festival Karisma Event Nusantara (KEN) ini memusatkan kegiatannya di kawasan bersejarah Kota Tua Padang, Jembatan Siti Nurbaya, dan tepian Sungai Batang Arau.
-
-Beragam agenda atraktif memeriahkan festival, mulai dari pentas drama musikal kolosal riwayat Siti Nurbaya, pawai Baju Kuruang Basiba yang diikuti ribuan perempuan Minang, lomba memasak Marandang masal, parade selaju sampan tradisional di muara sungai, hingga karnaval budaya multi-etnis yang mencerminkan harmoni kebersamaan warga Minang, Tionghoa, Nias, dan Jawa di Kota Padang.
-
-Festival ini menjadi pintu gerbang bagi wisatawan untuk menjelajahi keindahan arsitektur heritage tempo doeloe, menikmati panorama matahari terbenam di puncak Gunung Padang tempat makam legenda Siti Nurbaya berada, serta mencicipi aneka jajanan legendaris di sepanjang pesisir Pantai Padang yang memikat.
-- English Description:
-Siti Nurbaya Cultural Festival is a coastal arts, heritage, and literary celebration held annually to commemorate the founding anniversary of Padang City. Inspired by Marah Rusli's timeless Minangkabau literary masterpiece, this Karisma Event Nusantara (KEN) festival unfolds across historic landmarks including Padang Old Town, Siti Nurbaya Bridge, and the Batang Arau riverfront.
-
-The festival lineup features grand musical theatrical reenactments of the Siti Nurbaya romance, an elaborate parade of thousands wearing traditional Baju Kuruang Basiba attire, mass rendang cooking competitions (marandang), traditional riverboat regattas, and multicultural parades showcasing peaceful coexistence among Minang, Chinese, Nias, and Javanese communities.
-
-The event offers travelers a wonderful opportunity to wander through vintage colonial heritage quarters, hike up Mount Padang to visit the legendary Siti Nurbaya vantage point at sunset, and indulge in iconic culinary delicacies along the bustling Padang waterfront promenade.
-
-### 20. Festival Rakik-Rakik Danau Maninjau (KEN) (Maninjau Rakik-Rakik Floating Festival (KEN))
-- ID: ev9
-- Jadwal / Tanggal: undefined (undefined)
-- Lokasi: Tepi Danau Maninjau, Kabupaten Agam
-- Status KEN: Event Unggulan Daerah
-- Kategori: Budaya & Tradisi
-- Deskripsi:
-Festival Rakik-Rakik adalah tradisi maritim danau yang sangat sakral dan telah diwariskan turun-temurun oleh masyarakat salingka Danau Maninjau di Kabupaten Agam. Digelar khusus pada malam perayaan Hari Raya Idul Fitri (1 Syawal) dan libur lebaran, tradisi ini merupakan bentuk sukacita kemenangan spiritual anak nagari setelah sebulan penuh berpuasa Ramadan.
-
-Setiap nagari di sekeliling danau bergotong royong merakit bambu raksasa (rakik) yang dihias megah menyerupai miniatur Rumah Gadang, Masjid bertingkat, atau perahu perang tradisional yang diterangi ratusan obor dan lampu hias kelap-kelip. Di atas rakik terapung di tengah perairan danau, warga menyalakan meriam karbit bambu yang menghasilkan dentuman menggelegar bersahut-sahutan di antara tebing-tebing kaldera Danau Maninjau.
-
-Keindahan pantulan cahaya lampu rakik di atas permukaan air danau yang tenang berpadu dengan gemerlap kembang api dan dentuman meriam menciptakan panorama malam hari raya yang magis dan sangat fotogenik. Wisatawan dapat menyaksikan keajaiban ini dari dermaga tepi danau sambil menikmati hangatnya secangkir Kawa Daun dan hidangan Palai Rinuak khas Maninjau.
-- English Description:
-Rakik-Rakik Floating Festival is a sacred lacustrine heritage tradition cherished for generations across the villages surrounding Lake Maninjau in Agam Regency. Celebrated on the eve of Eid al-Fitr (1st of Shawwal) and during the holiday season, this vibrant festival expresses the communal joy and spiritual triumph of the villagers following the holy month of Ramadan.
-
-Each lakeside nagari unites to construct massive floating bamboo rafts (rakik), elaborately sculpted into illuminated miniatures of traditional Rumah Gadang palaces, multi-tiered mosques, or ancient royal barges adorned with hundreds of oil torches. Floating across the lake waters, villagers ignite traditional carbide bamboo cannons, producing thunderous booming echoes that reverberate against the towering volcanic caldera walls.
-
-The magical glow of hundreds of floating lanterns reflected upon the tranquil lake surface, paired with fireworks and celebratory cannonades, creates an unforgettable photographic spectacle. Visitors can enjoy this enchanting night from lakeside piers while savoring warm cups of Kawa Daun coffee-leaf tea and authentic grilled Palai Rinuak fish.
-
-### 21. Pacu Itiak Tradisional Payakumbuh & Limapuluh Kota (Pacu Itiak (Traditional Flying Duck Race))
+### 14. Pacu Itiak Tradisional Payakumbuh & Limapuluh Kota (Pacu Itiak (Traditional Flying Duck Race))
 - ID: ev21
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Payakumbuh & Kabupaten Lima Puluh Kota
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Status KEN: Event Unggulan Daerah
 - Kategori: Atraksi Tradisi
 - Deskripsi:
 Pacu Itiak adalah atraksi olahraga tradisional yang sangat unik dan tiada duanya di dunia, hanya ada dan dipraktikkan secara eksklusif oleh masyarakat di Kota Payakumbuh dan Kabupaten Lima Puluh Kota. Tradisi ini bermula pada awal abad ke-20 dari kebiasaan para penggembala itik lokal di sawah-sawah nagari yang mengamati kemampuan itik betina lokal (itik bayang) yang mampu terbang melayang di udara melintasi bentangan sawah.
@@ -2772,7 +2683,7 @@ During a Pacu Itiak tournament, highly conditioned ducks are launched into the a
 
 The tournament grounds are charged with festive camaraderie, cheered on by thousands of enthusiastic spectators, roaring Gandang Tambua percussion, and buzzing village night food markets. Pacu Itiak is officially recognized as an Indonesian National Intangible Cultural Heritage and a premier international tourism draw.
 
-### 22. Festival Danau Singkarak & Seni Tradisi (Lake Singkarak Heritage & Cultural Festival)
+### 15. Festival Danau Singkarak & Seni Tradisi (Lake Singkarak Heritage & Cultural Festival)
 - ID: ev22
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Dermaga Danau Singkarak, Solok & Tanah Datar
@@ -2791,7 +2702,7 @@ The festival lineup features colorful flotillas of traditional wooden dragon boa
 
 Beyond performing arts, the festival hosts an expansive gastronomy fair celebrating fried crispy bilih fish, rich pangek stews, and fragrant Bareh Solok rice. The Lake Singkarak Festival represents a golden opportunity to experience the seamless harmony between majestic geology and living communal culture.
 
-### 23. Festival Serak Gulo Padang Heritage (Serak Gulo Padang Heritage Festival)
+### 16. Festival Serak Gulo Padang Heritage (Serak Gulo Padang Heritage Festival)
 - ID: ev23
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Masjid Muhammadan, Kota Padang
@@ -2810,11 +2721,11 @@ The morning begins with communal volunteers assembling thousands of small textil
 
 The festivities are enriched by bustling cross-cultural street food markets serving authentic Kubang Martabak, flaky roti canai with spiced mutton curry, aromatic biryani, alongside traditional rebana percussion performances. Serak Gulo stands as one of western Indonesia's most charismatic celebrations of multicultural heritage.
 
-### 24. Festival Kuliner Minangkabau Marandang Akbar (Grand Minangkabau Marandang & Culinary Festival)
+### 17. Festival Kuliner Minangkabau Marandang Akbar (Grand Minangkabau Marandang & Culinary Festival)
 - ID: ev24
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Pelataran Jam Gadang Bukittinggi & Padang
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Status KEN: Event Unggulan Daerah
 - Kategori: Festival Gastronomi
 - Deskripsi:
 Festival Kuliner Minangkabau Marandang Akbar adalah perhelatan gastronomi terakbar di Sumatera Barat yang merayakan status Rendang sebagai hidangan terlezat di dunia versi berbagai media internasional. Diikuti oleh ratusan juru masak tradisional (koki nagari), bundo kanduang, dan pegiat UMKM kuliner dari 19 kabupaten dan kota se-Sumatera Barat, festival ini menampilkan atraksi memasak rendang daging secara serentak di atas ratusan tungku kayu bakar tradisional.
@@ -2829,7 +2740,7 @@ Throughout the event, the intoxicating aroma of caramelizing coconut milk and ro
 
 Complementing the master cooking tournament, masterclasses demonstrate rare village recipes such as stuffed Nasi Kapau tambusu curries, wild eel rendang, Dadiah probiotic curd, and multi-layered Teh Talua egg tea. Travelers can savor authentic heritage rendang variations and purchase vacuum-sealed gourmet rendang directly from master artisans.
 
-### 25. Festival Pesona Air Bangis Pasaman Barat (Air Bangis Coastal & Marine Festival)
+### 18. Festival Pesona Air Bangis Pasaman Barat (Air Bangis Coastal & Marine Festival)
 - ID: ev25
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Pelabuhan Teluk Air Bangis, Pasaman Barat
@@ -2848,11 +2759,11 @@ The festival dazzles with regattas of decorated traditional wooden sailing boats
 
 Seafood enthusiasts are treated to grand public feasts featuring freshly grilled ocean fish and mangrove crabs caught by local artisanal fisherfolk, served with green chili sambal and calamansi limes. The Air Bangis Festival serves as a crucial springboard promoting undiscovered marine ecotourism across West Pasaman.
 
-### 26. Festival Batang Arau Heritage & Padang Waterfront (Batang Arau Heritage & Padang Waterfront Festival)
+### 19. Festival Batang Arau Heritage & Padang Waterfront (Batang Arau Heritage & Padang Waterfront Festival)
 - ID: ev26
 - Jadwal / Tanggal: undefined (undefined)
 - Lokasi: Kawasan Kota Tua & Muara Batang Arau, Padang
-- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Status KEN: Event Unggulan Daerah
 - Kategori: Festival Budaya & Warisan
 - Deskripsi:
 Festival Batang Arau Heritage adalah perayaan seni, sejarah, dan revitalisasi kawasan Kota Tua Padang yang berpusat di sepanjang bantaran Sungai Batang Arau. Kawasan ini merupakan saksi bisu kejayaan maritim abad ke-19 di mana kapal-kapal dagang rempah bersandar di samping deretan gudang komoditas dan gedung-gedung berarsitektur kolonial Belanda yang megah bergaya Indische Empire.
@@ -2866,6 +2777,139 @@ The Batang Arau Heritage Festival is a captivating celebration of history, urban
 The festival lineup features vibrant illuminated dragon boat regattas on the river estuary, vintage and Minangkabau costume pageants across the Siti Nurbaya Bridge, evening floating lantern ceremonies, and exhibitions of colonial photographic archives. Heritage facades are bathed in architectural lighting, transforming the old harbor quarter into a breathtaking living museum.
 
 Visitors savor nostalgic Old Town street foods ranging from spiced beef sate to Padang's legendary shaved durian desserts and Chinese-Minang culinary fusion snacks. The festival invites travelers to rediscover West Sumatra's glorious maritime legacy through vibrant contemporary cultural expressions.
+
+### 20. Pesona Budaya Hoyak Tabuik Piaman (KEN) (Hoyak Tabuik Cultural Festival (KEN))
+- ID: ev3
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Kota Pariaman & Pantai Gandoriah
+- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Kategori: Budaya & Tradisi
+- Deskripsi:
+Pesona Budaya Hoyak Tabuik Piaman merupakan salah satu festival budaya kolosal tertua dan paling spektakuler di pesisir barat Pulau Sumatera yang diselenggarakan setiap tanggal 1 hingga 10 Muharram di Kota Pariaman. Tradisi ini telah berakar sejak awal abad ke-19 dan secara resmi dinobatkan ke dalam agenda utama Karisma Event Nusantara (KEN) oleh Kementerian Pariwisata dan Ekonomi Kreatif.
+
+Rangkaian ritual adat Tabuik berlangsung selama sepuluh hari penuh melalui tahapan sakral yang sarat makna filosofis, mulai dari prosesi Maambiak Tanah (mengambil tanah), Manabang Batang Pisang (menebang batang pisang), Maatam, Maarak Jari-Jari, hingga Maarak Saroban. Puncaknya ditandai dengan pembuatan dua menara Tabuik megah setinggi 12 meter—Tabuik Pasa dan Tabuik Subarang—yang diarak serta digoyangkan (dihoyak) oleh puluhan ribu warga diiringi tabuhan gandang tasa yang bertalu-talu.
+
+Menjelang senja di Pantai Gandoriah, kedua struktur Tabuik diusung menuju bibir pantai dan dilarung ke tengah Samudra Hindia saat matahari terbenam, melambangkan pelepasan duka dan pembersihan diri menyongsong tahun baru Hijriah. Keagungan visual pelarungan berlatar lembayung senja menjadikan festival ini daya tarik wisata internasional yang tak tertandingi.
+- English Description:
+Hoyak Tabuik Cultural Festival is one of the oldest and most colossal coastal heritage spectacles in Western Sumatra, held annually from the 1st to the 10th of Muharram in Pariaman City. Rooted in traditions dating back to the early 19th century, this iconic festival is officially recognized in the prestigious Karisma Event Nusantara (KEN) calendar by the Ministry of Tourism and Creative Economy.
+
+The ten-day ritual sequence unfolds through a series of sacred symbolic stages: Maambiak Tanah (gathering sacred soil), Manabang Batang Pisang (cleaving the banana stalk), Maatam, and Maarak Saroban. The monumental climax features two towering 12-meter effigies—Tabuik Pasa and Tabuik Subarang—paraded, danced, and energetically hoisted (dihoyak) by tens of thousands of participants to the thunderous, hypnotic beats of gandang tasa drums.
+
+At dusk on Gandoriah Beach, both massive Tabuik towers are carried into the crashing waves of the Indian Ocean and cast into the sea against a fiery sunset, symbolizing spiritual catharsis and communal renewal for the Islamic New Year. The awe-inspiring maritime ritual stands as an internationally renowned cultural tourism landmark.
+
+### 21. Festival Rang Solok Baralek Gadang (KEN) (Rang Solok Baralek Gadang Festival (KEN))
+- ID: ev4
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Hamparan Sawah Solok, Kota Solok
+- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Kategori: Festival Seni & Budaya
+- Deskripsi:
+Festival Rang Solok Baralek Gadang adalah perayaan agraris akbar yang mengangkat kemasyhuran Beras Solok (Bareh Solok) sebagai warisan pangan terbaik Nusantara dan pilar kebudayaan masyarakat Minangkabau. Festival unggulan Karisma Event Nusantara (KEN) ini dipusatkan langsung di tengah bentangan sawah organik produktif Hamparan Sawah Solok yang berlatar Gunung Talang.
+
+Beragam prosesi adat dan atraksi tradisional digelar di atas tanah sawah berlumpur, termasuk upacara Batulak Bala (ritual tolak bala memohon berkah panen), pawai arak-arakan jamba oleh ratusan Bundo Kanduang, lomba pacu upiah, dan permainan tradisional anak nagari seperti sipak rago dan silat lumpur. Nuansa kebersamaan yang hangat tercermin saat seluruh tamu dan masyarakat duduk bersila menikmati jamuan Makan Bajamba di pematang sawah.
+
+Melalui festival ini, Kota Solok tidak hanya merayakan hasil bumi tetapi juga mengedukasi wisatawan mengenai pentingnya ketahanan pangan, pertanian organik berkelanjutan, dan kearifan lokal sistem pengairan persawahan tradisional. Keindahan visual bentang sawah kuning keemasan menjadikannya destinasi favorit pencinta budaya dan ekowisata.
+- English Description:
+Rang Solok Baralek Gadang Festival is a grand agrarian cultural celebration honoring the legendary Solok Rice (Bareh Solok) as one of the archipelago's finest heritage grains and a cultural cornerstone of Minangkabau society. Selected for the national Karisma Event Nusantara (KEN) roster, the festival takes place directly within the sprawling organic paddy fields of Hamparan Sawah Solok facing Mount Talang.
+
+A rich variety of ancestral ceremonies and lively folk games take center stage in the muddy fields, including the sacred Batulak Bala blessing rite, ceremonial jamba food tray processions by hundreds of Bundo Kanduang elders, upiah palm leaf racing, and mud martial arts (silek lumpur). The spirit of communal solidarity culminates in a massive open-air Makan Bajamba communal banquet on the field dykes.
+
+Beyond celebrating agricultural bounty, the festival actively educates visitors on food sovereignty, sustainable organic farming practices, and centuries-old traditional irrigation wisdom. The breathtaking visual panorama of golden paddy fields makes it a premier destination for cultural and eco-tourism enthusiasts alike.
+
+### 22. Sawahlunto International Songket Carnival / SISSCa (KEN) (Sawahlunto Int. Songket Silungkang Carnival (KEN))
+- ID: ev5
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Kota Warisan Dunia Sawahlunto
+- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Kategori: Festival Seni & Budaya
+- Deskripsi:
+Sawahlunto International Songket Silungkang Carnival (SISSCa) adalah festival adibusana dan karnaval jalanan bertaraf internasional yang diselenggarakan di Kota Sawahlunto, kota tambang batu bara bersejarah yang dinobatkan sebagai Situs Warisan Dunia UNESCO. Festival ini secara konsisten terpilih dalam jajaran Karisma Event Nusantara (KEN) sebagai wadah pelestarian dan diplomasi tenun Songket Silungkang ke kancah global.
+
+Selama karnaval berlangsung, jalanan kota tua peninggalan era kolonial Belanda disulap menjadi panggung catwalk terbuka terpanjang di Sumatera Barat. Ratusan desainer lokal, nasional, dan internasional berkolaborasi menampilkan kostum karnaval spektakuler dan busana kontemporer bertema modern yang memadukan kemilau motif benang emas Songket Silungkang dengan kreativitas tanpa batas.
+
+Selain parade kostum, SISSCa dimeriahkan dengan pameran kriya tenun langsung dari pengrajin nagari, simposium fashion warisan budaya, expo kuliner kota tua, dan tur terowongan tambang bersejarah Lubang Mbah Soero. Perpaduan pesona arsitektur Eropa abad ke-19 dan kemegahan kain tenun warisan leluhur menciptakan atmosfer magis yang memikat wisatawan mancanegara.
+- English Description:
+Sawahlunto International Songket Silungkang Carnival (SISSCa) is an internationally acclaimed street couture and heritage textile festival held in the historic mining city of Sawahlunto, a designated UNESCO World Heritage site. Consistently curated within the national Karisma Event Nusantara (KEN) program, SISSCa serves as a premier global platform for celebrating and preserving authentic Silungkang Songket weaves.
+
+Throughout the festival, the cobblestone streets and Dutch colonial avenues of the old town transform into the longest open-air runway in West Sumatra. Hundreds of visionary designers from across Indonesia and abroad showcase breathtaking avant-garde carnival costumes that integrate intricate gold-threaded Songket motifs with modern artistic creativity.
+
+Complementing the grand street parade, SISSCa features live artisan weaving demonstrations, heritage fashion symposiums, old-town culinary fairs, and guided tours of historic coal-mining sites like Lubang Mbah Soero. The captivating juxtaposition of 19th-century European industrial architecture and glittering heritage textiles delivers an unforgettable travel experience.
+
+### 23. Payakumbuh Botuang Festival (Payakumbuh Botuang Festival)
+- ID: ev6
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Ampangan, Kota Payakumbuh
+- Status KEN: Event Unggulan Daerah
+- Kategori: Festival Seni & Budaya
+- Deskripsi:
+Payakumbuh Botuang Festival adalah perhelatan seni dan ekologi inovatif yang mengeksplorasi tanaman botuang (bambu) sebagai unsur vital dalam kebudayaan masyarakat Luak Limopuluah. Diselenggarakan di kawasan perbukitan hijau Panorama Ampangan, festival ini menggabungkan kesenian tradisional Minangkabau dengan eksplorasi artistik kontemporer berwawasan lingkungan.
+
+Seniman musik, perajin kriya, arsitek, dan koreografer dari berbagai penjuru tanah air berkumpul untuk menciptakan instalasi megah dari bambu, memainkan alat musik bambu langka seperti talempong botuang dan sampelong, serta menggelar pertunjukan teater alam. Pengunjung juga disuguhi tradisi kuliner lamang tapai dan aneka masakan nagari yang dimasak langsung di dalam bilah bambu segar.
+
+Festival ini menjadi ruang edukasi penting tentang pelestarian ekosistem rumpun bambu serta potensi ekonominya bagi pemberdayaan masyarakat pedesaan. Di malam hari, tata lampu artistik yang menyinari instalasi bambu raksasa berpadu dengan udara sejuk pegunungan, menghadirkan pesona magis yang memanjakan panca indera wisatawan.
+- English Description:
+Payakumbuh Botuang Festival is an innovative arts and ecological celebration that explores the multifaceted significance of botuang (bamboo) in the cultural fabric of the Luak Limopuluah region. Staged amidst the verdant highlands of Panorama Ampangan, the festival bridges ancient Minangkabau heritage with eco-conscious contemporary artistic expression.
+
+Master musicians, artisans, architects, and choreographers from across the nation gather to craft monumental bamboo sculptures, perform on rare ethnic bamboo instruments such as talempong botuang and sampelong flutes, and present immersive open-air nature theatricals. Visitors are also treated to traditional lamang tapai and authentic dishes slow-cooked inside freshly harvested bamboo tubes.
+
+The festival serves as an invaluable platform for environmental education, highlighting bamboo conservation and its vast potential for rural community empowerment. As night falls, artistic illuminations cast a warm glow over massive bamboo installations against the crisp mountain air, offering an enchanting visual and acoustic sanctuary.
+
+### 24. Festival Pesona Minangkabau (KEN) (Festival Pesona Minangkabau (KEN))
+- ID: ev7
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Istano Basa Pagaruyung, Batusangkar, Tanah Datar
+- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Kategori: Festival Seni & Budaya
+- Deskripsi:
+Festival Pesona Minangkabau adalah mahakarya perayaan kebudayaan terbesar di Sumatera Barat yang digelar secara megah di pelataran bersejarah Istano Basa Pagaruyung, Kabupaten Tanah Datar. Sebagai ajang puncak dalam kalender Karisma Event Nusantara (KEN), festival ini menjadi etalase utama yang merepresentasikan seluruh spektrum adat, seni pertunjukan, dan nilai-nilai luhur Alam Minangkabau.
+
+Perhelatan akbar ini menampilkan ragam prosesi spektakuler, termasuk pawai budaya ribuan Bundo Kanduang dengan busana adat kebesaran dari 19 kabupaten/kota, pemecahan rekor MURI prosesi Makan Bajamba terpanjang, festival tari piring di atas pecahan kaca, pertunjukan silat tradisi (silek tuo), dan pagelaran musik tradisi Minang klasik.
+
+Pengunjung festival dapat berinteraksi langsung dengan para tetua adat, menikmati pameran kriya dan artefak kerajaan Minangkabau kuno, serta mencicipi aneka kuliner langka yang disajikan secara otentik. Dengan latar kemegahan Istano Basa Pagaruyung beratap gonjong bertingkat tiga, festival ini menawarkan pengalaman budaya yang tak terlupakan bagi wisatawan nusantara maupun mancanegara.
+- English Description:
+Festival Pesona Minangkabau is the crowning cultural extravaganza in West Sumatra, staged against the majestic historical backdrop of Istano Basa Pagaruyung Palace in Tanah Datar Regency. As a flagship event within the national Karisma Event Nusantara (KEN) calendar, it serves as the ultimate showcase representing the full spectrum of Minangkabau customs, performing arts, and philosophical values.
+
+The grand festival features awe-inspiring spectacles including a grand cultural parade of thousands of Bundo Kanduang matriarchs in regal traditional attire from all 19 cities and regencies, MURI record-breaking Makan Bajamba communal feasts, plate-dancing feats over shattered glass, ancient silek tuo martial arts exhibitions, and classical orchestral performances.
+
+Visitors can engage directly with traditional clan elders, admire historical artifact exhibitions from the ancient Minangkabau kingdom, and savor rare heirloom culinary recipes. Framed by the three-tiered gonjong roofs of Pagaruyung Palace, this festival delivers an immersive cultural journey of unmatched authenticity.
+
+### 25. Festival Siti Nurbaya (KEN) (Siti Nurbaya Cultural Festival (KEN))
+- ID: ev8
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Kota Tua Padang, Muaro Padang & Gunung Padang
+- Status KEN: Karisma Event Nusantara (Kemenparekraf RI)
+- Kategori: Festival Seni & Budaya
+- Deskripsi:
+Festival Siti Nurbaya adalah perhelatan seni, budaya, dan sejarah pesisir yang diselenggarakan setiap tahun bertepatan dengan peringatan Hari Jadi Kota Padang. Mengangkat mahakarya sastra klasik novel Roman Siti Nurbaya karya Marah Rusli, festival Karisma Event Nusantara (KEN) ini memusatkan kegiatannya di kawasan bersejarah Kota Tua Padang, Jembatan Siti Nurbaya, dan tepian Sungai Batang Arau.
+
+Beragam agenda atraktif memeriahkan festival, mulai dari pentas drama musikal kolosal riwayat Siti Nurbaya, pawai Baju Kuruang Basiba yang diikuti ribuan perempuan Minang, lomba memasak Marandang masal, parade selaju sampan tradisional di muara sungai, hingga karnaval budaya multi-etnis yang mencerminkan harmoni kebersamaan warga Minang, Tionghoa, Nias, dan Jawa di Kota Padang.
+
+Festival ini menjadi pintu gerbang bagi wisatawan untuk menjelajahi keindahan arsitektur heritage tempo doeloe, menikmati panorama matahari terbenam di puncak Gunung Padang tempat makam legenda Siti Nurbaya berada, serta mencicipi aneka jajanan legendaris di sepanjang pesisir Pantai Padang yang memikat.
+- English Description:
+Siti Nurbaya Cultural Festival is a coastal arts, heritage, and literary celebration held annually to commemorate the founding anniversary of Padang City. Inspired by Marah Rusli's timeless Minangkabau literary masterpiece, this Karisma Event Nusantara (KEN) festival unfolds across historic landmarks including Padang Old Town, Siti Nurbaya Bridge, and the Batang Arau riverfront.
+
+The festival lineup features grand musical theatrical reenactments of the Siti Nurbaya romance, an elaborate parade of thousands wearing traditional Baju Kuruang Basiba attire, mass rendang cooking competitions (marandang), traditional riverboat regattas, and multicultural parades showcasing peaceful coexistence among Minang, Chinese, Nias, and Javanese communities.
+
+The event offers travelers a wonderful opportunity to wander through vintage colonial heritage quarters, hike up Mount Padang to visit the legendary Siti Nurbaya vantage point at sunset, and indulge in iconic culinary delicacies along the bustling Padang waterfront promenade.
+
+### 26. Festival Rakik-Rakik Danau Maninjau (KEN) (Maninjau Rakik-Rakik Floating Festival (KEN))
+- ID: ev9
+- Jadwal / Tanggal: undefined (undefined)
+- Lokasi: Tepi Danau Maninjau, Kabupaten Agam
+- Status KEN: Event Unggulan Daerah
+- Kategori: Budaya & Tradisi
+- Deskripsi:
+Festival Rakik-Rakik adalah tradisi maritim danau yang sangat sakral dan telah diwariskan turun-temurun oleh masyarakat salingka Danau Maninjau di Kabupaten Agam. Digelar khusus pada malam perayaan Hari Raya Idul Fitri (1 Syawal) dan libur lebaran, tradisi ini merupakan bentuk sukacita kemenangan spiritual anak nagari setelah sebulan penuh berpuasa Ramadan.
+
+Setiap nagari di sekeliling danau bergotong royong merakit bambu raksasa (rakik) yang dihias megah menyerupai miniatur Rumah Gadang, Masjid bertingkat, atau perahu perang tradisional yang diterangi ratusan obor dan lampu hias kelap-kelip. Di atas rakik terapung di tengah perairan danau, warga menyalakan meriam karbit bambu yang menghasilkan dentuman menggelegar bersahut-sahutan di antara tebing-tebing kaldera Danau Maninjau.
+
+Keindahan pantulan cahaya lampu rakik di atas permukaan air danau yang tenang berpadu dengan gemerlap kembang api dan dentuman meriam menciptakan panorama malam hari raya yang magis dan sangat fotogenik. Wisatawan dapat menyaksikan keajaiban ini dari dermaga tepi danau sambil menikmati hangatnya secangkir Kawa Daun dan hidangan Palai Rinuak khas Maninjau.
+- English Description:
+Rakik-Rakik Floating Festival is a sacred lacustrine heritage tradition cherished for generations across the villages surrounding Lake Maninjau in Agam Regency. Celebrated on the eve of Eid al-Fitr (1st of Shawwal) and during the holiday season, this vibrant festival expresses the communal joy and spiritual triumph of the villagers following the holy month of Ramadan.
+
+Each lakeside nagari unites to construct massive floating bamboo rafts (rakik), elaborately sculpted into illuminated miniatures of traditional Rumah Gadang palaces, multi-tiered mosques, or ancient royal barges adorned with hundreds of oil torches. Floating across the lake waters, villagers ignite traditional carbide bamboo cannons, producing thunderous booming echoes that reverberate against the towering volcanic caldera walls.
+
+The magical glow of hundreds of floating lanterns reflected upon the tranquil lake surface, paired with fireworks and celebratory cannonades, creates an unforgettable photographic spectacle. Visitors can enjoy this enchanting night from lakeside piers while savoring warm cups of Kawa Daun coffee-leaf tea and authentic grilled Palai Rinuak fish.
 
 ================================================================================
 SECTION 5: HOT INFO & BERITA TERKINI PARIWISATA (6 ARTIKEL)
