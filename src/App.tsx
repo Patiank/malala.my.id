@@ -328,7 +328,7 @@ export default function App() {
     setSelectedNews(null);
   }, [activeDrawer]);
 
-  // Hover Intent for Hot Info & Breaking News Ticker Bar (~300ms)
+  // Instant Hover Auto-Open for Hot Info & Breaking News Ticker Bar (No Delay)
   const tickerHoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleTickerMouseEnter = useCallback(() => {
@@ -336,11 +336,10 @@ export default function App() {
 
     if (tickerHoverTimeoutRef.current) {
       clearTimeout(tickerHoverTimeoutRef.current);
+      tickerHoverTimeoutRef.current = null;
     }
-    // 300ms smooth hover-intent delay: ensures intentional hover without accidental flickers
-    tickerHoverTimeoutRef.current = setTimeout(() => {
-      handleOpenDrawer('hotinfo');
-    }, 300);
+    // Instant trigger: langsung muncul seketika saat kursor mengarah (no delay)
+    handleOpenDrawer('hotinfo');
   }, [activeDrawer, selectedNews, handleOpenDrawer]);
 
   const handleTickerMouseLeave = useCallback(() => {
