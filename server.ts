@@ -19,6 +19,21 @@ async function startServer() {
     next(err);
   });
 
+  // Circuit breaker: cache models that hit 429 quota exhaustion so we don't waste 2-3s round-trips on every click
+  const modelCooldownMap: Record<string, number> = {};
+
+  function isModelInCooldown(modelName: string): boolean {
+    const until = modelCooldownMap[modelName];
+    if (!until) return false;
+    if (Date.now() < until) return true;
+    delete modelCooldownMap[modelName];
+    return false;
+  }
+
+  function markModelExhausted(modelName: string, cooldownMinutes = 5) {
+    modelCooldownMap[modelName] = Date.now() + cooldownMinutes * 60 * 1000;
+  }
+
   // API Route: Sync Database to GitHub
   app.post("/api/sync-github", async (req, res) => {
     try {
@@ -229,6 +244,10 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
       let parsedData = null;
 
       for (const modelName of modelsToTry) {
+        if (isModelInCooldown(modelName)) {
+          continue;
+        }
+
         try {
           const response = await ai.models.generateContent({
             model: modelName,
@@ -241,8 +260,12 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
             parsedData = JSON.parse(jsonMatch[0]);
             break;
           }
-        } catch (err) {
-          console.warn(`Server Gemini call with ${modelName} failed, trying next model...`, err);
+        } catch (err: any) {
+          const errStr = String(err?.message || err?.status || err);
+          if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+            markModelExhausted(modelName, 5);
+          }
+          console.warn(`Server Gemini call with ${modelName} failed, trying next model...`, err?.message || err);
         }
       }
 
@@ -348,20 +371,34 @@ ${eventList}
 
       let reply = '';
       const chatModelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+      const needsSearch = /kapan|jadwal|tanggal|hari ini|besok|minggu ini|cuaca|hujan|banjir|longsor|buka|tutup|tiket|berita|terbaru|terkini|kondisi jalan|kapal|pesawat|status|macet/i.test(cleanMsg);
+
       for (const modelName of chatModelsToTry) {
+        if (isModelInCooldown(modelName)) {
+          continue;
+        }
+
         try {
+          const config: any = {
+            systemInstruction,
+            temperature: 0.5,
+          };
+          if (needsSearch) {
+            config.tools = [{ googleSearch: {} } as any];
+          }
+
           const response = await ai.models.generateContent({
             model: modelName,
             contents: formattedContents,
-            config: {
-              systemInstruction,
-              temperature: 0.5,
-              tools: [{ googleSearch: {} } as any],
-            }
+            config,
           });
           reply = response.text || '';
           if (reply) break;
         } catch (mErr: any) {
+          const errStr = String(mErr?.message || mErr?.status || mErr);
+          if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+            markModelExhausted(modelName, 5);
+          }
           console.warn(`Chat model ${modelName} failed:`, mErr?.message);
         }
       }

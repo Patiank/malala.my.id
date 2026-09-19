@@ -798,6 +798,24 @@ export function getItineraryFallback(params: any) {
   };
 }
 
+// Client-side Model Cooldown Circuit Breaker (skip quota-exhausted models for 5 minutes)
+const clientModelCooldownUntil: Record<string, number> = {};
+
+function isClientModelInCooldown(modelName: string): boolean {
+  const expiry = clientModelCooldownUntil[modelName];
+  if (!expiry) return false;
+  if (Date.now() > expiry) {
+    delete clientModelCooldownUntil[modelName];
+    return false;
+  }
+  return true;
+}
+
+function markClientModelExhausted(modelName: string, minutes: number = 5) {
+  clientModelCooldownUntil[modelName] = Date.now() + minutes * 60 * 1000;
+  console.info(`[Client Circuit Breaker] Model ${modelName} cooling down for ${minutes} min due to quota.`);
+}
+
 export async function fetchAiItinerary(params: any) {
   try {
     const res = await fetch('/api/ai/itinerary', {
@@ -820,6 +838,9 @@ export async function fetchAiItinerary(params: any) {
   if (isValidGeminiKey) {
     const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
+      if (isClientModelInCooldown(modelName)) {
+        continue;
+      }
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
         const isEnglish = params?.language === 'en';
@@ -918,7 +939,11 @@ Aturan Ketat:
         if (jsonMatch) {
           return JSON.parse(jsonMatch[0]);
         }
-      } catch (err) {
+      } catch (err: any) {
+        const errStr = String(err?.message || err?.status || err);
+        if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+          markClientModelExhausted(modelName, 5);
+        }
         console.warn(`Client Gemini API failed with ${modelName}, trying next...`, err);
       }
     }
@@ -1025,6 +1050,9 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   if (viteApiKey) {
     const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
     for (const modelName of modelsToTry) {
+      if (isClientModelInCooldown(modelName)) {
+        continue;
+      }
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
         
@@ -1077,7 +1105,11 @@ PANDUAN PENGETAHUAN & LOGISTIK SUMBAR:
         if (response && response.text && response.text.trim()) {
           return { reply: response.text.trim() };
         }
-      } catch (err) {
+      } catch (err: any) {
+        const errStr = String(err?.message || err?.status || err);
+        if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+          markClientModelExhausted(modelName, 5);
+        }
         console.warn(`Client Gemini API chat with ${modelName} failed, trying next...`, err);
       }
     }

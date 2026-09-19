@@ -740,8 +740,38 @@ export const Drawers: React.FC<DrawersProps> = ({
   };
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
+  const [generationStep, setGenerationStep] = useState<number>(0);
   const [aiResponse, setAiResponse] = useState<FormAIResponse | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+
+  const GENERATION_STEPS_ID = [
+    '🤖 Menghubungkan ke Mesin Cerdas UNI MALA AI...',
+    '🗺️ Menganalisis koridor rute & klaster geografis searah...',
+    '🍛 Memadukan kuliner otentik & kearifan lokal Minangkabau...',
+    '⏱️ Menghitung estimasi waktu tempuh realistis & ritme perjalanan...',
+    '✨ Merapikan susunan jadwal harian perjalanan wisata Anda...'
+  ];
+
+  const GENERATION_STEPS_EN = [
+    '🤖 Connecting to UNI MALA AI Engine...',
+    '🗺️ Optimizing linear route corridors & geographical clusters...',
+    '🍛 Blending authentic culinary & Minangkabau cultural heritage...',
+    '⏱️ Calculating realistic travel times & comfortable pacing...',
+    '✨ Finalizing your personalized tour itinerary schedule...'
+  ];
+
+  useEffect(() => {
+    let timer: any;
+    if (isGenerating) {
+      setGenerationStep(0);
+      timer = setInterval(() => {
+        setGenerationStep((prev) => (prev + 1) % 5);
+      }, 2500);
+    } else {
+      setGenerationStep(0);
+    }
+    return () => clearInterval(timer);
+  }, [isGenerating]);
 
   const [isDownloadingPdf, setIsDownloadingPdf] = useState<boolean>(false);
 
@@ -3344,6 +3374,27 @@ export const Drawers: React.FC<DrawersProps> = ({
                           </>
                         )}
                       </button>
+
+                      {isGenerating && (
+                        <div className="p-3 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-2">
+                          <div className="flex items-center justify-between text-[11px] font-orbitron font-semibold text-amber-400">
+                            <span className="flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                              UNI MALA AI OPTIMIZER
+                            </span>
+                            <span className="text-[10px] text-gray-400 font-jakarta">{lang === 'en' ? `Step ${generationStep + 1} of 5` : `Langkah ${generationStep + 1} dari 5`}</span>
+                          </div>
+                          <p className="text-xs font-jakarta text-gray-200">
+                            {lang === 'en' ? GENERATION_STEPS_EN[generationStep] : GENERATION_STEPS_ID[generationStep]}
+                          </p>
+                          <div className="w-full bg-neutral-800 rounded-full h-1.5 overflow-hidden">
+                            <div 
+                              className="bg-gradient-to-r from-amber-500 to-yellow-300 h-1.5 rounded-full transition-all duration-500 ease-out"
+                              style={{ width: `${((generationStep + 1) / 5) * 100}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
                     </form>
                   </div>
                 ) : (
@@ -3406,7 +3457,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </form>
                       </div>
 
-                      <div className="p-3 bg-gray-50 border-t border-gray-200 shrink-0">
+                      <div className="p-3 bg-gray-50 border-t border-gray-200 shrink-0 space-y-2">
                         <button
                           form="itinerary-pref-form-desktop"
                           type="submit"
@@ -3425,6 +3476,27 @@ export const Drawers: React.FC<DrawersProps> = ({
                             </>
                           )}
                         </button>
+
+                        {isGenerating && (
+                          <div className="p-2.5 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-1.5">
+                            <div className="flex items-center justify-between text-[10px] font-orbitron font-semibold text-amber-400">
+                              <span className="flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                                OPTIMIZING ROUTE
+                              </span>
+                              <span className="text-[9px] text-gray-400 font-jakarta">{generationStep + 1} / 5</span>
+                            </div>
+                            <p className="text-[11px] font-jakarta text-gray-200 leading-tight">
+                              {lang === 'en' ? GENERATION_STEPS_EN[generationStep] : GENERATION_STEPS_ID[generationStep]}
+                            </p>
+                            <div className="w-full bg-neutral-800 rounded-full h-1 overflow-hidden">
+                              <div 
+                                className="bg-gradient-to-r from-amber-500 to-yellow-300 h-1 rounded-full transition-all duration-500 ease-out"
+                                style={{ width: `${((generationStep + 1) / 5) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 
