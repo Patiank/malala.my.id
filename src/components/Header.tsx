@@ -62,16 +62,17 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo (Left) */}
         <button
           onClick={onCloseDrawer}
-          className="flex flex-col items-start cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
+          className="w-[155px] sm:w-[180px] md:w-[205px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
           {/* Default / Light Background Logo (Red + Black) */}
           <img
             src="/malala-logo.png"
             alt="MALALA"
-            className={`h-7 sm:h-8 md:h-9.5 lg:h-11 w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[215px] object-contain transition-all duration-300 ${
+            className={`w-full h-auto object-contain transition-all duration-300 ${
               isWhiteHeroText ? 'md:hidden' : 'block'
             } drop-shadow-[0_1px_3px_rgba(255,255,255,0.7)]`}
+            style={{ aspectRatio: '812 / 184' }}
           />
 
           {/* Dark Background Logo for Desktop Hero (Red + White) */}
@@ -79,16 +80,20 @@ export const Header: React.FC<HeaderProps> = ({
             <img
               src="/malala-logo-white.png"
               alt="MALALA"
-              className="hidden md:block h-7 sm:h-8 md:h-9.5 lg:h-11 w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[215px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+              className="hidden md:block w-full h-auto object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
+              style={{ aspectRatio: '812 / 184' }}
             />
           )}
 
-          <span
-            className="font-jakarta text-[8px] sm:text-[8.5px] md:text-[9px] tracking-[0.2em] sm:tracking-[0.22em] font-semibold mt-0.5 uppercase transition-colors duration-300"
+          {/* Tagline Selalu Satu Baris & Pas Sejajar Lebar Logo */}
+          <div
+            className="flex justify-between items-center w-full font-jakarta text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-bold mt-1 uppercase whitespace-nowrap tracking-[0.03em] select-none transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
           >
-            {t.logoTagline}
-          </span>
+            {t.logoTagline.split(' ').map((word, i) => (
+              <span key={i}>{word}</span>
+            ))}
+          </div>
         </button>
 
         {/* Mobile Menu Toggle & Essentials */}
