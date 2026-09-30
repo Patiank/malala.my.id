@@ -5,6 +5,7 @@ import { AdminPanel } from './AdminPanel';
 import { InteractiveMapModal } from './InteractiveMapModal';
 import { ItineraryMap } from './ItineraryMap';
 import { EBookletModal } from './EBookletModal';
+import { FlipbookModal } from './FlipbookModal';
 import { WeatherWidget } from './WeatherWidget';
 import { ReviewSection } from './ReviewSection';
 import { getDestinationRatingSummary } from '../data/reviewsData';
@@ -298,6 +299,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedSouvenir, setSelectedSouvenir] = useState<SouvenirItem | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
+  const [isFlipbookModalOpen, setIsFlipbookModalOpen] = useState<boolean>(false);
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
   const [currency, setCurrency] = useState<CurrencyCode>('IDR');
@@ -440,6 +442,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     setSelectedSouvenir(null);
     setSelectedEvent(null);
     setIsBookletModalOpen(false);
+    setIsFlipbookModalOpen(false);
 
     if (activeDrawer) {
       pushRoute(getDrawerPath(activeDrawer), { malalaLayer: 'drawer', drawer: activeDrawer });
@@ -481,19 +484,20 @@ export const Drawers: React.FC<DrawersProps> = ({
     const handlePopState = () => {
       const { itemSlug } = parseRoute(window.location.pathname);
       // If we popped back and there is no item slug in the URL, close any open submodal
-      if (!itemSlug && (selectedDestination || selectedCulture || selectedCulinary || selectedSouvenir || selectedEvent || isBookletModalOpen)) {
+      if (!itemSlug && (selectedDestination || selectedCulture || selectedCulinary || selectedSouvenir || selectedEvent || isBookletModalOpen || isFlipbookModalOpen)) {
         setSelectedDestination(null);
         setSelectedCulture(null);
         setSelectedCulinary(null);
         setSelectedSouvenir(null);
         setSelectedEvent(null);
         setIsBookletModalOpen(false);
+        setIsFlipbookModalOpen(false);
       }
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [selectedDestination, selectedCulture, selectedCulinary, selectedSouvenir, selectedEvent, isBookletModalOpen]);
+  }, [selectedDestination, selectedCulture, selectedCulinary, selectedSouvenir, selectedEvent, isBookletModalOpen, isFlipbookModalOpen]);
 
   // Calendar of Events helpers
   const [eventViewMode, setEventViewMode] = useState<'calendar' | 'list'>('calendar');
@@ -4213,7 +4217,18 @@ export const Drawers: React.FC<DrawersProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+                    {/* PRIMARY ACTION: READ FLIPBOOK ONLINE (INTERACTIVE) */}
+                    <button
+                      type="button"
+                      onClick={() => setIsFlipbookModalOpen(true)}
+                      className="flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] text-center border border-red-400/30"
+                    >
+                      <BookOpen className="w-4 h-4 text-yellow-300 animate-pulse shrink-0" />
+                      <span>{lang === 'en' ? '📖 READ FLIPBOOK' : '📖 BACA FLIPBOOK'}</span>
+                    </button>
+
+                    {/* SECONDARY ACTION: DOWNLOAD OFFICIAL PDF (KEPT 100%) */}
                     <button
                       type="button"
                       onClick={() => {
@@ -4225,10 +4240,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-red-600/30 hover:scale-[1.01] text-center"
+                      className="flex-1 py-3 px-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-gray-200 hover:text-white font-jakarta font-bold text-xs uppercase tracking-wider transition-all border border-slate-700 hover:border-slate-500 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
                     >
-                      <Download className="w-4 h-4 text-white" />
-                      <span>{lang === 'en' ? '⬇️ DOWNLOAD E-BOOK' : '⬇️ UNDUH E-BOOK'}</span>
+                      <Download className="w-4 h-4 text-red-400 shrink-0" />
+                      <span>{lang === 'en' ? '⬇️ PDF (29 MB)' : '⬇️ UNDUH PDF'}</span>
                     </button>
                   </div>
                 </div>
@@ -4923,6 +4938,14 @@ export const Drawers: React.FC<DrawersProps> = ({
         onClose={handleSubModalClose}
         lang={lang}
         dataStore={dataStore}
+      />
+
+      {/* 3D INTERACTIVE FLIPBOOK VIEWER MODAL */}
+      <FlipbookModal
+        isOpen={isFlipbookModalOpen}
+        onClose={() => setIsFlipbookModalOpen(false)}
+        lang={lang}
+        bookSlug="panduan"
       />
     </>
   );
