@@ -48,32 +48,32 @@ function generateFullHTMLEn(): string {
   });
 
   // --- DETERMINISTIC 1:1 PAGE NUMBERING SYSTEM ---
-  // Total entries = 1 (map) + 1 (chap 1) + 52 (dest) + 1 (chap 2) + 30 (cult) + 1 (chap 3) + 36 (cul) + 1 (chap 4) + 26 (ev) = 149 entries
-  const itemsPerPage = 50; // 50 entries per page (25 per column) ensures no vertical overflow and crisp layout
+  // 1 full-width row per catalog item (no multi-column truncation)
+  const itemsPerPage = 25; // 25 items per page gives clean, readable spacing without vertical cramming
   const totalEntriesCount = 1 + 1 + destinations.length + 1 + cultureItems.length + 1 + culinaryItems.length + 1 + eventItems.length;
-  const tocPagesCount = Math.ceil(totalEntriesCount / itemsPerPage); // 3 pages: Page 2, 3, 4
+  const tocPagesCount = Math.ceil(totalEntriesCount / itemsPerPage); // 6 pages: Pages 2..7
 
   // Page index constants
   const pageCover = 1;
-  const pageTocStart = 2; // TOC spans pageTocStart .. pageTocStart + tocPagesCount - 1 (2, 3, 4)
-  const pageMap = 1 + tocPagesCount + 1; // Page 5: Map
-  const pageChapter1 = pageMap + 1; // Page 6: Chapter 1 Divider
+  const pageTocStart = 2; // Pages 2..7
+  const pageMap = 1 + tocPagesCount + 1; // Page 8: Map
+  const pageChapter1 = pageMap + 1; // Page 9: Chapter 1 Divider
 
   // Destination pages: starting immediately after Chapter 1 divider
-  const destPages = destinations.map((_, i) => pageChapter1 + 1 + i); // Pages 7 to 58
-  const pageChapter2 = pageChapter1 + 1 + destinations.length; // Page 59: Chapter 2 Divider
+  const destPages = destinations.map((_, i) => pageChapter1 + 1 + i); // Pages 10 to 61
+  const pageChapter2 = pageChapter1 + 1 + destinations.length; // Page 62: Chapter 2 Divider
 
   // Culture pages: starting immediately after Chapter 2 divider
-  const cultPages = cultureItems.map((_, i) => pageChapter2 + 1 + i); // Pages 60 to 89
-  const pageChapter3 = pageChapter2 + 1 + cultureItems.length; // Page 90: Chapter 3 Divider
+  const cultPages = cultureItems.map((_, i) => pageChapter2 + 1 + i); // Pages 63 to 92
+  const pageChapter3 = pageChapter2 + 1 + cultureItems.length; // Page 93: Chapter 3 Divider
 
   // Culinary pages: starting immediately after Chapter 3 divider
-  const culPages = culinaryItems.map((_, i) => pageChapter3 + 1 + i); // Pages 91 to 126
-  const pageChapter4 = pageChapter3 + 1 + culinaryItems.length; // Page 127: Chapter 4 Divider
+  const culPages = culinaryItems.map((_, i) => pageChapter3 + 1 + i); // Pages 94 to 129
+  const pageChapter4 = pageChapter3 + 1 + culinaryItems.length; // Page 130: Chapter 4 Divider
 
   // Event pages: starting immediately after Chapter 4 divider
-  const evPages = eventItems.map((_, i) => pageChapter4 + 1 + i); // Pages 128 to 153
-  const pageBackCover = pageChapter4 + 1 + eventItems.length; // Page 154: Back Cover
+  const evPages = eventItems.map((_, i) => pageChapter4 + 1 + i); // Pages 131 to 156
+  const pageBackCover = pageChapter4 + 1 + eventItems.length; // Page 157: Back Cover
 
   // Compile TOC Entries with their EXACT matching page numbers
   interface TocItem {
@@ -94,7 +94,7 @@ function generateFullHTMLEn(): string {
     ...eventItems.map((e, i) => ({ title: e.titleEn || e.title, type: 'FESTIVAL' as const, page: evPages[i] }))
   ];
 
-  // Chunk TOC entries into pages of 50 items (25 items per column)
+  // Chunk TOC entries into pages of 25 items (1 item per full-width row)
   const tocChunks: TocItem[][] = [];
   for (let i = 0; i < tocEntries.length; i += itemsPerPage) {
     tocChunks.push(tocEntries.slice(i, i + itemsPerPage));
@@ -103,31 +103,28 @@ function generateFullHTMLEn(): string {
   function renderTocRow(e: TocItem): string {
     if (e.type === 'DIVIDER' || e.type === 'INFOGRAFIS') {
       return `
-        <div class="flex items-center justify-between gap-1 text-[9.5px] pt-1.5 pb-0.5 border-b border-blue-200/60 min-w-0 w-full overflow-hidden">
-          <span class="font-extrabold text-blue-900 truncate min-w-0 flex-1 font-orbitron">${e.title}</span>
-          <span class="shrink-0 font-extrabold text-blue-700 font-orbitron text-[9px] pl-1">${e.page}</span>
+        <div class="flex items-center justify-between gap-2 text-[10px] pt-1.5 pb-1 border-b border-blue-200/80 min-w-0 w-full mt-1 bg-blue-50/70 px-2.5 rounded">
+          <span class="font-extrabold text-blue-950 font-orbitron tracking-wide truncate flex-1 min-w-0">${e.title}</span>
+          <span class="shrink-0 font-extrabold text-blue-700 font-orbitron text-[9.5px] pl-2">${e.page}</span>
         </div>
       `;
     }
     return `
-      <div class="flex items-center justify-between gap-1 text-[9px] min-w-0 w-full overflow-hidden leading-tight py-0.5">
-        <span class="font-medium text-slate-700 truncate min-w-0 flex-1">${e.title}</span>
-        <span class="grow border-b border-dotted border-gray-300 mx-1 min-w-[6px]"></span>
-        <span class="shrink-0 font-bold text-blue-600 font-orbitron text-[8.5px] text-right min-w-[18px]">${e.page}</span>
+      <div class="flex items-center justify-between gap-2 text-[9.5px] min-w-0 w-full leading-tight py-1 border-b border-gray-100/70">
+        <span class="font-medium text-slate-800 truncate flex-1 min-w-0">${e.title}</span>
+        <span class="grow border-b border-dotted border-gray-300 mx-2 min-w-[14px] relative -top-0.5"></span>
+        <span class="shrink-0 font-bold text-blue-600 font-orbitron text-[9px] text-right min-w-[22px]">${e.page}</span>
       </div>
     `;
   }
 
   const tocHtml = tocChunks.map((chunk, idx) => {
-    const mid = Math.ceil(chunk.length / 2);
-    const col1 = chunk.slice(0, mid);
-    const col2 = chunk.slice(mid);
     const currentPage = pageTocStart + idx;
 
     return `
     <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 sm:p-6 flex flex-col justify-between mb-6 shadow-sm">
       <div class="w-full">
-        <div class="border-b border-gray-200 pb-2.5 mb-3">
+        <div class="border-b border-gray-200 pb-2 mb-2.5">
           <div class="flex items-center justify-between">
             <span class="text-[9.5px] font-extrabold font-orbitron uppercase text-blue-600 tracking-wider">
               TABLE OF CONTENTS • PART ${idx + 1}/${tocChunks.length}
@@ -141,13 +138,8 @@ function generateFullHTMLEn(): string {
           </h2>
         </div>
 
-        <div class="grid grid-cols-2 gap-x-4 w-full">
-          <div class="min-w-0 space-y-0.5">
-            ${col1.map(renderTocRow).join('')}
-          </div>
-          <div class="min-w-0 space-y-0.5">
-            ${col2.map(renderTocRow).join('')}
-          </div>
+        <div class="space-y-0.5 w-full">
+          ${chunk.map(renderTocRow).join('')}
         </div>
       </div>
 
