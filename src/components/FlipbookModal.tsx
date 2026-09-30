@@ -78,13 +78,22 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
   };
 
   const handleDownloadPdf = () => {
+    const isEn = readingLang === 'en';
     const link = document.createElement('a');
     if (isEvents) {
-      link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
-      link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+      link.href = isEn
+        ? `/downloads/kalender-event-sumbar-2026-en.pdf?v=${Date.now()}`
+        : `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+      link.download = isEn
+        ? 'MALALA-West-Sumatra-Calendar-of-Events-2026.pdf'
+        : 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
     } else {
-      link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
-      link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+      link.href = isEn
+        ? `/downloads/malala-tourism-guide-sumbar-2026-en.pdf?v=${Date.now()}`
+        : `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+      link.download = isEn
+        ? 'MALALA-West-Sumatra-Tourism-Guide-2026.pdf'
+        : 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
     }
     link.target = '_blank';
     document.body.appendChild(link);

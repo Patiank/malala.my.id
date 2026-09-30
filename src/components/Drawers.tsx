@@ -4193,7 +4193,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         {lang === 'en' ? 'OFFICIAL E-BOOK 2026' : 'E-BOOK RESMI 2026'}
                       </span>
                       <span className="text-yellow-400 font-jakarta text-xs font-bold">
-                        PDF E-Book (29 MB)
+                        {lang === 'en' ? 'PDF E-Book (68 MB)' : 'PDF E-Book (29 MB)'}
                       </span>
                     </div>
 
@@ -4236,9 +4236,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <button
                       type="button"
                       onClick={() => {
+                        const isEn = lang === 'en';
                         const link = document.createElement('a');
-                        link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
-                        link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+                        link.href = isEn
+                          ? `/downloads/malala-tourism-guide-sumbar-2026-en.pdf?v=${Date.now()}`
+                          : `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.download = isEn
+                          ? 'MALALA-West-Sumatra-Tourism-Guide-2026.pdf'
+                          : 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
                         document.body.appendChild(link);
                         link.click();
@@ -4247,7 +4252,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       className="flex-1 py-3 px-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-gray-200 hover:text-white font-jakarta font-bold text-xs uppercase tracking-wider transition-all border border-slate-700 hover:border-slate-500 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
                     >
                       <Download className="w-4 h-4 text-red-400 shrink-0" />
-                      <span>{lang === 'en' ? '⬇️ PDF (29 MB)' : '⬇️ UNDUH PDF'}</span>
+                      <span>{lang === 'en' ? '⬇️ PDF (68 MB)' : '⬇️ UNDUH PDF'}</span>
                     </button>
                   </div>
                 </div>
@@ -4262,7 +4267,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         {lang === 'en' ? 'OFFICIAL CoE 2026' : 'KALENDER EVENT RESMI'}
                       </span>
                       <span className="text-amber-400 font-jakarta text-xs font-bold">
-                        PDF E-Book (6.6 MB)
+                        {lang === 'en' ? 'PDF E-Book (18 MB)' : 'PDF E-Book (6.6 MB)'}
                       </span>
                     </div>
 
@@ -4296,9 +4301,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <button
                       type="button"
                       onClick={() => {
+                        const isEn = lang === 'en';
                         const link = document.createElement('a');
-                        link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
-                        link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+                        link.href = isEn
+                          ? `/downloads/kalender-event-sumbar-2026-en.pdf?v=${Date.now()}`
+                          : `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.download = isEn
+                          ? 'MALALA-West-Sumatra-Calendar-of-Events-2026.pdf'
+                          : 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
                         document.body.appendChild(link);
                         link.click();
@@ -4307,7 +4317,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       className="flex-1 py-3 px-3 rounded-xl bg-stone-900/90 hover:bg-stone-800 text-amber-200 hover:text-white font-jakarta font-bold text-xs uppercase tracking-wider transition-all border border-amber-900/60 hover:border-amber-500 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
                     >
                       <Download className="w-4 h-4 text-amber-400 shrink-0" />
-                      <span>{lang === 'en' ? '⬇️ PDF (6.6 MB)' : '⬇️ UNDUH PDF'}</span>
+                      <span>{lang === 'en' ? '⬇️ PDF (18 MB)' : '⬇️ UNDUH PDF'}</span>
                     </button>
                   </div>
                 </div>
