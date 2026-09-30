@@ -8,82 +8,6 @@ function generateFullHTML(): string {
   let culinaryItems = CULINARY_ITEMS;
   let eventItems = EVENTS_SCHEDULE;
 
-
-  // --- TOC LOGIC START ---
-  const tocEntries = [
-    { title: 'PETA PARIWISATA & BUDAYA SUMBAR', type: 'INFOGRAFIS' },
-    { title: 'BAB 1: DESTINASI WISATA ALAM', type: 'DIVIDER' },
-    ...destinations.map(d => ({ title: d.title, type: 'DESTINASI' })),
-    { title: 'BAB 2: WARISAN ADAT & BUDAYA', type: 'DIVIDER' },
-    ...cultureItems.map(c => ({ title: c.title, type: 'BUDAYA' })),
-    { title: 'BAB 3: KULINER & GASTRONOMI', type: 'DIVIDER' },
-    ...culinaryItems.map(c => ({ title: c.title, type: 'KULINER' })),
-    { title: 'BAB 4: KALENDER EVENT & FESTIVAL', type: 'DIVIDER' },
-    ...eventItems.map(e => ({ title: e.title, type: 'FESTIVAL' }))
-  ];
-
-  const itemsPerPage = 70;
-  const tocPagesCount = Math.ceil(tocEntries.length / itemsPerPage);
-  let globalPdfPage = 1 + tocPagesCount;
-
-  const assignedToc = tocEntries.map(entry => {
-    globalPdfPage++;
-    return { ...entry, page: globalPdfPage };
-  });
-
-  const tocChunks = [];
-  for (let i = 0; i < assignedToc.length; i += itemsPerPage) {
-    tocChunks.push(assignedToc.slice(i, i + itemsPerPage));
-  }
-
-  const tocHtml = tocChunks.map((chunk, idx) => {
-    const col1 = chunk.slice(0, Math.ceil(itemsPerPage / 2));
-    const col2 = chunk.slice(Math.ceil(itemsPerPage / 2));
-    return `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-6 flex flex-col justify-between mb-6 shadow-sm">
-      <div>
-        <div class="border-b border-gray-200 pb-3 mb-4">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-extrabold font-orbitron uppercase text-blue-600 tracking-wider">
-              DAFTAR ISI ? BAGIAN ${idx + 1}/${tocChunks.length}
-            </span>
-          </div>
-          <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-1">
-            DAFTAR ISI
-          </h2>
-        </div>
-        <div class="flex gap-4">
-          <div class="flex-1 space-y-1.5">
-            ${col1.map(e => `
-              <div class="flex items-end gap-2 text-[10px]">
-                <span class="${e.type === 'DIVIDER' ? 'font-black text-[11px] text-blue-900 mt-2' : 'font-semibold text-slate-700 truncate flex-1'}">${e.title}</span>
-                ${e.type === 'DIVIDER' ? '' : '<span class="flex-1 border-b border-dotted border-gray-300 relative -top-1"></span>'}
-                <span class="${e.type === 'DIVIDER' ? 'font-black text-[11px] text-blue-900 mt-2' : 'font-bold text-blue-600'}">${e.page}</span>
-              </div>
-            `).join('')}
-          </div>
-          <div class="flex-1 space-y-1.5">
-            ${col2.map(e => `
-              <div class="flex items-end gap-2 text-[10px]">
-                <span class="${e.type === 'DIVIDER' ? 'font-black text-[11px] text-blue-900 mt-2' : 'font-semibold text-slate-700 truncate flex-1'}">${e.title}</span>
-                ${e.type === 'DIVIDER' ? '' : '<span class="flex-1 border-b border-dotted border-gray-300 relative -top-1"></span>'}
-                <span class="${e.type === 'DIVIDER' ? 'font-black text-[11px] text-blue-900 mt-2' : 'font-bold text-blue-600'}">${e.page}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-      <div class="pt-2 border-t border-gray-100 text-center text-[9px] font-bold text-gray-400">Hal. ${1 + idx + 1}</div>
-    </article>
-    `;
-  }).join('');
-  
-  let pageCounter = 1 + tocPagesCount;
-  const getNextPage = () => { pageCounter++; return pageCounter; };
-  // --- TOC LOGIC END ---
-
-  let bgCover = BG_IMAGE_2;
-
   // Load from Firestore backup if populated
   try {
     const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
@@ -93,13 +17,6 @@ function generateFullHTML(): string {
       if (raw.cultureItems && raw.cultureItems.length > 0) cultureItems = raw.cultureItems;
       if (raw.culinaryItems && raw.culinaryItems.length > 0) culinaryItems = raw.culinaryItems;
       if (raw.eventItems && raw.eventItems.length > 0) eventItems = raw.eventItems;
-      if (raw.appSettings) {
-        if (raw.appSettings.revealImage && raw.appSettings.revealImage.trim()) {
-          bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
-        } else if (raw.appSettings.baseImage && raw.appSettings.baseImage.trim()) {
-          bgCover = getDirectDriveUrl(raw.appSettings.baseImage);
-        }
-      }
     }
   } catch (e) {
     console.warn('Backup parse error:', e);
@@ -130,11 +47,137 @@ function generateFullHTML(): string {
     return (b.isKen ? 1 : 0) - (a.isKen ? 1 : 0);
   });
 
-  const destHtml = destinations.map((dest, idx) => {
-    const pageNumber = getNextPage();
+  // --- DETERMINISTIC 1:1 PAGE NUMBERING SYSTEM ---
+  const itemsPerPage = 50; // 50 items per page (25 per column) ensures clean vertical spacing
+  const totalEntriesCount = 1 + 1 + destinations.length + 1 + cultureItems.length + 1 + culinaryItems.length + 1 + eventItems.length;
+  const tocPagesCount = Math.ceil(totalEntriesCount / itemsPerPage); // 3 pages: Hal 2, 3, 4
+
+  // Page index constants
+  const pageCover = 1;
+  const pageTocStart = 2; // Hal 2..4
+  const pageMap = 1 + tocPagesCount + 1; // Hal 5: Peta
+  const pageChapter1 = pageMap + 1; // Hal 6: Bab 1 Divider
+
+  // Destination pages: starting immediately after Chapter 1 divider
+  const destPages = destinations.map((_, i) => pageChapter1 + 1 + i); // Hal 7..58
+  const pageChapter2 = pageChapter1 + 1 + destinations.length; // Hal 59: Bab 2 Divider
+
+  // Culture pages: starting immediately after Chapter 2 divider
+  const cultPages = cultureItems.map((_, i) => pageChapter2 + 1 + i); // Hal 60..89
+  const pageChapter3 = pageChapter2 + 1 + cultureItems.length; // Hal 90: Bab 3 Divider
+
+  // Culinary pages: starting immediately after Chapter 3 divider
+  const culPages = culinaryItems.map((_, i) => pageChapter3 + 1 + i); // Hal 91..126
+  const pageChapter4 = pageChapter3 + 1 + culinaryItems.length; // Hal 127: Bab 4 Divider
+
+  // Event pages: starting immediately after Chapter 4 divider
+  const evPages = eventItems.map((_, i) => pageChapter4 + 1 + i); // Hal 128..153
+  const pageBackCover = pageChapter4 + 1 + eventItems.length; // Hal 154: Back Cover
+
+  interface TocItem {
+    title: string;
+    type: 'INFOGRAFIS' | 'DIVIDER' | 'DESTINASI' | 'BUDAYA' | 'KULINER' | 'FESTIVAL';
+    page: number;
+  }
+
+  const tocEntries: TocItem[] = [
+    { title: 'PETA PARIWISATA & BUDAYA SUMBAR', type: 'INFOGRAFIS', page: pageMap },
+    { title: 'BAB 1: DESTINASI WISATA ALAM', type: 'DIVIDER', page: pageChapter1 },
+    ...destinations.map((d, i) => ({ title: d.title, type: 'DESTINASI' as const, page: destPages[i] })),
+    { title: 'BAB 2: WARISAN ADAT & BUDAYA', type: 'DIVIDER', page: pageChapter2 },
+    ...cultureItems.map((c, i) => ({ title: c.title, type: 'BUDAYA' as const, page: cultPages[i] })),
+    { title: 'BAB 3: KULINER & GASTRONOMI', type: 'DIVIDER', page: pageChapter3 },
+    ...culinaryItems.map((c, i) => ({ title: c.title, type: 'KULINER' as const, page: culPages[i] })),
+    { title: 'BAB 4: KALENDER EVENT & FESTIVAL', type: 'DIVIDER', page: pageChapter4 },
+    ...eventItems.map((e, i) => ({ title: e.title, type: 'FESTIVAL' as const, page: evPages[i] }))
+  ];
+
+  const tocChunks: TocItem[][] = [];
+  for (let i = 0; i < tocEntries.length; i += itemsPerPage) {
+    tocChunks.push(tocEntries.slice(i, i + itemsPerPage));
+  }
+
+  function renderTocRow(e: TocItem): string {
+    if (e.type === 'DIVIDER' || e.type === 'INFOGRAFIS') {
+      return `
+        <div class="flex items-center justify-between gap-1 text-[9.5px] pt-1.5 pb-0.5 border-b border-blue-200/60 min-w-0 w-full overflow-hidden">
+          <span class="font-extrabold text-blue-900 truncate min-w-0 flex-1 font-orbitron">${e.title}</span>
+          <span class="shrink-0 font-extrabold text-blue-700 font-orbitron text-[9px] pl-1">${e.page}</span>
+        </div>
+      `;
+    }
+    return `
+      <div class="flex items-center justify-between gap-1 text-[9px] min-w-0 w-full overflow-hidden leading-tight py-0.5">
+        <span class="font-medium text-slate-700 truncate min-w-0 flex-1">${e.title}</span>
+        <span class="grow border-b border-dotted border-gray-300 mx-1 min-w-[6px]"></span>
+        <span class="shrink-0 font-bold text-blue-600 font-orbitron text-[8.5px] text-right min-w-[18px]">${e.page}</span>
+      </div>
+    `;
+  }
+
+  const tocHtml = tocChunks.map((chunk, idx) => {
+    const mid = Math.ceil(chunk.length / 2);
+    const col1 = chunk.slice(0, mid);
+    const col2 = chunk.slice(mid);
+    const currentPage = pageTocStart + idx;
+
+    return `
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 sm:p-6 flex flex-col justify-between mb-6 shadow-sm">
+      <div class="w-full">
+        <div class="border-b border-gray-200 pb-2.5 mb-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[9.5px] font-extrabold font-orbitron uppercase text-blue-600 tracking-wider">
+              DAFTAR ISI • BAGIAN ${idx + 1}/${tocChunks.length}
+            </span>
+            <span class="text-[9px] bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded font-orbitron">
+              MALALA 2026
+            </span>
+          </div>
+          <h2 class="font-orbitron font-black text-xl text-slate-900 uppercase pt-1">
+            DAFTAR ISI
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-4 w-full">
+          <div class="min-w-0 space-y-0.5">
+            ${col1.map(renderTocRow).join('')}
+          </div>
+          <div class="min-w-0 space-y-0.5">
+            ${col2.map(renderTocRow).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-[9px] font-bold text-gray-400">
+        <span class="text-blue-600 font-orbitron uppercase">Malala Edisi Eksklusif</span>
+        <span>Hal. ${currentPage}</span>
+      </div>
+    </article>
+    `;
+  }).join('');
+
+  let bgCover = BG_IMAGE_2;
+  try {
+    const backupPath = path.join(process.cwd(), 'src', 'data', 'firestore_backup.json');
+    if (fs.existsSync(backupPath)) {
+      const raw = JSON.parse(fs.readFileSync(backupPath, 'utf-8'));
+      if (raw.appSettings) {
+        if (raw.appSettings.revealImage && raw.appSettings.revealImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.revealImage);
+        } else if (raw.appSettings.baseImage && raw.appSettings.baseImage.trim()) {
+          bgCover = getDirectDriveUrl(raw.appSettings.baseImage);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Backup parse error:', e);
+  }
+
+  const destHtml = destinations.map((dest, i) => {
+    const pageNumber = destPages[i];
     const img = getDirectDriveUrl(dest.imageUrl);
     return `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 flex flex-col justify-between mb-6">
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-gray-200 p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span>MALALA 2026 • ${dest.regency || 'SUMATERA BARAT'}</span>
@@ -158,33 +201,33 @@ function generateFullHTML(): string {
           <span>📍 ${dest.locationDetails || dest.regency}</span>
         </div>
 
-        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
-          ${(dest.description || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2 text-justify">
+          ${(dest.description || '').split('\n\n').map(p => `<p class="text-justify leading-relaxed">${p}</p>`).join('')}
         </div>
 
         ${dest.highlights && dest.highlights.length > 0 ? `
           <div class="mt-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
             <h4 class="font-bold text-[10px] uppercase text-slate-900 tracking-wider mb-1.5">Daya Tarik Utama:</h4>
             <ul class="space-y-1 text-xs text-gray-700">
-              ${dest.highlights.map(h => `<li class="flex items-center gap-1.5"><span class="text-green-600 font-bold">✓</span> <span>${h}</span></li>`).join('')}
+              ${dest.highlights.map(h => `<li class="flex items-center gap-1.5"><span class="text-green-600 font-bold">✓</span> <span class="text-justify">${h}</span></li>`).join('')}
             </ul>
           </div>
         ` : ''}
       </div>
 
-        <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-4">
-          <span>Waktu Terbaik: <strong class="text-black">${dest.bestTime || 'Sepanjang Tahun'}</strong></span>
-          <span class="text-gray-400 font-bold">Hal. ${pageNumber}</span>
-        </div>
-      </article>
+      <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-[10px] text-gray-500 mt-4">
+        <span>Waktu Terbaik: <strong class="text-black">${dest.bestTime || 'Sepanjang Tahun'}</strong></span>
+        <span class="text-gray-400 font-bold">Hal. ${pageNumber}</span>
+      </div>
+    </article>
     `;
   }).join('');
 
-  const cultHtml = cultureItems.map((cult, idx) => {
-    const pageNumber = getNextPage();
+  const cultHtml = cultureItems.map((cult, i) => {
+    const pageNumber = cultPages[i];
     const img = getDirectDriveUrl(cult.imageUrl);
     return `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-amber-200 p-5 flex flex-col justify-between mb-6">
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-amber-200 p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span>MALALA 2026 • WARISAN BUDAYA</span>
@@ -208,14 +251,14 @@ function generateFullHTML(): string {
           <span>🏛️ Asal: ${cult.origin}</span>
         </div>
 
-        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
-          ${(cult.description || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2 text-justify">
+          ${(cult.description || '').split('\n\n').map(p => `<p class="text-justify leading-relaxed">${p}</p>`).join('')}
         </div>
 
         ${cult.philosophy ? `
           <div class="mt-3 p-3 bg-amber-50 rounded-xl border border-amber-200">
             <h4 class="font-bold text-[10px] uppercase text-amber-900 tracking-wider mb-1">Falsafah & Makna Adat:</h4>
-            <p class="text-xs text-amber-950 italic">"${cult.philosophy}"</p>
+            <p class="text-xs text-amber-950 italic text-justify leading-relaxed">"${cult.philosophy}"</p>
           </div>
         ` : ''}
       </div>
@@ -225,15 +268,15 @@ function generateFullHTML(): string {
         <span class="text-gray-400 font-bold">Hal. ${pageNumber}</span>
       </div>
     </article>
-  `;
+    `;
   }).join('');
 
-  const culHtml = culinaryItems.map((cul, idx) => {
-    const pageNumber = getNextPage();
+  const culHtml = culinaryItems.map((cul, i) => {
+    const pageNumber = culPages[i];
     const img = getDirectDriveUrl(cul.imageUrl);
     const culCategory = cul.type || cul.category || 'Kuliner Khas';
     return `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-rose-200 p-5 flex flex-col justify-between mb-6">
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border border-rose-200 p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span>MALALA 2026 • GASTRONOMI MINANG</span>
@@ -257,14 +300,14 @@ function generateFullHTML(): string {
           <span>🍽️ Asal: ${cul.origin}</span>
         </div>
 
-        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
-          ${(cul.description || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2 text-justify">
+          ${(cul.description || '').split('\n\n').map(p => `<p class="text-justify leading-relaxed">${p}</p>`).join('')}
         </div>
 
         ${cul.flavorProfile ? `
           <div class="mt-3 p-3 bg-rose-50 rounded-xl border border-rose-200">
             <h4 class="font-bold text-[10px] uppercase text-rose-900 tracking-wider mb-1">Karakteristik & Cita Rasa:</h4>
-            <p class="text-xs text-rose-950 font-medium">${cul.flavorProfile}</p>
+            <p class="text-xs text-rose-950 font-medium text-justify leading-relaxed">${cul.flavorProfile}</p>
           </div>
         ` : ''}
       </div>
@@ -274,14 +317,14 @@ function generateFullHTML(): string {
         <span class="text-gray-400 font-bold">Hal. ${pageNumber}</span>
       </div>
     </article>
-  `;
+    `;
   }).join('');
 
-  const evHtml = eventItems.map((ev, idx) => {
-    const pageNumber = getNextPage();
+  const evHtml = eventItems.map((ev, i) => {
+    const pageNumber = evPages[i];
     const img = getDirectDriveUrl(ev.imageUrl);
     return `
-    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border ${ev.isKen ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200'} p-5 flex flex-col justify-between mb-6">
+    <article class="page-card bg-white text-slate-900 rounded-2xl overflow-hidden border ${ev.isKen ? 'border-red-300 ring-1 ring-red-200' : 'border-gray-200'} p-5 flex flex-col justify-between mb-6 shadow-sm">
       <div>
         <div class="flex items-center justify-between pb-2.5 border-b border-gray-100 text-[11px] font-bold text-gray-500">
           <span>MALALA 2026 • CALENDAR OF EVENTS</span>
@@ -305,14 +348,14 @@ function generateFullHTML(): string {
           <span>📅 ${ev.schedule} • 📍 ${ev.location}</span>
         </div>
 
-        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
-          ${(ev.description || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}
+        <div class="text-xs text-gray-700 leading-relaxed pt-2 space-y-2 text-justify">
+          ${(ev.description || '').split('\n\n').map(p => `<p class="text-justify leading-relaxed">${p}</p>`).join('')}
         </div>
 
         ${ev.isKen ? `
           <div class="mt-3 p-3 bg-red-50 rounded-xl border border-red-200">
             <h4 class="font-bold text-[10px] uppercase text-red-900 tracking-wider mb-1">Karisma Event Nusantara (KEN):</h4>
-            <p class="text-xs text-red-950">Masuk dalam kalender pariwisata resmi Kemenparekraf RI.</p>
+            <p class="text-xs text-red-950 text-justify leading-relaxed">Masuk dalam kalender pariwisata resmi Kemenparekraf RI.</p>
           </div>
         ` : ''}
       </div>
@@ -322,7 +365,7 @@ function generateFullHTML(): string {
         <span class="text-gray-400 font-bold">Hal. ${pageNumber}</span>
       </div>
     </article>
-  `;
+    `;
   }).join('');
 
   return `
@@ -360,6 +403,10 @@ function generateFullHTML(): string {
       margin-right: auto;
       box-sizing: border-box;
     }
+    p {
+      text-align: justify;
+      text-justify: inter-word;
+    }
     @media print {
       body {
         background: transparent;
@@ -378,8 +425,8 @@ function generateFullHTML(): string {
 </head>
 <body class="py-6 px-4">
   <div class="max-w-[480px] mx-auto space-y-6">
-    <!-- COVER -->
-    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-slate-900">
+    <!-- PAGE 1: COVER -->
+    <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-slate-900 shadow-xl">
       <img src="${bgCover}" alt="Cover" class="absolute inset-0 w-full h-full object-cover" />
       
       <div class="relative z-10 space-y-4">
@@ -419,7 +466,10 @@ function generateFullHTML(): string {
       </div>
     </article>
 
-    \\n\n    <!-- 2. PETA PERSEBARAN 19 KABUPATEN & KOTA (REGIONAL TOURISM & CULTURE MAP) -->
+    <!-- PAGES 2..4: DAFTAR ISI -->
+    ${tocHtml}
+
+    <!-- PAGE 5: PETA PERSEBARAN 19 KABUPATEN & KOTA -->
     <article class="page-card bg-slate-950 text-white rounded-2xl overflow-hidden border border-slate-800 p-6 flex flex-col justify-between mb-6 shadow-xl relative">
       <div class="space-y-4">
         <div class="border-b border-white/15 pb-3">
@@ -434,7 +484,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-lg sm:text-xl text-white uppercase pt-1">
             PETA PARIWISATA & BUDAYA SUMBAR
           </h2>
-          <p class="text-xs text-gray-400 font-medium pt-0.5">
+          <p class="text-xs text-gray-400 font-medium pt-0.5 text-justify">
             Panduan zonasi eksplorasi destinasi, adat budaya, dan gastronomi di Sumatera Barat.
           </p>
         </div>
@@ -446,7 +496,7 @@ function generateFullHTML(): string {
               <span class="font-orbitron font-bold text-amber-400 text-xs">1. DATARAN TINGGI & LUHAK NAN TUO</span>
               <span class="text-[9px] bg-amber-400/20 text-amber-300 px-1.5 py-0.2 rounded font-bold">Jantung Minang</span>
             </div>
-            <p class="text-[11px] text-gray-300">
+            <p class="text-[11px] text-gray-300 text-justify leading-relaxed">
               <strong class="text-white">Tanah Datar, Agam, Bukittinggi, Padang Panjang, Payakumbuh, 50 Kota:</strong> Jam Gadang, Lembah Harau, Pagaruyung, Kelok 9, Danau Maninjau, Songket Pandai Sikek, Nasi Kapau.
             </p>
           </div>
@@ -457,7 +507,7 @@ function generateFullHTML(): string {
               <span class="font-orbitron font-bold text-cyan-400 text-xs">2. PESISIR BARAT & SURGA BAHARI</span>
               <span class="text-[9px] bg-cyan-400/20 text-cyan-300 px-1.5 py-0.2 rounded font-bold">Pesisir & Pulau</span>
             </div>
-            <p class="text-[11px] text-gray-300">
+            <p class="text-[11px] text-gray-300 text-justify leading-relaxed">
               <strong class="text-white">Kota Padang, Pariaman, Padang Pariaman, Pesisir Selatan, Mentawai:</strong> Kawasan Mandeh, Pantai Air Manis, Kepulauan Mentawai, Air Terjun Nyarai, Pantai Carocok, Sate Padang & Sala Lauak.
             </p>
           </div>
@@ -468,7 +518,7 @@ function generateFullHTML(): string {
               <span class="font-orbitron font-bold text-emerald-400 text-xs">3. DANAU, LEMBAH & WARISAN UNESCO</span>
               <span class="text-[9px] bg-emerald-400/20 text-emerald-300 px-1.5 py-0.2 rounded font-bold">Geopark & Danau</span>
             </div>
-            <p class="text-[11px] text-gray-300">
+            <p class="text-[11px] text-gray-300 text-justify leading-relaxed">
               <strong class="text-white">Kota & Kab. Solok, Sawahlunto, Sijunjung, Solok Selatan:</strong> Danau Singkarak, Danau Kembar, Kota Warisan Dunia Sawahlunto, Geopark Silokek, Seribu Rumah Gadang, Ikan Bilih.
             </p>
           </div>
@@ -479,7 +529,7 @@ function generateFullHTML(): string {
               <span class="font-orbitron font-bold text-rose-400 text-xs">4. PERBATASAN & SITUS SEJARAH PURBA</span>
               <span class="text-[9px] bg-rose-400/20 text-rose-300 px-1.5 py-0.2 rounded font-bold">Arkeologi & Alam</span>
             </div>
-            <p class="text-[11px] text-gray-300">
+            <p class="text-[11px] text-gray-300 text-justify leading-relaxed">
               <strong class="text-white">Pasaman, Pasaman Barat, Dharmasraya:</strong> Gunung Talamau (13 Telaga), Percandian Dharmasraya & Candi Padang Roco, Garis Khatulistiwa Bonjol.
             </p>
           </div>
@@ -489,11 +539,11 @@ function generateFullHTML(): string {
       <div class="pt-3 border-t border-white/15 flex items-center justify-between text-[10px] text-gray-400 mt-2">
         <span class="font-semibold text-amber-400 font-orbitron">MINANGKAOS</span>
         <span>Halaman Peta Zonasi 19 Kab/Kota</span>
-          <span class="text-gray-400 font-bold">Hal. ${getNextPage()}</span>
+        <span class="text-gray-400 font-bold">Hal. ${pageMap}</span>
       </div>
     </article>
 
-    <!-- BAB 1 DIVIDER: DESTINASI WISATA -->
+    <!-- PAGE 6: BAB 1 DIVIDER (DESTINASI) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-blue-950 via-slate-900 to-black shadow-2xl border border-blue-800/40">
       <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div class="relative z-10 space-y-4">
@@ -513,7 +563,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
             DESTINASI<br/><span class="text-blue-400">WISATA ALAM</span><br/>& SEJARAH
           </h2>
-          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+          <p class="text-xs text-gray-300 leading-relaxed pt-2 text-justify">
             Kompilasi komprehensif 38 surga tersembunyi, danau vulkanik, kemegahan ngarai dan lembah granit, pesona pulau bahari, hingga situs cagar budaya peninggalan purba di Sumatera Barat.
           </p>
         </div>
@@ -534,12 +584,13 @@ function generateFullHTML(): string {
           <span class="font-orbitron font-bold">BAB 1</span>
         </div>
       </div>
-    <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${getNextPage()}</div></article>
+      <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${pageChapter1}</div>
+    </article>
 
-    <!-- CONTENT: DESTINASI -->
+    <!-- PAGES 7..58: CONTENT DESTINASI -->
     ${destHtml}
 
-    <!-- BAB 2 DIVIDER: WARISAN ADAT & BUDAYA -->
+    <!-- PAGE 59: BAB 2 DIVIDER (BUDAYA) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-purple-950 via-slate-900 to-black shadow-2xl border border-purple-800/40">
       <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#a855f7_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div class="relative z-10 space-y-4">
@@ -559,7 +610,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
             ADAT, SENI<br/><span class="text-purple-400">& TRADISI</span><br/>MINANGKABAU
           </h2>
-          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+          <p class="text-xs text-gray-300 leading-relaxed pt-2 text-justify">
             Menyelami falsafah agung <em>"Adat Basandi Syarak, Syarak Basandi Kitabullah"</em>, arsitektur megah Rumah Gadang, mahakarya tenun Songket, seni beladiri Silek, dan upacara adat sakral.
           </p>
         </div>
@@ -580,12 +631,13 @@ function generateFullHTML(): string {
           <span class="font-orbitron font-bold">BAB 2</span>
         </div>
       </div>
-    <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${getNextPage()}</div></article>
+      <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${pageChapter2}</div>
+    </article>
 
-    <!-- CONTENT: BUDAYA -->
+    <!-- PAGES 60..89: CONTENT BUDAYA -->
     ${cultHtml}
 
-    <!-- BAB 3 DIVIDER: KULINER & GASTRONOMI -->
+    <!-- PAGE 90: BAB 3 DIVIDER (KULINER) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-amber-950 via-slate-900 to-black shadow-2xl border border-amber-800/40">
       <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#f59e0b_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div class="relative z-10 space-y-4">
@@ -605,7 +657,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
             KULINER &<br/><span class="text-amber-400">GASTRONOMI</span><br/>RANAH MINANG
           </h2>
-          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+          <p class="text-xs text-gray-300 leading-relaxed pt-2 text-justify">
             Koleksi mahakarya kuliner Minangkabau legendaris, dari Rendang Daging terbaik dunia, Sate Pariaman, Gulai Tambusu, Palai Rinuak Maninjau, hingga kudapan manis Lamang Tapai.
           </p>
         </div>
@@ -626,12 +678,13 @@ function generateFullHTML(): string {
           <span class="font-orbitron font-bold">BAB 3</span>
         </div>
       </div>
-    <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${getNextPage()}</div></article>
+      <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${pageChapter3}</div>
+    </article>
 
-    <!-- CONTENT: KULINER -->
+    <!-- PAGES 91..126: CONTENT KULINER -->
     ${culHtml}
 
-    <!-- BAB 4 DIVIDER: KALENDER EVENT & FESTIVAL -->
+    <!-- PAGE 127: BAB 4 DIVIDER (EVENTS) -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-red-950 via-slate-900 to-black shadow-2xl border border-red-800/40">
       <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:16px_16px]"></div>
       <div class="relative z-10 space-y-4">
@@ -651,7 +704,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-3xl text-white uppercase tracking-wider leading-tight">
             KALENDER<br/><span class="text-red-400">EVENT & FESTIVAL</span><br/>SUMBAR 2026
           </h2>
-          <p class="text-xs text-gray-300 leading-relaxed pt-2">
+          <p class="text-xs text-gray-300 leading-relaxed pt-2 text-justify">
             Agenda festival kebudayaan dan atraksi unggulan seni tradisi anak nagari yang diselenggarakan di seluruh 19 Kabupaten dan Kota di Sumatera Barat.
           </p>
         </div>
@@ -672,12 +725,13 @@ function generateFullHTML(): string {
           <span class="font-orbitron font-bold">BAB 4</span>
         </div>
       </div>
-    <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${getNextPage()}</div></article>
+      <div class="absolute bottom-4 right-6 text-[9px] font-bold text-white/50">Hal. ${pageChapter4}</div>
+    </article>
 
-    <!-- CONTENT: EVENTS -->
+    <!-- PAGES 128..153: CONTENT EVENTS -->
     ${evHtml}
 
-    <!-- OFFICIAL BACK COVER -->
+    <!-- PAGE 154: OFFICIAL BACK COVER -->
     <article class="page-card text-white rounded-2xl overflow-hidden relative min-h-[98vh] flex flex-col justify-between p-7 bg-gradient-to-b from-slate-950 via-slate-900 to-black shadow-2xl border border-slate-800">
       <div class="relative z-10 space-y-4">
         <div class="flex items-center justify-between border-b border-white/20 pb-3">
@@ -696,7 +750,7 @@ function generateFullHTML(): string {
           <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white uppercase tracking-wider leading-tight">
             ALAM TAKAMBANG<br/><span class="text-amber-400">JADI GURU</span>
           </h2>
-          <p class="text-xs text-gray-300 max-w-xs mx-auto italic pt-2 leading-relaxed">
+          <p class="text-xs text-gray-300 max-w-xs mx-auto italic pt-2 leading-relaxed text-center">
             "Panduan komprehensif mengeksplorasi mahakarya alam, kekayaan tradisi, dan kelezatan gastronomi Minangkabau di Sumatera Barat."
           </p>
         </div>
@@ -739,8 +793,24 @@ function generateFullHTML(): string {
   `;
 }
 
-const htmlContent = generateFullHTML();
-const finalHtml = htmlContent.replace(/src="\/images\//g, 'src="./images/');
-const htmlPath = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
-fs.writeFileSync(htmlPath, finalHtml, 'utf-8');
-console.log('✅ HTML E-Booklet 1:1 berhasil dibuat di:', htmlPath);
+export function generateAndSaveHtmlPdf() {
+  const htmlContent = generateFullHTML();
+  const finalHtml = htmlContent.replace(/src="\/images\//g, 'src="./images/');
+  const htmlPath = path.join(process.cwd(), 'public', 'ebooklet_printable.html');
+  for (let attempt = 1; attempt <= 5; attempt++) {
+    try {
+      fs.writeFileSync(htmlPath, finalHtml, 'utf-8');
+      console.log('✅ HTML E-Booklet Indonesian 1:1 successfully created at:', htmlPath);
+      break;
+    } catch (err: any) {
+      if (attempt === 5) throw err;
+      const waitMs = attempt * 300;
+      const end = Date.now() + waitMs;
+      while (Date.now() < end) {}
+    }
+  }
+}
+
+// Standalone execution
+generateAndSaveHtmlPdf();
+

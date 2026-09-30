@@ -215,6 +215,10 @@ export function generateEventHTML(): string {
       margin-right: auto;
       box-sizing: border-box;
     }
+    p {
+      text-align: justify;
+      text-justify: inter-word;
+    }
     @media print {
       body {
         background: transparent;
