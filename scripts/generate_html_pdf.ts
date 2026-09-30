@@ -103,16 +103,16 @@ function generateFullHTML(): string {
     if (e.type === 'DIVIDER' || e.type === 'INFOGRAFIS') {
       return `
         <div class="flex items-center justify-between gap-2 text-[10px] pt-1.5 pb-1 border-b border-blue-200/80 min-w-0 w-full mt-1 bg-blue-50/70 px-2.5 rounded">
-          <span class="font-extrabold text-blue-950 font-orbitron tracking-wide truncate flex-1 min-w-0">${e.title}</span>
+          <span class="font-extrabold text-blue-950 font-orbitron tracking-wide break-words flex-1 min-w-0">${e.title}</span>
           <span class="shrink-0 font-extrabold text-blue-700 font-orbitron text-[9.5px] pl-2">${e.page}</span>
         </div>
       `;
     }
     return `
-      <div class="flex items-center justify-between gap-2 text-[9.5px] min-w-0 w-full leading-tight py-1 border-b border-gray-100/70">
-        <span class="font-medium text-slate-800 truncate flex-1 min-w-0">${e.title}</span>
-        <span class="grow border-b border-dotted border-gray-300 mx-2 min-w-[14px] relative -top-0.5"></span>
-        <span class="shrink-0 font-bold text-blue-600 font-orbitron text-[9px] text-right min-w-[22px]">${e.page}</span>
+      <div class="flex items-end justify-between gap-1.5 text-[9.5px] min-w-0 w-full leading-snug py-1 border-b border-gray-100/70">
+        <span class="font-medium text-slate-800 break-words max-w-[85%]">${e.title}</span>
+        <span class="grow border-b border-dotted border-gray-300 min-w-[8px] mb-1"></span>
+        <span class="shrink-0 font-bold text-blue-600 font-orbitron text-[9px] text-right min-w-[20px] mb-0.5">${e.page}</span>
       </div>
     `;
   }
