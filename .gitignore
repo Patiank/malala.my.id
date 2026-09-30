@@ -6,3 +6,5 @@ coverage/
 *.log
 .env*
 !.env.example
+ebooklet_pages_en_jpg/
+event_pages_en_jpg/
