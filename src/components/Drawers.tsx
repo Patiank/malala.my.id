@@ -300,6 +300,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
   const [isFlipbookModalOpen, setIsFlipbookModalOpen] = useState<boolean>(false);
+  const [flipbookSlug, setFlipbookSlug] = useState<'panduan' | 'events'>('panduan');
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
   const [currency, setCurrency] = useState<CurrencyCode>('IDR');
@@ -4221,7 +4222,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                     {/* PRIMARY ACTION: READ FLIPBOOK ONLINE (INTERACTIVE) */}
                     <button
                       type="button"
-                      onClick={() => setIsFlipbookModalOpen(true)}
+                      onClick={() => {
+                        setFlipbookSlug('panduan');
+                        setIsFlipbookModalOpen(true);
+                      }}
                       className="flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:via-rose-500 hover:to-red-600 text-white font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-red-600/30 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] text-center border border-red-400/30"
                     >
                       <BookOpen className="w-4 h-4 text-yellow-300 animate-pulse shrink-0" />
@@ -4274,7 +4278,21 @@ export const Drawers: React.FC<DrawersProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+                    {/* PRIMARY ACTION: READ FLIPBOOK ONLINE (INTERACTIVE) */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFlipbookSlug('events');
+                        setIsFlipbookModalOpen(true);
+                      }}
+                      className="flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:via-yellow-400 hover:to-amber-500 text-black font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-amber-500/30 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] text-center border border-amber-300/40"
+                    >
+                      <BookOpen className="w-4 h-4 text-black animate-pulse shrink-0" />
+                      <span>{lang === 'en' ? '📖 READ FLIPBOOK' : '📖 BACA FLIPBOOK'}</span>
+                    </button>
+
+                    {/* SECONDARY ACTION: DOWNLOAD OFFICIAL PDF (KEPT 100%) */}
                     <button
                       type="button"
                       onClick={() => {
@@ -4286,10 +4304,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-jakarta font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer hover:shadow-amber-500/30 hover:scale-[1.01] text-center"
+                      className="flex-1 py-3 px-3 rounded-xl bg-stone-900/90 hover:bg-stone-800 text-amber-200 hover:text-white font-jakarta font-bold text-xs uppercase tracking-wider transition-all border border-amber-900/60 hover:border-amber-500 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] text-center"
                     >
-                      <Download className="w-4 h-4 text-black" />
-                      <span>{lang === 'en' ? '⬇️ Download CoE E-Book' : '⬇️ Unduh E-Book CoE'}</span>
+                      <Download className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span>{lang === 'en' ? '⬇️ PDF (6.6 MB)' : '⬇️ UNDUH PDF'}</span>
                     </button>
                   </div>
                 </div>
@@ -4945,7 +4963,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         isOpen={isFlipbookModalOpen}
         onClose={() => setIsFlipbookModalOpen(false)}
         lang={lang}
-        bookSlug="panduan"
+        bookSlug={flipbookSlug}
       />
     </>
   );

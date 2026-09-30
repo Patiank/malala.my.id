@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, BookOpen, Maximize2, Minimize2, ExternalLink, Download, Globe, Sparkles, Loader2 } from 'lucide-react';
+import { X, BookOpen, Calendar, Maximize2, Minimize2, ExternalLink, Download, Globe, Sparkles, Loader2 } from 'lucide-react';
 
 interface FlipbookModalProps {
   isOpen: boolean;
   onClose: () => void;
   lang?: 'id' | 'en';
-  bookSlug?: string;
+  bookSlug?: 'panduan' | 'events' | string;
   customTitle?: string;
 }
 
@@ -20,6 +20,8 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const isEvents = bookSlug === 'events';
 
   // Sync with parent language when modal opens
   useEffect(() => {
@@ -77,17 +79,26 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
 
   const handleDownloadPdf = () => {
     const link = document.createElement('a');
-    link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
-    link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+    if (isEvents) {
+      link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+      link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+    } else {
+      link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+      link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+    }
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const defaultTitle = readingLang === 'en'
-    ? 'West Sumatra Complete Tourism & Culture Guide 2026'
-    : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026';
+  const defaultTitle = isEvents
+    ? (readingLang === 'en'
+        ? 'West Sumatra Calendar of Events & KEN 2026'
+        : 'Kalender Event & Kharisma Event Nusantara 2026')
+    : (readingLang === 'en'
+        ? 'West Sumatra Complete Tourism & Culture Guide 2026'
+        : 'Buku Panduan Lengkap Pariwisata & Budaya Sumbar 2026');
 
   return (
     <div
@@ -101,12 +112,24 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
         
         {/* Left: Book Title & Badge */}
         <div className="flex items-center gap-2.5 min-w-0 pr-2">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-red-600/20 border border-red-500/30 flex items-center justify-center shrink-0">
-            <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+          <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg border flex items-center justify-center shrink-0 ${
+            isEvents 
+              ? 'bg-amber-500/20 border-amber-500/40 text-amber-400' 
+              : 'bg-red-600/20 border-red-500/30 text-red-500'
+          }`}>
+            {isEvents ? (
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+            ) : (
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+            )}
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="hidden sm:inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-red-600/30 text-red-400 border border-red-500/40">
+              <span className={`hidden sm:inline-flex items-center gap-1 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded border ${
+                isEvents
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                  : 'bg-red-600/30 text-red-400 border-red-500/40'
+              }`}>
                 <Sparkles className="w-2.5 h-2.5" />
                 Flipbook 3D
               </span>
@@ -135,7 +158,7 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
               }}
               className={`px-2 py-1 sm:px-2.5 sm:py-1 rounded-md text-[11px] font-bold font-jakarta transition-all cursor-pointer flex items-center gap-1 ${
                 readingLang === 'id'
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? (isEvents ? 'bg-amber-500 text-black shadow-sm' : 'bg-red-600 text-white shadow-sm')
                   : 'text-gray-400 hover:text-white hover:bg-slate-800'
               }`}
               title="Baca Versi Bahasa Indonesia"
@@ -153,7 +176,7 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
               }}
               className={`px-2 py-1 sm:px-2.5 sm:py-1 rounded-md text-[11px] font-bold font-jakarta transition-all cursor-pointer flex items-center gap-1 ${
                 readingLang === 'en'
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? (isEvents ? 'bg-amber-500 text-black shadow-sm' : 'bg-red-600 text-white shadow-sm')
                   : 'text-gray-400 hover:text-white hover:bg-slate-800'
               }`}
               title="Read English Edition"
@@ -170,7 +193,7 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-gray-200 hover:text-white text-xs font-jakarta font-semibold transition-all cursor-pointer"
             title={readingLang === 'en' ? 'Download PDF Version' : 'Unduh Berkas PDF'}
           >
-            <Download className="w-3.5 h-3.5 text-red-400" />
+            <Download className={`w-3.5 h-3.5 ${isEvents ? 'text-amber-400' : 'text-red-400'}`} />
             <span className="hidden md:inline">PDF</span>
           </button>
 
@@ -219,7 +242,7 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
         {/* Loading Spinner */}
         {isLoading && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-xs text-white">
-            <Loader2 className="w-10 h-10 text-red-500 animate-spin mb-3" />
+            <Loader2 className={`w-10 h-10 ${isEvents ? 'text-amber-400' : 'text-red-500'} animate-spin mb-3`} />
             <p className="font-orbitron text-xs sm:text-sm font-semibold tracking-wider text-gray-200">
               {readingLang === 'en' ? 'LOADING FLIPBOOK...' : 'MEMUAT BUKU PANDUAN...'}
             </p>
