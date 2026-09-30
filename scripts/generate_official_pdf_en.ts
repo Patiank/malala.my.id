@@ -42,19 +42,19 @@ async function fetchImageBase64(url: string): Promise<string | null> {
 }
 
 async function buildEnglishEBookletPDF() {
-  console.log('🚀 Generating Official English E-Booklet PDF Guide (77 Pages)...');
+  console.log('🚀 Generating Official English E-Booklet PDF Guide (Matching Indonesian Dimensions: 127 x 233.4 mm)...');
 
-  // Page dimensions: A5 Portrait (148 x 210 mm)
+  // Exact 1:1 paper dimensions matching Indonesian E-Book: 127 x 233.4 mm (360 x 661.5 pt / 480 x 882 px)
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a5'
+    format: [127, 233.4]
   });
 
-  const pageWidth = 148;
-  const pageHeight = 210;
-  const margin = 12;
-  const contentWidth = pageWidth - (margin * 2);
+  const pageWidth = 127;
+  const pageHeight = 233.4;
+  const margin = 10;
+  const contentWidth = pageWidth - (margin * 2); // 107mm
 
   // Helper to add clean footer
   const addPageFooter = (pageNumber: number, categoryLabel: string) => {
@@ -96,7 +96,7 @@ async function buildEnglishEBookletPDF() {
 
   // Cover Top Badge
   doc.setFillColor(220, 38, 38);
-  doc.roundedRect(margin, margin + 4, 48, 6, 1, 1, 'F');
+  doc.roundedRect(margin, margin + 4, 46, 6, 1, 1, 'F');
   doc.setFontSize(6.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
@@ -107,16 +107,16 @@ async function buildEnglishEBookletPDF() {
   doc.text('MALALA.MY.ID', pageWidth - margin, margin + 8.2, { align: 'right' });
 
   // Cover Main Title
-  doc.setFontSize(26);
+  doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
   doc.text('MALALA', margin, margin + 26);
   doc.text('2026', margin, margin + 36);
 
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
-  doc.text('WEST SUMATRA COMPLETE TOURISM & CULTURE GUIDE', margin, margin + 44);
+  doc.text('WEST SUMATRA TOURISM & CULTURE GUIDE', margin, margin + 44);
 
   // Cover Bottom Info
   const totalStats = `${destinations.length} Curated Destinations • ${cultureItems.length} Cultural Traditions • ${culinaryItems.length} Authentic Dishes • ${eventItems.length} Major 2026 Events`;
@@ -143,7 +143,7 @@ async function buildEnglishEBookletPDF() {
   for (let i = 0; i < sampleDests.length; i++) {
     const dest = sampleDests[i];
     currentPageNum++;
-    doc.addPage('a5', 'portrait');
+    doc.addPage([127, 233.4], 'portrait');
 
     const regencyText = dest.regencyEn || dest.regency || 'West Sumatra';
     const categoryText = dest.categoryEn || dest.category || 'Nature Tourism';
@@ -152,7 +152,7 @@ async function buildEnglishEBookletPDF() {
     // Image
     const imgData = await fetchImageBase64(dest.imageUrl);
     const imgY = 17;
-    const imgH = 54;
+    const imgH = 58;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, imgY, contentWidth, imgH);
@@ -163,7 +163,7 @@ async function buildEnglishEBookletPDF() {
     }
 
     // Title & Category
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(20, 20, 20);
     doc.text(dest.titleEn || dest.title, margin, imgY + imgH + 8);
@@ -182,10 +182,10 @@ async function buildEnglishEBookletPDF() {
     const descText = (dest.descriptionEn || dest.description || '').replace(/\\n/g, '\n');
     const firstPara = descText.split('\n\n')[0] || descText;
     const splitDesc = doc.splitTextToSize(firstPara, contentWidth);
-    doc.text(splitDesc.slice(0, 7), margin, imgY + imgH + 19);
+    doc.text(splitDesc.slice(0, 8), margin, imgY + imgH + 19);
 
     // Highlights Box
-    const boxY = imgY + imgH + 42;
+    const boxY = imgY + imgH + 54;
     const hlList = (dest.highlightsEn && dest.highlightsEn.length > 0) ? dest.highlightsEn : dest.highlights;
     if (hlList && hlList.length > 0) {
       doc.setFillColor(248, 250, 252);
@@ -224,7 +224,7 @@ async function buildEnglishEBookletPDF() {
   for (let i = 0; i < sampleCult.length; i++) {
     const cult = sampleCult[i];
     currentPageNum++;
-    doc.addPage('a5', 'portrait');
+    doc.addPage([127, 233.4], 'portrait');
 
     const catText = cult.categoryEn || cult.category || 'Minangkabau Customs';
     addPageHeader('Cultural Heritage & Traditions', catText, [180, 83, 9]);
@@ -232,7 +232,7 @@ async function buildEnglishEBookletPDF() {
     // Image
     const imgData = await fetchImageBase64(cult.imageUrl);
     const imgY = 17;
-    const imgH = 54;
+    const imgH = 58;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, imgY, contentWidth, imgH);
@@ -243,7 +243,7 @@ async function buildEnglishEBookletPDF() {
     }
 
     // Title
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(20, 20, 20);
     doc.text(cult.titleEn || cult.title, margin, imgY + imgH + 8);
@@ -261,15 +261,15 @@ async function buildEnglishEBookletPDF() {
     const descText = (cult.descriptionEn || cult.description || '').replace(/\\n/g, '\n');
     const firstPara = descText.split('\n\n')[0] || descText;
     const splitDesc = doc.splitTextToSize(firstPara, contentWidth);
-    doc.text(splitDesc.slice(0, 7), margin, imgY + imgH + 19);
+    doc.text(splitDesc.slice(0, 8), margin, imgY + imgH + 19);
 
     // Philosophy Box
-    const boxY = imgY + imgH + 42;
+    const boxY = imgY + imgH + 54;
     const philText = cult.philosophyEn || cult.philosophy;
     if (philText) {
       doc.setFillColor(254, 252, 232);
       doc.setDrawColor(254, 240, 138);
-      doc.roundedRect(margin, boxY, contentWidth, 22, 2, 2, 'FD');
+      doc.roundedRect(margin, boxY, contentWidth, 24, 2, 2, 'FD');
 
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
@@ -294,7 +294,7 @@ async function buildEnglishEBookletPDF() {
   for (let i = 0; i < sampleCul.length; i++) {
     const cul = sampleCul[i];
     currentPageNum++;
-    doc.addPage('a5', 'portrait');
+    doc.addPage([127, 233.4], 'portrait');
 
     const culCat = cul.categoryEn || cul.category || 'Authentic Gastronomy';
     addPageHeader('Minangkabau Gastronomy', culCat, [225, 29, 72]);
@@ -302,7 +302,7 @@ async function buildEnglishEBookletPDF() {
     // Image
     const imgData = await fetchImageBase64(cul.imageUrl);
     const imgY = 17;
-    const imgH = 54;
+    const imgH = 58;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, imgY, contentWidth, imgH);
@@ -313,7 +313,7 @@ async function buildEnglishEBookletPDF() {
     }
 
     // Title
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(20, 20, 20);
     doc.text(cul.titleEn || cul.title, margin, imgY + imgH + 8);
@@ -331,13 +331,13 @@ async function buildEnglishEBookletPDF() {
     const descText = (cul.descriptionEn || cul.description || '').replace(/\\n/g, '\n');
     const firstPara = descText.split('\n\n')[0] || descText;
     const splitDesc = doc.splitTextToSize(firstPara, contentWidth);
-    doc.text(splitDesc.slice(0, 7), margin, imgY + imgH + 19);
+    doc.text(splitDesc.slice(0, 8), margin, imgY + imgH + 19);
 
     // Ingredients & Taste Box
-    const boxY = imgY + imgH + 42;
+    const boxY = imgY + imgH + 54;
     doc.setFillColor(255, 241, 242);
     doc.setDrawColor(254, 205, 211);
-    doc.roundedRect(margin, boxY, contentWidth, 22, 2, 2, 'FD');
+    doc.roundedRect(margin, boxY, contentWidth, 24, 2, 2, 'FD');
 
     doc.setFontSize(7.5);
     doc.setFont('helvetica', 'bold');
@@ -368,14 +368,14 @@ async function buildEnglishEBookletPDF() {
   for (let i = 0; i < sampleEvents.length; i++) {
     const ev = sampleEvents[i];
     currentPageNum++;
-    doc.addPage('a5', 'portrait');
+    doc.addPage([127, 233.4], 'portrait');
 
     addPageHeader('Calendar of Events 2026', ev.isKen ? 'Kharisma Event Nusantara (KEN)' : 'Official Festival', ev.isKen ? [220, 38, 38] : [30, 41, 59]);
 
     // Image
     const imgData = await fetchImageBase64(ev.imageUrl);
     const imgY = 17;
-    const imgH = 54;
+    const imgH = 58;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, imgY, contentWidth, imgH);
@@ -386,7 +386,7 @@ async function buildEnglishEBookletPDF() {
     }
 
     // Title
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(20, 20, 20);
     doc.text(ev.titleEn || ev.title, margin, imgY + imgH + 8);
@@ -409,14 +409,14 @@ async function buildEnglishEBookletPDF() {
     const descText = (ev.descriptionEn || ev.description || '').replace(/\\n/g, '\n');
     const firstPara = descText.split('\n\n')[0] || descText;
     const splitDesc = doc.splitTextToSize(firstPara, contentWidth);
-    doc.text(splitDesc.slice(0, 6), margin, imgY + imgH + 23);
+    doc.text(splitDesc.slice(0, 7), margin, imgY + imgH + 23);
 
     // KEN badge box if applicable
+    const boxY = imgY + imgH + 54;
     if (ev.isKen) {
-      const boxY = imgY + imgH + 42;
       doc.setFillColor(254, 242, 242);
       doc.setDrawColor(254, 202, 202);
-      doc.roundedRect(margin, boxY, contentWidth, 22, 2, 2, 'FD');
+      doc.roundedRect(margin, boxY, contentWidth, 24, 2, 2, 'FD');
 
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
@@ -443,7 +443,7 @@ async function buildEnglishEBookletPDF() {
   fs.writeFileSync(outPath, pdfBuffer);
 
   const fileSizeMB = (pdfBuffer.length / (1024 * 1024)).toFixed(2);
-  console.log(`\n🎉 SUCCESS: English E-Booklet PDF Guide (77 Pages) Generated!`);
+  console.log(`\n🎉 SUCCESS: English E-Booklet PDF Guide (77 Pages, 127x233.4mm) Generated!`);
   console.log(`📁 File Location: ${outPath}`);
   console.log(`⚖️ File Size: ${fileSizeMB} MB`);
 }

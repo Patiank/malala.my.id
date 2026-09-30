@@ -64,19 +64,19 @@ async function fetchImageBase64(url: string): Promise<string | null> {
 }
 
 async function buildEnglishEventPDF() {
-  console.log('🚀 Generating English Calendar of Events 2026 PDF (28 Pages)...');
+  console.log('🚀 Generating English Calendar of Events 2026 PDF (Matching Indonesian Dimensions: 127 x 233.4 mm)...');
 
-  // Page dimensions: A5 Portrait (148 x 210 mm)
+  // Exact 1:1 paper dimensions matching Indonesian E-Book: 127 x 233.4 mm (360 x 661.5 pt / 480 x 882 px)
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'mm',
-    format: 'a5'
+    format: [127, 233.4]
   });
 
-  const pageWidth = 148;
-  const pageHeight = 210;
-  const margin = 12;
-  const contentWidth = pageWidth - (margin * 2);
+  const pageWidth = 127;
+  const pageHeight = 233.4;
+  const margin = 10;
+  const contentWidth = pageWidth - (margin * 2); // 107mm
 
   const addPageFooter = (pageNumber: number) => {
     doc.setFontSize(7);
@@ -117,7 +117,7 @@ async function buildEnglishEventPDF() {
 
   // Cover Top Badge
   doc.setFillColor(217, 119, 6);
-  doc.roundedRect(margin, margin + 4, 52, 6, 1, 1, 'F');
+  doc.roundedRect(margin, margin + 4, 50, 6, 1, 1, 'F');
   doc.setFontSize(6.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
@@ -128,13 +128,13 @@ async function buildEnglishEventPDF() {
   doc.text('MALALA.MY.ID', pageWidth - margin, margin + 8.2, { align: 'right' });
 
   // Cover Main Title
-  doc.setFontSize(26);
+  doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(255, 255, 255);
   doc.text('CALENDAR OF', margin, margin + 26);
   doc.text('EVENTS 2026', margin, margin + 36);
 
-  doc.setFontSize(9);
+  doc.setFontSize(8.5);
   doc.setFont('helvetica', 'bold');
   doc.setTextColor(254, 243, 199);
   doc.text('WEST SUMATRA TOURISM & CULTURAL FESTIVALS', margin, margin + 44);
@@ -162,7 +162,7 @@ async function buildEnglishEventPDF() {
   // =========================================================================
   console.log('📄 [2/28] Compiling Annual Timeline Agenda Overview...');
   currentPageNum++;
-  doc.addPage('a5', 'portrait');
+  doc.addPage([127, 233.4], 'portrait');
 
   addPageHeader('Calendar of Events 2026', 'Yearly Agenda Overview', [217, 119, 6]);
 
@@ -177,20 +177,20 @@ async function buildEnglishEventPDF() {
   doc.text('Chronological summary of cultural celebrations & tourism attractions.', margin, 29);
 
   let currentY = 35;
-  const overviewList = eventItems.slice(0, 12);
+  const overviewList = eventItems.slice(0, 13);
   overviewList.forEach((ev, idx) => {
     doc.setFillColor(ev.isKen ? 254 : 248, ev.isKen ? 242 : 250, ev.isKen ? 242 : 252);
     doc.setDrawColor(ev.isKen ? 254 : 226, ev.isKen ? 202 : 232, ev.isKen ? 202 : 240);
-    doc.roundedRect(margin, currentY, contentWidth, 10.5, 1.5, 1.5, 'FD');
+    doc.roundedRect(margin, currentY, contentWidth, 11, 1.5, 1.5, 'FD');
 
     // Number & title
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(15, 23, 42);
     const titleStr = `${idx + 1}. ${(ev.titleEn || ev.title)}`;
-    doc.text(doc.splitTextToSize(titleStr, contentWidth - 45)[0], margin + 2.5, currentY + 4.5);
+    doc.text(doc.splitTextToSize(titleStr, contentWidth - 40)[0], margin + 2.5, currentY + 4.5);
 
-    // Schedule & Tag
+    // Schedule & Location
     doc.setFontSize(7);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(100, 100, 100);
@@ -198,14 +198,14 @@ async function buildEnglishEventPDF() {
 
     if (ev.isKen) {
       doc.setFillColor(220, 38, 38);
-      doc.roundedRect(pageWidth - margin - 20, currentY + 2.5, 17, 5, 1, 1, 'F');
+      doc.roundedRect(pageWidth - margin - 18, currentY + 2.5, 16, 5, 1, 1, 'F');
       doc.setFontSize(6);
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(255, 255, 255);
-      doc.text('KEN 2026', pageWidth - margin - 11.5, currentY + 6, { align: 'center' });
+      doc.text('KEN 2026', pageWidth - margin - 10, currentY + 6, { align: 'center' });
     }
 
-    currentY += 12;
+    currentY += 13;
   });
 
   addPageFooter(currentPageNum);
@@ -217,14 +217,14 @@ async function buildEnglishEventPDF() {
   for (let i = 0; i < eventItems.length; i++) {
     const ev = eventItems[i];
     currentPageNum++;
-    doc.addPage('a5', 'portrait');
+    doc.addPage([127, 233.4], 'portrait');
 
     addPageHeader('Official Calendar of Events 2026', ev.isKen ? 'Kharisma Event Nusantara' : 'Official Festival', ev.isKen ? [220, 38, 38] : [217, 119, 6]);
 
     // Image
     const imgData = await fetchImageBase64(ev.imageUrl);
     const imgY = 17;
-    const imgH = 54;
+    const imgH = 58;
     if (imgData) {
       try {
         doc.addImage(imgData, 'JPEG', margin, imgY, contentWidth, imgH);
@@ -235,7 +235,7 @@ async function buildEnglishEventPDF() {
     }
 
     // Title
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(20, 20, 20);
     doc.text(ev.titleEn || ev.title, margin, imgY + imgH + 8);
@@ -259,14 +259,14 @@ async function buildEnglishEventPDF() {
     const descText = (ev.descriptionEn || ev.description || '').replace(/\\n/g, '\n');
     const firstPara = descText.split('\n\n')[0] || descText;
     const splitDesc = doc.splitTextToSize(firstPara, contentWidth);
-    doc.text(splitDesc.slice(0, 6), margin, imgY + imgH + 23);
+    doc.text(splitDesc.slice(0, 8), margin, imgY + imgH + 23);
 
     // KEN badge box if applicable
-    const boxY = imgY + imgH + 42;
+    const boxY = imgY + imgH + 54;
     if (ev.isKen) {
       doc.setFillColor(254, 242, 242);
       doc.setDrawColor(254, 202, 202);
-      doc.roundedRect(margin, boxY, contentWidth, 22, 2, 2, 'FD');
+      doc.roundedRect(margin, boxY, contentWidth, 24, 2, 2, 'FD');
 
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
@@ -280,7 +280,7 @@ async function buildEnglishEventPDF() {
     } else {
       doc.setFillColor(255, 251, 235);
       doc.setDrawColor(254, 243, 199);
-      doc.roundedRect(margin, boxY, contentWidth, 22, 2, 2, 'FD');
+      doc.roundedRect(margin, boxY, contentWidth, 24, 2, 2, 'FD');
 
       doc.setFontSize(7.5);
       doc.setFont('helvetica', 'bold');
@@ -307,7 +307,7 @@ async function buildEnglishEventPDF() {
   fs.writeFileSync(outPath, pdfBuffer);
 
   const fileSizeMB = (pdfBuffer.length / (1024 * 1024)).toFixed(2);
-  console.log(`\n🎉 SUCCESS: English Calendar of Events 2026 PDF Generated!`);
+  console.log(`\n🎉 SUCCESS: English Calendar of Events 2026 PDF (28 Pages, 127x233.4mm) Generated!`);
   console.log(`📁 File Location: ${outPath}`);
   console.log(`⚖️ File Size: ${fileSizeMB} MB`);
 }
