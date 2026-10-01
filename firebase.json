@@ -7,7 +7,9 @@
       "**/node_modules/**",
       "server.cjs",
       "server.cjs.map",
-      "**/*.map"
+      "**/*.map",
+      "ebooklet_printable*.html",
+      "event_calendar_printable*.html"
     ],
     "headers": [
       {

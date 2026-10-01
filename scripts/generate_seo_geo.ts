@@ -98,6 +98,12 @@ function escapeXml(unsafe: string): string {
   });
 }
 
+function isValidHttpUrl(url?: string): boolean {
+  if (!url) return false;
+  const trimmed = url.trim();
+  return (trimmed.startsWith('http://') || trimmed.startsWith('https://')) && !trimmed.startsWith('data:');
+}
+
 function main() {
   console.log('🚀 Menghasilkan aset SEO (Search Engine Optimization) & GEO (Generative Engine Optimization)...');
 
@@ -323,7 +329,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <loc>https://malala.my.id/destinasi/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>${d.imageUrl ? `
+    <priority>0.85</priority>${isValidHttpUrl(d.imageUrl) ? `
     <image:image>
       <image:loc>${escapeXml(d.imageUrl)}</image:loc>
       <image:title>${escapeXml(d.title)}</image:title>
@@ -339,7 +345,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <loc>https://malala.my.id/kebudayaan/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>${c.imageUrl ? `
+    <priority>0.8</priority>${isValidHttpUrl(c.imageUrl) ? `
     <image:image>
       <image:loc>${escapeXml(c.imageUrl)}</image:loc>
       <image:title>${escapeXml(c.title)}</image:title>
@@ -355,7 +361,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <loc>https://malala.my.id/kuliner/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>${cu.imageUrl ? `
+    <priority>0.8</priority>${isValidHttpUrl(cu.imageUrl) ? `
     <image:image>
       <image:loc>${escapeXml(cu.imageUrl)}</image:loc>
       <image:title>${escapeXml(cu.title)}</image:title>
@@ -371,7 +377,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <loc>https://malala.my.id/event/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.85</priority>${ev.imageUrl ? `
+    <priority>0.85</priority>${isValidHttpUrl(ev.imageUrl) ? `
     <image:image>
       <image:loc>${escapeXml(ev.imageUrl)}</image:loc>
       <image:title>${escapeXml(ev.title)}</image:title>
@@ -387,7 +393,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <loc>https://malala.my.id/berita/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>${n.imageUrl ? `
+    <priority>0.9</priority>${isValidHttpUrl(n.imageUrl) ? `
     <image:image>
       <image:loc>${escapeXml(n.imageUrl)}</image:loc>
       <image:title>${escapeXml(n.title)}</image:title>
