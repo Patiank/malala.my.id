@@ -3,11 +3,12 @@ import { Flame, RefreshCw } from 'lucide-react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { ImageRevealBackground } from './components/ImageRevealBackground';
-import { Drawers } from './components/Drawers';
 import { Toast } from './components/Toast';
-import { NewsModal } from './components/NewsModal';
-import { LegalModal } from './components/LegalModal';
 import { CookieBanner } from './components/CookieBanner';
+
+const Drawers = React.lazy(() => import('./components/Drawers').then(m => ({ default: m.Drawers })));
+const NewsModal = React.lazy(() => import('./components/NewsModal').then(m => ({ default: m.NewsModal })));
+const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
 import { DrawerType, ToastNotice } from './types';
 import { HotInfoItem } from './types';
 import { useData } from './data/useData';
@@ -433,6 +434,11 @@ export default function App() {
         searchQuery={searchQuery}
         onSearchQueryChange={setSearchQuery}
         eventItems={dataStore.eventItems}
+        destinations={dataStore.destinations}
+        cultureItems={dataStore.cultureItems}
+        culinaryItems={dataStore.culinaryItems}
+        souvenirItems={dataStore.souvenirItems}
+        hotInfoItems={dataStore.hotInfoItems}
       />
 
       {/* Breaking News Ticker Bar (Placed at the very bottom) */}
@@ -516,33 +522,40 @@ export default function App() {
       </div>
 
       {/* Drawers */}
-      <Drawers
-        activeDrawer={activeDrawer}
-        onClose={handleCloseDrawer}
-        onOpenDrawer={handleOpenDrawer}
-        savedIds={savedIds}
-        onToggleSave={handleToggleSave}
-        dataStore={dataStore}
-        lang={lang}
-        onSelectNews={handleOpenNews}
-        searchQuery={searchQuery}
-        onSearchQueryChange={setSearchQuery}
-      />
+      <React.Suspense fallback={null}>
+        <Drawers
+          activeDrawer={activeDrawer}
+          onClose={handleCloseDrawer}
+          onOpenDrawer={handleOpenDrawer}
+          savedIds={savedIds}
+          onToggleSave={handleToggleSave}
+          dataStore={dataStore}
+          lang={lang}
+          onSelectNews={handleOpenNews}
+          searchQuery={searchQuery}
+          onSearchQueryChange={setSearchQuery}
+        />
+      </React.Suspense>
 
       {/* Center News Detail Pop-up Modal */}
-      <NewsModal
-        item={selectedNews}
-        onClose={handleCloseNews}
-        lang={lang}
-      />
+      {selectedNews && (
+        <React.Suspense fallback={null}>
+          <NewsModal
+            item={selectedNews}
+            onClose={handleCloseNews}
+            lang={lang}
+          />
+        </React.Suspense>
+      )}
 
-      
       {/* Legal Modal */}
       {(activeDrawer === 'about' || activeDrawer === 'privacy' || activeDrawer === 'terms' || activeDrawer === 'disclaimer' || activeDrawer === 'contact') && (
-        <LegalModal
-          type={activeDrawer as any}
-          onClose={handleCloseDrawer}
-        />
+        <React.Suspense fallback={null}>
+          <LegalModal
+            type={activeDrawer as any}
+            onClose={handleCloseDrawer}
+          />
+        </React.Suspense>
       )}
 
       {/* Tiny Legal Footer */}

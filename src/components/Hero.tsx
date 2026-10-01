@@ -3,9 +3,9 @@ import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, Ma
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 import ArrowFillButton from '@/components/ui/arrow-fill-button';
 
-import { DrawerType, AppSettings, EventItem } from '../types';
+import { DrawerType, AppSettings, EventItem, Destination, CultureItem, CulinaryItem, SouvenirItem, HotInfoItem } from '../types';
 import { Language, translations } from '../lib/translations';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, HOT_INFO_ITEMS } from '../data/content';
+import { HOT_INFO_ITEMS } from '../data/staticConfig';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
 import { parseNewsTimestamp } from '../utils/ai';
 
@@ -16,6 +16,11 @@ interface HeroProps {
   searchQuery?: string;
   onSearchQueryChange?: (q: string) => void;
   eventItems?: EventItem[];
+  destinations?: Destination[];
+  cultureItems?: CultureItem[];
+  culinaryItems?: CulinaryItem[];
+  souvenirItems?: SouvenirItem[];
+  hotInfoItems?: HotInfoItem[];
 }
 
 function getYoutubeVideoId(url?: string): string | null {
@@ -48,7 +53,12 @@ export const Hero: React.FC<HeroProps> = ({
   appSettings,
   searchQuery = '',
   onSearchQueryChange,
-  eventItems,
+  eventItems = [],
+  destinations = [],
+  cultureItems = [],
+  culinaryItems = [],
+  souvenirItems = [],
+  hotInfoItems = [],
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
@@ -391,7 +401,7 @@ export const Hero: React.FC<HeroProps> = ({
     };
   };
 
-  const eventsList = eventItems && eventItems.length > 0 ? eventItems : EVENTS_SCHEDULE;
+  const eventsList = eventItems || [];
 
   const spotlightDisplayMode = appSettings?.spotlightDisplayMode || 'both';
   const featuredVideoEventId = appSettings?.featuredVideoEventId || 'auto';
@@ -506,7 +516,7 @@ export const Hero: React.FC<HeroProps> = ({
       keywords: string;
     }> = [];
 
-    DESTINATIONS.forEach(d => {
+    (destinations || []).forEach(d => {
       items.push({
         id: d.id,
         title: d.title,
@@ -521,7 +531,7 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    CULTURE_ITEMS.forEach(c => {
+    (cultureItems || []).forEach(c => {
       items.push({
         id: c.id,
         title: c.title,
@@ -536,7 +546,7 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    CULINARY_ITEMS.forEach(c => {
+    (culinaryItems || []).forEach(c => {
       items.push({
         id: c.id,
         title: c.title,
@@ -551,7 +561,7 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    SOUVENIR_ITEMS.forEach(s => {
+    (souvenirItems || []).forEach(s => {
       items.push({
         id: s.id,
         title: s.title,
@@ -566,7 +576,7 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    EVENTS_SCHEDULE.forEach(e => {
+    (eventItems || []).forEach(e => {
       items.push({
         id: e.id,
         title: e.title,
@@ -581,7 +591,8 @@ export const Hero: React.FC<HeroProps> = ({
       });
     });
 
-    [...HOT_INFO_ITEMS]
+    const newsList = (hotInfoItems && hotInfoItems.length > 0) ? hotInfoItems : HOT_INFO_ITEMS;
+    [...newsList]
       .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt))
       .forEach(h => {
       items.push({
@@ -599,7 +610,7 @@ export const Hero: React.FC<HeroProps> = ({
     });
 
     return items;
-  }, []);
+  }, [destinations, cultureItems, culinaryItems, souvenirItems, eventItems, hotInfoItems]);
 
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();

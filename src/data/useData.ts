@@ -2,11 +2,19 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, getDocs, getDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from '../lib/firebase';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, SOUVENIR_ITEMS, EVENTS_SCHEDULE, DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './content';
+import { DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './staticConfig';
 import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings, PendingEventItem } from '../types';
 import { deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
 import { getLocalCache, setLocalCache } from '../utils/localCache';
+
+let fallbackCatalogPromise: Promise<typeof import('./content')> | null = null;
+const loadFallbackContent = () => {
+  if (!fallbackCatalogPromise) {
+    fallbackCatalogPromise = import('./content');
+  }
+  return fallbackCatalogPromise;
+};
 
 const CATALOG_CACHE_KEY = 'malala_full_catalog_v2';
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours Time-To-Live for public visitors
@@ -23,11 +31,11 @@ interface CatalogCachePayload {
 }
 
 export function useData() {
-  const [destinations, setDestinations] = useState<Destination[]>(DESTINATIONS);
-  const [cultureItems, setCultureItems] = useState<CultureItem[]>(CULTURE_ITEMS);
-  const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>(CULINARY_ITEMS);
-  const [souvenirItems, setSouvenirItems] = useState<SouvenirItem[]>(SOUVENIR_ITEMS);
-  const [eventItems, setEventItems] = useState<EventItem[]>(EVENTS_SCHEDULE);
+  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [cultureItems, setCultureItems] = useState<CultureItem[]>([]);
+  const [culinaryItems, setCulinaryItems] = useState<CulinaryItem[]>([]);
+  const [souvenirItems, setSouvenirItems] = useState<SouvenirItem[]>([]);
+  const [eventItems, setEventItems] = useState<EventItem[]>([]);
   const [pendingEvents, setPendingEvents] = useState<PendingEventItem[]>([]);
   const [downloadItems, setDownloadItems] = useState<DownloadItem[]>(DOWNLOAD_ITEMS);
   const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>(HOT_INFO_ITEMS);
@@ -99,7 +107,7 @@ export function useData() {
   }, []);
 
   // Transformation helper: map Firestore docs into clean objects with direct image URLs
-  const processDestinationDocs = (docs: any[]): Destination[] => {
+  const processDestinationDocs = (docs: any[], fallback: Destination[] = []): Destination[] => {
     const firestoreData = docs
       .map(docSnap => {
         const item = docSnap.data() as Destination;
@@ -108,12 +116,13 @@ export function useData() {
       .filter(item => item.title && item.title.trim().length > 0);
 
     const firestoreIds = new Set(firestoreData.map(d => d.id));
-    const missing = DESTINATIONS.filter(d => !firestoreIds.has(d.id));
+    const baseFallback = fallback.length > 0 ? fallback : (stateRef.current.destinations || []);
+    const missing = baseFallback.filter(d => !firestoreIds.has(d.id));
     const combined = [...firestoreData, ...missing];
-    return combined.length > 0 ? combined : DESTINATIONS;
+    return combined.length > 0 ? combined : baseFallback;
   };
 
-  const processCultureDocs = (docs: any[]): CultureItem[] => {
+  const processCultureDocs = (docs: any[], fallback: CultureItem[] = []): CultureItem[] => {
     const firestoreData = docs
       .map(docSnap => {
         const item = docSnap.data() as CultureItem;
@@ -122,12 +131,13 @@ export function useData() {
       .filter(item => item.title && item.title.trim().length > 0);
 
     const firestoreIds = new Set(firestoreData.map(d => d.id));
-    const missing = CULTURE_ITEMS.filter(d => !firestoreIds.has(d.id));
+    const baseFallback = fallback.length > 0 ? fallback : (stateRef.current.cultureItems || []);
+    const missing = baseFallback.filter(d => !firestoreIds.has(d.id));
     const combined = [...firestoreData, ...missing];
-    return combined.length > 0 ? combined : CULTURE_ITEMS;
+    return combined.length > 0 ? combined : baseFallback;
   };
 
-  const processCulinaryDocs = (docs: any[]): CulinaryItem[] => {
+  const processCulinaryDocs = (docs: any[], fallback: CulinaryItem[] = []): CulinaryItem[] => {
     const firestoreData = docs
       .map(docSnap => {
         const item = docSnap.data() as CulinaryItem;
@@ -136,12 +146,13 @@ export function useData() {
       .filter(item => item.title && item.title.trim().length > 0);
 
     const firestoreIds = new Set(firestoreData.map(d => d.id));
-    const missing = CULINARY_ITEMS.filter(d => !firestoreIds.has(d.id));
+    const baseFallback = fallback.length > 0 ? fallback : (stateRef.current.culinaryItems || []);
+    const missing = baseFallback.filter(d => !firestoreIds.has(d.id));
     const combined = [...firestoreData, ...missing];
-    return combined.length > 0 ? combined : CULINARY_ITEMS;
+    return combined.length > 0 ? combined : baseFallback;
   };
 
-  const processSouvenirDocs = (docs: any[]): SouvenirItem[] => {
+  const processSouvenirDocs = (docs: any[], fallback: SouvenirItem[] = []): SouvenirItem[] => {
     const firestoreData = docs
       .map(docSnap => {
         const item = docSnap.data() as SouvenirItem;
@@ -149,10 +160,11 @@ export function useData() {
       })
       .filter(item => item.title && item.title.trim().length > 0);
 
-    return firestoreData.length > 0 ? firestoreData : SOUVENIR_ITEMS;
+    const baseFallback = fallback.length > 0 ? fallback : (stateRef.current.souvenirItems || []);
+    return firestoreData.length > 0 ? firestoreData : baseFallback;
   };
 
-  const processEventDocs = (docs: any[]): EventItem[] => {
+  const processEventDocs = (docs: any[], fallback: EventItem[] = []): EventItem[] => {
     const firestoreData = docs
       .map(docSnap => {
         const item = docSnap.data() as EventItem;
@@ -161,9 +173,10 @@ export function useData() {
       .filter(item => item.title && item.title.trim().length > 0);
 
     const firestoreIds = new Set(firestoreData.map(d => d.id));
-    const missing = EVENTS_SCHEDULE.filter(d => !firestoreIds.has(d.id));
+    const baseFallback = fallback.length > 0 ? fallback : (stateRef.current.eventItems || []);
+    const missing = baseFallback.filter(d => !firestoreIds.has(d.id));
     const combined = [...firestoreData, ...missing];
-    return combined.length > 0 ? combined : EVENTS_SCHEDULE;
+    return combined.length > 0 ? combined : baseFallback;
   };
 
   const processDownloadDocs = (docs: any[]): DownloadItem[] => {
@@ -248,9 +261,10 @@ export function useData() {
   };
 
   // Perform a single, one-time read pass for all collections and persist to local cache
-  const fetchFromFirestoreOnce = useCallback(async () => {
+  const fetchFromFirestoreOnce = useCallback(async (loadedFallback?: any) => {
     setIsSyncing(true);
     try {
+      const fallback = loadedFallback || await loadFallbackContent();
       const [
         destSnap,
         cultSnap,
@@ -271,11 +285,11 @@ export function useData() {
         getDoc(doc(db, 'settings', 'hero')).catch(() => null),
       ]);
 
-      const updatedDest = destSnap && !destSnap.empty ? processDestinationDocs(destSnap.docs) : DESTINATIONS;
-      const updatedCult = cultSnap && !cultSnap.empty ? processCultureDocs(cultSnap.docs) : CULTURE_ITEMS;
-      const updatedCul = culSnap && !culSnap.empty ? processCulinaryDocs(culSnap.docs) : CULINARY_ITEMS;
-      const updatedSouv = souvSnap && !souvSnap.empty ? processSouvenirDocs(souvSnap.docs) : SOUVENIR_ITEMS;
-      const updatedEv = evSnap && !evSnap.empty ? processEventDocs(evSnap.docs) : EVENTS_SCHEDULE;
+      const updatedDest = destSnap && !destSnap.empty ? processDestinationDocs(destSnap.docs, fallback.DESTINATIONS) : (fallback.DESTINATIONS || []);
+      const updatedCult = cultSnap && !cultSnap.empty ? processCultureDocs(cultSnap.docs, fallback.CULTURE_ITEMS) : (fallback.CULTURE_ITEMS || []);
+      const updatedCul = culSnap && !culSnap.empty ? processCulinaryDocs(culSnap.docs, fallback.CULINARY_ITEMS) : (fallback.CULINARY_ITEMS || []);
+      const updatedSouv = souvSnap && !souvSnap.empty ? processSouvenirDocs(souvSnap.docs, fallback.SOUVENIR_ITEMS) : (fallback.SOUVENIR_ITEMS || []);
+      const updatedEv = evSnap && !evSnap.empty ? processEventDocs(evSnap.docs, fallback.EVENTS_SCHEDULE) : (fallback.EVENTS_SCHEDULE || []);
       const updatedDl = dlSnap && !dlSnap.empty ? processDownloadDocs(dlSnap.docs) : DOWNLOAD_ITEMS;
       const updatedHot = hotSnap && !hotSnap.empty ? processHotInfoDocs(hotSnap.docs) : deduplicateNewsItems(HOT_INFO_ITEMS);
       const updatedSett = settSnap ? processSettingsDoc(settSnap) : null;
@@ -332,9 +346,24 @@ export function useData() {
         console.warn('[useData] LocalCache read warning:', err);
       }
 
-      // 2. Cache miss or expired: fetch once in background without websocket listener
+      // 2. Cache miss or expired: load fallback chunk asynchronously in background
+      let fallbackModule: any = null;
+      try {
+        fallbackModule = await loadFallbackContent();
+        if (!isCancelled && fallbackModule) {
+          setDestinations(prev => prev.length ? prev : fallbackModule.DESTINATIONS);
+          setCultureItems(prev => prev.length ? prev : fallbackModule.CULTURE_ITEMS);
+          setCulinaryItems(prev => prev.length ? prev : fallbackModule.CULINARY_ITEMS);
+          setSouvenirItems(prev => prev.length ? prev : fallbackModule.SOUVENIR_ITEMS);
+          setEventItems(prev => prev.length ? prev : fallbackModule.EVENTS_SCHEDULE);
+        }
+      } catch (err) {
+        console.warn('[useData] Local fallback load warning:', err);
+      }
+
+      // 3. Sync from Firestore in background
       if (!isCancelled && !isAdminLoggedIn) {
-        await fetchFromFirestoreOnce();
+        await fetchFromFirestoreOnce(fallbackModule);
       }
     }
 
@@ -349,57 +378,69 @@ export function useData() {
   useEffect(() => {
     if (!isAdminLoggedIn) return;
 
-    // 1. Destinations
-    const unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
-      const items = !snapshot.empty ? processDestinationDocs(snapshot.docs) : DESTINATIONS;
-      setDestinations(items);
-      persistCurrentToCache({ destinations: items });
-    }, (err) => console.warn('Admin Firestore destinations error:', err));
+    let unsubDest: (() => void) | undefined;
+    let unsubCult: (() => void) | undefined;
+    let unsubCul: (() => void) | undefined;
+    let unsubSouv: (() => void) | undefined;
+    let unsubEv: (() => void) | undefined;
+    let unsubDl: (() => void) | undefined;
+    let unsubHot: (() => void) | undefined;
+    let unsubSett: (() => void) | undefined;
+    let unsubPending: (() => void) | undefined;
 
-    // 2. Cultures
-    const unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
-      const items = !snapshot.empty ? processCultureDocs(snapshot.docs) : CULTURE_ITEMS;
-      setCultureItems(items);
-      persistCurrentToCache({ cultureItems: items });
-    }, (err) => console.warn('Admin Firestore cultures error:', err));
+    loadFallbackContent().then(fallback => {
+      // 1. Destinations
+      unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
+        const items = !snapshot.empty ? processDestinationDocs(snapshot.docs, fallback.DESTINATIONS) : fallback.DESTINATIONS;
+        setDestinations(items);
+        persistCurrentToCache({ destinations: items });
+      }, (err) => console.warn('Admin Firestore destinations error:', err));
 
-    // 3. Culinaries
-    const unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
-      const items = !snapshot.empty ? processCulinaryDocs(snapshot.docs) : CULINARY_ITEMS;
-      setCulinaryItems(items);
-      persistCurrentToCache({ culinaryItems: items });
-    }, (err) => console.warn('Admin Firestore culinaries error:', err));
+      // 2. Cultures
+      unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
+        const items = !snapshot.empty ? processCultureDocs(snapshot.docs, fallback.CULTURE_ITEMS) : fallback.CULTURE_ITEMS;
+        setCultureItems(items);
+        persistCurrentToCache({ cultureItems: items });
+      }, (err) => console.warn('Admin Firestore cultures error:', err));
 
-    // 4. Souvenirs
-    const unsubSouv = onSnapshot(collection(db, 'souvenirs'), (snapshot) => {
-      const items = !snapshot.empty ? processSouvenirDocs(snapshot.docs) : SOUVENIR_ITEMS;
-      setSouvenirItems(items);
-      persistCurrentToCache({ souvenirItems: items });
-    }, (err) => console.warn('Admin Firestore souvenirs error:', err));
+      // 3. Culinaries
+      unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
+        const items = !snapshot.empty ? processCulinaryDocs(snapshot.docs, fallback.CULINARY_ITEMS) : fallback.CULINARY_ITEMS;
+        setCulinaryItems(items);
+        persistCurrentToCache({ culinaryItems: items });
+      }, (err) => console.warn('Admin Firestore culinaries error:', err));
 
-    // 5. Events
-    const unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
-      const items = !snapshot.empty ? processEventDocs(snapshot.docs) : EVENTS_SCHEDULE;
-      setEventItems(items);
-      persistCurrentToCache({ eventItems: items });
-    }, (err) => console.warn('Admin Firestore events error:', err));
+      // 4. Souvenirs
+      unsubSouv = onSnapshot(collection(db, 'souvenirs'), (snapshot) => {
+        const items = !snapshot.empty ? processSouvenirDocs(snapshot.docs, fallback.SOUVENIR_ITEMS) : fallback.SOUVENIR_ITEMS;
+        setSouvenirItems(items);
+        persistCurrentToCache({ souvenirItems: items });
+      }, (err) => console.warn('Admin Firestore souvenirs error:', err));
+
+      // 5. Events
+      unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
+        const items = !snapshot.empty ? processEventDocs(snapshot.docs, fallback.EVENTS_SCHEDULE) : fallback.EVENTS_SCHEDULE;
+        setEventItems(items);
+        persistCurrentToCache({ eventItems: items });
+      }, (err) => console.warn('Admin Firestore events error:', err));
+    });
 
     // 6. Downloads
-    const unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
+    unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
       const items = !snapshot.empty ? processDownloadDocs(snapshot.docs) : DOWNLOAD_ITEMS;
       setDownloadItems(items);
       persistCurrentToCache({ downloadItems: items });
     }, (err) => console.warn('Admin Firestore downloads error:', err));
 
     // 7. Hot Info
-    const unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
+    unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
       const items = !snapshot.empty ? processHotInfoDocs(snapshot.docs) : deduplicateNewsItems(HOT_INFO_ITEMS);
       setHotInfoItems(items);
       persistCurrentToCache({ hotInfoItems: items });
     }, (err) => console.warn('Admin Firestore hotinfo error:', err));
 
     // 8. Settings
-    const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
+    unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
       const sett = processSettingsDoc(docSnap);
       if (sett) {
         setAppSettings(sett);
@@ -408,7 +449,7 @@ export function useData() {
     }, (err) => console.warn('Admin Firestore settings error:', err));
 
     // 9. Pending AI Events (Discovery queue)
-    const unsubPending = onSnapshot(collection(db, 'pending_events'), (snapshot) => {
+    unsubPending = onSnapshot(collection(db, 'pending_events'), (snapshot) => {
       if (snapshot.empty) {
         setPendingEvents([]);
         return;
@@ -423,15 +464,15 @@ export function useData() {
     }, (err) => console.warn('Admin Firestore pending_events error:', err));
 
     return () => {
-      unsubDest();
-      unsubCult();
-      unsubCul();
-      unsubSouv();
-      unsubEv();
-      unsubDl();
-      unsubHot();
-      unsubSett();
-      unsubPending();
+      if (unsubDest) unsubDest();
+      if (unsubCult) unsubCult();
+      if (unsubCul) unsubCul();
+      if (unsubSouv) unsubSouv();
+      if (unsubEv) unsubEv();
+      if (unsubDl) unsubDl();
+      if (unsubHot) unsubHot();
+      if (unsubSett) unsubSett();
+      if (unsubPending) unsubPending();
     };
   }, [isAdminLoggedIn, persistCurrentToCache]);
 
@@ -572,71 +613,88 @@ export function useData() {
   };
 
   const seedData = async () => {
-    const batch = writeBatch(db);
-    DESTINATIONS.forEach(item => batch.set(doc(db, 'destinations', item.id), {
-      ...item,
-      titleEn: item.titleEn || item.title,
-      categoryEn: item.categoryEn || item.category,
-      tagEn: item.tagEn || item.tag,
-      descriptionEn: item.descriptionEn || item.description,
-      highlightsEn: item.highlightsEn || item.highlights,
-      bestTimeEn: item.bestTimeEn || item.bestTime,
-      locationDetailsEn: item.locationDetailsEn || item.locationDetails
-    }));
-    CULTURE_ITEMS.forEach(item => batch.set(doc(db, 'cultures', item.id), {
-      ...item,
-      titleEn: item.titleEn || item.title,
-      categoryEn: item.categoryEn || item.category,
-      descriptionEn: item.descriptionEn || item.description,
-      philosophyEn: item.philosophyEn || item.philosophy,
-      originEn: item.originEn || item.origin
-    }));
-    CULINARY_ITEMS.forEach(item => batch.set(doc(db, 'culinaries', item.id), {
-      ...item,
-      titleEn: item.titleEn || item.title,
-      typeEn: item.typeEn || item.type,
-      originEn: item.originEn || item.origin,
-      descriptionEn: item.descriptionEn || item.description,
-      flavorProfileEn: item.flavorProfileEn || item.flavorProfile
-    }));
-    SOUVENIR_ITEMS.forEach(item => batch.set(doc(db, 'souvenirs', item.id), {
-      ...item,
-      titleEn: item.titleEn || item.title,
-      categoryEn: item.categoryEn || item.category,
-      originEn: item.originEn || item.origin,
-      descriptionEn: item.descriptionEn || item.description,
-      priceRangeEn: item.priceRangeEn || item.priceRange,
-      highlightsEn: item.highlightsEn || item.highlights
-    }));
-    EVENTS_SCHEDULE.forEach(item => batch.set(doc(db, 'events', item.id), {
-      ...item,
-      titleEn: item.titleEn || item.title,
-      scheduleEn: item.scheduleEn || item.schedule,
-      locationEn: item.locationEn || item.location,
-      descriptionEn: item.descriptionEn || item.description
-    }));
-    DOWNLOAD_ITEMS.forEach(item => batch.set(doc(db, 'downloads', item.id), item));
-    HOT_INFO_ITEMS.forEach(item => batch.set(doc(db, 'hotinfo', item.id), item));
-    batch.set(doc(db, 'settings', 'hero'), {
-      baseImage: BG_IMAGE_1,
-      revealImage: BG_IMAGE_2,
-      allowedAdminEmails: ['aldoaldiles@gmail.com'],
-    });
-    await batch.commit();
+    setIsSyncing(true);
+    try {
+      const fallback = await loadFallbackContent();
+      const batch = writeBatch(db);
+      fallback.DESTINATIONS.forEach(item => batch.set(doc(db, 'destinations', item.id), {
+        ...item,
+        titleEn: item.titleEn || item.title,
+        categoryEn: item.categoryEn || item.category,
+        tagEn: item.tagEn || item.tag,
+        descriptionEn: item.descriptionEn || item.description,
+        highlightsEn: item.highlightsEn || item.highlights,
+        bestTimeEn: item.bestTimeEn || item.bestTime,
+        locationDetailsEn: item.locationDetailsEn || item.locationDetails
+      }));
+      fallback.CULTURE_ITEMS.forEach(item => batch.set(doc(db, 'cultures', item.id), {
+        ...item,
+        titleEn: item.titleEn || item.title,
+        categoryEn: item.categoryEn || item.category,
+        descriptionEn: item.descriptionEn || item.description,
+        philosophyEn: item.philosophyEn || item.philosophy,
+        originEn: item.originEn || item.origin
+      }));
+      fallback.CULINARY_ITEMS.forEach(item => batch.set(doc(db, 'culinaries', item.id), {
+        ...item,
+        titleEn: item.titleEn || item.title,
+        typeEn: item.typeEn || item.type,
+        originEn: item.originEn || item.origin,
+        descriptionEn: item.descriptionEn || item.description,
+        flavorProfileEn: item.flavorProfileEn || item.flavorProfile
+      }));
+      fallback.SOUVENIR_ITEMS.forEach(item => batch.set(doc(db, 'souvenirs', item.id), {
+        ...item,
+        titleEn: item.titleEn || item.title,
+        categoryEn: item.categoryEn || item.category,
+        originEn: item.originEn || item.origin,
+        descriptionEn: item.descriptionEn || item.description,
+        priceRangeEn: item.priceRangeEn || item.priceRange,
+        highlightsEn: item.highlightsEn || item.highlights
+      }));
+      fallback.EVENTS_SCHEDULE.forEach(item => batch.set(doc(db, 'events', item.id), {
+        ...item,
+        titleEn: item.titleEn || item.title,
+        scheduleEn: item.scheduleEn || item.schedule,
+        locationEn: item.locationEn || item.location,
+        descriptionEn: item.descriptionEn || item.description
+      }));
+      DOWNLOAD_ITEMS.forEach(item => batch.set(doc(db, 'downloads', item.id), item));
+      HOT_INFO_ITEMS.forEach(item => batch.set(doc(db, 'hotinfo', item.id), item));
+      batch.set(doc(db, 'settings', 'hero'), {
+        baseImage: BG_IMAGE_1,
+        revealImage: BG_IMAGE_2,
+        allowedAdminEmails: ['aldoaldiles@gmail.com'],
+      });
+      await batch.commit();
 
-    // Re-sync local cache
-    await persistCurrentToCache({
-      destinations: DESTINATIONS,
-      cultureItems: CULTURE_ITEMS,
-      culinaryItems: CULINARY_ITEMS,
-      souvenirItems: SOUVENIR_ITEMS,
-      eventItems: EVENTS_SCHEDULE,
-      downloadItems: DOWNLOAD_ITEMS,
-      hotInfoItems: HOT_INFO_ITEMS,
-    });
+      setDestinations(fallback.DESTINATIONS);
+      setCultureItems(fallback.CULTURE_ITEMS);
+      setCulinaryItems(fallback.CULINARY_ITEMS);
+      setSouvenirItems(fallback.SOUVENIR_ITEMS);
+      setEventItems(fallback.EVENTS_SCHEDULE);
+      setDownloadItems(DOWNLOAD_ITEMS);
+      setHotInfoItems(HOT_INFO_ITEMS);
+
+      // Re-sync local cache
+      await persistCurrentToCache({
+        destinations: fallback.DESTINATIONS,
+        cultureItems: fallback.CULTURE_ITEMS,
+        culinaryItems: fallback.CULINARY_ITEMS,
+        souvenirItems: fallback.SOUVENIR_ITEMS,
+        eventItems: fallback.EVENTS_SCHEDULE,
+        downloadItems: DOWNLOAD_ITEMS,
+        hotInfoItems: HOT_INFO_ITEMS,
+      });
+    } catch (err) {
+      console.error('Failed to seed data:', err);
+      throw err;
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
-  const getDestinationsWithEn = () => DESTINATIONS.map(item => ({
+  const getDestinationsWithEn = (items: Destination[] = destinations) => items.map(item => ({
     ...item,
     titleEn: item.titleEn || item.title,
     categoryEn: item.categoryEn || item.category,
@@ -647,7 +705,7 @@ export function useData() {
     locationDetailsEn: item.locationDetailsEn || item.locationDetails
   }));
 
-  const getCultureWithEn = () => CULTURE_ITEMS.map(item => ({
+  const getCultureWithEn = (items: CultureItem[] = cultureItems) => items.map(item => ({
     ...item,
     titleEn: item.titleEn || item.title,
     categoryEn: item.categoryEn || item.category,
@@ -656,7 +714,7 @@ export function useData() {
     originEn: item.originEn || item.origin
   }));
 
-  const getCulinaryWithEn = () => CULINARY_ITEMS.map(item => ({
+  const getCulinaryWithEn = (items: CulinaryItem[] = culinaryItems) => items.map(item => ({
     ...item,
     titleEn: item.titleEn || item.title,
     typeEn: item.typeEn || item.type,
@@ -665,7 +723,7 @@ export function useData() {
     flavorProfileEn: item.flavorProfileEn || item.flavorProfile
   }));
 
-  const getEventsWithEn = () => EVENTS_SCHEDULE.map(item => ({
+  const getEventsWithEn = (items: EventItem[] = eventItems) => items.map(item => ({
     ...item,
     titleEn: item.titleEn || item.title,
     scheduleEn: item.scheduleEn || item.schedule,
@@ -749,11 +807,11 @@ export function useData() {
   };
 
   return {
-    destinations: destinations.length > 0 ? destinations : getDestinationsWithEn(),
-    cultureItems: cultureItems.length > 0 ? cultureItems : getCultureWithEn(),
-    culinaryItems: culinaryItems.length > 0 ? culinaryItems : getCulinaryWithEn(),
-    souvenirItems: souvenirItems.length > 0 ? souvenirItems : SOUVENIR_ITEMS,
-    eventItems: eventItems.length > 0 ? eventItems : getEventsWithEn(),
+    destinations: destinations.length > 0 ? getDestinationsWithEn(destinations) : [],
+    cultureItems: cultureItems.length > 0 ? getCultureWithEn(cultureItems) : [],
+    culinaryItems: culinaryItems.length > 0 ? getCulinaryWithEn(culinaryItems) : [],
+    souvenirItems: souvenirItems.length > 0 ? souvenirItems : [],
+    eventItems: eventItems.length > 0 ? getEventsWithEn(eventItems) : [],
     pendingEvents,
     downloadItems: downloadItems.length > 0 ? downloadItems : DOWNLOAD_ITEMS,
     hotInfoItems: hotInfoItems.length > 0 ? hotInfoItems : HOT_INFO_ITEMS,

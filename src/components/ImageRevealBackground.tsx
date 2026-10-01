@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BG_IMAGE_1, BG_IMAGE_2 } from '../data/content';
+import { BG_IMAGE_1, BG_IMAGE_2 } from '../data/staticConfig';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
 
 interface ImageRevealBackgroundProps {
