@@ -2790,7 +2790,9 @@ export const DOWNLOAD_ITEMS: DownloadItem[] = [
     description: 'Panduan lengkap komprehensif berisi rekomendasi seluruh destinasi, adat budaya, kuliner, dan tips perjalanan.',
     descriptionEn: 'Comprehensive guide with complete destinations, cultural heritage, authentic cuisine, and travel tips.',
     filename: 'malala-panduan-wisata-sumbar-2026.pdf',
+    filenameEn: 'malala-tourism-guide-sumbar-2026-en.pdf',
     content: '/downloads/malala-panduan-wisata-sumbar-2026.pdf',
+    contentEn: '/downloads/malala-tourism-guide-sumbar-2026-en.pdf',
     mimeType: 'application/pdf'
   },
   {
@@ -2805,7 +2807,9 @@ export const DOWNLOAD_ITEMS: DownloadItem[] = [
     description: 'E-Book resmi kalender seluruh festival budaya, seni tradisi Minangkabau, dan agenda Kharisma Event Nusantara (KEN) 2026.',
     descriptionEn: 'Official e-book featuring all cultural festivals, traditional art events, and Karisma Event Nusantara (KEN) 2026 agenda.',
     filename: 'kalender-event-sumbar-2026.pdf',
+    filenameEn: 'kalender-event-sumbar-2026-en.pdf',
     content: '/downloads/kalender-event-sumbar-2026.pdf',
+    contentEn: '/downloads/kalender-event-sumbar-2026-en.pdf',
     mimeType: 'application/pdf'
   }
 ];

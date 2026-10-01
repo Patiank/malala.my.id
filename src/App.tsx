@@ -14,7 +14,7 @@ import { useData } from './data/useData';
 import { Language } from './lib/translations';
 import { logTourismSignal } from './utils/telemetry';
 
-import { fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { fetchAiHotInfo, getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -50,27 +50,36 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dataStore = useData();
 
-  // Smoothly fade out and dismiss the pre-hydration brand splash loader
+  // Smoothly fade out and dismiss the pre-hydration brand splash loader ONLY when React has painted
   useEffect(() => {
-    const splash = document.getElementById('app-splash-loader');
-    if (splash) {
-      // Small 80ms delay to ensure browser has painted initial React frame
-      const fadeTimer = setTimeout(() => {
-        splash.style.opacity = '0';
-        splash.style.pointerEvents = 'none';
-      }, 80);
+    let fadeTimer: NodeJS.Timeout | null = null;
+    let cleanupTimer: NodeJS.Timeout | null = null;
 
-      const cleanupTimer = setTimeout(() => {
-        if (splash.parentNode) {
-          splash.parentNode.removeChild(splash);
+    // Use double requestAnimationFrame to ensure browser has completed layout & paint of React DOM
+    const rId = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const splash = document.getElementById('app-splash-loader');
+        if (splash) {
+          fadeTimer = setTimeout(() => {
+            splash.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+            splash.style.opacity = '0';
+            splash.style.pointerEvents = 'none';
+          }, 150);
+
+          cleanupTimer = setTimeout(() => {
+            if (splash.parentNode) {
+              splash.parentNode.removeChild(splash);
+            }
+          }, 650);
         }
-      }, 420);
+      });
+    });
 
-      return () => {
-        clearTimeout(fadeTimer);
-        clearTimeout(cleanupTimer);
-      };
-    }
+    return () => {
+      cancelAnimationFrame(rId);
+      if (fadeTimer) clearTimeout(fadeTimer);
+      if (cleanupTimer) clearTimeout(cleanupTimer);
+    };
   }, []);
 
   // Background translation pre-fetching for instant smooth English experience
@@ -80,46 +89,44 @@ export default function App() {
     }
   }, [dataStore.hotInfoItems]);
 
-  // Automatic 2-hour refresh for Hot Info news ticker via Live RSS & AI (National Indonesia tourism news)
+  // Automatic Daily 03:00 AM WIB (Waktu Indonesia Barat, UTC+7) Hot Info News Refresh
   useEffect(() => {
-    const TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 7,200,000 ms
+    let timerId: any = null;
 
-    const autoRefresh = async () => {
+    const checkAndRunDailyRefresh = async () => {
       try {
-        const lastRefreshStr = localStorage.getItem('malala_hotinfo_last_auto_refresh');
-        const lastRefreshTime = lastRefreshStr ? parseInt(lastRefreshStr, 10) : 0;
-        const now = Date.now();
+        const { cycleId, msUntilNextRun } = getWibNewsCycleInfo();
+        const lastCycle = localStorage.getItem('malala_hotinfo_last_wib_cycle');
 
-        if (now - lastRefreshTime > TWO_HOURS_MS) {
+        // Only run if the 03:00 WIB daily cycle has not been processed yet
+        if (lastCycle !== cycleId) {
           setIsRefreshingTicker(true);
           const data = await fetchAiHotInfo(lang);
           if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
             await dataStore.updateHotInfoItems(data);
-            localStorage.setItem('malala_hotinfo_last_auto_refresh', now.toString());
+            localStorage.setItem('malala_hotinfo_last_wib_cycle', cycleId);
+            console.log(`[AI Hot Info] Berita berhasil diperbarui secara harian untuk siklus 03:00 WIB (${cycleId})`);
           }
         }
+
+        // Schedule timer precisely for the next 03:00 AM WIB (capped at 24 hours max)
+        const safeDelay = Math.min(msUntilNextRun + 1000, 24 * 60 * 60 * 1000);
+        timerId = setTimeout(checkAndRunDailyRefresh, safeDelay);
       } catch (e) {
-        console.warn("Auto-refresh hot info error:", e);
+        console.warn("Daily 03:00 WIB hot info auto-refresh notice:", e);
       } finally {
         setIsRefreshingTicker(false);
       }
     };
 
-    // Initial check on load after 2s
-    const initialTimer = setTimeout(() => {
-      autoRefresh();
-    }, 2000);
-
-    // Re-check every 2 hours while the app is open
-    const intervalTimer = setInterval(() => {
-      autoRefresh();
-    }, TWO_HOURS_MS);
+    // Initial check after 3 seconds on app mount
+    const initTimer = setTimeout(checkAndRunDailyRefresh, 3000);
 
     return () => {
-      clearTimeout(initialTimer);
-      clearInterval(intervalTimer);
+      clearTimeout(initTimer);
+      if (timerId) clearTimeout(timerId);
     };
-  }, []);
+  }, [lang, dataStore]);
 
   const handleRefreshTicker = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -128,14 +135,15 @@ export default function App() {
       const data = await fetchAiHotInfo(lang);
       if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
         await dataStore.updateHotInfoItems(data);
-        localStorage.setItem('malala_hotinfo_last_auto_refresh', Date.now().toString());
+        const { cycleId } = getWibNewsCycleInfo();
+        localStorage.setItem('malala_hotinfo_last_wib_cycle', cycleId);
         setToasts((prev) => [
           ...prev,
           {
             id: `toast-${Date.now()}`,
             message: lang === 'en'
               ? 'Real-time Indonesia tourism news updated successfully!'
-              : 'Berita pariwisata real-time Indonesia berhasil diperbarui!',
+              : 'Berita pariwisata Indonesia berhasil diperbarui!',
             type: 'info'
           }
         ]);

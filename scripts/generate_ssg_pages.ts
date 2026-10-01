@@ -241,25 +241,25 @@ export function generateSsg() {
 
   console.log('📄 Mengoptimasi Homepage dengan FAQPage Schema & Organization JSON-LD...');
   const homeContent = `
-    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
-      <header style="margin-bottom: 2.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat &amp; Panduan Pariwisata Sumbar 2026 (MALALA)</h1>
-        <p style="font-size: 1.15rem; color: #475569; max-width: 820px; margin: 0 auto;">Portal resmi panduan pariwisata Sumatera Barat terlengkap: eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, kalender pariwisata Sumbar &amp; Karisma Event Nusantara (KEN) 2026, serta asisten AI Uni Mala.</p>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #cbd5e1; line-height: 1.7; background: #070a12;">
+      <header style="margin-bottom: 2.5rem; text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 2rem;">
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat &amp; Panduan Pariwisata Sumbar 2026 (MALALA)</h1>
+        <p style="font-size: 1.15rem; color: #94a3b8; max-width: 820px; margin: 0 auto;">Portal resmi panduan pariwisata Sumatera Barat terlengkap: eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, kalender pariwisata Sumbar &amp; Karisma Event Nusantara (KEN) 2026, serta asisten AI Uni Mala.</p>
         <nav style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="/destinasi" style="color: #dc2626; font-weight: 600; text-decoration: none;">Jelajah 50+ Destinasi &rarr;</a>
-          <a href="/kebudayaan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
-          <a href="/kuliner" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kuliner Autentik &rarr;</a>
-          <a href="/event" style="color: #dc2626; font-weight: 600; text-decoration: none;">Kalender Event 2026 &rarr;</a>
-          <a href="/berita" style="color: #dc2626; font-weight: 600; text-decoration: none;">Berita &amp; Info Terkini &rarr;</a>
-          <a href="/unduhan" style="color: #dc2626; font-weight: 600; text-decoration: none;">Download E-Book PDF &rarr;</a>
+          <a href="/destinasi" style="color: #ef4444; font-weight: 600; text-decoration: none;">Jelajah 50+ Destinasi &rarr;</a>
+          <a href="/kebudayaan" style="color: #ef4444; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
+          <a href="/kuliner" style="color: #ef4444; font-weight: 600; text-decoration: none;">Kuliner Autentik &rarr;</a>
+          <a href="/event" style="color: #ef4444; font-weight: 600; text-decoration: none;">Kalender Event 2026 &rarr;</a>
+          <a href="/berita" style="color: #ef4444; font-weight: 600; text-decoration: none;">Berita &amp; Info Terkini &rarr;</a>
+          <a href="/unduhan" style="color: #ef4444; font-weight: 600; text-decoration: none;">Download E-Book PDF &rarr;</a>
         </nav>
       </header>
-      <section style="margin-top: 3rem; background: #f8fafc; padding: 2rem; border-radius: 1rem; border: 1px solid #e2e8f0;">
-        <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 1.5rem;">Tanya Jawab Seputar Pariwisata Sumatera Barat &amp; Pariwisata Sumbar (FAQ)</h2>
+      <section style="margin-top: 3rem; background: #0f172a; padding: 2rem; border-radius: 1rem; border: 1px solid #1e293b;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin-bottom: 1.5rem;">Tanya Jawab Seputar Pariwisata Sumatera Barat &amp; Pariwisata Sumbar (FAQ)</h2>
         ${FAQS.map(f => `
-          <article style="margin-bottom: 1.5rem; border-bottom: 1px solid #cbd5e1; padding-bottom: 1rem;">
-            <h3 style="font-size: 1.15rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem;">${escapeHtml(f.question)}</h3>
-            <p style="color: #475569;">${escapeHtml(f.answer)}</p>
+          <article style="margin-bottom: 1.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 1rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 600; color: #f1f5f9; margin-bottom: 0.5rem;">${escapeHtml(f.question)}</h3>
+            <p style="color: #94a3b8;">${escapeHtml(f.answer)}</p>
           </article>
         `).join('')}
       </section>
@@ -278,31 +278,31 @@ export function generateSsg() {
   // 2. GENERATE DESTINASI CATEGORY DIRECTORY PAGE (/destinasi)
   console.log('📄 Mengoptimasi Halaman Direktori /destinasi dengan Katalog 50 Destinasi Lengkap...');
   const destinasiCatalogHtml = `
-    <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
-      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Destinasi</span>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #cbd5e1; line-height: 1.7; background: #070a12;">
+      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #94a3b8;">
+        <a href="/" style="color: #94a3b8; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #f8fafc; font-weight: 600;">Destinasi</span>
       </nav>
-      <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 50+ Destinasi Wisata Terbaik di Sumatera Barat 2026</h1>
-        <p style="font-size: 1.15rem; color: #475569;">Jelajahi keindahan alam Bukit Barisan, geopark tebing granit Lembah Harau, danau vulkanik Singkarak & Maninjau, surga bahari Mandeh & Mentawai, serta desa wisata terindah di Ranah Minang.</p>
+      <header style="margin-bottom: 3rem; border-bottom: 1px solid #1e293b; padding-bottom: 2rem;">
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem;">Katalog 50+ Destinasi Wisata Terbaik di Sumatera Barat 2026</h1>
+        <p style="font-size: 1.15rem; color: #94a3b8;">Jelajahi keindahan alam Bukit Barisan, geopark tebing granit Lembah Harau, danau vulkanik Singkarak & Maninjau, surga bahari Mandeh & Mentawai, serta desa wisata terindah di Ranah Minang.</p>
       </header>
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
         ${destinations.map(d => {
           const slug = slugify(d.title);
           const ratingSummary = getDestinationRatingSummary(d.id, d.title);
           return `
-            <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <article style="background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
               <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">
-                <a href="/destinasi/${slug}" style="color: #0f172a; text-decoration: none;">${escapeHtml(d.title)}</a>
+                <a href="/destinasi/${slug}" style="color: #f8fafc; text-decoration: none;">${escapeHtml(d.title)}</a>
               </h2>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
-                <p style="font-size: 0.875rem; color: #dc2626; font-weight: 600; margin: 0;">📍 ${escapeHtml(d.regency || 'Sumatera Barat')} • <span style="color: #64748b;">${escapeHtml(d.category || 'Wisata Alam')}</span></p>
-                <span style="background: #fef3c7; color: #b45309; font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.25rem;">
+                <p style="font-size: 0.875rem; color: #ef4444; font-weight: 600; margin: 0;">📍 ${escapeHtml(d.regency || 'Sumatera Barat')} • <span style="color: #94a3b8;">${escapeHtml(d.category || 'Wisata Alam')}</span></p>
+                <span style="background: #451a03; color: #fbbf24; font-size: 0.8rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 0.25rem;">
                   ⭐ ${ratingSummary.rating.toFixed(1)} (${ratingSummary.reviewCount})
                 </span>
               </div>
-              <p style="color: #475569; font-size: 0.95rem; margin-bottom: 1rem;">${escapeHtml((d.description || '').substring(0, 180))}...</p>
-              <a href="/destinasi/${slug}" style="display: inline-block; color: #dc2626; font-weight: 600; text-decoration: none; font-size: 0.95rem;">Lihat Panduan & Rute Lengkap &rarr;</a>
+              <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1rem;">${escapeHtml((d.description || '').substring(0, 180))}...</p>
+              <a href="/destinasi/${slug}" style="display: inline-block; color: #ef4444; font-weight: 600; text-decoration: none; font-size: 0.95rem;">Lihat Panduan & Rute Lengkap &rarr;</a>
             </article>
           `;
         }).join('')}
@@ -331,26 +331,26 @@ export function generateSsg() {
   // 3. GENERATE KEBUDAYAAN CATEGORY DIRECTORY PAGE (/kebudayaan)
   console.log('📄 Mengoptimasi Halaman Direktori /kebudayaan dengan Katalog 30 Warisan Budaya...');
   const kebudayaanCatalogHtml = `
-    <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
-      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #64748b;">
-        <a href="/" style="color: #64748b; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #0f172a; font-weight: 600;">Kebudayaan</span>
+    <div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #cbd5e1; line-height: 1.7; background: #070a12;">
+      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #94a3b8;">
+        <a href="/" style="color: #94a3b8; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #f8fafc; font-weight: 600;">Kebudayaan</span>
       </nav>
-      <header style="margin-bottom: 3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #0f172a; margin-bottom: 0.75rem;">Katalog 30+ Warisan Adat & Seni Budaya Minangkabau</h1>
-        <p style="font-size: 1.15rem; color: #475569;">Eksplorasi keluhuran filosofi Adat Basandi Syarak, Syarak Basandi Kitabullah, sistem matrilineal, kemegahan arsitektur Rumah Gadang, Tari Piring, bela diri Silek, dan tenun pusaka Pandai Sikek.</p>
+      <header style="margin-bottom: 3rem; border-bottom: 1px solid #1e293b; padding-bottom: 2rem;">
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem;">Katalog 30+ Warisan Adat & Seni Budaya Minangkabau</h1>
+        <p style="font-size: 1.15rem; color: #94a3b8;">Eksplorasi keluhuran filosofi Adat Basandi Syarak, Syarak Basandi Kitabullah, sistem matrilineal, kemegahan arsitektur Rumah Gadang, Tari Piring, bela diri Silek, dan tenun pusaka Pandai Sikek.</p>
       </header>
       <section style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
         ${cultureItems.map(c => {
           const slug = slugify(c.title);
           return `
-            <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+            <article style="background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
               <h2 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem;">
-                <a href="/kebudayaan/${slug}" style="color: #0f172a; text-decoration: none;">${escapeHtml(c.title)}</a>
+                <a href="/kebudayaan/${slug}" style="color: #f8fafc; text-decoration: none;">${escapeHtml(c.title)}</a>
               </h2>
-              <p style="font-size: 0.875rem; color: #b45309; font-weight: 600; margin-bottom: 0.75rem;">🏛️ ${escapeHtml(c.category || 'Tradisi Adat')} • <span style="color: #64748b;">${escapeHtml(c.origin || 'Minangkabau')}</span></p>
-              ${c.philosophy ? `<p style="font-size: 0.9rem; color: #047857; font-style: italic; margin-bottom: 0.75rem;">"${escapeHtml(c.philosophy)}"</p>` : ''}
-              <p style="color: #475569; font-size: 0.95rem; margin-bottom: 1rem;">${escapeHtml((c.description || '').substring(0, 180))}...</p>
-              <a href="/kebudayaan/${slug}" style="display: inline-block; color: #dc2626; font-weight: 600; text-decoration: none; font-size: 0.95rem;">Baca Filosofi & Sejarah &rarr;</a>
+              <p style="font-size: 0.875rem; color: #f59e0b; font-weight: 600; margin-bottom: 0.75rem;">🏛️ ${escapeHtml(c.category || 'Tradisi Adat')} • <span style="color: #94a3b8;">${escapeHtml(c.origin || 'Minangkabau')}</span></p>
+              ${c.philosophy ? `<p style="font-size: 0.9rem; color: #10b981; font-style: italic; margin-bottom: 0.75rem;">"${escapeHtml(c.philosophy)}"</p>` : ''}
+              <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1rem;">${escapeHtml((c.description || '').substring(0, 180))}...</p>
+              <a href="/kebudayaan/${slug}" style="display: inline-block; color: #ef4444; font-weight: 600; text-decoration: none; font-size: 0.95rem;">Baca Filosofi & Sejarah &rarr;</a>
             </article>
           `;
         }).join('')}

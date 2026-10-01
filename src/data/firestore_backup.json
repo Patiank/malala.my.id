@@ -4840,6 +4840,7 @@
       "typeEn": "PNG",
       "titleEn": "Visit Beautiful West Sumatra Logo",
       "filename": "Logo Visit Beautiful West Sumatra.png",
+      "filenameEn": "Visit Beautiful West Sumatra Logo.png",
       "descriptionEn": "Visit Beautiful West Sumatra Logo",
       "categoryEn": "Logo",
       "description": "Logo Visit Beautiful West Sumatra.png"
@@ -4855,6 +4856,7 @@
       "size": "96 KB",
       "type": "PNG",
       "filename": "Logo Wonderful Indonesia.png",
+      "filenameEn": "Wonderful Indonesia Logo.png",
       "mimeType": "application/pdf",
       "titleEn": "Wonderful Indonesia Logo",
       "descriptionEn": "Wonderful Indonesia Logo"
@@ -4863,12 +4865,17 @@
       "id": "item_1787199630372",
       "mimeType": "application/pdf",
       "title": "Logo Pemerintah Provinsi Sumatera Barat",
+      "titleEn": "West Sumatra Provincial Government Logo",
       "filename": "Logo Pemerintah Provinsi Sumatera Barat.png",
+      "filenameEn": "West Sumatra Provincial Government Logo.png",
       "content": "https://res.cloudinary.com/uupbxcw5/image/upload/v1787199497/Provinsi_Sumatra_Barat_vector_logo_ktzcbe.png",
       "category": "Logo",
+      "categoryEn": "Logo",
       "type": "PNG",
+      "typeEn": "PNG",
       "size": "251 KB",
-      "description": "Logo Pemerintah Provinsi Sumatera Barat"
+      "description": "Logo Pemerintah Provinsi Sumatera Barat",
+      "descriptionEn": "West Sumatra Provincial Government Logo"
     }
   ],
   "hotInfoItems": [],

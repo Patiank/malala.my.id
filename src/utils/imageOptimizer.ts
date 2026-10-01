@@ -107,6 +107,7 @@ function blobToDataURL(blob: Blob): Promise<string> {
 
 /**
  * Processes and optimizes an image file directly on the client using HTML5 Canvas WebP compression.
+ * Targets a lightweight 60-90 KB payload so documents in Firestore remain tiny, ultra-fast, and bandwidth-friendly.
  * Completely free, runs 100% locally in browser, zero Blaze Plan needed, and instantly fast (~200ms)!
  */
 export async function uploadCatalogImage(
@@ -116,17 +117,23 @@ export async function uploadCatalogImage(
 ): Promise<string> {
   try {
     // Stage 1: Reading file & starting compression
-    if (onProgress) onProgress(25);
+    if (onProgress) onProgress(20);
 
-    // Stage 2: Client-side WebP compression (1280x960 max, quality 0.80)
-    let compressedBlob = await compressImage(file, 1280, 960, 0.80);
-    if (onProgress) onProgress(60);
+    // Stage 2: Client-side WebP compression (1200x900 max, quality 0.78)
+    let compressedBlob = await compressImage(file, 1200, 900, 0.78);
+    if (onProgress) onProgress(50);
 
-    // Safeguard: If still larger than 250KB, compress adaptively to ensure light payload (<100KB)
-    if (compressedBlob.size > 250 * 1024) {
-      compressedBlob = await compressImage(file, 960, 720, 0.72);
+    // Safeguard Tier 1: If larger than 100KB, adaptively compress to 1000x750 at 0.72
+    if (compressedBlob.size > 100 * 1024) {
+      compressedBlob = await compressImage(file, 1000, 750, 0.72);
+      if (onProgress) onProgress(70);
     }
-    if (onProgress) onProgress(85);
+
+    // Safeguard Tier 2: If still larger than 85KB, compress to 880x660 at 0.68
+    if (compressedBlob.size > 85 * 1024) {
+      compressedBlob = await compressImage(file, 880, 660, 0.68);
+      if (onProgress) onProgress(85);
+    }
 
     // Stage 3: Generate Base64 Data URL for instant preview and Firestore persistence
     const dataUrl = await blobToDataURL(compressedBlob);
@@ -136,8 +143,8 @@ export async function uploadCatalogImage(
   } catch (err: any) {
     console.warn('Image compression fallback:', err);
     if (onProgress) onProgress(100);
-    // If original file is already small (< 400KB), allow it; otherwise throw error to protect Firestore 1MB quota
-    if (file.size < 400 * 1024) {
+    // If original file is already small (< 200KB), allow it; otherwise throw error to protect Firestore quota
+    if (file.size < 200 * 1024) {
       return await blobToDataURL(file);
     }
     throw new Error('Resolusi foto terlalu tinggi dan gagal dikompresi. Silakan gunakan foto berukuran di bawah 5MB atau format JPG/PNG standar.');

@@ -47,9 +47,13 @@ export function isCookieConsentAccepted(): boolean {
 
 // Throttling map to avoid duplicate spam signals
 const recentSignals = new Set<string>();
+const MAX_SIGNALS_PER_SESSION = 10;
+const SESSION_COUNTER_KEY = 'malala_signals_count';
 
 /**
  * Log an anonymous tourism signal for intelligence analysis (Dinas Pariwisata).
+ * Optimized for Firebase Spark Plan: deduplicates redundant signals and caps writes per session
+ * to prevent exhausting daily write quotas.
  * Fully non-blocking, fail-safe, and privacy-compliant.
  */
 export async function logTourismSignal(
@@ -59,11 +63,30 @@ export async function logTourismSignal(
   if (typeof window === 'undefined') return;
 
   try {
-    // Unique deduplication key for 10 seconds (e.g. rapid multiple clicks)
+    // 1. Safeguard: Limit session_start to only 1 time per browser session
+    if (eventType === 'session_start') {
+      if (sessionStorage.getItem('signal_session_started')) return;
+      sessionStorage.setItem('signal_session_started', 'true');
+    }
+
+    // 2. Safeguard: Deduplicate destination and event views within the same session
+    if (eventType === 'view_destination' || eventType === 'view_event') {
+      const viewKey = `signal_${eventType}_${payload.targetId || payload.title || ''}`;
+      if (sessionStorage.getItem(viewKey)) return;
+      sessionStorage.setItem(viewKey, '1');
+    }
+
+    // 3. Safeguard: Global write cap per session (max 10 writes per user session)
+    const currentCount = parseInt(sessionStorage.getItem(SESSION_COUNTER_KEY) || '0', 10);
+    if (currentCount >= MAX_SIGNALS_PER_SESSION) {
+      return; // Cap reached, preserve Firestore daily write quota
+    }
+
+    // 4. Short-term deduplication key for 15 seconds (e.g. rapid multiple clicks)
     const dedupKey = `${eventType}_${payload.targetId || payload.category || payload.duration || ''}`;
     if (recentSignals.has(dedupKey)) return;
     recentSignals.add(dedupKey);
-    setTimeout(() => recentSignals.delete(dedupKey), 10000);
+    setTimeout(() => recentSignals.delete(dedupKey), 15000);
 
     const visitorId = getAnonymousVisitorId();
     const sessionId = getSessionId();
@@ -77,6 +100,9 @@ export async function logTourismSignal(
       language: navigator.language || 'id-ID',
       ...payload,
     };
+
+    // Increment session counter
+    sessionStorage.setItem(SESSION_COUNTER_KEY, (currentCount + 1).toString());
 
     // Save asynchronously without blocking UI
     addDoc(collection(db, 'tourism_signals'), signalDoc).catch(() => {

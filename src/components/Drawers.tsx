@@ -4355,7 +4355,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </span>
                         <button
                           onClick={() => {
-                            triggerDownload(item.filename, item.content, item.mimeType);
+                            const dlFilename = isEn && item.filenameEn ? item.filenameEn : item.filename;
+                            const dlContent = isEn && item.contentEn ? item.contentEn : item.content;
+                            triggerDownload(dlFilename, dlContent, item.mimeType);
                             setDownloadSuccessMessage(isEn ? `Successfully downloaded "${item.titleEn || item.title}"` : `Berhasil mengunduh "${item.title}"`);
                             setTimeout(() => setDownloadSuccessMessage(null), 4000);
                           }}

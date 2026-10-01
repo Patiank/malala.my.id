@@ -168,7 +168,9 @@ export interface DownloadItem {
   description: string;
   descriptionEn?: string;
   filename: string;
+  filenameEn?: string;
   content: string;
+  contentEn?: string;
   mimeType: string;
 }
 

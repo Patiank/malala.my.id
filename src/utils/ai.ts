@@ -836,7 +836,7 @@ export async function fetchAiItinerary(params: any) {
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   const isValidGeminiKey = Boolean(viteApiKey && viteApiKey.length > 20 && !viteApiKey.includes("Dummy"));
   if (isValidGeminiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       if (isClientModelInCooldown(modelName)) {
         continue;
@@ -1048,7 +1048,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       if (isClientModelInCooldown(modelName)) {
         continue;
@@ -1457,7 +1457,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2720,6 +2720,55 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   return finalDeduped.length > 0 ? finalDeduped : null;
 }
 
+/**
+ * Helper to calculate the current WIB (Waktu Indonesia Barat, UTC+7) daily 03:00 AM news cycle.
+ * - The cycle updates precisely once a day at 03:00 AM WIB.
+ * - Any time before 03:00 AM WIB belongs to the previous day's cycle.
+ * - Returns cycleId (YYYY-MM-DD), current WIB date/time, and msUntilNextRun to the next 03:00 AM WIB.
+ */
+export function getWibNewsCycleInfo(): {
+  cycleId: string;
+  wibDateString: string;
+  wibTimeString: string;
+  msUntilNextRun: number;
+} {
+  const now = new Date();
+  // UTC in ms
+  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+  // WIB is UTC + 7 hours (25,200,000 ms)
+  const wibMs = utcMs + (7 * 3600000);
+  const wibDate = new Date(wibMs);
+
+  const hours = wibDate.getHours();
+
+  // If before 03:00 AM WIB, the active cycle belongs to yesterday
+  const cycleDate = new Date(wibDate);
+  if (hours < 3) {
+    cycleDate.setDate(cycleDate.getDate() - 1);
+  }
+
+  const yyyy = cycleDate.getFullYear();
+  const mm = String(cycleDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(cycleDate.getDate()).padStart(2, '0');
+  const cycleId = `${yyyy}-${mm}-${dd}`;
+
+  // Next scheduled 03:00 AM WIB
+  const nextTargetWib = new Date(wibDate);
+  if (hours >= 3) {
+    nextTargetWib.setDate(nextTargetWib.getDate() + 1);
+  }
+  nextTargetWib.setHours(3, 0, 0, 0);
+
+  const msUntilNextRun = Math.max(1000, nextTargetWib.getTime() - wibDate.getTime());
+
+  return {
+    cycleId,
+    wibDateString: `${yyyy}-${mm}-${dd}`,
+    wibTimeString: wibDate.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB',
+    msUntilNextRun
+  };
+}
+
 export async function fetchAiHotInfo(language: string = 'id') {
   // 1. Try local server API if running in node environment
   try {
@@ -2743,7 +2792,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
   // 2. Client-side Gemini AI if API key is provided
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       try {
         const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2911,7 +2960,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+  const modelsToTry = ['gemini-3.8-flash'];
   for (const model of modelsToTry) {
     try {
       const ai = new GoogleGenAI({ apiKey: viteApiKey });
@@ -2998,7 +3047,7 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+    const modelsToTry = ['gemini-3.8-flash'];
     for (const model of modelsToTry) {
       try {
         const res = await ai.models.generateContent({

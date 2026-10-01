@@ -240,7 +240,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
   ]
 }`;
 
-      const modelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+      const modelsToTry = ['gemini-3.8-flash'];
       let parsedData = null;
 
       for (const modelName of modelsToTry) {
@@ -370,7 +370,7 @@ ${eventList}
       });
 
       let reply = '';
-      const chatModelsToTry = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-flash-latest'];
+      const chatModelsToTry = ['gemini-3.8-flash'];
       const needsSearch = /kapan|jadwal|tanggal|hari ini|besok|minggu ini|cuaca|hujan|banjir|longsor|buka|tutup|tiket|berita|terbaru|terkini|kondisi jalan|kapal|pesawat|status|macet/i.test(cleanMsg);
 
       for (const modelName of chatModelsToTry) {
@@ -538,7 +538,7 @@ Formatkan output HANYA dalam format JSON valid Array of Objects:
 
 Keluarkan HANYA array JSON valid tanpa markdown backticks atau teks pengantar lainnya.`;
 
-          const hotInfoModels = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+          const hotInfoModels = ['gemini-3.8-flash'];
           for (const modelName of hotInfoModels) {
             try {
               const response = await ai.models.generateContent({
@@ -696,7 +696,7 @@ ${typePrompt}
 
 Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
 
-      const itemModels = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest'];
+      const itemModels = ['gemini-3.8-flash'];
       let parsedData = null;
 
       for (const modelName of itemModels) {
@@ -746,6 +746,67 @@ Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau tek
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
+
+  // Daily 03:00 AM WIB (UTC+7) Scheduled Background News Auto-Refresh Worker
+  function setupDailyWibNewsCron() {
+    function getWibCycle() {
+      const now = new Date();
+      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+      const wibMs = utcMs + (7 * 3600000);
+      const wibDate = new Date(wibMs);
+      const hours = wibDate.getHours();
+      const cycleDate = new Date(wibDate);
+      if (hours < 3) cycleDate.setDate(cycleDate.getDate() - 1);
+      const yyyy = cycleDate.getFullYear();
+      const mm = String(cycleDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(cycleDate.getDate()).padStart(2, '0');
+      const cycleId = `${yyyy}-${mm}-${dd}`;
+      const nextTarget = new Date(wibDate);
+      if (hours >= 3) nextTarget.setDate(nextTarget.getDate() + 1);
+      nextTarget.setHours(3, 0, 0, 0);
+      const msUntilNext = Math.max(1000, nextTarget.getTime() - wibDate.getTime());
+      return { cycleId, msUntilNext, wibDate };
+    }
+
+    let lastExecutedCycle = '';
+
+    const checkSchedule = async () => {
+      try {
+        const { cycleId, wibDate } = getWibCycle();
+        const currentHours = wibDate.getHours();
+
+        if (currentHours === 3 && lastExecutedCycle !== cycleId) {
+          lastExecutedCycle = cycleId;
+          console.log(`[Server Cron] Pukul 03:00 WIB terdeteksi (${cycleId}). Menjalankan update kurasi AI berita pariwisata...`);
+          try {
+            const fetchRes = await fetch(`http://localhost:${PORT}/api/ai/fetch-hot-info`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ language: 'id' }),
+            });
+            if (fetchRes.ok) {
+              const freshNews = await fetchRes.json();
+              console.log(`[Server Cron] Sukses memperbarui ${freshNews.length} berita untuk siklus 03:00 WIB.`);
+            }
+          } catch (e: any) {
+            console.warn('[Server Cron] Gagal request auto-refresh internal:', e?.message);
+          }
+        }
+
+        // Check again every 60 seconds
+        setTimeout(checkSchedule, 60000);
+      } catch (err) {
+        console.warn('[Server Cron] Scheduler warning:', err);
+        setTimeout(checkSchedule, 60000);
+      }
+    };
+
+    // Start background checker after 10s
+    setTimeout(checkSchedule, 10000);
+    console.log('[Server Cron] Penjadwal update berita harian 03:00 WIB aktif.');
+  }
+
+  setupDailyWibNewsCron();
 }
 
 startServer();
