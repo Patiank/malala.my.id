@@ -62,16 +62,16 @@ export default function App() {
         const splash = document.getElementById('app-splash-loader');
         if (splash) {
           fadeTimer = setTimeout(() => {
-            splash.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+            splash.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
             splash.style.opacity = '0';
             splash.style.pointerEvents = 'none';
-          }, 150);
+          }, 50);
 
           cleanupTimer = setTimeout(() => {
             if (splash.parentNode) {
               splash.parentNode.removeChild(splash);
             }
-          }, 650);
+          }, 450);
         }
       });
     });

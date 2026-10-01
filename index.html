@@ -255,15 +255,16 @@
       </style>
     </noscript>
     <script>
-      // Emergency safety fallback (25s): only triggered if JavaScript is disabled or fatal script crash
+      // Ultra-Fast Auto Dismiss: Ensure splash screen NEVER blocks user for more than 1.2 seconds
       setTimeout(function() {
         var s = document.getElementById('app-splash-loader');
         if (s && s.style.opacity !== '0') {
+          s.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
           s.style.opacity = '0';
           s.style.pointerEvents = 'none';
-          setTimeout(function() { if (s && s.parentNode) s.parentNode.removeChild(s); }, 450);
+          setTimeout(function() { if (s && s.parentNode) s.parentNode.removeChild(s); }, 400);
         }
-      }, 25000);
+      }, 1200);
     </script>
 
     <!-- Fallback Semantic HTML for Search Engine Crawlers & LLM Indexers (Googlebot, Bingbot, GPTBot, Perplexity) -->

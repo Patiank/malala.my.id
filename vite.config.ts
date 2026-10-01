@@ -25,6 +25,7 @@ export default defineConfig(() => {
             dep => !dep.includes('catalog-content') &&
                    !dep.includes('vendor-pdf') &&
                    !dep.includes('vendor-leaflet') &&
+                   !dep.includes('vendor-ai') &&
                    !dep.includes('Drawers')
           );
         },
@@ -34,6 +35,9 @@ export default defineConfig(() => {
           manualChunks(id) {
             if (id.includes('src/data/content.ts') || id.includes('src\\data\\content.ts')) {
               return 'catalog-content';
+            }
+            if (id.includes('@google/genai')) {
+              return 'vendor-ai';
             }
             if (id.includes('node_modules/leaflet') || id.includes('node_modules\\leaflet')) {
               return 'vendor-leaflet';

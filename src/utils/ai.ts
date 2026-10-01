@@ -1,4 +1,8 @@
-import { GoogleGenAI } from "@google/genai";
+// Lazy dynamic loader for GoogleGenAI to keep the critical initial bundle light
+async function getGeminiClient(apiKey: string) {
+  const { GoogleGenAI } = await import("@google/genai");
+  return new GoogleGenAI({ apiKey });
+}
 
 // Fallback data when API or Gemini API key is unavailable
 export const HOT_INFO_FALLBACK = [
@@ -842,7 +846,7 @@ export async function fetchAiItinerary(params: any) {
         continue;
       }
       try {
-        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const ai = await getGeminiClient(viteApiKey);
         const isEnglish = params?.language === 'en';
         const langStr = isEnglish ? 'English' : 'Bahasa Indonesia';
         const availableDestinations = params?.availableDestinations || [];
@@ -1054,7 +1058,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
         continue;
       }
       try {
-        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const ai = await getGeminiClient(viteApiKey);
         
         // Multi-turn context
         const formattedContents: any[] = [];
@@ -1460,7 +1464,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
     const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       try {
-        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const ai = await getGeminiClient(viteApiKey);
 
         let typePrompt = '';
         if (type === 'destinations') {
@@ -2795,7 +2799,7 @@ export async function fetchAiHotInfo(language: string = 'id') {
     const modelsToTry = ['gemini-3.8-flash'];
     for (const modelName of modelsToTry) {
       try {
-        const ai = new GoogleGenAI({ apiKey: viteApiKey });
+        const ai = await getGeminiClient(viteApiKey);
         const prompt = `Anda adalah REDAKTUR JURNALISTIK PARIWISATA PROFESIONAL (standar LKBN Antara / Kompas / Tempo) yang bertugas menyusun warta pariwisata Sumatera Barat dan nasional Indonesia.
 Tugas Anda: Hasilkan 6 butir berita pariwisata resmi, mendalam, objektif, tidak bias, faktual, dan sangat informatif dalam format JSON array.
 KOMPOSISI WAJIB: TEPAT 50% Pariwisata Sumatera Barat (3 butir) dan 50% Pariwisata Nasional Indonesia (3 butir). Susun secara berselang-seling [Sumbar, Nasional, Sumbar, Nasional, Sumbar, Nasional].
@@ -2963,7 +2967,7 @@ Waktu saat ini: ${nowStr}`;
   const modelsToTry = ['gemini-3.8-flash'];
   for (const model of modelsToTry) {
     try {
-      const ai = new GoogleGenAI({ apiKey: viteApiKey });
+      const ai = await getGeminiClient(viteApiKey);
       const res = await ai.models.generateContent({
         model,
         contents: prompt,
@@ -3029,7 +3033,7 @@ export async function generateSocialMediaDigest(
   if (!viteApiKey) return fallback;
 
   try {
-    const ai = new GoogleGenAI({ apiKey: viteApiKey });
+    const ai = await getGeminiClient(viteApiKey);
     const prompt = `Anda adalah Social Media Content Specialist Pariwisata Sumatera Barat (Malala / malala.my.id).
 Buatkan konten media sosial harian yang sangat estetik, menggugah rasa rindu kampung halaman / hasrat berlibur, dan siap posting.
 
