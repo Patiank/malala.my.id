@@ -59,10 +59,10 @@ export const Header: React.FC<HeaderProps> = ({
       }}
     >
       <div className="flex items-center justify-between w-full md:w-auto">
-        {/* Logo (Left) */}
+        {/* Logo (Left) - Scaled down 50% as requested */}
         <button
           onClick={onCloseDrawer}
-          className="w-[155px] sm:w-[180px] md:w-[205px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
+          className="w-[78px] sm:w-[90px] md:w-[102px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
           {/* Default / Light Background Logo (Red + Black) */}
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Tagline Selalu Satu Baris & Pas Sejajar Lebar Logo */}
           <div
-            className="flex justify-between items-center w-full font-jakarta text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-bold mt-1 uppercase whitespace-nowrap tracking-[0.03em] select-none transition-colors duration-300"
+            className="flex justify-between items-center w-full font-jakarta text-[5px] sm:text-[5.5px] md:text-[6px] font-bold mt-0.5 uppercase whitespace-nowrap tracking-[0.02em] select-none transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
           >
             {t.logoTagline.split(' ').map((word, i) => (
