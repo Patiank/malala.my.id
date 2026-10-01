@@ -1,6 +1,4 @@
-import { Destination, CultureItem, CulinaryItem, EventItem, DownloadItem, HotInfoItem, SouvenirItem } from '../types';
-
-export * from './staticConfig';
+import { Destination, CultureItem, CulinaryItem, EventItem, SouvenirItem } from '../types';
 
 export const DESTINATIONS: Destination[] = [
   {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { X, MapPin, Check, BookOpen, Download, Printer } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_2, getDirectDriveUrl } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
+import { BG_IMAGE_2, getDirectDriveUrl } from '../data/staticConfig';
 
 interface EBookletModalProps {
   isOpen: boolean;

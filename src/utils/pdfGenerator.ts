@@ -1,6 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { Destination, CultureItem, CulinaryItem, EventItem, FormAIResponse } from '../types';
-import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE, BG_IMAGE_1 } from '../data/content';
+import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
+import { BG_IMAGE_1 } from '../data/staticConfig';
 
 interface BookletData {
   destinations?: Destination[];
