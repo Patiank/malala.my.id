@@ -346,7 +346,10 @@ export function useData() {
         console.warn('[useData] LocalCache read warning:', err);
       }
 
-      // 2. Cache miss or expired: load fallback chunk asynchronously in background
+      // 2. Cache miss or expired: wait 600ms to let the splash screen fade out & initial hero paint smoothly
+      await new Promise(resolve => setTimeout(resolve, 600));
+      if (isCancelled) return;
+
       let fallbackModule: any = null;
       try {
         fallbackModule = await loadFallbackContent();

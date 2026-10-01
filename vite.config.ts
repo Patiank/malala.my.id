@@ -19,6 +19,16 @@ export default defineConfig(() => {
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
     },
     build: {
+      modulePreload: {
+        resolveDependencies(filename, deps, { hostId, hostType }) {
+          return deps.filter(
+            dep => !dep.includes('catalog-content') &&
+                   !dep.includes('vendor-pdf') &&
+                   !dep.includes('vendor-leaflet') &&
+                   !dep.includes('Drawers')
+          );
+        },
+      },
       rollupOptions: {
         output: {
           manualChunks(id) {
