@@ -730,8 +730,12 @@ Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau tek
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
+    const hmrPort = process.env.HMR_PORT ? Number(process.env.HMR_PORT) : (PORT !== 5000 ? PORT + 20000 : undefined);
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: hmrPort ? { port: hmrPort } : true,
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);
