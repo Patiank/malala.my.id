@@ -14,7 +14,7 @@ import { getDestinationRatingSummary } from '../data/reviewsData';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS, OFFICIAL_PDF_URLS } from '../data/staticConfig';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDirectArticleUrl, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
 import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
@@ -3908,8 +3908,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch">
                       {displayedList.map((item: any, idx: number) => {
                         const categoryDisplay = isEn ? (item.categoryEn || (item.category === 'Pariwisata Sumatera Barat' ? 'West Sumatra Tourism' : 'Indonesian Tourism')) : (item.category || 'Pariwisata Indonesia');
-                        const hasExternalUrl = Boolean(item.sourceUrl && (item.sourceUrl.startsWith('http://') || item.sourceUrl.startsWith('https://')));
-                        const primaryLink = hasExternalUrl ? item.sourceUrl! : (item.actionUrl?.startsWith('http') ? item.actionUrl : '');
+                        const directNewsLink = getNewsDirectArticleUrl(item);
+                        const primaryLink = directNewsLink;
+                        const hasExternalUrl = Boolean(directNewsLink);
                         const publisherDomain = item.sourceDomain || item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
                         const mainFavicon = item.sourceIcon || (hasExternalUrl ? getPublisherFavicon(item.sourceDomain, item.sourceName) : '/favicon.ico');
                         const timeAgoText = formatNewsTimeAgo(item.date, item.createdAt, item.timeAgo, lang);
@@ -3926,13 +3927,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                               {/* News Card Banner Image: Hanya tampil jika memang diupload oleh pengguna */}
                               {Boolean((item as any).isUserUploadedImage || (item.imageUrl && item.imageUrl.startsWith('data:image/'))) && item.imageUrl && (
                                 <div
-                                  onClick={() => {
-                                    if (hasExternalUrl && primaryLink) {
-                                      window.open(primaryLink, '_blank', 'noopener,noreferrer');
-                                    } else {
-                                      onSelectNews?.(item);
-                                    }
-                                  }}
+                                  onClick={() => onSelectNews?.(item)}
                                   className="relative h-36 w-full overflow-hidden bg-gray-100 cursor-pointer"
                                 >
                                   <img
@@ -3988,13 +3983,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                                 {/* Main Headline */}
                                 <h3
-                                  onClick={() => {
-                                    if (hasExternalUrl && primaryLink) {
-                                      window.open(primaryLink, '_blank', 'noopener,noreferrer');
-                                    } else {
-                                      onSelectNews?.(item);
-                                    }
-                                  }}
+                                  onClick={() => onSelectNews?.(item)}
                                   className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer"
                                 >
                                   {getNewsDisplayTitle(item, lang)}
@@ -4025,35 +4014,19 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                             {/* Bottom Grey Action Bar / Column: Official Source Only */}
                             <div className="p-3 bg-gray-50 border-t border-gray-100 mt-auto flex flex-col gap-2">
-                              {hasExternalUrl && primaryLink ? (
-                                <button
-                                  onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
-                                  title={isEn ? `Open original story at ${publisherDomain}` : `Buka berita di situs resmi ${publisherDomain}`}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                                    <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
-                                  </div>
-                                  <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
-                                    {publisherDomain} ↗
-                                  </span>
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(item.title + ' pariwisata sumatera barat')}`, '_blank', 'noopener,noreferrer')}
-                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
-                                  title={isEn ? 'Search official publication' : 'Cari sumber rilis resmi'}
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
-                                    <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
-                                  </div>
-                                  <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
-                                    {publisherDomain || 'google.com'} ↗
-                                  </span>
-                                </button>
-                              )}
+                              <button
+                                onClick={() => window.open(directNewsLink, '_blank', 'noopener,noreferrer')}
+                                className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                title={isEn ? `Open official news at ${publisherDomain}` : `Buka berita langsung di situs resmi ${publisherDomain}`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+                                  <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
+                                </div>
+                                <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
+                                  {publisherDomain} ↗
+                                </span>
+                              </button>
                             </div>
                           </article>
                         );

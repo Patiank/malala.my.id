@@ -2,7 +2,7 @@ import React from 'react';
 import { X, MapPin, Share2, Flame, ExternalLink, BookOpen } from 'lucide-react';
 import { HotInfoItem } from '../types';
 import { Language } from '../lib/translations';
-import { getNewsDisplayTitle, formatNewsTimeAgo } from '../utils/ai';
+import { getNewsDisplayTitle, formatNewsTimeAgo, getNewsDirectArticleUrl } from '../utils/ai';
 import { getPublisherFavicon } from './Drawers';
 
 interface NewsModalProps {
@@ -20,8 +20,8 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   const tag = isEn && item.tagEn ? item.tagEn : item.tag;
   const date = isEn && item.dateEn ? item.dateEn : item.date;
   const timeAgoText = formatNewsTimeAgo(item.date, item.createdAt, item.timeAgo, lang);
-  const hasExternalUrl = Boolean(item.sourceUrl && (item.sourceUrl.startsWith('http://') || item.sourceUrl.startsWith('https://')));
-  const primaryUrl = hasExternalUrl ? item.sourceUrl! : (item.actionUrl?.startsWith('http') ? item.actionUrl : '');
+  const primaryUrl = getNewsDirectArticleUrl(item);
+  const hasExternalUrl = Boolean(primaryUrl);
   const publisherName = item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'Antara News Sumbar' : 'Media Resmi') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
   const publisherDomain = item.sourceDomain || item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
   const faviconUrl = item.sourceIcon || (hasExternalUrl ? getPublisherFavicon(item.sourceDomain, item.sourceName) : '/favicon.ico');
@@ -171,14 +171,14 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
 
         {/* Action Buttons */}
         <div className="space-y-2 pt-3 border-t border-gray-100">
-          {/* Primary Action: Direct Link to Original News (Only shown if external link exists) */}
+          {/* Primary Action: Direct Link to Original News */}
           {hasExternalUrl && primaryUrl && (
             <button
               onClick={() => window.open(primaryUrl, '_blank', 'noopener,noreferrer')}
               className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white py-3 rounded-xl font-bold text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs border border-neutral-700/70"
             >
-              <span>{isEn ? `Read Full Story on ${publisherName}` : `Buka Berita Lengkap di ${publisherName}`}</span>
-              <ExternalLink className="w-4 h-4 text-gray-300" />
+              <span>{isEn ? `Read Official Source on ${publisherName}` : `Baca Sumber Resmi di ${publisherName}`}</span>
+              <ExternalLink className="w-4 h-4 text-amber-400" />
             </button>
           )}
 

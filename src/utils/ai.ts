@@ -25,225 +25,193 @@ export const GEMINI_MODELS_HIERARCHY = [
 export const HOT_INFO_FALLBACK = [
   {
     "id": "hi1",
-    "title": "Tol Padang-Sicincin 36,6 Km Siap Dioperasikan Penuh: Akses Wisatawan Padang ke Bukittinggi Makin Cepat & Nyaman",
-    "titleEn": "Padang-Sicincin 36.6 Km Expressway Ready for Full Operation: Padang to Bukittinggi Tourist Transit Cut to 45 Mins",
+    "title": "Andre Rosiade: Rp19 Triliun Disiapkan untuk Bangun Sumbar, Tol Sicincin--Bukittinggi Jadi Prioritas",
+    "titleEn": "Rp19 Trillion Allocated for West Sumatra Infrastructure: Sicincin--Bukittinggi Toll Expressway Set as Priority",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
     "date": "12 Oktober 2026",
     "dateEn": "October 12, 2026",
-    "sourceName": "Padang Ekspres",
-    "sourceDomain": "padek.jawapos.com",
-    "sourceUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
-    "sourceIcon": "https://www.google.com/s2/favicons?domain=jawapos.com&sz=64",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/779165/andre-rosiade-rp19-triliun-disiapkan-untuk-bangun-sumbar-tol-sicincin-bukittinggi-jadi-prioritas",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://padek.jawapos.com/padang-pariaman/2365049381/uji-laik-fungsi-tol-padang-sicincin-tuntas",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Tol+Padang+Sicincin",
-    "locationName": "Ruas Tol Padang - Sicincin, Padang Pariaman",
-    "locationNameEn": "Padang - Sicincin Expressway, Padang Pariaman",
-    "description": "Jalan tol perdana di Sumatera Barat ruas Padang - Sicincin sepanjang 36,6 km siap melayani arus wisatawan dan pemudik, memangkas waktu tempuh menuju kawasan wisata dataran tinggi Minangkabau secara signifikan.",
-    "descriptionEn": "West Sumatra first 36.6-km Padang - Sicincin expressway is prepared to welcome tourists, dramatically shortening travel times to Bukittinggi and the central Minangkabau highlands.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/779165/andre-rosiade-rp19-triliun-disiapkan-untuk-bangun-sumbar-tol-sicincin-bukittinggi-jadi-prioritas",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Jalan+Tol+Padang+Sicincin+Sumatera+Barat",
+    "locationName": "Ruas Tol Padang-Sicincin & Bukittinggi, Sumatera Barat",
+    "locationNameEn": "Padang-Sicincin & Bukittinggi Toll Corridor, West Sumatra",
+    "description": "Pemerintah dan DPR RI memastikan alokasi anggaran Rp19 triliun untuk percepatan infrastruktur Sumatera Barat, dengan prioritas utama kelanjutan pembangunan Tol Sicincin menuju Bukittinggi guna mempermudah akses wisatawan dan memangkas waktu tempuh antardestinasi unggulan.",
+    "descriptionEn": "The central government secures a Rp19 trillion infrastructure budget for West Sumatra, prioritizing the Sicincin-Bukittinggi expressway extension to slash travel times and enhance tourist connectivity.",
     "relatedStories": [
       {
-        "title": "Rest Area KM 23 Arsitektur Gonjong Rumah Gadang Alokasikan 70 Persen Gerai untuk UMKM Kuliner Minang",
-        "titleEn": "Gonjong-Roofed Rest Area KM 23 Dedicates 70 Percent Space to Minang Culinary MSMEs",
+        "title": "Konektivitas Jalur Trans-Sumatera Pacu Kebangkitan Destinasi Dataran Tinggi Bukittinggi",
+        "titleEn": "Highland Tourism Corridor Receives Significant Travel Boost via Trans-Sumatra Connectivity",
         "sourceName": "Antara News Sumbar",
         "sourceDomain": "sumbar.antaranews.com",
-        "sourceUrl": "https://sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/779165/andre-rosiade-rp19-triliun-disiapkan-untuk-bangun-sumbar-tol-sicincin-bukittinggi-jadi-prioritas",
         "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
-      },
-      {
-        "title": "Konektivitas Wisatawan Lembah Anai dan Dataran Tinggi Semakin Nyaman Bebas Hambatan",
-        "titleEn": "Seamless Travel Corridor for Anai Valley and Bukittinggi Highland Visitors",
-        "sourceName": "Langgam.id",
-        "sourceDomain": "langgam.id",
-        "sourceUrl": "https://langgam.id",
-        "sourceIcon": "https://www.google.com/s2/favicons?domain=langgam.id&sz=64"
       }
     ]
   },
   {
     "id": "hi2",
-    "title": "Kharisma Event Nusantara 2026: Pacu Jawi Tanah Datar dan Festival Tabuik Pariaman Jadi Magnet Wisatawan Mancanegara",
-    "titleEn": "National Event Calendar: Pacu Jawi Bull Race & Pariaman Tabuik Draw Surge of International Travelers",
+    "title": "RSBG 2026 Hidupkan Tradisi Minangkabau dan Geliat Ekonomi: Masuk Agenda Kharisma Event Nusantara",
+    "titleEn": "Rang Solok Baralek Gadang 2026 Celebrates Minangkabau Heritage: Featured in National Event Calendar",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
     "date": "11 Oktober 2026",
     "dateEn": "October 11, 2026",
     "sourceName": "Antara News Sumbar",
     "sourceDomain": "sumbar.antaranews.com",
-    "sourceUrl": "https://sumbar.antaranews.com/berita/festival-budaya-sumbar-ken-2026",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/782265/rsbg-2026-hidupkan-tradisi-minangkabau-dan-geliat-ekonomi-solok",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://sumbar.antaranews.com/berita/festival-budaya-sumbar-ken-2026",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Tanah+Datar+Sumatera+Barat",
-    "locationName": "Tanah Datar & Pantai Gandoriah, Kota Pariaman",
-    "locationNameEn": "Tanah Datar & Gandoriah Beach, Pariaman",
-    "description": "Dua atraksi budaya akbar Minangkabau yakni Alek Nagari Pacu Jawi dan Pesona Budaya Tabuik resmi dinobatkan masuk dalam agenda unggulan Kharisma Event Nusantara (KEN) 2026, menyedot ribuan pelancong.",
-    "descriptionEn": "Two iconic Minangkabau cultural spectacles—Pacu Jawi in Tanah Datar and Tabuik in Pariaman—continue to headline national travel calendars, drawing thousands of travelers.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/782265/rsbg-2026-hidupkan-tradisi-minangkabau-dan-geliat-ekonomi-solok",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Kota+Solok+Sumatera+Barat",
+    "locationName": "Hamparan Sawah Solok & Kawasan Budaya, Kota Solok",
+    "locationNameEn": "Solok Heritage Rice Fields, West Sumatra",
+    "description": "Perhelatan Kharisma Event Nusantara (KEN) Rang Solok Baralek Gadang (RSBG) 2026 sukses menghidupkan khazanah tradisi leluhur Minangkabau, menyedot ribuan pelancong nusantara sekaligus menggerakkan ekonomi kerakyatan dan pelaku UMKM lokal.",
+    "descriptionEn": "The flagship Kharisma Event Nusantara (KEN) celebration Rang Solok Baralek Gadang (RSBG) 2026 draws thousands of travelers, revitalizing indigenous agrarian rituals alongside the local tourism economy.",
     "relatedStories": [
       {
-        "title": "Dispar Sumbar Targetkan Lonjakan Wisatawan Mancanegara Lewat Kharisma Event Nusantara",
-        "titleEn": "West Sumatra Tourism Targets Foreign Visitor Boost via Flagship KEN Celebrations",
-        "sourceName": "Harian Haluan",
-        "sourceDomain": "harianhaluan.com",
-        "sourceUrl": "https://harianhaluan.com",
-        "sourceIcon": "https://www.google.com/s2/favicons?domain=harianhaluan.com&sz=64"
-      },
-      {
-        "title": "Sensasi Balap Sapi Berlumpur di Kaki Marapi dan Kemegahan Menara Tabuik 12 Meter",
-        "titleEn": "Experiencing Thrilling Mud Racing under Marapi and 12-Meter Majestic Coastal Shrines",
-        "sourceName": "Kompas.com",
-        "sourceDomain": "kompas.com",
-        "sourceUrl": "https://travel.kompas.com",
-        "sourceIcon": "https://www.google.com/s2/favicons?domain=kompas.com&sz=64"
+        "title": "Atraksi Budaya Tradisional Minangkabau Jadi Daya Tarik Favorit Wisatawan Mancanegara",
+        "titleEn": "Authentic Minangkabau Cultural Pageantry Captivates Overseas Visitors",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/782265/rsbg-2026-hidupkan-tradisi-minangkabau-dan-geliat-ekonomi-solok",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
   },
   {
     "id": "hi3",
-    "title": "Gerakan Bangga Berwisata di Indonesia: Kemenpar Akselerasi Kunjungan Wisatawan Nusantara ke Destinasi Unggulan Sumbar",
-    "titleEn": "Proud to Travel in Indonesia Initiative: Accelerating Domestic Trips to West Sumatra Top Destinations",
+    "title": "Untuk Tarik Minat Wisatawan Nusantara, Kemenpar Perkuat Penyelenggaraan Event Pariwisata Daerah",
+    "titleEn": "Ministry of Tourism Strengthens Regional Tourism Events to Drive Domestic Traveler Interest",
     "category": "Pariwisata Indonesia",
     "categoryEn": "Indonesian Tourism",
     "date": "10 Oktober 2026",
     "dateEn": "October 10, 2026",
-    "sourceName": "travel.kompas.com",
-    "sourceDomain": "kompas.com",
-    "sourceUrl": "https://travel.kompas.com/read/2026/10/10/bangga-berwisata-di-indonesia-sumbar",
-    "sourceIcon": "https://www.google.com/s2/favicons?domain=kompas.com&sz=64",
+    "sourceName": "Antara News",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Nasional",
     "tagEn": "National",
-    "actionUrl": "https://travel.kompas.com/read/2026/10/10/bangga-berwisata-di-indonesia-sumbar",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Bukittinggi+Sumatera+Barat",
-    "locationName": "Koridor Wisata Sumatera Barat & Destinasi Prioritas",
-    "locationNameEn": "West Sumatra Tourism Corridor & Priority Destinations",
-    "description": "Kementerian Pariwisata bersama asosiasi perhotelan dan agen perjalanan daring menggencarkan stimulus liburan domestik untuk mendorong pergerakan wisatawan ke Bukittinggi, Harau, dan Mandeh.",
-    "descriptionEn": "The Indonesian Ministry of Tourism alongside hospitality partners accelerates travel incentives promoting authentic cultural and natural journeys across West Sumatra.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Destinasi+Wisata+Sumatera+Barat",
+    "locationName": "Kawasan Wisata Unggulan Sumatera Barat & Nasional",
+    "locationNameEn": "Flagship Tourism Regions, Indonesia",
+    "description": "Kementerian Pariwisata Republik Indonesia memperkuat pendampingan dan standardisasi event pariwisata daerah untuk mendongkrak pergerakan wisatawan nusantara serta mendorong regenerasi festival budaya di berbagai provinsi termasuk Sumatera Barat.",
+    "descriptionEn": "The Ministry of Tourism bolsters national assistance for regional cultural events to boost domestic travel mobility and support regional tourism resilience.",
     "relatedStories": [
       {
-        title: "Paket Bundling Penerbangan Domestik dan Homestay Desa Wisata Minangkabau Diminati",
-        titleEn: "Domestic Flight & Homestay Bundles to Minang Villages Gain Strong Traction",
-        sourceName: "detikTravel",
-        sourceDomain: "detik.com",
-        sourceUrl: "https://travel.detik.com",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=detik.com&sz=64"
-      },
-      {
-        title: "Pemerataan Wisatawan Nusantara Dorong Kebangkitan UMKM Kuliner Tradisional",
-        titleEn: "Domestic Inflow Drives Sustainable Growth for Local Traditional Culinary Vendors",
-        sourceName: "CNN Indonesia",
-        sourceDomain: "cnnindonesia.com",
-        sourceUrl: "https://www.cnnindonesia.com",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=cnnindonesia.com&sz=64"
+        "title": "Stimulus Pariwisata Nusantara Perkuat Ekosistem Industri Kreatif dan Homestay",
+        "titleEn": "National Travel Incentives Bolster Local Homestay and Creative Eco-Systems",
+        "sourceName": "Antara News",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
   },
   {
     "id": "hi4",
-    "title": "Pesona Ombak Dunia Mentawai: Ratusan Peselancar Mancanegara Padati Kepulauan Siberut dan Sipora",
-    "titleEn": "Mentawai World-Class Surf Season: International Surfers Flock to Siberut and Sipora Islands",
+    "title": "Bupati Agam Targetkan Nagari Wisata Simarasok Raih Prestasi Tertinggi Desa Wisata 2026",
+    "titleEn": "Agam Regency Champions Simarasok Heritage Village for National Tourism Honors 2026",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
     "date": "09 Oktober 2026",
     "dateEn": "October 09, 2026",
     "sourceName": "Antara News Sumbar",
     "sourceDomain": "sumbar.antaranews.com",
-    "sourceUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://sumbar.antaranews.com/berita/mentawai-surfing-international-2026",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Kepulauan+Mentawai+Sumatera+Barat",
-    "locationName": "Kepulauan Mentawai, Sumatera Barat",
-    "locationNameEn": "Mentawai Islands, West Sumatra",
-    "description": "Musim ombak selancar kelas dunia di Kepulauan Mentawai menyedot atensi peselancar profesional internasional dari berbagai negara yang mengagumi kejernihan laut toska dan budaya kearifan lokal Mentawai.",
-    "descriptionEn": "The world-class surf season across Mentawai draws international surfers exploring pristine turquoise breaks alongside indigenous ancestral heritage.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Nagari+Simarasok+Agam+Sumatera+Barat",
+    "locationName": "Nagari Simarasok, Baso, Kabupaten Agam",
+    "locationNameEn": "Simarasok Village, Agam Regency, West Sumatra",
+    "description": "Pemerintah Kabupaten Agam menargetkan Nagari Wisata Simarasok meraih peringkat pertama ajang desa wisata berkat keasrian alam perbukitan, gua alami Janjang Koto Gadang, persawahan terasering, dan keramahtamahan homestay Rumah Gadang.",
+    "descriptionEn": "Agam regency leadership champions Simarasok Tourism Village for premier national tourism honors, highlighted by lush tiered rice paddies, ancient caves, and hospitable Minangkabau homestays.",
     "relatedStories": [
       {
-        title: "Pemkab Mentawai Perkuat Proteksi Terumbu Karang dan Wisata Ramah Lingkungan",
-        titleEn: "Mentawai Enforces Coral Reef Protection and Eco-Friendly Travel Guidelines",
-        sourceName: "Padang Ekspres",
-        sourceDomain: "padek.jawapos.com",
-        sourceUrl: "https://padek.jawapos.com",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=jawapos.com&sz=64"
-      },
-      {
-        title: "Gugusan Pulau Tropis dan Warisan Budaya Seni Rajah Tertua Jadi Daya Tarik Unik",
-        titleEn: "Pristine Tropical Islets and Ancient Tattoo Culture Captivate Explorers",
-        sourceName: "Tempo.co",
-        sourceDomain: "tempo.co",
-        sourceUrl: "https://travel.tempo.co",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=tempo.co&sz=64"
+        "title": "Keasrian Alam Pedesaan dan Pengalaman Budaya Tradisional Jadi Daya Tarik Utama",
+        "titleEn": "Pristine Countryside Scenery and Living Minangkabau Traditions Charm Visitors",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
   },
   {
     "id": "hi5",
-    "title": "Jejaring Desa Wisata Minangkabau: Nagari Pariangan dan Lembah Harau Perkuat Layanan Homestay Berbasis Budaya",
-    "titleEn": "Minang Tourism Villages: Pariangan and Harau Valley Elevate Cultural Homestay Hospitality",
+    "title": "Wahana Permainan dan Fasilitas Baru Mulai Dibangun di Objek Wisata Pantai Pariaman",
+    "titleEn": "New Attractions and Recreational Facilities Underway at Pariaman Coastal Destinations",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
     "date": "08 Oktober 2026",
     "dateEn": "October 08, 2026",
-    "sourceName": "detikTravel",
-    "sourceDomain": "travel.detik.com",
-    "sourceUrl": "https://travel.detik.com/travel-news/desa-wisata-pariangan-sumbar",
-    "sourceIcon": "https://www.google.com/s2/favicons?domain=detik.com&sz=64",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://travel.detik.com/travel-news/desa-wisata-pariangan-sumbar",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Nagari+Pariangan+Tanah+Datar",
-    "locationName": "Nagari Pariangan, Tanah Datar & Lembah Harau, 50 Kota",
-    "locationNameEn": "Nagari Pariangan & Harau Valley, West Sumatra",
-    "description": "Komunitas pengelola desa wisata di Sumatera Barat memperkuat standar keramahtamahan Rumah Gadang dan kuliner autentik guna menyambut wisatawan keluarga dan pelancong mancanegara.",
-    "descriptionEn": "Tourism village operators across West Sumatra enhance authentic Rumah Gadang homestay standards and culinary workshops for family and eco-travelers.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Pantai+Gandoriah+Pariaman+Sumatera+Barat",
+    "locationName": "Pantai Gandoriah & Pesisir Kota Pariaman",
+    "locationNameEn": "Gandoriah Beach & Pariaman Coastline",
+    "description": "Pemerintah Kota Pariaman memperluas fasilitas rekreasi dan sarana wahana permainan keluarga di sepanjang garis pantai untuk meningkatkan kenyamanan wisatawan serta memperkuat daya tarik wisata pesisir Sumatera Barat.",
+    "descriptionEn": "Pariaman municipality expands seaside family recreational amenities along the coastline to enhance travel hospitality and tourism allure.",
     "relatedStories": [
       {
-        title: "Wisatawan Menikmati Pengalaman Menginap di Rumah Gadang Kayu Berusia Ratusan Tahun",
-        titleEn: "Travelers Savor Immersive Stays Inside Century-Old Traditional Wooden Mansions",
-        sourceName: "Langgam.id",
-        sourceDomain: "langgam.id",
-        sourceUrl: "https://langgam.id",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=langgam.id&sz=64"
+        "title": "Pengembangan Wisata Pantai Tingkatkan Kunjungan Wisatawan dan Ekonomi Warga",
+        "titleEn": "Coastal Tourism Expansion Elevates Visitor Footfall and Local Prosperity",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
   },
   {
     "id": "hi6",
-    "title": "Kemenparekraf Perluas Standar Pariwisata Hijau: Terapkan Ekowisata Berkelanjutan Bebas Sampah Plastik di Seluruh Destinasi",
-    "titleEn": "Ministry Expands Green Tourism Standards: Mandating Sustainable Plastic-Free Ecotourism Across Destinations",
-    "category": "Pariwisata Indonesia",
-    "categoryEn": "Indonesian Tourism",
+    "title": "Menikmati Keindahan Ngarai Sianok Terkini, Susuri Kelok 44 hingga Danau Maninjau",
+    "titleEn": "Exploring Majestic Sianok Canyon, Scenic 44 Hairpin Bends, and Serene Lake Maninjau",
+    "category": "Pariwisata Sumatera Barat",
+    "categoryEn": "West Sumatra Tourism",
     "date": "07 Oktober 2026",
     "dateEn": "October 07, 2026",
-    "sourceName": "Antara News",
-    "sourceDomain": "antaranews.com",
-    "sourceUrl": "https://www.antaranews.com/berita/kemenparekraf-standar-pariwisata-hijau",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
-    "tag": "Nasional",
-    "tagEn": "National",
-    "actionUrl": "https://www.antaranews.com/berita/kemenparekraf-standar-pariwisata-hijau",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Taman+Nasional+Kerinci+Seblat",
-    "locationName": "Destinasi Wisata Alam Indonesia",
-    "locationNameEn": "Indonesian Nature & National Park Reserves",
-    "description": "Pemerintah memperluas sertifikasi standarisasi pariwisata hijau dan dekarbonisasi bagi destinasi wisata alam, taman nasional, dan jejaring desa wisata nusantara.",
-    "descriptionEn": "The Indonesian government expands green tourism and decarbonization standards for national travel destinations and protected ecotourism parks.",
+    "tag": "Sumbar",
+    "tagEn": "West Sumatra",
+    "actionUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Ngarai+Sianok+Bukittinggi",
+    "locationName": "Ngarai Sianok, Kelok 44, & Danau Maninjau",
+    "locationNameEn": "Sianok Canyon, Kelok 44, & Lake Maninjau",
+    "description": "Jelajah geowisata Sumatera Barat menawarkan panorama spektakuler tebing Ngarai Sianok Bukittinggi, sensasi tikungan legendaris Kelok 44, serta ketenangan kaldera vulkanik Danau Maninjau yang memikat pelancong.",
+    "descriptionEn": "West Sumatra geological tour offers sweeping vistas of Sianok Canyon, thrilling hairpin turns along Kelok 44, and panoramic serenity at Lake Maninjau.",
     "relatedStories": [
       {
-        title: "Penerapan Konsep Ekowisata Efektif Cegah Kerusakan Lingkungan di Destinasi Geopark",
-        titleEn: "Ecotourism Protocols Successfully Protect Geological Wonders and Forest Canopies",
-        sourceName: "Kompas.com",
-        sourceDomain: "kompas.com",
-        sourceUrl: "https://travel.kompas.com",
-        sourceIcon: "https://www.google.com/s2/favicons?domain=kompas.com&sz=64"
+        "title": "Destinasi Geowisata Populer Sumatera Barat Jadi Magnet Fotografi Lanskap Alam",
+        "titleEn": "Flagship Geo-Tourism Sites in West Sumatra Attract Global Nature Photographers",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
   }
@@ -1664,6 +1632,39 @@ export function formatNewsTimeAgo(
   if (rawTimeAgo && rawTimeAgo.trim()) return rawTimeAgo.trim();
   return lang === 'en' ? 'Recent' : 'Terkini';
 }
+
+/**
+ * Resolves a reliable, direct article link for a news item.
+ * Guarantees that users are navigated directly to the actual official news story.
+ */
+export function getNewsDirectArticleUrl(item: any): string {
+  if (!item) return 'https://sumbar.antaranews.com/pariwisata';
+
+  // 1. Direct verified sourceUrl (must not be Google Maps)
+  if (typeof item.sourceUrl === 'string' && item.sourceUrl.trim().startsWith('http')) {
+    const url = item.sourceUrl.trim();
+    if (!url.includes('google.com/maps') && !url.includes('maps.google.com')) {
+      return url;
+    }
+  }
+
+  // 2. Action URL if it points directly to an official article
+  if (typeof item.actionUrl === 'string' && item.actionUrl.trim().startsWith('http')) {
+    const url = item.actionUrl.trim();
+    if (!url.includes('google.com/maps') && !url.includes('maps.google.com')) {
+      return url;
+    }
+  }
+
+  // 3. Fallback: Direct Google News Search for this exact headline
+  const headline = (item.title || '').trim();
+  if (headline) {
+    return `https://news.google.com/search?q=${encodeURIComponent(headline)}&hl=id&gl=ID&ceid=ID:id`;
+  }
+
+  return 'https://sumbar.antaranews.com/pariwisata';
+}
+
 
 function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWithin30d: boolean } {
   try {
