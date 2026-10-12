@@ -117,10 +117,10 @@ export const Header: React.FC<HeaderProps> = ({
       }}
     >
       <div className="flex items-center justify-between w-full md:w-auto shrink-0 md:mr-6 lg:mr-10">
-        {/* Logo (Left) - Scaled down 50% as requested */}
+        {/* Logo (Left) - Sized proportionally so end of MALALA aligns with end of AI */}
         <button
           onClick={onCloseDrawer}
-          className="w-[78px] sm:w-[90px] md:w-[102px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5 shrink-0"
+          className="w-[124px] sm:w-[136px] md:w-[148px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5 shrink-0"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
           {/* Default / Light Background Logo (Red + Black) */}
@@ -143,9 +143,9 @@ export const Header: React.FC<HeaderProps> = ({
             />
           )}
 
-          {/* Tagline Selalu Satu Baris & Pas Sejajar Lebar Logo */}
+          {/* Tagline Selalu Satu Baris & Pas Sejajar Rata Kiri-Kanan Lebar Logo */}
           <div
-            className="flex justify-between items-center w-full font-jakarta text-[5px] sm:text-[5.5px] md:text-[6px] font-bold mt-0.5 uppercase whitespace-nowrap tracking-[0.02em] select-none transition-colors duration-300"
+            className="flex justify-between items-center w-full font-jakarta text-[6.5px] sm:text-[7.2px] md:text-[8px] font-bold mt-0.5 uppercase whitespace-nowrap tracking-[0.02em] select-none transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
           >
             {t.logoTagline.split(' ').map((word, i) => (

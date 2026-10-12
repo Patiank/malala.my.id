@@ -83,7 +83,10 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
 
     const loop = () => {
       const now = Date.now();
-      if (now - lastUserTouch > 2000) {
+      const isMobile = width < 768;
+
+      // Auto-orbit only on desktop so mobile background stays perfectly still and never jumps
+      if (!isMobile && now - lastUserTouch > 2000) {
         autoAngle += 0.008;
         const orbitRadiusX = width * 0.25;
         const orbitRadiusY = height * 0.2;
@@ -177,16 +180,16 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* 1. Base Layer (Elevated on mobile to center 8% so the woman's face is clearly visible above panels) */}
+      {/* 1. Base Layer (Statically elevated on mobile so eyes are precisely under PARADISE without any jumping) */}
       <div
-        className="absolute inset-0 bg-cover bg-[center_8%] sm:bg-center bg-no-repeat transition-all duration-300"
+        className="absolute -top-[160px] sm:top-0 left-0 right-0 h-[calc(100%+160px)] sm:h-full bg-cover bg-center bg-no-repeat pointer-events-none"
         style={{ backgroundImage: `url(${optimizedBase})` }}
       />
 
       {/* 2. Reveal Layer clipped by canvas gradient spotlight */}
       <div
         ref={revealRef}
-        className="absolute inset-0 bg-cover bg-[center_8%] sm:bg-center bg-no-repeat transition-all duration-300"
+        className="absolute -top-[160px] sm:top-0 left-0 right-0 h-[calc(100%+160px)] sm:h-full bg-cover bg-center bg-no-repeat pointer-events-none"
         style={{ backgroundImage: `url(${optimizedReveal})` }}
       />
 
