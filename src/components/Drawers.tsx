@@ -4035,59 +4035,28 @@ export const Drawers: React.FC<DrawersProps> = ({
                       })}
                     </div>
 
-                    {/* Panel "Lihat Berita Sebelumnya" di bagian paling bawah */}
+                    {/* Tombol "Lihat Berita Sebelumnya" di Bagian Tengah Bawah */}
                     {olderList.length > 0 && (
-                      <div className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black rounded-2xl p-5 sm:p-6 border border-neutral-700/80 shadow-lg text-white font-jakarta space-y-4 animate-fade-in">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                          <div className="flex items-start gap-3.5">
-                            <div className="w-10 h-10 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center shrink-0 text-red-400">
-                              <FolderArchive className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h4 className="font-orbitron font-bold text-sm sm:text-base tracking-wide text-white">
-                                  {showAllNewsArchive
-                                    ? (isEn ? 'Earlier News Archive (Active)' : 'Arsip Berita Sebelumnya (Aktif)')
-                                    : (isEn ? 'Earlier Tourism News Archive' : 'Arsip Berita Pariwisata Sebelumnya')}
-                                </h4>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">
-                                  {showAllNewsArchive
-                                    ? (isEn ? `All ${dedupedList.length} Articles Active` : `Total ${dedupedList.length} Berita Aktif`)
-                                    : `+${olderList.length} ${isEn ? 'Earlier Articles' : 'Berita Sebelumnya'}`}
-                                </span>
-                              </div>
-                              <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                                {showAllNewsArchive
-                                  ? (isEn
-                                      ? `Currently displaying all ${dedupedList.length} articles including ${olderList.length} earlier articles older than 1 month.`
-                                      : `Sedang menampilkan seluruh ${dedupedList.length} berita termasuk ${olderList.length} berita sebelumnya yang berusia lebih dari 1 bulan.`)
-                                  : (isEn
-                                      ? `Showing updates within the last 1 month (${recentList.length} articles). Click "View Earlier News" below to browse ${olderList.length} earlier articles older than 1 month.`
-                                      : `Menampilkan berita pariwisata dalam 1 bulan terakhir (${recentList.length} berita). Klik tombol "Lihat Berita Sebelumnya" di bawah untuk melihat ${olderList.length} berita yang lebih dari 1 bulan terakhir.`)}
-                              </p>
-                            </div>
-                          </div>
-
-                          <button
-                            onClick={() => setShowAllNewsArchive(prev => !prev)}
-                            className="shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-full font-bold text-xs transition-all cursor-pointer shadow-md active:scale-95 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white border border-red-400/40 hover:shadow-red-500/20"
-                          >
-                            {showAllNewsArchive ? (
-                              <>
-                                <ChevronUp className="w-4 h-4" />
-                                <span>{isEn ? 'Hide Earlier News' : 'Sembunyikan Berita Sebelumnya'}</span>
-                              </>
-                            ) : (
-                              <>
-                                <ChevronDown className="w-4 h-4" />
-                                <span>{isEn ? 'View Earlier News' : 'Lihat Berita Sebelumnya'}</span>
-                                <span className="bg-black/25 text-[10px] px-2 py-0.5 rounded-full border border-white/20">
-                                  +{olderList.length}
-                                </span>
-                              </>
-                            )}
-                          </button>
-                        </div>
+                      <div className="pt-4 pb-2 flex justify-center items-center w-full">
+                        <button
+                          onClick={() => setShowAllNewsArchive(prev => !prev)}
+                          className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-jakarta font-normal text-xs transition-all cursor-pointer shadow-xs hover:shadow-md active:scale-95 bg-white hover:bg-gray-50 text-gray-700 hover:text-black border border-gray-300 hover:border-gray-400"
+                        >
+                          {showAllNewsArchive ? (
+                            <>
+                              <ChevronUp className="w-3.5 h-3.5 text-red-600" />
+                              <span>{isEn ? 'Hide Earlier News' : 'Sembunyikan Berita Sebelumnya'}</span>
+                            </>
+                          ) : (
+                            <>
+                              <ChevronDown className="w-3.5 h-3.5 text-red-600" />
+                              <span>{isEn ? 'View Earlier News' : 'Lihat Berita Sebelumnya'}</span>
+                              <span className="bg-red-50 text-red-600 text-[10px] font-medium px-2 py-0.5 rounded-full border border-red-200">
+                                +{olderList.length}
+                              </span>
+                            </>
+                          )}
+                        </button>
                       </div>
                     )}
                   </div>
