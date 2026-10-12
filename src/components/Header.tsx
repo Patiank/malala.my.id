@@ -344,40 +344,30 @@ export const Header: React.FC<HeaderProps> = ({
           );
         })}
 
-        {/* Desktop Peta Wisata Button */}
+        {/* Desktop Peta Wisata Button (Uniform 2-Line Panel, No Logo) */}
         <button
           onClick={() => handleNavClick('map')}
-          className={`min-h-[32px] lg:min-h-[34px] inline-flex items-center justify-center gap-1.5 px-3 lg:px-3.5 py-1 rounded-full border font-orbitron font-bold uppercase tracking-[0.09em] lg:tracking-[0.11em] text-[9.5px] lg:text-[10.5px] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99] ${
+          className={`w-[96px] lg:w-[108px] h-[34px] lg:h-[36px] flex flex-col items-center justify-center rounded-xl border font-orbitron font-extrabold uppercase tracking-wider text-[8px] lg:text-[9px] leading-[1.15] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98] select-none text-center ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
-              : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
+              : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800 hover:border-emerald-800'
           }`}
+          title={t.navMap}
         >
-          <img
-            src="/images/nav/header/nav_peta_white.png"
-            alt=""
-            aria-hidden="true"
-            className="w-3.5 h-3.5 object-contain"
-          />
-          <span>{t.navMap}</span>
+          <span>{lang === 'en' ? 'TOURISM' : 'PETA'}</span>
+          <span>{lang === 'en' ? 'MAP' : 'WISATA'}</span>
         </button>
 
-        {/* Desktop Rencanakan Liburan Anda (1 Baris Saja) */}
+        {/* Desktop Rencanakan Liburan Anda (Uniform 2-Line Panel, Same Size as Peta Wisata, No Logo) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`min-h-[32px] lg:min-h-[34px] inline-flex items-center justify-center gap-1.5 px-3 lg:px-3.5 py-1 rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] text-[9.5px] lg:text-[10.5px] ${
+          className={`w-[96px] lg:w-[108px] h-[34px] lg:h-[36px] flex flex-col items-center justify-center rounded-xl border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.98] font-orbitron font-extrabold uppercase tracking-wider text-[8px] lg:text-[9px] leading-[1.15] select-none text-center ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
+          title={lang === 'en' ? 'Plan Your Vacation' : 'Rencanakan Liburan Anda'}
         >
-          <img
-            src="/images/nav/header/nav_rencana_white.png"
-            alt=""
-            aria-hidden="true"
-            className="w-3.5 h-3.5 object-contain"
-          />
-          <span className="font-orbitron font-extrabold uppercase tracking-wider text-white whitespace-nowrap">
-            {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
-          </span>
+          <span>{lang === 'en' ? 'PLAN YOUR' : 'RENCANAKAN'}</span>
+          <span>{lang === 'en' ? 'VACATION' : 'LIBURAN ANDA'}</span>
         </button>
 
         <span className="text-gray-300 font-light select-none">|</span>

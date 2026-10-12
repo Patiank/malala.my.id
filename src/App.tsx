@@ -12,6 +12,7 @@ const NewsModal = React.lazy(() => import('./components/NewsModal').then(m => ({
 const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
 import { DrawerType, ToastNotice } from './types';
 import { HotInfoItem } from './types';
+import { HOT_INFO_ITEMS } from './data/staticConfig';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
 import { logTourismSignal } from './utils/telemetry';
@@ -473,9 +474,9 @@ export default function App() {
         hotInfoItems={dataStore.hotInfoItems}
       />
 
-      {/* Breaking News Ticker Bar (Comfortably Above Mobile Dock on small screens, bottom-0 on desktop) */}
+      {/* Breaking News Ticker Bar (Elevated ~2mm More Above Mobile Dock with Safe-Area, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-[96px] sm:bottom-[100px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[calc(104px+env(safe-area-inset-bottom,0px))] sm:bottom-[108px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
@@ -497,23 +498,25 @@ export default function App() {
           </button>
         </div>
 
-        {/* Running News Ticker: Smooth continuous scroll, clicking opens news modal */}
-        <div className="overflow-hidden whitespace-nowrap w-full relative">
+        {/* Running News Ticker: Flex-1 and min-w-0 ensures proper width without squishing, clicking opens news modal */}
+        <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap relative flex items-center h-6 md:h-7">
           {(() => {
-            const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
-            const rawFiltered = allHotInfo.filter((news) => isWithinLast6Months(news.date || news.createdAt));
+            const rawList: HotInfoItem[] = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0)
+              ? dataStore.hotInfoItems
+              : HOT_INFO_ITEMS;
+            const rawFiltered = rawList.filter((news) => isWithinLast6Months(news.date || news.createdAt));
             const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered)
               .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
             const displayItems: HotInfoItem[] = validItems.length > 0 
               ? validItems 
-              : deduplicateNewsItems<HotInfoItem>(allHotInfo)
+              : deduplicateNewsItems<HotInfoItem>(rawList)
                   .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
             // Smooth, clearly visible gliding tempo: ~7 seconds per item, 35-55s total
             const marqueeDuration = Math.max(35, Math.min(55, displayItems.length * 7.5));
 
             return (
               <div 
-                className="inline-flex items-center gap-10 animate-marquee font-jakarta text-xs text-gray-200"
+                className="inline-flex items-center gap-10 animate-marquee font-jakarta text-xs text-gray-200 will-change-transform"
                 style={{
                   animation: `marqueeScroll ${marqueeDuration}s linear infinite`,
                   willChange: 'transform'
@@ -521,18 +524,18 @@ export default function App() {
               >
                 {[...displayItems, ...displayItems].map((news, idx) => {
                   const isEn = lang === 'en';
-                  const sourceBrand = news.sourceName || (isEn && news.categoryEn ? news.categoryEn : news.category);
-                  const titleText = getNewsDisplayTitle(news, lang);
-                  const timeText = news.timeAgo || (isEn && news.dateEn ? news.dateEn : news.date);
+                  const sourceBrand = news.sourceName || (isEn && news.categoryEn ? news.categoryEn : news.category) || 'Info Wisata';
+                  const titleText = getNewsDisplayTitle(news, lang) || news.title || 'Update Info Wisata Terkini';
+                  const timeText = news.timeAgo || (isEn && news.dateEn ? news.dateEn : news.date) || 'Hari Ini';
                   return (
                     <button
                       key={`${news.id}-${idx}`}
                       onClick={() => setSelectedNews(news)}
-                      className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5"
+                      className="inline-flex items-center gap-2 hover:text-yellow-300 transition-colors cursor-pointer text-left focus:outline-none group py-0.5 shrink-0"
                       title={lang === 'en' ? 'Click to read article' : 'Klik untuk membaca berita'}
                     >
-                      <span className="font-bold text-red-400 group-hover:text-red-300 font-mono text-[10px]">[{sourceBrand}]</span>
-                      <span className="underline-offset-2 group-hover:underline tracking-wide text-xs">{titleText}</span>
+                      <span className="font-bold text-red-400 group-hover:text-red-300 font-mono text-[10px] bg-red-950/70 border border-red-700/50 px-1 py-0.5 rounded">[{sourceBrand}]</span>
+                      <span className="underline-offset-2 group-hover:underline tracking-wide text-xs text-gray-100 font-medium">{titleText}</span>
                       <span className="text-gray-400 font-mono text-[10px]">({timeText})</span>
                       <span className="text-gray-600 ml-4 select-none">•</span>
                     </button>
