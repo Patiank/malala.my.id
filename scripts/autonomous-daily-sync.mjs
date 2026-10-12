@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, writeBatch } from 'firebase/firestore';
 
@@ -41,7 +42,7 @@ function getSmartImage(title = '', category = '') {
 
 async function runAutonomousDailySync() {
   console.log("🤖 [MALALA AUTONOMOUS ENGINE] Memulai sinkronisasi harian otonom...");
-  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
+  const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "";
 
   // 1. Ambil event yang ada dari Firestore
   const eventSnap = await getDocs(collection(db, 'events'));
@@ -66,7 +67,7 @@ Hasilkan JSON murni tanpa markdown:
   "discoveredEvents": []
 }`;
 
-      const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`, {
+      const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

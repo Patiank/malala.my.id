@@ -32,6 +32,7 @@
  *   scripts/setup-task-scheduler.bat
  */
 
+import 'dotenv/config';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, setDoc, getDocs, addDoc } from 'firebase/firestore';
 import fs from 'fs';
@@ -60,10 +61,9 @@ const db = getFirestore(app);
 // ============================================================
 // GEMINI API — WITH GOOGLE SEARCH GROUNDING
 // ============================================================
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY
-  || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || "";
 
-const MODELS = ['gemini-3.8-flash', 'gemini-3.7-flash', 'gemini-flash-latest', 'gemini-pro-latest'];
+const MODELS = ['gemini-3.8-flash'];
 
 async function callGeminiWithGrounding(prompt, useGrounding = true, retries = 3) {
   for (const model of MODELS) {
