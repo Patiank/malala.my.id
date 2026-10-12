@@ -796,30 +796,6 @@ export const Hero: React.FC<HeroProps> = ({
                 </button>
               </form>
 
-              {/* Quick Discovery Category Chips (Swipeable Horizontal Strip) */}
-              <div className="w-full overflow-x-auto no-scrollbar py-2 -mx-0.5 px-0.5 touch-pan-x flex items-center gap-1.5 sm:gap-2 select-none">
-                {[
-                  { id: 'destinations' as DrawerType, label: lang === 'en' ? 'Destinations' : 'Wisata', icon: '🏔️' },
-                  { id: 'culinary' as DrawerType, label: lang === 'en' ? 'Culinary' : 'Kuliner', icon: '🍲' },
-                  { id: 'culture' as DrawerType, label: lang === 'en' ? 'Culture' : 'Budaya', icon: '🏛️' },
-                  { id: 'events' as DrawerType, label: lang === 'en' ? 'Events' : 'Event', icon: '📅' },
-                  { id: 'souvenirs' as DrawerType, label: lang === 'en' ? 'Souvenirs' : 'Oleh-oleh', icon: '🛍️' },
-                  { id: 'map' as DrawerType, label: lang === 'en' ? 'Map' : 'Peta', icon: '🗺️' },
-                  { id: 'formai' as DrawerType, label: lang === 'en' ? 'AI Trip' : 'Rute AI', icon: '✨' },
-                  { id: 'download' as DrawerType, label: lang === 'en' ? 'Guidebook' : 'Panduan', icon: '📖' },
-                ].map((chip) => (
-                  <button
-                    key={chip.id}
-                    type="button"
-                    onClick={() => onOpenDrawer(chip.id)}
-                    className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200/90 shadow-2xs hover:bg-gray-50 hover:border-gray-400 active:scale-95 text-xs font-jakarta font-semibold text-gray-800 transition-all cursor-pointer whitespace-nowrap"
-                  >
-                    <span className="text-xs">{chip.icon}</span>
-                    <span>{chip.label}</span>
-                  </button>
-                ))}
-              </div>
-
               {/* Mobile Action Buttons (Compact 2-Column Grid on small screens) */}
               <div className="grid grid-cols-2 gap-2 w-full sm:hidden pt-0.5">
                 <button
