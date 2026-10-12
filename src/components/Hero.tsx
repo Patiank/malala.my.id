@@ -736,16 +736,16 @@ export const Hero: React.FC<HeroProps> = ({
                   e.preventDefault();
                   if (onOpenDrawer) onOpenDrawer('search');
                 }}
-                className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-full shadow-xl transition-all p-1.5 pl-2"
+                className="relative flex items-center bg-white/95 backdrop-blur-md border border-gray-300 hover:border-red-500 focus-within:border-red-600 sm:border-2 rounded-full shadow-lg transition-all p-1 sm:p-1.5 pl-2 sm:pl-2.5"
               >
                 {/* Kaca Pembesar Icon Badge */}
                 <div 
                   onClick={() => {
                     if (onOpenDrawer) onOpenDrawer('search');
                   }}
-                  className="pl-3 pr-2 text-red-600 flex items-center justify-center cursor-pointer"
+                  className="pl-2 pr-1.5 sm:pl-3 sm:pr-2 text-red-600 flex items-center justify-center cursor-pointer"
                 >
-                  <Search className="w-5 h-5 animate-pulse" />
+                  <Search className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
                 </div>
 
                 {/* Input Field - 16px on mobile prevents involuntary iOS zoom */}
@@ -764,10 +764,10 @@ export const Hero: React.FC<HeroProps> = ({
                   }}
                   placeholder={
                     lang === 'en'
-                      ? "Cari Harau, Jam Gadang, Rendang, Sate..."
-                      : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang)..."
+                      ? "Cari destinasi, kuliner, event..."
+                      : "Cari destinasi, kuliner, event..."
                   }
-                  className="w-full py-2 px-1 bg-transparent text-base sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
+                  className="w-full py-1.5 sm:py-2 px-1 bg-transparent text-sm sm:text-base text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
                 />
 
                 {/* Clear Input Button if query exists */}
@@ -778,10 +778,10 @@ export const Hero: React.FC<HeroProps> = ({
                       e.stopPropagation();
                       if (onSearchQueryChange) onSearchQueryChange('');
                     }}
-                    className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                    className="p-1 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer min-w-[30px] min-h-[30px] sm:min-w-[36px] sm:min-h-[36px] flex items-center justify-center"
                     title="Clear"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
                 )}
 
@@ -789,30 +789,30 @@ export const Hero: React.FC<HeroProps> = ({
                 <button
                   type="submit"
                   onClick={() => onOpenDrawer('search')}
-                  className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-full flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0 min-h-[42px]"
+                  className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-orbitron font-bold text-[10.5px] sm:text-xs uppercase tracking-wider px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-full flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0 min-h-[36px] sm:min-h-[42px]"
                 >
                   <Search className="w-3.5 h-3.5" />
                   <span>{lang === 'en' ? 'SEARCH' : 'CARI'}</span>
                 </button>
               </form>
 
-              {/* Mobile Action Buttons (Compact 2-Column Grid on small screens) */}
-              <div className="grid grid-cols-2 gap-2 w-full sm:hidden pt-0.5">
+              {/* Mobile Action Buttons (Refined 2-Column Grid with Comfortable Breathing Room) */}
+              <div className="grid grid-cols-2 gap-2 w-full sm:hidden mt-3">
                 <button
                   type="button"
                   onClick={() => onOpenDrawer('formai')}
-                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-zinc-950 text-white font-jakarta font-bold text-xs uppercase tracking-wider shadow-md active:scale-95 border border-amber-500/30 transition-transform cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-zinc-950 text-white font-orbitron font-bold text-[10.5px] uppercase tracking-wider shadow-md active:scale-95 border border-amber-500/40 transition-transform cursor-pointer min-h-[40px]"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-                  <span className="truncate">{lang === 'en' ? 'AI Trip Planner' : 'Rute Wisata AI'}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
+                  <span className="truncate">{lang === 'en' ? 'AI TRIP' : 'RUTE WISATA AI'}</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenDrawer('destinations')}
-                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-white text-zinc-900 font-jakarta font-bold text-xs uppercase tracking-wider shadow-md active:scale-95 border border-gray-300 hover:border-red-500 transition-transform cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-white text-zinc-900 font-orbitron font-bold text-[10.5px] uppercase tracking-wider shadow-md active:scale-95 border border-gray-300 hover:border-red-500 transition-transform cursor-pointer min-h-[40px]"
                 >
-                  <Compass className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-                  <span className="truncate">{lang === 'en' ? 'Explore' : 'Mulai Jelajah'}</span>
+                  <Compass className="w-3.5 h-3.5 text-red-600 shrink-0 animate-pulse" />
+                  <span className="truncate">{lang === 'en' ? 'EXPLORE' : 'MULAI JELAJAH'}</span>
                 </button>
               </div>
 
