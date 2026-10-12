@@ -92,7 +92,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Wisata"
             className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
+          <span className="text-[9px] sm:text-[9.5px] font-orbitron font-bold tracking-wider uppercase mt-1 whitespace-nowrap">
             {navItems[0].label}
           </span>
         </button>
@@ -113,7 +113,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Kuliner"
             className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
+          <span className="text-[9px] sm:text-[9.5px] font-orbitron font-bold tracking-wider uppercase mt-1 whitespace-nowrap">
             {navItems[1].label}
           </span>
         </button>
@@ -134,7 +134,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
               />
             </div>
           </div>
-          <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-1 font-orbitron">
+          <span className="text-[9px] sm:text-[9.5px] font-orbitron font-black text-amber-700 tracking-wider uppercase mt-1">
             {isEn ? 'AI TRIP' : 'RUTE AI'}
           </span>
         </button>
@@ -155,7 +155,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Event"
             className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
+          <span className="text-[9px] sm:text-[9.5px] font-orbitron font-bold tracking-wider uppercase mt-1 whitespace-nowrap">
             {navItems[3].label}
           </span>
         </button>
@@ -176,7 +176,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Panduan"
             className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
+          <span className="text-[9px] sm:text-[9.5px] font-orbitron font-bold tracking-wider uppercase mt-1 whitespace-nowrap">
             {navItems[4].label}
           </span>
         </button>

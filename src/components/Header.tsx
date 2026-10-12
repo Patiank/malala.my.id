@@ -211,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
       <nav
         className={`${
           isMobileMenuOpen ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white/95 backdrop-blur-xl md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-jakarta font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
+        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white/95 backdrop-blur-xl md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
         style={{ fontSize: 'var(--nav)' }}
       >
         {primaryNavItems.map((item) => {
@@ -258,7 +258,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         <button
           onClick={() => handleNavClick('map')}
-          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-between md:justify-center px-4 md:px-5 py-2 md:py-0 rounded-xl md:rounded-full border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md active:scale-[0.99] ${
+          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-between md:justify-center px-4 md:px-5 py-2 md:py-0 rounded-xl md:rounded-full border font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md active:scale-[0.99] ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
@@ -276,11 +276,11 @@ export const Header: React.FC<HeaderProps> = ({
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
-          <div className="flex flex-col items-center justify-center text-center leading-tight">
-            <span className="text-[11px] sm:text-[10.5px] md:text-[10px] lg:text-[11px] font-black uppercase tracking-wider text-white whitespace-nowrap">
+          <div className="flex flex-col items-center justify-center text-center leading-tight font-orbitron">
+            <span className="text-[10px] sm:text-[9.5px] md:text-[9px] lg:text-[10px] font-extrabold uppercase tracking-wider text-white whitespace-nowrap">
               {lang === 'en' ? 'PLAN YOUR' : 'RENCANAKAN'}
             </span>
-            <span className="text-[11px] sm:text-[10.5px] md:text-[10px] lg:text-[11px] font-black uppercase tracking-wider text-white whitespace-nowrap leading-none mt-0.5">
+            <span className="text-[10px] sm:text-[9.5px] md:text-[9px] lg:text-[10px] font-extrabold uppercase tracking-wider text-white whitespace-nowrap leading-none mt-0.5">
               {lang === 'en' ? 'VACATION' : 'LIBURAN ANDA'}
             </span>
           </div>

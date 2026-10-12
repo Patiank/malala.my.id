@@ -1467,16 +1467,16 @@ export const Drawers: React.FC<DrawersProps> = ({
 
           {/* Sub-Menu Navigation Bar across main categories */}
           {['destinations', 'culture', 'culinary', 'souvenirs', 'events', 'download'].includes(activeDrawer) && (
-            <div className="bg-gray-50/90 border border-gray-200 p-2 rounded-xl shadow-2xs space-y-1.5 font-jakarta mb-5 shrink-0 w-full">
+            <div className="bg-gray-50/90 border border-gray-200 p-2 rounded-xl shadow-2xs space-y-1.5 font-orbitron mb-5 shrink-0 w-full">
               <div className="flex items-center justify-between px-1">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 flex items-center gap-1.5">
+                <span className="text-[9.5px] font-extrabold uppercase tracking-widest text-gray-500 flex items-center gap-1.5">
                   <IconMarawa size={14} className="shrink-0" />
                   <span>{lang === 'en' ? 'Sub-Menu Categories:' : 'Sub-Menu Kategori Wisata:'}</span>
                 </span>
               </div>
 
               {/* 7 Category Buttons Fitted Perfectly with Authentic Minang Icons */}
-              <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-0.5 touch-pan-x sm:grid sm:grid-cols-4 lg:grid-cols-7 w-full text-[10px] sm:text-[10.5px]">
+              <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-0.5 touch-pan-x sm:grid sm:grid-cols-4 lg:grid-cols-7 w-full text-[9.5px] sm:text-[10px]">
                 <button
                   onClick={() => onOpenDrawer?.('destinations')}
                   className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
