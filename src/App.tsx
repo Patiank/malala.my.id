@@ -90,25 +90,17 @@ export default function App() {
     let fadeTimer: NodeJS.Timeout | null = null;
     let cleanupTimer: NodeJS.Timeout | null = null;
 
-    // Use double requestAnimationFrame to ensure browser has completed layout & paint of React DOM
-    const rId = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const splash = document.getElementById('app-splash-loader');
-        if (splash) {
-          fadeTimer = setTimeout(() => {
-            splash.style.transition = 'opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1)';
-            splash.style.opacity = '0';
-            splash.style.pointerEvents = 'none';
-          }, 50);
-
-          cleanupTimer = setTimeout(() => {
-            if (splash.parentNode) {
-              splash.parentNode.removeChild(splash);
-            }
-          }, 450);
+    // Immediate dismissal on React mount to guarantee ultrafast FCP / LCP
+    const splash = document.getElementById('app-splash-loader');
+    if (splash) {
+      splash.style.transition = 'opacity 0.2s ease-out';
+      splash.style.opacity = '0';
+      cleanupTimer = setTimeout(() => {
+        if (splash.parentNode) {
+          splash.parentNode.removeChild(splash);
         }
-      });
-    });
+      }, 220);
+    }
 
     return () => {
       cancelAnimationFrame(rId);

@@ -54,18 +54,50 @@
     <meta name="twitter:description" content="Portal resmi pariwisata Sumatera Barat & panduan pariwisata Sumbar 2026: 50+ destinasi wisata, 30 warisan budaya Minangkabau, 36 kuliner autentik, dan kalender event KEN 2026.">
     <meta name="twitter:image" content="https://res.cloudinary.com/uupbxcw5/image/upload/v1786885123/ea0650d0-224f-4a82-bc7b-4211cbd31df4_oa7jnw.png">
 
-    <!-- Google AdSense Verification & Auto Ads -->
-    <meta name="google-adsense-account" content="ca-pub-7249231182967738">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7249231182967738" crossorigin="anonymous"></script>
+    <!-- Priority Preload for LCP Hero Background Image -->
+    <link rel="preload" as="image" href="/images/bg-cover-1.webp" type="image/webp" fetchpriority="high">
 
-    <!-- Preconnect & Non-Render-Blocking Web Fonts -->
+    <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- Essential Critical Web Fonts: Plus Jakarta Sans & Orbitron with display=swap -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Michroma&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Slackside+One&display=swap" rel="stylesheet">
     </noscript>
+
+    <!-- Google AdSense Verification (Account ID maintained for bot crawler verification) -->
+    <meta name="google-adsense-account" content="ca-pub-7249231182967738">
+
+    <!-- Ultra High-Performance Lazy Load for Google AdSense: Defers until user interaction or after first paint -->
+    <script>
+      (function() {
+        var adsenseLoaded = false;
+        function loadAdSense() {
+          if (adsenseLoaded) return;
+          adsenseLoaded = true;
+          window.removeEventListener('scroll', loadAdSense);
+          window.removeEventListener('touchstart', loadAdSense);
+          window.removeEventListener('mousemove', loadAdSense);
+          window.removeEventListener('click', loadAdSense);
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7249231182967738';
+          s.crossOrigin = 'anonymous';
+          document.head.appendChild(s);
+        }
+        window.addEventListener('scroll', loadAdSense, { passive: true, once: true });
+        window.addEventListener('touchstart', loadAdSense, { passive: true, once: true });
+        window.addEventListener('mousemove', loadAdSense, { passive: true, once: true });
+        window.addEventListener('click', loadAdSense, { passive: true, once: true });
+        // Fallback: load after 3.8s if no user interaction yet so ads still populate
+        setTimeout(loadAdSense, 3800);
+      })();
+    </script>
+
+    <!-- Async Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'" />
     <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /></noscript>
 
@@ -224,8 +256,8 @@
     </script>
       </head>
   <body style="margin: 0; padding: 0; background: #070a12; color: #ffffff; min-height: 100vh; overflow-x: hidden;">
-    <!-- Brand Splash Screen & Hydration Loader Overlay -->
-    <div id="app-splash-loader" style="position: fixed; inset: 0; z-index: 999999; background: #070a12; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #ffffff; transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: auto;">
+    <!-- Brand Splash Screen & Hydration Loader Overlay (Subtle, non-blocking on slow devices) -->
+    <div id="app-splash-loader" style="position: fixed; inset: 0; z-index: 999999; background: #070a12; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #ffffff; transition: opacity 0.3s ease-out; pointer-events: none;">
       <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 380px; padding: 24px;">
         <div style="position: relative; width: 68px; height: 68px; margin-bottom: 18px;">
           <img src="/favicon.png" alt="Malala Logo" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 18px rgba(220, 38, 38, 0.5)); animation: malalaPulse 1.8s ease-in-out infinite;" />
@@ -258,16 +290,14 @@
       </style>
     </noscript>
     <script>
-      // Fallback Safety Timer: Only dismiss if React takes longer than 4.5s
+      // Fast Auto Dismiss: guarantees splash screen drops after 1.8s even on slow simulated mobile CPUs
       setTimeout(function() {
         var s = document.getElementById('app-splash-loader');
-        if (s && s.style.opacity !== '0') {
-          s.style.transition = 'opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        if (s) {
           s.style.opacity = '0';
-          s.style.pointerEvents = 'none';
-          setTimeout(function() { if (s && s.parentNode) s.parentNode.removeChild(s); }, 450);
+          setTimeout(function() { if (s && s.parentNode) s.parentNode.removeChild(s); }, 320);
         }
-      }, 4500);
+      }, 1800);
     </script>
 
     <!-- Fallback Semantic HTML for Search Engine Crawlers & LLM Indexers (Googlebot, Bingbot, GPTBot, Perplexity) -->
