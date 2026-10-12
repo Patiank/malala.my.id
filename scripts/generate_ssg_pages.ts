@@ -631,30 +631,7 @@ export function generateSsg() {
         "@type": "GeoCoordinates",
         "latitude": dest.lat,
         "longitude": dest.lng
-      } : undefined,
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": ratingSummary.rating.toFixed(1),
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": ratingSummary.reviewCount,
-        "reviewCount": ratingSummary.reviewCount
-      },
-      "review": ratingSummary.reviews.slice(0, 3).map(r => ({
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": r.author
-        },
-        "datePublished": r.date,
-        "reviewBody": r.comment,
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": r.rating,
-          "bestRating": "5",
-          "worstRating": "1"
-        }
-      }))
+      } : undefined
     };
 
     const breadcrumbJsonLd = {
