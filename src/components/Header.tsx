@@ -221,10 +221,10 @@ export const Header: React.FC<HeaderProps> = ({
         >
           {/* Header Tag inside Mobile Dropdown */}
           <div className="flex items-center justify-between px-1 pb-1 border-b border-gray-100">
-            <span className="text-[10px] font-orbitron font-extrabold uppercase tracking-widest text-gray-500">
+            <span className="text-[10px] font-jakarta font-bold uppercase tracking-widest text-gray-500">
               {lang === 'en' ? 'EXPLORE CATEGORIES' : 'JELAJAHI KATEGORI'}
             </span>
-            <span className="text-[9px] font-orbitron font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+            <span className="text-[9px] font-jakarta font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
               MALALA SUMBAR
             </span>
           </div>
@@ -255,7 +255,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="font-orbitron font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider leading-tight line-clamp-1">
+                  <span className="font-jakarta font-bold text-[11px] sm:text-[11.5px] uppercase tracking-wider leading-tight line-clamp-1">
                     {item.label}
                   </span>
                 </button>
@@ -268,7 +268,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Action 1: Peta Wisata (1 Baris) */}
             <button
               onClick={() => handleNavClick('map')}
-              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border font-orbitron font-bold text-[11px] uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
+              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border font-jakarta font-bold text-[12px] uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
                 activeDrawer === 'map'
                   ? 'bg-red-600 text-white border-red-600'
                   : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800'
@@ -294,7 +294,7 @@ export const Header: React.FC<HeaderProps> = ({
                 alt="Rencana"
                 className="w-5 h-5 object-contain"
               />
-              <span className="font-orbitron font-extrabold text-[11px] uppercase tracking-wider whitespace-nowrap">
+              <span className="font-jakarta font-extrabold text-[12px] uppercase tracking-wider whitespace-nowrap">
                 {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
               </span>
             </button>
@@ -304,7 +304,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Desktop Nav Links (Clean Minimalist Typography, No Logos, Perfectly Balanced Font) */}
       <nav
-        className="hidden md:flex flex-row items-center gap-1.5 lg:gap-2.5 font-orbitron font-extrabold uppercase text-black"
+        className="hidden md:flex flex-row items-center gap-1.5 lg:gap-2.5 font-jakarta font-bold uppercase text-black"
         style={{ fontSize: 'clamp(0.68rem, 0.25vw + 0.52rem, 0.82rem)' }}
       >
         {primaryNavItems.map((item) => {
@@ -334,7 +334,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Text Label (Clean Minimalist Typography without Logo/Icon) */}
               <span
-                className={`relative z-10 text-[11px] lg:text-[12px] xl:text-[12.5px] tracking-[0.08em] lg:tracking-[0.10em] transition-colors duration-150 select-none whitespace-nowrap ${
+                className={`relative z-10 text-[11px] lg:text-[12px] xl:text-[12.5px] tracking-[0.06em] lg:tracking-[0.08em] transition-colors duration-150 select-none whitespace-nowrap ${
                   !isActive ? 'group-hover:text-[var(--hover-text)] group-hover:[text-shadow:none]' : ''
                 }`}
               >
@@ -347,7 +347,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Peta Wisata Button (Uniform 2-Line Panel, No Logo) */}
         <button
           onClick={() => handleNavClick('map')}
-          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border font-orbitron font-extrabold uppercase tracking-wider text-[8.5px] lg:text-[9.5px] leading-[1.18] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98] select-none text-center ${
+          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border font-jakarta font-bold uppercase tracking-wider text-[9.5px] lg:text-[10.5px] leading-[1.18] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98] select-none text-center ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800 hover:border-emerald-800'
@@ -361,7 +361,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Rencanakan Liburan Anda (Uniform 2-Line Panel, Same Size as Peta Wisata, No Logo) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.98] font-orbitron font-extrabold uppercase tracking-wider text-[8.5px] lg:text-[9.5px] leading-[1.18] select-none text-center ${
+          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.98] font-jakarta font-extrabold uppercase tracking-wider text-[9.5px] lg:text-[10.5px] leading-[1.18] select-none text-center ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
           title={lang === 'en' ? 'Plan Your Vacation' : 'Rencanakan Liburan Anda'}

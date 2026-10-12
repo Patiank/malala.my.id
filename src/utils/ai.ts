@@ -121,32 +121,32 @@ export const HOT_INFO_FALLBACK = [
   },
   {
     "id": "hi4",
-    "title": "Bupati Agam Targetkan Nagari Wisata Simarasok Raih Prestasi Tertinggi Desa Wisata 2026",
-    "titleEn": "Agam Regency Champions Simarasok Heritage Village for National Tourism Honors 2026",
+    "title": "Dispar Sumbar Luncurkan Kalender Wisata Terpadu 2026: 45 Festival Budaya Siap Sambut Pelancong",
+    "titleEn": "West Sumatra Tourism Office Unveils Integrated 2026 Calendar: 45 Cultural Festivals Ready to Welcome Visitors",
     "category": "Pariwisata Sumatera Barat",
     "categoryEn": "West Sumatra Tourism",
     "date": "09 Oktober 2026",
     "dateEn": "October 09, 2026",
     "sourceName": "Antara News Sumbar",
     "sourceDomain": "sumbar.antaranews.com",
-    "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Sumbar",
     "tagEn": "West Sumatra",
-    "actionUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Nagari+Simarasok+Agam+Sumatera+Barat",
-    "locationName": "Nagari Simarasok, Baso, Kabupaten Agam",
-    "locationNameEn": "Simarasok Village, Agam Regency, West Sumatra",
-    "description": "Pemerintah Kabupaten Agam menargetkan Nagari Wisata Simarasok meraih peringkat pertama ajang desa wisata berkat keasrian alam perbukitan, gua alami Janjang Koto Gadang, persawahan terasering, dan keramahtamahan homestay Rumah Gadang.",
-    "descriptionEn": "Agam regency leadership champions Simarasok Tourism Village for premier national tourism honors, highlighted by lush tiered rice paddies, ancient caves, and hospitable Minangkabau homestays.",
+    "actionUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Dinas+Pariwisata+Sumatera+Barat",
+    "locationName": "Pusat Informasi Wisata & Budaya Sumatera Barat",
+    "locationNameEn": "West Sumatra Tourism & Cultural Center",
+    "description": "Dinas Pariwisata Sumatera Barat merilis 45 agenda festival unggulan sepanjang tahun 2026 yang tersebar di 19 kabupaten dan kota guna menarik jutaan wisatawan domestik maupun mancanegara.",
+    "descriptionEn": "The West Sumatra Tourism Office announces 45 premier festivals for 2026 across 19 regencies and cities to welcome millions of domestic and global visitors.",
     "relatedStories": [
       {
-        "title": "Keasrian Alam Pedesaan dan Pengalaman Budaya Tradisional Jadi Daya Tarik Utama",
-        "titleEn": "Pristine Countryside Scenery and Living Minangkabau Traditions Charm Visitors",
+        "title": "Festival Tradisi dan Alam Terbuka Jadi Magnet Utama Pariwisata Ranah Minang",
+        "titleEn": "Heritage Festivals and Nature Trails Emerge as Top Allure for Minangkabau Tourism",
         "sourceName": "Antara News Sumbar",
         "sourceDomain": "sumbar.antaranews.com",
-        "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
         "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
@@ -307,6 +307,134 @@ export const HOT_INFO_FALLBACK = [
         "sourceName": "Antara News",
         "sourceDomain": "sumbar.antaranews.com",
         "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi10",
+    "title": "Bupati Agam Targetkan Nagari Wisata Simarasok Keluar Sebagai Juara Satu WIA 2026",
+    "titleEn": "Agam Regency Champions Simarasok Heritage Village for First Place in WIA 2026",
+    "category": "Pariwisata Sumatera Barat",
+    "categoryEn": "West Sumatra Tourism",
+    "date": "06 September 2026",
+    "dateEn": "September 06, 2026",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Sumbar",
+    "tagEn": "West Sumatra",
+    "actionUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Nagari+Simarasok+Agam+Sumatera+Barat",
+    "locationName": "Nagari Simarasok, Baso, Kabupaten Agam",
+    "locationNameEn": "Simarasok Village, Agam Regency, West Sumatra",
+    "description": "Pemerintah Kabupaten Agam menargetkan Nagari Wisata Simarasok meraih peringkat pertama ajang desa wisata berkat keasrian alam perbukitan, gua alami Janjang Koto Gadang, persawahan terasering, dan keramahtamahan homestay Rumah Gadang.",
+    "descriptionEn": "Agam regency leadership champions Simarasok Tourism Village for premier national tourism honors, highlighted by lush tiered rice paddies, ancient caves, and hospitable Minangkabau homestays.",
+    "relatedStories": [
+      {
+        "title": "Keasrian Alam Pedesaan dan Budaya Tradisional Jadi Daya Tarik Simarasok",
+        "titleEn": "Pristine Countryside Scenery and Living Traditions Charm Visitors",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/779771/bupati-agam-targetkan-nagari-wisata-simarasok-keluar-sebagai-juara-satu-wia-2026",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi11",
+    "title": "Pengembangan Geowisata Lembah Harau dan Ngarai Sianok Terus Diperkuat Menyambut Pelancong",
+    "titleEn": "Harau Valley and Sianok Canyon Geo-Tourism Development Strengthened for Travelers",
+    "category": "Pariwisata Sumatera Barat",
+    "categoryEn": "West Sumatra Tourism",
+    "date": "28 Agustus 2026",
+    "dateEn": "August 28, 2026",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Sumbar",
+    "tagEn": "West Sumatra",
+    "actionUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Lembah+Harau+Lima+Puluh+Kota",
+    "locationName": "Lembah Harau & Bukittinggi, Sumatera Barat",
+    "locationNameEn": "Harau Valley & Bukittinggi, West Sumatra",
+    "description": "Pemerintah daerah bersama pengelola wisata mempercantik jalur tracking, fasilitas keselamatan tebing, dan sentra kuliner lokal di kawasan lembah tebing granit Harau dan Ngarai Sianok.",
+    "descriptionEn": "Regional tourism authorities enhance trekking paths, cliff safety infrastructure, and local culinary outposts at Harau Valley and Sianok Canyon.",
+    "relatedStories": [
+      {
+        "title": "Pesona Tebing Granit Menjulang Memikat Wisatawan Mancanegara dan Fotografer",
+        "titleEn": "Towering Granite Cliffs Attract International Explorers and Nature Photographers",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi12",
+    "title": "Pariaman Kembangkan Atraksi Budaya Tabuik dan Wisata Bahari Pulau Angso Duo",
+    "titleEn": "Pariaman Expands Tabuik Cultural Pageantry and Angso Duo Island Marine Tourism",
+    "category": "Pariwisata Sumatera Barat",
+    "categoryEn": "West Sumatra Tourism",
+    "date": "19 Agustus 2026",
+    "dateEn": "August 19, 2026",
+    "sourceName": "Antara News Sumbar",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Sumbar",
+    "tagEn": "West Sumatra",
+    "actionUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Pulau+Angso+Duo+Pariaman",
+    "locationName": "Pesisir Pantai Gandoriah & Pulau Angso Duo, Kota Pariaman",
+    "locationNameEn": "Gandoriah Beach & Angso Duo Island, Pariaman",
+    "description": "Kota Pariaman memadukan daya tarik kolosal ritual Pesona Budaya Hoyak Tabuik dengan rekreasi bahari snorkeling pulau karang Angso Duo sebagai magnet unggulan wisatawan nusantara.",
+    "descriptionEn": "Pariaman municipality pairs the cultural spectacle of Hoyak Tabuik with pristine island snorkeling adventures at Angso Duo Island.",
+    "relatedStories": [
+      {
+        "title": "Wisata Bahari Ramah Lingkungan Tingkatkan Pendapatan Nelayan dan Pengemudi Boat",
+        "titleEn": "Eco-Friendly Marine Tourism Lifts Incomes for Local Boat Operators",
+        "sourceName": "Antara News Sumbar",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/748610/wahana-permainan-mulai-dibangun-di-objek-wisata-pariaman-semarakkan-piaman-barayo",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi13",
+    "title": "Kemenpar Dorong Akselerasi 1.000 Desa Wisata Nusantara Menuju Standar Destinasi Global",
+    "titleEn": "Tourism Ministry Encourages 1,000 Indonesian Tourism Villages to Reach Global Standards",
+    "category": "Pariwisata Indonesia",
+    "categoryEn": "Indonesian Tourism",
+    "date": "12 Agustus 2026",
+    "dateEn": "August 12, 2026",
+    "sourceName": "Antara News",
+    "sourceDomain": "antaranews.com",
+    "sourceUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Nasional",
+    "tagEn": "National",
+    "actionUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Desa+Wisata+Indonesia",
+    "locationName": "Jaringan Desa Wisata Nusantara, Indonesia",
+    "locationNameEn": "Indonesian Heritage Tourism Village Network",
+    "description": "Kementerian Pariwisata Republik Indonesia menyalurkan pendampingan manajemen hospitality dan digitalisasi promosi bagi 1.000 desa wisata guna memperkuat daya saing pariwisata berkelanjutan.",
+    "descriptionEn": "The Ministry of Tourism provides hospitality mentorship and digital promotion tools to 1,000 tourism villages across Indonesia.",
+    "relatedStories": [
+      {
+        "title": "Pengembangan Desa Wisata Berkelanjutan Buka Lapangan Kerja Generasi Muda",
+        "titleEn": "Sustainable Rural Tourism Development Unlocks Opportunities for Youth",
+        "sourceName": "Antara News",
+        "sourceDomain": "antaranews.com",
+        "sourceUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
         "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
@@ -3027,13 +3155,13 @@ export async function fetchAiHotInfo(language: string = 'id') {
 
   // 3. Client-side Gemini AI if API key is provided and RSS was not available
 
-  // 4. Static fallback if completely offline (50:50 balanced, within 30 days)
+  // 4. Static fallback if completely offline (Curated recent + archive news)
   const fallbackClean = HOT_INFO_FALLBACK.map(item => ({
     ...item,
     imageUrl: '',
     isUserUploadedImage: false
   }));
-  return deduplicateNewsItems(fallbackClean.filter((it: any) => isWithinLast30Days(it.date)));
+  return deduplicateNewsItems(fallbackClean);
 }
 
 /**

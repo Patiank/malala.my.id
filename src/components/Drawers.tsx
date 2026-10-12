@@ -3729,10 +3729,11 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                 <div className="flex flex-wrap items-center gap-2 text-xs font-jakarta w-full">
                   {(() => {
-                    const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                      .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
-                    const dedupedList = deduplicateNewsItems(rawList);
-                    const dynamicCats = dedupedList.map((i: any) => i.category).filter(Boolean);
+                    const allHotInfoSource = deduplicateNewsItems([
+                      ...(dataStore.hotInfoItems || []),
+                      ...HOT_INFO_ITEMS
+                    ]);
+                    const dynamicCats = allHotInfoSource.map((i: any) => i.category).filter(Boolean);
                     const uniqueCategories = Array.from(new Set([
                       'Semua',
                       'Berita Utama',
@@ -3846,7 +3847,10 @@ export const Drawers: React.FC<DrawersProps> = ({
               </div>
 
               {(() => {
-                const allHotInfo = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS);
+                const allHotInfo = deduplicateNewsItems([
+                  ...(dataStore.hotInfoItems || []),
+                  ...HOT_INFO_ITEMS
+                ]);
                 
                 const categoryFiltered = allHotInfo.filter((item: any) => {
                   if (hotInfoCategory === 'Semua') return true;
@@ -3882,19 +3886,17 @@ export const Drawers: React.FC<DrawersProps> = ({
                     return timeB - timeA;
                   });
 
-                const activeList = showAllNewsArchive
-                  ? dedupedList
-                  : dedupedList.filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
+                // Berita pariwisata 1 bulan terakhir (<= 30 hari)
+                const recentList = dedupedList.filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
+                // Berita pariwisata lebih dari 1 bulan terakhir (> 30 hari)
+                const olderList = dedupedList.filter((item: any) => !isWithinLast30Days(item.date || item.createdAt));
 
-                const totalCount = dedupedList.length;
-                const hasMoreThan10 = totalCount > 10;
-                const displayedList = (hasMoreThan10 && !showAllNewsArchive)
-                  ? activeList.slice(0, 10)
-                  : activeList;
-                const hiddenCount = Math.max(0, totalCount - displayedList.length);
+                // Berita yang ditampilkan: liputan 1 bulan terakhir secara default,
+                // atau seluruh berita bila user mengklik "Lihat Berita Sebelumnya".
+                const displayedList = showAllNewsArchive ? dedupedList : recentList;
                 const isEn = lang === 'en';
 
-                if (activeList.length === 0) {
+                if (displayedList.length === 0 && olderList.length === 0) {
                   return (
                     <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
                       {isEn ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
@@ -4033,8 +4035,8 @@ export const Drawers: React.FC<DrawersProps> = ({
                       })}
                     </div>
 
-                    {/* Panel "Tampilkan Semua Arsip Berita" - Muncul jika berita > 10 */}
-                    {hasMoreThan10 && (
+                    {/* Panel "Lihat Berita Sebelumnya" di bagian paling bawah */}
+                    {olderList.length > 0 && (
                       <div className="bg-gradient-to-br from-neutral-900 via-neutral-800 to-black rounded-2xl p-5 sm:p-6 border border-neutral-700/80 shadow-lg text-white font-jakarta space-y-4 animate-fade-in">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                           <div className="flex items-start gap-3.5">
@@ -4044,22 +4046,24 @@ export const Drawers: React.FC<DrawersProps> = ({
                             <div>
                               <div className="flex items-center gap-2 flex-wrap">
                                 <h4 className="font-orbitron font-bold text-sm sm:text-base tracking-wide text-white">
-                                  {isEn ? 'Tourism News Archive' : 'Panel Arsip Berita'}
+                                  {showAllNewsArchive
+                                    ? (isEn ? 'Earlier News Archive (Active)' : 'Arsip Berita Sebelumnya (Aktif)')
+                                    : (isEn ? 'Earlier Tourism News Archive' : 'Arsip Berita Pariwisata Sebelumnya')}
                                 </h4>
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">
                                   {showAllNewsArchive
-                                    ? (isEn ? 'All Archive Active' : 'Semua Arsip Aktif')
-                                    : `${totalCount} ${isEn ? 'Articles' : 'Berita'}`}
+                                    ? (isEn ? `All ${dedupedList.length} Articles Active` : `Total ${dedupedList.length} Berita Aktif`)
+                                    : `+${olderList.length} ${isEn ? 'Earlier Articles' : 'Berita Sebelumnya'}`}
                                 </span>
                               </div>
                               <p className="text-xs text-gray-300 mt-1 leading-relaxed">
                                 {showAllNewsArchive
                                   ? (isEn
-                                      ? `Currently displaying all ${totalCount} articles from the complete tourism archive.`
-                                      : `Sedang menampilkan seluruh ${totalCount} berita dari database arsip pariwisata lengkap.`)
+                                      ? `Currently displaying all ${dedupedList.length} articles including ${olderList.length} earlier articles older than 1 month.`
+                                      : `Sedang menampilkan seluruh ${dedupedList.length} berita termasuk ${olderList.length} berita sebelumnya yang berusia lebih dari 1 bulan.`)
                                   : (isEn
-                                      ? `Showing top 10 latest news. ${hiddenCount} older articles available in the archive.`
-                                      : `Menampilkan 10 berita teratas. Terdapat ${hiddenCount} berita lainnya yang tersimpan dalam arsip.`)}
+                                      ? `Showing updates within the last 1 month (${recentList.length} articles). Click "View Earlier News" below to browse ${olderList.length} earlier articles older than 1 month.`
+                                      : `Menampilkan berita pariwisata dalam 1 bulan terakhir (${recentList.length} berita). Klik tombol "Lihat Berita Sebelumnya" di bawah untuk melihat ${olderList.length} berita yang lebih dari 1 bulan terakhir.`)}
                               </p>
                             </div>
                           </div>
@@ -4071,14 +4075,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                             {showAllNewsArchive ? (
                               <>
                                 <ChevronUp className="w-4 h-4" />
-                                <span>{isEn ? 'Collapse to Top 10' : 'Sembunyikan Sebagian (10 Teratas)'}</span>
+                                <span>{isEn ? 'Hide Earlier News' : 'Sembunyikan Berita Sebelumnya'}</span>
                               </>
                             ) : (
                               <>
                                 <ChevronDown className="w-4 h-4" />
-                                <span>{isEn ? 'Show All News Archive' : 'Tampilkan Semua Arsip Berita'}</span>
+                                <span>{isEn ? 'View Earlier News' : 'Lihat Berita Sebelumnya'}</span>
                                 <span className="bg-black/25 text-[10px] px-2 py-0.5 rounded-full border border-white/20">
-                                  +{hiddenCount}
+                                  +{olderList.length}
                                 </span>
                               </>
                             )}
