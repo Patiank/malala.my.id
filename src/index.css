@@ -281,3 +281,20 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+
+/* Mobile Bottom Sheet Smooth Slide Up Animation */
+@keyframes slideUpSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpSmooth 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}

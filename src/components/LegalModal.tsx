@@ -12,12 +12,17 @@ export function LegalModal({ type, onClose }: LegalModalProps) {
   if (!content) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 pt-20">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-6">
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-3xl bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in fade-in zoom-in duration-300">
+      <div
+        className="relative w-full max-w-3xl bg-white/95 backdrop-blur-xl rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh] sm:max-h-[85vh] animate-slide-up sm:animate-in sm:fade-in sm:zoom-in duration-200"
+        style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}
+      >
+        {/* Visual Grab Handle for Mobile Bottom Sheet */}
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto my-2.5 sm:hidden shrink-0" />
         
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200">

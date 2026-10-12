@@ -50,17 +50,21 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
 
   return (
     <div 
-      className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
+      className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn"
       onClick={onClose}
     >
       <div 
-        className="bg-white text-gray-900 max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-5 sm:p-6 relative max-h-[90vh] overflow-y-auto font-jakarta"
+        className="bg-white text-gray-900 max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto font-jakarta"
+        style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Visual Grab Handle for Mobile Bottom Sheet */}
+        <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
         {/* Modal Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-1.5 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors cursor-pointer z-20 shadow-2xs"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-900 transition-colors cursor-pointer z-20 shadow-2xs active:scale-95"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />

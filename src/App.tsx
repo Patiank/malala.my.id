@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { ImageRevealBackground } from './components/ImageRevealBackground';
 import { Toast } from './components/Toast';
 import { CookieBanner } from './components/CookieBanner';
+import { MobileNavDock } from './components/MobileNavDock';
 
 const Drawers = React.lazy(() => import('./components/Drawers').then(m => ({ default: m.Drawers })));
 const NewsModal = React.lazy(() => import('./components/NewsModal').then(m => ({ default: m.NewsModal })));
@@ -472,9 +473,9 @@ export default function App() {
         hotInfoItems={dataStore.hotInfoItems}
       />
 
-      {/* Breaking News Ticker Bar (Placed directly above Mobile Dock on small screens, bottom-0 on desktop) */}
+      {/* Breaking News Ticker Bar (Above Mobile Dock on small screens, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-[58px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[68px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
@@ -552,91 +553,14 @@ export default function App() {
         </button>
       </div>
 
-      {/* Mobile Bottom Navigation Dock (Thumb-zone friendly native app feel for smartphones) */}
-      <nav
-        aria-label="Navigasi Bawah Smartphone"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-gray-200 px-2 py-1 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-safe touch-callout-none"
-      >
-        {/* 1. Beranda */}
-        <button
-          onClick={handleCloseDrawer}
-          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
-            activeDrawer === null
-              ? 'text-red-600 font-bold'
-              : 'text-gray-600 hover:text-black active:scale-95'
-          }`}
-          aria-label="Beranda"
-        >
-          <span className="text-lg leading-none">🏠</span>
-          <span className="text-[10px] tracking-tight mt-0.5">
-            {lang === 'en' ? 'Home' : 'Beranda'}
-          </span>
-        </button>
-
-        {/* 2. Wisata / Destinasi */}
-        <button
-          onClick={() => handleOpenDrawer('destinations')}
-          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
-            activeDrawer === 'destinations'
-              ? 'text-red-600 font-bold'
-              : 'text-gray-600 hover:text-black active:scale-95'
-          }`}
-          aria-label="Destinasi Wisata"
-        >
-          <span className="text-lg leading-none">🏔️</span>
-          <span className="text-[10px] tracking-tight mt-0.5">
-            {lang === 'en' ? 'Explore' : 'Wisata'}
-          </span>
-        </button>
-
-        {/* 3. Central AI Button (Elevated Action) */}
-        <button
-          onClick={() => handleOpenDrawer('formai')}
-          className="relative -top-3 flex flex-col items-center justify-center cursor-pointer group active:scale-95 transition-transform"
-          aria-label="UNI MALA AI Itinerary Planner"
-        >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-0.5 shadow-lg shadow-amber-500/40 flex items-center justify-center">
-            <div className="w-full h-full rounded-full bg-black flex items-center justify-center text-white">
-              <span className="text-xl animate-pulse">✨</span>
-            </div>
-          </div>
-          <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-0.5">
-            Rute AI
-          </span>
-        </button>
-
-        {/* 4. Panduan / Booklet */}
-        <button
-          onClick={() => handleOpenDrawer('download')}
-          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
-            activeDrawer === 'download'
-              ? 'text-red-600 font-bold'
-              : 'text-gray-600 hover:text-black active:scale-95'
-          }`}
-          aria-label="Pusat Unduhan & Panduan"
-        >
-          <span className="text-lg leading-none">📖</span>
-          <span className="text-[10px] tracking-tight mt-0.5">
-            {lang === 'en' ? 'Guides' : 'Panduan'}
-          </span>
-        </button>
-
-        {/* 5. Tanya Uni Mala / AI Chat */}
-        <button
-          onClick={() => handleOpenDrawer('chat')}
-          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
-            activeDrawer === 'chat'
-              ? 'text-red-600 font-bold'
-              : 'text-gray-600 hover:text-black active:scale-95'
-          }`}
-          aria-label="Tanya Uni Mala Chat"
-        >
-          <span className="text-lg leading-none">💬</span>
-          <span className="text-[10px] tracking-tight mt-0.5">
-            {lang === 'en' ? 'Ask Mala' : 'Tanya Mala'}
-          </span>
-        </button>
-      </nav>
+      {/* Floating Mobile Bottom Navigation Dock (Minimalist Thumb-Zone Friendly) */}
+      <MobileNavDock
+        activeDrawer={activeDrawer}
+        onOpenDrawer={handleOpenDrawer}
+        onCloseDrawer={handleCloseDrawer}
+        lang={lang}
+        savedCount={savedIds.length}
+      />
 
 
       {/* Drawers */}

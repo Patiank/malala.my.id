@@ -4,12 +4,12 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  projectId: "malala-my-id",
-  appId: "1:150503186564:web:64af24b2edc852fb23a2d1",
-  apiKey: "AIzaSyBAizWQnaNb-EX-BcjoZt9BSRctFGyMEnE",
-  authDomain: "malala-my-id.firebaseapp.com",
-  storageBucket: "malala-my-id.firebasestorage.app",
-  messagingSenderId: "150503186564",
+  projectId: "malala-web",
+  appId: "1:521100250267:web:f98c67ac47b4d1a0300a3e",
+  apiKey: "AIzaSyC6cfbqR8MAwiBFZt6GrWFSfIHYXC_pM0c",
+  authDomain: "malala-web.firebaseapp.com",
+  storageBucket: "malala-web.firebasestorage.app",
+  messagingSenderId: "521100250267",
 };
 
 export const app = initializeApp(firebaseConfig);

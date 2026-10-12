@@ -198,11 +198,20 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
+      {/* Mobile Menu Backdrop Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Nav Links (Desktop + Mobile Dropdown Sheet) */}
       <nav
         className={`${
           isMobileMenuOpen ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-jakarta font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
+        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white/95 backdrop-blur-xl md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-jakarta font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
         style={{ fontSize: 'var(--nav)' }}
       >
         {primaryNavItems.map((item) => {

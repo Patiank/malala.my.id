@@ -67,6 +67,7 @@ export const Hero: React.FC<HeroProps> = ({
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoActive, setIsVideoActive] = useState(false);
+  const [mobileSpotlightTab, setMobileSpotlightTab] = useState<'video' | 'event'>('video');
 
   // Synchronize custom volume toggle button with native YouTube player volume changes
   useEffect(() => {
@@ -152,13 +153,17 @@ export const Hero: React.FC<HeroProps> = ({
 
   // Close search dropdown on click outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
         setIsSearchFocused(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, []);
 
   const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -683,8 +688,8 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* Combined Action Buttons & Search Panel Container (Matched Exact Width) */}
           <div className="inline-flex flex-col items-stretch gap-2.5 pt-2 w-full sm:w-fit max-w-full">
-            {/* Action Buttons Row */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full">
+            {/* Desktop Action Buttons Row */}
+            <div className="hidden sm:flex sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full">
               {/* UNI MALA AI Assistant Primary CTA */}
               <ArrowFillButton
                 btnText={t.heroBtnAiPlanner}
@@ -726,69 +731,114 @@ export const Hero: React.FC<HeroProps> = ({
 
             {/* Premium Search Bar Panel - Width stretches 100% to match exact length of Buttons Row */}
             <div ref={searchContainerRef} className="w-full relative z-30 font-jakarta">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (onOpenDrawer) onOpenDrawer('search');
-              }}
-              className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-full shadow-xl transition-all p-1.5 pl-2"
-            >
-              {/* Kaca Pembesar Icon Badge */}
-              <div 
-                onClick={() => {
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
                   if (onOpenDrawer) onOpenDrawer('search');
                 }}
-                className="pl-3 pr-2 text-red-600 flex items-center justify-center cursor-pointer"
+                className="relative flex items-center bg-white/95 backdrop-blur-md border-2 border-gray-300 hover:border-red-500 focus-within:border-red-600 rounded-full shadow-xl transition-all p-1.5 pl-2"
               >
-                <Search className="w-5 h-5 animate-pulse" />
+                {/* Kaca Pembesar Icon Badge */}
+                <div 
+                  onClick={() => {
+                    if (onOpenDrawer) onOpenDrawer('search');
+                  }}
+                  className="pl-3 pr-2 text-red-600 flex items-center justify-center cursor-pointer"
+                >
+                  <Search className="w-5 h-5 animate-pulse" />
+                </div>
+
+                {/* Input Field - 16px on mobile prevents involuntary iOS zoom */}
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onFocus={() => setIsSearchFocused(true)}
+                  onChange={(e) => {
+                    if (onSearchQueryChange) onSearchQueryChange(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      if (onOpenDrawer) onOpenDrawer('search');
+                    }
+                  }}
+                  placeholder={
+                    lang === 'en'
+                      ? "Cari Harau, Jam Gadang, Rendang, Sate..."
+                      : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang)..."
+                  }
+                  className="w-full py-2 px-1 bg-transparent text-base sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
+                />
+
+                {/* Clear Input Button if query exists */}
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onSearchQueryChange) onSearchQueryChange('');
+                    }}
+                    className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                    title="Clear"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+
+                {/* Tombol CARI Dedicated Button */}
+                <button
+                  type="submit"
+                  onClick={() => onOpenDrawer('search')}
+                  className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-full flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0 min-h-[42px]"
+                >
+                  <Search className="w-3.5 h-3.5" />
+                  <span>{lang === 'en' ? 'SEARCH' : 'CARI'}</span>
+                </button>
+              </form>
+
+              {/* Quick Discovery Category Chips (Swipeable Horizontal Strip) */}
+              <div className="w-full overflow-x-auto no-scrollbar py-2 -mx-0.5 px-0.5 touch-pan-x flex items-center gap-1.5 sm:gap-2 select-none">
+                {[
+                  { id: 'destinations' as DrawerType, label: lang === 'en' ? 'Destinations' : 'Wisata', icon: '🏔️' },
+                  { id: 'culinary' as DrawerType, label: lang === 'en' ? 'Culinary' : 'Kuliner', icon: '🍲' },
+                  { id: 'culture' as DrawerType, label: lang === 'en' ? 'Culture' : 'Budaya', icon: '🏛️' },
+                  { id: 'events' as DrawerType, label: lang === 'en' ? 'Events' : 'Event', icon: '📅' },
+                  { id: 'souvenirs' as DrawerType, label: lang === 'en' ? 'Souvenirs' : 'Oleh-oleh', icon: '🛍️' },
+                  { id: 'map' as DrawerType, label: lang === 'en' ? 'Map' : 'Peta', icon: '🗺️' },
+                  { id: 'formai' as DrawerType, label: lang === 'en' ? 'AI Trip' : 'Rute AI', icon: '✨' },
+                  { id: 'download' as DrawerType, label: lang === 'en' ? 'Guidebook' : 'Panduan', icon: '📖' },
+                ].map((chip) => (
+                  <button
+                    key={chip.id}
+                    type="button"
+                    onClick={() => onOpenDrawer(chip.id)}
+                    className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200/90 shadow-2xs hover:bg-gray-50 hover:border-gray-400 active:scale-95 text-xs font-jakarta font-semibold text-gray-800 transition-all cursor-pointer whitespace-nowrap"
+                  >
+                    <span className="text-xs">{chip.icon}</span>
+                    <span>{chip.label}</span>
+                  </button>
+                ))}
               </div>
 
-              {/* Input Field - 16px on mobile prevents involuntary iOS zoom */}
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  if (onSearchQueryChange) onSearchQueryChange(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (onOpenDrawer) onOpenDrawer('search');
-                  }
-                }}
-                placeholder={
-                  lang === 'en'
-                    ? "Cari Harau, Jam Gadang, Rendang, Sate..."
-                    : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang)..."
-                }
-                className="w-full py-2 px-1 bg-transparent text-base sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
-              />
-
-              {/* Clear Input Button if query exists */}
-              {searchQuery && (
+              {/* Mobile Action Buttons (Compact 2-Column Grid on small screens) */}
+              <div className="grid grid-cols-2 gap-2 w-full sm:hidden pt-0.5">
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (onSearchQueryChange) onSearchQueryChange('');
-                  }}
-                  className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
-                  title="Clear"
+                  onClick={() => onOpenDrawer('formai')}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-zinc-950 text-white font-jakarta font-bold text-xs uppercase tracking-wider shadow-md active:scale-95 border border-amber-500/30 transition-transform cursor-pointer"
                 >
-                  <X className="w-4 h-4" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                  <span className="truncate">{lang === 'en' ? 'AI Trip Planner' : 'Rute Wisata AI'}</span>
                 </button>
-              )}
-
-              {/* Tombol CARI Dedicated Button */}
-              <button
-                type="submit"
-                onClick={() => onOpenDrawer('search')}
-                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-full flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0 min-h-[42px]"
-              >
-                <Search className="w-3.5 h-3.5" />
-                <span>{lang === 'en' ? 'SEARCH' : 'CARI'}</span>
-              </button>
-            </form>
+                <button
+                  type="button"
+                  onClick={() => onOpenDrawer('destinations')}
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl bg-white text-zinc-900 font-jakarta font-bold text-xs uppercase tracking-wider shadow-md active:scale-95 border border-gray-300 hover:border-red-500 transition-transform cursor-pointer"
+                >
+                  <Compass className="w-3.5 h-3.5 text-red-600 animate-pulse" />
+                  <span className="truncate">{lang === 'en' ? 'Explore' : 'Mulai Jelajah'}</span>
+                </button>
+              </div>
 
             {/* Real-time Search Results Dropdown Panel */}
             {isSearchFocused && searchQuery.trim().length > 0 && (
@@ -902,6 +952,36 @@ export const Hero: React.FC<HeroProps> = ({
 
               {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
               <div className="flex flex-col space-y-2.5 w-full">
+                {/* Mobile Tab Switcher (Only visible on mobile when both video & banner exist) */}
+                {isDualBanner && (
+                  <div className="flex lg:hidden items-center p-1 bg-gray-100/90 backdrop-blur-md rounded-xl border border-gray-200">
+                    <button
+                      type="button"
+                      onClick={() => setMobileSpotlightTab('video')}
+                      className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] font-jakarta font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                        mobileSpotlightTab === 'video'
+                          ? 'bg-white text-gray-900 shadow-xs font-black'
+                          : 'text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      <Youtube className="w-3.5 h-3.5 text-red-600" />
+                      <span>{lang === 'en' ? 'Video' : 'Video Event'}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setMobileSpotlightTab('event')}
+                      className={`flex-1 py-1.5 px-2 rounded-lg text-[10px] font-jakarta font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                        mobileSpotlightTab === 'event'
+                          ? 'bg-white text-gray-900 shadow-xs font-black'
+                          : 'text-gray-500 hover:text-gray-900'
+                      }`}
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      <span>{lang === 'en' ? 'Upcoming' : 'Sorotan Event'}</span>
+                    </button>
+                  </div>
+                )}
+
             {/* Spotlight 1: Video Event Card (Clean Video with Structured Top & Bottom Panels) */}
             {videoEvent && (() => {
               const eventItem = videoEvent.item;
@@ -924,7 +1004,9 @@ export const Hero: React.FC<HeroProps> = ({
               };
 
               return (
-                <div className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all">
+                <div className={`w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all ${
+                  isDualBanner && mobileSpotlightTab !== 'video' ? 'hidden lg:block' : 'block'
+                }`}>
                   <div className="absolute top-0 right-0 w-24 h-24 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
                   {/* Top Header */}
@@ -1063,7 +1145,9 @@ export const Hero: React.FC<HeroProps> = ({
                 <div
                   onMouseEnter={() => setIsCarouselPaused(true)}
                   onMouseLeave={() => setIsCarouselPaused(false)}
-                  className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all"
+                  className={`w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all ${
+                    isDualBanner && mobileSpotlightTab !== 'event' ? 'hidden lg:block' : 'block'
+                  }`}
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
@@ -1237,7 +1321,7 @@ export const Hero: React.FC<HeroProps> = ({
     })()}
 
         {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
-        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full select-none z-30">
+        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-28 lg:pb-6 w-full select-none z-30">
           {/* Left: Minangkaos Branding with SPONSORED BY: (Centered Block) */}
           <div className="flex flex-col items-center text-center gap-1 min-w-0 pl-1 select-none">
             {/* SPONSORED BY: Header Label */}

@@ -1398,14 +1398,14 @@ export const Drawers: React.FC<DrawersProps> = ({
             : activeDrawer === 'formai'
             ? 'w-full sm:w-[500px] md:w-[560px] lg:w-[580px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
-        } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
+        } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300 rounded-t-2xl md:rounded-none`}
       >
         
         {/* Header Drawer (Sticky, Safe Touch Target, Mobile Handle) */}
-        <div className="sticky top-0 z-30 px-4 sm:px-6 py-3.5 sm:py-5 border-b border-gray-200 flex items-center justify-between bg-white/95 backdrop-blur-md shrink-0">
+        <div className="sticky top-0 z-30 px-4 sm:px-6 py-3 sm:py-5 border-b border-gray-200 flex items-center justify-between bg-white/95 backdrop-blur-md shrink-0">
           <div className="flex-1 pr-2">
             {/* Visual Grab Handle for Mobile */}
-            <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-2 md:hidden"></div>
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-2 md:hidden"></div>
             
             <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
               {activeDrawer === 'destinations' && <IconRumahGadang size={24} className="shrink-0" />}
@@ -1461,11 +1461,10 @@ export const Drawers: React.FC<DrawersProps> = ({
         {/* Scrollable Main Content (Smooth, isolated scrolling with mobile bottom dock clearance) */}
         <div className={`flex-1 ${
           activeDrawer === 'chat'
-            ? 'p-3 sm:p-3.5 flex flex-col overflow-hidden h-full pb-16 md:pb-3.5'
-            : 'p-4 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto pb-24 md:pb-8'
+            ? 'p-3 sm:p-3.5 flex flex-col overflow-hidden h-full pb-20 md:pb-3.5'
+            : 'p-3.5 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto pb-32 md:pb-8'
         } overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
 
-          {/* Sub-Menu Navigation Bar across main categories */}
           {/* Sub-Menu Navigation Bar across main categories */}
           {['destinations', 'culture', 'culinary', 'souvenirs', 'events', 'download'].includes(activeDrawer) && (
             <div className="bg-gray-50/90 border border-gray-200 p-2 rounded-xl shadow-2xs space-y-1.5 font-jakarta mb-5 shrink-0 w-full">
@@ -1477,89 +1476,89 @@ export const Drawers: React.FC<DrawersProps> = ({
               </div>
 
               {/* 7 Category Buttons Fitted Perfectly with Authentic Minang Icons */}
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-1 sm:gap-1.5 w-full text-[10px] sm:text-[10.5px]">
+              <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto no-scrollbar py-0.5 touch-pan-x sm:grid sm:grid-cols-4 lg:grid-cols-7 w-full text-[10px] sm:text-[10.5px]">
                 <button
                   onClick={() => onOpenDrawer?.('destinations')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'destinations'
                       ? 'bg-[#386641] text-white shadow-xs font-extrabold border border-[#386641]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#386641]/10 hover:text-[#386641] hover:border-[#386641]/40'
                   }`}
                 >
                   <IconRumahGadang size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navDestinations}</span>
+                  <span>{translations[lang].navDestinations}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('culture')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'culture'
                       ? 'bg-[#6a994e] text-white shadow-xs font-extrabold border border-[#6a994e]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#6a994e]/10 hover:text-[#6a994e] hover:border-[#6a994e]/40'
                   }`}
                 >
                   <IconCarano size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navCulture}</span>
+                  <span>{translations[lang].navCulture}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('culinary')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'culinary'
                       ? 'bg-[#a7c957] text-[#1b3815] shadow-xs font-extrabold border border-[#a7c957]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#a7c957]/20 hover:text-[#2d4715] hover:border-[#a7c957]/50'
                   }`}
                 >
                   <IconRendang size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navCulinary}</span>
+                  <span>{translations[lang].navCulinary}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('souvenirs')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'souvenirs'
                       ? 'bg-[#f2e8cf] text-[#2b2118] shadow-xs font-extrabold border border-[#e5d8b8]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#f2e8cf]/70 hover:text-[#2b2118] hover:border-[#d6c7a3]'
                   }`}
                 >
                   <IconSongket size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navSouvenirs}</span>
+                  <span>{translations[lang].navSouvenirs}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('events')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'events'
                       ? 'bg-[#bc4749] text-white shadow-xs font-extrabold border border-[#bc4749]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#bc4749]/10 hover:text-[#bc4749] hover:border-[#bc4749]/40'
                   }`}
                 >
                   <IconTabuik size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navEvents}</span>
+                  <span>{translations[lang].navEvents}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('download')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center whitespace-nowrap ${
                     activeDrawer === 'download'
                       ? 'bg-[#ff7d00] text-white shadow-xs font-extrabold border border-[#ff7d00]'
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#ff7d00]/10 hover:text-[#ff7d00] hover:border-[#ff7d00]/40'
                   }`}
                 >
                   <IconMarawa size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navDownloads}</span>
+                  <span>{translations[lang].navDownloads}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('map')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center shadow-2xs ${
+                  className={`shrink-0 px-2.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center shadow-2xs whitespace-nowrap ${
                     activeDrawer === 'map'
                       ? 'bg-red-600 text-white shadow-xs font-extrabold border border-red-600'
                       : 'bg-emerald-600 text-white border border-emerald-600 hover:bg-red-600 hover:border-red-600'
                   }`}
                 >
                   <IconDanauSingkarak size={15} className="shrink-0" />
-                  <span className="truncate">{translations[lang].navMap}</span>
+                  <span>{translations[lang].navMap}</span>
                 </button>
               </div>
             </div>
@@ -4316,12 +4315,18 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR DESTINATIONS */}
       {selectedDestination && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-white max-w-lg md:max-w-3xl lg:max-w-5xl w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up p-5 sm:p-6 relative max-h-[92vh] overflow-y-auto font-jakarta">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white max-w-lg md:max-w-3xl lg:max-w-5xl w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[92vh] overflow-y-auto font-jakarta"
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            {/* Visual Grab Handle for Mobile Bottom Sheet */}
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
             {/* Floating Close Button Top Right */}
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1.5 rounded-full bg-black/60 hover:bg-black text-white transition-colors cursor-pointer z-20 shadow-md"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-black/60 hover:bg-black text-white transition-colors cursor-pointer z-20 shadow-md active:scale-95"
               title={translations[lang].btnClose}
             >
               <X className="w-5 h-5" />
@@ -4522,11 +4527,17 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR CULTURE */}
       {selectedCulture && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto"
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            {/* Visual Grab Handle for Mobile Bottom Sheet */}
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10 active:scale-95"
             >
               <X className="w-5 h-5" />
             </button>
@@ -4596,11 +4607,17 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR CULINARY */}
       {selectedCulinary && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto"
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            {/* Visual Grab Handle for Mobile Bottom Sheet */}
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10 active:scale-95"
             >
               <X className="w-5 h-5" />
             </button>
@@ -4677,11 +4694,17 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR SOUVENIR (OLEH-OLEH & SHOPEE AFFILIATE) */}
       {selectedSouvenir && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto"
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            {/* Visual Grab Handle for Mobile Bottom Sheet */}
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10 active:scale-95"
             >
               <X className="w-5 h-5" />
             </button>
@@ -4786,11 +4809,17 @@ export const Drawers: React.FC<DrawersProps> = ({
 
       {/* MODAL INFORMATION DIALOG FOR EVENTS */}
       {selectedEvent && (
-        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white max-w-lg w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 animate-scale-up space-y-4 p-6 relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="bg-white max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto"
+            style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
+          >
+            {/* Visual Grab Handle for Mobile Bottom Sheet */}
+            <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
+
             <button
               onClick={handleSubModalClose}
-              className="absolute top-4 right-4 p-1 rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10"
+              className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-black transition-colors cursor-pointer z-10 active:scale-95"
             >
               <X className="w-5 h-5" />
             </button>
