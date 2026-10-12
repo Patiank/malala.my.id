@@ -74,7 +74,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
       className="md:hidden fixed bottom-3 left-3 right-3 z-50 select-none pointer-events-auto"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      <div className="bg-white/95 backdrop-blur-xl border border-gray-200/90 shadow-[0_10px_30px_rgba(0,0,0,0.18)] rounded-2xl px-2 py-1.5 flex items-center justify-between gap-1">
+      <div className="bg-white/95 backdrop-blur-xl border border-gray-200/90 shadow-[0_12px_36px_rgba(0,0,0,0.20)] rounded-2xl px-2 py-2 flex items-center justify-between gap-1">
         
         {/* Item 1: Destinasi Wisata (Rumah Gadang Asli) */}
         <button
@@ -90,9 +90,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'destinations' ? '/images/nav/nav_wisata_white.png' : '/images/nav/nav_wisata.png'}
             alt="Wisata"
-            className="w-6 h-6 object-contain transition-transform"
+            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
+          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
             {navItems[0].label}
           </span>
         </button>
@@ -111,9 +111,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'culinary' ? '/images/nav/nav_kuliner_white.png' : '/images/nav/nav_kuliner.png'}
             alt="Kuliner"
-            className="w-6 h-6 object-contain transition-transform"
+            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
+          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
             {navItems[1].label}
           </span>
         </button>
@@ -122,19 +122,19 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'formai' ? onCloseDrawer() : onOpenDrawer('formai'))}
-          className="relative -top-3.5 px-2 flex flex-col items-center justify-center cursor-pointer group active:scale-90 transition-transform"
+          className="relative -top-4 px-2 flex flex-col items-center justify-center cursor-pointer group active:scale-90 transition-transform"
           aria-label="AI Planner"
         >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2.5px] shadow-lg shadow-amber-500/40 flex items-center justify-center">
+          <div className="w-[54px] h-[54px] rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2.5px] shadow-lg shadow-amber-500/40 flex items-center justify-center">
             <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2.5">
               <img
                 src="/images/nav/nav_ai_gold.png"
                 alt="AI Trip"
-                className="w-6 h-6 object-contain animate-pulse"
+                className="w-[32px] h-[32px] object-contain animate-pulse"
               />
             </div>
           </div>
-          <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-0.5 font-orbitron">
+          <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-1 font-orbitron">
             {isEn ? 'AI TRIP' : 'RUTE AI'}
           </span>
         </button>
@@ -153,9 +153,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'events' ? '/images/nav/nav_event_white.png' : '/images/nav/nav_event.png'}
             alt="Event"
-            className="w-6 h-6 object-contain transition-transform"
+            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
+          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
             {navItems[3].label}
           </span>
         </button>
@@ -174,9 +174,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'download' ? '/images/nav/nav_panduan_white.png' : '/images/nav/nav_panduan.png'}
             alt="Panduan"
-            className="w-6 h-6 object-contain transition-transform"
+            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
           />
-          <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
+          <span className="text-[10px] font-bold tracking-tight mt-1 whitespace-nowrap">
             {navItems[4].label}
           </span>
         </button>

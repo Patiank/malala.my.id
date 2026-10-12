@@ -475,7 +475,7 @@ export default function App() {
 
       {/* Breaking News Ticker Bar (Above Mobile Dock on small screens, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-[68px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[74px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
