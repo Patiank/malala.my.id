@@ -89,32 +89,32 @@ export const HOT_INFO_FALLBACK = [
   },
   {
     "id": "hi3",
-    "title": "Untuk Tarik Minat Wisatawan Nusantara, Kemenpar Perkuat Penyelenggaraan Event Pariwisata Daerah",
-    "titleEn": "Ministry of Tourism Strengthens Regional Tourism Events to Drive Domestic Traveler Interest",
+    "title": "Menpar: Ajang MotoGP Kembangkan Wisata Olahraga dan Sport Tourism Nasional Secara Positif",
+    "titleEn": "Minister of Tourism: MotoGP Successfully Advances Indonesian Sport Tourism and Economic Impact",
     "category": "Pariwisata Indonesia",
     "categoryEn": "Indonesian Tourism",
     "date": "10 Oktober 2026",
     "dateEn": "October 10, 2026",
     "sourceName": "Antara News",
-    "sourceDomain": "sumbar.antaranews.com",
-    "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "sourceDomain": "antaranews.com",
+    "sourceUrl": "https://www.antaranews.com/berita/5781408/menpar-sebut-motogp-kembangkan-wisata-olahraga-secara-positif",
     "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
     "imageUrl": "",
     "tag": "Nasional",
     "tagEn": "National",
-    "actionUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
-    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Destinasi+Wisata+Sumatera+Barat",
-    "locationName": "Kawasan Wisata Unggulan Sumatera Barat & Nasional",
-    "locationNameEn": "Flagship Tourism Regions, Indonesia",
-    "description": "Kementerian Pariwisata Republik Indonesia memperkuat pendampingan dan standardisasi event pariwisata daerah untuk mendongkrak pergerakan wisatawan nusantara serta mendorong regenerasi festival budaya di berbagai provinsi termasuk Sumatera Barat.",
-    "descriptionEn": "The Ministry of Tourism bolsters national assistance for regional cultural events to boost domestic travel mobility and support regional tourism resilience.",
+    "actionUrl": "https://www.antaranews.com/berita/5781408/menpar-sebut-motogp-kembangkan-wisata-olahraga-secara-positif",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Sirkuit+Mandalika+Lombok",
+    "locationName": "Kawasan Ekonomi Khusus Mandalika, Lombok",
+    "locationNameEn": "Mandalika Special Economic Zone, Lombok",
+    "description": "Kementerian Pariwisata Republik Indonesia menegaskan perhelatan balap kelas dunia MotoGP berhasil mengakselerasi ekosistem pariwisata olahraga nasional, memperluas okupansi hotel, serta mempromosikan destinasi unggulan Indonesia ke mata dunia.",
+    "descriptionEn": "The Ministry of Tourism highlights the world-class MotoGP event for accelerating Indonesia sport tourism ecosystem, driving record hospitality occupancy and global exposure.",
     "relatedStories": [
       {
-        "title": "Stimulus Pariwisata Nusantara Perkuat Ekosistem Industri Kreatif dan Homestay",
-        "titleEn": "National Travel Incentives Bolster Local Homestay and Creative Eco-Systems",
+        "title": "Sport Tourism Internasional Dorong Lonjakan Wisatawan Mancanegara ke Destinasi Prioritas",
+        "titleEn": "International Sport Tourism Drives Inflow of Overseas Visitors to Priority Destinations",
         "sourceName": "Antara News",
-        "sourceDomain": "sumbar.antaranews.com",
-        "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+        "sourceDomain": "antaranews.com",
+        "sourceUrl": "https://www.antaranews.com/berita/5781408/menpar-sebut-motogp-kembangkan-wisata-olahraga-secara-positif",
         "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
@@ -211,6 +211,102 @@ export const HOT_INFO_FALLBACK = [
         "sourceName": "Antara News Sumbar",
         "sourceDomain": "sumbar.antaranews.com",
         "sourceUrl": "https://sumbar.antaranews.com/berita/713728/menikmati-ngarai-sianok-terkini--susuri-juga-kelok-44-hingga-danau-maninjau",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi7",
+    "title": "Kunjungan Wisatawan Mancanegara ke Indonesia Tembus 10,58 Juta, Sektor Pariwisata Terus Tumbuh",
+    "titleEn": "Foreign Tourist Arrivals to Indonesia Surge Past 10.58 Million with Steady Tourism Growth",
+    "category": "Pariwisata Indonesia",
+    "categoryEn": "Indonesian Tourism",
+    "date": "06 Oktober 2026",
+    "dateEn": "October 06, 2026",
+    "sourceName": "Antara News",
+    "sourceDomain": "antaranews.com",
+    "sourceUrl": "https://www.antaranews.com/berita/5778226/kunjungan-wisman-ke-indonesia-per-agustus-2026-tembus-1058-juta",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Nasional",
+    "tagEn": "National",
+    "actionUrl": "https://www.antaranews.com/berita/5778226/kunjungan-wisman-ke-indonesia-per-agustus-2026-tembus-1058-juta",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Destinasi+Pariwisata+Indonesia",
+    "locationName": "Pintu Masuk Wisatawan Nusantara & Mancanegara Indonesia",
+    "locationNameEn": "International Tourism Gateways, Indonesia",
+    "description": "Badan Pusat Statistik dan Kementerian Pariwisata mencatat arus kunjungan wisatawan mancanegara ke berbagai destinasi nusantara menembus 10,58 juta pelancong, didorong penerbangan langsung dan promosi festival budaya.",
+    "descriptionEn": "Official data reveals foreign tourist arrivals to Indonesian destinations have exceeded 10.58 million, supported by direct flight routes and world-class cultural celebrations.",
+    "relatedStories": [
+      {
+        "title": "Peningkatan Konektivitas Udara Pacu Kunjungan Pelancong ke Destinasi di Luar Jawa dan Bali",
+        "titleEn": "Enhanced Air Connectivity Drives Traveler Growth Beyond Traditional Tourist Hubs",
+        "sourceName": "Antara News",
+        "sourceDomain": "antaranews.com",
+        "sourceUrl": "https://www.antaranews.com/berita/5778226/kunjungan-wisman-ke-indonesia-per-agustus-2026-tembus-1058-juta",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi8",
+    "title": "Kemenpar Targetkan Sertifikasi Halal Produk UMKM Kuliner di 1.500 Desa Wisata Indonesia",
+    "titleEn": "Ministry Targets Halal Certification for MSME Culinary Vendors Across 1,500 Indonesian Tourism Villages",
+    "category": "Pariwisata Indonesia",
+    "categoryEn": "Indonesian Tourism",
+    "date": "04 Oktober 2026",
+    "dateEn": "October 04, 2026",
+    "sourceName": "Antara News",
+    "sourceDomain": "antaranews.com",
+    "sourceUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Nasional",
+    "tagEn": "National",
+    "actionUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Jejaring+Desa+Wisata+Indonesia",
+    "locationName": "Jejaring 1.500 Desa Wisata Nusantara, Indonesia",
+    "locationNameEn": "1,500 Indonesian Tourism Village Network",
+    "description": "Kementerian Pariwisata menggencarkan program standardisasi dan sertifikasi halal gratis bagi pelaku usaha kuliner di 1.500 desa wisata guna menjamin kebersihan, kehigienisan, dan kenyamanan wisatawan keluarga maupun pelancong global.",
+    "descriptionEn": "The Indonesian Ministry of Tourism accelerates halal certification for traditional culinary businesses across 1,500 tourism villages to ensure quality hygiene standards.",
+    "relatedStories": [
+      {
+        "title": "Penguatan Kuliner Tradisional Lokal Jadi Daya Pikat Unggulan Wisata Pedesaan Nusantara",
+        "titleEn": "Authentic Regional Cuisine Strengthens Competitive Allure for Rural Tourism Villages",
+        "sourceName": "Antara News",
+        "sourceDomain": "antaranews.com",
+        "sourceUrl": "https://www.antaranews.com/berita/5777133/kemenpar-targetkan-produk-umkm-1500-desa-wisata-tersertifikasi-halal",
+        "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
+      }
+    ]
+  },
+  {
+    "id": "hi9",
+    "title": "Untuk Tarik Minat Wisatawan Nusantara, Kemenpar Perkuat Penyelenggaraan Event Pariwisata Daerah",
+    "titleEn": "Ministry of Tourism Strengthens Regional Tourism Events to Drive Domestic Traveler Interest",
+    "category": "Pariwisata Indonesia",
+    "categoryEn": "Indonesian Tourism",
+    "date": "02 Oktober 2026",
+    "dateEn": "October 02, 2026",
+    "sourceName": "Antara News",
+    "sourceDomain": "sumbar.antaranews.com",
+    "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64",
+    "imageUrl": "",
+    "tag": "Nasional",
+    "tagEn": "National",
+    "actionUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Destinasi+Wisata+Sumatera+Barat",
+    "locationName": "Kawasan Wisata Unggulan Sumatera Barat & Nasional",
+    "locationNameEn": "Flagship Tourism Regions, Indonesia",
+    "description": "Kementerian Pariwisata Republik Indonesia memperkuat pendampingan dan standardisasi event pariwisata daerah untuk mendongkrak pergerakan wisatawan nusantara serta mendorong regenerasi festival budaya di berbagai provinsi termasuk Sumatera Barat.",
+    "descriptionEn": "The Ministry of Tourism bolsters national assistance for regional cultural events to boost domestic travel mobility and support regional tourism resilience.",
+    "relatedStories": [
+      {
+        "title": "Stimulus Pariwisata Nusantara Perkuat Ekosistem Industri Kreatif dan Homestay",
+        "titleEn": "National Travel Incentives Bolster Local Homestay and Creative Eco-Systems",
+        "sourceName": "Antara News",
+        "sourceDomain": "sumbar.antaranews.com",
+        "sourceUrl": "https://sumbar.antaranews.com/berita/769240/untuk-tarik-minat-wisatawan-kemenpar-perkuat-event-daerah",
         "sourceIcon": "https://www.google.com/s2/favicons?domain=antaranews.com&sz=64"
       }
     ]
@@ -1553,14 +1649,16 @@ export function parseNewsTimestamp(dateStr?: string, createdAt?: any): number {
   return 0;
 }
 
-export function isWithinLast6Months(dateStr?: string): boolean {
-  if (!dateStr) return true;
+export function isWithinLast30Days(dateStr?: string, createdAt?: any): boolean {
+  if (!dateStr && !createdAt) return true;
   try {
-    const timestamp = parseNewsTimestamp(dateStr);
+    const timestamp = parseNewsTimestamp(dateStr, createdAt);
     if (timestamp > 0) {
-      // 180 hari = 6 bulan
-      const sixMonthsInMs = 180 * 24 * 60 * 60 * 1000;
-      return (Date.now() - timestamp) <= sixMonthsInMs && (timestamp <= Date.now() + 86400000);
+      // 30 hari = 1 bulan terakhir
+      const thirtyDaysInMs = 30 * 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      const diff = now - timestamp;
+      return diff >= -86400000 && diff <= thirtyDaysInMs;
     }
     return true;
   } catch {
@@ -1568,8 +1666,22 @@ export function isWithinLast6Months(dateStr?: string): boolean {
   }
 }
 
-// Alias agar kompatibel dengan seluruh pemanggil yang ada
-export const isWithinLast30Days = isWithinLast6Months;
+export function isWithinLast6Months(dateStr?: string, createdAt?: any): boolean {
+  if (!dateStr && !createdAt) return true;
+  try {
+    const timestamp = parseNewsTimestamp(dateStr, createdAt);
+    if (timestamp > 0) {
+      // 180 hari = 6 bulan
+      const sixMonthsInMs = 180 * 24 * 60 * 60 * 1000;
+      const now = Date.now();
+      const diff = now - timestamp;
+      return diff >= -86400000 && diff <= sixMonthsInMs;
+    }
+    return true;
+  } catch {
+    return true;
+  }
+}
 
 /**
  * Accurately formats news relative time or real date.
@@ -1673,8 +1785,8 @@ function formatDateIndo(dateStr: string): { dateId: string; dateEn: string; isWi
       return { dateId: 'Hari Ini', dateEn: 'Today', isWithin30d: true };
     }
     const diffMs = Date.now() - d.getTime();
-    const sixMonthsMs = 180 * 24 * 60 * 60 * 1000;
-    const isWithin30d = diffMs <= sixMonthsMs && diffMs >= -86400000;
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    const isWithin30d = diffMs <= thirtyDaysMs && diffMs >= -86400000;
 
     const monthNamesId = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
     const monthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

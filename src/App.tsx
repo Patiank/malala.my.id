@@ -504,7 +504,7 @@ export default function App() {
             const rawList: HotInfoItem[] = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0)
               ? dataStore.hotInfoItems
               : HOT_INFO_ITEMS;
-            const rawFiltered = rawList.filter((news) => isWithinLast6Months(news.date || news.createdAt));
+            const rawFiltered = rawList.filter((news) => isWithinLast30Days(news.date || news.createdAt));
             const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered)
               .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
             const displayItems: HotInfoItem[] = validItems.length > 0 

@@ -3730,7 +3730,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                 <div className="flex flex-wrap items-center gap-2 text-xs font-jakarta w-full">
                   {(() => {
                     const rawList = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0 ? dataStore.hotInfoItems : HOT_INFO_ITEMS)
-                      .filter((i: any) => isWithinLast6Months(i.date || i.createdAt));
+                      .filter((i: any) => isWithinLast30Days(i.date || i.createdAt));
                     const dedupedList = deduplicateNewsItems(rawList);
                     const dynamicCats = dedupedList.map((i: any) => i.category).filter(Boolean);
                     const uniqueCategories = Array.from(new Set([
@@ -3884,7 +3884,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                 const activeList = showAllNewsArchive
                   ? dedupedList
-                  : dedupedList.filter((item: any) => isWithinLast6Months(item.date || item.createdAt));
+                  : dedupedList.filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
 
                 const totalCount = dedupedList.length;
                 const hasMoreThan10 = totalCount > 10;
@@ -3914,7 +3914,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         const publisherDomain = item.sourceDomain || item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'sumbar.antaranews.com' : 'travel.kompas.com') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));
                         const mainFavicon = item.sourceIcon || (hasExternalUrl ? getPublisherFavicon(item.sourceDomain, item.sourceName) : '/favicon.ico');
                         const timeAgoText = formatNewsTimeAgo(item.date, item.createdAt, item.timeAgo, lang);
-                        const isOlderThan6M = !isWithinLast6Months(item.date || item.createdAt);
+                        const isOlderThan1M = !isWithinLast30Days(item.date || item.createdAt);
                         const displayDescription = isEn && item.descriptionEn ? item.descriptionEn : item.description;
 
                         return (
@@ -3973,10 +3973,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                                       <span>HOT</span>
                                     </span>
                                   )}
-                                  {isOlderThan6M && (
+                                  {isOlderThan1M && (
                                     <span className="bg-neutral-100 text-neutral-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-neutral-300 shadow-2xs">
                                       <Archive className="w-2.5 h-2.5 text-neutral-500" />
-                                      <span>{isEn ? 'Archive' : 'Arsip'}</span>
+                                      <span>{isEn ? 'Archive' : 'Arsip (>1 Bln)'}</span>
                                     </span>
                                   )}
                                 </div>
