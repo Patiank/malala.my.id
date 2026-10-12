@@ -35,6 +35,22 @@ async function startServer() {
     modelCooldownMap[modelName] = Date.now() + cooldownMinutes * 60 * 1000;
   }
 
+  function getAvailableServerApiKeys(): string[] {
+    const keys: string[] = [];
+    const primary = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    const backup = process.env.GEMINI_BACKUP_API_KEY || process.env.VITE_GEMINI_BACKUP_API_KEY;
+    if (primary && primary.trim() && !primary.includes('Dummy')) keys.push(primary.trim());
+    if (backup && backup.trim() && !backup.includes('Dummy') && !keys.includes(backup.trim())) keys.push(backup.trim());
+    return keys;
+  }
+
+  const SERVER_GEMINI_MODELS_HIERARCHY = [
+    'gemini-3.8-flash',
+    'gemini-3.7-flash',
+    'gemini-3.5-flash',
+    'gemini-flash-latest'
+  ];
+
   // API Route: Sync Database to GitHub
   app.post("/api/sync-github", async (req, res) => {
     try {
@@ -73,7 +89,7 @@ async function startServer() {
   // API Route: AI Travel Planner (UNI MALA AI Minangkabau)
   app.post("/api/ai/itinerary", async (req, res) => {
     try {
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKeys = getAvailableServerApiKeys();
       const { 
         durasiHari, 
         profilWisatawan, 
@@ -97,20 +113,9 @@ async function startServer() {
       const targetEv = targetEvent;
       const daysCountClamped = Math.min(Math.max(Number(durasiHari) || 3, 1), 7);
 
-      const isValidGeminiKey = Boolean(apiKey && apiKey.length > 20 && !apiKey.includes('Dummy'));
-
-      if (!isValidGeminiKey) {
+      if (apiKeys.length === 0) {
         return res.json(getItineraryFallback(req.body));
       }
-
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
-        },
-      });
 
       const langInstruction = isEnglish
         ? "CRITICAL MANDATORY REQUIREMENT: The user is browsing the website in ENGLISH. You MUST output 100% of the entire itinerary, title, summary, activity descriptions, tips, culinary recommendations, and advice strictly in natural professional ENGLISH. DO NOT leave ANY Indonesian phrases or words (except proper place/attraction names)."
@@ -241,33 +246,40 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
   ]
 }`;
 
-      const modelsToTry = ['gemini-3.8-flash'];
       let parsedData = null;
+      for (const currentKey of apiKeys) {
+        const ai = new GoogleGenAI({
+          apiKey: currentKey,
+          httpOptions: { headers: { 'User-Agent': 'aistudio-build' } },
+        });
 
-      for (const modelName of modelsToTry) {
-        if (isModelInCooldown(modelName)) {
-          continue;
+        for (const modelName of SERVER_GEMINI_MODELS_HIERARCHY) {
+          if (isModelInCooldown(modelName)) {
+            continue;
+          }
+
+          try {
+            const response = await ai.models.generateContent({
+              model: modelName,
+              contents: prompt,
+            });
+
+            const rawText = response.text || '';
+            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              parsedData = JSON.parse(jsonMatch[0]);
+              break;
+            }
+          } catch (err: any) {
+            const errStr = String(err?.message || err?.status || err);
+            if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+              markModelExhausted(modelName, 5);
+            }
+            console.warn(`Server Gemini call with ${modelName} failed, trying next model or key...`, err?.message || err);
+          }
         }
 
-        try {
-          const response = await ai.models.generateContent({
-            model: modelName,
-            contents: prompt,
-          });
-
-          const rawText = response.text || '';
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            parsedData = JSON.parse(jsonMatch[0]);
-            break;
-          }
-        } catch (err: any) {
-          const errStr = String(err?.message || err?.status || err);
-          if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
-            markModelExhausted(modelName, 5);
-          }
-          console.warn(`Server Gemini call with ${modelName} failed, trying next model...`, err?.message || err);
-        }
+        if (parsedData) break;
       }
 
       if (!parsedData) {
@@ -285,7 +297,7 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
   // API Route: UNI MALA AI Chatbot / Real-Time Conversational Guide
   app.post("/api/ai/chat", async (req, res) => {
     try {
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKeys = getAvailableServerApiKeys();
       const { message, history = [] } = req.body;
 
       if (!message || typeof message !== 'string' || !message.trim()) {
@@ -293,22 +305,12 @@ Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau t
       }
 
       const cleanMsg = message.trim();
-      const isValidGeminiKey = Boolean(apiKey && apiKey.length > 20 && !apiKey.includes('Dummy'));
 
-      if (!isValidGeminiKey) {
+      if (apiKeys.length === 0) {
         return res.json({
           reply: `**Salamaik Datang di Ranah Minang!** 🙏✨\n\nSaya **UNI MALA AI**, pemandu virtual resmi pariwisata & kebudayaan Sumatera Barat. Menjawab pertanyaan Anda mengenai *"${cleanMsg}"*:\n\nSumatera Barat menawarkan pesona 38+ destinasi alam & geopark (seperti Lembah Harau, Ngarai Sianok, Danau Singkarak, dan Kepulauan Mandeh), 26+ kuliner legendaris (Rendang, Nasi Kapau, Sate Padang), dan kekayaan budaya Minangkabau.\n\n💡 *Tips:* Gunakan fitur **Rencanakan AI** untuk membuat jadwal perjalanan harian (1–7 hari) otomatis yang disesuaikan dengan kebutuhan Anda.`
         });
       }
-
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
-        },
-      });
 
       // Build in-memory Knowledge Base (Simple RAG Grounding)
       const destList = DESTINATIONS.map((d: any) => `- ${d.title} (${d.regency}): Kategori ${d.category}, Tag: ${d.tag}. Keunggulan: ${d.highlights?.join(', ')}. Lokasi: ${d.locationDetails || d.regency}`).join('\n');
@@ -371,37 +373,44 @@ ${eventList}
       });
 
       let reply = '';
-      const chatModelsToTry = ['gemini-3.8-flash'];
       const needsSearch = /kapan|jadwal|tanggal|hari ini|besok|minggu ini|cuaca|hujan|banjir|longsor|buka|tutup|tiket|berita|terbaru|terkini|kondisi jalan|kapal|pesawat|status|macet/i.test(cleanMsg);
 
-      for (const modelName of chatModelsToTry) {
-        if (isModelInCooldown(modelName)) {
-          continue;
-        }
+      for (const currentKey of apiKeys) {
+        const ai = new GoogleGenAI({
+          apiKey: currentKey,
+          httpOptions: { headers: { 'User-Agent': 'aistudio-build' } },
+        });
 
-        try {
-          const config: any = {
-            systemInstruction,
-            temperature: 0.5,
-          };
-          if (needsSearch) {
-            config.tools = [{ googleSearch: {} } as any];
+        for (const modelName of SERVER_GEMINI_MODELS_HIERARCHY) {
+          if (isModelInCooldown(modelName)) {
+            continue;
           }
 
-          const response = await ai.models.generateContent({
-            model: modelName,
-            contents: formattedContents,
-            config,
-          });
-          reply = response.text || '';
-          if (reply) break;
-        } catch (mErr: any) {
-          const errStr = String(mErr?.message || mErr?.status || mErr);
-          if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
-            markModelExhausted(modelName, 5);
+          try {
+            const config: any = {
+              systemInstruction,
+              temperature: 0.5,
+            };
+            if (needsSearch) {
+              config.tools = [{ googleSearch: {} } as any];
+            }
+
+            const response = await ai.models.generateContent({
+              model: modelName,
+              contents: formattedContents,
+              config,
+            });
+            reply = response.text || '';
+            if (reply) break;
+          } catch (mErr: any) {
+            const errStr = String(mErr?.message || mErr?.status || mErr);
+            if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+              markModelExhausted(modelName, 5);
+            }
+            console.warn(`Chat model ${modelName} failed, trying next model or key...`, mErr?.message);
           }
-          console.warn(`Chat model ${modelName} failed:`, mErr?.message);
         }
+        if (reply) break;
       }
 
       if (!reply) {
@@ -458,18 +467,10 @@ ${eventList}
         return res.status(400).json({ error: "Nama item katalog wajib diisi." });
       }
 
-      if (!apiKey) {
+      const apiKeys = getAvailableServerApiKeys();
+      if (apiKeys.length === 0) {
         return res.status(503).json({ error: "Gemini API Key belum dikonfigurasi di server." });
       }
-
-      const ai = new GoogleGenAI({
-        apiKey,
-        httpOptions: {
-          headers: {
-            'User-Agent': 'aistudio-build',
-          },
-        },
-      });
 
       let typePrompt = '';
       if (type === 'destinations') {
@@ -562,25 +563,31 @@ ${typePrompt}
 
 Keluarkan HANYA format JSON valid tanpa markdown backticks (\`\`\`json) atau teks pengantar lainnya.`;
 
-      const itemModels = ['gemini-3.8-flash'];
       let parsedData = null;
+      for (const currentKey of apiKeys) {
+        const ai = new GoogleGenAI({
+          apiKey: currentKey,
+          httpOptions: { headers: { 'User-Agent': 'aistudio-build' } },
+        });
 
-      for (const modelName of itemModels) {
-        try {
-          const response = await ai.models.generateContent({
-            model: modelName,
-            contents: prompt,
-          });
+        for (const modelName of SERVER_GEMINI_MODELS_HIERARCHY) {
+          try {
+            const response = await ai.models.generateContent({
+              model: modelName,
+              contents: prompt,
+            });
 
-          const rawText = response.text || '';
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            parsedData = JSON.parse(jsonMatch[0]);
-            if (parsedData) break;
+            const rawText = response.text || '';
+            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              parsedData = JSON.parse(jsonMatch[0]);
+              if (parsedData) break;
+            }
+          } catch (itemErr: any) {
+            console.warn(`Catalog generator with ${modelName} failed, trying next...`, itemErr?.message);
           }
-        } catch (itemErr: any) {
-          console.warn(`Catalog generator with ${modelName} failed:`, itemErr?.message);
         }
+        if (parsedData) break;
       }
 
       if (!parsedData) {

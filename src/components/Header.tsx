@@ -302,10 +302,10 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
-      {/* Desktop Nav Links (Clean Minimalist Typography, No Logos, Compact Font) */}
+      {/* Desktop Nav Links (Clean Minimalist Typography, No Logos, Perfectly Balanced Font) */}
       <nav
-        className="hidden md:flex flex-row items-center gap-1 lg:gap-2 font-orbitron font-bold uppercase text-black"
-        style={{ fontSize: 'clamp(0.62rem, 0.22vw + 0.48rem, 0.72rem)' }}
+        className="hidden md:flex flex-row items-center gap-1.5 lg:gap-2.5 font-orbitron font-extrabold uppercase text-black"
+        style={{ fontSize: 'clamp(0.68rem, 0.25vw + 0.52rem, 0.82rem)' }}
       >
         {primaryNavItems.map((item) => {
           const isActive = activeDrawer === item.id;
@@ -313,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`group relative overflow-hidden min-h-0 px-2.5 py-1 lg:px-3 lg:py-1 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-[0.98] ${
+              className={`group relative overflow-hidden min-h-0 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-[0.98] ${
                 isActive
                   ? 'border-transparent font-bold shadow-sm'
                   : 'border-transparent hover:border-transparent'
@@ -334,7 +334,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Text Label (Clean Minimalist Typography without Logo/Icon) */}
               <span
-                className={`relative z-10 text-[9.5px] lg:text-[10.5px] xl:text-[11px] tracking-[0.09em] lg:tracking-[0.12em] transition-colors duration-150 select-none whitespace-nowrap ${
+                className={`relative z-10 text-[11px] lg:text-[12px] xl:text-[12.5px] tracking-[0.08em] lg:tracking-[0.10em] transition-colors duration-150 select-none whitespace-nowrap ${
                   !isActive ? 'group-hover:text-[var(--hover-text)] group-hover:[text-shadow:none]' : ''
                 }`}
               >
@@ -347,7 +347,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Peta Wisata Button (Uniform 2-Line Panel, No Logo) */}
         <button
           onClick={() => handleNavClick('map')}
-          className={`w-[96px] lg:w-[108px] h-[34px] lg:h-[36px] flex flex-col items-center justify-center rounded-xl border font-orbitron font-extrabold uppercase tracking-wider text-[8px] lg:text-[9px] leading-[1.15] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98] select-none text-center ${
+          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border font-orbitron font-extrabold uppercase tracking-wider text-[8.5px] lg:text-[9.5px] leading-[1.18] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.98] select-none text-center ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800 hover:border-emerald-800'
@@ -361,7 +361,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Rencanakan Liburan Anda (Uniform 2-Line Panel, Same Size as Peta Wisata, No Logo) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`w-[96px] lg:w-[108px] h-[34px] lg:h-[36px] flex flex-col items-center justify-center rounded-xl border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.98] font-orbitron font-extrabold uppercase tracking-wider text-[8px] lg:text-[9px] leading-[1.15] select-none text-center ${
+          className={`w-[100px] lg:w-[112px] h-[36px] lg:h-[38px] flex flex-col items-center justify-center rounded-xl border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.98] font-orbitron font-extrabold uppercase tracking-wider text-[8.5px] lg:text-[9.5px] leading-[1.18] select-none text-center ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
           title={lang === 'en' ? 'Plan Your Vacation' : 'Rencanakan Liburan Anda'}

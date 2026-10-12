@@ -233,6 +233,7 @@ export interface AppSettings {
   activeBookingPartner?: 'dual' | 'tiket' | 'traveloka';
   isAutonomousSyncEnabled?: boolean;
   lastAutonomousSync?: string;
+  catalogVersion?: number;
 }
 
 export interface FormAIItineraryActivity {

@@ -17,7 +17,7 @@ const loadFallbackContent = () => {
 };
 
 const CATALOG_CACHE_KEY = 'malala_full_catalog_v2';
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours Time-To-Live for public visitors (Saves 98% Firebase Quota)
+const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes TTL with smart version check
 
 interface CatalogCachePayload {
   destinations: Destination[];
@@ -322,14 +322,16 @@ export function useData() {
     }
   }, []);
 
-  // FASE 2: Cache-First strategy for general visitors
+  // FASE 2: Stale-While-Revalidate + Smart Version Check strategy
   useEffect(() => {
     let isCancelled = false;
 
     async function initCatalog() {
-      // 1. Check local persistent cache
+      let cached: CatalogCachePayload | null = null;
+
+      // 1. Check local persistent cache for instant 0ms load
       try {
-        const cached = await getLocalCache<CatalogCachePayload>(CATALOG_CACHE_KEY, CACHE_TTL_MS);
+        cached = await getLocalCache<CatalogCachePayload>(CATALOG_CACHE_KEY, CACHE_TTL_MS);
         if (cached && !isCancelled) {
           if (cached.destinations?.length) setDestinations(cached.destinations);
           if (cached.cultureItems?.length) setCultureItems(cached.cultureItems);
@@ -339,42 +341,45 @@ export function useData() {
           if (Array.isArray(cached.downloadItems)) setDownloadItems(cached.downloadItems);
           if (cached.hotInfoItems?.length) setHotInfoItems(cached.hotInfoItems);
           if (cached.appSettings) setAppSettings(cached.appSettings);
-          // Cache hit: 0 Firestore reads used!
-          return;
         }
       } catch (err) {
         console.warn('[useData] LocalCache read warning:', err);
       }
 
-      // 2. Cache miss or expired: populate immediately from local static SSG content
-      let fallbackModule: any = null;
-      try {
-        fallbackModule = await loadFallbackContent();
-        if (!isCancelled && fallbackModule) {
-          setDestinations(prev => prev.length ? prev : fallbackModule.DESTINATIONS);
-          setCultureItems(prev => prev.length ? prev : fallbackModule.CULTURE_ITEMS);
-          setCulinaryItems(prev => prev.length ? prev : fallbackModule.CULINARY_ITEMS);
-          setSouvenirItems(prev => prev.length ? prev : fallbackModule.SOUVENIR_ITEMS);
-          setEventItems(prev => prev.length ? prev : fallbackModule.EVENTS_SCHEDULE);
-
-          // Populate cache with static SSG data immediately so subsequent visits have 0 delay
-          await persistCurrentToCache({
-            destinations: fallbackModule.DESTINATIONS,
-            cultureItems: fallbackModule.CULTURE_ITEMS,
-            culinaryItems: fallbackModule.CULINARY_ITEMS,
-            souvenirItems: fallbackModule.SOUVENIR_ITEMS,
-            eventItems: fallbackModule.EVENTS_SCHEDULE,
-            downloadItems: DOWNLOAD_ITEMS,
-            hotInfoItems: HOT_INFO_ITEMS,
-            appSettings,
-          });
+      // If no cache at all, populate from local fallback SSG first so UI renders immediately
+      if (!cached && !isCancelled) {
+        try {
+          const fallbackModule = await loadFallbackContent();
+          if (!isCancelled && fallbackModule) {
+            setDestinations(fallbackModule.DESTINATIONS);
+            setCultureItems(fallbackModule.CULTURE_ITEMS);
+            setCulinaryItems(fallbackModule.CULINARY_ITEMS);
+            setSouvenirItems(fallbackModule.SOUVENIR_ITEMS);
+            setEventItems(fallbackModule.EVENTS_SCHEDULE);
+            setDownloadItems(DOWNLOAD_ITEMS);
+            setHotInfoItems(HOT_INFO_ITEMS);
+          }
+        } catch (err) {
+          console.warn('[useData] Local fallback load warning:', err);
         }
-      } catch (err) {
-        console.warn('[useData] Local fallback load warning:', err);
       }
 
-      // 3. Quota-Shield: Pengunjung publik 100% membaca dari cache lokal / SSG (0 kuota read Firestore).
-      // Sinkronisasi data Firestore hanya aktif melalui realtime listener FASE 3 jika Admin login.
+      // 2. Smart Lightweight Version Check (Only 1 Firestore read: settings/hero)
+      try {
+        const heroDoc = await getDoc(doc(db, 'settings', 'hero')).catch(() => null);
+        const remoteVersion = heroDoc && heroDoc.exists() ? (heroDoc.data()?.catalogVersion || 0) : 0;
+        const localVersion = cached?.appSettings?.catalogVersion || 0;
+
+        // If remote version is newer, or if we have no cached data, or if admin is logged in:
+        if (!cached || remoteVersion > localVersion || isAdminLoggedIn) {
+          await fetchFromFirestoreOnce();
+        }
+      } catch (checkErr) {
+        console.warn('[useData] Catalog sync check warning:', checkErr);
+        if (!cached) {
+          await fetchFromFirestoreOnce().catch(() => {});
+        }
+      }
     }
 
     initCatalog();
@@ -382,7 +387,7 @@ export function useData() {
     return () => {
       isCancelled = true;
     };
-  }, [isAdminLoggedIn, persistCurrentToCache]);
+  }, [isAdminLoggedIn, fetchFromFirestoreOnce]);
 
   // FASE 3: Active Realtime Listeners (HANYA aktif ketika Admin sedang login)
   // Pengunjung umum sama sekali tidak membuka koneksi WebSocket/onSnapshot ke Firestore.
@@ -534,7 +539,21 @@ export function useData() {
         if (!downloadItems.some(d => d.id === item.id)) updated.push(item);
         setDownloadItems(updated);
         persistCurrentToCache({ downloadItems: updated });
+      } else if (colName === 'hotinfo') {
+        const updated = hotInfoItems.map(h => h.id === item.id ? { ...h, ...item } : h);
+        if (!hotInfoItems.some(h => h.id === item.id)) updated.unshift(item);
+        setHotInfoItems(updated);
+        persistCurrentToCache({ hotInfoItems: updated });
       }
+
+      // Bump catalog version in Firestore and localStorage so all visitors get updated instantly
+      const newVersion = Date.now();
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('malala_catalog_cache_bust', newVersion.toString());
+        } catch {}
+      }
+      setDoc(doc(db, 'settings', 'hero'), { catalogVersion: newVersion }, { merge: true }).catch(() => {});
     } catch (e) {
       console.error("Error saving to Firebase: ", e);
       throw e;
@@ -557,6 +576,7 @@ export function useData() {
         tiketAffiliateId: newSettings.tiketAffiliateId || '6a893170239c5bf8a8b71930',
         travelokaAffiliateId: newSettings.travelokaAffiliateId || '',
         activeBookingPartner: newSettings.activeBookingPartner || 'dual',
+        catalogVersion: Date.now(),
       };
       setAppSettings(formatted);
       persistCurrentToCache({ appSettings: formatted });
@@ -564,6 +584,7 @@ export function useData() {
       if (typeof window !== 'undefined') {
         try {
           localStorage.setItem('malala_app_settings', JSON.stringify(formatted));
+          localStorage.setItem('malala_catalog_cache_bust', formatted.catalogVersion!.toString());
         } catch (e) {
           console.warn('Failed to save settings to localStorage:', e);
         }
@@ -581,6 +602,7 @@ export function useData() {
         tiketAffiliateId: formatted.tiketAffiliateId,
         travelokaAffiliateId: formatted.travelokaAffiliateId,
         activeBookingPartner: formatted.activeBookingPartner,
+        catalogVersion: formatted.catalogVersion,
       };
       if (formatted.baseImage && (!formatted.baseImage.startsWith('data:') || formatted.baseImage.length < 800000)) {
         firestorePayload.baseImage = formatted.baseImage;
@@ -627,12 +649,44 @@ export function useData() {
         const updated = downloadItems.filter(d => d.id !== id);
         setDownloadItems(updated);
         persistCurrentToCache({ downloadItems: updated });
+      } else if (colName === 'hotinfo') {
+        const updated = hotInfoItems.filter(h => h.id !== id);
+        setHotInfoItems(updated);
+        persistCurrentToCache({ hotInfoItems: updated });
       }
+
+      // Bump catalog version in Firestore and localStorage
+      const newVersion = Date.now();
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('malala_catalog_cache_bust', newVersion.toString());
+        } catch {}
+      }
+      setDoc(doc(db, 'settings', 'hero'), { catalogVersion: newVersion }, { merge: true }).catch(() => {});
     } catch (e) {
       console.error("Error deleting from Firebase: ", e);
       throw e;
     }
   };
+
+  const forceRefreshCatalog = useCallback(async () => {
+    setIsSyncing(true);
+    try {
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.removeItem('malala_catalog_cache_bust');
+          await setLocalCache(CATALOG_CACHE_KEY, null as any);
+        } catch {}
+      }
+      await fetchFromFirestoreOnce();
+      return true;
+    } catch (e) {
+      console.error("Force refresh error:", e);
+      return false;
+    } finally {
+      setIsSyncing(false);
+    }
+  }, [fetchFromFirestoreOnce]);
 
   const seedData = async () => {
     setIsSyncing(true);
@@ -842,6 +896,7 @@ export function useData() {
     isSyncing,
     isAdminLoggedIn,
     refreshData: fetchFromFirestoreOnce,
+    forceRefreshCatalog,
     saveItem,
     saveSettings,
     deleteItem,

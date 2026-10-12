@@ -31,12 +31,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     saveItem,
     saveSettings,
     deleteItem,
+    forceRefreshCatalog,
     seedData,
     approvePendingEvent,
     rejectPendingEvent,
     savePendingEvent,
   } = dataStore;
 
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isSeeding, setIsSeeding] = useState<boolean>(false);
   const [isAiScanning, setIsAiScanning] = useState<boolean>(false);
   const [scanResult, setScanResult] = useState<AutonomousScanResult | null>(null);
@@ -58,6 +60,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       } finally {
         setIsSeeding(false);
       }
+    }
+  };
+
+  const handleForceRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      await forceRefreshCatalog();
+      showSuccess('✅ Sukses! Cache dibersihkan & data katalog berhasil disinkronkan langsung dari Cloud Firestore.');
+    } catch {
+      setAdminError('Gagal menyinkronkan data dari Cloud Firestore.');
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -191,7 +205,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       setUploadProgress(15);
       const res = await processCatalogImageWithStats(file, adminTab, (pct) => setUploadProgress(pct));
       if (res?.dataUrl) {
-        setFormData((prev: any) => ({ ...prev, imageUrl: res.dataUrl }));
+        setFormData((prev: any) => ({ ...prev, imageUrl: res.dataUrl, isUserUploadedImage: true }));
         setCompressionStats(res.stats);
         showSuccess(`📸 Foto berhasil dikompresi ke WebP! Hemat ${res.stats.reductionPercentage}% (${formatBytes(res.stats.originalBytes)} → ${formatBytes(res.stats.compressedBytes)})`);
       }
@@ -767,6 +781,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           }
         }
       }
+
+      if (formData.imageUrl && formData.imageUrl.trim()) {
+        formData.isUserUploadedImage = true;
+      }
+
       const colName = getCollectionName();
       await saveItem(colName, formData);
       showSuccess('Perubahan katalog berhasil disimpan permanen ke Cloud Firestore!');
@@ -1200,6 +1219,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
           {adminTab === 'download' ? 'Kelola Media Kit & Unduhan' : adminTab === 'hotinfo' ? 'Kelola Hot Info & Berita Terbaru' : adminTab === 'settings' ? 'Kelola Pengaturan Latar & Admin' : `Kelola Data ${adminTab}`}
         </h3>
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleForceRefresh}
+            disabled={isRefreshing}
+            className="bg-emerald-600 text-white px-3 py-1.5 rounded-md text-xs font-bold font-jakarta uppercase flex items-center gap-1.5 hover:bg-emerald-700 transition-colors cursor-pointer shadow-xs"
+            title="Bersihkan cache lokal & sinkronkan data paling segar langsung dari Cloud Firestore"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span>{isRefreshing ? 'Menyinkronkan...' : 'Sinkronkan Dari Cloud'}</span>
+          </button>
           <button
             type="button"
             onClick={handleSeedData}

@@ -4,6 +4,23 @@ async function getGeminiClient(apiKey: string) {
   return new GoogleGenAI({ apiKey });
 }
 
+export function getAvailableGeminiApiKeys(): string[] {
+  const envObj = (typeof import.meta !== 'undefined' ? (import.meta as any).env : null) || {};
+  const keys: string[] = [];
+  const primary = envObj.VITE_GEMINI_API_KEY || envObj.GEMINI_API_KEY;
+  const backup = envObj.VITE_GEMINI_BACKUP_API_KEY || envObj.GEMINI_BACKUP_API_KEY;
+  if (primary && primary.length > 20 && !primary.includes("Dummy")) keys.push(primary);
+  if (backup && backup.length > 20 && !backup.includes("Dummy") && backup !== primary) keys.push(backup);
+  return keys;
+}
+
+export const GEMINI_MODELS_HIERARCHY = [
+  'gemini-3.8-flash',
+  'gemini-3.7-flash',
+  'gemini-3.5-flash',
+  'gemini-flash-latest'
+];
+
 // Fallback data when API or Gemini API key is unavailable
 export const HOT_INFO_FALLBACK = [
   {
@@ -836,17 +853,16 @@ export async function fetchAiItinerary(params: any) {
     console.warn("Server API itinerary endpoint unavailable, using fallback AI response", e);
   }
 
-  // Client side Gemini API fallback if a valid VITE_GEMINI_API_KEY is available
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "";
-  const isValidGeminiKey = Boolean(viteApiKey && viteApiKey.length > 20 && !viteApiKey.includes("Dummy"));
-  if (isValidGeminiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
-    for (const modelName of modelsToTry) {
-      if (isClientModelInCooldown(modelName)) {
-        continue;
-      }
-      try {
-        const ai = await getGeminiClient(viteApiKey);
+  // Client side Gemini API fallback with Dual Key & Model Hierarchy
+  const apiKeys = getAvailableGeminiApiKeys();
+  if (apiKeys.length > 0) {
+    for (const currentKey of apiKeys) {
+      for (const modelName of GEMINI_MODELS_HIERARCHY) {
+        if (isClientModelInCooldown(modelName)) {
+          continue;
+        }
+        try {
+          const ai = await getGeminiClient(currentKey);
         const isEnglish = params?.language === 'en';
         const langStr = isEnglish ? 'English' : 'Bahasa Indonesia';
         const availableDestinations = params?.availableDestinations || [];
@@ -952,6 +968,7 @@ Aturan Ketat:
       }
     }
   }
+}
 
   return getItineraryFallback(params);
 }
@@ -1049,36 +1066,36 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
     console.warn("Server API chat endpoint offline, connecting to client Gemini engine...", e);
   }
 
-  // Client side Gemini API fallback (Guaranteed Active)
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "";
-  if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
-    for (const modelName of modelsToTry) {
-      if (isClientModelInCooldown(modelName)) {
-        continue;
-      }
-      try {
-        const ai = await getGeminiClient(viteApiKey);
-        
-        // Multi-turn context
-        const formattedContents: any[] = [];
-        if (Array.isArray(history) && history.length > 0) {
-          const recent = history.slice(-10);
-          for (const h of recent) {
-            if (h && h.text) {
-              formattedContents.push({
-                role: h.sender === 'user' ? 'user' : 'model',
-                parts: [{ text: h.text }]
-              });
+  // Client side Gemini API fallback with Dual Key & Model Hierarchy
+  const apiKeys = getAvailableGeminiApiKeys();
+  if (apiKeys.length > 0) {
+    for (const currentKey of apiKeys) {
+      for (const modelName of GEMINI_MODELS_HIERARCHY) {
+        if (isClientModelInCooldown(modelName)) {
+          continue;
+        }
+        try {
+          const ai = await getGeminiClient(currentKey);
+          
+          // Multi-turn context
+          const formattedContents: any[] = [];
+          if (Array.isArray(history) && history.length > 0) {
+            const recent = history.slice(-10);
+            for (const h of recent) {
+              if (h && h.text) {
+                formattedContents.push({
+                  role: h.sender === 'user' ? 'user' : 'model',
+                  parts: [{ text: h.text }]
+                });
+              }
             }
           }
-        }
-        formattedContents.push({
-          role: 'user',
-          parts: [{ text: message }]
-        });
+          formattedContents.push({
+            role: 'user',
+            parts: [{ text: message }]
+          });
 
-        const systemInstruction = `Anda adalah 'UNI MALA AI', asisten virtual dan pemandu wisata cerdas resmi Sumatera Barat (Wonderful West Sumatra Tourism Board).
+          const systemInstruction = `Anda adalah 'UNI MALA AI', asisten virtual dan pemandu wisata cerdas resmi Sumatera Barat (Wonderful West Sumatra Tourism Board).
 
 KEPRIBADIAN & GAYA KOMUNIKASI:
 1. Ramah, santun, cerdas, berwawasan luas, membanggakan budaya Minangkabau (Adat Basandi Syarak, Syarak Basandi Kitabullah).
@@ -1097,24 +1114,25 @@ PANDUAN PENGETAHUAN & LOGISTIK SUMBAR:
    - Padang ke Kepulauan Mentawai: Kapal Cepat Mentawai Fast (±3 - 3,5 jam dari Pelabuhan Muaro)
 3. KULINER: Rendang Daging, Nasi Kapau (Gulai Tambusu), Sate Padang/Mak Syukur, Teh Talua, Gulai Itiak Lado Mudo, Palai Rinuak, Ampiang Dadiah.`;
 
-        const response = await ai.models.generateContent({
-          model: modelName,
-          contents: formattedContents,
-          config: {
-            systemInstruction,
-            temperature: 0.6,
-          }
-        });
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: formattedContents,
+            config: {
+              systemInstruction,
+              temperature: 0.6,
+            }
+          });
 
-        if (response && response.text && response.text.trim()) {
-          return { reply: response.text.trim() };
+          if (response && response.text && response.text.trim()) {
+            return { reply: response.text.trim() };
+          }
+        } catch (err: any) {
+          const errStr = String(err?.message || err?.status || err);
+          if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
+            markClientModelExhausted(modelName, 5);
+          }
+          console.warn(`Client Gemini API chat with ${modelName} failed, trying next...`, err);
         }
-      } catch (err: any) {
-        const errStr = String(err?.message || err?.status || err);
-        if (errStr.includes('429') || errStr.includes('quota') || errStr.includes('RESOURCE_EXHAUSTED')) {
-          markClientModelExhausted(modelName, 5);
-        }
-        console.warn(`Client Gemini API chat with ${modelName} failed, trying next...`, err);
       }
     }
   }
@@ -1458,45 +1476,46 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
     console.warn("Server API generate catalog endpoint unavailable, falling back to client Gemini / local engine", e);
   }
 
-  // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "";
-  if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
-    for (const modelName of modelsToTry) {
-      try {
-        const ai = await getGeminiClient(viteApiKey);
+  // Client side Gemini API fallback with Dual Key & Model Hierarchy
+  const apiKeys = getAvailableGeminiApiKeys();
+  if (apiKeys.length > 0) {
+    for (const currentKey of apiKeys) {
+      for (const modelName of GEMINI_MODELS_HIERARCHY) {
+        try {
+          const ai = await getGeminiClient(currentKey);
 
-        let typePrompt = '';
-        if (type === 'destinations') {
-          typePrompt = `Kategori: DESTINASI WISATA SUMATERA BARAT\nNama Destinasi: "${name}" ${hint ? `(${hint})` : ''}`;
-        } else if (type === 'culture') {
-          typePrompt = `Kategori: KEBUDAYAAN & TRADISI MINANGKABAU\nNama Budaya: "${name}" ${hint ? `(${hint})` : ''}`;
-        } else if (type === 'culinary') {
-          typePrompt = `Kategori: KULINER AUTENTIK MINANGKABAU\nNama Kuliner: "${name}" ${hint ? `(${hint})` : ''}`;
-        } else if (type === 'souvenirs') {
-          typePrompt = `Kategori: OLEH-OLEH & KRIYA KHAS MINANGKABAU\nNama Oleh-Oleh: "${name}" ${hint ? `(${hint})` : ''}`;
-        } else if (type === 'events') {
-          typePrompt = `Kategori: EVENT & FESTIVAL PARIWISATA SUMBAR 2026\nNama Event: "${name}" ${hint ? `(${hint})` : ''}`;
-        }
-
-        const prompt = `Anda adalah JURNALIS SENIOR & AHLI PARIWISATA SUMATERA BARAT. Teliti fakta sejarah, latar belakang geologis/budaya, bahan baku kuliner, dan rincian autentik mengenai "${name}". Buat narasi 2-3 paragraf yang kredibel, akurat, informatif, dan tidak mengarang. Keluarkan dalam format JSON valid (Bilingual ID & EN):\n${typePrompt}\n\nKeluarkan HANYA format JSON valid tanpa markdown backticks:`;
-
-        const response = await ai.models.generateContent({
-          model: modelName,
-          contents: prompt,
-          config: {
-            temperature: 0.2,
-            tools: [{ googleSearch: {} } as any]
+          let typePrompt = '';
+          if (type === 'destinations') {
+            typePrompt = `Kategori: DESTINASI WISATA SUMATERA BARAT\nNama Destinasi: "${name}" ${hint ? `(${hint})` : ''}`;
+          } else if (type === 'culture') {
+            typePrompt = `Kategori: KEBUDAYAAN & TRADISI MINANGKABAU\nNama Budaya: "${name}" ${hint ? `(${hint})` : ''}`;
+          } else if (type === 'culinary') {
+            typePrompt = `Kategori: KULINER AUTENTIK MINANGKABAU\nNama Kuliner: "${name}" ${hint ? `(${hint})` : ''}`;
+          } else if (type === 'souvenirs') {
+            typePrompt = `Kategori: OLEH-OLEH & KRIYA KHAS MINANGKABAU\nNama Oleh-Oleh: "${name}" ${hint ? `(${hint})` : ''}`;
+          } else if (type === 'events') {
+            typePrompt = `Kategori: EVENT & FESTIVAL PARIWISATA SUMBAR 2026\nNama Event: "${name}" ${hint ? `(${hint})` : ''}`;
           }
-        });
 
-        const rawText = response.text || '';
-        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          return JSON.parse(jsonMatch[0]);
+          const prompt = `Anda adalah JURNALIS SENIOR & AHLI PARIWISATA SUMATERA BARAT. Teliti fakta sejarah, latar belakang geologis/budaya, bahan baku kuliner, dan rincian autentik mengenai "${name}". Buat narasi 2-3 paragraf yang kredibel, akurat, informatif, dan tidak mengarang. Keluarkan dalam format JSON valid (Bilingual ID & EN):\n${typePrompt}\n\nKeluarkan HANYA format JSON valid tanpa markdown backticks:`;
+
+          const response = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: {
+              temperature: 0.2,
+              tools: [{ googleSearch: {} } as any]
+            }
+          });
+
+          const rawText = response.text || '';
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            return JSON.parse(jsonMatch[0]);
+          }
+        } catch (err) {
+          console.warn(`Client Gemini API catalog generation with ${modelName} encountered rate-limit / quota, trying next model or backup key...`, err);
         }
-      } catch (err) {
-        console.warn(`Client Gemini API catalog generation with ${modelName} encountered rate-limit / quota, using verified Master Encyclopedia Engine:`, err);
       }
     }
   }
@@ -2925,10 +2944,10 @@ export interface AutonomousScanResult {
  * Autonomous AI Scanner to discover new events and verify dates for existing events in West Sumatra.
  */
 export async function scanAutonomousEventsWithAI(existingEvents: Array<{ id: string; title: string; schedule: string; location: string }>): Promise<AutonomousScanResult> {
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const apiKeys = getAvailableGeminiApiKeys();
   const nowStr = new Date().toISOString();
 
-  if (!viteApiKey) {
+  if (apiKeys.length === 0) {
     return {
       scheduleUpdates: [],
       discoveredEvents: [],
@@ -2979,33 +2998,34 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-3.8-flash'];
-  for (const model of modelsToTry) {
-    try {
-      const ai = await getGeminiClient(viteApiKey);
-      const res = await ai.models.generateContent({
-        model,
-        contents: prompt,
-        config: {
-          temperature: 0.1,
-          tools: [{ googleSearch: {} } as any]
-        }
-      });
+  for (const currentKey of apiKeys) {
+    for (const model of GEMINI_MODELS_HIERARCHY) {
+      try {
+        const ai = await getGeminiClient(currentKey);
+        const res = await ai.models.generateContent({
+          model,
+          contents: prompt,
+          config: {
+            temperature: 0.1,
+            tools: [{ googleSearch: {} } as any]
+          }
+        });
 
-      const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-      const parsed = JSON.parse(cleanJson);
+        const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(cleanJson);
 
-      return {
-        scheduleUpdates: Array.isArray(parsed.scheduleUpdates) ? parsed.scheduleUpdates : [],
-        discoveredEvents: Array.isArray(parsed.discoveredEvents) ? parsed.discoveredEvents.map((ev: any, idx: number) => ({
-          ...ev,
-          id: ev.id || `ev-ai-${Date.now()}-${idx}`,
-          imageUrl: ev.imageUrl || getSmartImageForNews(ev.title, 'event')
-        })) : [],
-        scannedAt: nowStr
-      };
-    } catch (e) {
-      console.warn(`Autonomous event scan failed with ${model}:`, e);
+        return {
+          scheduleUpdates: Array.isArray(parsed.scheduleUpdates) ? parsed.scheduleUpdates : [],
+          discoveredEvents: Array.isArray(parsed.discoveredEvents) ? parsed.discoveredEvents.map((ev: any, idx: number) => ({
+            ...ev,
+            id: ev.id || `ev-ai-${Date.now()}-${idx}`,
+            imageUrl: ev.imageUrl || getSmartImageForNews(ev.title, 'event')
+          })) : [],
+          scannedAt: nowStr
+        };
+      } catch (e) {
+        console.warn(`Autonomous event scan failed with ${model}:`, e);
+      }
     }
   }
 
@@ -3017,11 +3037,11 @@ Waktu saat ini: ${nowStr}`;
 }
 
 export interface SocialMediaDigest {
+  spotlightTitle: string;
   instagramCaption: string;
   whatsappBroadcast: string;
   tiktokScriptHook: string;
   hashtags: string[];
-  spotlightTitle: string;
   generatedAt: string;
 }
 
@@ -3033,7 +3053,7 @@ export async function generateSocialMediaDigest(
   spotlightItem: { title: string; category?: string; description?: string; schedule?: string; location?: string },
   upcomingEvent?: { title: string; schedule: string; location: string }
 ): Promise<SocialMediaDigest> {
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY;
+  const apiKeys = getAvailableGeminiApiKeys();
   const nowStr = new Date().toISOString();
 
   const fallback: SocialMediaDigest = {
@@ -3045,11 +3065,12 @@ export async function generateSocialMediaDigest(
     generatedAt: nowStr
   };
 
-  if (!viteApiKey) return fallback;
+  if (apiKeys.length === 0) return fallback;
 
-  try {
-    const ai = await getGeminiClient(viteApiKey);
-    const prompt = `Anda adalah Social Media Content Specialist Pariwisata Sumatera Barat (Malala / malala.my.id).
+  for (const currentKey of apiKeys) {
+    try {
+      const ai = await getGeminiClient(currentKey);
+      const prompt = `Anda adalah Social Media Content Specialist Pariwisata Sumatera Barat (Malala / malala.my.id).
 Buatkan konten media sosial harian yang sangat estetik, menggugah rasa rindu kampung halaman / hasrat berlibur, dan siap posting.
 
 Data Destinasi Hari Ini:
@@ -3066,35 +3087,35 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const modelsToTry = ['gemini-3.8-flash'];
-    for (const model of modelsToTry) {
-      try {
-        const res = await ai.models.generateContent({
-          model,
-          contents: prompt,
-          config: { temperature: 0.7 }
-        });
+      for (const model of GEMINI_MODELS_HIERARCHY) {
+        try {
+          const res = await ai.models.generateContent({
+            model,
+            contents: prompt,
+            config: { temperature: 0.7 }
+          });
 
-        const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-        const parsed = JSON.parse(cleanJson);
+          const cleanJson = (res.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(cleanJson);
 
-        return {
-          spotlightTitle: spotlightItem.title,
-          instagramCaption: parsed.instagramCaption || fallback.instagramCaption,
-          whatsappBroadcast: parsed.whatsappBroadcast || fallback.whatsappBroadcast,
-          tiktokScriptHook: parsed.tiktokScriptHook || fallback.tiktokScriptHook,
-          hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags : fallback.hashtags,
-          generatedAt: nowStr
-        };
-      } catch (err: any) {
-        // try next model
+          return {
+            spotlightTitle: spotlightItem.title,
+            instagramCaption: parsed.instagramCaption || fallback.instagramCaption,
+            whatsappBroadcast: parsed.whatsappBroadcast || fallback.whatsappBroadcast,
+            tiktokScriptHook: parsed.tiktokScriptHook || fallback.tiktokScriptHook,
+            hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags : fallback.hashtags,
+            generatedAt: nowStr
+          };
+        } catch (err: any) {
+          // try next model
+        }
       }
+    } catch {
+      // try next key
     }
-    return fallback;
-  } catch (e) {
-    console.warn('Social media digest generation fallback:', e);
-    return fallback;
   }
+
+  return fallback;
 }
 
 
