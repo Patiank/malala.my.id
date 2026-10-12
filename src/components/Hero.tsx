@@ -645,10 +645,9 @@ export const Hero: React.FC<HeroProps> = ({
   return (
     <>
       <main
-        className="flex-1 flex flex-col lg:flex-row justify-between items-stretch lg:items-center z-10 relative px-[var(--pad-x)]"
+        className="flex-1 flex flex-col lg:flex-row justify-between items-stretch lg:items-center z-10 relative px-[var(--pad-x)] pb-0 lg:pb-[clamp(3.5rem,6vh,4.5rem)]"
         style={{
           paddingTop: 'var(--main-py)',
-          paddingBottom: 'clamp(5rem, 8vh, 4rem)',
           gap: 'var(--section-gap)',
         }}
       >
@@ -1297,7 +1296,7 @@ export const Hero: React.FC<HeroProps> = ({
     })()}
 
         {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
-        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-28 lg:pb-6 w-full select-none z-30">
+        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-4 sm:mt-6 pb-[114px] w-full select-none z-30">
           {/* Left: Minangkaos Branding with SPONSORED BY: (Centered Block) */}
           <div className="flex flex-col items-center text-center gap-1 min-w-0 pl-1 select-none">
             {/* SPONSORED BY: Header Label */}

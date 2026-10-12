@@ -177,16 +177,16 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* 1. Base Layer */}
+      {/* 1. Base Layer (Elevated on mobile to center 8% so the woman's face is clearly visible above panels) */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
+        className="absolute inset-0 bg-cover bg-[center_8%] sm:bg-center bg-no-repeat transition-all duration-300"
         style={{ backgroundImage: `url(${optimizedBase})` }}
       />
 
       {/* 2. Reveal Layer clipped by canvas gradient spotlight */}
       <div
         ref={revealRef}
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-300"
+        className="absolute inset-0 bg-cover bg-[center_8%] sm:bg-center bg-no-repeat transition-all duration-300"
         style={{ backgroundImage: `url(${optimizedReveal})` }}
       />
 
