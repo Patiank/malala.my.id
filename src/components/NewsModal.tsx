@@ -2,7 +2,7 @@ import React from 'react';
 import { X, MapPin, Share2, Flame, ExternalLink, BookOpen } from 'lucide-react';
 import { HotInfoItem } from '../types';
 import { Language } from '../lib/translations';
-import { getNewsDisplayTitle } from '../utils/ai';
+import { getNewsDisplayTitle, formatNewsTimeAgo } from '../utils/ai';
 import { getPublisherFavicon } from './Drawers';
 
 interface NewsModalProps {
@@ -19,7 +19,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   const category = isEn && item.categoryEn ? item.categoryEn : item.category;
   const tag = isEn && item.tagEn ? item.tagEn : item.tag;
   const date = isEn && item.dateEn ? item.dateEn : item.date;
-  const timeAgoText = item.timeAgo || date;
+  const timeAgoText = formatNewsTimeAgo(item.date, item.createdAt, item.timeAgo, lang);
   const hasExternalUrl = Boolean(item.sourceUrl && (item.sourceUrl.startsWith('http://') || item.sourceUrl.startsWith('https://')));
   const primaryUrl = hasExternalUrl ? item.sourceUrl! : (item.actionUrl?.startsWith('http') ? item.actionUrl : '');
   const publisherName = item.sourceName || (hasExternalUrl ? (item.tag === 'Sumbar' ? 'Antara News Sumbar' : 'Media Resmi') : (isEn ? 'Official Tourism Sumbar' : 'Rilis Resmi Pariwisata Sumbar'));

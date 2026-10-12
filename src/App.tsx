@@ -17,7 +17,7 @@ import { useData } from './data/useData';
 import { Language } from './lib/translations';
 import { logTourismSignal } from './utils/telemetry';
 
-import { fetchAiHotInfo, getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { fetchAiHotInfo, getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -526,7 +526,7 @@ export default function App() {
                   const isEn = lang === 'en';
                   const sourceBrand = news.sourceName || (isEn && news.categoryEn ? news.categoryEn : news.category) || 'Info Wisata';
                   const titleText = getNewsDisplayTitle(news, lang) || news.title || 'Update Info Wisata Terkini';
-                  const timeText = news.timeAgo || (isEn && news.dateEn ? news.dateEn : news.date) || 'Hari Ini';
+                  const timeText = formatNewsTimeAgo(news.date, news.createdAt, news.timeAgo, lang);
                   return (
                     <button
                       key={`${news.id}-${idx}`}
