@@ -302,10 +302,10 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
-      {/* Desktop Nav Links (Horizontal Bar with Authentic Vector Icons) */}
+      {/* Desktop Nav Links (Clean Minimalist Typography, No Logos, Compact Font) */}
       <nav
-        className="hidden md:flex flex-row items-center gap-[var(--gap-nav)] font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] text-black"
-        style={{ fontSize: 'var(--nav)' }}
+        className="hidden md:flex flex-row items-center gap-1 lg:gap-2 font-orbitron font-bold uppercase text-black"
+        style={{ fontSize: 'clamp(0.62rem, 0.22vw + 0.48rem, 0.72rem)' }}
       >
         {primaryNavItems.map((item) => {
           const isActive = activeDrawer === item.id;
@@ -313,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`group relative overflow-hidden min-h-0 px-3 py-1.5 lg:px-3.5 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 active:scale-[0.98] ${
+              className={`group relative overflow-hidden min-h-0 px-2.5 py-1 lg:px-3 lg:py-1 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-center active:scale-[0.98] ${
                 isActive
                   ? 'border-transparent font-bold shadow-sm'
                   : 'border-transparent hover:border-transparent'
@@ -332,19 +332,9 @@ export const Header: React.FC<HeaderProps> = ({
                 style={{ backgroundColor: item.color }}
               />
 
-              {/* Vector Icon */}
-              <img
-                src={isActive ? item.iconWhiteSrc : (isWhiteHeroText ? item.iconWhiteSrc : item.iconSrc)}
-                alt=""
-                aria-hidden="true"
-                className={`relative z-10 w-4 h-4 object-contain transition-transform group-hover:scale-110 ${
-                  !isActive && !isWhiteHeroText ? 'group-hover:brightness-0 group-hover:invert' : ''
-                }`}
-              />
-
-              {/* Text Label */}
+              {/* Text Label (Clean Minimalist Typography without Logo/Icon) */}
               <span
-                className={`relative z-10 transition-colors duration-150 select-none whitespace-nowrap ${
+                className={`relative z-10 text-[9.5px] lg:text-[10.5px] xl:text-[11px] tracking-[0.09em] lg:tracking-[0.12em] transition-colors duration-150 select-none whitespace-nowrap ${
                   !isActive ? 'group-hover:text-[var(--hover-text)] group-hover:[text-shadow:none]' : ''
                 }`}
               >
@@ -357,18 +347,17 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Peta Wisata Button */}
         <button
           onClick={() => handleNavClick('map')}
-          className={`min-h-[38px] lg:min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 lg:px-4 py-1.5 rounded-full border font-orbitron font-bold uppercase tracking-[0.12em] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99] ${
+          className={`min-h-[32px] lg:min-h-[34px] inline-flex items-center justify-center gap-1.5 px-3 lg:px-3.5 py-1 rounded-full border font-orbitron font-bold uppercase tracking-[0.09em] lg:tracking-[0.11em] text-[9.5px] lg:text-[10.5px] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99] ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
           }`}
-          style={{ fontSize: 'var(--nav)' }}
         >
           <img
             src="/images/nav/header/nav_peta_white.png"
             alt=""
             aria-hidden="true"
-            className="w-4 h-4 object-contain"
+            className="w-3.5 h-3.5 object-contain"
           />
           <span>{t.navMap}</span>
         </button>
@@ -376,7 +365,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Rencanakan Liburan Anda (1 Baris Saja) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`min-h-[38px] lg:min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 lg:px-4 py-1.5 rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] ${
+          className={`min-h-[32px] lg:min-h-[34px] inline-flex items-center justify-center gap-1.5 px-3 lg:px-3.5 py-1 rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] text-[9.5px] lg:text-[10.5px] ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
@@ -384,9 +373,9 @@ export const Header: React.FC<HeaderProps> = ({
             src="/images/nav/header/nav_rencana_white.png"
             alt=""
             aria-hidden="true"
-            className="w-4 h-4 object-contain"
+            className="w-3.5 h-3.5 object-contain"
           />
-          <span className="font-orbitron font-extrabold text-[10px] lg:text-[10.5px] uppercase tracking-wider text-white whitespace-nowrap">
+          <span className="font-orbitron font-extrabold uppercase tracking-wider text-white whitespace-nowrap">
             {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
           </span>
         </button>
