@@ -76,41 +76,49 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
     >
       <div className="bg-white/95 backdrop-blur-xl border border-gray-200/90 shadow-[0_10px_30px_rgba(0,0,0,0.18)] rounded-2xl px-2 py-1.5 flex items-center justify-between gap-1">
         
-        {/* Item 1: Destinasi Wisata */}
+        {/* Item 1: Destinasi Wisata (Rumah Gadang Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'destinations' ? onCloseDrawer() : onOpenDrawer('destinations'))}
           className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'destinations'
               ? 'bg-emerald-600 text-white font-bold shadow-sm'
-              : 'text-gray-600 hover:text-black hover:bg-gray-100/60'
+              : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
           }`}
           aria-label={navItems[0].label}
         >
-          <Compass className={`w-5 h-5 ${activeDrawer === 'destinations' ? 'text-white' : 'text-gray-700'}`} />
+          <img
+            src={activeDrawer === 'destinations' ? '/images/nav/nav_wisata_white.png' : '/images/nav/nav_wisata.png'}
+            alt="Wisata"
+            className="w-6 h-6 object-contain transition-transform"
+          />
           <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
             {navItems[0].label}
           </span>
         </button>
 
-        {/* Item 2: Kuliner Minang */}
+        {/* Item 2: Kuliner Minang (Carano / Hidangan Beruap Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'culinary' ? onCloseDrawer() : onOpenDrawer('culinary'))}
           className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'culinary'
               ? 'bg-amber-600 text-white font-bold shadow-sm'
-              : 'text-gray-600 hover:text-black hover:bg-gray-100/60'
+              : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
           }`}
           aria-label={navItems[1].label}
         >
-          <UtensilsCrossed className={`w-5 h-5 ${activeDrawer === 'culinary' ? 'text-white' : 'text-gray-700'}`} />
+          <img
+            src={activeDrawer === 'culinary' ? '/images/nav/nav_kuliner_white.png' : '/images/nav/nav_kuliner.png'}
+            alt="Kuliner"
+            className="w-6 h-6 object-contain transition-transform"
+          />
           <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
             {navItems[1].label}
           </span>
         </button>
 
-        {/* CENTER SPECIAL: AI Travel Planner (Uni Mala Elevated Pill) */}
+        {/* CENTER SPECIAL: AI Travel Planner (Chat Sparkle AI Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'formai' ? onCloseDrawer() : onOpenDrawer('formai'))}
@@ -118,8 +126,12 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           aria-label="AI Planner"
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2.5px] shadow-lg shadow-amber-500/40 flex items-center justify-center">
-            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-white">
-              <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
+            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2.5">
+              <img
+                src="/images/nav/nav_ai_gold.png"
+                alt="AI Trip"
+                className="w-6 h-6 object-contain animate-pulse"
+              />
             </div>
           </div>
           <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-0.5 font-orbitron">
@@ -127,35 +139,43 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           </span>
         </button>
 
-        {/* Item 3: Event & Festival */}
+        {/* Item 3: Event & Festival (Talempong Tradisional Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'events' ? onCloseDrawer() : onOpenDrawer('events'))}
           className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'events'
               ? 'bg-blue-600 text-white font-bold shadow-sm'
-              : 'text-gray-600 hover:text-black hover:bg-gray-100/60'
+              : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
           }`}
           aria-label={navItems[3].label}
         >
-          <CalendarDays className={`w-5 h-5 ${activeDrawer === 'events' ? 'text-white' : 'text-gray-700'}`} />
+          <img
+            src={activeDrawer === 'events' ? '/images/nav/nav_event_white.png' : '/images/nav/nav_event.png'}
+            alt="Event"
+            className="w-6 h-6 object-contain transition-transform"
+          />
           <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
             {navItems[3].label}
           </span>
         </button>
 
-        {/* Item 4: Buku Panduan / Flipbook */}
+        {/* Item 4: Buku Panduan / Flipbook (Peta Rute Wisata Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'download' ? onCloseDrawer() : onOpenDrawer('download'))}
           className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'download'
               ? 'bg-orange-600 text-white font-bold shadow-sm'
-              : 'text-gray-600 hover:text-black hover:bg-gray-100/60'
+              : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
           }`}
           aria-label={navItems[4].label}
         >
-          <Download className={`w-5 h-5 ${activeDrawer === 'download' ? 'text-white' : 'text-gray-700'}`} />
+          <img
+            src={activeDrawer === 'download' ? '/images/nav/nav_panduan_white.png' : '/images/nav/nav_panduan.png'}
+            alt="Panduan"
+            className="w-6 h-6 object-contain transition-transform"
+          />
           <span className="text-[10px] tracking-tight mt-0.5 whitespace-nowrap">
             {navItems[4].label}
           </span>
