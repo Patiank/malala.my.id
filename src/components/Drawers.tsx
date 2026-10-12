@@ -1485,7 +1485,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#386641]/10 hover:text-[#386641] hover:border-[#386641]/40'
                   }`}
                 >
-                  <IconRumahGadang size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'destinations' ? '/images/nav/header/nav_destinasi_white.png' : '/images/nav/header/nav_destinasi.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navDestinations}</span>
                 </button>
 
@@ -1497,7 +1501,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#6a994e]/10 hover:text-[#6a994e] hover:border-[#6a994e]/40'
                   }`}
                 >
-                  <IconCarano size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'culture' ? '/images/nav/header/nav_kebudayaan_white.png' : '/images/nav/header/nav_kebudayaan.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navCulture}</span>
                 </button>
 
@@ -1509,7 +1517,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#a7c957]/20 hover:text-[#2d4715] hover:border-[#a7c957]/50'
                   }`}
                 >
-                  <IconRendang size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'culinary' ? '/images/nav/header/nav_kuliner_white.png' : '/images/nav/header/nav_kuliner.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navCulinary}</span>
                 </button>
 
@@ -1521,7 +1533,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#f2e8cf]/70 hover:text-[#2b2118] hover:border-[#d6c7a3]'
                   }`}
                 >
-                  <IconSongket size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'souvenirs' ? '/images/nav/header/nav_oleholeh.png' : '/images/nav/header/nav_oleholeh.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navSouvenirs}</span>
                 </button>
 
@@ -1533,7 +1549,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#bc4749]/10 hover:text-[#bc4749] hover:border-[#bc4749]/40'
                   }`}
                 >
-                  <IconTabuik size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'events' ? '/images/nav/header/nav_event_white.png' : '/images/nav/header/nav_event.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navEvents}</span>
                 </button>
 
@@ -1545,7 +1565,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#ff7d00]/10 hover:text-[#ff7d00] hover:border-[#ff7d00]/40'
                   }`}
                 >
-                  <IconMarawa size={15} className="shrink-0" />
+                  <img
+                    src={activeDrawer === 'download' ? '/images/nav/header/nav_unduh_white.png' : '/images/nav/header/nav_unduh.png'}
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navDownloads}</span>
                 </button>
 
@@ -1557,7 +1581,11 @@ export const Drawers: React.FC<DrawersProps> = ({
                       : 'bg-emerald-600 text-white border border-emerald-600 hover:bg-red-600 hover:border-red-600'
                   }`}
                 >
-                  <IconDanauSingkarak size={15} className="shrink-0" />
+                  <img
+                    src="/images/nav/header/nav_peta_white.png"
+                    alt=""
+                    className="w-4 h-4 object-contain shrink-0"
+                  />
                   <span>{translations[lang].navMap}</span>
                 </button>
               </div>

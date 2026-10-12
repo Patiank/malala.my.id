@@ -53,49 +53,56 @@ export const Header: React.FC<HeaderProps> = ({
   const primaryNavItems: {
     id: DrawerType;
     label: string;
-    icon: string;
+    iconSrc: string;
+    iconWhiteSrc: string;
     color: string;
     hoverTextColor: string;
   }[] = [
     {
       id: 'destinations',
       label: t.navDestinations,
-      icon: '🏔️',
+      iconSrc: '/images/nav/header/nav_destinasi.png',
+      iconWhiteSrc: '/images/nav/header/nav_destinasi_white.png',
       color: '#386641',
       hoverTextColor: '#ffffff',
     },
     {
       id: 'culture',
       label: t.navCulture,
-      icon: '🏛️',
+      iconSrc: '/images/nav/header/nav_kebudayaan.png',
+      iconWhiteSrc: '/images/nav/header/nav_kebudayaan_white.png',
       color: '#6a994e',
       hoverTextColor: '#ffffff',
     },
     {
       id: 'culinary',
       label: t.navCulinary,
-      icon: '🍲',
+      iconSrc: '/images/nav/header/nav_kuliner.png',
+      iconWhiteSrc: '/images/nav/header/nav_kuliner_white.png',
       color: '#a7c957',
       hoverTextColor: '#1b3815',
     },
     {
       id: 'souvenirs',
       label: t.navSouvenirs,
-      icon: '🛍️',
+      iconSrc: '/images/nav/header/nav_oleholeh.png',
+      iconWhiteSrc: '/images/nav/header/nav_oleholeh_white.png',
       color: '#f2e8cf',
       hoverTextColor: '#2b2118',
     },
     {
       id: 'events',
       label: t.navEvents,
-      icon: '📅',
+      iconSrc: '/images/nav/header/nav_event.png',
+      iconWhiteSrc: '/images/nav/header/nav_event_white.png',
       color: '#bc4749',
       hoverTextColor: '#ffffff',
     },
     {
       id: 'download',
       label: t.navDownloads,
-      icon: '📖',
+      iconSrc: '/images/nav/header/nav_unduh.png',
+      iconWhiteSrc: '/images/nav/header/nav_unduh_white.png',
       color: '#ff7d00',
       hoverTextColor: '#ffffff',
     },
@@ -201,17 +208,103 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Menu Backdrop Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
           aria-hidden="true"
         />
       )}
 
-      {/* Nav Links (Desktop + Mobile Dropdown Sheet) */}
+      {/* Mobile Menu Dropdown Panel (Modern 2-Column App Grid - Zero Wasted Space) */}
+      {isMobileMenuOpen && (
+        <div
+          className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-2xl shadow-2xl border-t border-b border-gray-200/90 p-3.5 z-50 rounded-b-3xl animate-fadeIn space-y-2.5 mx-2"
+        >
+          {/* Header Tag inside Mobile Dropdown */}
+          <div className="flex items-center justify-between px-1 pb-1 border-b border-gray-100">
+            <span className="text-[10px] font-orbitron font-extrabold uppercase tracking-widest text-gray-500">
+              {lang === 'en' ? 'EXPLORE CATEGORIES' : 'JELAJAHI KATEGORI'}
+            </span>
+            <span className="text-[9px] font-orbitron font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+              MALALA SUMBAR
+            </span>
+          </div>
+
+          {/* 6 Category Tiles in a 2-Column Grid */}
+          <div className="grid grid-cols-2 gap-2">
+            {primaryNavItems.map((item) => {
+              const isActive = activeDrawer === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`flex items-center gap-2 p-2 rounded-2xl border transition-all duration-200 cursor-pointer text-left active:scale-[0.98] ${
+                    isActive
+                      ? 'shadow-sm text-white font-bold border-transparent'
+                      : 'bg-gray-50/90 hover:bg-gray-100 text-gray-800 border-gray-200/70 hover:border-gray-300'
+                  }`}
+                  style={isActive ? { backgroundColor: item.color } : {}}
+                >
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 p-1.5 transition-colors ${
+                      isActive ? 'bg-white/20' : 'bg-white border border-gray-200/80 shadow-2xs'
+                    }`}
+                  >
+                    <img
+                      src={isActive ? item.iconWhiteSrc : item.iconSrc}
+                      alt={item.label}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span className="font-orbitron font-bold text-[10px] sm:text-[10.5px] uppercase tracking-wider leading-tight line-clamp-1">
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 2 Full-Width Action Buttons: Peta & Rencanakan Liburan */}
+          <div className="pt-1 space-y-2">
+            {/* Action 1: Peta Wisata (1 Baris) */}
+            <button
+              onClick={() => handleNavClick('map')}
+              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border font-orbitron font-bold text-[11px] uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
+                activeDrawer === 'map'
+                  ? 'bg-red-600 text-white border-red-600'
+                  : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800'
+              }`}
+            >
+              <img
+                src="/images/nav/header/nav_peta_white.png"
+                alt="Peta"
+                className="w-5 h-5 object-contain"
+              />
+              <span className="whitespace-nowrap">{t.navMap}</span>
+            </button>
+
+            {/* Action 2: Rencanakan Liburan Anda (1 Baris Saja) */}
+            <button
+              onClick={() => handleNavClick('formai')}
+              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border bg-black text-white border-black hover:bg-gray-900 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
+                activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
+              }`}
+            >
+              <img
+                src="/images/nav/header/nav_rencana_white.png"
+                alt="Rencana"
+                className="w-5 h-5 object-contain"
+              />
+              <span className="font-orbitron font-extrabold text-[11px] uppercase tracking-wider whitespace-nowrap">
+                {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Nav Links (Horizontal Bar with Authentic Vector Icons) */}
       <nav
-        className={`${
-          isMobileMenuOpen ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white/95 backdrop-blur-xl md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
+        className="hidden md:flex flex-row items-center gap-[var(--gap-nav)] font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] text-black"
         style={{ fontSize: 'var(--nav)' }}
       >
         {primaryNavItems.map((item) => {
@@ -220,17 +313,17 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`group relative overflow-hidden w-full md:w-auto min-h-[44px] md:min-h-0 px-3.5 py-2.5 md:py-1.5 md:px-3 lg:px-3.5 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-between md:justify-center active:scale-[0.98] ${
+              className={`group relative overflow-hidden min-h-0 px-3 py-1.5 lg:px-3.5 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 active:scale-[0.98] ${
                 isActive
                   ? 'border-transparent font-bold shadow-sm'
-                  : 'border-gray-100 md:border-transparent hover:border-transparent'
+                  : 'border-transparent hover:border-transparent'
               }`}
               style={{
                 ...(!isActive ? headerTextStyle : { color: item.hoverTextColor }),
                 '--hover-text': item.hoverTextColor,
               } as React.CSSProperties}
             >
-              {/* Sliding Curved Color Box (Pill Shape with Custom Minang Palette) */}
+              {/* Sliding Curved Color Box */}
               <span
                 aria-hidden="true"
                 className={`pointer-events-none absolute inset-0 rounded-full transition-transform duration-200 ease-out -translate-x-[101%] group-hover:translate-x-0 ${
@@ -239,7 +332,17 @@ export const Header: React.FC<HeaderProps> = ({
                 style={{ backgroundColor: item.color }}
               />
 
-              {/* Text Label with Contrast Flip on Hover & Active */}
+              {/* Vector Icon */}
+              <img
+                src={isActive ? item.iconWhiteSrc : (isWhiteHeroText ? item.iconWhiteSrc : item.iconSrc)}
+                alt=""
+                aria-hidden="true"
+                className={`relative z-10 w-4 h-4 object-contain transition-transform group-hover:scale-110 ${
+                  !isActive && !isWhiteHeroText ? 'group-hover:brightness-0 group-hover:invert' : ''
+                }`}
+              />
+
+              {/* Text Label */}
               <span
                 className={`relative z-10 transition-colors duration-150 select-none whitespace-nowrap ${
                   !isActive ? 'group-hover:text-[var(--hover-text)] group-hover:[text-shadow:none]' : ''
@@ -247,51 +350,53 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 {item.label}
               </span>
-
-              {/* Mobile Category Icon */}
-              <span className="relative z-10 md:hidden text-xs opacity-75 shrink-0 ml-2">
-                {item.icon}
-              </span>
             </button>
           );
         })}
 
+        {/* Desktop Peta Wisata Button */}
         <button
           onClick={() => handleNavClick('map')}
-          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-between md:justify-center px-4 md:px-5 py-2 md:py-0 rounded-xl md:rounded-full border font-orbitron font-bold uppercase tracking-[0.12em] sm:tracking-[0.15em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md active:scale-[0.99] ${
+          className={`min-h-[38px] lg:min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 lg:px-4 py-1.5 rounded-full border font-orbitron font-bold uppercase tracking-[0.12em] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99] ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
           }`}
           style={{ fontSize: 'var(--nav)' }}
         >
+          <img
+            src="/images/nav/header/nav_peta_white.png"
+            alt=""
+            aria-hidden="true"
+            className="w-4 h-4 object-contain"
+          />
           <span>{t.navMap}</span>
-          <span className="md:hidden text-xs opacity-80">🗺️</span>
         </button>
 
-        {/* Rencanakan Liburan Anda (Ukuran Selaras dengan Panel Peta Wisata, Teks Lebih Besar & Jelas Tanpa Ikon Bintang) */}
+        {/* Desktop Rencanakan Liburan Anda (1 Baris Saja) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-center px-4 md:px-5 py-2.5 md:py-0 rounded-xl md:rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] ${
+          className={`min-h-[38px] lg:min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 lg:px-4 py-1.5 rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
-          <div className="flex flex-col items-center justify-center text-center leading-tight font-orbitron">
-            <span className="text-[10px] sm:text-[9.5px] md:text-[9px] lg:text-[10px] font-extrabold uppercase tracking-wider text-white whitespace-nowrap">
-              {lang === 'en' ? 'PLAN YOUR' : 'RENCANAKAN'}
-            </span>
-            <span className="text-[10px] sm:text-[9.5px] md:text-[9px] lg:text-[10px] font-extrabold uppercase tracking-wider text-white whitespace-nowrap leading-none mt-0.5">
-              {lang === 'en' ? 'VACATION' : 'LIBURAN ANDA'}
-            </span>
-          </div>
+          <img
+            src="/images/nav/header/nav_rencana_white.png"
+            alt=""
+            aria-hidden="true"
+            className="w-4 h-4 object-contain"
+          />
+          <span className="font-orbitron font-extrabold text-[10px] lg:text-[10.5px] uppercase tracking-wider text-white whitespace-nowrap">
+            {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
+          </span>
         </button>
 
-        <span className="text-gray-300 font-light select-none hidden md:inline">|</span>
+        <span className="text-gray-300 font-light select-none">|</span>
 
         {/* Desktop Language Switcher Button with Globe Logo & ID | EN Side-By-Side */}
         <button
           onClick={onToggleLang}
-          className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs group"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs group"
           title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
         >
           <Globe className="w-3.5 h-3.5 text-red-600 transition-transform group-hover:rotate-12" />
@@ -309,7 +414,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Favorites Bookmark Icon Button */}
         <button
           onClick={() => handleNavClick('saved')}
-          className="hidden md:flex relative hover:opacity-60 transition-opacity cursor-pointer items-center justify-center p-1"
+          className="relative hover:opacity-60 transition-opacity cursor-pointer items-center justify-center p-1"
           aria-label={`${t.navSaved} (${savedCount})`}
           title={t.savedTitle}
           style={{ color: heroTextColor, filter: shadowValue ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' : undefined }}
