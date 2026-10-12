@@ -63,17 +63,10 @@ export async function logTourismSignal(
   if (typeof window === 'undefined') return;
 
   try {
-    // 1. Safeguard: Limit session_start to only 1 time per browser session
-    if (eventType === 'session_start') {
-      if (sessionStorage.getItem('signal_session_started')) return;
-      sessionStorage.setItem('signal_session_started', 'true');
-    }
-
-    // 2. Safeguard: Deduplicate destination and event views within the same session
-    if (eventType === 'view_destination' || eventType === 'view_event') {
-      const viewKey = `signal_${eventType}_${payload.targetId || payload.title || ''}`;
-      if (sessionStorage.getItem(viewKey)) return;
-      sessionStorage.setItem(viewKey, '1');
+    // Strict Quota Shield: Only write high-intent conversion events (itinerary, pdf, affiliate, bookmark)
+    // to Firestore. Low-intent high-volume browsing events are omitted to strictly protect monthly quota.
+    if (eventType === 'session_start' || eventType === 'view_destination' || eventType === 'view_event') {
+      return;
     }
 
     // 3. Safeguard: Global write cap per session (max 10 writes per user session)

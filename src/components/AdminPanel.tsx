@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem, PendingEventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram, Image as ImageIcon, ImagePlus, Loader2 } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram, Image as ImageIcon, ImagePlus, Loader2, BookOpen, FileCheck } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult, generateSocialMediaDigest, SocialMediaDigest } from '../utils/ai';
 import { pingSearchEngineIndexNow } from '../utils/seo';
 import { EVENTS_SCHEDULE } from '../data/content';
-import { uploadCatalogImage } from '../utils/imageOptimizer';
+import { uploadCatalogImage, processCatalogImageWithStats, formatBytes, ImageOptimizationStats } from '../utils/imageOptimizer';
 import { TourismIntelligenceTab } from './TourismIntelligenceTab';
 
 interface AdminPanelProps {
@@ -181,6 +181,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const [adminSearchQuery, setAdminSearchQuery] = useState<string>('');
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [compressionStats, setCompressionStats] = useState<ImageOptimizationStats | null>(null);
 
   const handleCatalogImageFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -188,10 +189,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     try {
       setIsUploadingImage(true);
       setUploadProgress(15);
-      const url = await uploadCatalogImage(file, adminTab, (pct) => setUploadProgress(pct));
-      if (url) {
-        setFormData((prev: any) => ({ ...prev, imageUrl: url }));
-        showSuccess('📸 Gambar berhasil diproses (WebP optimal) & siap disimpan!');
+      const res = await processCatalogImageWithStats(file, adminTab, (pct) => setUploadProgress(pct));
+      if (res?.dataUrl) {
+        setFormData((prev: any) => ({ ...prev, imageUrl: res.dataUrl }));
+        setCompressionStats(res.stats);
+        showSuccess(`📸 Foto berhasil dikompresi ke WebP! Hemat ${res.stats.reductionPercentage}% (${formatBytes(res.stats.originalBytes)} → ${formatBytes(res.stats.compressedBytes)})`);
       }
     } catch (err: any) {
       console.error('Upload catalog image error:', err);
@@ -609,6 +611,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   };
 
   const handleEdit = (item: any) => {
+    setCompressionStats(null);
     setEditingId(item.id);
     setFormData({
       ...item,
@@ -659,6 +662,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
   const handleCancelEdit = () => {
     setEditingId(null);
     setFormData(null);
+    setCompressionStats(null);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -847,6 +851,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         };
         break;
     }
+    setCompressionStats(null);
     setFormData(emptyItem);
     setEditingId('new');
   };
@@ -1326,15 +1331,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => {
+                        onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            const reader = new FileReader();
-                            reader.onload = (evt) => {
-                              const res = evt.target?.result as string;
-                              setSettingsFormData(prev => ({ ...prev, baseImage: res }));
-                            };
-                            reader.readAsDataURL(file);
+                            try {
+                              const res = await processCatalogImageWithStats(file, 'settings');
+                              setSettingsFormData(prev => ({ ...prev, baseImage: res.dataUrl }));
+                              showSuccess(`📸 Base background berhasil dikompres ke WebP (${formatBytes(res.stats.compressedBytes)})!`);
+                            } catch {
+                              const reader = new FileReader();
+                              reader.onload = (evt) => {
+                                const res = evt.target?.result as string;
+                                setSettingsFormData(prev => ({ ...prev, baseImage: res }));
+                              };
+                              reader.readAsDataURL(file);
+                            }
                           }
                         }}
                         className="w-full text-xs text-gray-600 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer"
@@ -1363,15 +1374,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                       <input
                         type="file"
                         accept="image/*"
-                        onChange={(e) => {
+                        onChange={async (e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            const reader = new FileReader();
-                            reader.onload = (evt) => {
-                              const res = evt.target?.result as string;
-                              setSettingsFormData(prev => ({ ...prev, revealImage: res }));
-                            };
-                            reader.readAsDataURL(file);
+                            try {
+                              const res = await processCatalogImageWithStats(file, 'settings');
+                              setSettingsFormData(prev => ({ ...prev, revealImage: res.dataUrl }));
+                              showSuccess(`📸 Reveal background berhasil dikompres ke WebP (${formatBytes(res.stats.compressedBytes)})!`);
+                            } catch {
+                              const reader = new FileReader();
+                              reader.onload = (evt) => {
+                                const res = evt.target?.result as string;
+                                setSettingsFormData(prev => ({ ...prev, revealImage: res }));
+                              };
+                              reader.readAsDataURL(file);
+                            }
                           }
                         }}
                         className="w-full text-xs text-gray-600 file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer"
@@ -1859,6 +1876,65 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                   <Download className="w-4 h-4 text-emerald-700" />
                   <span>📥 Unduh Backup File JSON</span>
                 </button>
+              </div>
+            </div>
+
+            {/* E-Book & Kalender Event Global CDN Manager */}
+            <div className="bg-gradient-to-br from-indigo-50 to-blue-50/50 border-2 border-indigo-200 p-4 rounded-xl space-y-3 mt-4 shadow-xs">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <h4 className="text-xs font-black uppercase text-indigo-950 flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-indigo-600" />
+                    <span>📚 Manajemen E-Book & Kalender Event Global CDN</span>
+                  </h4>
+                  <p className="text-[10px] text-indigo-800/80 mt-0.5">
+                    File unduhan PDF tersimpan di GitHub Release (Zero Firebase Egress) & bebas blokir Kominfo.
+                  </p>
+                </div>
+                <span className="bg-indigo-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Release v1.0.0 Aktif
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs">
+                <div className="bg-white/80 p-2.5 rounded-lg border border-indigo-100 flex items-center justify-between">
+                  <div>
+                    <span className="block font-bold text-gray-800 text-[11px]">Buku Panduan Wisata 2026</span>
+                    <span className="text-[9px] text-gray-500">Versi Indonesia (77 Hal) & English</span>
+                  </div>
+                  <a
+                    href="https://github.com/Patiank/malala.my.id/releases/tag/v1.0.0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                  >
+                    <span>Cek CDN</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                <div className="bg-white/80 p-2.5 rounded-lg border border-indigo-100 flex items-center justify-between">
+                  <div>
+                    <span className="block font-bold text-gray-800 text-[11px]">Kalender Event & KEN 2026</span>
+                    <span className="text-[9px] text-gray-500">Versi Indonesia (27 Hal) & English</span>
+                  </div>
+                  <a
+                    href="https://github.com/Patiank/malala.my.id/releases/tag/v1.0.0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                  >
+                    <span>Cek CDN</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="bg-indigo-100/60 p-2.5 rounded-lg border border-indigo-200/80 text-[10px] text-indigo-900 flex items-start gap-2">
+                <FileCheck className="w-4 h-4 text-indigo-700 shrink-0 mt-0.5" />
+                <p className="leading-relaxed">
+                  <strong>Otomatisasi Aktif:</strong> Setiap kali Anda mengklik tombol <em>"🚀 Sinkronkan & Push ke GitHub Sekarang"</em> di atas, GitHub Actions di cloud akan secara otomatis menyinkronkan data katalog terbaru dan memperbarui aset E-Book di Release v1.0.0 tanpa menguras kuota Firebase.
+                </p>
               </div>
             </div>
 
@@ -2821,7 +2897,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                             </span>
                             <button
                               type="button"
-                              onClick={() => setFormData((prev: any) => ({ ...prev, imageUrl: '' }))}
+                              onClick={() => {
+                                setFormData((prev: any) => ({ ...prev, imageUrl: '' }));
+                                setCompressionStats(null);
+                              }}
                               className="text-[9px] text-red-500 hover:underline font-medium"
                             >
                               Ganti / Hapus
@@ -2894,6 +2973,85 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Visual Stats Compression Card */}
+                    {compressionStats && (
+                      <div className="p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50 to-green-50 border border-emerald-300 rounded-xl shadow-xs space-y-2.5 font-jakarta animate-fade-in">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className="flex h-2.5 w-2.5 relative">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
+                            </span>
+                            <span className="text-[11px] font-extrabold uppercase text-emerald-950 tracking-wider flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                              Auto-Compress WebP Berhasil
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="bg-emerald-600 text-white font-orbitron font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-2xs tracking-wider">
+                              ⚡ HEMAT {compressionStats.reductionPercentage}%
+                            </span>
+                            <span className="bg-black text-amber-300 font-orbitron font-bold text-[9px] px-2 py-0.5 rounded-full uppercase">
+                              {compressionStats.format}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* 3 Metric Cards */}
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div className="bg-white/95 backdrop-blur-xs p-2 rounded-lg border border-emerald-100 shadow-2xs">
+                            <span className="block text-[8.5px] uppercase tracking-wider text-gray-400 font-bold">Ukuran Asli</span>
+                            <span className="text-xs font-bold text-gray-400 line-through">
+                              {formatBytes(compressionStats.originalBytes)}
+                            </span>
+                          </div>
+                          <div className="bg-white/95 backdrop-blur-xs p-2 rounded-lg border border-emerald-200 shadow-2xs ring-1 ring-emerald-300">
+                            <span className="block text-[8.5px] uppercase tracking-wider text-emerald-600 font-bold">Ukuran WebP</span>
+                            <span className="text-xs font-black text-emerald-700">
+                              {formatBytes(compressionStats.compressedBytes)}
+                            </span>
+                          </div>
+                          <div className="bg-white/95 backdrop-blur-xs p-2 rounded-lg border border-emerald-100 shadow-2xs">
+                            <span className="block text-[8.5px] uppercase tracking-wider text-teal-600 font-bold">Dimensi</span>
+                            <span className="text-[11px] font-bold text-teal-800">
+                              {compressionStats.width > 0 ? `${compressionStats.width}×${compressionStats.height}px` : 'Auto'}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Visual Bar Comparison */}
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between text-[9.5px] text-emerald-900 font-bold">
+                            <span>Efisiensi Penyimpanan Firestore</span>
+                            <span>{formatBytes(compressionStats.compressedBytes)} (hanya {Math.max(1, 100 - compressionStats.reductionPercentage)}% dari ukuran asli)</span>
+                          </div>
+                          <div className="w-full bg-emerald-200/60 h-2 rounded-full overflow-hidden flex shadow-inner">
+                            <div
+                              className="bg-emerald-600 h-full rounded-full transition-all duration-500"
+                              style={{ width: `${Math.max(4, 100 - compressionStats.reductionPercentage)}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="text-[10px] text-emerald-800 font-medium flex items-center gap-1.5 pt-0.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span>Foto siap disimpan! Dokumen Firestore Anda tetap ultra-ringan (~{formatBytes(compressionStats.compressedBytes)}) dan scroll di HP pengunjung tetap 60 FPS dingin.</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {!compressionStats && formData.imageUrl && formData.imageUrl.startsWith('data:image/') && (
+                      <div className="p-2.5 bg-neutral-100 border border-neutral-200 rounded-xl text-[10px] text-neutral-600 flex items-center justify-between font-jakarta">
+                        <span className="flex items-center gap-1.5 font-medium">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          Format WebP tersimpan di database katalog
+                        </span>
+                        <span className="font-mono font-bold text-neutral-800 bg-white px-2 py-0.5 rounded-md border border-neutral-200 shadow-2xs">
+                          ~{formatBytes(Math.round(formData.imageUrl.length * 0.75))}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div>

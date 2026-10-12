@@ -24,6 +24,12 @@ jobs:
       - name: Build Application
         run: npm run build
 
+      - name: Sync E-Books to GitHub Release v1.0.0 CDN
+        run: npx tsx scripts/sync_release_pdfs.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:

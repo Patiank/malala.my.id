@@ -29,8 +29,40 @@ export default function App() {
   const [selectedNews, setSelectedNews] = useState<HotInfoItem | null>(null);
   const [lang, setLang] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
+      // 1. Prioritas Utama: Preferensi tersimpan pengguna
       const saved = localStorage.getItem('malala_lang');
       if (saved === 'en' || saved === 'id') return saved;
+
+      // 2. Cek Cookie khusus 'malala_lang'
+      const match = document.cookie.match(/(?:^|;\s*)malala_lang=(en|id)(?:;|$)/);
+      if (match && (match[1] === 'en' || match[1] === 'id')) {
+        return match[1] as Language;
+      }
+
+      // 3. Deteksi Otomatis Lokasi & Bahasa Pengunjung (Geo-Timezone & Browser Locale)
+      try {
+        const browserLangs = navigator.languages || [navigator.language || ''];
+        const isIndonesianLocale = browserLangs.some((l) =>
+          typeof l === 'string' && (l.toLowerCase().startsWith('id') || l.toLowerCase().startsWith('ms') || l.toLowerCase().startsWith('in'))
+        );
+
+        // Cek timezone: Indonesia umum menggunakan Asia/Jakarta, Asia/Pontianak, Asia/Makassar, Asia/Jayapura
+        let timeZone = '';
+        try {
+          timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        } catch {}
+
+        const isIndonesianTimezone = /Asia\/(Jakarta|Pontianak|Makassar|Jayapura)/i.test(timeZone);
+
+        // Jika bukan browser bahasa Indonesia dan bukan zona waktu Indonesia, jadikan bahasa Inggris secara otomatis
+        if (!isIndonesianLocale && !isIndonesianTimezone) {
+          localStorage.setItem('malala_lang', 'en');
+          document.cookie = `malala_lang=en; path=/; max-age=31536000; SameSite=Lax`;
+          return 'en';
+        }
+      } catch (err) {
+        console.warn('Visitor locale auto-detection error:', err);
+      }
     }
     return 'id';
   });
@@ -90,8 +122,11 @@ export default function App() {
     }
   }, [dataStore.hotInfoItems]);
 
-  // Automatic Daily 03:00 AM WIB (Waktu Indonesia Barat, UTC+7) Hot Info News Refresh
+  // Automatic Daily 03:00 AM WIB (Waktu Indonesia Barat, UTC+7) Hot Info News Refresh (Admin Only)
   useEffect(() => {
+    // Quota Shield: Only run autonomous RSS scraping and Firestore sync if Admin is logged in
+    if (!dataStore.isAdminLoggedIn) return;
+
     let timerId: any = null;
 
     const checkAndRunDailyRefresh = async () => {
@@ -127,7 +162,7 @@ export default function App() {
       clearTimeout(initTimer);
       if (timerId) clearTimeout(timerId);
     };
-  }, [lang, dataStore]);
+  }, [lang, dataStore.isAdminLoggedIn]);
 
   const handleRefreshTicker = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -138,16 +173,11 @@ export default function App() {
         await dataStore.updateHotInfoItems(data);
         const { cycleId } = getWibNewsCycleInfo();
         localStorage.setItem('malala_hotinfo_last_wib_cycle', cycleId);
-        setToasts((prev) => [
-          ...prev,
-          {
-            id: `toast-${Date.now()}`,
-            message: lang === 'en'
-              ? 'Real-time Indonesia tourism news updated successfully!'
-              : 'Berita pariwisata Indonesia berhasil diperbarui!',
-            type: 'info'
-          }
-        ]);
+        showToast(
+          lang === 'en'
+            ? 'Real-time Indonesia tourism news updated successfully!'
+            : 'Berita pariwisata Indonesia berhasil diperbarui!'
+        );
       }
     } catch (err) {
       console.warn('Failed to refresh ticker:', err);
@@ -156,12 +186,13 @@ export default function App() {
     }
   };
 
-  // Sync lang to localStorage
+  // Sync lang to localStorage & Cookie
   const handleToggleLang = useCallback(() => {
     setLang((prev) => {
       const next = prev === 'id' ? 'en' : 'id';
       if (typeof window !== 'undefined') {
         localStorage.setItem('malala_lang', next);
+        document.cookie = `malala_lang=${next}; path=/; max-age=31536000; SameSite=Lax`;
       }
       return next;
     });
@@ -441,18 +472,18 @@ export default function App() {
         hotInfoItems={dataStore.hotInfoItems}
       />
 
-      {/* Breaking News Ticker Bar (Placed at the very bottom) */}
+      {/* Breaking News Ticker Bar (Placed directly above Mobile Dock on small screens, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-2 px-4 flex items-center gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[58px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
             onClick={() => handleOpenDrawer('hotinfo')}
-            className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[10px] uppercase px-2.5 py-1 rounded flex items-center gap-1.5 shrink-0 shadow-xs hover:scale-105 transition-transform cursor-pointer"
+            className="bg-red-600 hover:bg-red-700 text-white font-orbitron font-extrabold text-[9px] md:text-[10px] uppercase px-2 md:px-2.5 py-1 rounded flex items-center gap-1 md:gap-1.5 shrink-0 shadow-xs hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             title={lang === 'en' ? 'Hot Info & News (Click to open full panel)' : 'Hot Info & Berita Terbaru (Klik untuk membuka panel lengkap)'}
           >
-            <Flame className="w-3.5 h-3.5 text-yellow-300 fill-current animate-bounce" />
-            <span>{lang === 'en' ? 'HOT INFO & NEWS' : 'HOT INFO TERKINI'}</span>
+            <Flame className="w-3 md:w-3.5 h-3 md:h-3.5 text-yellow-300 fill-current animate-bounce" />
+            <span>{lang === 'en' ? 'HOT INFO' : 'HOT INFO'}</span>
           </button>
           
           <button
@@ -461,7 +492,7 @@ export default function App() {
             title={lang === 'en' ? 'Refresh real-time news' : 'Perbarui berita real-time'}
             className="bg-red-950/80 hover:bg-red-900 border border-red-600/50 text-red-300 p-1 rounded shrink-0 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshingTicker ? 'animate-spin text-yellow-400' : ''}`} />
+            <RefreshCw className={`w-3 md:w-3.5 h-3 md:h-3.5 ${isRefreshingTicker ? 'animate-spin text-yellow-400' : ''}`} />
           </button>
         </div>
 
@@ -521,6 +552,93 @@ export default function App() {
         </button>
       </div>
 
+      {/* Mobile Bottom Navigation Dock (Thumb-zone friendly native app feel for smartphones) */}
+      <nav
+        aria-label="Navigasi Bawah Smartphone"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-t border-gray-200 px-2 py-1 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.08)] pb-safe touch-callout-none"
+      >
+        {/* 1. Beranda */}
+        <button
+          onClick={handleCloseDrawer}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
+            activeDrawer === null
+              ? 'text-red-600 font-bold'
+              : 'text-gray-600 hover:text-black active:scale-95'
+          }`}
+          aria-label="Beranda"
+        >
+          <span className="text-lg leading-none">🏠</span>
+          <span className="text-[10px] tracking-tight mt-0.5">
+            {lang === 'en' ? 'Home' : 'Beranda'}
+          </span>
+        </button>
+
+        {/* 2. Wisata / Destinasi */}
+        <button
+          onClick={() => handleOpenDrawer('destinations')}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
+            activeDrawer === 'destinations'
+              ? 'text-red-600 font-bold'
+              : 'text-gray-600 hover:text-black active:scale-95'
+          }`}
+          aria-label="Destinasi Wisata"
+        >
+          <span className="text-lg leading-none">🏔️</span>
+          <span className="text-[10px] tracking-tight mt-0.5">
+            {lang === 'en' ? 'Explore' : 'Wisata'}
+          </span>
+        </button>
+
+        {/* 3. Central AI Button (Elevated Action) */}
+        <button
+          onClick={() => handleOpenDrawer('formai')}
+          className="relative -top-3 flex flex-col items-center justify-center cursor-pointer group active:scale-95 transition-transform"
+          aria-label="UNI MALA AI Itinerary Planner"
+        >
+          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-0.5 shadow-lg shadow-amber-500/40 flex items-center justify-center">
+            <div className="w-full h-full rounded-full bg-black flex items-center justify-center text-white">
+              <span className="text-xl animate-pulse">✨</span>
+            </div>
+          </div>
+          <span className="text-[9.5px] font-black text-amber-700 tracking-wider uppercase mt-0.5">
+            Rute AI
+          </span>
+        </button>
+
+        {/* 4. Panduan / Booklet */}
+        <button
+          onClick={() => handleOpenDrawer('download')}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
+            activeDrawer === 'download'
+              ? 'text-red-600 font-bold'
+              : 'text-gray-600 hover:text-black active:scale-95'
+          }`}
+          aria-label="Pusat Unduhan & Panduan"
+        >
+          <span className="text-lg leading-none">📖</span>
+          <span className="text-[10px] tracking-tight mt-0.5">
+            {lang === 'en' ? 'Guides' : 'Panduan'}
+          </span>
+        </button>
+
+        {/* 5. Tanya Uni Mala / AI Chat */}
+        <button
+          onClick={() => handleOpenDrawer('chat')}
+          className={`flex flex-col items-center justify-center min-w-[54px] min-h-[48px] py-1 px-1 rounded-xl transition-all cursor-pointer ${
+            activeDrawer === 'chat'
+              ? 'text-red-600 font-bold'
+              : 'text-gray-600 hover:text-black active:scale-95'
+          }`}
+          aria-label="Tanya Uni Mala Chat"
+        >
+          <span className="text-lg leading-none">💬</span>
+          <span className="text-[10px] tracking-tight mt-0.5">
+            {lang === 'en' ? 'Ask Mala' : 'Tanya Mala'}
+          </span>
+        </button>
+      </nav>
+
+
       {/* Drawers */}
       <React.Suspense fallback={null}>
         <Drawers
@@ -534,6 +652,7 @@ export default function App() {
           onSelectNews={handleOpenNews}
           searchQuery={searchQuery}
           onSearchQueryChange={setSearchQuery}
+          onShowToast={showToast}
         />
       </React.Suspense>
 

@@ -9,9 +9,30 @@
       "server.cjs.map",
       "**/*.map",
       "ebooklet_printable*.html",
-      "event_calendar_printable*.html"
+      "event_calendar_printable*.html",
+      "ebooklet_pages_jpg/**",
+      "offline_templates/**",
+      "downloads/*.pdf"
     ],
     "headers": [
+      {
+        "source": "/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.@(html|htm)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      },
       {
         "source": "/assets/**",
         "headers": [
@@ -22,16 +43,7 @@
         ]
       },
       {
-        "source": "/downloads/**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=86400, stale-while-revalidate=604800"
-          }
-        ]
-      },
-      {
-        "source": "**/*.@(jpg|jpeg|png|svg|webp|ico|woff2)",
+        "source": "**/*.@(jpg|jpeg|png|svg|webp|ico|woff|woff2|gif|json)",
         "headers": [
           {
             "key": "Cache-Control",
@@ -40,7 +52,16 @@
         ]
       },
       {
-        "source": "/sitemap.xml",
+        "source": "/downloads/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=2592000, stale-while-revalidate=604800"
+          }
+        ]
+      },
+      {
+        "source": "/@(sitemap.xml|news-sitemap.xml|rss.xml)",
         "headers": [
           {
             "key": "Content-Type",
@@ -69,17 +90,12 @@
         "source": "/@(robots.txt|llms.txt|llms-full.txt)",
         "headers": [
           {
-            "key": "Cache-Control",
-            "value": "public, max-age=3600, stale-while-revalidate=86400"
-          }
-        ]
-      },
-      {
-        "source": "/**",
-        "headers": [
+            "key": "Content-Type",
+            "value": "text/plain; charset=utf-8"
+          },
           {
             "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
+            "value": "public, max-age=3600, stale-while-revalidate=86400"
           }
         ]
       }

@@ -4,15 +4,16 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from "./src/data/content";
-import { getItineraryFallback } from "./src/utils/ai";
+import { getItineraryFallback, fetchLiveTourismNewsFromRSS, HOT_INFO_FALLBACK } from "./src/utils/ai";
 
 async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 5000;
 
-  app.use(express.json());
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
   app.use((err: any, req: any, res: any, next: any) => {
-    if (err && err.status === 400 && 'body' in err) {
+    if (err && (err.status === 400 || err.type === 'entity.too.large') && 'body' in err) {
       req.body = {};
       return next();
     }
@@ -112,7 +113,7 @@ async function startServer() {
       });
 
       const langInstruction = isEnglish
-        ? "Please generate the official trip itinerary for West Sumatra completely in ENGLISH language."
+        ? "CRITICAL MANDATORY REQUIREMENT: The user is browsing the website in ENGLISH. You MUST output 100% of the entire itinerary, title, summary, activity descriptions, tips, culinary recommendations, and advice strictly in natural professional ENGLISH. DO NOT leave ANY Indonesian phrases or words (except proper place/attraction names)."
         : "Buatkan rencana perjalanan wisata (Itinerary) resmi & komprehensif untuk Sumatera Barat dalam Bahasa Indonesia.";
 
       const eventsSummary = Array.isArray(availableEvents) && availableEvents.length > 0
@@ -217,7 +218,7 @@ FORMAT OUTPUT:
 Keluarkan HANYA format JSON valid tanpa tanda kutip markdown (\`\`\`json) atau teks pengantar apa pun di luar JSON:
 {
   "title": "${isEnglish ? 'Executive Tour Itinerary Title' : 'Judul Rencana Perjalanan Wisata Eksklusif'}",
-  "summary": "${isEnglish ? 'Professional summary of the optimized travel experience' : 'Ringkasan profesional pengalaman perjalanan yang logis, nyaman, dan berkesan'}",
+  "summary": "${isEnglish ? 'Rich, evocative 2-3 sentence narrative describing the magical atmosphere, geopark highlights, cultural heritage, and culinary adventures awaiting the traveler along this corridor' : 'Narasi kaya dan memikat 2-3 kalimat yang mendeskripsikan atmosfer magis ranah Minang, keindahan geopark, kemegahan warisan budaya, dan petualangan kuliner legendaris yang searah rute'}",
   "itinerary": [
     {
       "day": 1,
@@ -413,169 +414,34 @@ ${eventList}
     }
   });
 
-  // API Route: AI Fetch Hot Info (UNI MALA AI News)
+  // API Route: AI Fetch Hot Info (UNI MALA AI News - Real-time Google News RSS & Kemenparekraf)
   app.post("/api/ai/fetch-hot-info", async (req, res) => {
     try {
-      const apiKey = process.env.GEMINI_API_KEY;
       const { language = 'id' } = req.body;
-      const isEnglish = language === 'en';
 
-      const fallbackData = [
-        {
-          "id": "news-fallback-1",
-          "title": "Uji Laik Fungsi Tol Padang-Sicincin 36,6 Km: Pangkas Waktu Tempuh Padang ke Bukittinggi Jadi 45 Menit",
-          "titleEn": "Padang-Sicincin 36.6 Km Toll Road Functional Test: Slashes Padang-Bukittinggi Travel Time to 45 Minutes",
-          "date": "04 September 2026",
-          "dateEn": "September 04, 2026",
-          "category": "Pariwisata Sumatera Barat",
-          "categoryEn": "West Sumatra Tourism",
-          "description": "PT Hutama Karya (Persero) bersama Balai Pengelola Transportasi Darat (BPTD) Kelas II Sumatera Barat mengonfirmasi bahwa uji laik fungsi fisik Jalan Tol Ruas Padang - Sicincin sepanjang 36,6 kilometer telah rampung dan siap beroperasi penuh untuk mendukung mobilitas wisatawan antarkota. Akses jalan bebas hambatan ini secara signifikan memangkas waktu tempuh dari Kota Padang menuju kawasan Bukittinggi dan Padang Panjang dari sebelumnya 2 hingga 2,5 jam melalui jalur arteri nasional menjadi hanya sekitar 35 hingga 45 menit.\n\nJalur tol pertama di Ranah Minang ini dilengkapi dengan dua gerbang tol utama, yakni Gerbang Tol Kapalo Hilalang dan kawasan Tarok City, serta rest area tipe A bernuansa arsitektur gonjong Rumah Gadang yang mengalokasikan 70 persen ruang usahanya bagi sentra kuliner dan suvenir UMKM lokal Minangkabau. Selain mengurai titik kemacetan kronis di pasar tumpah Lubuk Alung dan Kayu Tanam, jalur ini memberikan kenyamanan ekstra bagi pelancong keluarga dan rombongan bus wisata dengan standar keselamatan modern serta panorama hijau perbukitan kaki Gunung Singgalang di sepanjang koridor perjalanan.\n\nPengelola jalan tol mengimbau seluruh pengguna jalan untuk memastikan saldo kartu uang elektronik (e-toll) mencukupi serta mematuhi batas kecepatan berkendara 60 hingga 80 km/jam. Bagi wisatawan yang keluar melalui Gerbang Tol Kapalo Hilalang, akses langsung tersambung mulus dengan jalan arteri Padang Panjang - Bukittinggi, sehingga memudahkan kelanjutan perjalanan ke destinasi unggulan Lembah Anai, Mifan Waterpark, Pandai Sikek, hingga pelataran Jam Gadang.",
-          "descriptionEn": "PT Hutama Karya in coordination with the West Sumatra Land Transportation Management Agency confirms the completion of functional feasibility testing for the 36.6-kilometer Padang-Sicincin Toll Road section, now ready for full operation. This expressway link drastically cuts driving times from Padang City to the highland hubs of Bukittinggi and Padang Panjang from over two hours along congested national highways down to just 35 to 45 minutes.\n\nAs the first highway in the Minang realm, the corridor features dual main toll plazas at Kapalo Hilalang and Tarok City, alongside a Type-A rest area showcasing iconic Rumah Gadang gonjong architecture where 70 percent of retail space is reserved for local culinary and craft MSMEs. In addition to resolving chronic bottleneck congestion at Lubuk Alung and Kayu Tanam markets, the route affords seamless journeys for travel groups with state-of-the-art safety fixtures and emerald vistas of Mount Singgalang foothills.\n\nMotorists are strongly advised to ensure sufficient electronic toll balances and adhere strictly to designated speed limits between 60 and 80 km/h. Travelers exiting at the Kapalo Hilalang interchange gain immediate access to the Padang Panjang-Bukittinggi arterial corridor, facilitating convenient onward travel to Anai Valley, Pandai Sikek weaving village, and the historic Jam Gadang clock plaza.",
-          "tag": "Penting",
-          "tagEn": "Important",
-          "actionUrl": "https://maps.google.com/?q=Tol+Padang+Sicincin",
-          "highlights": ["Pangkas rute Padang - Bukittinggi dari 2,5 jam menjadi 45 menit", "Rest area arsitektur gonjong dengan 70% gerai UMKM kuliner lokal", "Koneksi langsung ke jalur wisata Lembah Anai dan Pandai Sikek"],
-          "highlightsEn": ["Travel time slashed from 2.5 hours to 45 minutes", "Minang gonjong-roof rest area with 70% local culinary stalls", "Direct highway interchange to Anai Valley and Pandai Sikek"],
-          "tips": "Pastikan saldo kartu tol terisi minimal Rp50.000 dan periksa kondisi rem kendaraan sebelum melanjutkan tanjakan ke arah Bukittinggi.",
-          "tipsEn": "Ensure your e-toll card has at least IDR 50,000 balance and check vehicle brakes before heading up to Bukittinggi.",
-          "locationName": "Ruas Tol Padang - Sicincin, Padang Pariaman",
-          "locationNameEn": "Padang - Sicincin Toll Road, Padang Pariaman"
-        },
-        {
-          "id": "news-fallback-2",
-          "title": "Kesiapan Jalur Sitinjau Lauik: BPJN dan Satlantas Siagakan Alat Berat & Posko Terpadu 24 Jam",
-          "titleEn": "Sitinjau Lauik Route Readiness: Road Agency & Police Deploy 24/7 Heavy Machinery and Safety Outposts",
-          "date": "03 September 2026",
-          "dateEn": "September 03, 2026",
-          "category": "Pariwisata Sumatera Barat",
-          "categoryEn": "West Sumatra Tourism",
-          "description": "Direktorat Lalu Lintas Polda Sumatera Barat bersama Balai Pelaksanaan Jalan Nasional (BPJN) Wilayah III menyiagakan posko tanggap darurat 24 jam dan unit alat berat excavator di kawasan tanjakan ekstrem Sitinjau Lauik, menyusul tingginya intensitas mobilitas angkutan logistik dan bus pariwisata rute Padang - Solok. Pemantauan terpadu difokuskan pada pengamanan lereng tebing di tikungan kritis Panorama 1 dan Panorama 2 guna mengantisipasi kerawanan guguran batuan saat hujan lebat serta menjamin kelancaran arus menuju Danau Singkarak dan Alahan Panjang.\n\nUpaya penguatan infrastruktur keselamatan terus direalisasikan melalui penambahan jaring pengaman batu berkawat baja (wire mesh netting), perbaikan sistem drainase lereng bertingkat, serta pelebaran bahu jalan di sudut belokan tajam. Di lapangan, koordinasi lintas sektor melibatkan relawan pengatur jalan anak nagari yang terhubung langsung dengan petugas Satlantas melalui jaringan radio komunikasi terintegrasi untuk memberlakukan skema buka-tutup darurat manakala terjadi insiden truk mogok atau kabut tebal pegunungan.\n\nPara pengemudi kendaraan pribadi, travel, maupun bus pariwisata sangat disarankan untuk memeriksa fungsi kampas rem, cairan radiator, dan transmisi sebelum melintasi koridor Sitinjau Lauik. Pengemudi wajib mendahulukan kendaraan bermuatan berat yang sedang melaju menanjak, menggunakan transmisi gigi rendah (low gear) saat menurun tajam, serta dilarang menyalip di area tikungan buta (blind spot) demi keselamatan perjalanan bersama.",
-          "descriptionEn": "The West Sumatra Traffic Police Directorate in partnership with National Road Implementation Agency III has mobilized a 24/7 emergency response outpost and heavy excavators along the steep Sitinjau Lauik mountain pass, responding to elevated passenger and cargo flows between Padang and Solok. Coordinated monitoring zeroes in on unstable cliff faces near Panorama 1 and Panorama 2 hairpins to preempt rockfall risks during downpours and safeguard access towards Lake Singkarak and Alahan Panjang highland tea estates.\n\nInfrastructure resilience initiatives encompass high-tensile wire mesh rockfall barriers, terraced hillside drainage channels, and expanded paved shoulders across switchback bends to accommodate large-chassis transport. On the ground, inter-agency protocols link local village road marshals directly with highway patrol units via dedicated radio frequencies to manage phased traffic flow during sudden vehicle breakdowns or dense highland fog.\n\nDrivers of private cars, tour vans, and chartered coaches are firmly advised to inspect brake linings, cooling systems, and tire pressure prior to traversing Sitinjau Lauik. Regulations require descending vehicles to yield unconditionally to ascending traffic, engage low gears throughout steep gradients, and refrain from overtaking at blind corners to uphold travel safety.",
-          "tag": "Pantauan Jalur",
-          "tagEn": "Route Watch",
-          "actionUrl": "https://maps.google.com/?q=Sitinjau+Lauik+Padang",
-          "highlights": ["Posko siaga 24 jam dan alat berat di Panorama 1 & 2", "Pemasangan wire mesh baja penahan guguran batu lereng tebing", "Arus lalu lintas lancar dengan panduan relawan dan Satlantas"],
-          "highlightsEn": ["24/7 emergency post and heavy excavators at Panorama bends", "Steel wire mesh rockfall barriers installed along cliffs", "Smooth traffic guided by highway patrol and community marshals"],
-          "tips": "Gunakan gigi 1 atau 2 saat menanjak maupun menurun, dan selalu berikan prioritas jalan pada kendaraan bermuatan berat yang sedang menanjak.",
-          "tipsEn": "Engage low gears (1st or 2nd) when ascending and descending, and always yield to uphill-climbing heavy vehicles.",
-          "locationName": "Jalan Raya Padang - Solok (Sitinjau Lauik)",
-          "locationNameEn": "Padang - Solok Highway (Sitinjau Lauik Pass)"
-        },
-        {
-          "id": "news-fallback-3",
-          "title": "Kemenparekraf Rilis Kalender KEN 2026 Sumbar: Pacu Jawi Tanah Datar dan Tabuik Pariaman Jadi Sorotan Utama",
-          "titleEn": "Ministry Announces 2026 National Event Calendar: Pacu Jawi & Tabuik Festival Highlight West Sumatra",
-          "date": "01 September 2026",
-          "dateEn": "September 01, 2026",
-          "category": "Pariwisata Sumatera Barat",
-          "categoryEn": "West Sumatra Tourism",
-          "description": "Kementerian Pariwisata dan Ekonomi Kreatif secara resmi merilis daftar agenda terpilih Kharisma Event Nusantara (KEN) 2026 untuk Provinsi Sumatera Barat, menempatkan atraksi budaya legendaris Alek Nagari Pacu Jawi di Kabupaten Tanah Datar dan festival kolosal Pesona Budaya Tabuik Pariaman sebagai agenda unggulan berskala nasional. Pemprov Sumbar menargetkan rangkaian perhelatan budaya ini mampu menggerakkan lebih dari 400 ribu kunjungan wisatawan domestik dan internasional serta mendorong perputaran ekonomi kreatif nagari hingga miliaran Rupiah.\n\nDalam jadwal resmi, Pacu Jawi akan digelar bergiliran setiap akhir pekan di empat nagari bersejarah Tanah Datar (Sungai Tarab, Pariangan, Rambatan, dan Lima Kaum) di atas bentangan sawah basah berlumpur berlatar megah Gunung Marapi. Di pesisir barat, prosesi akbar Pesta Budaya Tabuik di Kota Pariaman akan menggelar prosesi sakral Maambiak Tanah, Menumbuk Panja, hingga prosesi puncak Tabuik Naiak Pangkek dan pelepasan Tabuik ke Samudra Hindia di Pantai Gandoriah dengan iringan serempak ratusan pemukul Gandang Tasa.\n\nPemerintah daerah bersama asosiasi perhotelan PHRI mengimbau wisatawan yang hendak menyaksikan langsung momentum budaya ini untuk memesan akomodasi di Batusangkar, Bukittinggi, atau Pariaman minimal tiga pekan sebelum tanggal pelaksanaan. Panitia telah menyiapkan kantong parkir terpadu, shuttle bus ramah keluarga, serta area khusus bagi para fotografer profesional guna memastikan kenyamanan dokumentasi tanpa mengganggu jalannya prosesi adat.",
-          "descriptionEn": "The Ministry of Tourism and Creative Economy has officially unveiled the 2026 Karisma Event Nusantara (KEN) calendar for West Sumatra, starring the legendary Pacu Jawi mud buffalo race in Tanah Datar Regency and the epic Tabuik Cultural Festival in Pariaman City as premier national attractions. The provincial administration projects over 400,000 domestic and international tourist visits throughout the festival season, driving billions in grassroots creative economy revenues.\n\nPer official itineraries, Pacu Jawi runs on rotating weekends across four heritage nagari in Tanah Datar (Sungai Tarab, Pariangan, Rambatan, and Lima Kaum) amidst wet mud paddies framed by majestic Mount Marapi. Along the coast, Pariaman's Tabuik Festival spans sacred stages from Maambiak Tanah to the spectacular Tabuik Naiak Pangkek finale, culminating in the ocean casting ceremony at Gandoriah Beach accompanied by thunderous Gandang Tasa drum ensembles.\n\nRegional authorities and the Indonesian Hotel Association (PHRI) urge travelers planning to attend these celebrations to book lodging across Batusangkar, Bukittinggi, and Pariaman at least three weeks ahead. Organizers have prepared integrated park-and-ride facilities, dedicated shuttle services, and designated photographer staging areas to deliver an orderly spectator experience that respects traditional proceedings.",
-          "tag": "Event KEN",
-          "tagEn": "KEN Event",
-          "actionUrl": "https://maps.google.com/?q=Tanah+Datar+Sumatera+Barat",
-          "highlights": ["Masuk kurasi resmi Kharisma Event Nusantara (KEN) 2026 Kemenparekraf", "Pacu Jawi bergilir di 4 Nagari Tanah Datar berlatar sawah Gunung Marapi", "Prosesi puncak Tabuik Dibuang ka Lauik di Pantai Gandoriah Pariaman"],
-          "highlightsEn": ["Curated into official 2026 Karisma Event Nusantara (KEN) national roster", "Pacu Jawi rotated across 4 Tanah Datar nagari framed by Mount Marapi", "Grand ocean casting ritual at Gandoriah Beach in Pariaman"],
-          "tips": "Gunakan pakaian kasual yang nyaman dan siap terkena cipratan lumpur saat menonton Pacu Jawi di pematang sawah.",
-          "tipsEn": "Wear comfortable casual clothes and mud-ready footwear when watching Pacu Jawi along paddy ridges.",
-          "locationName": "Tanah Datar & Pantai Gandoriah Pariaman",
-          "locationNameEn": "Tanah Datar & Gandoriah Beach, Pariaman"
+      // 1. Fetch live tourism news directly from Google News RSS (50% Sumbar, 50% National)
+      try {
+        const liveNews = await fetchLiveTourismNewsFromRSS(language);
+        if (Array.isArray(liveNews) && liveNews.length > 0) {
+          const enrichedLive = liveNews.map((item: any) => ({
+            ...item,
+            imageUrl: item.imageUrl || '',
+            isUserUploadedImage: false,
+          }));
+          return res.json(enrichedLive);
         }
-      ];
-
-      let parsedData: any[] = [];
-
-      if (apiKey) {
-        try {
-          const ai = new GoogleGenAI({
-            apiKey,
-            httpOptions: {
-              headers: {
-                'User-Agent': 'aistudio-build',
-              },
-            },
-          });
-
-          const currentDateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-
-          const prompt = `Anda adalah REDAKTUR UTAMA & JURNALIS SENIOR portal berita pariwisata Sumatera Barat dan nasional (Malala Newsroom).
-Lakukan penelusuran fakta terkini untuk menghasilkan 5 hingga 6 artikel berita/informasi pariwisata Sumatera Barat dan nasional terpercaya yang terbit DALAM 30 HARI TERAKHIR (Per ${currentDateStr} tahun 2026).
-
-STANDAR JURNALISTIK & ANTI-BOILERPLATE MUTLAK:
-1. DILARANG KERAS MENGGUNAKAN BAHASA TEMPLAT / ROBOTIK:
-   - DILARANG menulis kalimat klise pembuka seperti: "Sektor kepariwisataan terus menunjukkan dinamika kemajuan yang signifikan...", "Industri pariwisata kembali menyuguhkan kabar menggembirakan...", atau sejenisnya.
-   - Gunakan gaya bahasa jurnalistik baku Indonesia (seperti Antara, Kompas, Tempo) dengan dateline kota yang jelas di awal kalimat lead.
-2. STRUKTUR ARTIKEL WAJIB PERSIS 3 PARAGRAF BERNAS (Pisahkan dengan \\n\\n):
-   - Paragraf 1 (Lead 5W+1H dengan Dateline): Sebutkan nama kota (contoh: "PADANG —", "BUKITTINGGI —", "PARIAMAN —"), subjek otoritas/penyelenggara resmi, fakta kejadian nyata, lokasi presisi, dan waktu secara lugas dan faktual.
-   - Paragraf 2 (Detail Lapangan, Kesiapan Fasilitas & Fakta Pendukung): Rincian teknis, fasilitas pengunjung, penataan amenitas, data kuantitatif (waktu tempuh, panjang rute, jumlah kunjungan), dan dampak terhadap masyarakat nagari atau UMKM lokal.
-   - Paragraf 3 (Panduan Praktis & Imbauan Resmi Bagi Wisatawan): Saran navigasi rute nyata, regulasi keamanan/etika adat yang berlaku, waktu kunjungan terbaik, atau kontak/akses menuju destinasi.
-3. CAKUPAN PRIORITAS: Utamakan kabar faktual seputar Sumatera Barat (Konektivitas Tol Padang-Sicincin, Jalur Sitinjau Lauik, Cagar Alam Lembah Anai, Event KEN Pacu Jawi / Tabuik, Geopark Harau, Mentawai, Bukittinggi) serta kebijakan strategis pariwisata nasional.
-4. FORMAT TANGGAL: Gunakan format tanggal riil dalam 30 hari terakhir (contoh: "04 September 2026", "28 Agustus 2026"). JANGAN gunakan "Hari Ini" atau "Minggu Ini" yang abstrak.
-
-Formatkan output HANYA dalam format JSON valid Array of Objects:
-[
-  {
-    "id": "news-1",
-    "title": "Judul Berita Lugas & Informatif Standar Media Nasional",
-    "titleEn": "Accurate & Professional English Headline",
-    "date": "04 September 2026",
-    "dateEn": "September 04, 2026",
-    "category": "Pariwisata Sumatera Barat",
-    "categoryEn": "West Sumatra Tourism",
-    "description": "PADANG — Paragraf 1 narasi jurnalistik 5W+1H...\\n\\nParagraf 2 data faktual & fasilitas...\\n\\nParagraf 3 panduan praktis wisatawan...",
-    "descriptionEn": "PADANG — Paragraph 1 factual lead...\\n\\nParagraph 2 technical details & amenities...\\n\\nParagraph 3 practical traveler guidance...",
-    "tag": "Penting | Pantauan Jalur | Event KEN | Wisata Bahari | Konservasi",
-    "tagEn": "Important | Route Watch | KEN Event | Marine | Conservation",
-    "actionUrl": "https://peta-atau-link-terkait.com",
-    "highlights": ["Fakta kunci 1", "Fakta kunci 2", "Fakta kunci 3"],
-    "highlightsEn": ["Key fact 1", "Key fact 2", "Key fact 3"],
-    "tips": "Tips spesifik dan aplikatif bagi wisatawan",
-    "tipsEn": "Specific practical tip for travelers",
-    "locationName": "Nama Destinasi, Kota/Kabupaten",
-    "locationNameEn": "Destination, Regency/City"
-  }
-]
-
-Keluarkan HANYA array JSON valid tanpa markdown backticks atau teks pengantar lainnya.`;
-
-          const hotInfoModels = ['gemini-3.8-flash'];
-          for (const modelName of hotInfoModels) {
-            try {
-              const response = await ai.models.generateContent({
-                model: modelName,
-                contents: prompt,
-                config: {
-                  tools: [{ googleSearch: {} }],
-                }
-              });
-              const rawText = response.text || '';
-              const jsonMatch = rawText.match(/\[\s*\{[\s\S]*\}\s*\]/);
-              if (jsonMatch) {
-                parsedData = JSON.parse(jsonMatch[0]);
-                if (Array.isArray(parsedData) && parsedData.length > 0) break;
-              }
-            } catch (err: any) {
-              console.log(`AI Hot Info fetch with ${modelName} failed:`, err?.message);
-            }
-          }
-        } catch (genError: any) {
-          console.log("AI Hot Info fetch falling back to default news items:", genError?.message);
-        }
+      } catch (rssErr: any) {
+        console.warn("Server live RSS fetch warning:", rssErr?.message);
       }
 
-      if (!Array.isArray(parsedData) || parsedData.length === 0) {
-        parsedData = fallbackData;
-      }
+      // 2. High-quality curated fallback (with verified sources & URLs)
+      const enrichedFallback = HOT_INFO_FALLBACK.map((item: any) => ({
+        ...item,
+        imageUrl: item.imageUrl || '',
+        isUserUploadedImage: false,
+      }));
 
-      // Keep imageUrl as explicitly provided or empty (ready for manual upload)
-      const enrichedData = parsedData.map((item: any) => {
-        return {
-          ...item,
-          imageUrl: item.imageUrl || ''
-        };
-      });
-
-      return res.json(enrichedData);
+      return res.json(enrichedFallback);
     } catch (error: any) {
       console.error("AI Fetch Hot Info error:", error);
       return res.status(500).json({ error: error.message || "Gagal mendapatkan informasi terkini." });

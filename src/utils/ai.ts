@@ -783,8 +783,8 @@ export function getItineraryFallback(params: any) {
       ? (targetEv ? `Special Event Itinerary: ${targetEv.titleEn || targetEv.title} & West Sumatra Highlights (${daysCount} Days)` : `Master Tour Itinerary: Wonderful West Sumatra Grand Exploration (${daysCount} Days${startDate ? ` - Starting ${startDate}` : ''})`)
       : (targetEv ? `Rencana Perjalanan Spesial: ${targetEv.title} & Pesona Sumatera Barat (${daysCount} Hari)` : `Rencana Perjalanan Eksklusif: Master Tour Wonderful West Sumatra (${daysCount} Hari${startDate ? ` - Mulai ${startDate}` : ''})`),
     summary: isEnglish
-      ? (targetEv ? `A custom travel plan featuring the magnificent ${targetEv.titleEn || targetEv.title} as the centerpiece highlight, seamlessly combined with scenic Minangkabau geoparks, cultural heritage, and legendary gastronomy.` : `A professionally curated, 100% distinct daily travel plan designed by master tour operators. Features seamless corridor routing, realistic drive times, iconic Minangkabau geoparks, UNESCO cultural heritage, and world-class culinary stops.`)
-      : (targetEv ? `Rencana perjalanan wisata istimewa yang dirancang khusus dengan puncak perayaan festival akbar "${targetEv.title}" (${targetEv.schedule || ''}), dipadukan dengan eksplorasi geopark, warisan budaya Minangkabau, serta kuliner legendaris yang searah rute.` : `Rencana perjalanan wisata 100% berbeda setiap hari yang dirancang oleh Master Tour Operator profesional. Mengutamakan rute koridor searah tanpa bolak-balik, estimasi waktu tempuh realistis, kepuasan maksimal wisatawan, serta eksplorasi kuliner legendaris khas Minangkabau.`),
+      ? (targetEv ? `An evocative, tailor-made journey centered around the iconic ${targetEv.titleEn || targetEv.title} celebration, seamlessly woven with the dramatic granite chasms of Harau, royal heritage of Pagaruyung, and legendary Minangkabau culinary indulgences along scenic highland passes.` : `A captivating, masterfully orchestrated expedition across West Sumatra designed for maximum wonder and seamless comfort. Experience the emerald splendor of Minangkabau geoparks, iconic UNESCO cultural heritage, and world-renowned culinary treasures along efficient, scenic one-way corridors.`)
+      : (targetEv ? `Sebuah petualangan istimewa yang memikat, memadukan puncak kemeriahan festival akbar "${targetEv.title}" (${targetEv.schedule || ''}) dengan kemegahan bentang alam geopark, keagungan istana pusaka Minangkabau, serta petualangan kuliner legendaris rempah nusantara dalam satu alur perjalanan yang harmonis.` : `Sebuah ekspedisi terkurasi yang memadukan pesona magis ranah Minang: mulai dari kemegahan tebing granit Lembah Harau, keelokan ngarai dan danau vulkanik, keagungan warisan budaya Istano Basa Pagaruyung, hingga kelezatan kuliner rendang autentik dalam alur perjalanan searah yang nyaman dan bebas repot.`),
     itinerary: selectedDays,
     localTips: isEnglish
       ? [
@@ -911,11 +911,11 @@ Aturan Ketat:
 1. Wajib sesuaikan destinasi, titik keberangkatan, ritme, dan aktivitas dengan profil wisatawan (${isNonAirport ? `DILARANG KERAS memasukkan penjemputan Bandara BIM di Hari 1 karena titik awal adalah ${startingPointLabel}; rute Hari 1 HARUS dimulai langsung dari ${startingPointLabel}` : 'mulai Hari 1 dari Bandara BIM'}).
 2. Rute HARUS SEARAH per klaster geografis tiap harinya. JANGAN bolak-balik.
 3. JANGAN mengulang destinasi di hari yang berbeda.
-4. Gunakan bahasa: ${langStr}.
+4. Gunakan bahasa: ${langStr}. ${isEnglish ? 'CRITICAL MANDATORY: The user selected ENGLISH. You MUST output 100% of title, summary, activity, tips, and culinary recommendations strictly in ENGLISH. Do not use Indonesian words except official location proper names.' : ''}
 5. FORMAT OUTPUT WAJIB BERUPA JSON VALID dengan struktur berikut:
 {
-  "title": "Judul Itinerary",
-  "summary": "Ringkasan itinerary",
+  "title": "${isEnglish ? 'Executive Tour Itinerary Title' : 'Judul Itinerary'}",
+  "summary": "${isEnglish ? 'Rich evocative summary of the trip' : 'Ringkasan itinerary'}",
   "itinerary": [
     {
       "day": 1,
@@ -2460,10 +2460,11 @@ export async function fetchDirectTranslation(text: string, from = 'id', to = 'en
 export function prefetchNewsTranslations(items: any[]) {
   if (!Array.isArray(items) || items.length === 0) return;
   items.forEach(item => {
-    if (item.title) {
+    // Only fetch translation if English translation is not already provided
+    if (!item.titleEn && item.title) {
       fetchDirectTranslation(item.title, 'id', 'en').catch(() => {});
     }
-    if (item.description) {
+    if (!item.descriptionEn && item.description) {
       fetchDirectTranslation(item.description, 'id', 'en').catch(() => {});
     }
   });
@@ -2538,7 +2539,7 @@ export function getNewsDisplayDescription(item: any, lang: string): string {
  * Maintains a strict 50:50 balance between local (Sumatera Barat) and national (Indonesia) tourism news.
  * Queries recent news (when:2d with when:7d fallback) to provide fast, unbiased updates.
  */
-async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
+export async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   const sumbarQueries = [
     'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:2d&hl=id&gl=ID&ceid=ID:id',
     'https://news.google.com/rss/search?q=wisata+sumbar+when:2d&hl=id&gl=ID&ceid=ID:id'
@@ -2549,14 +2550,79 @@ async function fetchLiveTourismNewsFromRSS(language: string = 'id') {
   ];
 
   const sumbarFallbackQueries = [
-    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat+when:7d&hl=id&gl=ID&ceid=ID:id'
+    'https://news.google.com/rss/search?q=pariwisata+sumatera+barat&hl=id&gl=ID&ceid=ID:id'
   ];
   const nationalFallbackQueries = [
-    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf+when:7d&hl=id&gl=ID&ceid=ID:id'
+    'https://news.google.com/rss/search?q=pariwisata+indonesia+kemenparekraf&hl=id&gl=ID&ceid=ID:id'
   ];
 
   async function fetchFeed(url: string, isSumbarTopicFeed: boolean): Promise<any[]> {
     const list: any[] = [];
+    // 1. In Node or direct environment, fetch the RSS directly!
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (res.ok) {
+        const text = await res.text();
+        if (text && text.includes('<item>')) {
+          const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+          let match;
+          while ((match = itemRegex.exec(text)) !== null) {
+            const rawItem = match[1];
+            const titleMatch = /<title>([\s\S]*?)<\/title>/.exec(rawItem);
+            const linkMatch = /<link>([\s\S]*?)<\/link>/.exec(rawItem);
+            const pubDateMatch = /<pubDate>([\s\S]*?)<\/pubDate>/.exec(rawItem);
+            const sourceMatch = /<source[^>]*>([\s\S]*?)<\/source>/.exec(rawItem);
+            const descMatch = /<description>([\s\S]*?)<\/description>/.exec(rawItem);
+
+            const rawTitle = cleanHtml(titleMatch ? titleMatch[1] : '');
+            if (!rawTitle) continue;
+
+            const titleParts = rawTitle.split(' - ');
+            const source = sourceMatch ? sourceMatch[1] : (titleParts.length > 1 ? titleParts.pop() : 'Media Tepercaya');
+            const cleanTitle = titleParts.join(' - ').trim() || rawTitle;
+
+            const pubDate = pubDateMatch ? pubDateMatch[1] : new Date().toISOString();
+            const { dateId, dateEn, isWithin30d } = formatDateIndo(pubDate);
+            if (!isWithin30d) continue;
+
+            const snippet = cleanHtml(descMatch ? descMatch[1] : '');
+            const link = linkMatch ? linkMatch[1] : '';
+            const narrative = buildJournalisticTourismNarrative(cleanTitle, source || 'Media Tepercaya', snippet, isSumbarTopicFeed);
+
+            list.push({
+              id: `news-live-${list.length + 1}-${Date.now().toString().slice(-6)}`,
+              title: narrative.smartTitleId || cleanTitle,
+              titleEn: narrative.smartTitleEn || translateHeadlineIndoToEn(cleanTitle),
+              category: isSumbarTopicFeed ? 'Pariwisata Sumatera Barat' : 'Pariwisata Indonesia',
+              categoryEn: isSumbarTopicFeed ? 'West Sumatra Tourism' : 'Indonesian Tourism',
+              date: dateId,
+              dateEn: dateEn,
+              tag: isSumbarTopicFeed ? 'Sumbar' : 'Nasional',
+              tagEn: isSumbarTopicFeed ? 'West Sumatra' : 'National',
+              description: narrative.descId,
+              descriptionEn: narrative.descEn,
+              imageUrl: '',
+              actionUrl: narrative.mapsUrl,
+              mapsUrl: narrative.mapsUrl,
+              sourceUrl: link || '',
+              sourceName: source || 'Media Tepercaya',
+              highlights: narrative.highlightsId,
+              highlightsEn: narrative.highlightsEn,
+              tips: narrative.tipsId,
+              tipsEn: narrative.tipsEn,
+              locationName: narrative.locationNameId,
+              locationNameEn: narrative.locationNameEn
+            });
+            if (list.length >= 8) break;
+          }
+          if (list.length > 0) return list;
+        }
+      }
+    } catch (e) {
+      // In browser this might fail due to CORS, fall through to rss2json or proxy
+    }
+
+    // 2. Browser fallback via rss2json
     try {
       const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
       const res = await fetch(endpoint, { cache: 'no-store' });
@@ -2793,73 +2859,22 @@ export async function fetchAiHotInfo(language: string = 'id') {
     // Normal in static Firebase Hosting environment
   }
 
-  // 2. Client-side Gemini AI if API key is provided
-  const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
-  if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
-    for (const modelName of modelsToTry) {
-      try {
-        const ai = await getGeminiClient(viteApiKey);
-        const prompt = `Anda adalah REDAKTUR JURNALISTIK PARIWISATA PROFESIONAL (standar LKBN Antara / Kompas / Tempo) yang bertugas menyusun warta pariwisata Sumatera Barat dan nasional Indonesia.
-Tugas Anda: Hasilkan 6 butir berita pariwisata resmi, mendalam, objektif, tidak bias, faktual, dan sangat informatif dalam format JSON array.
-KOMPOSISI WAJIB: TEPAT 50% Pariwisata Sumatera Barat (3 butir) dan 50% Pariwisata Nasional Indonesia (3 butir). Susun secara berselang-seling [Sumbar, Nasional, Sumbar, Nasional, Sumbar, Nasional].
-
-STANDAR JURNALISTIK KEPARIWISATAAN (DILARANG MENGGUNAKAN GAYA BULETIN SANTAI, KOLOKIAL, 'CATATAN VERIFIKASI', ATAU 'TIPS BUAT KAMU'):
-1. GAYA BAHASA: Bahasa Indonesia baku jurnalistik yang lugas, presisi, berwibawa, berbobot, dan objektif. Gunakan Dateline resmi dengan huruf kapital diikuti tanda strip panjang (misalnya "PADANG — ", "JAKARTA — ", "BUKITTINGGI — ", "BATUSANGKAR — ").
-2. SUMBER & FAKTA: Ambil fakta terverifikasi dari sumber otoritatif (Kemenparekraf, BPTD, Ditlantas, BPJN, BMKG Maritim, PHRI, Dinas Pariwisata, atau pers resmi). Sajikan fakta murni, spesifik, dan kaya konteks tanpa spekulasi atau desas-desus.
-3. STRUKTUR DESKRIPSI BERITA (TIDAK ADA BATASAN JUMLAH PARAGRAF KAKU. Berikan narasi jurnalistik yang ideal, mendalam, dan kaya konteks secara utuh, dengan 4 hingga 5 paragraf berbobot yang dipisahkan dengan \\n\\n):
-   - Paragraf 1 (Lead 5W+1H): Dimulai dengan DATELINE resmi (contoh: "PADANG — ") lalu memuat pokok inti peristiwa/kebijakan secara komprehensif (siapa pemangku kepentingan, apa peristiwanya, di mana lokasi persisnya, kapan berlangsung, dan bagaimana dampaknya bagi kepariwisataan).
-   - Paragraf 2 (Konteks & Spesifikasi Teknis): Rincian latar belakang kebijakan, spesifikasi infrastruktur/fasilitas transportasi, data jarak/waktu tempuh, atau signifikansi geografis koridor wisata.
-   - Paragraf 3 (Fasilitas & Dampak Ekonomi Kerakyatan): Kesiapan amenitas publik, rest area/dermaga/posko, pelibatan masyarakat lokal/nagari, dan sentra UMKM kuliner serta kriya daerah.
-   - Paragraf 4 (Pengawasan Lapangan & Mitigasi Operasional): Koordinasi lintas instansi (kepolisian, dinas perhubungan, pengelola cagar alam, BMKG), pemantauan arus pergerakan wisatawan, dan tata kelola keselamatan.
-   - Paragraf 5 (Panduan Resmi & Regulasi Kunjungan): Imbauan resmi bagi pelancong, ketentuan tiket/saldo elektronik, etika perlindungan lingkungan/cagar budaya, dan saran keselamatan berkendara atau berwisata secara formal.
-4. PROPERTI WAJIB SETIAP ITEM:
-   id (string unik), title (string judul berita jurnalistik yang lugas, informatif, dan berbobot), titleEn (string judul bahasa Inggris), category ("Pariwisata Sumatera Barat" atau "Pariwisata Indonesia"), categoryEn ("West Sumatra Tourism" atau "Indonesian Tourism"), date (format: "DD MMMM YYYY"), dateEn (string), tag ("Sumbar" atau "Nasional"), tagEn ("West Sumatra" atau "National"), description (narasi jurnalistik formal mendalam 4-5 paragraf), descriptionEn (formal English journalistic narrative 4-5 paragraphs), imageUrl (""), actionUrl (""), highlights (array 3 butir: "Fakta Utama: ...", "Fasilitas/Infrastruktur: ...", "Panduan Perjalanan: ..."), highlightsEn (array 3 butir formal English highlights), tips (string imbauan praktis resmi untuk wisatawan), tipsEn (string official travel guidance), locationName (string nama lokasi spesifik), locationNameEn (string).
-Hanya kembalikan valid JSON tanpa markdown.
-Waktu saat ini: ${new Date().toISOString()}
-Variasi Permintaan Seed: ${Math.random()}`;
-
-        const response = await ai.models.generateContent({
-          model: modelName,
-          contents: prompt,
-          config: {
-            temperature: 0.4,
-            tools: [{ googleSearch: {} } as any]
-          }
-        });
-
-        const cleanJson = (response.text || '').replace(/```json/g, '').replace(/```/g, '').trim();
-        const parsed = JSON.parse(cleanJson);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const mapped = parsed.map((it: any) => {
-            const loc = it.locationName || (it.tag === 'Sumbar' ? 'Sumatera Barat' : 'Indonesia');
-            const maps = it.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}`;
-            return {
-              ...it,
-              actionUrl: maps,
-              mapsUrl: maps,
-              sourceUrl: it.sourceUrl || '',
-              sourceName: it.sourceName || 'Kemenparekraf / Media Resmi'
-            };
-          });
-          return deduplicateNewsItems(mapped.filter((it: any) => isWithinLast30Days(it.date)));
-        }
-      } catch (err) {
-        console.warn(`Client Gemini hotinfo generation failed with ${modelName}, trying next...`, err);
-      }
+  // 2. Live Google News / RSS National & Local Tourism Feed (50:50 balanced, real-time & official journalism with working source links)
+  try {
+    const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
+    if (liveRssNews && liveRssNews.length > 0) {
+      const cleanLiveNews = liveRssNews.map(item => ({
+        ...item,
+        imageUrl: '',
+        isUserUploadedImage: false
+      }));
+      return deduplicateNewsItems(cleanLiveNews);
     }
+  } catch (rssErr) {
+    console.warn("Client RSS fetch failed, falling back to Gemini/static:", rssErr);
   }
 
-  // 3. Live Google News / RSS National & Local Tourism Feed (50:50 balanced, real-time & official journalism)
-  const liveRssNews = await fetchLiveTourismNewsFromRSS(language);
-  if (liveRssNews && liveRssNews.length > 0) {
-    const cleanLiveNews = liveRssNews.map(item => ({
-      ...item,
-      imageUrl: '',
-      isUserUploadedImage: false
-    }));
-    return deduplicateNewsItems(cleanLiveNews);
-  }
+  // 3. Client-side Gemini AI if API key is provided and RSS was not available
 
   // 4. Static fallback if completely offline (50:50 balanced, within 30 days)
   const fallbackClean = HOT_INFO_FALLBACK.map(item => ({

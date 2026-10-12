@@ -1,11 +1,21 @@
 import { DownloadItem, HotInfoItem } from '../types';
 
-export const RAW_BG_IMAGE_1 = "https://drive.google.com/file/d/15YQ1KiIdWOO216udJAHNZP4dmR5CNKf-/view?usp=drive_link";
-export const RAW_BG_IMAGE_2 = "https://drive.google.com/file/d/1sKE9Y3NKIh6wwIQMsy5zYEQtROna5H1f/view?usp=drive_link";
+export const RAW_BG_IMAGE_1 = "/images/bg-cover-1.webp";
+export const RAW_BG_IMAGE_2 = "/images/bg-cover-2.webp";
+
+// Fast & 100% Free Egress CDN via Official GitHub Releases (Zero Firebase bandwidth consumed, 100% bypasses Kominfo/ISP blocks)
+export const GITHUB_RELEASES_BASE = "https://github.com/Patiank/malala.my.id/releases/download/v1.0.0";
+
+export const OFFICIAL_PDF_URLS = {
+  panduanId: `${GITHUB_RELEASES_BASE}/malala-panduan-wisata-sumbar-2026.pdf`,
+  panduanEn: `${GITHUB_RELEASES_BASE}/malala-tourism-guide-sumbar-2026-en.pdf`,
+  eventsId: `${GITHUB_RELEASES_BASE}/kalender-event-sumbar-2026.pdf`,
+  eventsEn: `${GITHUB_RELEASES_BASE}/kalender-event-sumbar-2026-en.pdf`,
+};
 
 export function getDirectDriveUrl(url: string): string {
   if (!url) return '';
-  if (url.startsWith('data:')) return url;
+  if (url.startsWith('data:') || url.startsWith('/')) return url;
   const matchFileD = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (matchFileD && matchFileD[1]) {
     return `https://lh3.googleusercontent.com/d/${matchFileD[1]}`;
@@ -17,8 +27,8 @@ export function getDirectDriveUrl(url: string): string {
   return url;
 }
 
-export const BG_IMAGE_1 = getDirectDriveUrl(RAW_BG_IMAGE_1);
-export const BG_IMAGE_2 = getDirectDriveUrl(RAW_BG_IMAGE_2);
+export const BG_IMAGE_1 = "/images/bg-cover-1.webp";
+export const BG_IMAGE_2 = "/images/bg-cover-2.webp";
 
 export const HOT_INFO_ITEMS: HotInfoItem[] = [
   {
@@ -290,39 +300,5 @@ export const HOT_INFO_ITEMS: HotInfoItem[] = [
   }
 ];
 
-export const DOWNLOAD_ITEMS: DownloadItem[] = [
-  {
-    id: 'dl1',
-    title: 'Panduan Wisata Sumatera Barat 2026',
-    titleEn: 'West Sumatra Tourism Guide 2026',
-    category: 'Buku Panduan',
-    categoryEn: 'Guidebook',
-    type: 'PDF',
-    typeEn: 'PDF',
-    size: '38.5 MB',
-    description: 'Panduan lengkap komprehensif berisi rekomendasi seluruh destinasi, adat budaya, kuliner, dan tips perjalanan.',
-    descriptionEn: 'Comprehensive guide with complete destinations, cultural heritage, authentic cuisine, and travel tips.',
-    filename: 'malala-panduan-wisata-sumbar-2026.pdf',
-    filenameEn: 'malala-tourism-guide-sumbar-2026-en.pdf',
-    content: '/downloads/malala-panduan-wisata-sumbar-2026.pdf',
-    contentEn: '/downloads/malala-tourism-guide-sumbar-2026-en.pdf',
-    mimeType: 'application/pdf'
-  },
-  {
-    id: 'dl2',
-    title: 'Calendar of Events (CoE) Sumatera Barat 2026',
-    titleEn: 'Official Calendar of Events (CoE) 2026',
-    category: 'Kalender Event',
-    categoryEn: 'Event Calendar',
-    type: 'PDF',
-    typeEn: 'PDF',
-    size: '7.2 MB',
-    description: 'E-Book resmi kalender seluruh festival budaya, seni tradisi Minangkabau, dan agenda Kharisma Event Nusantara (KEN) 2026.',
-    descriptionEn: 'Official e-book featuring all cultural festivals, traditional art events, and Karisma Event Nusantara (KEN) 2026 agenda.',
-    filename: 'kalender-event-sumbar-2026.pdf',
-    filenameEn: 'kalender-event-sumbar-2026-en.pdf',
-    content: '/downloads/kalender-event-sumbar-2026.pdf',
-    contentEn: '/downloads/kalender-event-sumbar-2026-en.pdf',
-    mimeType: 'application/pdf'
-  }
-];
+export const DOWNLOAD_ITEMS: DownloadItem[] = [];
+

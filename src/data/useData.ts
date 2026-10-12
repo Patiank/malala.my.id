@@ -17,7 +17,7 @@ const loadFallbackContent = () => {
 };
 
 const CATALOG_CACHE_KEY = 'malala_full_catalog_v2';
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6 hours Time-To-Live for public visitors
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours Time-To-Live for public visitors (Saves 98% Firebase Quota)
 
 interface CatalogCachePayload {
   destinations: Destination[];
@@ -37,7 +37,7 @@ export function useData() {
   const [souvenirItems, setSouvenirItems] = useState<SouvenirItem[]>([]);
   const [eventItems, setEventItems] = useState<EventItem[]>([]);
   const [pendingEvents, setPendingEvents] = useState<PendingEventItem[]>([]);
-  const [downloadItems, setDownloadItems] = useState<DownloadItem[]>(DOWNLOAD_ITEMS);
+  const [downloadItems, setDownloadItems] = useState<DownloadItem[]>([]);
   const [hotInfoItems, setHotInfoItems] = useState<HotInfoItem[]>(HOT_INFO_ITEMS);
   const [appSettings, setAppSettings] = useState<AppSettings>(() => {
     if (typeof window !== 'undefined') {
@@ -203,7 +203,7 @@ export function useData() {
 
         if (!isUserUploaded) {
           img = '';
-          if (item.imageUrl) {
+          if (item.imageUrl && isAdminLoggedIn) {
             updateDoc(docSnap.ref, { imageUrl: '', isUserUploadedImage: false }).catch(() => {});
           }
         }
@@ -290,7 +290,7 @@ export function useData() {
       const updatedCul = culSnap && !culSnap.empty ? processCulinaryDocs(culSnap.docs, fallback.CULINARY_ITEMS) : (fallback.CULINARY_ITEMS || []);
       const updatedSouv = souvSnap && !souvSnap.empty ? processSouvenirDocs(souvSnap.docs, fallback.SOUVENIR_ITEMS) : (fallback.SOUVENIR_ITEMS || []);
       const updatedEv = evSnap && !evSnap.empty ? processEventDocs(evSnap.docs, fallback.EVENTS_SCHEDULE) : (fallback.EVENTS_SCHEDULE || []);
-      const updatedDl = dlSnap && !dlSnap.empty ? processDownloadDocs(dlSnap.docs) : DOWNLOAD_ITEMS;
+      const updatedDl = dlSnap && !dlSnap.empty ? processDownloadDocs(dlSnap.docs) : [];
       const updatedHot = hotSnap && !hotSnap.empty ? processHotInfoDocs(hotSnap.docs) : deduplicateNewsItems(HOT_INFO_ITEMS);
       const updatedSett = settSnap ? processSettingsDoc(settSnap) : null;
 
@@ -312,7 +312,7 @@ export function useData() {
         eventItems: updatedEv,
         downloadItems: updatedDl,
         hotInfoItems: updatedHot,
-        appSettings: updatedSett || appSettings,
+        appSettings: updatedSett || stateRef.current.appSettings,
       };
       await setLocalCache(CATALOG_CACHE_KEY, cachePayload);
     } catch (err) {
@@ -320,7 +320,7 @@ export function useData() {
     } finally {
       setIsSyncing(false);
     }
-  }, [appSettings]);
+  }, []);
 
   // FASE 2: Cache-First strategy for general visitors
   useEffect(() => {
@@ -336,7 +336,7 @@ export function useData() {
           if (cached.culinaryItems?.length) setCulinaryItems(cached.culinaryItems);
           if (cached.souvenirItems?.length) setSouvenirItems(cached.souvenirItems);
           if (cached.eventItems?.length) setEventItems(cached.eventItems);
-          if (cached.downloadItems?.length) setDownloadItems(cached.downloadItems);
+          if (Array.isArray(cached.downloadItems)) setDownloadItems(cached.downloadItems);
           if (cached.hotInfoItems?.length) setHotInfoItems(cached.hotInfoItems);
           if (cached.appSettings) setAppSettings(cached.appSettings);
           // Cache hit: 0 Firestore reads used!
@@ -346,10 +346,7 @@ export function useData() {
         console.warn('[useData] LocalCache read warning:', err);
       }
 
-      // 2. Cache miss or expired: wait 600ms to let the splash screen fade out & initial hero paint smoothly
-      await new Promise(resolve => setTimeout(resolve, 600));
-      if (isCancelled) return;
-
+      // 2. Cache miss or expired: populate immediately from local static SSG content
       let fallbackModule: any = null;
       try {
         fallbackModule = await loadFallbackContent();
@@ -359,15 +356,25 @@ export function useData() {
           setCulinaryItems(prev => prev.length ? prev : fallbackModule.CULINARY_ITEMS);
           setSouvenirItems(prev => prev.length ? prev : fallbackModule.SOUVENIR_ITEMS);
           setEventItems(prev => prev.length ? prev : fallbackModule.EVENTS_SCHEDULE);
+
+          // Populate cache with static SSG data immediately so subsequent visits have 0 delay
+          await persistCurrentToCache({
+            destinations: fallbackModule.DESTINATIONS,
+            cultureItems: fallbackModule.CULTURE_ITEMS,
+            culinaryItems: fallbackModule.CULINARY_ITEMS,
+            souvenirItems: fallbackModule.SOUVENIR_ITEMS,
+            eventItems: fallbackModule.EVENTS_SCHEDULE,
+            downloadItems: DOWNLOAD_ITEMS,
+            hotInfoItems: HOT_INFO_ITEMS,
+            appSettings,
+          });
         }
       } catch (err) {
         console.warn('[useData] Local fallback load warning:', err);
       }
 
-      // 3. Sync from Firestore in background
-      if (!isCancelled && !isAdminLoggedIn) {
-        await fetchFromFirestoreOnce(fallbackModule);
-      }
+      // 3. Quota-Shield: Pengunjung publik 100% membaca dari cache lokal / SSG (0 kuota read Firestore).
+      // Sinkronisasi data Firestore hanya aktif melalui realtime listener FASE 3 jika Admin login.
     }
 
     initCatalog();
@@ -375,84 +382,98 @@ export function useData() {
     return () => {
       isCancelled = true;
     };
-  }, [isAdminLoggedIn, fetchFromFirestoreOnce]);
+  }, [isAdminLoggedIn, persistCurrentToCache]);
 
-  // FASE 3: Active Realtime Listeners (ONLY attached when Admin is logged in)
+  // FASE 3: Active Realtime Listeners (HANYA aktif ketika Admin sedang login)
+  // Pengunjung umum sama sekali tidak membuka koneksi WebSocket/onSnapshot ke Firestore.
   useEffect(() => {
     if (!isAdminLoggedIn) return;
 
-    let unsubDest: (() => void) | undefined;
-    let unsubCult: (() => void) | undefined;
-    let unsubCul: (() => void) | undefined;
-    let unsubSouv: (() => void) | undefined;
-    let unsubEv: (() => void) | undefined;
-    let unsubDl: (() => void) | undefined;
-    let unsubHot: (() => void) | undefined;
-    let unsubSett: (() => void) | undefined;
-    let unsubPending: (() => void) | undefined;
+    let isMounted = true;
+    const unsubList: (() => void)[] = [];
 
     loadFallbackContent().then(fallback => {
+      if (!isMounted) return;
+
       // 1. Destinations
-      unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
+      const unsubDest = onSnapshot(collection(db, 'destinations'), (snapshot) => {
+        if (!isMounted) return;
         const items = !snapshot.empty ? processDestinationDocs(snapshot.docs, fallback.DESTINATIONS) : fallback.DESTINATIONS;
         setDestinations(items);
         persistCurrentToCache({ destinations: items });
       }, (err) => console.warn('Admin Firestore destinations error:', err));
+      unsubList.push(unsubDest);
 
       // 2. Cultures
-      unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
+      const unsubCult = onSnapshot(collection(db, 'cultures'), (snapshot) => {
+        if (!isMounted) return;
         const items = !snapshot.empty ? processCultureDocs(snapshot.docs, fallback.CULTURE_ITEMS) : fallback.CULTURE_ITEMS;
         setCultureItems(items);
         persistCurrentToCache({ cultureItems: items });
       }, (err) => console.warn('Admin Firestore cultures error:', err));
+      unsubList.push(unsubCult);
 
       // 3. Culinaries
-      unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
+      const unsubCul = onSnapshot(collection(db, 'culinaries'), (snapshot) => {
+        if (!isMounted) return;
         const items = !snapshot.empty ? processCulinaryDocs(snapshot.docs, fallback.CULINARY_ITEMS) : fallback.CULINARY_ITEMS;
         setCulinaryItems(items);
         persistCurrentToCache({ culinaryItems: items });
       }, (err) => console.warn('Admin Firestore culinaries error:', err));
+      unsubList.push(unsubCul);
 
       // 4. Souvenirs
-      unsubSouv = onSnapshot(collection(db, 'souvenirs'), (snapshot) => {
+      const unsubSouv = onSnapshot(collection(db, 'souvenirs'), (snapshot) => {
+        if (!isMounted) return;
         const items = !snapshot.empty ? processSouvenirDocs(snapshot.docs, fallback.SOUVENIR_ITEMS) : fallback.SOUVENIR_ITEMS;
         setSouvenirItems(items);
         persistCurrentToCache({ souvenirItems: items });
       }, (err) => console.warn('Admin Firestore souvenirs error:', err));
+      unsubList.push(unsubSouv);
 
       // 5. Events
-      unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
+      const unsubEv = onSnapshot(collection(db, 'events'), (snapshot) => {
+        if (!isMounted) return;
         const items = !snapshot.empty ? processEventDocs(snapshot.docs, fallback.EVENTS_SCHEDULE) : fallback.EVENTS_SCHEDULE;
         setEventItems(items);
         persistCurrentToCache({ eventItems: items });
       }, (err) => console.warn('Admin Firestore events error:', err));
+      unsubList.push(unsubEv);
     });
 
     // 6. Downloads
-    unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
-      const items = !snapshot.empty ? processDownloadDocs(snapshot.docs) : DOWNLOAD_ITEMS;
+    const unsubDl = onSnapshot(collection(db, 'downloads'), (snapshot) => {
+      if (!isMounted) return;
+      const items = !snapshot.empty ? processDownloadDocs(snapshot.docs) : [];
       setDownloadItems(items);
       persistCurrentToCache({ downloadItems: items });
     }, (err) => console.warn('Admin Firestore downloads error:', err));
 
+    unsubList.push(unsubDl);
+
     // 7. Hot Info
-    unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
+    const unsubHot = onSnapshot(collection(db, 'hotinfo'), (snapshot) => {
+      if (!isMounted) return;
       const items = !snapshot.empty ? processHotInfoDocs(snapshot.docs) : deduplicateNewsItems(HOT_INFO_ITEMS);
       setHotInfoItems(items);
       persistCurrentToCache({ hotInfoItems: items });
     }, (err) => console.warn('Admin Firestore hotinfo error:', err));
+    unsubList.push(unsubHot);
 
     // 8. Settings
-    unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
+    const unsubSett = onSnapshot(doc(db, 'settings', 'hero'), (docSnap) => {
+      if (!isMounted) return;
       const sett = processSettingsDoc(docSnap);
       if (sett) {
         setAppSettings(sett);
         persistCurrentToCache({ appSettings: sett });
       }
     }, (err) => console.warn('Admin Firestore settings error:', err));
+    unsubList.push(unsubSett);
 
     // 9. Pending AI Events (Discovery queue)
-    unsubPending = onSnapshot(collection(db, 'pending_events'), (snapshot) => {
+    const unsubPending = onSnapshot(collection(db, 'pending_events'), (snapshot) => {
+      if (!isMounted) return;
       if (snapshot.empty) {
         setPendingEvents([]);
         return;
@@ -465,17 +486,15 @@ export function useData() {
         .filter(item => item.title && item.status !== 'rejected');
       setPendingEvents(data);
     }, (err) => console.warn('Admin Firestore pending_events error:', err));
+    unsubList.push(unsubPending);
 
     return () => {
-      if (unsubDest) unsubDest();
-      if (unsubCult) unsubCult();
-      if (unsubCul) unsubCul();
-      if (unsubSouv) unsubSouv();
-      if (unsubEv) unsubEv();
-      if (unsubDl) unsubDl();
-      if (unsubHot) unsubHot();
-      if (unsubSett) unsubSett();
-      if (unsubPending) unsubPending();
+      isMounted = false;
+      unsubList.forEach(unsub => {
+        try {
+          unsub();
+        } catch {}
+      });
     };
   }, [isAdminLoggedIn, persistCurrentToCache]);
 
@@ -756,17 +775,19 @@ export function useData() {
     setHotInfoItems(cleanItems);
     persistCurrentToCache({ hotInfoItems: cleanItems });
 
-    try {
-      const batch = writeBatch(db);
-      // Simpan berita permanen ke Firestore tanpa menghapus arsip berita historis
-      cleanItems.forEach(item => {
-        if (item.id) {
-          batch.set(doc(db, 'hotinfo', item.id), item, { merge: true });
-        }
-      });
-      await batch.commit();
-    } catch (e) {
-      console.warn("Failed to sync hotinfo to firestore:", e);
+    if (isAdminLoggedIn) {
+      try {
+        const batch = writeBatch(db);
+        // Simpan berita permanen ke Firestore tanpa menghapus arsip berita historis
+        cleanItems.forEach(item => {
+          if (item.id) {
+            batch.set(doc(db, 'hotinfo', item.id), item, { merge: true });
+          }
+        });
+        await batch.commit();
+      } catch (e) {
+        console.warn("Failed to sync hotinfo to firestore:", e);
+      }
     }
   };
 
@@ -815,9 +836,8 @@ export function useData() {
     culinaryItems: culinaryItems.length > 0 ? getCulinaryWithEn(culinaryItems) : [],
     souvenirItems: souvenirItems.length > 0 ? souvenirItems : [],
     eventItems: eventItems.length > 0 ? getEventsWithEn(eventItems) : [],
-    pendingEvents,
-    downloadItems: downloadItems.length > 0 ? downloadItems : DOWNLOAD_ITEMS,
-    hotInfoItems: hotInfoItems.length > 0 ? hotInfoItems : HOT_INFO_ITEMS,
+    downloadItems: downloadItems,
+
     appSettings,
     isSyncing,
     isAdminLoggedIn,

@@ -46,6 +46,18 @@ let weatherCache: { [key: string]: { data: LocationWeather; expires: number } } 
 
 export async function fetchSumbarWeather(): Promise<LocationWeather[]> {
   const now = Date.now();
+  if (typeof window !== 'undefined') {
+    try {
+      const sess = sessionStorage.getItem('sumbar_weather_cache');
+      if (sess) {
+        const parsed = JSON.parse(sess);
+        if (parsed.expires > now && Array.isArray(parsed.data) && parsed.data.length === SUMBAR_LOCATIONS.length) {
+          return parsed.data;
+        }
+      }
+    } catch {}
+  }
+
   const cachedResults = SUMBAR_LOCATIONS.map(loc => weatherCache[loc.id]?.data).filter(Boolean);
 
   if (cachedResults.length === SUMBAR_LOCATIONS.length && weatherCache['bukittinggi']?.expires > now) {
@@ -145,6 +157,15 @@ export async function fetchSumbarWeather(): Promise<LocationWeather[]> {
         updatedAt: new Date().toISOString()
       });
     }
+  }
+
+  if (typeof window !== 'undefined' && results.length > 0) {
+    try {
+      sessionStorage.setItem('sumbar_weather_cache', JSON.stringify({
+        data: results,
+        expires: now + (30 * 60 * 1000)
+      }));
+    } catch {}
   }
 
   return results;

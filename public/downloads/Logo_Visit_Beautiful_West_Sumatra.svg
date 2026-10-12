@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="vbwsGradRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626" />
+      <stop offset="100%" stop-color="#991B1B" />
+    </linearGradient>
+    <linearGradient id="vbwsGradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="vbwsGradGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Background Card -->
+  <rect width="800" height="500" rx="24" fill="#FFFFFF" />
+
+  <!-- Gonjong Silhouette Icon (Rumah Gadang Minangkabau) -->
+  <g transform="translate(400, 150)" filter="url(#shadow)" text-anchor="middle">
+    <!-- Center Main Gonjong -->
+    <path d="M 0,-85 C -15,-50 -25,-15 -35,25 C -15,18 15,18 35,25 C 25,-15 15,-50 0,-85 Z" fill="url(#vbwsGradGold)" />
+    <!-- Left Inner Gonjong -->
+    <path d="M -75,-65 C -70,-35 -65,-5 -60,25 C -45,18 -20,20 -5,22 C -18,-15 -45,-45 -75,-65 Z" fill="url(#vbwsGradRed)" />
+    <!-- Right Inner Gonjong -->
+    <path d="M 75,-65 C 70,-35 65,-5 60,25 C 45,18 20,20 5,22 C 18,-15 45,-45 75,-65 Z" fill="url(#vbwsGradRed)" />
+    <!-- Left Outer Gonjong -->
+    <path d="M -150,-40 C -135,-15 -115,10 -90,26 C -80,18 -65,18 -55,20 C -75,-10 -115,-30 -150,-40 Z" fill="url(#vbwsGradGreen)" />
+    <!-- Right Outer Gonjong -->
+    <path d="M 150,-40 C 135,-15 115,10 90,26 C 80,18 65,18 55,20 C 75,-10 115,-30 150,-40 Z" fill="url(#vbwsGradGreen)" />
+    
+    <!-- Foundation Base Band (Marawa Colors) -->
+    <path d="M -160,26 L 160,26 C 140,36 100,42 0,42 C -100,42 -140,36 -160,26 Z" fill="#0F172A" />
+    <path d="M -140,34 L 140,34 L 130,40 L -130,40 Z" fill="url(#vbwsGradGold)" />
+  </g>
+
+  <!-- Typography -->
+  <text x="400" y="275" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="34" letter-spacing="4" fill="#0F172A">
+    VISIT BEAUTIFUL
+  </text>
+  <text x="400" y="325" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="900" font-size="38" letter-spacing="6" fill="#DC2626">
+    WEST SUMATRA
+  </text>
+  
+  <rect x="250" y="352" width="300" height="3" rx="1.5" fill="url(#vbwsGradGold)" />
+
+  <text x="400" y="388" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="16" letter-spacing="8" fill="#059669">
+    SUMATERA BARAT • INDONESIA
+  </text>
+
+  <text x="400" y="420" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="600" font-size="13" letter-spacing="3" fill="#64748B">
+    OFFICIAL TOURISM BOARD BRAND KIT
+  </text>
+</svg>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, BookOpen, Calendar, Maximize2, Minimize2, ExternalLink, Download, Globe, Sparkles, Loader2 } from 'lucide-react';
+import { OFFICIAL_PDF_URLS } from '../data/staticConfig';
 
 interface FlipbookModalProps {
   isOpen: boolean;
@@ -81,21 +82,18 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
     const isEn = readingLang === 'en';
     const link = document.createElement('a');
     if (isEvents) {
-      link.href = isEn
-        ? `/downloads/kalender-event-sumbar-2026-en.pdf?v=${Date.now()}`
-        : `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+      link.href = isEn ? OFFICIAL_PDF_URLS.eventsEn : OFFICIAL_PDF_URLS.eventsId;
       link.download = isEn
         ? 'MALALA-West-Sumatra-Calendar-of-Events-2026.pdf'
         : 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
     } else {
-      link.href = isEn
-        ? `/downloads/malala-tourism-guide-sumbar-2026-en.pdf?v=${Date.now()}`
-        : `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+      link.href = isEn ? OFFICIAL_PDF_URLS.panduanEn : OFFICIAL_PDF_URLS.panduanId;
       link.download = isEn
         ? 'MALALA-West-Sumatra-Tourism-Guide-2026.pdf'
         : 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
     }
     link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

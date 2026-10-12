@@ -80,6 +80,9 @@ export const InteractiveMapModal: React.FC<InteractiveMapModalProps> = ({
       const map = L.map(mapContainerRef.current, {
         center: [-0.7893, 100.6506],
         zoom: 8,
+        scrollWheelZoom: true,
+        touchZoom: true,
+        doubleClickZoom: true,
         zoomControl: false,
       });
 

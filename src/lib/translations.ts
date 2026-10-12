@@ -21,7 +21,7 @@ export const translations = {
     heroSubtitle: 'Panduan Pariwisata Sumatera Barat & Pariwisata Sumbar Berbasis AI',
     heroDesc: 'Portal panduan pariwisata Sumatera Barat & pariwisata Sumbar 2026 terlengkap. Jelajahi 50+ destinasi wisata alam, 30 warisan budaya Minangkabau, 36 kuliner legendaris, serta kalender event KEN dengan asisten AI Uni Mala.',
     heroBtnExplore: 'Mulai Jelajah',
-    heroBtnAiPlanner: 'Rencanakan Liburan Anda (Ai Powered)',
+    heroBtnAiPlanner: 'Rencanakan Liburan Anda',
 
     // Uni Mala AI Form & Drawer
     aiTitle: 'UNI MALA AI - Asisten Perencana Wisata',
@@ -34,7 +34,7 @@ export const translations = {
     fieldNotes: 'Catatan Khusus / Permintaan Spesial',
     btnGenerate: 'Buat Rencana Wisata Sekarang',
     btnGenerating: 'Menganalisis & Menyusun Itinerary...',
-    btnPrintA4: 'Unduh Rencana Wisata A4 (PDF / Cetak)',
+    btnPrintA4: 'unduh rencana wisata anda',
     aiPromptLang: 'Tolong berikan jawaban dan itinerary dalam Bahasa Indonesia yang ramah dan lengkap.',
     chatError: 'Maaf, terjadi masalah saat menghubungi UNI MALA AI. Mohon coba lagi beberapa saat.',
     chatInitial: 'Saluang & Ranah Minang! Saya UNI MALA AI Sumbar, asisten resmi pariwisata Sumatera Barat. Ada yang bisa saya bantu terkait destinasi wisata, kuliner Rendang, atau kebudayaan Minangkabau?',
@@ -101,6 +101,7 @@ export const translations = {
     optExtreme: 'Ekstrem / Adventure',
     optBudget: 'Hemat (Backpacker)',
     optStandard: 'Menengah (Standard)',
+    optPremium: 'Mewah (Luxury / Sultan)',
     fieldTravelDate: 'Tanggal Mulai Perjalanan (Pilihan)',
     fieldTravelDateHint: 'AI akan menyelaraskan jadwal dan mengusulkan festival resmi jika ada yang berlangsung di tanggal ini.',
     badgeEventMatched: '✨ Festival Resmi Sumbar Tersedia:',
@@ -137,7 +138,7 @@ export const translations = {
     heroSubtitle: 'Interactive AI-Powered West Sumatra Tourism Guide',
     heroDesc: 'Explore natural wonderlands, rich Minangkabau heritage, authentic rendang culinary delights, and annual vibrant festivals with AI assistant Uni Mala.',
     heroBtnExplore: 'Start Exploring',
-    heroBtnAiPlanner: 'Plan Your Vacation (Ai Powered)',
+    heroBtnAiPlanner: 'Plan Your Vacation',
 
     // Uni Mala AI Form & Drawer
     aiTitle: 'UNI MALA AI - Smart Travel Assistant',
@@ -150,7 +151,7 @@ export const translations = {
     fieldNotes: 'Special Requests / Notes',
     btnGenerate: 'Generate Trip Itinerary Now',
     btnGenerating: 'Analyzing & Crafting Itinerary...',
-    btnPrintA4: 'Download A4 Trip Plan (PDF / Print)',
+    btnPrintA4: 'download your trip plan',
     aiPromptLang: 'Please provide the complete answer and itinerary in clear, friendly English.',
     chatError: 'Sorry, there was an issue contacting UNI MALA AI. Please try again in a moment.',
     chatInitial: 'Saluang & Ranah Minang! I am UNI MALA AI, the official tourism assistant of West Sumatra. How can I assist you with tourist destinations, authentic Rendang, or Minangkabau culture?',
@@ -217,6 +218,7 @@ export const translations = {
     optExtreme: 'Adventure / Extreme',
     optBudget: 'Budget (Backpacker)',
     optStandard: 'Standard (Mid-range)',
+    optPremium: 'Luxury (Premium / High-end)',
     fieldTravelDate: 'Travel Start Date (Optional)',
     fieldTravelDateHint: 'AI will align your schedule and suggest official festivals if any occur during this date.',
     badgeEventMatched: '✨ Official West Sumatra Festival Available:',

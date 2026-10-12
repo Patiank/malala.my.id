@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build && tsx scripts/generate_ssg_pages.ts && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "build": "vite build && tsx scripts/generate_ssg_pages.ts && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --outfile=dist/server.cjs",
     "export:booklet": "tsx scripts/export_all_pages_jpg.ts",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
@@ -14,7 +14,8 @@
     "push:github": "git add . && git commit -m \"Update Malala app\" && git push origin main",
     "push:firebase": "npm run build && firebase deploy --only hosting",
     "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && firebase deploy --only hosting",
-    "sync-to-github": "tsx scripts/sync_to_github.ts"
+    "sync-to-github": "tsx scripts/sync_to_github.ts",
+    "sync:ebook": "tsx scripts/sync_release_pdfs.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -27,6 +28,7 @@
     "html2pdf.js": "^0.14.0",
     "jspdf": "^4.2.1",
     "leaflet": "^1.9.4",
+    "lottie-web": "^5.13.0",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
     "react": "^19.0.1",

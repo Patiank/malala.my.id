@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bookmark, Sparkles, Download, Map, Globe, Menu, X } from 'lucide-react';
+import { Bookmark, Download, Map, Globe, Menu, X } from 'lucide-react';
 import { DrawerType, AppSettings } from '../types';
 import { Language, translations } from '../lib/translations';
 
@@ -50,19 +50,70 @@ export const Header: React.FC<HeaderProps> = ({
     setIsMobileMenuOpen(false);
   };
 
+  const primaryNavItems: {
+    id: DrawerType;
+    label: string;
+    icon: string;
+    color: string;
+    hoverTextColor: string;
+  }[] = [
+    {
+      id: 'destinations',
+      label: t.navDestinations,
+      icon: '🏔️',
+      color: '#386641',
+      hoverTextColor: '#ffffff',
+    },
+    {
+      id: 'culture',
+      label: t.navCulture,
+      icon: '🏛️',
+      color: '#6a994e',
+      hoverTextColor: '#ffffff',
+    },
+    {
+      id: 'culinary',
+      label: t.navCulinary,
+      icon: '🍲',
+      color: '#a7c957',
+      hoverTextColor: '#1b3815',
+    },
+    {
+      id: 'souvenirs',
+      label: t.navSouvenirs,
+      icon: '🛍️',
+      color: '#f2e8cf',
+      hoverTextColor: '#2b2118',
+    },
+    {
+      id: 'events',
+      label: t.navEvents,
+      icon: '📅',
+      color: '#bc4749',
+      hoverTextColor: '#ffffff',
+    },
+    {
+      id: 'download',
+      label: t.navDownloads,
+      icon: '📖',
+      color: '#ff7d00',
+      hoverTextColor: '#ffffff',
+    },
+  ];
+
   return (
     <header
-      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-white/90 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none px-4 sm:px-6 md:px-[var(--pad-x)]"
+      className="z-50 relative flex flex-col md:flex-row items-center justify-between w-full select-none bg-transparent px-4 sm:px-6 md:px-[var(--pad-x)]"
       style={{
         paddingTop: 'var(--header-pt)',
         paddingBottom: 'var(--section-gap)',
       }}
     >
-      <div className="flex items-center justify-between w-full md:w-auto">
+      <div className="flex items-center justify-between w-full md:w-auto shrink-0 md:mr-6 lg:mr-10">
         {/* Logo (Left) - Scaled down 50% as requested */}
         <button
           onClick={onCloseDrawer}
-          className="w-[78px] sm:w-[90px] md:w-[102px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5"
+          className="w-[78px] sm:w-[90px] md:w-[102px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5 shrink-0"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
           {/* Default / Light Background Logo (Red + Black) */}
@@ -96,152 +147,132 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </button>
 
+        {/* Subtle Hairline Divider (Desktop Only - Opsi 1) */}
+        <div
+          className="hidden md:block w-px h-5 ml-6 lg:ml-8 transition-colors duration-300 shrink-0 select-none rounded-full"
+          style={{
+            backgroundColor: isWhiteHeroText ? 'rgba(255, 255, 255, 0.32)' : 'rgba(0, 0, 0, 0.16)',
+            boxShadow: isWhiteHeroText ? '0 1px 4px rgba(0, 0, 0, 0.5)' : 'none',
+          }}
+          aria-hidden="true"
+        />
+
         {/* Mobile Menu Toggle & Essentials */}
-        <div className="flex items-center gap-1.5 sm:gap-2.5 md:hidden shrink-0 pr-1">
-          {/* Compact Language Toggle */}
+        <div className="flex items-center gap-2 md:hidden shrink-0">
+          {/* Touch-Friendly Language Toggle (min 40px touch area) */}
           <button
             onClick={onToggleLang}
-            className="inline-flex items-center gap-1 px-1.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs"
+            className="min-h-[40px] min-w-[40px] px-2.5 py-1.5 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-xs flex items-center justify-center gap-1 active:scale-95"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+            aria-label="Toggle language"
           >
-            <Globe className="w-3 h-3 text-red-600 shrink-0" />
-            <span className="text-[9px] font-extrabold px-1 py-0.2 rounded bg-black text-white leading-tight uppercase">
+            <Globe className="w-3.5 h-3.5 text-red-600 shrink-0" />
+            <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-black text-white leading-none uppercase">
               {lang.toUpperCase()}
             </span>
           </button>
           
-          {/* Compact Saved / Bookmark Button */}
+          {/* Touch-Friendly Saved / Bookmark Button */}
           <button
             onClick={() => handleNavClick('saved')}
-            className="relative cursor-pointer p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800 shadow-2xs"
+            className="min-h-[40px] min-w-[40px] relative cursor-pointer p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800 shadow-xs flex items-center justify-center active:scale-95"
             title="Tersimpan"
+            aria-label="Buka item tersimpan"
           >
-            <Bookmark strokeWidth={2} className="w-3.5 h-3.5" />
+            <Bookmark strokeWidth={2.2} className="w-4 h-4" />
             {savedCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black text-white font-orbitron font-bold text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center leading-none shadow-xs">
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white font-orbitron font-bold text-[8px] w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-xs">
                 {savedCount}
               </span>
             )}
           </button>
           
-          {/* Hamburger Menu Toggle Button */}
+          {/* Touch-Friendly Hamburger Menu Toggle Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-2xs"
-            aria-label="Toggle menu"
+            className="min-h-[40px] min-w-[40px] p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-xs flex items-center justify-center active:scale-95"
+            aria-label="Toggle menu navigasi"
           >
-            {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            {isMobileMenuOpen ? <X className="w-5 h-5 text-red-600" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
-      {/* Nav Links (Desktop + Mobile Dropdown) */}
+      {/* Nav Links (Desktop + Mobile Dropdown Sheet) */}
       <nav
         className={`${
           isMobileMenuOpen ? 'flex' : 'hidden'
-        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-xl md:shadow-none p-4 md:p-0 gap-4 md:gap-[var(--gap-nav)] font-jakarta font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] items-start md:items-center text-black border-t md:border-none border-gray-100 z-50`}
+        } md:flex flex-col md:flex-row absolute md:relative top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-2xl md:shadow-none p-4 md:p-0 gap-2.5 md:gap-[var(--gap-nav)] font-jakarta font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] items-stretch md:items-center text-black border-t md:border-none border-gray-200 z-50 rounded-b-2xl md:rounded-none animate-fadeIn`}
         style={{ fontSize: 'var(--nav)' }}
       >
-        <button
-          onClick={() => handleNavClick('destinations')}
-          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'destinations'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'destinations' ? headerTextStyle : undefined}
-        >
-          {t.navDestinations}
-        </button>
+        {primaryNavItems.map((item) => {
+          const isActive = activeDrawer === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`group relative overflow-hidden w-full md:w-auto min-h-[44px] md:min-h-0 px-3.5 py-2.5 md:py-1.5 md:px-3 lg:px-3.5 rounded-full border transition-all duration-300 cursor-pointer flex items-center justify-between md:justify-center active:scale-[0.98] ${
+                isActive
+                  ? 'border-transparent font-bold shadow-sm'
+                  : 'border-gray-100 md:border-transparent hover:border-transparent'
+              }`}
+              style={{
+                ...(!isActive ? headerTextStyle : { color: item.hoverTextColor }),
+                '--hover-text': item.hoverTextColor,
+              } as React.CSSProperties}
+            >
+              {/* Sliding Curved Color Box (Pill Shape with Custom Minang Palette) */}
+              <span
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-0 rounded-full transition-transform duration-200 ease-out -translate-x-[101%] group-hover:translate-x-0 ${
+                  isActive ? 'translate-x-0 shadow-xs' : ''
+                }`}
+                style={{ backgroundColor: item.color }}
+              />
 
-        <button
-          onClick={() => handleNavClick('culture')}
-          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'culture'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'culture' ? headerTextStyle : undefined}
-        >
-          {t.navCulture}
-        </button>
+              {/* Text Label with Contrast Flip on Hover & Active */}
+              <span
+                className={`relative z-10 transition-colors duration-150 select-none whitespace-nowrap ${
+                  !isActive ? 'group-hover:text-[var(--hover-text)] group-hover:[text-shadow:none]' : ''
+                }`}
+              >
+                {item.label}
+              </span>
 
-        <button
-          onClick={() => handleNavClick('culinary')}
-          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'culinary'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'culinary' ? headerTextStyle : undefined}
-        >
-          {t.navCulinary}
-        </button>
-
-        <button
-          onClick={() => handleNavClick('souvenirs')}
-          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'souvenirs'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'souvenirs' ? headerTextStyle : undefined}
-        >
-          {t.navSouvenirs}
-        </button>
-
-        <button
-          onClick={() => handleNavClick('events')}
-          className={`px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'events'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'events' ? headerTextStyle : undefined}
-        >
-          {t.navEvents}
-        </button>
-
-        <button
-          onClick={() => handleNavClick('download')}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border transition-all duration-200 cursor-pointer ${
-            activeDrawer === 'download'
-              ? 'bg-red-600 text-white border-red-600 font-bold'
-              : 'border-transparent hover:bg-red-600 hover:text-white hover:border-red-600'
-          }`}
-          style={activeDrawer !== 'download' ? headerTextStyle : undefined}
-        >
-          <Download className="w-3.5 h-3.5" />
-          <span>{t.navDownloads}</span>
-        </button>
+              {/* Mobile Category Icon */}
+              <span className="relative z-10 md:hidden text-xs opacity-75 shrink-0 ml-2">
+                {item.icon}
+              </span>
+            </button>
+          );
+        })}
 
         <button
           onClick={() => handleNavClick('map')}
-          className={`inline-flex items-center justify-center gap-2 px-5 h-[48px] sm:h-[50px] rounded-full border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md ${
+          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-between md:justify-center px-4 md:px-5 py-2 md:py-0 rounded-xl md:rounded-full border font-semibold uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-200 cursor-pointer group shadow-xs hover:shadow-md active:scale-[0.99] ${
             activeDrawer === 'map'
               ? 'bg-red-600 text-white border-red-600'
               : 'bg-emerald-700 text-white border-emerald-700 hover:bg-red-600 hover:border-red-600'
           }`}
           style={{ fontSize: 'var(--nav)' }}
         >
-          <Map className="w-4 h-4 text-white transition-colors" />
           <span>{t.navMap}</span>
+          <span className="md:hidden text-xs opacity-80">🗺️</span>
         </button>
 
-        {/* Rencanakan Liburan Anda - AI Powered */}
+        {/* Rencanakan Liburan Anda (Ukuran Selaras dengan Panel Peta Wisata, Teks Lebih Besar & Jelas Tanpa Ikon Bintang) */}
         <button
           onClick={() => handleNavClick('formai')}
-          className={`inline-flex items-center justify-center gap-2 px-5 h-[48px] sm:h-[50px] rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 ${
+          className={`w-full md:w-auto min-h-[44px] md:min-h-[48px] inline-flex items-center justify-center px-4 md:px-5 py-2.5 md:py-0 rounded-xl md:rounded-full border bg-black text-white border-black hover:bg-gray-800 hover:border-gray-800 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md shrink-0 active:scale-[0.99] ${
             activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
           }`}
         >
-          <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse shrink-0" />
-          <div className="flex flex-col items-start text-left leading-tight">
-            <span className="text-[8.5px] sm:text-[9px] font-bold uppercase tracking-tight text-white whitespace-nowrap">
-              {t.navUniMala}
+          <div className="flex flex-col items-center justify-center text-center leading-tight">
+            <span className="text-[11px] sm:text-[10.5px] md:text-[10px] lg:text-[11px] font-black uppercase tracking-wider text-white whitespace-nowrap">
+              {lang === 'en' ? 'PLAN YOUR' : 'RENCANAKAN'}
             </span>
-            <span className="text-[7px] sm:text-[7.5px] font-extrabold tracking-widest text-amber-300 uppercase leading-none mt-0.5">
-              {t.navAiPowered}
+            <span className="text-[11px] sm:text-[10.5px] md:text-[10px] lg:text-[11px] font-black uppercase tracking-wider text-white whitespace-nowrap leading-none mt-0.5">
+              {lang === 'en' ? 'VACATION' : 'LIBURAN ANDA'}
             </span>
           </div>
         </button>

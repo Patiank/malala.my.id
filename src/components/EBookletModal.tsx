@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, MapPin, Check, BookOpen, Download, Printer } from 'lucide-react';
 import { Destination, CultureItem, CulinaryItem, EventItem } from '../types';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
-import { BG_IMAGE_2, getDirectDriveUrl } from '../data/staticConfig';
+import { BG_IMAGE_2, getDirectDriveUrl, OFFICIAL_PDF_URLS } from '../data/staticConfig';
 
 interface EBookletModalProps {
   isOpen: boolean;
@@ -46,9 +46,12 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
-    link.download = 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
+    link.href = isEn ? OFFICIAL_PDF_URLS.panduanEn : OFFICIAL_PDF_URLS.panduanId;
+    link.download = isEn
+      ? 'MALALA-West-Sumatra-Tourism-Guide-2026.pdf'
+      : 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
     link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

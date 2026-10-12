@@ -1,23 +1,41 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { X, Bookmark, BookmarkCheck, Sparkles, Send, MapPin, Calendar, Clock, ChevronRight, ChevronLeft, RefreshCw, Check, Edit3, Trash2, Plus, Youtube, PlayCircle, Flame, Download, ExternalLink, Share2, CheckCircle, Search, BookOpen, Printer, ShoppingBag, Info, Star, FolderArchive, Archive, ChevronDown, ChevronUp, Plane, Building2, LocateFixed, Target, Navigation } from 'lucide-react';
 import { DrawerType, Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, FormAIResponse, HotInfoItem } from '../types';
-import { AdminPanel } from './AdminPanel';
-import { InteractiveMapModal } from './InteractiveMapModal';
-import { ItineraryMap } from './ItineraryMap';
-import { EBookletModal } from './EBookletModal';
-import { FlipbookModal } from './FlipbookModal';
 import { WeatherWidget } from './WeatherWidget';
 import { ReviewSection } from './ReviewSection';
+
+// Code Splitting (Lazy Import) for heavy modals & libraries (Leaflet Map, Flipbook, E-Booklet, Itinerary, AdminPanel)
+const AdminPanel = React.lazy(() => import('./AdminPanel').then(m => ({ default: m.AdminPanel })));
+const InteractiveMapModal = React.lazy(() => import('./InteractiveMapModal').then(m => ({ default: m.InteractiveMapModal })));
+const EBookletModal = React.lazy(() => import('./EBookletModal').then(m => ({ default: m.EBookletModal })));
+const FlipbookModal = React.lazy(() => import('./FlipbookModal').then(m => ({ default: m.FlipbookModal })));
+const ItineraryModal = React.lazy(() => import('./ItineraryModal').then(m => ({ default: m.ItineraryModal })));
 import { getDestinationRatingSummary } from '../data/reviewsData';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
-import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS } from '../data/staticConfig';
+import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS, OFFICIAL_PDF_URLS } from '../data/staticConfig';
 import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
-import { generateSumbarBookletPDF, generateItineraryPDF } from '../utils/pdfGenerator';
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
 import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
 import { logTourismSignal } from '../utils/telemetry';
+import {
+  IconRumahGadang,
+  IconJamGadang,
+  IconRendang,
+  IconMarawa,
+  IconCarano,
+  IconTariPiring,
+  IconSongket,
+  IconSaluang,
+  IconPacuJawi,
+  IconKelok9,
+  IconDanauSingkarak,
+  IconSatePadang,
+  IconTabuik,
+  IconAirTerjunLembahAnai,
+  IconKopiKawaDaun,
+} from './icons/MinangIcons';
 
 const triggerDownload = (filename: string, content: string, mimeType: string = 'application/octet-stream') => {
   if (!content) return;
@@ -158,35 +176,93 @@ export const getTiketAffiliateId = (appSettings?: any): string => {
 
 export const getTiketHotelUrl = (dest?: Destination | null, appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  if (dest?.title) {
-    return `https://www.tiket.com/hotel/search?q=${encodeURIComponent(dest.title + ' Sumatera Barat')}&aff_id=${affId}&tracking_id=malala_sumbar`;
+  if (affId && (affId.startsWith('http://') || affId.startsWith('https://'))) {
+    return affId;
   }
-  return `https://www.tiket.com/hotel/search?q=Sumatera%20Barat&aff_id=${affId}&tracking_id=malala_sumbar`;
+  const query = dest?.title ? `${dest.title} Sumatera Barat` : 'Sumatera Barat';
+  return `https://www.tiket.com/hotel/search?q=${encodeURIComponent(query)}&aff_id=${encodeURIComponent(affId)}&partner=${encodeURIComponent(affId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
 };
 
 export const getTiketCarRentalUrl = (appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  return `https://www.tiket.com/sewa-mobil?aff_id=${affId}&tracking_id=malala_sumbar`;
+  if (affId && (affId.startsWith('http://') || affId.startsWith('https://'))) {
+    try {
+      const parsed = new URL(affId);
+      if (parsed.search) {
+        return `https://www.tiket.com/sewa-mobil${parsed.search}`;
+      }
+    } catch {}
+    return affId;
+  }
+  return `https://www.tiket.com/sewa-mobil?aff_id=${encodeURIComponent(affId)}&partner=${encodeURIComponent(affId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
 };
 
 export const getTiketFlightUrl = (appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  return `https://www.tiket.com/pesawat?aff_id=${affId}&tracking_id=malala_sumbar`;
+  if (affId && (affId.startsWith('http://') || affId.startsWith('https://'))) {
+    try {
+      const parsed = new URL(affId);
+      if (parsed.search) {
+        return `https://www.tiket.com/pesawat${parsed.search}`;
+      }
+    } catch {}
+    return affId;
+  }
+  return `https://www.tiket.com/pesawat?aff_id=${encodeURIComponent(affId)}&partner=${encodeURIComponent(affId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
 };
 
 export const getTiketActivitiesUrl = (dest?: Destination | null, appSettings?: any): string => {
   const affId = getTiketAffiliateId(appSettings);
-  if (dest?.title) {
-    return `https://www.tiket.com/to-do/search?keyword=${encodeURIComponent(dest.title)}&aff_id=${affId}&tracking_id=malala_sumbar`;
+  if (affId && (affId.startsWith('http://') || affId.startsWith('https://'))) {
+    try {
+      const parsed = new URL(affId);
+      if (parsed.search) {
+        const keyword = dest?.title ? `${dest.title} Sumatera Barat` : 'Sumatera Barat';
+        return `https://www.tiket.com/to-do/search?keyword=${encodeURIComponent(keyword)}&${parsed.search.replace(/^\?/, '')}`;
+      }
+    } catch {}
+    return affId;
   }
-  return `https://www.tiket.com/to-do/search?keyword=Sumatera%20Barat&aff_id=${affId}&tracking_id=malala_sumbar`;
+  const keyword = dest?.title || 'Sumatera Barat';
+  return `https://www.tiket.com/to-do/search?keyword=${encodeURIComponent(keyword)}&aff_id=${encodeURIComponent(affId)}&partner=${encodeURIComponent(affId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
 };
 
-export const getTravelokaHotelUrl = (_dest?: Destination | null): string => {
-  return 'https://www.traveloka.com/id-id/hotel';
+export const getTravelokaHotelUrl = (dest?: Destination | null, appSettings?: any): string => {
+  const rawId = appSettings?.travelokaAffiliateId?.trim();
+  const query = dest?.title ? `${dest.title} Sumatera Barat` : 'Sumatera Barat';
+  const baseUrl = `https://www.traveloka.com/id-id/hotel/search?q=${encodeURIComponent(query)}`;
+  if (!rawId) return baseUrl;
+
+  if (rawId.startsWith('http://') || rawId.startsWith('https://')) {
+    try {
+      const parsed = new URL(rawId);
+      if (parsed.search) {
+        return `${baseUrl}&${parsed.search.replace(/^\?/, '')}`;
+      }
+    } catch {}
+    return rawId;
+  }
+  return `${baseUrl}&aff_id=${encodeURIComponent(rawId)}&partner=${encodeURIComponent(rawId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
 };
 
-export const getTravelokaSecondaryAction = (dest?: Destination | null, lang: Language = 'id') => {
+export const getTravelokaSecondaryAction = (dest?: Destination | null, lang: Language = 'id', appSettings?: any) => {
+  const rawId = appSettings?.travelokaAffiliateId?.trim();
+  const appendTracking = (url: string) => {
+    if (!rawId) return url;
+    if (rawId.startsWith('http://') || rawId.startsWith('https://')) {
+      try {
+        const parsed = new URL(rawId);
+        if (parsed.search) {
+          const sep = url.includes('?') ? '&' : '?';
+          return `${url}${sep}${parsed.search.replace(/^\?/, '')}`;
+        }
+      } catch {}
+      return rawId;
+    }
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}aff_id=${encodeURIComponent(rawId)}&partner=${encodeURIComponent(rawId)}&tracking_id=malala_sumbar&utm_source=malala_sumbar`;
+  };
+
   if (!dest) {
     return {
       label: lang === 'en' ? 'Car Rental' : 'Rental Mobil & Supir',
@@ -248,6 +324,114 @@ const WEST_SUMATRA_CITIES = [
   { id: 'pasaman_barat', name: 'Kabupaten Pasaman Barat', desc: 'Gunung Talamau & Pantai Sasak' },
 ];
 
+export const createDefaultItineraryForm = () => ({
+  durasiHari: 3,
+  startingPoint: {
+    type: 'airport',
+    label: 'Bandara Internasional Minangkabau (BIM)',
+    details: '',
+    city: '',
+    destinationId: '',
+    coords: null,
+  },
+  profilWisatawan: {
+    jumlahOrang: 2,
+    kategori: 'pasangan',
+    asal: 'domestik',
+  },
+  preferensiMinat: {
+    kategoriWisata: [],
+    tingkatAktivitas: 'sedang',
+    suasanaRamai: false,
+  },
+  logistik: {
+    titikKeberangkatan: 'Bandara Internasional Minangkabau (BIM)',
+    moda: 'kendaraan_pribadi',
+    radiusMaksimalKm: 100,
+  },
+  anggaran: {
+    rentang: 'menengah',
+    alokasi: { akomodasiPersen: 35, makanPersen: 25, tiketPersen: 20, transportasiPersen: 20 },
+  },
+  akomodasi: {
+    jenis: ['hotel'],
+    lokasiPreferensi: '',
+  },
+  waktuKunjungan: {
+    tanggalMulai: '',
+    tanggalSelesai: '',
+  },
+  kebutuhanKhusus: {
+    catatanKhusus: '',
+    preferensiMakanan: [],
+    alergiMakanan: [],
+    aksesibilitasFisik: false,
+  },
+  outputPreferensi: {
+    formatItinerary: 'per_hari',
+    tingkatDetail: 'lengkap_kuliner_oleholeh',
+  },
+});
+
+interface InfiniteScrollSentinelProps {
+  onIntersect: () => void;
+  hasMore: boolean;
+  currentCount: number;
+  totalCount: number;
+  label: string;
+}
+
+const InfiniteScrollSentinel: React.FC<InfiniteScrollSentinelProps> = ({
+  onIntersect,
+  hasMore,
+  currentCount,
+  totalCount,
+  label,
+}) => {
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onIntersect();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '280px', // Pre-load 280px before hitting bottom for seamless 60fps experience
+        threshold: 0.05,
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, onIntersect]);
+
+  return (
+    <div ref={sentinelRef} className="py-5 flex flex-col items-center justify-center font-jakarta">
+      {hasMore ? (
+        <div className="flex items-center gap-2 text-[11px] text-gray-500 font-medium py-1.5 px-4 rounded-full bg-gray-100/90 border border-gray-200/80 shadow-2xs animate-pulse">
+          <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-500" />
+          <span>Memuat {label} berikutnya... ({currentCount} dari {totalCount})</span>
+        </div>
+      ) : (
+        totalCount > 16 && (
+          <div className="flex items-center gap-3 text-[11px] text-gray-400 font-medium py-2">
+            <span className="w-10 h-px bg-gray-200"></span>
+            <span>✓ Seluruh {totalCount} {label} telah ditampilkan</span>
+            <span className="w-10 h-px bg-gray-200"></span>
+          </div>
+        )
+      )}
+    </div>
+  );
+};
+
 interface DrawersProps {
   activeDrawer: DrawerType;
   onClose: () => void;
@@ -261,6 +445,7 @@ interface DrawersProps {
   onSelectNews?: (item: HotInfoItem) => void;
   searchQuery?: string;
   onSearchQueryChange?: (q: string) => void;
+  onShowToast?: (msg: string) => void;
 }
 
 export const Drawers: React.FC<DrawersProps> = ({
@@ -276,6 +461,7 @@ export const Drawers: React.FC<DrawersProps> = ({
   onSelectNews,
   searchQuery = '',
   onSearchQueryChange,
+  onShowToast,
 }) => {
   const {
     destinations, updateDestinations,
@@ -301,11 +487,40 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
   const [isFlipbookModalOpen, setIsFlipbookModalOpen] = useState<boolean>(false);
+  const [isItineraryModalOpen, setIsItineraryModalOpen] = useState<boolean>(false);
   const [flipbookSlug, setFlipbookSlug] = useState<'panduan' | 'events'>('panduan');
   const [souvenirCategory, setSouvenirCategory] = useState<string>('Semua');
   const [bookingPartner, setBookingPartner] = useState<'tiket' | 'traveloka'>('tiket');
   const [currency, setCurrency] = useState<CurrencyCode>('IDR');
   const [currencyRates, setCurrencyRates] = useState<Record<CurrencyCode, CurrencyRate>>(DEFAULT_RATES);
+
+  // Progressive Loading Limits (16 items initially per drawer for 60fps scrolling & low RAM)
+  const [visibleDestCount, setVisibleDestCount] = useState<number>(16);
+  const [visibleCultureCount, setVisibleCultureCount] = useState<number>(16);
+  const [visibleCulinaryCount, setVisibleCulinaryCount] = useState<number>(16);
+  const [visibleSouvenirCount, setVisibleSouvenirCount] = useState<number>(16);
+  const [visibleEventCount, setVisibleEventCount] = useState<number>(16);
+
+  // Reset pagination when drawer or category changes
+  useEffect(() => {
+    setVisibleDestCount(16);
+  }, [destCategory, activeDrawer]);
+
+  useEffect(() => {
+    setVisibleCultureCount(16);
+  }, [activeDrawer]);
+
+  useEffect(() => {
+    setVisibleCulinaryCount(16);
+  }, [activeDrawer]);
+
+  useEffect(() => {
+    setVisibleSouvenirCount(16);
+  }, [souvenirCategory, activeDrawer]);
+
+  useEffect(() => {
+    setVisibleEventCount(16);
+  }, [eventCategoryFilter, eventMonthFilter, activeDrawer]);
 
   useEffect(() => {
     fetchLiveExchangeRates().then(rates => {
@@ -445,6 +660,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     setSelectedEvent(null);
     setIsBookletModalOpen(false);
     setIsFlipbookModalOpen(false);
+    setIsItineraryModalOpen(false);
 
     if (activeDrawer) {
       pushRoute(getDrawerPath(activeDrawer), { malalaLayer: 'drawer', drawer: activeDrawer });
@@ -639,9 +855,20 @@ export const Drawers: React.FC<DrawersProps> = ({
       const data = await fetchAiHotInfo(lang);
       if (dataStore.updateHotInfoItems && Array.isArray(data) && data.length > 0) {
         await dataStore.updateHotInfoItems(data);
+        if (onShowToast) {
+          onShowToast(
+            lang === 'en'
+              ? 'Real-time Indonesia tourism news updated successfully!'
+              : 'Berita pariwisata Indonesia berhasil diperbarui!'
+          );
+        }
       }
     } catch (e) {
-      alert(lang === 'en' ? 'Network error.' : 'Terjadi kesalahan jaringan.');
+      if (onShowToast) {
+        onShowToast(lang === 'en' ? 'Network error. Please try again.' : 'Terjadi kendala jaringan.');
+      } else {
+        alert(lang === 'en' ? 'Network error.' : 'Terjadi kesalahan jaringan.');
+      }
     } finally {
       setIsFetchingHotInfo(false);
     }
@@ -657,54 +884,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     return () => window.removeEventListener('open-ai-chat', handleOpenChat);
   }, []);
 
-  const [itineraryForm, setItineraryForm] = useState<any>({
-    durasiHari: 3,
-    startingPoint: {
-      type: 'airport',
-      label: 'Bandara Internasional Minangkabau (BIM)',
-      details: '',
-      city: '',
-      destinationId: '',
-      coords: null,
-    },
-    profilWisatawan: {
-      jumlahOrang: 2,
-      kategori: 'pasangan',
-      asal: 'domestik',
-    },
-    preferensiMinat: {
-      kategoriWisata: [],
-      tingkatAktivitas: 'sedang',
-      suasanaRamai: false,
-    },
-    logistik: {
-      titikKeberangkatan: 'Bandara Internasional Minangkabau (BIM)',
-      moda: 'kendaraan_pribadi',
-      radiusMaksimalKm: 100,
-    },
-    anggaran: {
-      rentang: 'menengah',
-      alokasi: { akomodasiPersen: 35, makanPersen: 25, tiketPersen: 20, transportasiPersen: 20 },
-    },
-    akomodasi: {
-      jenis: ['hotel'],
-      lokasiPreferensi: '',
-    },
-    waktuKunjungan: {
-      tanggalMulai: '',
-      tanggalSelesai: '',
-    },
-    kebutuhanKhusus: {
-      catatanKhusus: '',
-      preferensiMakanan: [],
-      alergiMakanan: [],
-      aksesibilitasFisik: false,
-    },
-    outputPreferensi: {
-      formatItinerary: 'per_hari',
-      tingkatDetail: 'lengkap_kuliner_oleholeh',
-    },
-  });
+  const [itineraryForm, setItineraryForm] = useState<any>(createDefaultItineraryForm);
 
   const [isDetectingLocation, setIsDetectingLocation] = useState<boolean>(false);
   const [locationStatus, setLocationStatus] = useState<string | null>(null);
@@ -750,6 +930,21 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [aiResponse, setAiResponse] = useState<FormAIResponse | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
 
+  const resetItineraryState = useCallback(() => {
+    setAiResponse(null);
+    setAiError(null);
+    setItineraryForm(createDefaultItineraryForm());
+    setLocationStatus(null);
+    setIsItineraryModalOpen(false);
+  }, []);
+
+  // When user navigates away from formai drawer, ensure itinerary state is reset clean
+  useEffect(() => {
+    if (activeDrawer !== 'formai') {
+      resetItineraryState();
+    }
+  }, [activeDrawer, resetItineraryState]);
+
   const GENERATION_STEPS_ID = [
     '🤖 Menghubungkan ke Mesin Cerdas UNI MALA AI...',
     '🗺️ Menganalisis koridor rute & klaster geografis searah...',
@@ -785,10 +980,11 @@ export const Drawers: React.FC<DrawersProps> = ({
     if (!aiResponse || isDownloadingPdf) return;
     try {
       setIsDownloadingPdf(true);
-      await generateItineraryPDF(aiResponse, (lang as 'id' | 'en') || 'id');
-      logTourismSignal('download_pdf', { type: 'itinerary_a4', title: aiResponse.title });
+      const { generateItineraryPDF } = await import('../utils/pdfGenerator');
+      await generateItineraryPDF(aiResponse, (lang as 'id' | 'en') || 'id', dataStore?.appSettings);
+      logTourismSignal('download_pdf', { type: 'itinerary_a5', title: aiResponse.title });
     } catch (err) {
-      console.error('Failed to generate A4 itinerary PDF:', err);
+      console.error('Failed to generate A5 itinerary PDF:', err);
       alert(lang === 'en' ? 'Failed to download itinerary PDF. Please try again.' : 'Gagal mengunduh file PDF rencana wisata. Silakan coba lagi.');
     } finally {
       setIsDownloadingPdf(false);
@@ -1106,6 +1302,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         language: lang,
       });
       setAiResponse(data);
+      setIsItineraryModalOpen(true);
       logTourismSignal('generate_itinerary', {
         durationDays: itineraryForm.durasiHari || 3,
         startingPointType: itineraryForm.startingPoint?.type || 'airport',
@@ -1155,19 +1352,30 @@ export const Drawers: React.FC<DrawersProps> = ({
   return (
     <>
       {activeDrawer === 'map' ? (
-        <InteractiveMapModal
-          isOpen={true}
-          onClose={onClose}
-          lang={lang}
-          destinations={destinations}
-          cultureItems={cultureItems}
-          culinaryItems={culinaryItems}
-          eventItems={eventItems}
-          onSelectDestination={(item) => openSubModal(() => setSelectedDestination(item))}
-          onSelectCulture={(item) => openSubModal(() => setSelectedCulture(item))}
-          onSelectCulinary={(item) => openSubModal(() => setSelectedCulinary(item))}
-          onSelectEvent={(item) => openSubModal(() => setSelectedEvent(item))}
-        />
+        <React.Suspense
+          fallback={
+            <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex flex-col items-center justify-center text-white font-jakarta">
+              <RefreshCw className="w-8 h-8 animate-spin text-amber-500 mb-3" />
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider">
+                {lang === 'en' ? 'Loading Interactive Map...' : 'Memuat Peta Wisata Interaktif...'}
+              </p>
+            </div>
+          }
+        >
+          <InteractiveMapModal
+            isOpen={true}
+            onClose={onClose}
+            lang={lang}
+            destinations={destinations}
+            cultureItems={cultureItems}
+            culinaryItems={culinaryItems}
+            eventItems={eventItems}
+            onSelectDestination={(item) => openSubModal(() => setSelectedDestination(item))}
+            onSelectCulture={(item) => openSubModal(() => setSelectedCulture(item))}
+            onSelectCulinary={(item) => openSubModal(() => setSelectedCulinary(item))}
+            onSelectEvent={(item) => openSubModal(() => setSelectedEvent(item))}
+          />
+        </React.Suspense>
       ) : (
         <>
           {/* Backdrop */}
@@ -1187,67 +1395,74 @@ export const Drawers: React.FC<DrawersProps> = ({
             ? 'w-full md:w-[92vw] lg:w-[88vw] xl:w-[82vw] max-w-7xl right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'download'
             ? 'w-full md:w-[75vw] lg:w-[65vw] xl:w-[58vw] max-w-5xl right-0 border-l border-gray-200 animate-drawer-slide-right'
-            : (activeDrawer === 'formai' && aiResponse)
-            ? 'w-full md:w-[96vw] lg:w-[95vw] xl:w-[92vw] max-w-[1550px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : activeDrawer === 'formai'
-            ? 'w-full sm:w-[540px] md:w-[620px] lg:w-[680px] right-0 border-l border-gray-200 animate-drawer-slide-right'
+            ? 'w-full sm:w-[500px] md:w-[560px] lg:w-[580px] right-0 border-l border-gray-200 animate-drawer-slide-right'
             : 'w-full md:w-1/2 lg:w-1/2 right-0 border-l border-gray-200 animate-drawer-slide-right'
         } bg-white shadow-2xl flex flex-col justify-between overflow-hidden transition-all duration-300`}
       >
         
-        {/* Header Drawer */}
-        <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between bg-white shrink-0">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-orbitron font-extrabold text-black uppercase tracking-wider text-base sm:text-lg">
+        {/* Header Drawer (Sticky, Safe Touch Target, Mobile Handle) */}
+        <div className="sticky top-0 z-30 px-4 sm:px-6 py-3.5 sm:py-5 border-b border-gray-200 flex items-center justify-between bg-white/95 backdrop-blur-md shrink-0">
+          <div className="flex-1 pr-2">
+            {/* Visual Grab Handle for Mobile */}
+            <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-2 md:hidden"></div>
+            
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+              {activeDrawer === 'destinations' && <IconRumahGadang size={24} className="shrink-0" />}
+              {activeDrawer === 'culture' && <IconTariPiring size={24} className="shrink-0" />}
+              {activeDrawer === 'culinary' && <IconRendang size={24} className="shrink-0" />}
+              {activeDrawer === 'souvenirs' && <IconSongket size={24} className="shrink-0" />}
+              {activeDrawer === 'events' && <IconTabuik size={24} className="shrink-0" />}
+              {activeDrawer === 'download' && <IconMarawa size={24} className="shrink-0" />}
+              {activeDrawer === 'map' && <IconDanauSingkarak size={24} className="shrink-0" />}
+              {activeDrawer === 'formai' && <IconJamGadang size={24} className="shrink-0" />}
+              <h2 className="font-orbitron font-extrabold text-black uppercase tracking-wider text-sm sm:text-lg">
                 {getDrawerTitle()}
               </h2>
               {activeDrawer === 'formai' && (
-                <span className="bg-black text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
+                <span className="bg-black text-white font-orbitron font-bold text-[8.5px] sm:text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
                   <Sparkles className="w-2.5 h-2.5 text-yellow-300" />
                   AI Powered
                 </span>
               )}
               {activeDrawer === 'hotinfo' && (
-                <span className="bg-red-600 text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
+                <span className="bg-red-600 text-white font-orbitron font-bold text-[8.5px] sm:text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
                   <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current animate-pulse" />
                   Live Update
                 </span>
               )}
               {activeDrawer === 'chat' && (
-                <span className="bg-blue-600 text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
+                <span className="bg-blue-600 text-white font-orbitron font-bold text-[8.5px] sm:text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
                   <Sparkles className="w-2.5 h-2.5 text-yellow-300" />
                   Guide AI
                 </span>
               )}
               {activeDrawer === 'download' && (
-                <span className="bg-indigo-700 text-white font-orbitron font-bold text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
+                <span className="bg-indigo-700 text-white font-orbitron font-bold text-[8.5px] sm:text-[9px] px-2 py-0.5 rounded flex items-center gap-1 uppercase">
                   <Download className="w-2.5 h-2.5 text-cyan-300" />
                   Media Kit
                 </span>
               )}
             </div>
-            <p className="font-jakarta text-gray-500 text-xs mt-0.5">
+            <p className="font-jakarta text-gray-500 text-[11px] sm:text-xs mt-0.5 line-clamp-1 sm:line-clamp-none">
               {getDrawerSubtitle()}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-full transition-all cursor-pointer shrink-0 active:scale-95"
             aria-label="Tutup Panel"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Scrollable Main Content (Smooth, isolated scrolling) */}
+        {/* Scrollable Main Content (Smooth, isolated scrolling with mobile bottom dock clearance) */}
         <div className={`flex-1 ${
           activeDrawer === 'chat'
-            ? 'p-3.5 flex flex-col overflow-hidden h-full'
-            : (activeDrawer === 'formai' && aiResponse)
-            ? 'p-3 sm:p-4 md:p-5 overflow-y-auto lg:overflow-hidden flex flex-col lg:h-[calc(100vh-73px)]'
-            : 'p-6 space-y-6 overflow-y-auto'
+            ? 'p-3 sm:p-3.5 flex flex-col overflow-hidden h-full pb-16 md:pb-3.5'
+            : 'p-4 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto pb-24 md:pb-8'
         } overscroll-contain scroll-smooth focus:outline-none`} tabIndex={0}>
 
           {/* Sub-Menu Navigation Bar across main categories */}
@@ -1255,95 +1470,95 @@ export const Drawers: React.FC<DrawersProps> = ({
           {['destinations', 'culture', 'culinary', 'souvenirs', 'events', 'download'].includes(activeDrawer) && (
             <div className="bg-gray-50/90 border border-gray-200 p-2 rounded-xl shadow-2xs space-y-1.5 font-jakarta mb-5 shrink-0 w-full">
               <div className="flex items-center justify-between px-1">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 flex items-center gap-1">
-                  <span>🗺️</span>
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-gray-500 flex items-center gap-1.5">
+                  <IconMarawa size={14} className="shrink-0" />
                   <span>{lang === 'en' ? 'Sub-Menu Categories:' : 'Sub-Menu Kategori Wisata:'}</span>
                 </span>
               </div>
 
-              {/* 7 Category Buttons Fitted Perfectly Without Swipe */}
+              {/* 7 Category Buttons Fitted Perfectly with Authentic Minang Icons */}
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-1 sm:gap-1.5 w-full text-[10px] sm:text-[10.5px]">
                 <button
                   onClick={() => onOpenDrawer?.('destinations')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'destinations'
-                      ? 'bg-red-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#386641] text-white shadow-xs font-extrabold border border-[#386641]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#386641]/10 hover:text-[#386641] hover:border-[#386641]/40'
                   }`}
                 >
-                  <span className="text-xs">🏔️</span>
+                  <IconRumahGadang size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navDestinations}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('culture')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'culture'
-                      ? 'bg-purple-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#6a994e] text-white shadow-xs font-extrabold border border-[#6a994e]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#6a994e]/10 hover:text-[#6a994e] hover:border-[#6a994e]/40'
                   }`}
                 >
-                  <span className="text-xs">🏛️</span>
+                  <IconCarano size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navCulture}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('culinary')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'culinary'
-                      ? 'bg-amber-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#a7c957] text-[#1b3815] shadow-xs font-extrabold border border-[#a7c957]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#a7c957]/20 hover:text-[#2d4715] hover:border-[#a7c957]/50'
                   }`}
                 >
-                  <span className="text-xs">🍲</span>
+                  <IconRendang size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navCulinary}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('souvenirs')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'souvenirs'
-                      ? 'bg-rose-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#f2e8cf] text-[#2b2118] shadow-xs font-extrabold border border-[#e5d8b8]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#f2e8cf]/70 hover:text-[#2b2118] hover:border-[#d6c7a3]'
                   }`}
                 >
-                  <span className="text-xs">🎁</span>
+                  <IconSongket size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navSouvenirs}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('events')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'events'
-                      ? 'bg-blue-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#bc4749] text-white shadow-xs font-extrabold border border-[#bc4749]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#bc4749]/10 hover:text-[#bc4749] hover:border-[#bc4749]/40'
                   }`}
                 >
-                  <span className="text-xs">📅</span>
+                  <IconTabuik size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navEvents}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('download')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center ${
                     activeDrawer === 'download'
-                      ? 'bg-indigo-600 text-white shadow-xs font-extrabold'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 hover:text-black'
+                      ? 'bg-[#ff7d00] text-white shadow-xs font-extrabold border border-[#ff7d00]'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-[#ff7d00]/10 hover:text-[#ff7d00] hover:border-[#ff7d00]/40'
                   }`}
                 >
-                  <span className="text-xs">📥</span>
+                  <IconMarawa size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navDownloads}</span>
                 </button>
 
                 <button
                   onClick={() => onOpenDrawer?.('map')}
-                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1 text-center shadow-2xs ${
+                  className={`px-1.5 py-1.5 sm:px-2 sm:py-2 rounded-lg font-bold uppercase tracking-tight transition-all cursor-pointer flex items-center justify-center gap-1.5 text-center shadow-2xs ${
                     activeDrawer === 'map'
                       ? 'bg-red-600 text-white shadow-xs font-extrabold border border-red-600'
                       : 'bg-emerald-600 text-white border border-emerald-600 hover:bg-red-600 hover:border-red-600'
                   }`}
                 >
-                  <span className="text-xs">🗺️</span>
+                  <IconDanauSingkarak size={15} className="shrink-0" />
                   <span className="truncate">{translations[lang].navMap}</span>
                 </button>
               </div>
@@ -1583,31 +1798,32 @@ export const Drawers: React.FC<DrawersProps> = ({
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-jakarta">
                 {[
-                  { val: 'Semua', label: translations[lang].catAll },
-                  { val: 'Danau & Gunung', label: translations[lang].catLakeMountain },
-                  { val: 'Lembah & Geopark', label: translations[lang].catValleyGeopark },
-                  { val: 'Pantai & Bahari', label: translations[lang].catBeachMarine },
-                  { val: 'Air Terjun & Alam', label: translations[lang].catWaterfallNature },
-                  { val: 'Sejarah', label: translations[lang].catHistoryHeritage },
-                  { val: 'Desa Wisata', label: translations[lang].catVillage }
+                  { val: 'Semua', label: translations[lang].catAll, icon: <IconMarawa size={13} className="shrink-0" /> },
+                  { val: 'Danau & Gunung', label: translations[lang].catLakeMountain, icon: <IconDanauSingkarak size={13} className="shrink-0" /> },
+                  { val: 'Lembah & Geopark', label: translations[lang].catValleyGeopark, icon: <IconKelok9 size={13} className="shrink-0" /> },
+                  { val: 'Pantai & Bahari', label: translations[lang].catBeachMarine, icon: <IconDanauSingkarak size={13} className="shrink-0" /> },
+                  { val: 'Air Terjun & Alam', label: translations[lang].catWaterfallNature, icon: <IconAirTerjunLembahAnai size={13} className="shrink-0" /> },
+                  { val: 'Sejarah', label: translations[lang].catHistoryHeritage, icon: <IconJamGadang size={13} className="shrink-0" /> },
+                  { val: 'Desa Wisata', label: translations[lang].catVillage, icon: <IconRumahGadang size={13} className="shrink-0" /> }
                 ].map(cat => (
                   <button
                     key={cat.val}
                     onClick={() => setDestCategory(cat.val)}
-                    className={`px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-semibold whitespace-nowrap transition-all cursor-pointer ${
                       destCategory === cat.val
-                        ? 'bg-black text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-black text-white shadow-xs'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    {cat.label}
+                    {cat.icon}
+                    <span>{cat.label}</span>
                   </button>
                 ))}
               </div>
 
               {/* Destination Cards - 3 COLUMN GRID */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredDestinations.map((dest) => {
+                {filteredDestinations.slice(0, visibleDestCount).map((dest) => {
                   const isSaved = savedIds.includes(dest.id);
                   const isEn = lang === 'en';
                   return (
@@ -1713,91 +1929,114 @@ export const Drawers: React.FC<DrawersProps> = ({
                   );
                 })}
               </div>
+
+              {/* Seamless Infinite Scroll: Destinasi */}
+              <InfiniteScrollSentinel
+                hasMore={visibleDestCount < filteredDestinations.length}
+                onIntersect={() => setVisibleDestCount((prev) => prev + 16)}
+                currentCount={Math.min(visibleDestCount, filteredDestinations.length)}
+                totalCount={filteredDestinations.length}
+                label={lang === 'en' ? 'destinations' : 'destinasi wisata'}
+              />
             </div>
           )}
 
           {/* =================================================== */}
           {/* 2. SENI & BUDAYA MINANG DRAWER                     */}
           {/* =================================================== */}
+          {/* =================================================== */}
+          {/* 2. SENI & BUDAYA MINANG DRAWER                     */}
+          {/* =================================================== */}
           {activeDrawer === 'culture' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {cultureItems.map((item: CultureItem) => {
-                const isSaved = savedIds.includes(item.id);
-                const isEn = lang === 'en';
-                return (
-                  <div
-                    key={item.id}
-                    className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all group"
-                  >
-                    <div>
-                      {/* Image Banner */}
-                      <div className="relative h-36 w-full overflow-hidden bg-gray-100">
-                        <img
-                          src={item.imageUrl}
-                          alt={isEn && item.titleEn ? item.titleEn : item.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
-                        <span className="absolute top-2 left-2 bg-black/75 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
-                          {isEn && item.categoryEn ? item.categoryEn : item.category}
-                        </span>
-                        <button
-                          onClick={() => onToggleSave(item.id, isEn && item.titleEn ? item.titleEn : item.title)}
-                          className={`absolute top-2 right-2 p-1.5 rounded-full border transition-all cursor-pointer ${
-                            isSaved
-                              ? 'bg-black text-white border-black'
-                              : 'bg-white/90 text-gray-700 border-gray-200 hover:text-black hover:bg-white'
-                          }`}
-                        >
-                          {isSaved ? <BookmarkCheck className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
-                        </button>
-                      </div>
-
-                      <div className="p-3.5 space-y-2">
-                        <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
-                          {isEn && item.titleEn ? item.titleEn : item.title}
-                        </h3>
-                        <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
-                          {isEn && item.descriptionEn ? item.descriptionEn : item.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-col gap-2">
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {cultureItems.slice(0, visibleCultureCount).map((item: CultureItem) => {
+                  const isSaved = savedIds.includes(item.id);
+                  const isEn = lang === 'en';
+                  return (
+                    <div
+                      key={item.id}
+                      className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all group"
+                    >
                       <div>
-                        <span className="font-jakarta font-bold text-[9px] text-gray-400 uppercase tracking-widest block">
-                          {isEn ? 'MINANG PHILOSOPHY' : 'FALSAFAH MINANG'}
-                        </span>
-                        <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-1 truncate mt-0.5">
-                          "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
-                        </p>
+                        {/* Image Banner */}
+                        <div className="relative h-36 w-full overflow-hidden bg-gray-100">
+                          <img
+                            src={item.imageUrl}
+                            alt={isEn && item.titleEn ? item.titleEn : item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                          <span className="absolute top-2 left-2 bg-black/75 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
+                            {isEn && item.categoryEn ? item.categoryEn : item.category}
+                          </span>
+                          <button
+                            onClick={() => onToggleSave(item.id, isEn && item.titleEn ? item.titleEn : item.title)}
+                            className={`absolute top-2 right-2 p-1.5 rounded-full border transition-all cursor-pointer ${
+                              isSaved
+                                ? 'bg-black text-white border-black'
+                                : 'bg-white/90 text-gray-700 border-gray-200 hover:text-black hover:bg-white'
+                            }`}
+                          >
+                            {isSaved ? <BookmarkCheck className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
+                          </button>
+                        </div>
+
+                        <div className="p-3.5 space-y-2">
+                          <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
+                            {isEn && item.titleEn ? item.titleEn : item.title}
+                          </h3>
+                          <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
+                            {isEn && item.descriptionEn ? item.descriptionEn : item.description}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-gray-200/60">
-                        <a
-                          href={getSafeYoutubeUrl(item.title, item.category || item.origin, item.videoUrl)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                          title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
-                        >
-                          <Youtube className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">YouTube</span>
-                        </a>
+                      <div className="p-3 bg-gray-50 border-t border-gray-100 flex flex-col gap-2">
+                        <div>
+                          <span className="font-jakarta font-bold text-[9px] text-gray-400 uppercase tracking-widest block">
+                            {isEn ? 'MINANG PHILOSOPHY' : 'FALSAFAH MINANG'}
+                          </span>
+                          <p className="font-jakarta italic text-black font-semibold text-[11px] line-clamp-1 truncate mt-0.5">
+                            "{isEn && item.philosophyEn ? item.philosophyEn : item.philosophy}"
+                          </p>
+                        </div>
 
-                        <button
-                          onClick={() => openSubModal(() => setSelectedCulture(item))}
-                          className="bg-black hover:bg-amber-600 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                          title={translations[lang].btnDetail}
-                        >
-                          <Info className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{translations[lang].btnDetail}</span>
-                        </button>
+                        <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-gray-200/60">
+                          <a
+                            href={getSafeYoutubeUrl(item.title, item.category || item.origin, item.videoUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                          >
+                            <Youtube className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">YouTube</span>
+                          </a>
+
+                          <button
+                            onClick={() => openSubModal(() => setSelectedCulture(item))}
+                            className="bg-black hover:bg-amber-600 text-white py-1.5 px-2 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={translations[lang].btnDetail}
+                          >
+                            <Info className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{translations[lang].btnDetail}</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+
+              {/* Seamless Infinite Scroll: Budaya */}
+              <InfiniteScrollSentinel
+                hasMore={visibleCultureCount < cultureItems.length}
+                onIntersect={() => setVisibleCultureCount((prev) => prev + 16)}
+                currentCount={Math.min(visibleCultureCount, cultureItems.length)}
+                totalCount={cultureItems.length}
+                label={lang === 'en' ? 'cultural items' : 'seni & budaya'}
+              />
             </div>
           )}
 
@@ -1805,83 +2044,94 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 3. KULINER AUTHENTIC DRAWER                        */}
           {/* =================================================== */}
           {activeDrawer === 'culinary' && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {culinaryItems.map((cul: CulinaryItem) => {
-                const isEn = lang === 'en';
-                return (
-                  <div
-                    key={cul.id}
-                    className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all group"
-                  >
-                    <div>
-                      {/* Image Banner */}
-                      <div className="relative h-36 w-full overflow-hidden bg-gray-100">
-                        <img
-                          src={cul.imageUrl}
-                          alt={isEn && cul.titleEn ? cul.titleEn : cul.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
-                        <span className="absolute top-2 left-2 bg-black/75 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
-                          {isEn && cul.typeEn ? cul.typeEn : cul.type}
-                        </span>
-                      </div>
-
-                      <div className="p-3.5 space-y-2">
-                        <div className="text-gray-400 font-jakarta text-[10px] uppercase tracking-wider font-semibold">
-                          {isEn ? 'Origin:' : 'Asal:'} {isEn && cul.originEn ? cul.originEn : cul.origin}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {culinaryItems.slice(0, visibleCulinaryCount).map((cul: CulinaryItem) => {
+                  const isEn = lang === 'en';
+                  return (
+                    <div
+                      key={cul.id}
+                      className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all group"
+                    >
+                      <div>
+                        {/* Image Banner */}
+                        <div className="relative h-36 w-full overflow-hidden bg-gray-100">
+                          <img
+                            src={cul.imageUrl}
+                            alt={isEn && cul.titleEn ? cul.titleEn : cul.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                          <span className="absolute top-2 left-2 bg-black/75 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded backdrop-blur-xs">
+                            {isEn && cul.typeEn ? cul.typeEn : cul.type}
+                          </span>
                         </div>
-                        <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
-                          {isEn && cul.titleEn ? cul.titleEn : cul.title}
-                        </h3>
-                        <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
-                          {isEn && cul.descriptionEn ? cul.descriptionEn : cul.description}
-                        </p>
+
+                        <div className="p-3.5 space-y-2">
+                          <div className="text-gray-400 font-jakarta text-[10px] uppercase tracking-wider font-semibold">
+                            {isEn ? 'Origin:' : 'Asal:'} {isEn && cul.originEn ? cul.originEn : cul.origin}
+                          </div>
+                          <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
+                            {isEn && cul.titleEn ? cul.titleEn : cul.title}
+                          </h3>
+                          <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
+                            {isEn && cul.descriptionEn ? cul.descriptionEn : cul.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex flex-col gap-2">
+                        <div className="truncate">
+                          <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
+                          <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
+                          <a
+                            href={getCulinaryGoogleMapsUrl(cul)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={isEn ? "Find Food Places on Google Maps" : "Cari Tempat Kuliner di Google Maps"}
+                          >
+                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{isEn ? "Maps" : "Maps"}</span>
+                          </a>
+
+                          <a
+                            href={getSafeYoutubeUrl(cul.title, cul.type || cul.origin, cul.videoUrl)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                          >
+                            <Youtube className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">YouTube</span>
+                          </a>
+
+                          <button
+                            onClick={() => openSubModal(() => setSelectedCulinary(cul))}
+                            className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                            title={translations[lang].btnDetail}
+                          >
+                            <Info className="w-3.5 h-3.5 shrink-0" />
+                            <span className="truncate">{translations[lang].btnDetail}</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
+                  );
+                })}
+              </div>
 
-                    <div className="p-3 bg-gray-50 border-t border-gray-100 text-[11px] font-jakarta flex flex-col gap-2">
-                      <div className="truncate">
-                        <span className="font-bold text-black">{isEn ? 'Flavor Profile:' : 'Profil Rasa:'} </span>
-                        <span className="text-gray-600 line-clamp-1 block sm:inline">{isEn && cul.flavorProfileEn ? cul.flavorProfileEn : cul.flavorProfile}</span>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-200/60">
-                        <a
-                          href={getCulinaryGoogleMapsUrl(cul)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                          title={isEn ? "Find Food Places on Google Maps" : "Cari Tempat Kuliner di Google Maps"}
-                        >
-                          <MapPin className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{isEn ? "Maps" : "Maps"}</span>
-                        </a>
-
-                        <a
-                          href={getSafeYoutubeUrl(cul.title, cul.type || cul.origin, cul.videoUrl)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-red-600 hover:bg-red-700 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                          title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
-                        >
-                          <Youtube className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">YouTube</span>
-                        </a>
-
-                        <button
-                          onClick={() => openSubModal(() => setSelectedCulinary(cul))}
-                          className="bg-black hover:bg-amber-600 text-white py-1.5 px-1 rounded font-jakarta font-bold uppercase text-[10px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
-                          title={translations[lang].btnDetail}
-                        >
-                          <Info className="w-3.5 h-3.5 shrink-0" />
-                          <span className="truncate">{translations[lang].btnDetail}</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              {/* Seamless Infinite Scroll: Kuliner */}
+              <InfiniteScrollSentinel
+                hasMore={visibleCulinaryCount < culinaryItems.length}
+                onIntersect={() => setVisibleCulinaryCount((prev) => prev + 16)}
+                currentCount={Math.min(visibleCulinaryCount, culinaryItems.length)}
+                totalCount={culinaryItems.length}
+                label={lang === 'en' ? 'culinary items' : 'kuliner khas'}
+              />
             </div>
           )}
 
@@ -1948,7 +2198,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
                 {/* Souvenir Product Grid - 3 COLUMN GRID */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredSouvenirs.map((souv: SouvenirItem) => {
+                  {filteredSouvenirs.slice(0, visibleSouvenirCount).map((souv: SouvenirItem) => {
                     const rawPrice = (isEn && souv.priceRangeEn ? souv.priceRangeEn : souv.priceRange) || '';
                     const displayPrice = formatToCurrency(rawPrice, currency, currencyRates);
 
@@ -2050,6 +2300,15 @@ export const Drawers: React.FC<DrawersProps> = ({
                     );
                   })}
                 </div>
+
+                {/* Seamless Infinite Scroll: Souvenirs */}
+                <InfiniteScrollSentinel
+                  hasMore={visibleSouvenirCount < filteredSouvenirs.length}
+                  onIntersect={() => setVisibleSouvenirCount((prev) => prev + 16)}
+                  currentCount={Math.min(visibleSouvenirCount, filteredSouvenirs.length)}
+                  totalCount={filteredSouvenirs.length}
+                  label={lang === 'en' ? 'souvenirs' : 'produk oleh-oleh'}
+                />
               </div>
             );
           })()}
@@ -2325,7 +2584,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                       type="button"
                       onClick={() => {
                         const link = document.createElement('a');
-                        link.href = `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.href = '/downloads/kalender-event-sumbar-2026.pdf';
                         link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
                         document.body.appendChild(link);
@@ -2609,8 +2868,19 @@ export const Drawers: React.FC<DrawersProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {calendarEventsToDisplay.map(renderEventCard)}
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {calendarEventsToDisplay.slice(0, visibleEventCount).map(renderEventCard)}
+                        </div>
+
+                        {/* Seamless Infinite Scroll: Events */}
+                        <InfiniteScrollSentinel
+                          hasMore={visibleEventCount < calendarEventsToDisplay.length}
+                          onIntersect={() => setVisibleEventCount((prev) => prev + 16)}
+                          currentCount={Math.min(visibleEventCount, calendarEventsToDisplay.length)}
+                          totalCount={calendarEventsToDisplay.length}
+                          label={lang === 'en' ? 'events' : 'agenda event'}
+                        />
                       </div>
                     )}
                   </div>
@@ -2624,150 +2894,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* =================================================== */}
           {/* 5. FORMAI SUMATERA BARAT (AI ITINERARY BUILDER)      */}
           {/* =================================================== */}
-                    {activeDrawer === 'formai' && (() => {
-            const renderBookingSuite = () => (
-              <div className={`shrink-0 text-white p-3.5 rounded-2xl space-y-2.5 shadow-sm transition-all ${
-                bookingPartner === 'tiket'
-                  ? 'bg-gradient-to-br from-[#0064D2] via-[#0050A8] to-[#002B66] border-2 border-[#FEDD00]/70'
-                  : 'bg-gradient-to-br from-[#0194F3] via-[#0082DE] to-[#0264A6] border-2 border-white/40'
-              }`}>
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center gap-1.5">
-                    {bookingPartner === 'tiket' ? (
-                      <span className="bg-[#FEDD00] text-[#002B66] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                        <span>tiket.com</span>
-                      </span>
-                    ) : (
-                      <span className="bg-white text-[#0194F3] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-2xs flex items-center gap-1">
-                        <span>✈️</span>
-                        <span>traveloka</span>
-                      </span>
-                    )}
-                    <span className="font-orbitron font-bold text-xs uppercase tracking-wide text-white">
-                      {lang === 'en' ? 'Book Itinerary Logistics' : 'Pesan Logistik & Akomodasi Rute'}
-                    </span>
-                  </div>
-
-                  {/* Partner Switcher Tabs */}
-                  <div className="flex items-center bg-black/30 p-0.5 rounded-lg border border-white/20 text-[10px] font-bold font-jakarta">
-                    <button
-                      type="button"
-                      onClick={() => setBookingPartner('tiket')}
-                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                        bookingPartner === 'tiket'
-                          ? 'bg-[#FEDD00] text-[#002B66] shadow-sm font-black'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0064D2]"></span>
-                      <span>tiket.com</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setBookingPartner('traveloka')}
-                      className={`px-2.5 py-1 rounded-md transition-all cursor-pointer flex items-center gap-1 ${
-                        bookingPartner === 'traveloka'
-                          ? 'bg-white text-[#0194F3] shadow-sm font-black'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      <span>✈️</span>
-                      <span>Traveloka</span>
-                    </button>
-                  </div>
-                </div>
-
-                <p className={`text-xs font-jakarta leading-relaxed ${
-                  bookingPartner === 'tiket' ? 'text-blue-100' : 'text-sky-100'
-                }`}>
-                  {lang === 'en'
-                    ? 'Make your dream vacation a reality by booking hotels, car rentals in Padang, tours, and flights via our official partners Tiket.com or Traveloka.'
-                    : 'Wujudkan rencana liburan impian ini dengan memesan hotel, rental mobil di Padang, tur wisata, dan tiket pesawat melalui Tiket.com atau Traveloka.'}
-                </p>
-
-                {bookingPartner === 'tiket' ? (
-                  <div className="grid grid-cols-2 gap-2 pt-0.5">
-                    <a
-                      href={getTiketHotelUrl(null, dataStore?.appSettings)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#FEDD00] hover:bg-[#FFE53B] text-[#002B66] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                    >
-                      <span>🏨 {lang === 'en' ? 'Hotels Sumbar' : 'Cari Hotel'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href={getTiketCarRentalUrl(dataStore?.appSettings)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>🚗 {lang === 'en' ? 'Car Rental' : 'Sewa Mobil'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href={getTiketFlightUrl(dataStore?.appSettings)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>✈️ {lang === 'en' ? 'Flight to BIM' : 'Tiket Pesawat'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href={getTiketActivitiesUrl(null, dataStore?.appSettings)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#00479E] hover:bg-[#003B85] text-white border border-white/25 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>🎟️ {lang === 'en' ? 'Attractions' : 'Tur & Atraksi'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-2 gap-2 pt-0.5">
-                    <a
-                      href="https://www.traveloka.com/id-id/hotel"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white hover:bg-sky-50 text-[#0194F3] py-2 px-2.5 rounded-lg font-jakarta font-black text-[11px] transition-all flex items-center justify-center gap-1 shadow-sm cursor-pointer text-center"
-                    >
-                      <span>🏨 {lang === 'en' ? 'Hotels' : 'Cek Hotel'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href="https://www.traveloka.com/id-id/car-rental"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>🚗 {lang === 'en' ? 'Car Rental' : 'Rental Mobil'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href="https://www.traveloka.com/id-id/flight/to/Padang.PDG"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>✈️ {lang === 'en' ? 'Flight BIM' : 'Tiket Pesawat'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                    <a
-                      href="https://www.traveloka.com/id-id/activities"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#0264A6]/80 hover:bg-[#0264A6] text-white border border-white/30 py-2 px-2.5 rounded-lg font-jakarta font-bold text-[11px] transition-all flex items-center justify-center gap-1 shadow-2xs cursor-pointer text-center"
-                    >
-                      <span>🎟️ {lang === 'en' ? 'Activities' : 'Tur & Tiket'}</span>
-                      <ExternalLink className="w-3 h-3 shrink-0" />
-                    </a>
-                  </div>
-                )}
-              </div>
-            );
-
+          {activeDrawer === 'formai' && (() => {
             const renderItineraryFormFields = () => (
               <div className="space-y-4">
                 {/* Target Event Priority Banner */}
@@ -3301,9 +3428,9 @@ export const Drawers: React.FC<DrawersProps> = ({
                       onChange={(e) => updateForm(['anggaran', 'rentang'], e.target.value)}
                       className="w-full bg-white border border-gray-300 rounded-lg p-2 text-xs font-jakarta text-black focus:outline-none focus:border-black"
                     >
-                      <option value="hemat">{translations[lang].optBudget}</option>
-                      <option value="menengah">{translations[lang].optStandard}</option>
-                      <option value="mewah">{translations[lang].optPremium}</option>
+                      <option value="hemat">{translations[lang]?.optBudget || (lang === 'en' ? 'Budget (Backpacker)' : 'Hemat (Backpacker)')}</option>
+                      <option value="menengah">{translations[lang]?.optStandard || (lang === 'en' ? 'Standard (Mid-range)' : 'Menengah (Standard)')}</option>
+                      <option value="mewah">{translations[lang]?.optPremium || (lang === 'en' ? 'Luxury (Premium / High-end)' : 'Mewah (Luxury / Sultan)')}</option>
                     </select>
                   </div>
                 </div>
@@ -3333,281 +3460,72 @@ export const Drawers: React.FC<DrawersProps> = ({
 
             return (
               <div className="w-full h-full min-h-0">
-                {!aiResponse ? (
-                  /* ============================================================== */
-                  /* STATE 1: SEBELUM GENERATE (Single Column Form Lapang & Elegan) */
-                  /* ============================================================== */
-                  <div className="max-w-2xl mx-auto w-full space-y-5 py-2">
-                    <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black text-white p-5 rounded-2xl shadow-sm space-y-2 border border-neutral-800">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
-                        <span className="font-orbitron font-bold text-xs uppercase tracking-widest text-amber-300">
-                          UNI MALA AI ITINERARY BUILDER
-                        </span>
-                      </div>
-                      <h3 className="font-orbitron font-bold text-base sm:text-lg text-white">
-                        {lang === 'en' ? 'Create Your Personalized West Sumatra Itinerary' : 'Rancang Rencana Liburan Impian di Sumatera Barat'}
-                      </h3>
-                      <p className="font-jakarta text-xs text-gray-300 leading-relaxed">
-                        {lang === 'en'
-                          ? 'Select your duration, dates, travel interests, and budget. UNI MALA AI will craft a smart, directional day-by-day travel plan complete with interactive map routing and authentic culinary tips.'
-                          : 'Pilih durasi liburan, tanggal, preferensi minat, dan estimasi anggaran. UNI MALA AI akan menyusun rute perjalanan searah yang efisien, lengkap dengan peta interaktif dan rekomendasi kuliner khas Minangkabau.'}
-                      </p>
+                <div className="max-w-2xl mx-auto w-full space-y-5 py-2">
+                  <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black text-white p-5 rounded-2xl shadow-sm space-y-2 border border-neutral-800">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
+                      <span className="font-orbitron font-bold text-xs uppercase tracking-widest text-amber-300">
+                        UNI MALA AI ITINERARY BUILDER
+                      </span>
                     </div>
+                    <h3 className="font-orbitron font-bold text-base sm:text-lg text-white">
+                      {lang === 'en' ? 'Create Your Personalized West Sumatra Itinerary' : 'Rancang Rencana Liburan Impian di Sumatera Barat'}
+                    </h3>
+                    <p className="font-jakarta text-xs text-gray-300 leading-relaxed">
+                      {lang === 'en'
+                        ? 'Select your duration, dates, travel interests, and budget. UNI MALA AI will craft a smart, directional day-by-day travel plan complete with interactive map routing and authentic culinary tips.'
+                        : 'Pilih durasi liburan, tanggal, preferensi minat, dan estimasi anggaran. UNI MALA AI akan menyusun rute perjalanan searah yang efisien, lengkap dengan peta interaktif dan rekomendasi kuliner khas Minangkabau.'}
+                    </p>
+                  </div>
 
-                    {aiError && (
-                      <div className="p-3 bg-red-50 text-red-700 text-xs font-jakarta rounded-xl border border-red-200">
-                        {aiError}
+                  {aiError && (
+                    <div className="p-3 bg-red-50 text-red-700 text-xs font-jakarta rounded-xl border border-red-200">
+                      {aiError}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleGenerateItinerary} className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-200 shadow-xs">
+                    {renderItineraryFormFields()}
+                    <button
+                      type="submit"
+                      disabled={isGenerating}
+                      className="w-full bg-black text-white py-3 rounded-xl font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+                    >
+                      {isGenerating ? (
+                        <>
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                          <span>{translations[lang].btnGenerating}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 text-yellow-300" />
+                          <span>{translations[lang].btnGenerate}</span>
+                        </>
+                      )}
+                    </button>
+
+                    {isGenerating && (
+                      <div className="p-3 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-2">
+                        <div className="flex items-center justify-between text-[11px] font-orbitron font-semibold text-amber-400">
+                          <span className="flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                            UNI MALA AI OPTIMIZER
+                          </span>
+                          <span className="text-[10px] text-gray-400 font-jakarta">{lang === 'en' ? `Step ${generationStep + 1} of 5` : `Langkah ${generationStep + 1} dari 5`}</span>
+                        </div>
+                        <p className="text-xs font-jakarta text-gray-200">
+                          {lang === 'en' ? GENERATION_STEPS_EN[generationStep] : GENERATION_STEPS_ID[generationStep]}
+                        </p>
+                        <div className="w-full bg-neutral-800 rounded-full h-1.5 overflow-hidden">
+                          <div 
+                            className="bg-gradient-to-r from-amber-500 to-yellow-300 h-1.5 rounded-full transition-all duration-500 ease-out"
+                            style={{ width: `${((generationStep + 1) / 5) * 100}%` }}
+                          />
+                        </div>
                       </div>
                     )}
-
-                    <form onSubmit={handleGenerateItinerary} className="space-y-4 bg-gray-50 p-5 rounded-2xl border border-gray-200 shadow-xs">
-                      {renderItineraryFormFields()}
-                      <button
-                        type="submit"
-                        disabled={isGenerating}
-                        className="w-full bg-black text-white py-3 rounded-xl font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
-                      >
-                        {isGenerating ? (
-                          <>
-                            <RefreshCw className="w-4 h-4 animate-spin" />
-                            <span>{translations[lang].btnGenerating}</span>
-                          </>
-                        ) : (
-                          <>
-                            <Sparkles className="w-4 h-4 text-yellow-300" />
-                            <span>{translations[lang].btnGenerate}</span>
-                          </>
-                        )}
-                      </button>
-
-                      {isGenerating && (
-                        <div className="p-3 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-2">
-                          <div className="flex items-center justify-between text-[11px] font-orbitron font-semibold text-amber-400">
-                            <span className="flex items-center gap-1.5">
-                              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-                              UNI MALA AI OPTIMIZER
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-jakarta">{lang === 'en' ? `Step ${generationStep + 1} of 5` : `Langkah ${generationStep + 1} dari 5`}</span>
-                          </div>
-                          <p className="text-xs font-jakarta text-gray-200">
-                            {lang === 'en' ? GENERATION_STEPS_EN[generationStep] : GENERATION_STEPS_ID[generationStep]}
-                          </p>
-                          <div className="w-full bg-neutral-800 rounded-full h-1.5 overflow-hidden">
-                            <div 
-                              className="bg-gradient-to-r from-amber-500 to-yellow-300 h-1.5 rounded-full transition-all duration-500 ease-out"
-                              style={{ width: `${((generationStep + 1) / 5) * 100}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </form>
-                  </div>
-                ) : (
-                  /* ============================================================== */
-                  /* STATE 2: SETELAH GENERATE -> 3 KOLOM BERDAMPINGAN (DESKTOP)    */
-                  /* (KOLOM 1: PREFERENSI, KOLOM 2: HASIL ITINERARY, KOLOM 3: PETA) */
-                  /* ============================================================== */
-                  <div className="flex flex-col lg:grid lg:grid-cols-[1fr_1fr_1.35fr] gap-4 h-full min-h-0">
-                    {/* KOLOM 1 (PALING KIRI): PETA RUTE INTERAKTIF & LOGISTIK PEMESANAN (LEBAR SAMA DENGAN PREFERENSI) */}
-                    <div className="order-2 lg:order-1 flex flex-col h-full min-h-0 space-y-3">
-                      {/* Peta Rute Interaktif */}
-                      <div className="flex-1 min-h-[300px] overflow-hidden rounded-2xl border border-gray-200 shadow-xs bg-gray-50 flex flex-col">
-                        <ItineraryMap
-                          aiResponse={aiResponse}
-                          destinations={destinations}
-                          cultureItems={cultureItems}
-                          culinaryItems={culinaryItems}
-                          eventItems={eventItems}
-                          lang={lang}
-                          fullHeight={true}
-                        />
-                      </div>
-
-                      {/* Booking Logistics Suite */}
-                      {renderBookingSuite()}
-                    </div>
-
-                    {/* KOLOM 2 (TENGAH): INPUT PREFERENSI WISATAWAN (LEBAR SAMA PERSIS DENGAN PETA) */}
-                    <div className="order-3 lg:order-2 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
-                      <div className="px-4 py-3 bg-neutral-900 text-white flex items-center justify-between shrink-0 border-b border-neutral-800">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">⚙️</span>
-                          <div>
-                            <h4 className="font-orbitron font-bold text-xs uppercase tracking-wider text-white">
-                              {lang === 'en' ? 'Traveler Preferences' : 'Preferensi Wisatawan'}
-                            </h4>
-                            <p className="text-[10px] text-gray-400 font-jakarta">
-                              {lang === 'en' ? 'Adjust parameters & regenerate' : 'Sesuaikan & perbarui rute'}
-                            </p>
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setAiResponse(null)}
-                          className="text-[10px] text-gray-400 hover:text-white underline cursor-pointer font-jakarta"
-                          title={lang === 'en' ? 'Start new plan from scratch' : 'Buat rencana baru dari awal'}
-                        >
-                          {lang === 'en' ? 'Reset' : 'Ulang'}
-                        </button>
-                      </div>
-
-                      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-                        {aiError && (
-                          <div className="p-2.5 bg-red-50 text-red-700 text-xs font-jakarta rounded-lg border border-red-200">
-                            {aiError}
-                          </div>
-                        )}
-                        <form id="itinerary-pref-form-desktop" onSubmit={handleGenerateItinerary} className="space-y-4">
-                          {renderItineraryFormFields()}
-                        </form>
-                      </div>
-
-                      <div className="p-3 bg-gray-50 border-t border-gray-200 shrink-0 space-y-2">
-                        <button
-                          form="itinerary-pref-form-desktop"
-                          type="submit"
-                          disabled={isGenerating}
-                          className="w-full bg-black text-white py-2.5 px-3 rounded-xl font-jakarta font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-2 hover:bg-neutral-800 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
-                        >
-                          {isGenerating ? (
-                            <>
-                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                              <span>{translations[lang].btnGenerating}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-                              <span>{lang === 'en' ? 'Update Itinerary' : 'Perbarui Rencana Wisata'}</span>
-                            </>
-                          )}
-                        </button>
-
-                        {isGenerating && (
-                          <div className="p-2.5 bg-neutral-900 text-white rounded-xl border border-neutral-800 space-y-1.5">
-                            <div className="flex items-center justify-between text-[10px] font-orbitron font-semibold text-amber-400">
-                              <span className="flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                                OPTIMIZING ROUTE
-                              </span>
-                              <span className="text-[9px] text-gray-400 font-jakarta">{generationStep + 1} / 5</span>
-                            </div>
-                            <p className="text-[11px] font-jakarta text-gray-200 leading-tight">
-                              {lang === 'en' ? GENERATION_STEPS_EN[generationStep] : GENERATION_STEPS_ID[generationStep]}
-                            </p>
-                            <div className="w-full bg-neutral-800 rounded-full h-1 overflow-hidden">
-                              <div 
-                                className="bg-gradient-to-r from-amber-500 to-yellow-300 h-1 rounded-full transition-all duration-500 ease-out"
-                                style={{ width: `${((generationStep + 1) / 5) * 100}%` }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* KOLOM 3 (KANAN): HASIL ITINERARY RESMI */}
-                    <div className="order-1 lg:order-3 flex flex-col h-full min-h-0 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xs">
-                      {/* Header Itinerary Title & A4 Print Button */}
-                      <div className="p-4 bg-gradient-to-r from-neutral-950 via-black to-neutral-900 text-white shrink-0 space-y-2 border-b border-neutral-800">
-                        <div className="flex items-center justify-between flex-wrap gap-2">
-                          <div className="flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-                            <span className="font-orbitron font-bold text-[10px] uppercase tracking-widest text-amber-300">
-                              {lang === 'en' ? 'Official Trip Plan' : 'Rencana Wisata Resmi'}
-                            </span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={handlePrintA4Itinerary}
-                            disabled={isDownloadingPdf}
-                            className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white py-1.5 px-3 rounded-lg font-jakarta font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all shadow-xs cursor-pointer disabled:opacity-60"
-                            title={translations[lang].btnPrintA4}
-                          >
-                            {isDownloadingPdf ? (
-                              <>
-                                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                                <span>{lang === 'en' ? 'Downloading PDF...' : 'Mengunduh PDF...'}</span>
-                              </>
-                            ) : (
-                              <>
-                                <Download className="w-3.5 h-3.5" />
-                                <span>{translations[lang].btnPrintA4}</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-
-                        <h3 className="font-orbitron font-bold text-sm sm:text-base uppercase text-white leading-snug">
-                          {aiResponse.title}
-                        </h3>
-                        <p className="font-jakarta text-[11px] text-gray-300 leading-relaxed line-clamp-2">
-                          {aiResponse.summary}
-                        </p>
-                      </div>
-
-                      {/* Scrollable Schedule & Days */}
-                      <div className="flex-1 overflow-y-auto p-4 space-y-3.5 custom-scrollbar">
-                        <div className="space-y-3.5">
-                          {aiResponse.itinerary.map((day) => (
-                            <div key={day.day} className="p-3.5 border border-gray-200 rounded-xl space-y-2.5 bg-white shadow-2xs hover:border-gray-300 transition-colors">
-                              <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-                                <span className="bg-black text-white font-orbitron font-bold text-[10px] uppercase px-2 py-0.5 rounded">
-                                  HARI {day.day}
-                                </span>
-                                <h4 className="font-orbitron font-bold text-xs uppercase text-black truncate ml-2">
-                                  {day.title}
-                                </h4>
-                              </div>
-
-                              <div className="space-y-2">
-                                {day.activities.map((act, i) => (
-                                  <div key={i} className="text-xs font-jakarta space-y-1 bg-slate-50/70 p-2.5 rounded-lg border border-slate-100">
-                                    <div className="flex items-center justify-between font-bold text-black text-[11px]">
-                                      <span>⏰ {act.time} — {act.location}</span>
-                                    </div>
-                                    <p className="text-gray-600 text-[11px] leading-relaxed">{act.activity}</p>
-                                    {act.tips && (
-                                      <p className="text-[10.5px] text-amber-800 italic bg-amber-50/80 p-1.5 rounded border border-amber-100 flex items-start gap-1">
-                                        <span>💡</span>
-                                        <span>{act.tips}</span>
-                                      </p>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-
-                              {day.culinaryRecommendation && (
-                                <div className="pt-2 border-t border-gray-100 text-[11px] font-jakarta text-amber-950 bg-amber-50/90 p-2.5 rounded-lg flex items-start gap-1.5 border border-amber-200/60">
-                                  <span className="shrink-0">🍲</span>
-                                  <div>
-                                    <strong className="font-bold">Rekomendasi Kuliner: </strong>
-                                    <span>{day.culinaryRecommendation}</span>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Kearifan Lokal & Etika Minangkabau */}
-                        {aiResponse.localTips && aiResponse.localTips.length > 0 && (
-                          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2 text-xs font-jakarta">
-                            <h4 className="font-bold text-black uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                              <span>🏛️</span>
-                              <span>Kearifan Lokal & Etika Minangkabau</span>
-                            </h4>
-                            <ul className="space-y-1 list-disc list-inside text-gray-700 text-[11px] leading-relaxed">
-                              {aiResponse.localTips.map((tip, idx) => (
-                                <li key={idx}>{tip}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                  </form>
+                </div>
               </div>
             );
           })()}
@@ -3746,7 +3664,16 @@ export const Drawers: React.FC<DrawersProps> = ({
           {/* 7. ADMIN MANAGEMENT DRAWER                          */}
           {/* =================================================== */}
           {activeDrawer === 'admin' && (
-            <AdminPanel dataStore={dataStore} />
+            <React.Suspense
+              fallback={
+                <div className="p-12 text-center text-gray-500 font-jakarta flex flex-col items-center gap-3">
+                  <RefreshCw className="w-8 h-8 animate-spin text-amber-500" />
+                  <p className="text-xs font-semibold uppercase tracking-wider">{lang === 'en' ? 'Loading Admin Panel...' : 'Memuat Admin Panel...'}</p>
+                </div>
+              }
+            >
+              <AdminPanel dataStore={dataStore} />
+            </React.Suspense>
           )}
 
           {/* =================================================== */}
@@ -4069,16 +3996,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                               </div>
                             </div>
 
-                            {/* Bottom Grey Action Bar / Column: External Source vs Read Release */}
-                            <div className="p-3 bg-gray-50 border-t border-gray-100 mt-auto">
+                            {/* Bottom Grey Action Bar / Column: Official Source Only */}
+                            <div className="p-3 bg-gray-50 border-t border-gray-100 mt-auto flex flex-col gap-2">
                               {hasExternalUrl && primaryLink ? (
                                 <button
                                   onClick={() => window.open(primaryLink, '_blank', 'noopener,noreferrer')}
-                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
-                                  title={isEn ? `Open full article at ${publisherDomain}` : `Buka berita lengkap di ${publisherDomain}`}
+                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                  title={isEn ? `Open original story at ${publisherDomain}` : `Buka berita di situs resmi ${publisherDomain}`}
                                 >
                                   <div className="flex items-center gap-2">
-                                    <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-transform" />
+                                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
                                     <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
                                   </div>
                                   <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
@@ -4087,16 +4014,16 @@ export const Drawers: React.FC<DrawersProps> = ({
                                 </button>
                               ) : (
                                 <button
-                                  onClick={() => onSelectNews?.(item)}
-                                  className="w-full bg-gradient-to-r from-emerald-800 to-teal-900 hover:from-emerald-700 hover:to-teal-800 text-white px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-emerald-700/60"
-                                  title={isEn ? 'Read full article' : 'Baca artikel lengkap'}
+                                  onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(item.title + ' pariwisata sumatera barat')}`, '_blank', 'noopener,noreferrer')}
+                                  className="w-full bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-950 hover:from-neutral-800 hover:to-neutral-900 text-white px-3.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-between shadow-xs hover:shadow-md cursor-pointer group border border-neutral-700/70 hover:border-neutral-500"
+                                  title={isEn ? 'Search official publication' : 'Cari sumber rilis resmi'}
                                 >
                                   <div className="flex items-center gap-2">
-                                    <BookOpen className="w-3.5 h-3.5 text-emerald-300 group-hover:text-white group-hover:scale-110 transition-transform" />
-                                    <span className="text-white">{isEn ? 'Read Full Article' : 'Baca Rilis Lengkap'}</span>
+                                    <ExternalLink className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+                                    <span className="text-gray-100 group-hover:text-white">{isEn ? 'Read Official Source' : 'Baca Sumber Resmi'}</span>
                                   </div>
-                                  <span className="text-[10.5px] font-semibold text-emerald-200 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md">
-                                    {isEn ? 'Official Release' : 'Rilis Resmi'}
+                                  <span className="text-[11px] font-semibold text-gray-300 bg-white/10 border border-white/10 px-2 py-0.5 rounded-md group-hover:text-white transition-colors truncate max-w-[130px]">
+                                    {publisherDomain || 'google.com'} ↗
                                   </span>
                                 </button>
                               )}
@@ -4239,13 +4166,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                       onClick={() => {
                         const isEn = lang === 'en';
                         const link = document.createElement('a');
-                        link.href = isEn
-                          ? `/downloads/malala-tourism-guide-sumbar-2026-en.pdf?v=${Date.now()}`
-                          : `/downloads/malala-panduan-wisata-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.href = isEn ? OFFICIAL_PDF_URLS.panduanEn : OFFICIAL_PDF_URLS.panduanId;
                         link.download = isEn
                           ? 'MALALA-West-Sumatra-Tourism-Guide-2026.pdf'
                           : 'MALALA-Panduan-Wisata-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
@@ -4304,13 +4230,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                       onClick={() => {
                         const isEn = lang === 'en';
                         const link = document.createElement('a');
-                        link.href = isEn
-                          ? `/downloads/kalender-event-sumbar-2026-en.pdf?v=${Date.now()}`
-                          : `/downloads/kalender-event-sumbar-2026.pdf?v=${Date.now()}`;
+                        link.href = isEn ? OFFICIAL_PDF_URLS.eventsEn : OFFICIAL_PDF_URLS.eventsId;
                         link.download = isEn
                           ? 'MALALA-West-Sumatra-Calendar-of-Events-2026.pdf'
                           : 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
@@ -4324,54 +4249,56 @@ export const Drawers: React.FC<DrawersProps> = ({
                 </div>
               </div>
 
-              {/* DOWNLOAD ITEMS LIST IN 2-COLUMN GRID */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(dataStore.downloadItems && dataStore.downloadItems.length > 0 ? dataStore.downloadItems : DOWNLOAD_ITEMS).map((item: any) => {
-                  const isEn = lang === 'en';
-                  return (
-                    <div
-                      key={item.id}
-                      className="border border-gray-200 rounded-xl p-4 bg-white hover:border-indigo-500 hover:shadow-md transition-all flex flex-col justify-between space-y-3 shadow-xs group"
-                    >
-                      <div className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="bg-slate-900 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
-                            {isEn && item.categoryEn ? item.categoryEn : item.category}
-                          </span>
-                          <span className="text-indigo-600 font-jakarta text-[10px] font-bold">
-                            {item.size}
-                          </span>
+              {/* DOWNLOAD ITEMS LIST IN 2-COLUMN GRID (Only if items exist) */}
+              {dataStore.downloadItems && dataStore.downloadItems.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {dataStore.downloadItems.map((item: any) => {
+                    const isEn = lang === 'en';
+                    return (
+                      <div
+                        key={item.id}
+                        className="border border-gray-200 rounded-xl p-4 bg-white hover:border-indigo-500 hover:shadow-md transition-all flex flex-col justify-between space-y-3 shadow-xs group"
+                      >
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <span className="bg-slate-900 text-white font-jakarta font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
+                              {isEn && item.categoryEn ? item.categoryEn : item.category}
+                            </span>
+                            <span className="text-indigo-600 font-jakarta text-[10px] font-bold">
+                              {item.size}
+                            </span>
+                          </div>
+                          <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
+                            {isEn && item.titleEn ? item.titleEn : item.title}
+                          </h3>
+                          <p className="font-jakarta text-gray-600 text-xs leading-relaxed">
+                            {isEn && item.descriptionEn ? item.descriptionEn : item.description}
+                          </p>
                         </div>
-                        <h3 className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm">
-                          {isEn && item.titleEn ? item.titleEn : item.title}
-                        </h3>
-                        <p className="font-jakarta text-gray-600 text-xs leading-relaxed">
-                          {isEn && item.descriptionEn ? item.descriptionEn : item.description}
-                        </p>
-                      </div>
 
-                      <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                        <span className="text-[10px] text-gray-400 font-jakarta font-semibold uppercase">
-                          Format: {isEn && item.typeEn ? item.typeEn : item.type}
-                        </span>
-                        <button
-                          onClick={() => {
-                            const dlFilename = isEn && item.filenameEn ? item.filenameEn : item.filename;
-                            const dlContent = isEn && item.contentEn ? item.contentEn : item.content;
-                            triggerDownload(dlFilename, dlContent, item.mimeType);
-                            setDownloadSuccessMessage(isEn ? `Successfully downloaded "${item.titleEn || item.title}"` : `Berhasil mengunduh "${item.title}"`);
-                            setTimeout(() => setDownloadSuccessMessage(null), 4000);
-                          }}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-xs cursor-pointer"
-                        >
-                          <Download className="w-3.5 h-3.5 text-cyan-300" />
-                          <span>{isEn ? 'Download File' : 'Unduh File'}</span>
-                        </button>
+                        <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+                          <span className="text-[10px] text-gray-400 font-jakarta font-semibold uppercase">
+                            Format: {isEn && item.typeEn ? item.typeEn : item.type}
+                          </span>
+                          <button
+                            onClick={() => {
+                              const dlFilename = isEn && item.filenameEn ? item.filenameEn : item.filename;
+                              const dlContent = isEn && item.contentEn ? item.contentEn : item.content;
+                              triggerDownload(dlFilename, dlContent, item.mimeType);
+                              setDownloadSuccessMessage(isEn ? `Successfully downloaded "${item.titleEn || item.title}"` : `Berhasil mengunduh "${item.title}"`);
+                              setTimeout(() => setDownloadSuccessMessage(null), 4000);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-jakarta font-bold text-xs uppercase transition-all shadow-xs cursor-pointer"
+                          >
+                            <Download className="w-3.5 h-3.5 text-cyan-300" />
+                            <span>{isEn ? 'Download File' : 'Unduh File'}</span>
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -4500,14 +4427,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span>🏨</span>
                         <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
                       </span>
-                      <span className="bg-[#FEDD00] text-[#002B66] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
-                        tiket.com
+                      <span className="bg-[#FEDD00] text-[#002B66] font-jakarta font-black text-[9.5px] px-2 py-0.5 rounded shrink-0 lowercase tracking-tight">
+                        tiket<span className="text-[#0064D2]">.com</span>
                       </span>
                     </a>
 
                     {/* Traveloka Hotel */}
                     <a
-                      href={getTravelokaHotelUrl(selectedDestination)}
+                      href={getTravelokaHotelUrl(selectedDestination, dataStore?.appSettings)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full bg-[#0194F3] hover:bg-[#007ECC] text-white py-2 px-2.5 rounded-lg font-jakarta font-bold text-xs hover:shadow-md transition-all flex items-center justify-between border-l-4 border-white shadow-xs cursor-pointer text-left"
@@ -4516,7 +4443,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span>🏨</span>
                         <span className="font-semibold">{lang === 'en' ? 'Find Hotels Nearby' : 'Cari Hotel Dekat Sini'}</span>
                       </span>
-                      <span className="bg-white text-[#0194F3] font-black text-[9px] px-1.5 py-0.5 rounded shrink-0">
+                      <span className="bg-white text-[#0194F3] font-jakarta font-black text-[9.5px] px-2 py-0.5 rounded shrink-0 lowercase tracking-tight">
                         traveloka
                       </span>
                     </a>
@@ -4532,7 +4459,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span>🚗</span>
                         <span className="font-semibold">{lang === 'en' ? 'Car Rental Sumbar' : 'Rental Mobil di Sumbar'}</span>
                       </span>
-                      <span className="text-[9px] font-black text-[#0064D2] shrink-0">
+                      <span className="text-[9.5px] font-jakarta font-black text-[#0064D2] shrink-0 lowercase tracking-tight">
                         tiket.com ↗
                       </span>
                     </a>
@@ -4548,42 +4475,45 @@ export const Drawers: React.FC<DrawersProps> = ({
                         <span>🎟️</span>
                         <span className="font-semibold">{lang === 'en' ? 'Tours & Packages' : 'Tiket & Paket Wisata'}</span>
                       </span>
-                      <span className="text-[9px] font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
+                      <span className="text-[9.5px] font-jakarta font-black bg-[#FEDD00] text-[#002B66] px-1.5 py-0.5 rounded shrink-0">
                         To Do ↗
                       </span>
                     </a>
                   </div>
                 </div>
 
-                {/* 3. GOOGLE MAPS DESTINATION LOCATION BUTTON */}
-                <a
-                  href={getDestinationGoogleMapsUrl(selectedDestination)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
-                >
-                  <MapPin className="w-4 h-4 text-white" />
-                  <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
-                </a>
+                {/* 3. Action Buttons Group (Google Maps, YouTube & Tutup - Rapat & Proporsional) */}
+                <div className="flex flex-col gap-2 pt-1">
+                  {/* GOOGLE MAPS DESTINATION LOCATION BUTTON */}
+                  <a
+                    href={getDestinationGoogleMapsUrl(selectedDestination)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
+                  >
+                    <MapPin className="w-4 h-4 text-white" />
+                    <span>{lang === 'en' ? 'View Location on Google Maps' : 'Lihat Lokasi di Google Maps'}</span>
+                  </a>
 
-                {/* 4. YOUTUBE VIDEO BUTTON */}
-                <a
-                  href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-[#FF0000] text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
-                >
-                  <Youtube className="w-4 h-4" />
-                  <span>{lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}</span>
-                </a>
+                  {/* YOUTUBE VIDEO BUTTON */}
+                  <a
+                    href={getSafeYoutubeUrl(selectedDestination.title, selectedDestination.category || selectedDestination.regency, selectedDestination.videoUrl)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-[#FF0000] text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs hover:bg-red-700 transition-colors cursor-pointer flex justify-center items-center gap-2 shadow-xs"
+                  >
+                    <Youtube className="w-4 h-4" />
+                    <span>{lang === 'en' ? 'Watch Videos on YouTube' : 'Tonton Video di YouTube'}</span>
+                  </a>
 
-                {/* 5. CLOSE BUTTON BAR AT THE BOTTOM OF THE RIGHT COLUMN */}
-                <button
-                  onClick={handleSubModalClose}
-                  className="w-full bg-black hover:bg-gray-800 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer shadow-xs mt-2"
-                >
-                  {translations[lang].btnClose}
-                </button>
+                  {/* CLOSE BUTTON BAR */}
+                  <button
+                    onClick={handleSubModalClose}
+                    className="w-full bg-black hover:bg-gray-800 text-white py-2.5 rounded-xl font-jakarta font-bold uppercase text-xs transition-colors cursor-pointer shadow-xs"
+                  >
+                    {translations[lang].btnClose}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -4963,21 +4893,45 @@ export const Drawers: React.FC<DrawersProps> = ({
         </div>
       )}
 
-      {/* E-BOOKLET MAGAZINE READER & PRINT-TO-PDF MODAL */}
-      <EBookletModal
-        isOpen={isBookletModalOpen}
-        onClose={handleSubModalClose}
-        lang={lang}
-        dataStore={dataStore}
-      />
+      {/* LAZY LOADED MODALS (Code Splitting: Only downloaded when opened) */}
+      <React.Suspense fallback={null}>
+        {/* E-BOOKLET MAGAZINE READER & PRINT-TO-PDF MODAL */}
+        {isBookletModalOpen && (
+          <EBookletModal
+            isOpen={isBookletModalOpen}
+            onClose={handleSubModalClose}
+            lang={lang}
+            dataStore={dataStore}
+          />
+        )}
 
-      {/* 3D INTERACTIVE FLIPBOOK VIEWER MODAL */}
-      <FlipbookModal
-        isOpen={isFlipbookModalOpen}
-        onClose={() => setIsFlipbookModalOpen(false)}
-        lang={lang}
-        bookSlug={flipbookSlug}
-      />
+        {/* 3D INTERACTIVE FLIPBOOK VIEWER MODAL */}
+        {isFlipbookModalOpen && (
+          <FlipbookModal
+            isOpen={isFlipbookModalOpen}
+            onClose={() => setIsFlipbookModalOpen(false)}
+            lang={lang}
+            bookSlug={flipbookSlug}
+          />
+        )}
+
+        {/* DEDICATED EXCLUSIVE ITINERARY MODAL (MAP + POP-UP + 2 AFFILIATE CARDS + BOTTOM PDF DOWNLOAD) */}
+        {isItineraryModalOpen && (
+          <ItineraryModal
+            isOpen={isItineraryModalOpen}
+            onClose={resetItineraryState}
+            aiResponse={aiResponse}
+            destinations={destinations}
+            cultureItems={cultureItems}
+            culinaryItems={culinaryItems}
+            eventItems={eventItems}
+            lang={lang}
+            appSettings={dataStore?.appSettings}
+            onDownloadPdf={handlePrintA4Itinerary}
+            isDownloadingPdf={isDownloadingPdf}
+          />
+        )}
+      </React.Suspense>
     </>
   );
 };

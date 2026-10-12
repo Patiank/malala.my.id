@@ -682,9 +682,9 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Combined Action Buttons & Search Panel Container (Matched Exact Width) */}
-          <div className="inline-flex flex-col items-stretch gap-2.5 pt-2 max-w-full">
+          <div className="inline-flex flex-col items-stretch gap-2.5 pt-2 w-full sm:w-fit max-w-full">
             {/* Action Buttons Row */}
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full">
               {/* UNI MALA AI Assistant Primary CTA */}
               <ArrowFillButton
                 btnText={t.heroBtnAiPlanner}
@@ -701,7 +701,7 @@ export const Hero: React.FC<HeroProps> = ({
                 arrowColor="#09090b"
                 hoverArrowColor="#09090b"
                 icon={<Sparkles className="w-4 h-4 text-amber-300 group-hover:text-black transition-colors animate-pulse" />}
-                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-amber-500/20 border-zinc-900"
+                className="w-full sm:w-auto font-jakarta font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] shadow-md hover:shadow-amber-500/20 border-zinc-900 justify-center min-h-[46px]"
               />
 
               {/* Mulai Jelajah Main Button - Opens Destinations Sub-menu directly */}
@@ -720,7 +720,7 @@ export const Hero: React.FC<HeroProps> = ({
                 arrowColor="#dc2626"
                 hoverArrowColor="#ffffff"
                 icon={<Compass className="w-4 h-4 text-red-600 group-hover:text-white transition-colors animate-pulse" />}
-                className="font-jakarta font-bold uppercase tracking-[0.14em] shadow-md hover:shadow-red-500/20 border-gray-300"
+                className="w-full sm:w-auto font-jakarta font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] shadow-md hover:shadow-red-500/20 border-gray-300 justify-center min-h-[46px]"
               />
             </div>
 
@@ -743,7 +743,7 @@ export const Hero: React.FC<HeroProps> = ({
                 <Search className="w-5 h-5 animate-pulse" />
               </div>
 
-              {/* Input Field */}
+              {/* Input Field - 16px on mobile prevents involuntary iOS zoom */}
               <input
                 type="text"
                 value={searchQuery}
@@ -758,10 +758,10 @@ export const Hero: React.FC<HeroProps> = ({
                 }}
                 placeholder={
                   lang === 'en'
-                    ? "Cari Harau, Jam Gadang, Rendang, Sate, Pariangan..."
-                    : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang, Sate, Pariangan)..."
+                    ? "Cari Harau, Jam Gadang, Rendang, Sate..."
+                    : "Ketik pencarian (cth: Harau, Jam Gadang, Rendang)..."
                 }
-                className="w-full py-2 px-1 bg-transparent text-xs sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
+                className="w-full py-2 px-1 bg-transparent text-base sm:text-sm text-gray-900 placeholder-gray-400 font-semibold transition-all focus:outline-none"
               />
 
               {/* Clear Input Button if query exists */}
@@ -772,7 +772,7 @@ export const Hero: React.FC<HeroProps> = ({
                     e.stopPropagation();
                     if (onSearchQueryChange) onSearchQueryChange('');
                   }}
-                  className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer"
+                  className="p-1.5 rounded-full text-gray-400 hover:text-black hover:bg-gray-100 transition-colors mr-1 cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
                   title="Clear"
                 >
                   <X className="w-4 h-4" />
@@ -783,7 +783,7 @@ export const Hero: React.FC<HeroProps> = ({
               <button
                 type="submit"
                 onClick={() => onOpenDrawer('search')}
-                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold text-xs uppercase tracking-wider px-5 sm:px-6 py-2.5 rounded-full flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
+                className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:scale-95 text-white font-bold text-xs uppercase tracking-wider px-4 sm:px-6 py-2.5 rounded-full flex items-center gap-1.5 sm:gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0 min-h-[42px]"
               >
                 <Search className="w-3.5 h-3.5" />
                 <span>{lang === 'en' ? 'SEARCH' : 'CARI'}</span>
@@ -836,19 +836,30 @@ export const Hero: React.FC<HeroProps> = ({
             )}
           </div>
 
-          {/* MINANGKAOS Brand Identity & Text (Desktop: Left-Bottom) */}
-          <div className="hidden lg:flex items-center gap-3 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-full max-w-md">
+          {/* MINANGKAOS Brand Identity & Text (Desktop: Left-Bottom, Centered Block) */}
+          <div className="hidden lg:flex flex-col items-center text-center gap-1 transition-colors duration-300 mt-10 sm:mt-16 lg:mt-20 pt-20 sm:pt-28 lg:pt-36 w-fit select-none">
+            {/* SPONSORED BY: Header Label */}
+            <span
+              className="text-[9px] font-orbitron font-extrabold uppercase tracking-widest transition-colors duration-300 opacity-80 text-center"
+              style={heroTextStyle}
+            >
+              SPONSORED BY:
+            </span>
+
+            {/* Minangkaos Logo */}
             <div
               onClick={handlePemprovLogoClick}
-              className="cursor-default shrink-0 select-none"
+              className="cursor-default shrink-0 select-none flex justify-center"
               title="MINANGKAOS"
             >
-              <PemprovSumbarLogo size={60} />
+              <PemprovSumbarLogo size={52} />
             </div>
+
+            {/* Minangkaos Text Below Logo (Smaller & Close Distance, Centered) */}
             <div
-              className="font-slackside text-xl sm:text-2xl lg:text-[26px] font-normal leading-none select-none flex-1 min-w-0"
+              className="font-slackside text-base sm:text-lg lg:text-xl font-normal leading-none select-none -mt-0.5 text-center"
             >
-              <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
+              <div className="text-[#ea580c] drop-shadow-sm tracking-wide">
                 Minangkaos
               </div>
             </div>
@@ -866,10 +877,10 @@ export const Hero: React.FC<HeroProps> = ({
 
           return (
             <div
-              className={`self-start relative flex flex-col justify-between w-full sm:w-[380px] lg:w-[400px] max-w-full transition-all duration-300 ${
+              className={`self-start relative flex flex-col justify-between w-full sm:w-[320px] md:w-[340px] lg:w-[350px] max-w-full transition-all duration-300 ${
                 isDualBanner
-                  ? 'lg:self-center mt-4 lg:mt-0 lg:-translate-y-20 xl:-translate-y-24'
-                  : 'lg:self-end mt-6 lg:mt-auto lg:-translate-y-10 xl:-translate-y-14'
+                  ? 'lg:self-center mt-4 lg:mt-2 lg:-translate-y-3 xl:-translate-y-4'
+                  : 'lg:self-end mt-6 lg:mt-auto lg:translate-y-0'
               }`}
               style={{
                 padding: 'var(--feature-pad)',
@@ -890,7 +901,7 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
 
               {/* Official Tourism Board Metadata & Upcoming Event Spotlight */}
-              <div className="flex flex-col space-y-3 w-full">
+              <div className="flex flex-col space-y-2.5 w-full">
             {/* Spotlight 1: Video Event Card (Clean Video with Structured Top & Bottom Panels) */}
             {videoEvent && (() => {
               const eventItem = videoEvent.item;
@@ -913,14 +924,14 @@ export const Hero: React.FC<HeroProps> = ({
               };
 
               return (
-                <div className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all">
-                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+                <div className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
                   {/* Top Header */}
-                  <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
-                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
-                      <Youtube className="w-3.5 h-3.5 text-red-600 animate-pulse" />
-                      <span>{isEn ? 'Featured Event of the Month' : 'Event Unggulan Bulan Ini'}</span>
+                  <div className="flex items-center justify-between gap-1.5 pb-1 border-b border-gray-100 text-[9.5px] font-jakarta">
+                    <div className="flex items-center gap-1 font-bold text-amber-900">
+                      <Youtube className="w-3 h-3 text-red-600 animate-pulse" />
+                      <span>{isEn ? 'Featured Video' : 'Video Sorotan Event'}</span>
                     </div>
 
                     <div className="flex items-center gap-1.5">
@@ -929,18 +940,18 @@ export const Hero: React.FC<HeroProps> = ({
                         type="button"
                         onClick={toggleVideoVolume}
                         aria-label={isVideoMuted ? 'Nyalakan Suara Video' : 'Matikan Suara Video'}
-                        className={`px-2 py-0.5 rounded-full flex items-center gap-1 text-[9px] font-jakarta font-bold transition-all cursor-pointer shadow-2xs active:scale-95 ${
+                        className={`px-1.5 py-0.5 rounded-full flex items-center gap-1 text-[8.5px] font-jakarta font-bold transition-all cursor-pointer shadow-2xs active:scale-95 ${
                           isVideoMuted
                             ? 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300'
                             : 'bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-400'
                         }`}
                       >
-                        {isVideoMuted ? <VolumeX className="w-3 h-3 text-red-500" /> : <Volume2 className="w-3 h-3 text-white animate-bounce" />}
-                        <span>{isVideoMuted ? (isEn ? 'Unmute' : 'Nyalakan Suara') : (isEn ? 'Mute' : 'Matikan Suara')}</span>
+                        {isVideoMuted ? <VolumeX className="w-2.5 h-2.5 text-red-500" /> : <Volume2 className="w-2.5 h-2.5 text-white animate-bounce" />}
+                        <span>{isVideoMuted ? (isEn ? 'Unmute' : 'Nyalakan') : (isEn ? 'Mute' : 'Matikan')}</span>
                       </button>
 
                       {isKEN && (
-                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-1.5 py-0.5 rounded shadow-2xs">
+                        <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[7.5px] uppercase px-1.5 py-0.5 rounded shadow-2xs">
                           KEN
                         </span>
                       )}
@@ -949,7 +960,7 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Pure & Clean YouTube Player (Lite Facade - Zero Initial TBT Blocking) */}
                   {isVideoActive ? (
-                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0">
+                    <div className="relative w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)] aspect-video -mx-2.5 sm:-mx-3 -mt-1 mb-1.5 overflow-hidden bg-black shrink-0">
                       <iframe
                         ref={videoIframeRef}
                         src={ytEmbedUrl || ''}
@@ -962,7 +973,7 @@ export const Hero: React.FC<HeroProps> = ({
                   ) : (
                     <div
                       onClick={() => { setIsVideoActive(true); setIsVideoMuted(false); }}
-                      className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-black shrink-0 cursor-pointer group/vid"
+                      className="relative w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)] aspect-video -mx-2.5 sm:-mx-3 -mt-1 mb-1.5 overflow-hidden bg-black shrink-0 cursor-pointer group/vid"
                       role="button"
                       tabIndex={0}
                       aria-label={isEn ? `Play ${title} Video` : `Putar Video ${title}`}
@@ -971,19 +982,19 @@ export const Hero: React.FC<HeroProps> = ({
                       <img
                         src={eventItem.imageUrl ? optimizeImageUrl(eventItem.imageUrl, 600) : (videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '')}
                         alt={title}
-                        width={400}
-                        height={225}
+                        width={350}
+                        height={197}
                         className="w-full h-full object-cover group-hover/vid:scale-105 transition-transform duration-500 opacity-90 group-hover/vid:opacity-100"
                         loading="lazy"
                         decoding="async"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 flex flex-col items-center justify-center gap-2">
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-2xl group-hover/vid:scale-110 group-hover/vid:bg-red-600 transition-all">
-                          <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white translate-x-0.5" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20 flex flex-col items-center justify-center gap-1.5">
+                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-xl group-hover/vid:scale-105 group-hover/vid:bg-red-600 transition-all">
+                          <Play className="w-5 h-5 fill-white translate-x-0.5" />
                         </div>
-                        <span className="bg-black/80 backdrop-blur-xs text-white text-[10px] font-jakarta font-bold px-3 py-1 rounded-full border border-white/20 shadow-sm flex items-center gap-1.5">
-                          <Sparkles className="w-3 h-3 text-amber-400 animate-pulse" />
-                          <span>{isEn ? 'Click to Play Video' : 'Putar Video Sorotan'}</span>
+                        <span className="bg-black/80 backdrop-blur-xs text-white text-[9px] font-jakarta font-bold px-2.5 py-0.5 rounded-full border border-white/20 shadow-sm flex items-center gap-1">
+                          <Sparkles className="w-2.5 h-2.5 text-amber-400 animate-pulse" />
+                          <span>{isEn ? 'Play Video' : 'Putar Video'}</span>
                         </span>
                       </div>
                     </div>
@@ -991,38 +1002,38 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Bottom Info: Title, Schedule & Location */}
                   <div className="space-y-0.5">
-                    <h3 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                    <h3 className="font-orbitron font-bold text-[11px] sm:text-xs uppercase text-gray-900 line-clamp-2 min-h-[1.75rem] flex items-center group-hover:text-amber-600 transition-colors leading-snug">
                       {title}
                     </h3>
-                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
+                    <div className="flex items-center gap-2.5 text-[9px] sm:text-[9.5px] text-gray-600 font-medium pt-0.5">
                       <span className="flex items-center gap-1 shrink-0">
-                        <Calendar className="w-3 h-3 text-amber-600" />
+                        <Calendar className="w-2.5 h-2.5 text-amber-600" />
                         <span>{schedule}</span>
                       </span>
                       <span className="flex items-center gap-1 truncate">
-                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
+                        <MapPin className="w-2.5 h-2.5 text-red-600 shrink-0" />
                         <span className="truncate">{location}</span>
                       </span>
                     </div>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 pt-1 border-t border-gray-100">
+                  <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
                     <button
                       onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
                     >
                       <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-3 h-3" />
+                      <ArrowUpRight className="w-2.5 h-2.5" />
                     </button>
                     <a
                       href={getGoogleCalUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
                       title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
                     >
-                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <Calendar className="w-2.5 h-2.5 text-blue-600" />
                       <span>+ Kalender</span>
                     </a>
                   </div>
@@ -1052,40 +1063,40 @@ export const Hero: React.FC<HeroProps> = ({
                 <div
                   onMouseEnter={() => setIsCarouselPaused(true)}
                   onMouseLeave={() => setIsCarouselPaused(false)}
-                  className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-3.5 shadow-xl space-y-2 relative overflow-hidden group hover:border-black transition-all"
+                  className="w-full bg-white/95 backdrop-blur-md border border-amber-300 rounded-xl p-2.5 sm:p-3 shadow-xl space-y-1.5 relative overflow-hidden group hover:border-black transition-all"
                 >
-                  <div className="absolute top-0 right-0 w-28 h-28 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-amber-400/15 rounded-full blur-xl pointer-events-none" />
 
                   {/* Multi-Event Mini Header with Carousel Controls */}
-                  <div className="flex items-center justify-between gap-2 pb-1 border-b border-gray-100 text-[10px] font-jakarta">
-                    <div className="flex items-center gap-1.5 font-bold text-amber-900 truncate">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-pulse shrink-0" />
+                  <div className="flex items-center justify-between gap-1.5 pb-1 border-b border-gray-100 text-[9.5px] font-jakarta">
+                    <div className="flex items-center gap-1 font-bold text-amber-900 truncate">
+                      <Sparkles className="w-3 h-3 text-amber-600 animate-pulse shrink-0" />
                       <span className="truncate">
                         {timeline.isUpcoming2Weeks
-                          ? (isEn ? 'Upcoming Event (Next 2 Weeks)' : 'Informasi Event (2 Minggu ke Depan)')
-                          : (isEn ? 'West Sumatra Event Spotlight' : 'Informasi Event Pariwisata Sumbar')}
+                          ? (isEn ? 'Upcoming Event (2 Weeks)' : 'Event 2 Minggu ke Depan')
+                          : (isEn ? 'Event Spotlight' : 'Sorotan Event Pariwisata')}
                       </span>
                     </div>
 
                     {bannerEvents.length > 1 && (
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <span className="text-[9px] font-bold text-gray-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                      <div className="flex items-center gap-1 shrink-0">
+                        <span className="text-[8.5px] font-bold text-gray-500 bg-amber-50 border border-amber-200 px-1 py-0.5 rounded leading-none">
                           {activeBannerIndex + 1}/{bannerEvents.length}
                         </span>
                         <div className="flex items-center gap-0.5">
                           <button
                             onClick={() => setActiveBannerIndex((prev) => (prev - 1 + bannerEvents.length) % bannerEvents.length)}
-                            className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                            className="p-0.5 rounded bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
                             title="Sebelumnya"
                           >
-                            <ChevronLeft className="w-3 h-3" />
+                            <ChevronLeft className="w-2.5 h-2.5" />
                           </button>
                           <button
                             onClick={() => setActiveBannerIndex((prev) => (prev + 1) % bannerEvents.length)}
-                            className="p-1 rounded-md bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
+                            className="p-0.5 rounded bg-gray-100 hover:bg-black hover:text-white transition-colors cursor-pointer"
                             title="Berikutnya"
                           >
-                            <ChevronRight className="w-3 h-3" />
+                            <ChevronRight className="w-2.5 h-2.5" />
                           </button>
                         </div>
                       </div>
@@ -1094,74 +1105,74 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Photo Banner Image */}
                   {eventItem.imageUrl ? (
-                    <div className="relative w-[calc(100%+1.75rem)] aspect-video -mx-3.5 -mt-1 mb-2 overflow-hidden bg-stone-900 shrink-0">
+                    <div className="relative w-[calc(100%+1.25rem)] sm:w-[calc(100%+1.5rem)] aspect-video -mx-2.5 sm:-mx-3 -mt-1 mb-1.5 overflow-hidden bg-stone-900 shrink-0">
                       <img
                         src={eventItem.imageUrl.startsWith('data:') ? eventItem.imageUrl : optimizeImageUrl(eventItem.imageUrl, 600)}
                         alt={title}
-                        width={400}
-                        height={225}
+                        width={350}
+                        height={197}
                         loading="eager"
                         decoding="async"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => {
                           const img = e.currentTarget as HTMLImageElement;
-                          if (!img.src.includes('ev26-danau-kembar.jpg')) {
-                            img.src = '/images/catalog/ev26-danau-kembar.jpg';
+                          if (!img.src.includes('ev26-danau-kembar.webp')) {
+                            img.src = '/images/catalog/ev26-danau-kembar.webp';
                           }
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                       
-                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full">
-                        <span className="relative flex h-2 w-2">
+                      <div className="absolute top-1.5 left-1.5 flex items-center gap-1 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded-full">
+                        <span className="relative flex h-1.5 w-1.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
                         </span>
-                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
+                        <span className="font-jakarta font-black text-[8px] uppercase tracking-wider text-white">
                           {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
                       {isKEN && (
-                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-sm">
+                        <span className="absolute top-1.5 right-1.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[7.5px] uppercase px-1.5 py-0.5 rounded shadow-sm">
                           KEN Kemenparekraf
                         </span>
                       )}
                     </div>
                   ) : (
-                    <div className="relative h-36 -mx-3.5 -mt-1 mb-2 overflow-hidden rounded-t-lg bg-gradient-to-br from-amber-800 via-stone-900 to-black shrink-0 flex items-center justify-center p-3">
-                      <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded-full">
-                        <span className="relative flex h-2 w-2">
+                    <div className="relative h-32 -mx-2.5 sm:-mx-3 -mt-1 mb-1.5 overflow-hidden rounded-t-lg bg-gradient-to-br from-amber-800 via-stone-900 to-black shrink-0 flex items-center justify-center p-2.5">
+                      <div className="absolute top-1.5 left-1.5 flex items-center gap-1 bg-black/60 backdrop-blur-xs px-1.5 py-0.5 rounded-full">
+                        <span className="relative flex h-1.5 w-1.5">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500"></span>
                         </span>
-                        <span className="font-jakarta font-black text-[9px] uppercase tracking-wider text-white">
+                        <span className="font-jakarta font-black text-[8px] uppercase tracking-wider text-white">
                           {isEn ? timeline.badgeLabelEn : timeline.badgeLabelId}
                         </span>
                       </div>
 
                       {isKEN && (
-                        <span className="absolute top-2 right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[8px] uppercase px-2 py-0.5 rounded shadow-2xs">
+                        <span className="absolute top-1.5 right-1.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-jakarta font-black text-[7.5px] uppercase px-1.5 py-0.5 rounded shadow-2xs">
                           KEN Kemenparekraf
                         </span>
                       )}
 
                       <div className="text-center text-white/90 space-y-1">
-                        <Calendar className="w-6 h-6 mx-auto text-amber-400 opacity-80" />
-                        <p className="font-orbitron font-bold text-[11px] uppercase tracking-wider line-clamp-1">{title}</p>
+                        <Calendar className="w-5 h-5 mx-auto text-amber-400 opacity-80" />
+                        <p className="font-orbitron font-bold text-[10px] uppercase tracking-wider line-clamp-1">{title}</p>
                       </div>
                     </div>
                   )}
 
                   {/* Multi-Event Dots Indicator */}
                   {bannerEvents.length > 1 && (
-                    <div className="flex items-center justify-center gap-1.5 py-0.5">
+                    <div className="flex items-center justify-center gap-1 py-0.5">
                       {bannerEvents.map((_, i) => (
                         <button
                           key={i}
                           onClick={() => setActiveBannerIndex(i)}
                           className={`h-1 rounded-full transition-all cursor-pointer ${
-                            activeBannerIndex === i ? 'w-5 bg-amber-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'
+                            activeBannerIndex === i ? 'w-4 bg-amber-600' : 'w-1.5 bg-gray-300 hover:bg-gray-400'
                           }`}
                           title={`Event ${i + 1}`}
                         />
@@ -1171,16 +1182,16 @@ export const Hero: React.FC<HeroProps> = ({
 
                   {/* Title & Info with fixed height */}
                   <div className="space-y-0.5">
-                    <h3 className="font-orbitron font-bold text-xs uppercase text-gray-900 line-clamp-2 h-8 flex items-center group-hover:text-amber-600 transition-colors leading-tight">
+                    <h3 className="font-orbitron font-bold text-[11px] sm:text-xs uppercase text-gray-900 line-clamp-2 min-h-[1.75rem] flex items-center group-hover:text-amber-600 transition-colors leading-snug">
                       {title}
                     </h3>
-                    <div className="flex items-center gap-3 text-[10px] text-gray-600 font-medium pt-0.5">
+                    <div className="flex items-center gap-2.5 text-[9px] sm:text-[9.5px] text-gray-600 font-medium pt-0.5">
                       <span className="flex items-center gap-1 shrink-0">
-                        <Calendar className="w-3 h-3 text-amber-600" />
+                        <Calendar className="w-2.5 h-2.5 text-amber-600" />
                         <span>{schedule}</span>
                       </span>
                       <span className="flex items-center gap-1 truncate">
-                        <MapPin className="w-3 h-3 text-red-600 shrink-0" />
+                        <MapPin className="w-2.5 h-2.5 text-red-600 shrink-0" />
                         <span className="truncate">{location}</span>
                       </span>
                     </div>
@@ -1190,18 +1201,18 @@ export const Hero: React.FC<HeroProps> = ({
                   <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
                     <button
                       onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs truncate"
+                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs truncate"
                     >
                       <span className="truncate">{isEn ? 'CoE Schedule' : 'Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-3 h-3 shrink-0" />
+                      <ArrowUpRight className="w-2.5 h-2.5 shrink-0" />
                     </button>
 
                     <button
                       onClick={() => onOpenDrawer('itinerary')}
-                      className="bg-amber-500 hover:bg-amber-400 text-black py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs shrink-0"
+                      className="bg-amber-500 hover:bg-amber-400 text-black py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs shrink-0"
                       title={isEn ? 'Plan with AI' : 'Susun Rencana AI'}
                     >
-                      <Sparkles className="w-3 h-3 text-black" />
+                      <Sparkles className="w-2.5 h-2.5 text-black" />
                       <span>{isEn ? 'AI Plan' : 'AI Plan'}</span>
                     </button>
 
@@ -1209,10 +1220,10 @@ export const Hero: React.FC<HeroProps> = ({
                       href={getGoogleCalUrl()}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1.5 px-2 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
                       title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
                     >
-                      <Calendar className="w-3 h-3 text-blue-600" />
+                      <Calendar className="w-2.5 h-2.5 text-blue-600" />
                       <span>+ Kalender</span>
                     </a>
                   </div>
@@ -1227,19 +1238,30 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
         <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-8 sm:mt-10 pb-6 w-full select-none z-30">
-          {/* Left: Minangkaos Branding */}
-          <div className="flex items-center gap-2.5 min-w-0 pl-1">
+          {/* Left: Minangkaos Branding with SPONSORED BY: (Centered Block) */}
+          <div className="flex flex-col items-center text-center gap-1 min-w-0 pl-1 select-none">
+            {/* SPONSORED BY: Header Label */}
+            <span
+              className="text-[8.5px] font-orbitron font-extrabold uppercase tracking-widest transition-colors duration-300 opacity-80 text-center"
+              style={heroTextStyle}
+            >
+              SPONSORED BY:
+            </span>
+
+            {/* Minangkaos Logo */}
             <div
               onClick={handlePemprovLogoClick}
-              className="cursor-default shrink-0 select-none"
+              className="cursor-default shrink-0 select-none flex justify-center"
               title="MINANGKAOS"
             >
-              <PemprovSumbarLogo size={46} />
+              <PemprovSumbarLogo size={42} />
             </div>
+
+            {/* Minangkaos Text Below Logo (Smaller & Close Distance, Centered) */}
             <div
-              className="font-slackside text-2xl sm:text-3xl font-normal leading-none select-none truncate"
+              className="font-slackside text-sm sm:text-base font-normal leading-none select-none -mt-0.5 text-center"
             >
-              <div className="text-[#ea580c] drop-shadow-sm tracking-wide pt-0.5">
+              <div className="text-[#ea580c] drop-shadow-sm tracking-wide">
                 Minangkaos
               </div>
             </div>

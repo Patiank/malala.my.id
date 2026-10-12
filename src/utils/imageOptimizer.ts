@@ -30,22 +30,50 @@ export function optimizeImageUrl(url?: string, width?: number): string {
   return trimmed;
 }
 
+export interface ImageOptimizationStats {
+  originalBytes: number;
+  compressedBytes: number;
+  reductionPercentage: number;
+  width: number;
+  height: number;
+  format: string;
+}
+
+export interface OptimizedImagePayload {
+  dataUrl: string;
+  stats: ImageOptimizationStats;
+}
+
+/**
+ * Format raw byte size into human-readable string (e.g. 2.4 MB, 68 KB)
+ */
+export function formatBytes(bytes: number, decimals: number = 1): string {
+  if (!bytes || bytes === 0) return '0 B';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+
 /**
  * Compresses an image file on the client using HTML Canvas before uploading.
  * Converts to WebP format with maximum width/height constraints and quality reduction.
+ * Returns both the Blob and the actual final dimensions.
  */
-export async function compressImage(
+export async function compressImageWithDimensions(
   file: File,
   maxWidth: number = 1600,
   maxHeight: number = 1200,
   quality: number = 0.85
-): Promise<Blob> {
+): Promise<{ blob: Blob; width: number; height: number }> {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.src = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    img.src = objectUrl;
 
     img.onload = () => {
-      URL.revokeObjectURL(img.src);
+      URL.revokeObjectURL(objectUrl);
       let width = img.width;
       let height = img.height;
 
@@ -66,7 +94,7 @@ export async function compressImage(
 
       const ctx = canvas.getContext('2d');
       if (!ctx) {
-        resolve(file);
+        resolve({ blob: file, width: img.width, height: img.height });
         return;
       }
 
@@ -77,9 +105,9 @@ export async function compressImage(
       canvas.toBlob(
         (blob) => {
           if (blob) {
-            resolve(blob);
+            resolve({ blob, width, height });
           } else {
-            resolve(file);
+            resolve({ blob: file, width: img.width, height: img.height });
           }
         },
         'image/webp',
@@ -88,9 +116,24 @@ export async function compressImage(
     };
 
     img.onerror = (err) => {
+      URL.revokeObjectURL(objectUrl);
       reject(new Error('Gagal memproses berkas gambar: ' + err));
     };
   });
+}
+
+/**
+ * Compresses an image file on the client using HTML Canvas before uploading.
+ * Converts to WebP format with maximum width/height constraints and quality reduction.
+ */
+export async function compressImage(
+  file: File,
+  maxWidth: number = 1600,
+  maxHeight: number = 1200,
+  quality: number = 0.85
+): Promise<Blob> {
+  const res = await compressImageWithDimensions(file, maxWidth, maxHeight, quality);
+  return res.blob;
 }
 
 /**
@@ -109,44 +152,83 @@ function blobToDataURL(blob: Blob): Promise<string> {
  * Processes and optimizes an image file directly on the client using HTML5 Canvas WebP compression.
  * Targets a lightweight 60-90 KB payload so documents in Firestore remain tiny, ultra-fast, and bandwidth-friendly.
  * Completely free, runs 100% locally in browser, zero Blaze Plan needed, and instantly fast (~200ms)!
+ * Returns both the base64 dataUrl and detailed compression metrics for visual UI display.
  */
-export async function uploadCatalogImage(
+export async function processCatalogImageWithStats(
   file: File,
   _folder: string = 'catalog',
   onProgress?: (percent: number) => void
-): Promise<string> {
+): Promise<OptimizedImagePayload> {
+  const originalBytes = file.size;
+
   try {
     // Stage 1: Reading file & starting compression
     if (onProgress) onProgress(20);
 
-    // Stage 2: Client-side WebP compression (1200x900 max, quality 0.78)
-    let compressedBlob = await compressImage(file, 1200, 900, 0.78);
+    // Stage 2: Client-side WebP compression (1200x900 max, quality 0.80)
+    let comp = await compressImageWithDimensions(file, 1200, 900, 0.80);
     if (onProgress) onProgress(50);
 
-    // Safeguard Tier 1: If larger than 100KB, adaptively compress to 1000x750 at 0.72
-    if (compressedBlob.size > 100 * 1024) {
-      compressedBlob = await compressImage(file, 1000, 750, 0.72);
+    // Safeguard Tier 1: If larger than 110KB, adaptively compress to 1000x750 at 0.74
+    if (comp.blob.size > 110 * 1024) {
+      comp = await compressImageWithDimensions(file, 1000, 750, 0.74);
       if (onProgress) onProgress(70);
     }
 
-    // Safeguard Tier 2: If still larger than 85KB, compress to 880x660 at 0.68
-    if (compressedBlob.size > 85 * 1024) {
-      compressedBlob = await compressImage(file, 880, 660, 0.68);
+    // Safeguard Tier 2: If still larger than 90KB, compress to 880x660 at 0.70
+    if (comp.blob.size > 90 * 1024) {
+      comp = await compressImageWithDimensions(file, 880, 660, 0.70);
       if (onProgress) onProgress(85);
     }
 
+    const compressedBytes = comp.blob.size;
+    const reductionPercentage = Math.max(0, Math.round(((originalBytes - compressedBytes) / originalBytes) * 100));
+
     // Stage 3: Generate Base64 Data URL for instant preview and Firestore persistence
-    const dataUrl = await blobToDataURL(compressedBlob);
+    const dataUrl = await blobToDataURL(comp.blob);
     if (onProgress) onProgress(100);
 
-    return dataUrl;
+    return {
+      dataUrl,
+      stats: {
+        originalBytes,
+        compressedBytes,
+        reductionPercentage,
+        width: comp.width,
+        height: comp.height,
+        format: 'WebP'
+      }
+    };
   } catch (err: any) {
     console.warn('Image compression fallback:', err);
     if (onProgress) onProgress(100);
     // If original file is already small (< 200KB), allow it; otherwise throw error to protect Firestore quota
     if (file.size < 200 * 1024) {
-      return await blobToDataURL(file);
+      const dataUrl = await blobToDataURL(file);
+      return {
+        dataUrl,
+        stats: {
+          originalBytes,
+          compressedBytes: file.size,
+          reductionPercentage: 0,
+          width: 0,
+          height: 0,
+          format: file.type.replace('image/', '').toUpperCase() || 'RAW'
+        }
+      };
     }
     throw new Error('Resolusi foto terlalu tinggi dan gagal dikompresi. Silakan gunakan foto berukuran di bawah 5MB atau format JPG/PNG standar.');
   }
+}
+
+/**
+ * Backward compatible wrapper for uploadCatalogImage
+ */
+export async function uploadCatalogImage(
+  file: File,
+  folder: string = 'catalog',
+  onProgress?: (percent: number) => void
+): Promise<string> {
+  const result = await processCatalogImageWithStats(file, folder, onProgress);
+  return result.dataUrl;
 }
