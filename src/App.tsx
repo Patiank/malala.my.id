@@ -475,7 +475,7 @@ export default function App() {
 
       {/* Breaking News Ticker Bar (Above Mobile Dock on small screens, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-[74px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[88px] sm:bottom-[92px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
@@ -497,7 +497,7 @@ export default function App() {
           </button>
         </div>
 
-        {/* Running News Ticker: Hover pauses scroll for reading, clicking opens specific news (no drawer auto-open) */}
+        {/* Running News Ticker: Smooth continuous scroll, clicking opens news modal */}
         <div className="overflow-hidden whitespace-nowrap w-full relative">
           {(() => {
             const allHotInfo: HotInfoItem[] = dataStore.hotInfoItems || [];
@@ -508,12 +508,12 @@ export default function App() {
               ? validItems 
               : deduplicateNewsItems<HotInfoItem>(allHotInfo)
                   .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
-            // Ultra-calm tempo: ~35 seconds per item (minimum 160 seconds total) for effortless readability
-            const marqueeDuration = Math.max(160, displayItems.length * 35);
+            // Smooth, clearly visible gliding tempo: ~7 seconds per item, 35-55s total
+            const marqueeDuration = Math.max(35, Math.min(55, displayItems.length * 7.5));
 
             return (
               <div 
-                className="inline-flex items-center gap-10 animate-marquee hover:[animation-play-state:paused] font-jakarta text-xs text-gray-200"
+                className="inline-flex items-center gap-10 animate-marquee font-jakarta text-xs text-gray-200"
                 style={{
                   animation: `marqueeScroll ${marqueeDuration}s linear infinite`,
                   willChange: 'transform'

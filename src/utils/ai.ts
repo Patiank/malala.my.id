@@ -840,7 +840,7 @@ export async function fetchAiItinerary(params: any) {
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   const isValidGeminiKey = Boolean(viteApiKey && viteApiKey.length > 20 && !viteApiKey.includes("Dummy"));
   if (isValidGeminiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
     for (const modelName of modelsToTry) {
       if (isClientModelInCooldown(modelName)) {
         continue;
@@ -1052,7 +1052,7 @@ export async function fetchAiChat(message: string, history: ChatMessageItem[] = 
   // Client side Gemini API fallback (Guaranteed Active)
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
     for (const modelName of modelsToTry) {
       if (isClientModelInCooldown(modelName)) {
         continue;
@@ -1461,7 +1461,7 @@ export async function generateCatalogItemWithAi(type: string, name: string, hint
   // Client side Gemini API fallback if VITE_GEMINI_API_KEY is available and has quota
   const viteApiKey = (import.meta as any).env?.VITE_GEMINI_API_KEY || (import.meta as any).env?.GEMINI_API_KEY || "AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw";
   if (viteApiKey) {
-    const modelsToTry = ['gemini-3.8-flash'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
     for (const modelName of modelsToTry) {
       try {
         const ai = await getGeminiClient(viteApiKey);
@@ -2979,7 +2979,7 @@ Tugas Anda:
 }
 Waktu saat ini: ${nowStr}`;
 
-  const modelsToTry = ['gemini-3.8-flash'];
+  const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   for (const model of modelsToTry) {
     try {
       const ai = await getGeminiClient(viteApiKey);
@@ -3066,7 +3066,7 @@ Format output JSON murni tanpa markdown:
   "hashtags": ["#WisataSumbar", "#PesonaIndonesia", "#MalalaSumbar", "#Minangkabau", "#ExploreSumbar"]
 }`;
 
-    const modelsToTry = ['gemini-3.8-flash'];
+    const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
     for (const model of modelsToTry) {
       try {
         const res = await ai.models.generateContent({

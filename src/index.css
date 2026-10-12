@@ -132,9 +132,10 @@ body {
   will-change: transform;
 }
 
-.animate-marquee:hover,
-.animate-marquee:focus-within {
-  animation-play-state: paused !important;
+@media (hover: hover) and (pointer: fine) {
+  .animate-marquee:hover {
+    animation-play-state: paused !important;
+  }
 }
 
 @keyframes wobbleRotate {

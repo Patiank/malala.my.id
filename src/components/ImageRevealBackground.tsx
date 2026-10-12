@@ -83,16 +83,14 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
 
     const loop = () => {
       const now = Date.now();
-      const isMobile = width < 768;
-
-      // Auto-orbit only on desktop so mobile background stays perfectly still and never jumps
-      if (!isMobile && now - lastUserTouch > 2000) {
+      // Auto-orbit smoothly on all devices if not touched for 2 seconds
+      if (now - lastUserTouch > 2000) {
         autoAngle += 0.008;
-        const orbitRadiusX = width * 0.25;
-        const orbitRadiusY = height * 0.2;
+        const orbitRadiusX = width * 0.22;
+        const orbitRadiusY = height * 0.16;
         mouseRef.current = {
           x: width / 2 + Math.cos(autoAngle) * orbitRadiusX,
-          y: height / 2 + Math.sin(autoAngle * 1.3) * orbitRadiusY,
+          y: height * 0.38 + Math.sin(autoAngle * 1.3) * orbitRadiusY,
         };
       }
 
