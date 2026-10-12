@@ -1,0 +1,47 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "MALALA — Portal Pariwisata & Budaya Sumatera Barat",
+    "identifier": "https://malala.my.id",
+    "documentationUrl": "https://malala.my.id/llms.txt",
+    "logoUrl": "https://malala.my.id/favicon.png"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:malala.my.id:resource:tourism-knowledge",
+      "displayName": "West Sumatra Tourism & Minangkabau Culture Knowledge Base",
+      "type": "text/markdown",
+      "url": "https://malala.my.id/llms.txt",
+      "description": "Comprehensive structured information on 50 destinations, 30 cultural traditions, 36 culinary delights, and 26 official KEN 2026 events in West Sumatra.",
+      "representativeQueries": [
+        "Tempat wisata terbaik di Sumatera Barat",
+        "Jadwal event festival budaya Minangkabau 2026",
+        "Kuliner khas Minang dan rekomendasi tempat makan",
+        "Rute liburan keliling Sumbar tanpa bolak balik"
+      ]
+    },
+    {
+      "identifier": "urn:air:malala.my.id:resource:full-knowledge",
+      "displayName": "West Sumatra Full Deep Knowledge Dataset",
+      "type": "text/markdown",
+      "url": "https://malala.my.id/llms-full.txt",
+      "description": "In-depth encyclopedic dataset covering geography, matrilineal culture, culinary history, and complete event calendars for West Sumatra.",
+      "representativeQueries": [
+        "Sejarah filosofi matrilineal Minangkabau",
+        "Daftar lengkap 50 destinasi wisata alam dan sejarah Sumatera Barat",
+        "Kalender event pariwisata Sumatera Barat 2026"
+      ]
+    },
+    {
+      "identifier": "urn:air:malala.my.id:resource:sitemap",
+      "displayName": "MALALA XML Sitemap Index",
+      "type": "application/xml",
+      "url": "https://malala.my.id/sitemap.xml",
+      "description": "Index of all discoverable pages and permalinks on MALALA portal.",
+      "representativeQueries": [
+        "Sitemap wisata Sumatera Barat",
+        "Daftar halaman direktori destinasi Malala"
+      ]
+    }
+  ]
+}
