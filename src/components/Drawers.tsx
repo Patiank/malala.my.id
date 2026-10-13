@@ -2611,9 +2611,12 @@ export const Drawers: React.FC<DrawersProps> = ({
                       type="button"
                       onClick={() => {
                         const link = document.createElement('a');
-                        link.href = '/downloads/kalender-event-sumbar-2026.pdf';
-                        link.download = 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
+                        link.href = isEn ? OFFICIAL_PDF_URLS.eventsEn : OFFICIAL_PDF_URLS.eventsId;
+                        link.download = isEn
+                          ? 'MALALA-West-Sumatra-Calendar-of-Events-2026.pdf'
+                          : 'MALALA-Kalender-Event-CoE-Sumatera-Barat-2026.pdf';
                         link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
