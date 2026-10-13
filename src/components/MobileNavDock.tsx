@@ -74,7 +74,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
       className="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 select-none pointer-events-auto"
     >
       <div
-        className="w-full box-border bg-white/98 backdrop-blur-xl border-t border-gray-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-2 grid grid-cols-5 items-center justify-items-center gap-1"
+        className="w-full box-border bg-white/98 backdrop-blur-xl rounded-t-2xl rounded-b-none border-t border-gray-200 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] px-2 grid grid-cols-5 items-center justify-items-center gap-1"
         style={{
           height: 'calc(68px + env(safe-area-inset-bottom, 0px))',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
