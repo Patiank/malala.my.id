@@ -1296,7 +1296,7 @@ export const Hero: React.FC<HeroProps> = ({
     })()}
 
         {/* Mobile Bottom Footer Row: Minangkaos Branding (Left) & Tanya Uni Mala Chat Bubble (Right) in the Same Line */}
-        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-3 sm:mt-5 pb-[calc(114px+env(safe-area-inset-bottom,0px))] sm:pb-[calc(120px+env(safe-area-inset-bottom,0px))] w-full select-none z-30">
+        <div className="flex lg:hidden items-center justify-between gap-3 transition-colors duration-300 mt-3 sm:mt-5 pb-[calc(122px+env(safe-area-inset-bottom,0px))] sm:pb-[calc(128px+env(safe-area-inset-bottom,0px))] w-full select-none z-30">
           {/* Left: Minangkaos Branding with SPONSORED BY: (Centered Block) */}
           <div className="flex flex-col items-center text-center gap-1 min-w-0 pl-1 select-none">
             {/* SPONSORED BY: Header Label */}

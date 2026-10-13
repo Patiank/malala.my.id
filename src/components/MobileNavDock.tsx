@@ -129,12 +129,12 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           className="w-full flex flex-col items-center justify-center py-1 px-0.5 cursor-pointer group active:scale-90 transition-transform"
           aria-label="AI Planner"
         >
-          <div className="w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2px] shadow-md shadow-amber-500/30 flex items-center justify-center">
-            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2">
+          <div className="w-[54px] h-[54px] -mt-5 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2.5px] shadow-lg shadow-amber-500/40 flex items-center justify-center">
+            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2.5">
               <img
                 src="/images/nav/nav_ai_gold.png"
                 alt="AI Trip"
-                className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] object-contain animate-pulse"
+                className="w-[32px] h-[32px] object-contain animate-pulse"
               />
             </div>
           </div>
