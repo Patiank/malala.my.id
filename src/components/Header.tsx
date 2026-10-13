@@ -166,20 +166,20 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Menu Toggle & Essentials */}
         <div className="flex items-center gap-1.5 sm:gap-2 md:hidden shrink-0">
-          {/* Touch-Friendly Language Toggle showing ID / EN clearly */}
+          {/* Touch-Friendly Language Toggle showing ID | EN matching PC style */}
           <button
             onClick={onToggleLang}
-            className="min-h-[38px] px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-xs flex items-center justify-center gap-1 active:scale-95"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs group active:scale-95"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-            aria-label="Toggle language ID / EN"
+            aria-label="Toggle language ID | EN"
           >
-            <Globe className="w-3.5 h-3.5 text-red-600 shrink-0" />
-            <div className="flex items-center gap-0.5 text-[10px] font-bold tracking-wider uppercase leading-none">
-              <span className={`px-1.5 py-1 rounded transition-colors ${lang === 'id' ? 'bg-black text-white' : 'text-gray-400'}`}>
+            <Globe className="w-3.5 h-3.5 text-red-600 transition-transform group-hover:rotate-12 shrink-0" />
+            <div className="flex items-center gap-1 text-[10px] font-extrabold tracking-wider uppercase">
+              <span className={`px-1.5 py-0.5 rounded transition-colors ${lang === 'id' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
                 ID
               </span>
-              <span className="text-gray-300 font-normal">/</span>
-              <span className={`px-1.5 py-1 rounded transition-colors ${lang === 'en' ? 'bg-black text-white' : 'text-gray-400'}`}>
+              <span className="text-gray-300 font-normal">|</span>
+              <span className={`px-1.5 py-0.5 rounded transition-colors ${lang === 'en' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
                 EN
               </span>
             </div>
