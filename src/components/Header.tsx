@@ -120,7 +120,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Logo (Left) - Sized proportionally so end of MALALA aligns with end of AI */}
         <button
           onClick={onCloseDrawer}
-          className="w-[124px] sm:w-[136px] md:w-[148px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5 shrink-0"
+          className="w-[104px] sm:w-[128px] md:w-[148px] flex flex-col items-stretch cursor-pointer hover:opacity-85 transition-opacity text-left focus:outline-none group py-0.5 shrink-0"
           aria-label="MALALA - Panduan Wisata Sumatera Barat"
         >
           {/* Default / Light Background Logo (Red + Black) */}
@@ -145,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Tagline Selalu Satu Baris & Pas Sejajar Rata Kiri-Kanan Lebar Logo */}
           <div
-            className="flex justify-between items-center w-full font-jakarta text-[6.5px] sm:text-[7.2px] md:text-[8px] font-bold mt-0.5 uppercase whitespace-nowrap tracking-[0.02em] select-none transition-colors duration-300"
+            className="flex justify-between items-center w-full font-jakarta text-[5.5px] sm:text-[6.8px] md:text-[8px] font-bold mt-0.5 uppercase whitespace-nowrap tracking-[0.015em] select-none transition-colors duration-300"
             style={{ color: heroTextColor, opacity: 0.85, textShadow: shadowValue }}
           >
             {t.logoTagline.split(' ').map((word, i) => (
@@ -165,18 +165,24 @@ export const Header: React.FC<HeaderProps> = ({
         />
 
         {/* Mobile Menu Toggle & Essentials */}
-        <div className="flex items-center gap-2 md:hidden shrink-0">
-          {/* Touch-Friendly Language Toggle (min 40px touch area) */}
+        <div className="flex items-center gap-1.5 sm:gap-2 md:hidden shrink-0">
+          {/* Touch-Friendly Language Toggle showing ID / EN clearly */}
           <button
             onClick={onToggleLang}
-            className="min-h-[40px] min-w-[40px] px-2.5 py-1.5 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-xs flex items-center justify-center gap-1 active:scale-95"
+            className="min-h-[38px] px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-xs flex items-center justify-center gap-1 active:scale-95"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
-            aria-label="Toggle language"
+            aria-label="Toggle language ID / EN"
           >
             <Globe className="w-3.5 h-3.5 text-red-600 shrink-0" />
-            <span className="text-[10px] font-black px-1.5 py-0.5 rounded bg-black text-white leading-none uppercase">
-              {lang.toUpperCase()}
-            </span>
+            <div className="flex items-center gap-0.5 text-[10px] font-bold tracking-wider uppercase leading-none">
+              <span className={`px-1.5 py-1 rounded transition-colors ${lang === 'id' ? 'bg-black text-white' : 'text-gray-400'}`}>
+                ID
+              </span>
+              <span className="text-gray-300 font-normal">/</span>
+              <span className={`px-1.5 py-1 rounded transition-colors ${lang === 'en' ? 'bg-black text-white' : 'text-gray-400'}`}>
+                EN
+              </span>
+            </div>
           </button>
           
           {/* Touch-Friendly Saved / Bookmark Button */}

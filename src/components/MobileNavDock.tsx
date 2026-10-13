@@ -74,8 +74,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
       className="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 select-none pointer-events-auto"
     >
       <div
-        className="w-full bg-white/98 backdrop-blur-xl border-t border-gray-200/90 shadow-[0_-8px_30px_rgba(0,0,0,0.12)] rounded-t-2xl px-2 pt-2 flex items-center justify-between gap-1"
-        style={{ paddingBottom: 'max(0.5rem, env(safe-area-inset-bottom, 0px))' }}
+        className="w-full h-[68px] sm:h-[72px] box-content bg-white/98 backdrop-blur-xl border-t border-gray-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-2 flex items-center justify-between gap-1"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         {/* Item 1: Destinasi Wisata (Rumah Gadang Asli) */}
         <button
@@ -91,9 +91,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'destinations' ? '/images/nav/nav_wisata_white.png' : '/images/nav/nav_wisata.png'}
             alt="Wisata"
-            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
+            className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
             {navItems[0].label}
           </span>
         </button>
@@ -112,9 +112,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'culinary' ? '/images/nav/nav_kuliner_white.png' : '/images/nav/nav_kuliner.png'}
             alt="Kuliner"
-            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
+            className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
             {navItems[1].label}
           </span>
         </button>
@@ -123,19 +123,19 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'formai' ? onCloseDrawer() : onOpenDrawer('formai'))}
-          className="relative -top-3.5 px-2 flex flex-col items-center justify-center cursor-pointer group active:scale-90 transition-transform"
+          className="px-2 flex flex-col items-center justify-center cursor-pointer group active:scale-90 transition-transform"
           aria-label="AI Planner"
         >
-          <div className="w-[54px] h-[54px] rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2.5px] shadow-lg shadow-amber-500/40 flex items-center justify-center">
-            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2.5">
+          <div className="w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2px] shadow-md shadow-amber-500/30 flex items-center justify-center">
+            <div className="w-full h-full rounded-full bg-slate-950 flex items-center justify-center p-2">
               <img
                 src="/images/nav/nav_ai_gold.png"
                 alt="AI Trip"
-                className="w-[32px] h-[32px] object-contain animate-pulse"
+                className="w-[24px] h-[24px] sm:w-[26px] sm:h-[26px] object-contain animate-pulse"
               />
             </div>
           </div>
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal text-amber-700 tracking-wider uppercase mt-1">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal text-amber-700 tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
             {isEn ? 'AI TRIP' : 'RUTE AI'}
           </span>
         </button>
@@ -154,9 +154,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'events' ? '/images/nav/nav_event_white.png' : '/images/nav/nav_event.png'}
             alt="Event"
-            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
+            className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
             {navItems[3].label}
           </span>
         </button>
@@ -175,9 +175,9 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'download' ? '/images/nav/nav_panduan_white.png' : '/images/nav/nav_panduan.png'}
             alt="Panduan"
-            className="w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] object-contain transition-transform"
+            className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
             {navItems[4].label}
           </span>
         </button>

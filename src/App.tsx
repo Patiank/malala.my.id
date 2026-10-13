@@ -466,9 +466,9 @@ export default function App() {
         hotInfoItems={dataStore.hotInfoItems}
       />
 
-      {/* Breaking News Ticker Bar (Elevated ~2mm More Above Mobile Dock with Safe-Area, bottom-0 on desktop) */}
+      {/* Breaking News Ticker Bar (Attached flush right on top of MobileNavDock on mobile, bottom-0 on desktop) */}
       <div 
-        className="fixed bottom-[calc(104px+env(safe-area-inset-bottom,0px))] sm:bottom-[108px] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[calc(68px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(72px+env(safe-area-inset-bottom,0px))] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 
