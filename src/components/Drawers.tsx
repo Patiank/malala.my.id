@@ -2575,35 +2575,35 @@ export const Drawers: React.FC<DrawersProps> = ({
             return (
               <div className="space-y-6 font-jakarta">
                 {/* Minimalist Header Calendar of Events */}
-                <div className="bg-neutral-900 text-white p-3.5 sm:p-4 rounded-xl shadow-xs relative overflow-hidden border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="bg-amber-500 text-black font-orbitron font-black text-[9px] uppercase px-2 py-0.5 rounded tracking-wider">
+                <div className="bg-neutral-900 text-white p-4 rounded-2xl shadow-sm relative overflow-hidden border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+                  <div className="space-y-1.5 min-w-0 w-full sm:w-auto">
+                    <div className="flex items-center justify-between sm:justify-start gap-2 flex-wrap">
+                      <span className="bg-amber-500 text-black font-orbitron font-black text-[9px] uppercase px-2.5 py-0.5 rounded-md tracking-wider">
                         OFFICIAL CoE 2026
                       </span>
                       <span className="text-gray-300 font-jakarta font-medium text-[10px]">
                         {isEn ? 'Curated by MINANGKAOS' : 'Disusun oleh MINANGKAOS'}
                       </span>
                     </div>
-                    <h2 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide text-white">
+                    <h2 className="font-orbitron font-bold text-xs sm:text-sm uppercase tracking-wide text-white text-center sm:text-left pt-0.5">
                       {isEn ? 'CALENDAR OF EVENTS (CoE) 2026' : 'KALENDER EVENT SUMBAR 2026'}
                     </h2>
                   </div>
 
                   {/* Compact Quick Stats & CoE Download Button */}
-                  <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
-                        <span className="font-orbitron font-bold text-xs text-amber-400">{eventItems.length}</span>
-                        <span className="text-[9px] text-gray-400 ml-1 uppercase">{isEn ? 'Events' : 'Event'}</span>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
+                    <div className="grid grid-cols-3 gap-2 w-full sm:w-auto">
+                      <div className="bg-white/5 px-2.5 py-2 sm:py-1.5 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 text-center">
+                        <span className="font-orbitron font-bold text-xs sm:text-sm text-amber-400 leading-none">{eventItems.length}</span>
+                        <span className="text-[9px] font-semibold text-gray-300 uppercase leading-none">{isEn ? 'Events' : 'Event'}</span>
                       </div>
-                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
-                        <span className="font-orbitron font-bold text-xs text-yellow-300">{totalKenCount}</span>
-                        <span className="text-[9px] text-gray-400 ml-1 uppercase">KEN</span>
+                      <div className="bg-white/5 px-2.5 py-2 sm:py-1.5 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 text-center">
+                        <span className="font-orbitron font-bold text-xs sm:text-sm text-yellow-300 leading-none">{totalKenCount}</span>
+                        <span className="text-[9px] font-semibold text-gray-300 uppercase leading-none">KEN</span>
                       </div>
-                      <div className="bg-white/5 px-2.5 py-1 rounded-lg border border-white/10 text-center">
-                        <span className="font-orbitron font-bold text-xs text-emerald-400">19</span>
-                        <span className="text-[9px] text-gray-400 ml-1 uppercase">Kab/Kota</span>
+                      <div className="bg-white/5 px-2.5 py-2 sm:py-1.5 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 text-center">
+                        <span className="font-orbitron font-bold text-xs sm:text-sm text-emerald-400 leading-none">19</span>
+                        <span className="text-[9px] font-semibold text-gray-300 uppercase leading-none">Kab/Kota</span>
                       </div>
                     </div>
 
@@ -2618,10 +2618,10 @@ export const Drawers: React.FC<DrawersProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
-                      className="bg-amber-500 hover:bg-amber-600 text-black px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-md cursor-pointer shrink-0 ml-auto sm:ml-0"
+                      className="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 active:scale-[0.99] text-black px-4 py-2.5 sm:py-2 rounded-xl text-[10.5px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer shrink-0"
                       title={isEn ? 'Download Calendar of Events E-Book (PDF)' : 'Unduh E-Book Kalender Event Resmi 2026 (PDF)'}
                     >
-                      <Download className="w-3.5 h-3.5 text-black" />
+                      <Download className="w-3.5 h-3.5 text-black shrink-0" />
                       <span>{isEn ? 'Download CoE E-Book' : 'Unduh E-Book CoE'}</span>
                     </button>
                   </div>
