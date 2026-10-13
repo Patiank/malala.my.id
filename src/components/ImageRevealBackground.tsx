@@ -171,8 +171,8 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
     );
   }
 
-  // Determine screen-appropriate max width (mobile ~960px, desktop ~1600px)
-  const screenWidth = typeof window !== 'undefined' ? (window.innerWidth < 768 ? 960 : 1600) : 1200;
+  // Determine high-definition width for Retina mobile (~1440px) and 2K/Full-HD desktop (~2200px)
+  const screenWidth = typeof window !== 'undefined' ? (window.innerWidth < 768 ? 1440 : 2200) : 1920;
   const optimizedBase = optimizeImageUrl(baseImage, screenWidth);
   const optimizedReveal = optimizeImageUrl(revealImage, screenWidth);
 

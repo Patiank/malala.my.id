@@ -156,29 +156,52 @@ function blobToDataURL(blob: Blob): Promise<string> {
  */
 export async function processCatalogImageWithStats(
   file: File,
-  _folder: string = 'catalog',
+  folder: string = 'catalog',
   onProgress?: (percent: number) => void
 ): Promise<OptimizedImagePayload> {
   const originalBytes = file.size;
+  const isHeroBackground = folder === 'settings' || folder === 'hero';
 
   try {
     // Stage 1: Reading file & starting compression
     if (onProgress) onProgress(20);
 
-    // Stage 2: Client-side WebP compression (1200x900 max, quality 0.80)
-    let comp = await compressImageWithDimensions(file, 1200, 900, 0.80);
-    if (onProgress) onProgress(50);
+    let comp: { blob: Blob; width: number; height: number };
 
-    // Safeguard Tier 1: If larger than 110KB, adaptively compress to 1000x750 at 0.74
-    if (comp.blob.size > 110 * 1024) {
-      comp = await compressImageWithDimensions(file, 1000, 750, 0.74);
-      if (onProgress) onProgress(70);
-    }
+    if (isHeroBackground) {
+      // HIGH-RESOLUTION HERO BACKGROUND PROFILE:
+      // Preserves razor-sharp 2K/Full-HD clarity (up to 2048x1365 at 0.92 quality)
+      comp = await compressImageWithDimensions(file, 2048, 1365, 0.92);
+      if (onProgress) onProgress(55);
 
-    // Safeguard Tier 2: If still larger than 90KB, compress to 880x660 at 0.70
-    if (comp.blob.size > 90 * 1024) {
-      comp = await compressImageWithDimensions(file, 880, 660, 0.70);
-      if (onProgress) onProgress(85);
+      // Safeguard Tier 1 for Firestore 1MB document limit: if > 420KB, step to 1920x1200 at 0.88
+      if (comp.blob.size > 420 * 1024) {
+        comp = await compressImageWithDimensions(file, 1920, 1200, 0.88);
+        if (onProgress) onProgress(75);
+      }
+
+      // Safeguard Tier 2: if still > 360KB, step to 1920x1080 at 0.84 (still Full HD 1080p sharp!)
+      if (comp.blob.size > 360 * 1024) {
+        comp = await compressImageWithDimensions(file, 1920, 1080, 0.84);
+        if (onProgress) onProgress(90);
+      }
+    } else {
+      // STANDARD CATALOG THUMBNAIL PROFILE:
+      // Stage 2: Client-side WebP compression (1200x900 max, quality 0.82)
+      comp = await compressImageWithDimensions(file, 1200, 900, 0.82);
+      if (onProgress) onProgress(50);
+
+      // Safeguard Tier 1: If larger than 110KB, adaptively compress to 1000x750 at 0.76
+      if (comp.blob.size > 110 * 1024) {
+        comp = await compressImageWithDimensions(file, 1000, 750, 0.76);
+        if (onProgress) onProgress(70);
+      }
+
+      // Safeguard Tier 2: If still larger than 90KB, compress to 880x660 at 0.72
+      if (comp.blob.size > 90 * 1024) {
+        comp = await compressImageWithDimensions(file, 880, 660, 0.72);
+        if (onProgress) onProgress(85);
+      }
     }
 
     const compressedBytes = comp.blob.size;
