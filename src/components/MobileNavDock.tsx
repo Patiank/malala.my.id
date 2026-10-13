@@ -74,14 +74,17 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
       className="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 select-none pointer-events-auto"
     >
       <div
-        className="w-full h-[68px] sm:h-[72px] box-content bg-white/98 backdrop-blur-xl border-t border-gray-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-2 flex items-center justify-between gap-1"
-        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        className="w-full box-border bg-white/98 backdrop-blur-xl border-t border-gray-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-2 grid grid-cols-5 items-center justify-items-center gap-1"
+        style={{
+          height: 'calc(68px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        }}
       >
         {/* Item 1: Destinasi Wisata (Rumah Gadang Asli) */}
         <button
           type="button"
           onClick={() => (activeDrawer === 'destinations' ? onCloseDrawer() : onOpenDrawer('destinations'))}
-          className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+          className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'destinations'
               ? 'bg-emerald-600 text-white font-normal shadow-sm'
               : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
@@ -93,7 +96,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Wisata"
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
             {navItems[0].label}
           </span>
         </button>
@@ -102,7 +105,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'culinary' ? onCloseDrawer() : onOpenDrawer('culinary'))}
-          className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+          className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'culinary'
               ? 'bg-amber-600 text-white font-normal shadow-sm'
               : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
@@ -114,7 +117,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Kuliner"
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
             {navItems[1].label}
           </span>
         </button>
@@ -123,7 +126,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'formai' ? onCloseDrawer() : onOpenDrawer('formai'))}
-          className="px-2 flex flex-col items-center justify-center cursor-pointer group active:scale-90 transition-transform"
+          className="w-full flex flex-col items-center justify-center py-1 px-0.5 cursor-pointer group active:scale-90 transition-transform"
           aria-label="AI Planner"
         >
           <div className="w-[40px] h-[40px] sm:w-[44px] sm:h-[44px] rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 p-[2px] shadow-md shadow-amber-500/30 flex items-center justify-center">
@@ -135,7 +138,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
               />
             </div>
           </div>
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal text-amber-700 tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal text-amber-700 tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
             {isEn ? 'AI TRIP' : 'RUTE AI'}
           </span>
         </button>
@@ -144,7 +147,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'events' ? onCloseDrawer() : onOpenDrawer('events'))}
-          className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+          className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'events'
               ? 'bg-blue-600 text-white font-normal shadow-sm'
               : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
@@ -156,7 +159,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Event"
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
             {navItems[3].label}
           </span>
         </button>
@@ -165,7 +168,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         <button
           type="button"
           onClick={() => (activeDrawer === 'download' ? onCloseDrawer() : onOpenDrawer('download'))}
-          className={`flex-1 flex flex-col items-center justify-center py-1 px-1 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
+          className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'download'
               ? 'bg-orange-600 text-white font-normal shadow-sm'
               : 'text-gray-700 hover:text-black hover:bg-gray-100/60'
@@ -177,7 +180,7 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
             alt="Panduan"
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
-          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap">
+          <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
             {navItems[4].label}
           </span>
         </button>
