@@ -1,5 +1,4 @@
 import { Destination, CultureItem, CulinaryItem, EventItem, SouvenirItem, DownloadItem } from '../types';
-export { BG_IMAGE_1, BG_IMAGE_2, HOT_INFO_ITEMS, getDirectDriveUrl } from './staticConfig';
 
 export const DESTINATIONS: Destination[] = [
   {

@@ -346,21 +346,28 @@ export function useData() {
         console.warn('[useData] LocalCache read warning:', err);
       }
 
-      // If no cache at all, populate from local fallback SSG first so UI renders immediately
+      // If no cache at all, populate lightweight items immediately so UI paints with 0 delay
       if (!cached && !isCancelled) {
-        try {
-          const fallbackModule = await loadFallbackContent();
-          if (!isCancelled && fallbackModule) {
-            setDestinations(fallbackModule.DESTINATIONS);
-            setCultureItems(fallbackModule.CULTURE_ITEMS);
-            setCulinaryItems(fallbackModule.CULINARY_ITEMS);
-            setSouvenirItems(fallbackModule.SOUVENIR_ITEMS);
-            setEventItems(fallbackModule.EVENTS_SCHEDULE);
-            setDownloadItems(DOWNLOAD_ITEMS);
-            setHotInfoItems(HOT_INFO_ITEMS);
-          }
-        } catch (err) {
-          console.warn('[useData] Local fallback load warning:', err);
+        setDownloadItems(DOWNLOAD_ITEMS);
+        setHotInfoItems(HOT_INFO_ITEMS);
+
+        // Defer heavy catalog loading (50 destinations, 30 cultures, etc.) until after initial page paint or idle!
+        const loadDeferredCatalog = () => {
+          loadFallbackContent().then(fallbackModule => {
+            if (!isCancelled && fallbackModule) {
+              setDestinations(fallbackModule.DESTINATIONS);
+              setCultureItems(fallbackModule.CULTURE_ITEMS);
+              setCulinaryItems(fallbackModule.CULINARY_ITEMS);
+              setSouvenirItems(fallbackModule.SOUVENIR_ITEMS);
+              setEventItems(fallbackModule.EVENTS_SCHEDULE);
+            }
+          }).catch(err => console.warn('[useData] Local fallback load warning:', err));
+        };
+
+        if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+          (window as any).requestIdleCallback(loadDeferredCatalog, { timeout: 2500 });
+        } else {
+          setTimeout(loadDeferredCatalog, 1200);
         }
       }
 

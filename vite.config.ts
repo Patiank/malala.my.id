@@ -33,17 +33,12 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks(id) {
+            // Keep commonjs helpers and preload helpers in the main bundle/framework
+            if (id.includes('commonjsHelpers') || id.includes('vite/preload-helper') || id.includes('\0')) {
+              return undefined;
+            }
             if (id.includes('src/data/content.ts') || id.includes('src\\data\\content.ts')) {
               return 'catalog-content';
-            }
-            if (id.includes('@google/genai')) {
-              return 'vendor-ai';
-            }
-            if (id.includes('node_modules/leaflet') || id.includes('node_modules\\leaflet')) {
-              return 'vendor-leaflet';
-            }
-            if (id.includes('node_modules/jspdf') || id.includes('node_modules\\jspdf') || id.includes('node_modules/html2pdf.js') || id.includes('node_modules\\html2pdf.js')) {
-              return 'vendor-pdf';
             }
             if (id.includes('node_modules/firebase') || id.includes('node_modules\\firebase')) {
               return 'vendor-firebase';
