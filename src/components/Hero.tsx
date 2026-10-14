@@ -7,7 +7,7 @@ import { DrawerType, AppSettings, EventItem, Destination, CultureItem, CulinaryI
 import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS } from '../data/staticConfig';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
-import { parseNewsTimestamp } from '../utils/ai';
+import { parseNewsTimestamp } from '../utils/newsUtils';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;

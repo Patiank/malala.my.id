@@ -523,10 +523,12 @@ export const Drawers: React.FC<DrawersProps> = ({
   }, [eventCategoryFilter, eventMonthFilter, activeDrawer]);
 
   useEffect(() => {
-    fetchLiveExchangeRates().then(rates => {
-      if (rates) setCurrencyRates(rates);
-    });
-  }, []);
+    if (currency !== 'IDR') {
+      fetchLiveExchangeRates().then(rates => {
+        if (rates) setCurrencyRates(rates);
+      });
+    }
+  }, [currency]);
 
   // Deep-linking and URL synchronization for Submodals
   useEffect(() => {

@@ -17,7 +17,7 @@ import { useData } from './data/useData';
 import { Language } from './lib/translations';
 import { logTourismSignal } from './utils/telemetry';
 
-import { fetchAiHotInfo, getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDisplayTitle, prefetchNewsTranslations } from './utils/ai';
+import { getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDisplayTitle } from './utils/newsUtils';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -109,10 +109,18 @@ export default function App() {
     };
   }, []);
 
-  // Background translation pre-fetching for instant smooth English experience
+  // Background translation pre-fetching for instant smooth English experience (deferred to idle)
   useEffect(() => {
     if (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0) {
-      prefetchNewsTranslations(dataStore.hotInfoItems);
+      const timer = setTimeout(async () => {
+        try {
+          const { prefetchNewsTranslations } = await import('./utils/ai');
+          prefetchNewsTranslations(dataStore.hotInfoItems);
+        } catch (e) {
+          console.warn('Background translation prefetch notice:', e);
+        }
+      }, 5000);
+      return () => clearTimeout(timer);
     }
   }, [dataStore.hotInfoItems]);
 
@@ -131,6 +139,7 @@ export default function App() {
         // Only run if the 03:00 WIB daily cycle has not been processed yet
         if (lastCycle !== cycleId) {
           setIsRefreshingTicker(true);
+          const { fetchAiHotInfo } = await import('./utils/ai');
           const data = await fetchAiHotInfo(lang);
           if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
             await dataStore.updateHotInfoItems(data);
@@ -149,8 +158,8 @@ export default function App() {
       }
     };
 
-    // Initial check after 3 seconds on app mount
-    const initTimer = setTimeout(checkAndRunDailyRefresh, 3000);
+    // Initial check after 4 seconds on app mount
+    const initTimer = setTimeout(checkAndRunDailyRefresh, 4000);
 
     return () => {
       clearTimeout(initTimer);
@@ -162,6 +171,7 @@ export default function App() {
     e.stopPropagation();
     setIsRefreshingTicker(true);
     try {
+      const { fetchAiHotInfo } = await import('./utils/ai');
       const data = await fetchAiHotInfo(lang);
       if (Array.isArray(data) && data.length > 0 && dataStore.updateHotInfoItems) {
         await dataStore.updateHotInfoItems(data);
@@ -558,22 +568,24 @@ export default function App() {
       />
 
 
-      {/* Drawers */}
-      <React.Suspense fallback={null}>
-        <Drawers
-          activeDrawer={activeDrawer}
-          onClose={handleCloseDrawer}
-          onOpenDrawer={handleOpenDrawer}
-          savedIds={savedIds}
-          onToggleSave={handleToggleSave}
-          dataStore={dataStore}
-          lang={lang}
-          onSelectNews={handleOpenNews}
-          searchQuery={searchQuery}
-          onSearchQueryChange={setSearchQuery}
-          onShowToast={showToast}
-        />
-      </React.Suspense>
+      {/* Drawers (Lazy-Loaded strictly when a drawer is opened) */}
+      {activeDrawer && (
+        <React.Suspense fallback={null}>
+          <Drawers
+            activeDrawer={activeDrawer}
+            onClose={handleCloseDrawer}
+            onOpenDrawer={handleOpenDrawer}
+            savedIds={savedIds}
+            onToggleSave={handleToggleSave}
+            dataStore={dataStore}
+            lang={lang}
+            onSelectNews={handleOpenNews}
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            onShowToast={showToast}
+          />
+        </React.Suspense>
+      )}
 
       {/* Center News Detail Pop-up Modal */}
       {selectedNews && (

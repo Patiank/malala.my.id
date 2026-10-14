@@ -4,7 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { db, auth } from '../lib/firebase';
 import { DOWNLOAD_ITEMS, HOT_INFO_ITEMS, BG_IMAGE_1, BG_IMAGE_2, getDirectDriveUrl } from './staticConfig';
 import { Destination, CultureItem, CulinaryItem, SouvenirItem, EventItem, DownloadItem, HotInfoItem, AppSettings, PendingEventItem } from '../types';
-import { deduplicateNewsItems, parseNewsTimestamp } from '../utils/ai';
+import { deduplicateNewsItems, parseNewsTimestamp } from '../utils/newsUtils';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
 import { getLocalCache, setLocalCache } from '../utils/localCache';
 

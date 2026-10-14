@@ -2,7 +2,7 @@ import React from 'react';
 import { X, MapPin, Share2, Flame, ExternalLink, BookOpen } from 'lucide-react';
 import { HotInfoItem } from '../types';
 import { Language } from '../lib/translations';
-import { getNewsDisplayTitle, formatNewsTimeAgo, getNewsDirectArticleUrl } from '../utils/ai';
+import { getNewsDisplayTitle, formatNewsTimeAgo, getNewsDirectArticleUrl } from '../utils/newsUtils';
 import { getPublisherFavicon } from './Drawers';
 
 interface NewsModalProps {

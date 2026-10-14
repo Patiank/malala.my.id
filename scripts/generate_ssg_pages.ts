@@ -203,6 +203,12 @@ function generateHtmlPage(
     );
   }
 
+  // Convert render-blocking stylesheet into non-blocking preload + loadCSS
+  html = html.replace(
+    /<link rel="stylesheet" crossorigin href="(\/assets\/index-[^"]+\.css)">/gi,
+    '<link rel="preload" as="style" href="$1"><link rel="stylesheet" crossorigin href="$1" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" crossorigin href="$1"></noscript>'
+  );
+
   return html;
 }
 
