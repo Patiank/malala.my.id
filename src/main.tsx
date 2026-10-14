@@ -64,3 +64,13 @@ createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </StrictMode>,
 );
+
+// Register PWA Service Worker with Tiered Caching Lifecycle for Flipbook (Production only)
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.warn('[PWA] ServiceWorker registration error:', err);
+    });
+  });
+}
+

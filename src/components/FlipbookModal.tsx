@@ -72,7 +72,9 @@ export const FlipbookModal: React.FC<FlipbookModalProps> = ({
     }
   };
 
-  const iframeSrc = `/flipbook/${bookSlug}/${readingLang}/malala.html`;
+  // Smart Versioned Cache-Busting Query: Forces update on new book revisions while maintaining 30-day client cache
+  const FLIPBOOK_BUILD_VERSION = '20261014_v3';
+  const iframeSrc = `/flipbook/${bookSlug}/${readingLang}/malala.html?v=${FLIPBOOK_BUILD_VERSION}`;
 
   const handleOpenNewTab = () => {
     window.open(iframeSrc, '_blank');
