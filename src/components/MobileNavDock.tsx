@@ -120,6 +120,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'destinations' ? '/images/nav/nav_wisata_white.png' : '/images/nav/nav_wisata.png'}
             alt="Wisata"
+            width={36}
+            height={36}
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
           <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
@@ -142,6 +144,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'culinary' ? '/images/nav/nav_kuliner_white.png' : '/images/nav/nav_kuliner.png'}
             alt="Kuliner"
+            width={36}
+            height={36}
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
           <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
@@ -162,6 +166,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
               <img
                 src="/images/nav/nav_ai_gold.png"
                 alt="AI Trip"
+                width={32}
+                height={32}
                 className="w-[32px] h-[32px] object-contain animate-pulse"
               />
             </div>
@@ -186,6 +192,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'events' ? '/images/nav/nav_event_white.png' : '/images/nav/nav_event.png'}
             alt="Event"
+            width={36}
+            height={36}
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
           <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
@@ -208,6 +216,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
           <img
             src={activeDrawer === 'download' ? '/images/nav/nav_panduan_white.png' : '/images/nav/nav_panduan.png'}
             alt="Panduan"
+            width={36}
+            height={36}
             className="w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] object-contain transition-transform"
           />
           <span className="text-[10px] sm:text-[10.5px] font-jakarta font-normal tracking-wider uppercase mt-1 leading-tight whitespace-nowrap text-center">
