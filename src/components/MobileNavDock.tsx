@@ -30,6 +30,31 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
 }) => {
   const isEn = lang === 'en';
 
+  // Subtle Haptic Feedback (Getaran Halus) for Smartphone Navigation
+  const lastHapticRef = React.useRef<number>(0);
+
+  const triggerHaptic = (ms: number = 15) => {
+    const now = Date.now();
+    if (now - lastHapticRef.current < 180) return;
+    lastHapticRef.current = now;
+    try {
+      if (typeof window !== 'undefined' && 'navigator' in window && typeof navigator.vibrate === 'function') {
+        navigator.vibrate(ms);
+      }
+    } catch {
+      // Graceful fallback for browsers without vibration support
+    }
+  };
+
+  const handleNavClick = (type: DrawerType, hapticMs: number = 15) => {
+    triggerHaptic(hapticMs);
+    if (activeDrawer === type) {
+      onCloseDrawer();
+    } else {
+      onOpenDrawer(type);
+    }
+  };
+
   const navItems = [
     {
       id: 'destinations' as DrawerType,
@@ -83,7 +108,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         {/* Item 1: Destinasi Wisata (Rumah Gadang Asli) */}
         <button
           type="button"
-          onClick={() => (activeDrawer === 'destinations' ? onCloseDrawer() : onOpenDrawer('destinations'))}
+          onTouchStart={() => triggerHaptic(15)}
+          onClick={() => handleNavClick('destinations', 15)}
           className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'destinations'
               ? 'bg-emerald-600 text-white font-normal shadow-sm'
@@ -104,7 +130,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         {/* Item 2: Kuliner Minang (Carano / Hidangan Beruap Asli) */}
         <button
           type="button"
-          onClick={() => (activeDrawer === 'culinary' ? onCloseDrawer() : onOpenDrawer('culinary'))}
+          onTouchStart={() => triggerHaptic(15)}
+          onClick={() => handleNavClick('culinary', 15)}
           className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'culinary'
               ? 'bg-amber-600 text-white font-normal shadow-sm'
@@ -125,7 +152,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         {/* CENTER SPECIAL: AI Travel Planner (Chat Sparkle AI Asli) */}
         <button
           type="button"
-          onClick={() => (activeDrawer === 'formai' ? onCloseDrawer() : onOpenDrawer('formai'))}
+          onTouchStart={() => triggerHaptic(20)}
+          onClick={() => handleNavClick('formai', 20)}
           className="w-full flex flex-col items-center justify-center py-1 px-0.5 cursor-pointer group active:scale-90 transition-transform"
           aria-label="AI Planner"
         >
@@ -146,7 +174,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         {/* Item 3: Event & Festival (Talempong Tradisional Asli) */}
         <button
           type="button"
-          onClick={() => (activeDrawer === 'events' ? onCloseDrawer() : onOpenDrawer('events'))}
+          onTouchStart={() => triggerHaptic(15)}
+          onClick={() => handleNavClick('events', 15)}
           className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'events'
               ? 'bg-blue-600 text-white font-normal shadow-sm'
@@ -167,7 +196,8 @@ export const MobileNavDock: React.FC<MobileNavDockProps> = ({
         {/* Item 4: Buku Panduan / Flipbook (Peta Rute Wisata Asli) */}
         <button
           type="button"
-          onClick={() => (activeDrawer === 'download' ? onCloseDrawer() : onOpenDrawer('download'))}
+          onTouchStart={() => triggerHaptic(15)}
+          onClick={() => handleNavClick('download', 15)}
           className={`w-full flex flex-col items-center justify-center py-1 px-0.5 rounded-xl transition-all duration-200 active:scale-95 cursor-pointer ${
             activeDrawer === 'download'
               ? 'bg-orange-600 text-white font-normal shadow-sm'
