@@ -78,4 +78,4 @@ Allow: /
 
 Sitemap: https://malala.my.id/sitemap.xml
 Sitemap: https://malala.my.id/news-sitemap.xml
-Agentmap: https://malala.my.id/.well-known/ai-catalog.json
+# Agent Discovery & Catalog: https://malala.my.id/.well-known/ai-catalog.json
