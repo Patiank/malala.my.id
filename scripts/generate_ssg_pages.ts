@@ -1141,7 +1141,216 @@ export function generateSsg() {
   });
   console.log(`✅ ${newsCount} Halaman SSG Berita Lengkap (/berita & /hotinfo) Berhasil Dibuat.`);
 
+  generateSitemaps(rootDir, distDir, destinations, cultureItems, culinaryItems, eventItems, hotInfoItems);
+
   console.log(`🎉 STATIC SITE GENERATION (SSG) SELESAI: Seluruh Halaman Diperkaya Konten Nyata Tanpa 'display:none' Siap Diindeks Google!`);
+}
+
+function generateSitemaps(
+  rootDir: string,
+  distDir: string,
+  destinations: any[],
+  cultureItems: any[],
+  culinaryItems: any[],
+  eventItems: any[],
+  hotInfoItems: any[]
+) {
+  console.log('🗺️ Memperbarui Peta Situs Resmi (sitemap.xml, news-sitemap.xml, rss.xml)...');
+
+  const today = new Date().toISOString().split('T')[0];
+  const nowIso = new Date().toISOString();
+
+  // 1. Build comprehensive sitemap.xml
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
+  xml += `        xmlns:xhtml="http://www.w3.org/1999/xhtml"\n`;
+  xml += `        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
+
+  // Homepage
+  xml += `  <!-- Homepage -->\n`;
+  xml += `  <url>\n`;
+  xml += `    <loc>https://malala.my.id/</loc>\n`;
+  xml += `    <lastmod>${today}</lastmod>\n`;
+  xml += `    <changefreq>daily</changefreq>\n`;
+  xml += `    <priority>1.0</priority>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="id" href="https://malala.my.id/?lang=id"/>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="en" href="https://malala.my.id/?lang=en"/>\n`;
+  xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="https://malala.my.id/"/>\n`;
+  xml += `  </url>\n\n`;
+
+  // Discovery Categories & Hubs
+  const mainHubs = [
+    { path: 'destinasi', freq: 'weekly', priority: '0.9' },
+    { path: 'kebudayaan', freq: 'weekly', priority: '0.9' },
+    { path: 'kuliner', freq: 'weekly', priority: '0.9' },
+    { path: 'event', freq: 'daily', priority: '0.9' },
+    { path: 'oleh-oleh', freq: 'weekly', priority: '0.85' },
+    { path: 'unduhan', freq: 'weekly', priority: '0.85' },
+    { path: 'berita', freq: 'daily', priority: '0.95' },
+    { path: 'hotinfo', freq: 'daily', priority: '0.9' },
+    { path: 'peta', freq: 'weekly', priority: '0.85' },
+    { path: 'rencana-liburan', freq: 'weekly', priority: '0.85' },
+    { path: 'tanya-mala', freq: 'weekly', priority: '0.85' },
+    { path: 'flipbook/panduan/id', freq: 'monthly', priority: '0.85' },
+    { path: 'flipbook/panduan/en', freq: 'monthly', priority: '0.85' },
+    { path: 'flipbook/events/id', freq: 'monthly', priority: '0.85' },
+    { path: 'flipbook/events/en', freq: 'monthly', priority: '0.85' },
+    { path: 'downloads/malala-panduan-wisata-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
+    { path: 'downloads/kalender-event-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
+    { path: 'llms.txt', freq: 'weekly', priority: '0.7' },
+    { path: 'llms-full.txt', freq: 'weekly', priority: '0.7' },
+  ];
+
+  xml += `  <!-- Main Discovery Categories & Hubs -->\n`;
+  for (const hub of mainHubs) {
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/${hub.path}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>${hub.freq}</changefreq>\n`;
+    xml += `    <priority>${hub.priority}</priority>\n`;
+    xml += `  </url>\n`;
+  }
+  xml += `\n`;
+
+  // 50+ Destinations
+  xml += `  <!-- 50+ Destinasi Wisata Unggulan -->\n`;
+  for (const d of destinations) {
+    const slug = slugify(d.title);
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/destinasi/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n`;
+    xml += `    <priority>0.85</priority>\n`;
+    if (d.imageUrl) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeHtml(d.imageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeHtml(d.title)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
+    xml += `  </url>\n`;
+  }
+  xml += `\n`;
+
+  // 30 Culture Items
+  xml += `  <!-- 30 Warisan Seni & Budaya Minangkabau -->\n`;
+  for (const c of cultureItems) {
+    const slug = slugify(c.title);
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/kebudayaan/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>monthly</changefreq>\n`;
+    xml += `    <priority>0.8</priority>\n`;
+    xml += `  </url>\n`;
+  }
+  xml += `\n`;
+
+  // 36 Culinary Items
+  xml += `  <!-- 36 Kuliner Otentik Legendaris -->\n`;
+  for (const c of culinaryItems) {
+    const slug = slugify(c.title);
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/kuliner/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>monthly</changefreq>\n`;
+    xml += `    <priority>0.8</priority>\n`;
+    xml += `  </url>\n`;
+  }
+  xml += `\n`;
+
+  // 26 Event Items
+  xml += `  <!-- 26 Agenda Event Karisma Event Nusantara 2026 -->\n`;
+  for (const e of eventItems) {
+    const slug = slugify(e.title);
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/event/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n`;
+    xml += `    <priority>0.85</priority>\n`;
+    xml += `  </url>\n`;
+  }
+  xml += `\n`;
+
+  // News Articles (/berita & /hotinfo)
+  xml += `  <!-- Liputan Berita Pariwisata Terkini & Hot Info -->\n`;
+  for (const n of hotInfoItems) {
+    const slug = slugify(n.title);
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>daily</changefreq>\n`;
+    xml += `    <priority>0.9</priority>\n`;
+    xml += `  </url>\n`;
+    xml += `  <url>\n`;
+    xml += `    <loc>https://malala.my.id/hotinfo/${slug}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>daily</changefreq>\n`;
+    xml += `    <priority>0.85</priority>\n`;
+    xml += `  </url>\n`;
+  }
+
+  xml += `</urlset>\n`;
+
+  // 2. Build news-sitemap.xml (Google News Schema)
+  let newsXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  newsXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
+  newsXml += `        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
+
+  for (const n of hotInfoItems) {
+    const slug = slugify(n.title);
+    newsXml += `  <url>\n`;
+    newsXml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
+    newsXml += `    <news:news>\n`;
+    newsXml += `      <news:publication>\n`;
+    newsXml += `        <news:name>MALALA Pariwisata Sumbar</news:name>\n`;
+    newsXml += `        <news:language>id</news:language>\n`;
+    newsXml += `      </news:publication>\n`;
+    newsXml += `      <news:publication_date>${nowIso}</news:publication_date>\n`;
+    newsXml += `      <news:title>${escapeHtml(n.title)}</news:title>\n`;
+    newsXml += `    </news:news>\n`;
+    newsXml += `  </url>\n`;
+  }
+  newsXml += `</urlset>\n`;
+
+  // 3. Build rss.xml
+  let rssXml = `<?xml version="1.0" encoding="UTF-8" ?>\n`;
+  rssXml += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n`;
+  rssXml += `<channel>\n`;
+  rssXml += `  <title>MALALA News — Berita &amp; Info Pariwisata Terkini Sumatera Barat</title>\n`;
+  rssXml += `  <link>https://malala.my.id/berita</link>\n`;
+  rssXml += `  <description>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, akses jalan raya, dan regulasi pariwisata di Sumatera Barat &amp; Nasional.</description>\n`;
+  rssXml += `  <language>id-ID</language>\n`;
+  rssXml += `  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n`;
+  rssXml += `  <atom:link href="https://malala.my.id/rss.xml" rel="self" type="application/rss+xml" />\n`;
+
+  for (const n of hotInfoItems) {
+    const slug = slugify(n.title);
+    rssXml += `  <item>\n`;
+    rssXml += `    <title>${escapeHtml(n.title)}</title>\n`;
+    rssXml += `    <link>https://malala.my.id/berita/${slug}</link>\n`;
+    rssXml += `    <guid isPermaLink="true">https://malala.my.id/berita/${slug}</guid>\n`;
+    rssXml += `    <description>${escapeHtml(n.description || n.title)}</description>\n`;
+    rssXml += `    <category>${escapeHtml(n.category || 'Pariwisata Sumatera Barat')}</category>\n`;
+    rssXml += `    <pubDate>${new Date().toUTCString()}</pubDate>\n`;
+    rssXml += `  </item>\n`;
+  }
+  rssXml += `</channel>\n`;
+  rssXml += `</rss>\n`;
+
+  // Write files to public/ and dist/
+  const publicDir = path.join(rootDir, 'public');
+  if (fs.existsSync(publicDir)) {
+    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
+  }
+
+  if (fs.existsSync(distDir)) {
+    fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'rss.xml'), rssXml, 'utf-8');
+  }
+
+  console.log(`✅ ${destinations.length + cultureItems.length + culinaryItems.length + eventItems.length + (hotInfoItems.length * 2) + mainHubs.length + 1} URL Peta Situs (sitemap.xml, news-sitemap.xml, rss.xml) Berhasil Disinkronkan.`);
 }
 
 // Auto-run if executed via CLI
