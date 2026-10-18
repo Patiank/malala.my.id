@@ -165,48 +165,33 @@ export const Header: React.FC<HeaderProps> = ({
         />
 
         {/* Mobile Menu Toggle & Essentials */}
-        <div className="flex items-center gap-1.5 sm:gap-2 md:hidden shrink-0">
-          {/* Touch-Friendly Language Toggle showing ID | EN matching PC style */}
+        <div className="flex items-center gap-1.5 md:hidden shrink-0">
+          {/* Touch-Friendly Language Toggle showing ID | EN matching PC style - Compact mobile size */}
           <button
             onClick={onToggleLang}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs group active:scale-95"
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-gray-300 bg-white hover:border-black transition-all cursor-pointer font-jakarta shadow-2xs group active:scale-95"
             title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
             aria-label="Toggle language ID | EN"
           >
-            <Globe className="w-3.5 h-3.5 text-red-600 transition-transform group-hover:rotate-12 shrink-0" />
-            <div className="flex items-center gap-1 text-[10px] font-extrabold tracking-wider uppercase">
-              <span className={`px-1.5 py-0.5 rounded transition-colors ${lang === 'id' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
+            <Globe className="w-3 h-3 text-red-600 transition-transform group-hover:rotate-12 shrink-0" />
+            <div className="flex items-center gap-0.5 text-[8.5px] font-extrabold tracking-wider uppercase">
+              <span className={`px-1 py-[1.5px] rounded transition-colors ${lang === 'id' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
                 ID
               </span>
-              <span className="text-gray-300 font-normal">|</span>
-              <span className={`px-1.5 py-0.5 rounded transition-colors ${lang === 'en' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
+              <span className="text-gray-300 font-normal text-[8px]">|</span>
+              <span className={`px-1 py-[1.5px] rounded transition-colors ${lang === 'en' ? 'bg-black text-white font-black' : 'text-gray-500 group-hover:text-black'}`}>
                 EN
               </span>
             </div>
           </button>
           
-          {/* Touch-Friendly Saved / Bookmark Button */}
-          <button
-            onClick={() => handleNavClick('saved')}
-            className="min-h-[40px] min-w-[40px] relative cursor-pointer p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-100 transition-colors text-gray-800 shadow-xs flex items-center justify-center active:scale-95"
-            title="Tersimpan"
-            aria-label="Buka item tersimpan"
-          >
-            <Bookmark strokeWidth={2.2} className="w-4 h-4" />
-            {savedCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white font-orbitron font-bold text-[8px] w-4 h-4 rounded-full flex items-center justify-center leading-none shadow-xs">
-                {savedCount}
-              </span>
-            )}
-          </button>
-          
           {/* Touch-Friendly Hamburger Menu Toggle Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="min-h-[40px] min-w-[40px] p-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-xs flex items-center justify-center active:scale-95"
+            className="min-h-[32px] min-w-[32px] p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 transition-colors cursor-pointer text-gray-900 shadow-xs flex items-center justify-center active:scale-95"
             aria-label="Toggle menu navigasi"
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5 text-red-600" /> : <Menu className="w-5 h-5" />}
+            {isMobileMenuOpen ? <X className="w-4 h-4 text-red-600" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </div>
@@ -220,30 +205,30 @@ export const Header: React.FC<HeaderProps> = ({
         />
       )}
 
-      {/* Mobile Menu Dropdown Panel (Modern 2-Column App Grid - Zero Wasted Space) */}
+      {/* Mobile Menu Dropdown Panel (Compact 2-Column App Grid) */}
       {isMobileMenuOpen && (
         <div
-          className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-2xl shadow-2xl border-t border-b border-gray-200/90 p-3.5 z-50 rounded-b-3xl animate-fadeIn space-y-2.5 mx-2"
+          className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-2xl shadow-2xl border-t border-b border-gray-200/90 p-2.5 z-50 rounded-b-2xl animate-fadeIn space-y-2 mx-1.5"
         >
           {/* Header Tag inside Mobile Dropdown */}
           <div className="flex items-center justify-between px-1 pb-1 border-b border-gray-100">
-            <span className="text-[10px] font-jakarta font-bold uppercase tracking-widest text-gray-500">
+            <span className="text-[9px] font-jakarta font-bold uppercase tracking-widest text-gray-500">
               {lang === 'en' ? 'EXPLORE CATEGORIES' : 'JELAJAHI KATEGORI'}
             </span>
-            <span className="text-[9px] font-jakarta font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+            <span className="text-[8.5px] font-jakarta font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
               MALALA SUMBAR
             </span>
           </div>
 
           {/* 6 Category Tiles in a 2-Column Grid */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-1.5">
             {primaryNavItems.map((item) => {
               const isActive = activeDrawer === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-2 p-2 rounded-2xl border transition-all duration-200 cursor-pointer text-left active:scale-[0.98] ${
+                  className={`flex items-center gap-1.5 p-1.5 rounded-xl border transition-all duration-200 cursor-pointer text-left active:scale-[0.98] ${
                     isActive
                       ? 'shadow-sm text-white font-normal border-transparent'
                       : 'bg-gray-50/90 hover:bg-gray-100 text-gray-800 border-gray-200/70 hover:border-gray-300'
@@ -251,7 +236,7 @@ export const Header: React.FC<HeaderProps> = ({
                   style={isActive ? { backgroundColor: item.color } : {}}
                 >
                   <div
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 p-1.5 transition-colors ${
+                    className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 p-1 transition-colors ${
                       isActive ? 'bg-white/20' : 'bg-white border border-gray-200/80 shadow-2xs'
                     }`}
                   >
@@ -261,7 +246,7 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span className="font-jakarta font-normal text-[11px] sm:text-[11.5px] uppercase tracking-wider leading-tight line-clamp-1">
+                  <span className="font-jakarta font-normal text-[10px] uppercase tracking-wider leading-tight line-clamp-1">
                     {item.label}
                   </span>
                 </button>
@@ -270,11 +255,11 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* 2 Full-Width Action Buttons: Peta & Rencanakan Liburan */}
-          <div className="pt-1 space-y-2">
+          <div className="pt-0.5 space-y-1.5">
             {/* Action 1: Peta Wisata (1 Baris) */}
             <button
               onClick={() => handleNavClick('map')}
-              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border font-jakarta font-normal text-[12px] uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
+              className={`w-full min-h-[38px] px-3 py-2 rounded-xl border font-jakarta font-normal text-[11px] uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99] ${
                 activeDrawer === 'map'
                   ? 'bg-red-600 text-white border-red-600'
                   : 'bg-emerald-700 text-white border-emerald-700 hover:bg-emerald-800'
@@ -283,7 +268,7 @@ export const Header: React.FC<HeaderProps> = ({
               <img
                 src="/images/nav/header/nav_peta_white.png"
                 alt="Peta"
-                className="w-5 h-5 object-contain"
+                className="w-4 h-4 object-contain"
               />
               <span className="whitespace-nowrap">{t.navMap}</span>
             </button>
@@ -291,16 +276,16 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Action 2: Rencanakan Liburan Anda (1 Baris Saja) */}
             <button
               onClick={() => handleNavClick('formai')}
-              className={`w-full min-h-[44px] px-3.5 py-2.5 rounded-xl border bg-black text-white border-black hover:bg-gray-900 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2.5 shadow-xs active:scale-[0.99] ${
+              className={`w-full min-h-[38px] px-3 py-2 rounded-xl border bg-black text-white border-black hover:bg-gray-900 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99] ${
                 activeDrawer === 'formai' ? 'ring-2 ring-offset-1 ring-black shadow-md' : ''
               }`}
             >
               <img
                 src="/images/nav/header/nav_rencana_white.png"
                 alt="Rencana"
-                className="w-5 h-5 object-contain"
+                className="w-4 h-4 object-contain"
               />
-              <span className="font-jakarta font-normal text-[12px] uppercase tracking-wider whitespace-nowrap">
+              <span className="font-jakarta font-normal text-[11px] uppercase tracking-wider whitespace-nowrap">
                 {lang === 'en' ? 'PLAN YOUR VACATION' : 'RENCANAKAN LIBURAN ANDA'}
               </span>
             </button>

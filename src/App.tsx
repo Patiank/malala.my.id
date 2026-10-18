@@ -476,9 +476,9 @@ export default function App() {
         hotInfoItems={dataStore.hotInfoItems}
       />
 
-      {/* Breaking News Ticker Bar (Raised ~2mm above MobileNavDock white box, lightly touching the protruding RUTE AI circle) */}
+      {/* Breaking News Ticker Bar (Lowered 2px on mobile) */}
       <div 
-        className="fixed bottom-[calc(76px+env(safe-area-inset-bottom,0px))] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
+        className="fixed bottom-[calc(74px+env(safe-area-inset-bottom,0px))] md:bottom-0 left-0 right-0 z-40 bg-black/95 text-white border-t border-red-600/40 py-1.5 md:py-2 px-3 md:px-4 flex items-center gap-2 md:gap-3 overflow-hidden select-none transition-all shadow-2xl backdrop-blur-md"
       >
         <div className="flex items-center gap-1.5 shrink-0">
           <button 

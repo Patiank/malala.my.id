@@ -47,12 +47,12 @@ const NOW_ISO = START_TIME.toISOString();
 // FIREBASE INIT
 // ============================================================
 const firebaseConfig = {
-  projectId: "malala-my-id",
-  appId: "1:150503186564:web:64af24b2edc852fb23a2d1",
-  apiKey: "AIzaSyBAizWQnaNb-EX-BcjoZt9BSRctFGyMEnE",
-  authDomain: "malala-my-id.firebaseapp.com",
-  storageBucket: "malala-my-id.firebasestorage.app",
-  messagingSenderId: "150503186564",
+  projectId: "malala-web",
+  appId: "1:521100250267:web:f98c67ac47b4d1a0300a3e",
+  apiKey: "AIzaSyC6cfbqR8MAwiBFZt6GrWFSfIHYXC_pM0c",
+  authDomain: "malala-web.firebaseapp.com",
+  storageBucket: "malala-web.firebasestorage.app",
+  messagingSenderId: "521100250267",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -266,7 +266,7 @@ Format JSON array murni tanpa markdown:
   for (const item of parsed) {
     if (!item.title) continue;
     const docId = `hotinfo-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
-    batch.push(setDoc(doc(db, 'hotInfo', docId), {
+    batch.push(setDoc(doc(db, 'hotinfo', docId), {
       ...item,
       id: docId,
       generatedAt: NOW_ISO,
