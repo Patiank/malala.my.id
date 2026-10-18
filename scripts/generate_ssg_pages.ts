@@ -198,10 +198,17 @@ function generateHtmlPage(
   // Inject Pre-rendered Semantic HTML inside <div id="root"> wrapped in <noscript>
   // This guarantees 0 Cumulative Layout Shift (CLS = 0) for browser visitors while providing 100% SEO indexability for crawlers
   if (options.bodyContent) {
-    html = html.replace(
-      /<div id="root">[\s\S]*?<\/div>/i,
-      `<div id="root">\n  <noscript>\n${options.bodyContent}\n  </noscript>\n</div>`
-    );
+    if (options.canonicalUrl.endsWith('/sitemap')) {
+      html = html.replace(
+        /<div id="root">[\s\S]*?<\/div>/i,
+        `<div id="root">\n  <noscript>\n${options.bodyContent}\n  </noscript>\n</div>\n<main id="static-sitemap-view" style="position: relative; z-index: 10; background: #070a12; min-height: 100vh;">\n${options.bodyContent}\n</main>`
+      );
+    } else {
+      html = html.replace(
+        /<div id="root">[\s\S]*?<\/div>/i,
+        `<div id="root">\n  <noscript>\n${options.bodyContent}\n  </noscript>\n</div>`
+      );
+    }
   }
 
   return html;
@@ -603,6 +610,158 @@ export function generateSsg() {
     });
     writePage(distDir, pg.route, pageHtml);
   });
+
+  // 6B. GENERATE HTML SITEMAP PAGE (/sitemap) FOR ULTRAFAST SEARCH ENGINE CRAWLING
+  console.log('📄 Mengoptimasi Halaman Peta Situs HTML /sitemap untuk Percepatan Crawling...');
+  const sitemapHtml = `
+    <div style="max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #cbd5e1; line-height: 1.7;">
+      <nav style="font-size: 0.9rem; margin-bottom: 1.5rem; color: #94a3b8;">
+        <a href="/" style="color: #38bdf8; text-decoration: none;">Pariwisata Sumatera Barat</a> &gt; <span style="color: #f8fafc; font-weight: 600;">Peta Situs (Sitemap)</span>
+      </nav>
+      <header style="margin-bottom: 2.5rem; border-bottom: 1px solid #334155; padding-bottom: 1.5rem;">
+        <div style="display: inline-block; background: #dc2626; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; text-transform: uppercase; margin-bottom: 0.75rem;">
+          🗺️ Indeks Navigasi Resmi
+        </div>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem; line-height: 1.25;">
+          Peta Situs Resmi (HTML Sitemap) — MALALA
+        </h1>
+        <p style="font-size: 1.05rem; color: #94a3b8; max-width: 860px; margin: 0;">
+          Indeks lengkap seluruh tautan eksplorasi destinasi wisata, warisan budaya Minangkabau, kuliner autentik, agenda festival Karisma Event Nusantara (KEN), liputan berita, dan dokumen resmi di Sumatera Barat.
+        </p>
+      </header>
+
+      <!-- Section 1: Halaman Utama & Fitur Utama -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          🌐 Halaman Utama &amp; Fitur Wisata
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; list-style: none; padding: 0; margin: 0;">
+          <li><a href="/" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🏠 Beranda Portal MALALA</a></li>
+          <li><a href="/destinasi" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🏖️ Direktori 50+ Destinasi Wisata</a></li>
+          <li><a href="/kebudayaan" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🎭 Direktori 30+ Warisan Seni &amp; Budaya</a></li>
+          <li><a href="/kuliner" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🍲 Direktori 36+ Kuliner Khas Minang</a></li>
+          <li><a href="/event" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🗓️ Kalender 26+ Agenda Festival 2026</a></li>
+          <li><a href="/berita" style="color: #38bdf8; text-decoration: none; font-weight: 600;">📰 Berita Pariwisata Terkini</a></li>
+          <li><a href="/hotinfo" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🔥 Hot Info &amp; Kondisi Jalur Wisata</a></li>
+          <li><a href="/oleh-oleh" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🎁 Pusat Cenderamata &amp; Oleh-Oleh</a></li>
+          <li><a href="/unduhan" style="color: #38bdf8; text-decoration: none; font-weight: 600;">📥 Unduh Gratis E-Booklet &amp; Peta PDF</a></li>
+          <li><a href="/peta" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🗺️ Peta Digital Interaktif Ranah Minang</a></li>
+          <li><a href="/rencana-liburan" style="color: #38bdf8; text-decoration: none; font-weight: 600;">🤖 AI Travel Planner (Rencana Liburan)</a></li>
+          <li><a href="/tanya-mala" style="color: #38bdf8; text-decoration: none; font-weight: 600;">💬 Tanya Mala (Asisten Virtual AI)</a></li>
+        </ul>
+      </section>
+
+      <!-- Section 2: Flipbook & File Unduhan -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          📖 Flipbook Digital, Dokumen &amp; Feed
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; list-style: none; padding: 0; margin: 0;">
+          <li><a href="/flipbook/panduan/id" style="color: #38bdf8; text-decoration: none;">📖 E-Book Panduan Wisata Sumbar (Indonesia)</a></li>
+          <li><a href="/flipbook/panduan/en" style="color: #38bdf8; text-decoration: none;">📖 West Sumatra Travel Guide Flipbook (English)</a></li>
+          <li><a href="/flipbook/events/id" style="color: #38bdf8; text-decoration: none;">📅 Flipbook Kalender Event Sumbar 2026 (Indonesia)</a></li>
+          <li><a href="/flipbook/events/en" style="color: #38bdf8; text-decoration: none;">📅 Calendar of Events 2026 Flipbook (English)</a></li>
+          <li><a href="/downloads/malala-panduan-wisata-sumbar-2026.pdf" style="color: #38bdf8; text-decoration: none;">📄 Unduh PDF Buku Panduan Wisata (149 Halaman)</a></li>
+          <li><a href="/downloads/kalender-event-sumbar-2026.pdf" style="color: #38bdf8; text-decoration: none;">📄 Unduh PDF Kalender Event KEN 2026</a></li>
+          <li><a href="/sitemap.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap XML Utama (sitemap.xml)</a></li>
+          <li><a href="/sitemap_index.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap Index XML Alias (sitemap_index.xml)</a></li>
+          <li><a href="/news-sitemap.xml" style="color: #38bdf8; text-decoration: none;">📰 Google News Sitemap XML (news-sitemap.xml)</a></li>
+          <li><a href="/rss.xml" style="color: #38bdf8; text-decoration: none;">📡 RSS 2.0 Feed (rss.xml)</a></li>
+          <li><a href="/feed.xml" style="color: #38bdf8; text-decoration: none;">📡 RSS Feed Alias (feed.xml)</a></li>
+          <li><a href="/llms.txt" style="color: #38bdf8; text-decoration: none;">🤖 Indeks AI &amp; LLM (llms.txt)</a></li>
+          <li><a href="/llms-full.txt" style="color: #38bdf8; text-decoration: none;">🤖 Korpus AI Lengkap (llms-full.txt)</a></li>
+          <li><a href="/.well-known/ai-catalog.json" style="color: #38bdf8; text-decoration: none;">🤖 AI Agent Catalog JSON</a></li>
+        </ul>
+      </section>
+
+      <!-- Section 3: 50+ Destinasi Wisata Unggulan -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          🏖️ 50+ Destinasi Wisata Unggulan Sumatera Barat
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; list-style: none; padding: 0; margin: 0;">
+          ${destinations.map(d => {
+            const slug = slugify(d.title);
+            return `<li><a href="/destinasi/${slug}" style="color: #cbd5e1; text-decoration: none; font-size: 0.95rem;">📍 <span style="color: #38bdf8; font-weight: 600;">${escapeHtml(d.title)}</span> <span style="font-size: 0.8rem; color: #94a3b8;">(${escapeHtml(d.regency || d.tag || 'Wisata')})</span></a></li>`;
+          }).join('')}
+        </ul>
+      </section>
+
+      <!-- Section 4: 30+ Warisan Seni & Budaya Minangkabau -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          🎭 30+ Warisan Seni &amp; Budaya Minangkabau
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; list-style: none; padding: 0; margin: 0;">
+          ${cultureItems.map(c => {
+            const slug = slugify(c.title);
+            return `<li><a href="/kebudayaan/${slug}" style="color: #cbd5e1; text-decoration: none; font-size: 0.95rem;">🏛️ <span style="color: #38bdf8; font-weight: 600;">${escapeHtml(c.title)}</span> <span style="font-size: 0.8rem; color: #94a3b8;">(${escapeHtml(c.category || 'Budaya')})</span></a></li>`;
+          }).join('')}
+        </ul>
+      </section>
+
+      <!-- Section 5: 36+ Kuliner Khas Minangkabau -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          🍲 36+ Kuliner Autentik Khas Ranah Minang
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; list-style: none; padding: 0; margin: 0;">
+          ${culinaryItems.map(cu => {
+            const slug = slugify(cu.title);
+            return `<li><a href="/kuliner/${slug}" style="color: #cbd5e1; text-decoration: none; font-size: 0.95rem;">🍲 <span style="color: #38bdf8; font-weight: 600;">${escapeHtml(cu.title)}</span> <span style="font-size: 0.8rem; color: #94a3b8;">(${escapeHtml(cu.origin || 'Sumbar')})</span></a></li>`;
+          }).join('')}
+        </ul>
+      </section>
+
+      <!-- Section 6: 26+ Event & Festival KEN 2026 -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          🗓️ 26+ Agenda Karisma Event Nusantara (KEN) &amp; CoE 2026
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; list-style: none; padding: 0; margin: 0;">
+          ${eventItems.map(ev => {
+            const slug = slugify(ev.title);
+            return `<li><a href="/event/${slug}" style="color: #cbd5e1; text-decoration: none; font-size: 0.95rem;">🎉 <span style="color: #38bdf8; font-weight: 600;">${escapeHtml(ev.title)}</span> <span style="font-size: 0.8rem; color: #94a3b8;">(${escapeHtml(ev.schedule || '2026')})</span></a></li>`;
+          }).join('')}
+        </ul>
+      </section>
+
+      <!-- Section 7: Liputan Berita Pariwisata Terkini -->
+      <section style="margin-bottom: 2.5rem; background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; padding: 1.75rem;">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: #f8fafc; margin-bottom: 1rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+          📰 Liputan Berita Pariwisata &amp; Hot Info Terkini
+        </h2>
+        <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; list-style: none; padding: 0; margin: 0;">
+          ${hotInfoItems.map((n: any) => {
+            const slug = slugify(n.title);
+            return `<li><a href="/berita/${slug}" style="color: #cbd5e1; text-decoration: none; font-size: 0.95rem;">📢 <span style="color: #38bdf8; font-weight: 600;">${escapeHtml(n.title)}</span></a></li>`;
+          }).join('')}
+        </ul>
+      </section>
+
+      <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #334155; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+        Peta Situs Resmi MALALA — Portal Pariwisata Sumatera Barat &copy; 2026. Diperbarui otomatis secara berkala.
+      </footer>
+    </div>
+  `;
+
+  const sitemapPage = generateHtmlPage(baseTemplate, {
+    title: 'Peta Situs Resmi (Sitemap): Direktori Lengkap Pariwisata Sumbar | MALALA',
+    description: 'Peta situs HTML resmi portal pariwisata Sumatera Barat. Akses cepat ke 50+ destinasi wisata, 30 budaya, 36 kuliner, 26 festival KEN, berita, dan unduhan panduan 2026.',
+    canonicalUrl: 'https://malala.my.id/sitemap',
+    jsonLdList: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Peta Situs Resmi (HTML Sitemap) MALALA Pariwisata Sumatera Barat",
+        "description": "Indeks lengkap seluruh tautan eksplorasi destinasi wisata, kebudayaan, kuliner, dan event di Sumatera Barat.",
+        "url": "https://malala.my.id/sitemap"
+      },
+      buildFaqJsonLd()
+    ],
+    bodyContent: sitemapHtml
+  });
+  writePage(distDir, 'sitemap', sitemapPage);
 
   // 7. GENERATE ALL 38 INDIVIDUAL DESTINATIONS WITH FULL CONTENT & INTERNAL LINKS
   let destCount = 0;
@@ -1173,9 +1332,6 @@ function generateSitemaps(
   xml += `    <lastmod>${today}</lastmod>\n`;
   xml += `    <changefreq>daily</changefreq>\n`;
   xml += `    <priority>1.0</priority>\n`;
-  xml += `    <xhtml:link rel="alternate" hreflang="id" href="https://malala.my.id/?lang=id"/>\n`;
-  xml += `    <xhtml:link rel="alternate" hreflang="en" href="https://malala.my.id/?lang=en"/>\n`;
-  xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="https://malala.my.id/"/>\n`;
   xml += `  </url>\n\n`;
 
   // Discovery Categories & Hubs
@@ -1191,6 +1347,7 @@ function generateSitemaps(
     { path: 'peta', freq: 'weekly', priority: '0.85' },
     { path: 'rencana-liburan', freq: 'weekly', priority: '0.85' },
     { path: 'tanya-mala', freq: 'weekly', priority: '0.85' },
+    { path: 'sitemap', freq: 'daily', priority: '0.9' },
     { path: 'flipbook/panduan/id', freq: 'monthly', priority: '0.85' },
     { path: 'flipbook/panduan/en', freq: 'monthly', priority: '0.85' },
     { path: 'flipbook/events/id', freq: 'monthly', priority: '0.85' },
@@ -1291,20 +1448,22 @@ function generateSitemaps(
   xml += `</urlset>\n`;
 
   // 2. Build news-sitemap.xml (Google News Schema)
+  const nowIsoW3c = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
   let newsXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   newsXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
   newsXml += `        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
 
   for (const n of hotInfoItems) {
     const slug = slugify(n.title);
+    const newsLang = (n.lang && n.lang.toLowerCase().startsWith('en')) ? 'en' : 'id';
     newsXml += `  <url>\n`;
     newsXml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
     newsXml += `    <news:news>\n`;
     newsXml += `      <news:publication>\n`;
     newsXml += `        <news:name>MALALA Pariwisata Sumbar</news:name>\n`;
-    newsXml += `        <news:language>id</news:language>\n`;
+    newsXml += `        <news:language>${newsLang}</news:language>\n`;
     newsXml += `      </news:publication>\n`;
-    newsXml += `      <news:publication_date>${nowIso}</news:publication_date>\n`;
+    newsXml += `      <news:publication_date>${nowIsoW3c}</news:publication_date>\n`;
     newsXml += `      <news:title>${escapeHtml(n.title)}</news:title>\n`;
     newsXml += `    </news:news>\n`;
     newsXml += `  </url>\n`;
@@ -1336,21 +1495,26 @@ function generateSitemaps(
   rssXml += `</channel>\n`;
   rssXml += `</rss>\n`;
 
+  // 4. Also write sitemap_index.xml (alias of sitemap.xml) and feed.xml (alias of rss.xml)
   // Write files to public/ and dist/
   const publicDir = path.join(rootDir, 'public');
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'feed.xml'), rssXml, 'utf-8');
   }
 
   if (fs.existsSync(distDir)) {
     fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap_index.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'rss.xml'), rssXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'feed.xml'), rssXml, 'utf-8');
   }
 
-  console.log(`✅ ${destinations.length + cultureItems.length + culinaryItems.length + eventItems.length + (hotInfoItems.length * 2) + mainHubs.length + 1} URL Peta Situs (sitemap.xml, news-sitemap.xml, rss.xml) Berhasil Disinkronkan.`);
+  console.log(`✅ ${destinations.length + cultureItems.length + culinaryItems.length + eventItems.length + (hotInfoItems.length * 2) + mainHubs.length + 1} URL Peta Situs (sitemap.xml, sitemap_index.xml, news-sitemap.xml, rss.xml, feed.xml) Berhasil Disinkronkan.`);
 }
 
 // Auto-run if executed via CLI
