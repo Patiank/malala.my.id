@@ -62,6 +62,7 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);

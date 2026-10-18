@@ -9,6 +9,7 @@ interface Props {
 
 interface State {
   hasError: boolean;
+  error?: Error;
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
@@ -16,12 +17,22 @@ class ErrorBoundary extends React.Component<Props, State> {
     hasError: false
   };
 
-  static getDerivedStateFromError(_: Error): State {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught Error in Malala App:', error, errorInfo);
+    // If it's a chunk load or dynamic import error after a new deployment, auto-recover once
+    const msg = error?.message || '';
+    if (msg.includes('dynamically imported module') || msg.includes('Loading chunk') || msg.includes('Failed to fetch')) {
+      const retryKey = 'malala_chunk_retry';
+      const lastRetry = sessionStorage.getItem(retryKey);
+      if (!lastRetry || Date.now() - parseInt(lastRetry, 10) > 10000) {
+        sessionStorage.setItem(retryKey, Date.now().toString());
+        window.location.reload();
+      }
+    }
   }
 
   render() {
@@ -48,6 +59,16 @@ class ErrorBoundary extends React.Component<Props, State> {
             >
               🔄 Muat Ulang Website
             </button>
+            {this.state.error?.message && (
+              <details className="text-left text-[11px] text-gray-400 bg-gray-900/80 p-2.5 rounded-lg border border-gray-700/60 mt-3">
+                <summary className="cursor-pointer text-[10px] text-gray-400 hover:text-white uppercase font-bold tracking-wider">
+                  Detail Teknis (Info Error)
+                </summary>
+                <p className="mt-1 font-mono text-[10px] text-red-300 break-words">
+                  {this.state.error.message}
+                </p>
+              </details>
+            )}
           </div>
         </div>
       );
@@ -55,6 +76,14 @@ class ErrorBoundary extends React.Component<Props, State> {
 
     return (this as any).props.children;
   }
+}
+
+// Handle Vite dynamic import chunk preload errors on client when new build is deployed
+if (typeof window !== 'undefined') {
+  window.addEventListener('vite:preloadError', (event) => {
+    console.warn('[Vite] Preload chunk error detected, reloading page to fetch latest assets:', event);
+    window.location.reload();
+  });
 }
 
 createRoot(document.getElementById('root')!).render(
