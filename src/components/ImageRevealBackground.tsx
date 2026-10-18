@@ -86,11 +86,13 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
       // Auto-orbit smoothly on all devices if not touched for 2 seconds
       if (now - lastUserTouch > 2000) {
         autoAngle += 0.008;
-        const orbitRadiusX = width * 0.22;
-        const orbitRadiusY = height * 0.16;
+        const isMobile = width < 768;
+        const orbitRadiusX = isMobile ? width * 0.28 : width * 0.22;
+        const orbitRadiusY = isMobile ? height * 0.14 : height * 0.16;
+        const centerY = isMobile ? height * 0.46 : height * 0.38;
         mouseRef.current = {
           x: width / 2 + Math.cos(autoAngle) * orbitRadiusX,
-          y: height * 0.38 + Math.sin(autoAngle * 1.3) * orbitRadiusY,
+          y: centerY + Math.sin(autoAngle * 1.3) * orbitRadiusY,
         };
       }
 
@@ -100,7 +102,7 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
       const cx = smoothRef.current.x;
       const cy = smoothRef.current.y;
 
-      const radius = Math.round(Math.min(750, Math.max(220, window.innerWidth * 0.32)));
+      const radius = Math.round(Math.min(750, Math.max(240, window.innerWidth * 0.36)));
 
       if (revealRef.current) {
         const maskStr = `radial-gradient(circle ${radius}px at ${cx}px ${cy}px, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0.12) 88%, rgba(0,0,0,0) 100%)`;
@@ -178,16 +180,16 @@ export const ImageRevealBackground: React.FC<ImageRevealBackgroundProps> = ({
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* 1. Base Layer (Statically elevated on mobile so eyes are precisely under PARADISE without any jumping) */}
+      {/* 1. Base Layer (Optimized position on mobile to frame the Minang portrait naturally below the top action card) */}
       <div
-        className="absolute -top-[160px] sm:top-0 left-0 right-0 h-[calc(100%+160px)] sm:h-full bg-cover bg-center bg-no-repeat pointer-events-none"
+        className="absolute inset-0 w-full h-full bg-cover bg-[center_top_10%] sm:bg-center bg-no-repeat pointer-events-none"
         style={{ backgroundImage: `url(${optimizedBase})` }}
       />
 
       {/* 2. Reveal Layer clipped by canvas gradient spotlight */}
       <div
         ref={revealRef}
-        className="absolute -top-[160px] sm:top-0 left-0 right-0 h-[calc(100%+160px)] sm:h-full bg-cover bg-center bg-no-repeat pointer-events-none"
+        className="absolute inset-0 w-full h-full bg-cover bg-[center_top_10%] sm:bg-center bg-no-repeat pointer-events-none"
         style={{ backgroundImage: `url(${optimizedReveal})` }}
       />
 

@@ -62,8 +62,8 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
   const videoIframeRef = useRef<HTMLIFrameElement>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoActive, setIsVideoActive] = useState(false);
@@ -154,7 +154,10 @@ export const Hero: React.FC<HeroProps> = ({
   // Close search dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideDesktop = searchContainerRef.current && searchContainerRef.current.contains(target);
+      const insideMobile = mobileSearchContainerRef.current && mobileSearchContainerRef.current.contains(target);
+      if (!insideDesktop && !insideMobile) {
         setIsSearchFocused(false);
       }
     };
@@ -651,8 +654,155 @@ export const Hero: React.FC<HeroProps> = ({
           gap: 'var(--section-gap)',
         }}
       >
-        {/* Left Block (Headline & Action Buttons) */}
-        <div className="flex flex-col justify-center items-start space-y-3.5 max-w-4xl">
+        {/* Global Semantic SEO H1 for bots & screen readers */}
+        <h1 className="sr-only">Pariwisata Sumatera Barat &amp; Pariwisata Sumbar 2026 — Discover West Sumatra Paradise</h1>
+
+        {/* Mobile-Only Action & Search Hub (Clean, Modern, Compact ala thailandjoy.asia) */}
+        <div ref={mobileSearchContainerRef} className="block sm:hidden w-full max-w-lg mx-auto pt-0.5 pb-2 font-jakarta z-30 relative select-none">
+          <div className="bg-white/92 backdrop-blur-md rounded-2xl p-2.5 shadow-xl border border-white/80 ring-1 ring-black/5">
+            {/* Row 1: Compact Search Form with Dedicated Pill CARI Button */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (onOpenDrawer) onOpenDrawer('search');
+              }}
+              className="relative flex items-center bg-gray-50/90 hover:bg-white border border-gray-200/90 rounded-full px-2.5 py-1.5 shadow-inner transition-all focus-within:border-red-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-red-500/20"
+            >
+              <div 
+                onClick={() => {
+                  if (onOpenDrawer) onOpenDrawer('search');
+                }}
+                className="pl-1 pr-1.5 text-red-600 flex items-center justify-center cursor-pointer shrink-0"
+              >
+                <Search className="w-4 h-4 animate-pulse" />
+              </div>
+
+              <input
+                type="text"
+                value={searchQuery}
+                onFocus={() => setIsSearchFocused(true)}
+                onChange={(e) => {
+                  if (onSearchQueryChange) onSearchQueryChange(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (onOpenDrawer) onOpenDrawer('search');
+                  }
+                }}
+                placeholder={lang === 'en' ? "Cari wisata, kuliner, event..." : "Cari wisata, kuliner, event..."}
+                className="w-full py-1 px-1 bg-transparent text-xs text-gray-900 placeholder-gray-400 font-semibold focus:outline-none"
+              />
+
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onSearchQueryChange) onSearchQueryChange('');
+                  }}
+                  className="p-1 rounded-full text-gray-400 hover:text-black mr-1 cursor-pointer shrink-0"
+                  title="Clear"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+
+              <button
+                type="submit"
+                onClick={() => onOpenDrawer('search')}
+                className="bg-gradient-to-r from-red-600 to-amber-600 active:scale-95 text-white font-orbitron font-bold text-[10px] tracking-wider uppercase px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shrink-0 shadow-md transition-all cursor-pointer"
+              >
+                <Search className="w-3 h-3" />
+                <span>{lang === 'en' ? 'CARI' : 'CARI'}</span>
+              </button>
+            </form>
+
+            {/* Row 2: Two Compact Action Cards Side-by-Side */}
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              {/* Mulai Jelajah */}
+              <button
+                type="button"
+                onClick={() => onOpenDrawer('destinations')}
+                className="flex items-center gap-2 p-2 rounded-xl bg-white border border-gray-200/90 hover:border-red-500 shadow-2xs active:scale-95 transition-all text-left cursor-pointer group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center shrink-0 text-red-600 group-hover:scale-105 transition-transform">
+                  <Compass className="w-4 h-4 animate-pulse" />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-orbitron font-extrabold text-[10.5px] uppercase tracking-wide text-zinc-900 truncate">
+                    {lang === 'en' ? 'EXPLORE' : 'MULAI JELAJAH'}
+                  </div>
+                  <div className="text-[8.5px] text-gray-500 font-semibold truncate">
+                    {lang === 'en' ? 'Destinations' : 'Kategori Wisata'}
+                  </div>
+                </div>
+              </button>
+
+              {/* Rencanakan AI */}
+              <button
+                type="button"
+                onClick={() => onOpenDrawer('formai')}
+                className="flex items-center gap-2 p-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 text-white shadow-md active:scale-95 transition-all text-left cursor-pointer group"
+              >
+                <div className="w-8 h-8 rounded-lg bg-black/20 flex items-center justify-center shrink-0 text-amber-200 group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-4 h-4 animate-pulse" />
+                </div>
+                <div className="min-w-0">
+                  <div className="font-orbitron font-extrabold text-[10.5px] uppercase tracking-wide text-white truncate">
+                    {lang === 'en' ? 'AI PLANNER' : 'RENCANAKAN'}
+                  </div>
+                  <div className="text-[8.5px] text-amber-100 font-semibold truncate">
+                    {lang === 'en' ? 'Uni Mala AI' : 'Rencana Liburan'}
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Real-time Search Dropdown for Mobile */}
+          {isSearchFocused && searchQuery.trim().length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 overflow-hidden max-h-[340px] overflow-y-auto z-50 animate-fade-in divide-y divide-gray-100">
+              {searchResults.length > 0 ? (
+                searchResults.map((item, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => {
+                      if (onSearchQueryChange) onSearchQueryChange('');
+                      setIsSearchFocused(false);
+                      onOpenDrawer(item.drawerType);
+                    }}
+                    className="p-3 hover:bg-red-50/80 transition-colors cursor-pointer flex items-center justify-between group"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-lg bg-gray-100 p-1.5 rounded-lg group-hover:scale-110 transition-transform shrink-0">
+                        {item.icon}
+                      </span>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-xs text-gray-900 group-hover:text-red-600 transition-colors truncate">
+                          {lang === 'en' && item.titleEn ? item.titleEn : item.title}
+                        </h4>
+                        <p className="text-[10px] text-gray-500 line-clamp-1">
+                          {lang === 'en' && item.descEn ? item.descEn : item.desc}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 group-hover:bg-red-600 group-hover:text-white transition-colors shrink-0">
+                      {lang === 'en' ? item.categoryLabelEn : item.categoryLabel}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 text-center text-xs text-gray-500 font-medium">
+                  Tidak ada informasi ditemukan untuk "{searchQuery}"
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Left Block (Headline & Action Buttons) — Hidden on mobile */}
+        <div className="hidden sm:flex flex-col justify-center items-start space-y-3.5 max-w-4xl">
           {/* Top-Left Corner Bracket */}
           <div style={bracketStyle} className="flex items-center gap-3">
             <CornerBracket type="TL" />
@@ -795,25 +945,7 @@ export const Hero: React.FC<HeroProps> = ({
                 </button>
               </form>
 
-              {/* Mobile Action Buttons (Refined 2-Column Grid with Comfortable Breathing Room) */}
-              <div className="grid grid-cols-2 gap-2 w-full sm:hidden mt-3">
-                <button
-                  type="button"
-                  onClick={() => onOpenDrawer('formai')}
-                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-zinc-950 text-white font-orbitron font-bold text-[10.5px] uppercase tracking-wider shadow-md active:scale-95 border border-amber-500/40 transition-transform cursor-pointer min-h-[40px]"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0 animate-pulse" />
-                  <span className="truncate">{lang === 'en' ? 'AI TRIP' : 'RUTE WISATA AI'}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onOpenDrawer('destinations')}
-                  className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-white text-zinc-900 font-orbitron font-bold text-[10.5px] uppercase tracking-wider shadow-md active:scale-95 border border-gray-300 hover:border-red-500 transition-transform cursor-pointer min-h-[40px]"
-                >
-                  <Compass className="w-3.5 h-3.5 text-red-600 shrink-0 animate-pulse" />
-                  <span className="truncate">{lang === 'en' ? 'EXPLORE' : 'MULAI JELAJAH'}</span>
-                </button>
-              </div>
+
 
             {/* Real-time Search Results Dropdown Panel */}
             {isSearchFocused && searchQuery.trim().length > 0 && (
@@ -902,7 +1034,7 @@ export const Hero: React.FC<HeroProps> = ({
 
           return (
             <div
-              className={`self-start relative flex flex-col justify-between w-full sm:w-[320px] md:w-[340px] lg:w-[350px] max-w-full transition-all duration-300 ${
+              className={`hidden sm:flex self-start relative flex-col justify-between w-full sm:w-[320px] md:w-[340px] lg:w-[350px] max-w-full transition-all duration-300 ${
                 isDualBanner
                   ? 'lg:self-center mt-4 lg:mt-2 lg:-translate-y-3 xl:-translate-y-4'
                   : 'lg:self-end mt-6 lg:mt-auto lg:translate-y-0'
