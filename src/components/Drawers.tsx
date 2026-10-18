@@ -846,6 +846,7 @@ export const Drawers: React.FC<DrawersProps> = ({
 
   // Hot Info & Download state
   const [hotInfoCategory, setHotInfoCategory] = useState<string>('Semua');
+  const [hotInfoSearchQuery, setHotInfoSearchQuery] = useState<string>('');
   const [showAllNewsArchive, setShowAllNewsArchive] = useState<boolean>(false);
   const [downloadSuccessMessage, setDownloadSuccessMessage] = useState<string | null>(null);
   const [isFetchingHotInfo, setIsFetchingHotInfo] = useState<boolean>(false);
@@ -1132,9 +1133,10 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    const rawNewsList = (dataStore?.hotInfoItems && dataStore.hotInfoItems.length > 0)
-      ? dataStore.hotInfoItems
-      : HOT_INFO_ITEMS;
+    const rawNewsList = deduplicateNewsItems([
+      ...(dataStore?.hotInfoItems || []),
+      ...HOT_INFO_ITEMS
+    ]);
 
     const newsList = [...rawNewsList].sort((a: any, b: any) => {
       return parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt);
@@ -3714,7 +3716,7 @@ export const Drawers: React.FC<DrawersProps> = ({
           {activeDrawer === 'hotinfo' && (
             <div className="space-y-6">
               {/* Category Filter Pills & Refresh Button */}
-              <div className="space-y-2 pb-2">
+              <div className="space-y-3 pb-2">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider font-jakarta">
                     {lang === 'en' ? 'News Category' : 'Kategori Berita'}
@@ -3730,6 +3732,27 @@ export const Drawers: React.FC<DrawersProps> = ({
                     <RefreshCw className={`w-3 h-3 ${isFetchingHotInfo ? 'animate-spin text-gray-400' : ''}`} />
                     <span>{lang === 'en' ? 'Refresh' : 'Muat Ulang'}</span>
                   </button>
+                </div>
+
+                {/* News Search Input Bar */}
+                <div className="relative w-full">
+                  <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={hotInfoSearchQuery}
+                    onChange={(e) => setHotInfoSearchQuery(e.target.value)}
+                    placeholder={lang === 'en' ? 'Search all news archives (e.g. Mentawai, Porprov, Danau)...' : 'Cari arsip berita (contoh: Mentawai, Porprov, Danau, Mandeh)...'}
+                    className="w-full pl-9 pr-8 py-1.5 text-xs font-jakarta rounded-lg bg-gray-50 border border-gray-200 focus:bg-white focus:border-red-500 focus:ring-1 focus:ring-red-500/20 outline-none transition-all placeholder:text-gray-400"
+                  />
+                  {hotInfoSearchQuery && (
+                    <button
+                      onClick={() => setHotInfoSearchQuery('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 rounded-full"
+                      title={lang === 'en' ? 'Clear search' : 'Hapus pencarian'}
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2 text-xs font-jakarta w-full">
@@ -3881,7 +3904,14 @@ export const Drawers: React.FC<DrawersProps> = ({
                   return item.category === hotInfoCategory;
                 });
 
-                const dedupedList = deduplicateNewsItems(categoryFiltered)
+                const searchFiltered = categoryFiltered.filter((item: any) => {
+                  if (!hotInfoSearchQuery.trim()) return true;
+                  const q = hotInfoSearchQuery.trim().toLowerCase();
+                  const targetText = `${item.title || ''} ${item.titleEn || ''} ${item.description || ''} ${item.descriptionEn || ''} ${item.category || ''} ${item.sourceName || ''} ${item.sourceDomain || ''} ${item.locationName || ''}`.toLowerCase();
+                  return targetText.includes(q);
+                });
+
+                const dedupedList = deduplicateNewsItems(searchFiltered)
                   .sort((a: any, b: any) => {
                     const aHeadline = (a.isHeadline || a.tag === 'Berita Utama') ? 1 : 0;
                     const bHeadline = (b.isHeadline || b.tag === 'Berita Utama') ? 1 : 0;
@@ -3896,15 +3926,17 @@ export const Drawers: React.FC<DrawersProps> = ({
                 // Berita pariwisata lebih dari 1 bulan terakhir (> 30 hari)
                 const olderList = dedupedList.filter((item: any) => !isWithinLast30Days(item.date || item.createdAt));
 
-                // Berita yang ditampilkan: liputan 1 bulan terakhir secara default,
-                // atau seluruh berita bila user mengklik "Lihat Berita Sebelumnya".
-                const displayedList = showAllNewsArchive ? dedupedList : recentList;
+                // Berita yang ditampilkan: jika sedang mencari atau user klik arsip, tampilkan semua
+                const isSearching = Boolean(hotInfoSearchQuery.trim());
+                const displayedList = (showAllNewsArchive || isSearching) ? dedupedList : recentList;
                 const isEn = lang === 'en';
 
                 if (displayedList.length === 0 && olderList.length === 0) {
                   return (
                     <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                      {isEn ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.'}
+                      {isSearching
+                        ? (isEn ? `No news found matching "${hotInfoSearchQuery}".` : `Tidak ditemukan berita yang cocok dengan kata kunci "${hotInfoSearchQuery}".`)
+                        : (isEn ? 'No recent news updates found in this category.' : 'Tidak ada update berita pariwisata untuk kategori ini.')}
                     </div>
                   );
                 }
@@ -3996,11 +4028,20 @@ export const Drawers: React.FC<DrawersProps> = ({
                                   {getNewsDisplayTitle(item, lang)}
                                 </h3>
 
-                                {/* Excerpt: Ukuran font persis sama dengan deskripsi item kuliner (text-[11px] font-jakarta text-gray-600 leading-relaxed) */}
+                                {/* Excerpt: Narasi berita deskriptif dan komprehensif */}
                                 {displayDescription && (
-                                  <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3">
-                                    {displayDescription.split('\n\n')[0]}
-                                  </p>
+                                  <div
+                                    onClick={() => onSelectNews?.(item)}
+                                    className="cursor-pointer group/desc space-y-1.5"
+                                  >
+                                    <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-4">
+                                      {displayDescription}
+                                    </p>
+                                    <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-red-600 group-hover/desc:text-red-700 transition-colors">
+                                      <span>{isEn ? 'Read full overview & details' : 'Baca rangkuman & inti lengkap'}</span>
+                                      <span className="text-xs transition-transform group-hover/desc:translate-x-0.5">→</span>
+                                    </span>
+                                  </div>
                                 )}
 
                                 {/* Meta Details: Time & Location */}
