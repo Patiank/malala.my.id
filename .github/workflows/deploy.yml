@@ -36,5 +36,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MALALA_MY_ID }}'
           channelId: live
-          projectId: malala-my-id
+          projectId: malala-web
         continue-on-error: true

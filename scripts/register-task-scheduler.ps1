@@ -8,8 +8,8 @@ Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction Silent
 # Create action
 $action = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c `"$scriptPath`""
 
-# Create trigger: daily at 06:00
-$trigger = New-ScheduledTaskTrigger -Daily -At "06:00AM"
+# Create trigger: daily at 03:00
+$trigger = New-ScheduledTaskTrigger -Daily -At "03:00AM"
 
 # Settings
 $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Hours 2) -StartWhenAvailable
@@ -20,7 +20,7 @@ Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Se
 Write-Host ""
 Write-Host "✅ Malala Autonomous Engine terdaftar di Task Scheduler!"
 Write-Host "   Nama Task: $taskName"
-Write-Host "   Jadwal: Setiap hari pukul 06:00 WIB"
+Write-Host "   Jadwal: Setiap hari pukul 03:00 WIB"
 Write-Host "   Script: $scriptPath"
 Write-Host ""
 

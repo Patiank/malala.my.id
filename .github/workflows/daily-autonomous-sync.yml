@@ -1,10 +1,13 @@
-name: Malala Autonomous Daily AI Sync
+name: Malala Autonomous Daily AI Sync (03:00 WIB)
 
 on:
   schedule:
-    # Runs daily at 17:00 UTC (00:00 WIB midnight)
-    - cron: '0 17 * * *'
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+    # Berjalan otomatis setiap hari tepat pukul 03:00 WIB (20:00 UTC)
+    - cron: '0 20 * * *'
+  workflow_dispatch: # Memungkinkan trigger manual kapan saja dari tab GitHub Actions
+
+permissions:
+  contents: write
 
 jobs:
   autonomous_sync:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,8 +27,35 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Autonomous Daily AI Engine
+      - name: Run Autonomous Daily AI Engine (03:00 WIB)
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw' }}
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY || 'AQ.Ab8RN6L6YdQ1D5yiwawCr73Xqsd3nr9gLQ1AAG0xsKRfe8W9Uw' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
         run: node scripts/autonomous-daily-sync.mjs
+
+      - name: Build Application & Pre-Render SSG News Pages
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MALALA_MY_ID }}'
+          channelId: live
+          projectId: malala-web
+        continue-on-error: true
+
+      - name: Commit & Push Updated Data to Main
+        run: |
+          git config --global user.name "Malala Autonomous Bot"
+          git config --global user.email "bot@malala.my.id"
+          git add src/data/staticConfig.ts public/
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan data baru untuk di-commit."
+          else
+            git commit -m "chore(auto-sync): daily 03:00 WIB news & SEO sitemap update [skip ci]"
+            git push origin main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
