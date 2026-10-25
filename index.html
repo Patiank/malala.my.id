@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <!-- Favicon / Logo Situs -->
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="application-name" content="MALALA" />
+    <meta name="apple-mobile-web-app-title" content="MALALA" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
     <meta name="theme-color" content="#dc2626" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -361,6 +365,13 @@
       </noscript>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+          navigator.serviceWorker.register("/sw.js").catch(function() {});
+        });
+      }
+    </script>
   </body>
 </html>
 

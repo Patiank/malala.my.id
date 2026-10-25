@@ -6,6 +6,7 @@ import { ImageRevealBackground } from './components/ImageRevealBackground';
 import { Toast } from './components/Toast';
 import { CookieBanner } from './components/CookieBanner';
 import { MobileNavDock } from './components/MobileNavDock';
+import { PwaInstallPrompt } from './components/PwaInstallPrompt';
 
 const Drawers = React.lazy(() => import('./components/Drawers').then(m => ({ default: m.Drawers })));
 const NewsModal = React.lazy(() => import('./components/NewsModal').then(m => ({ default: m.NewsModal })));
@@ -616,6 +617,9 @@ export default function App() {
         <button onClick={() => handleOpenDrawer('disclaimer')} className="hover:text-white/80 transition-colors">Disclaimer</button>
         <button onClick={() => handleOpenDrawer('contact')} className="hover:text-white/80 transition-colors">Contact</button>
       </div>
+
+      {/* PWA Smart Install Prompt Banner (Add to Home Screen) */}
+      <PwaInstallPrompt lang={lang} />
 
       {/* Cookie Consent Banner */}
       <CookieBanner
