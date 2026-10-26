@@ -24,6 +24,32 @@ function escapeHtml(unsafe: string): string {
     .replace(/'/g, '&#039;');
 }
 
+function escapeXml(unsafe: string): string {
+  if (!unsafe) return '';
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+export function resolveAbsoluteImageUrl(
+  url?: string,
+  fallback: string = 'https://malala.my.id/favicon.png'
+): string {
+  if (!url) return fallback;
+  const trimmed = url.trim();
+  if (!trimmed || trimmed.startsWith('data:')) return fallback;
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('/')) {
+    return `https://malala.my.id${trimmed}`;
+  }
+  return `https://malala.my.id/${trimmed}`;
+}
+
 function injectInternalLinks(text: string): string {
   const links: [RegExp, string][] = [
     [/\bLembah Anai\b/g, '<a href="/destinasi/air-terjun-lembah-anai" style="color: #0284c7; text-decoration: underline; font-weight: 600;">Lembah Anai</a>'],
@@ -175,17 +201,17 @@ function generateHtmlPage(
   }
 
   // OpenGraph Tags
-  const ogImage = options.imageUrl || 'https://malala.my.id/favicon.png';
+  const ogImage = resolveAbsoluteImageUrl(options.imageUrl, 'https://malala.my.id/favicon.png');
   const ogTags = `
   <meta property="og:title" content="${escapeHtml(options.title)}" />
   <meta property="og:description" content="${escapeHtml(options.description)}" />
   <meta property="og:url" content="${options.canonicalUrl}" />
-  <meta property="og:image" content="${ogImage}" />
+  <meta property="og:image" content="${escapeHtml(ogImage)}" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(options.title)}" />
   <meta name="twitter:description" content="${escapeHtml(options.description)}" />
-  <meta name="twitter:image" content="${ogImage}" />
+  <meta name="twitter:image" content="${escapeHtml(ogImage)}" />
   `;
 
   // Inject Schemas
@@ -780,7 +806,7 @@ export function generateSsg() {
       "@type": "TouristDestination",
       "name": dest.title,
       "description": dest.description,
-      "image": [dest.imageUrl || "https://malala.my.id/favicon.png"],
+      "image": [resolveAbsoluteImageUrl(dest.imageUrl, "https://malala.my.id/favicon.png")],
       "touristType": dest.tag || "Wisata Alam",
       "address": {
         "@type": "PostalAddress",
@@ -920,7 +946,7 @@ export function generateSsg() {
       "@type": "Article",
       "headline": cult.title,
       "description": cult.description,
-      "image": [cult.imageUrl || "https://malala.my.id/favicon.png"],
+      "image": [resolveAbsoluteImageUrl(cult.imageUrl, "https://malala.my.id/favicon.png")],
       "author": {
         "@type": "Organization",
         "name": "MALALA"
@@ -1002,7 +1028,7 @@ export function generateSsg() {
       "@type": "Recipe",
       "name": cul.title,
       "description": cul.description,
-      "image": [cul.imageUrl || "https://malala.my.id/favicon.png"],
+      "image": [resolveAbsoluteImageUrl(cul.imageUrl, "https://malala.my.id/favicon.png")],
       "recipeCuisine": "Minangkabau / Padang",
       "author": {
         "@type": "Organization",
@@ -1085,7 +1111,7 @@ export function generateSsg() {
       "@type": "Event",
       "name": ev.title,
       "description": ev.description,
-      "image": [ev.imageUrl || "https://malala.my.id/favicon.png"],
+      "image": [resolveAbsoluteImageUrl(ev.imageUrl, "https://malala.my.id/favicon.png")],
       "startDate": "2026-01-01",
       "location": {
         "@type": "Place",
@@ -1169,7 +1195,7 @@ export function generateSsg() {
     const lead = paragraphs[0] || n.description || '';
     const pageDesc = (lead.substring(0, 155) + '...').replace(/\n/g, ' ');
     const canonicalUrl = `https://malala.my.id/berita/${slug}`;
-    const ogImage = n.imageUrl || 'https://malala.my.id/og-image.jpg';
+    const ogImage = resolveAbsoluteImageUrl(n.imageUrl, 'https://malala.my.id/og-image.jpg');
     const mapsTargetUrl = n.mapsUrl || (n.actionUrl && (n.actionUrl.includes('google.com/maps') || n.actionUrl.includes('maps.google.com'))
       ? n.actionUrl
       : (n.locationName
@@ -1314,12 +1340,11 @@ function generateSitemaps(
   eventItems: any[],
   hotInfoItems: any[]
 ) {
-  console.log('🗺️ Memperbarui Peta Situs Resmi (sitemap.xml, news-sitemap.xml, rss.xml)...');
+  console.log('🗺️ Memperbarui Peta Situs Resmi (sitemap.xml, news-sitemap.xml, sitemap-news.xml, rss.xml, feed.xml)...');
 
   const today = new Date().toISOString().split('T')[0];
-  const nowIso = new Date().toISOString();
 
-  // 1. Build comprehensive sitemap.xml
+  // 1. Build comprehensive sitemap.xml (100% valid XML with absolute URLs only)
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
   xml += `        xmlns:xhtml="http://www.w3.org/1999/xhtml"\n`;
@@ -1334,7 +1359,7 @@ function generateSitemaps(
   xml += `    <priority>1.0</priority>\n`;
   xml += `  </url>\n\n`;
 
-  // Discovery Categories & Hubs
+  // Discovery Categories & Hubs (excluding /flipbook/* which is Disallowed & noindex)
   const mainHubs = [
     { path: 'destinasi', freq: 'weekly', priority: '0.9' },
     { path: 'kebudayaan', freq: 'weekly', priority: '0.9' },
@@ -1348,10 +1373,6 @@ function generateSitemaps(
     { path: 'rencana-liburan', freq: 'weekly', priority: '0.85' },
     { path: 'tanya-mala', freq: 'weekly', priority: '0.85' },
     { path: 'sitemap', freq: 'daily', priority: '0.9' },
-    { path: 'flipbook/panduan/id', freq: 'monthly', priority: '0.85' },
-    { path: 'flipbook/panduan/en', freq: 'monthly', priority: '0.85' },
-    { path: 'flipbook/events/id', freq: 'monthly', priority: '0.85' },
-    { path: 'flipbook/events/en', freq: 'monthly', priority: '0.85' },
     { path: 'downloads/malala-panduan-wisata-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
     { path: 'downloads/kalender-event-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
     { path: 'llms.txt', freq: 'weekly', priority: '0.7' },
@@ -1373,15 +1394,17 @@ function generateSitemaps(
   xml += `  <!-- 50+ Destinasi Wisata Unggulan -->\n`;
   for (const d of destinations) {
     const slug = slugify(d.title);
+    if (!slug) continue;
+    const absImageUrl = resolveAbsoluteImageUrl(d.imageUrl, '');
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/destinasi/${slug}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.85</priority>\n`;
-    if (d.imageUrl) {
+    if (absImageUrl) {
       xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeHtml(d.imageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeHtml(d.title)}</image:title>\n`;
+      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(d.title)}</image:title>\n`;
       xml += `    </image:image>\n`;
     }
     xml += `  </url>\n`;
@@ -1392,11 +1415,19 @@ function generateSitemaps(
   xml += `  <!-- 30 Warisan Seni & Budaya Minangkabau -->\n`;
   for (const c of cultureItems) {
     const slug = slugify(c.title);
+    if (!slug) continue;
+    const absImageUrl = resolveAbsoluteImageUrl(c.imageUrl, '');
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/kebudayaan/${slug}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>0.8</priority>\n`;
+    if (absImageUrl) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(c.title)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
     xml += `  </url>\n`;
   }
   xml += `\n`;
@@ -1405,11 +1436,19 @@ function generateSitemaps(
   xml += `  <!-- 36 Kuliner Otentik Legendaris -->\n`;
   for (const c of culinaryItems) {
     const slug = slugify(c.title);
+    if (!slug) continue;
+    const absImageUrl = resolveAbsoluteImageUrl(c.imageUrl, '');
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/kuliner/${slug}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>monthly</changefreq>\n`;
     xml += `    <priority>0.8</priority>\n`;
+    if (absImageUrl) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(c.title)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
     xml += `  </url>\n`;
   }
   xml += `\n`;
@@ -1418,24 +1457,52 @@ function generateSitemaps(
   xml += `  <!-- 26 Agenda Event Karisma Event Nusantara 2026 -->\n`;
   for (const e of eventItems) {
     const slug = slugify(e.title);
+    if (!slug) continue;
+    const absImageUrl = resolveAbsoluteImageUrl(e.imageUrl, '');
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/event/${slug}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>weekly</changefreq>\n`;
     xml += `    <priority>0.85</priority>\n`;
+    if (absImageUrl) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(e.title)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
     xml += `  </url>\n`;
   }
   xml += `\n`;
 
+  // Ensure non-empty news items for sitemap and news-sitemap
+  const validHotInfoItems = (hotInfoItems && hotInfoItems.length > 0)
+    ? hotInfoItems
+    : (HOT_INFO_FALLBACK && HOT_INFO_FALLBACK.length > 0
+      ? HOT_INFO_FALLBACK
+      : [{
+          title: 'Panduan Resmi Pariwisata Sumatera Barat & Karisma Event Nusantara 2026',
+          description: 'Informasi resmi destinasi wisata, budaya, kuliner, dan event Sumatera Barat 2026.',
+          category: 'Pariwisata Sumatera Barat',
+          lang: 'id'
+        }]);
+
   // News Articles (/berita & /hotinfo)
   xml += `  <!-- Liputan Berita Pariwisata Terkini & Hot Info -->\n`;
-  for (const n of hotInfoItems) {
+  for (const n of validHotInfoItems) {
     const slug = slugify(n.title);
+    if (!slug) continue;
+    const absImageUrl = resolveAbsoluteImageUrl(n.imageUrl, '');
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
     xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>daily</changefreq>\n`;
     xml += `    <priority>0.9</priority>\n`;
+    if (absImageUrl) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(n.title)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
     xml += `  </url>\n`;
     xml += `  <url>\n`;
     xml += `    <loc>https://malala.my.id/hotinfo/${slug}</loc>\n`;
@@ -1447,14 +1514,16 @@ function generateSitemaps(
 
   xml += `</urlset>\n`;
 
-  // 2. Build news-sitemap.xml (Google News Schema)
+  // 2. Build news-sitemap.xml & sitemap-news.xml (Google News Schema - guaranteed non-empty <urlset>)
   const nowIsoW3c = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
   let newsXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   newsXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
   newsXml += `        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
 
-  for (const n of hotInfoItems) {
+  let newsUrlCount = 0;
+  for (const n of validHotInfoItems) {
     const slug = slugify(n.title);
+    if (!slug) continue;
     const newsLang = (n.lang && n.lang.toLowerCase().startsWith('en')) ? 'en' : 'id';
     newsXml += `  <url>\n`;
     newsXml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
@@ -1464,57 +1533,79 @@ function generateSitemaps(
     newsXml += `        <news:language>${newsLang}</news:language>\n`;
     newsXml += `      </news:publication>\n`;
     newsXml += `      <news:publication_date>${nowIsoW3c}</news:publication_date>\n`;
-    newsXml += `      <news:title>${escapeHtml(n.title)}</news:title>\n`;
+    newsXml += `      <news:title>${escapeXml(n.title)}</news:title>\n`;
+    newsXml += `    </news:news>\n`;
+    newsXml += `  </url>\n`;
+    newsUrlCount++;
+  }
+  if (newsUrlCount === 0) {
+    newsXml += `  <url>\n`;
+    newsXml += `    <loc>https://malala.my.id/berita</loc>\n`;
+    newsXml += `    <news:news>\n`;
+    newsXml += `      <news:publication>\n`;
+    newsXml += `        <news:name>MALALA Pariwisata Sumbar</news:name>\n`;
+    newsXml += `        <news:language>id</news:language>\n`;
+    newsXml += `      </news:publication>\n`;
+    newsXml += `      <news:publication_date>${nowIsoW3c}</news:publication_date>\n`;
+    newsXml += `      <news:title>Kabar &amp; Berita Pariwisata Terkini Sumatera Barat 2026</news:title>\n`;
     newsXml += `    </news:news>\n`;
     newsXml += `  </url>\n`;
   }
   newsXml += `</urlset>\n`;
 
-  // 3. Build rss.xml
-  let rssXml = `<?xml version="1.0" encoding="UTF-8" ?>\n`;
-  rssXml += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n`;
-  rssXml += `<channel>\n`;
-  rssXml += `  <title>MALALA News — Berita &amp; Info Pariwisata Terkini Sumatera Barat</title>\n`;
-  rssXml += `  <link>https://malala.my.id/berita</link>\n`;
-  rssXml += `  <description>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, akses jalan raya, dan regulasi pariwisata di Sumatera Barat &amp; Nasional.</description>\n`;
-  rssXml += `  <language>id-ID</language>\n`;
-  rssXml += `  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n`;
-  rssXml += `  <atom:link href="https://malala.my.id/rss.xml" rel="self" type="application/rss+xml" />\n`;
+  // 3. Build rss.xml and feed.xml with distinct <atom:link rel="self">
+  const buildFeedXml = (selfFile: 'rss.xml' | 'feed.xml') => {
+    let feed = `<?xml version="1.0" encoding="UTF-8" ?>\n`;
+    feed += `<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n`;
+    feed += `<channel>\n`;
+    feed += `  <title>MALALA News — Berita &amp; Info Pariwisata Terkini Sumatera Barat</title>\n`;
+    feed += `  <link>https://malala.my.id/berita</link>\n`;
+    feed += `  <description>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, akses jalan raya, dan regulasi pariwisata di Sumatera Barat &amp; Nasional.</description>\n`;
+    feed += `  <language>id-ID</language>\n`;
+    feed += `  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>\n`;
+    feed += `  <atom:link href="https://malala.my.id/${selfFile}" rel="self" type="application/rss+xml" />\n`;
 
-  for (const n of hotInfoItems) {
-    const slug = slugify(n.title);
-    rssXml += `  <item>\n`;
-    rssXml += `    <title>${escapeHtml(n.title)}</title>\n`;
-    rssXml += `    <link>https://malala.my.id/berita/${slug}</link>\n`;
-    rssXml += `    <guid isPermaLink="true">https://malala.my.id/berita/${slug}</guid>\n`;
-    rssXml += `    <description>${escapeHtml(n.description || n.title)}</description>\n`;
-    rssXml += `    <category>${escapeHtml(n.category || 'Pariwisata Sumatera Barat')}</category>\n`;
-    rssXml += `    <pubDate>${new Date().toUTCString()}</pubDate>\n`;
-    rssXml += `  </item>\n`;
-  }
-  rssXml += `</channel>\n`;
-  rssXml += `</rss>\n`;
+    for (const n of validHotInfoItems) {
+      const slug = slugify(n.title);
+      if (!slug) continue;
+      feed += `  <item>\n`;
+      feed += `    <title>${escapeXml(n.title)}</title>\n`;
+      feed += `    <link>https://malala.my.id/berita/${slug}</link>\n`;
+      feed += `    <guid isPermaLink="true">https://malala.my.id/berita/${slug}</guid>\n`;
+      feed += `    <description>${escapeXml(n.description || n.title)}</description>\n`;
+      feed += `    <category>${escapeXml(n.category || 'Pariwisata Sumatera Barat')}</category>\n`;
+      feed += `    <pubDate>${new Date().toUTCString()}</pubDate>\n`;
+      feed += `  </item>\n`;
+    }
+    feed += `</channel>\n`;
+    feed += `</rss>\n`;
+    return feed;
+  };
 
-  // 4. Also write sitemap_index.xml (alias of sitemap.xml) and feed.xml (alias of rss.xml)
-  // Write files to public/ and dist/
+  const rssXml = buildFeedXml('rss.xml');
+  const feedXml = buildFeedXml('feed.xml');
+
+  // 4. Write all XML sitemaps and feeds to public/ and dist/
   const publicDir = path.join(rootDir, 'public');
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap-news.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
-    fs.writeFileSync(path.join(publicDir, 'feed.xml'), rssXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'feed.xml'), feedXml, 'utf-8');
   }
 
   if (fs.existsSync(distDir)) {
     fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'sitemap_index.xml'), xml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap-news.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'rss.xml'), rssXml, 'utf-8');
-    fs.writeFileSync(path.join(distDir, 'feed.xml'), rssXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'feed.xml'), feedXml, 'utf-8');
   }
 
-  console.log(`✅ ${destinations.length + cultureItems.length + culinaryItems.length + eventItems.length + (hotInfoItems.length * 2) + mainHubs.length + 1} URL Peta Situs (sitemap.xml, sitemap_index.xml, news-sitemap.xml, rss.xml, feed.xml) Berhasil Disinkronkan.`);
+  console.log(`✅ ${destinations.length + cultureItems.length + culinaryItems.length + eventItems.length + (validHotInfoItems.length * 2) + mainHubs.length + 1} URL Peta Situs (sitemap.xml, sitemap_index.xml, news-sitemap.xml, sitemap-news.xml, rss.xml, feed.xml) Berhasil Disinkronkan.`);
 }
 
 // Auto-run if executed via CLI

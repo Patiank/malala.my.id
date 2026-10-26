@@ -5,7 +5,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://malala.my.id/</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -13,121 +13,97 @@
   <!-- Main Discovery Categories & Hubs -->
   <url>
     <loc>https://malala.my.id/destinasi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/event</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/oleh-oleh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/unduhan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/peta</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/rencana-liburan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/tanya-mala</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/sitemap</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://malala.my.id/flipbook/panduan/id</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://malala.my.id/flipbook/panduan/en</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://malala.my.id/flipbook/events/id</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://malala.my.id/flipbook/events/en</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
     <loc>https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://malala.my.id/llms.txt</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://malala.my.id/llms-full.txt</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -135,501 +111,501 @@
   <!-- 50+ Destinasi Wisata Unggulan -->
   <url>
     <loc>https://malala.my.id/destinasi/danau-singkarak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d1.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d1.webp</image:loc>
       <image:title>Danau Singkarak</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/masjid-raya-syekh-ahmad-khatib-al-minangkabawi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d10.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d10.webp</image:loc>
       <image:title>Masjid Raya Syekh Ahmad Khatib Al-Minangkabawi</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/kepulauan-mentawai-surga-surfing-world-class</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d11.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d11.webp</image:loc>
       <image:title>Kepulauan Mentawai (Surga Surfing World Class)</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pantai-air-manis-batu-malin-kundang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d12.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d12.webp</image:loc>
       <image:title>Pantai Air Manis &amp; Batu Malin Kundang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/geopark-silokek-batang-kuantan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d13.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d13.webp</image:loc>
       <image:title>Geopark Silokek &amp; Batang Kuantan</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/kawasan-seribu-rumah-gadang-solok-selatan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d14.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d14.webp</image:loc>
       <image:title>Kawasan Seribu Rumah Gadang Solok Selatan</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/air-terjun-lembah-anai</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d15.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d15.webp</image:loc>
       <image:title>Air Terjun Lembah Anai</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pulau-pasumpahan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d16.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d16.webp</image:loc>
       <image:title>Pulau Pasumpahan</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/puncak-cemara-sawahlunto</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d1611.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d1611.webp</image:loc>
       <image:title>Puncak Cemara Sawahlunto</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/kebun-teh-alahan-panjang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d17.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d17.webp</image:loc>
       <image:title>Kebun Teh Alahan Panjang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/tarusan-kamang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d18.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d18.webp</image:loc>
       <image:title>Tarusan Kamang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/air-terjun-nyarai</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d19.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d19.webp</image:loc>
       <image:title>Air Terjun Nyarai</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/lembah-harau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d2.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d2.webp</image:loc>
       <image:title>Lembah Harau</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/jembatan-akar-bayang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d20.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d20.webp</image:loc>
       <image:title>Jembatan Akar Bayang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/candi-padang-roco-percandian-dharmasraya</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d21.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d21.webp</image:loc>
       <image:title>Candi Padang Roco &amp; Percandian Dharmasraya</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/goa-batu-kapal</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d22.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d22.webp</image:loc>
       <image:title>Goa Batu Kapal</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/sawahlunto-warisan-dunia-unesco</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d23.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d23.webp</image:loc>
       <image:title>Sawahlunto Warisan Dunia UNESCO</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/gunung-talamau-13-telaga</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d24.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d24.webp</image:loc>
       <image:title>Gunung Talamau &amp; 13 Telaga</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pulau-sirandah-pulau-pagang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d25.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d25.webp</image:loc>
       <image:title>Pulau Sirandah &amp; Pulau Pagang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/gunung-talang-danau-talang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d26.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d26.webp</image:loc>
       <image:title>Gunung Talang &amp; Danau Talang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/jembatan-kelok-9</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d27.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d27.webp</image:loc>
       <image:title>Jembatan Kelok 9</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pantai-carocok-pulau-cingkuak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d28.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d28.webp</image:loc>
       <image:title>Pantai Carocok &amp; Pulau Cingkuak</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/gua-ngalau-indah-payakumbuh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d29.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d29.webp</image:loc>
       <image:title>Gua Ngalau Indah Payakumbuh</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/jam-gadang-kota-bukittinggi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d3.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d3.webp</image:loc>
       <image:title>Jam Gadang &amp; Kota Bukittinggi</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/gunung-marapi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d30.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d30.webp</image:loc>
       <image:title>Gunung Marapi</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pulau-cubadak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d31.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d31.webp</image:loc>
       <image:title>Pulau Cubadak</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/museum-adityawarman</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d32.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d32.webp</image:loc>
       <image:title>Museum Adityawarman</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/museum-rumah-kelahiran-bung-hatta</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d33.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d33.webp</image:loc>
       <image:title>Museum Rumah Kelahiran Bung Hatta</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/bukit-langkisau-painan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d34.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d34.webp</image:loc>
       <image:title>Bukit Langkisau Painan</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pantai-gandoriah-pulau-angso-duo</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d35.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d35.webp</image:loc>
       <image:title>Pantai Gandoriah &amp; Pulau Angso Duo</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/air-terjun-lubuak-tampuruang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d36.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d36.webp</image:loc>
       <image:title>Air Terjun Lubuak Tampuruang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/istano-basa-pagaruyung</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d4.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d4.webp</image:loc>
       <image:title>Istano Basa Pagaruyung</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/puncak-lawang-danau-maninjau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d5.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d5.webp</image:loc>
       <image:title>Puncak Lawang &amp; Danau Maninjau</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/desa-wisata-nagari-pariangan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d6.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d6.webp</image:loc>
       <image:title>Desa Wisata Nagari Pariangan</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/danau-biru-sawahlunto</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d6540.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d6540.webp</image:loc>
       <image:title>Danau Biru Sawahlunto</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/kawasan-wisata-bahari-mandeh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d7.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d7.webp</image:loc>
       <image:title>Kawasan Wisata Bahari Mandeh</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/ngarai-sianok-lubang-jepang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d8.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d8.webp</image:loc>
       <image:title>Ngarai Sianok &amp; Lubang Jepang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/danau-kembar-danau-diatas-danau-dibawah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d9.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d9.webp</image:loc>
       <image:title>Danau Kembar (Danau Diatas &amp; Danau Dibawah)</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/janjang-koto-gadang-great-wall-ngarai-sianok</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/janjang-koto-gadang.webp</image:loc>
+      <image:loc>https://malala.my.id/images/janjang-koto-gadang.webp</image:loc>
       <image:title>Janjang Koto Gadang &amp; Great Wall Ngarai Sianok</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pantai-padang-jembatan-siti-nurbaya</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/pantai-padang-siti-nurbaya.webp</image:loc>
+      <image:loc>https://malala.my.id/images/pantai-padang-siti-nurbaya.webp</image:loc>
       <image:title>Pantai Padang &amp; Jembatan Siti Nurbaya</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/benteng-fort-de-kock-jembatan-limpapeh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d41.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d41.webp</image:loc>
       <image:title>Benteng Fort de Kock &amp; Jembatan Limpapeh</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/tugu-khatulistiwa-bonjol-museum-tuanku-imam-bonjol</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/tugu-khatulistiwa-bonjol.webp</image:loc>
+      <image:loc>https://malala.my.id/images/tugu-khatulistiwa-bonjol.webp</image:loc>
       <image:title>Tugu Khatulistiwa Bonjol &amp; Museum Tuanku Imam Bonjol</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/cagar-alam-rimbo-panti-pemandian-air-panas-alami</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d43.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d43.webp</image:loc>
       <image:title>Cagar Alam Rimbo Panti &amp; Pemandian Air Panas Alami</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pulau-pamutusan-spot-snorkeling-pasir-putih</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/pulau-pamutusan-pesisir-selatan.webp</image:loc>
+      <image:loc>https://malala.my.id/images/pulau-pamutusan-pesisir-selatan.webp</image:loc>
       <image:title>Pulau Pamutusan &amp; Spot Snorkeling Pasir Putih</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/puncak-gobah-panorama-danau-singkarak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/puncak-gobah-singkarak.webp</image:loc>
+      <image:loc>https://malala.my.id/images/puncak-gobah-singkarak.webp</image:loc>
       <image:title>Puncak Gobah &amp; Panorama Danau Singkarak</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/desa-wisata-kubu-gadang-padang-panjang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d46.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d46.webp</image:loc>
       <image:title>Desa Wisata Kubu Gadang Padang Panjang</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/air-terjun-lubuk-hitam-tiga-tingkat</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d47.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d47.webp</image:loc>
       <image:title>Air Terjun Lubuk Hitam Tiga Tingkat</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/danau-laut-tinggal-pasaman-barat</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/catalog/d48.webp</image:loc>
+      <image:loc>https://malala.my.id/images/catalog/d48.webp</image:loc>
       <image:title>Danau Laut Tinggal Pasaman Barat</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/puncak-polan-paralayang-sawahlunto</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/puncak-polan-sawahlunto.webp</image:loc>
+      <image:loc>https://malala.my.id/images/puncak-polan-sawahlunto.webp</image:loc>
       <image:title>Puncak Polan &amp; Paralayang Sawahlunto</image:title>
     </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/destinasi/pantai-tiku-tanjung-mutiara-agam</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
     <image:image>
-      <image:loc>/images/pantai-tiku-tanjung-mutiara.webp</image:loc>
+      <image:loc>https://malala.my.id/images/pantai-tiku-tanjung-mutiara.webp</image:loc>
       <image:title>Pantai Tiku &amp; Tanjung Mutiara Agam</image:title>
     </image:image>
   </url>
@@ -637,667 +613,1035 @@
   <!-- 30 Warisan Seni & Budaya Minangkabau -->
   <url>
     <loc>https://malala.my.id/kebudayaan/rumah-gadang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c1.webp</image:loc>
+      <image:title>Rumah Gadang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-marosok-tawar-menawar-rahasia</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c10-marosok.webp</image:loc>
+      <image:title>Tradisi Marosok (Tawar-Menawar Rahasia)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/upacara-batagak-penghulu</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c11.webp</image:loc>
+      <image:title>Upacara Batagak Penghulu</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/upacara-turun-mandi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c12.webp</image:loc>
+      <image:title>Upacara Turun Mandi</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-surau-merantau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c13.webp</image:loc>
+      <image:title>Tradisi Surau &amp; Merantau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/saluang-dendang-seruling-bambu-puisi-vokal</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c14.webp</image:loc>
+      <image:title>Saluang &amp; Dendang (Seruling Bambu &amp; Puisi Vokal)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/pacu-jawi-tradisional-alek-sawah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c15.webp</image:loc>
+      <image:title>Pacu Jawi Tradisional (Alek Sawah)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-balimau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c16.webp</image:loc>
+      <image:title>Tradisi Balimau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tari-pasambahan-siriah-carano</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c17.webp</image:loc>
+      <image:title>Tari Pasambahan &amp; Siriah Carano</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/musik-tradisional-talempong-pacik-rea</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c18.webp</image:loc>
+      <image:title>Musik Tradisional Talempong (Pacik &amp; Rea)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/seni-ukir-rumah-gadang-ukiran-minangkabau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c19.webp</image:loc>
+      <image:title>Seni Ukir Rumah Gadang (Ukiran Minangkabau)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tari-piring-atraksi-piring-pecah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c2.webp</image:loc>
+      <image:title>Tari Piring (Atraksi Piring Pecah)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-bakaba-sastra-tutur-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c20.webp</image:loc>
+      <image:title>Tradisi Bakaba &amp; Sastra Tutur Minang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tari-payung-minangkabau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c21.webp</image:loc>
+      <image:title>Tari Payung Minangkabau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-manyiriah-batimbang-tando</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c22.webp</image:loc>
+      <image:title>Tradisi Manyiriah &amp; Batimbang Tando</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/kain-songket-pandai-sikek</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c3.webp</image:loc>
+      <image:title>Kain Songket Pandai Sikek</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/seni-beladiri-silek-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c4.webp</image:loc>
+      <image:title>Seni Beladiri Silek Minang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/upacara-adat-makan-bajamba</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c5.webp</image:loc>
+      <image:title>Upacara Adat Makan Bajamba</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/kesenian-randai</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c6.webp</image:loc>
+      <image:title>Kesenian Randai</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-pacu-kuda-tradisional</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c7.webp</image:loc>
+      <image:title>Tradisi Pacu Kuda Tradisional</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/pakaian-adat-bundo-kanduang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c8.webp</image:loc>
+      <image:title>Pakaian Adat Bundo Kanduang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/sistem-matrilineal-minangkabau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c9-matrilineal.webp</image:loc>
+      <image:title>Sistem Matrilineal Minangkabau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/seni-beladiri-silek-harimau-minangkabau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c23.webp</image:loc>
+      <image:title>Seni Beladiri Silek Harimau Minangkabau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/kesenian-rabab-pasisie-rebab-pesisir-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c24.webp</image:loc>
+      <image:title>Kesenian Rabab Pasisie (Rebab Pesisir Minang)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-batagak-kudo-kudo-gotong-royong-atap-rumah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c25.webp</image:loc>
+      <image:title>Tradisi Batagak Kudo-Kudo (Gotong Royong Atap Rumah)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-serak-gulo-padang-hujan-gula-akulturasi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c26.webp</image:loc>
+      <image:title>Tradisi Serak Gulo Padang (Hujan Gula Akulturasi)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/alat-musik-tradisional-bansi-minangkabau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c27.webp</image:loc>
+      <image:title>Alat Musik Tradisional Bansi Minangkabau</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-manyerak-bareh-kunik-beras-kunyit-sakral</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c28.webp</image:loc>
+      <image:title>Tradisi Manyerak Bareh Kunik (Beras Kunyit Sakral)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/kesenian-gandang-tambua-gandang-tasa</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c29.webp</image:loc>
+      <image:title>Kesenian Gandang Tambua &amp; Gandang Tasa</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kebudayaan/tradisi-bakajang-sampan-alek-gunuang-malintang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/c30.webp</image:loc>
+      <image:title>Tradisi Bakajang / Sampan Alek Gunuang Malintang</image:title>
+    </image:image>
   </url>
 
   <!-- 36 Kuliner Otentik Legendaris -->
   <url>
     <loc>https://malala.my.id/kuliner/rendang-daging</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu1.webp</image:loc>
+      <image:title>Rendang Daging</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/sala-lauak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu10.webp</image:loc>
+      <image:title>Sala Lauak</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/palai-rinuak</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu11.webp</image:loc>
+      <image:title>Palai Rinuak</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-cancang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu12.webp</image:loc>
+      <image:title>Gulai Cancang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/katupek-gulai-paku</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu13.webp</image:loc>
+      <image:title>Katupek Gulai Paku</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-tunjang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu14.webp</image:loc>
+      <image:title>Gulai Tunjang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/pinyaram</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu15.webp</image:loc>
+      <image:title>Pinyaram</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/rakik-maco</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu16.webp</image:loc>
+      <image:title>Rakik Maco</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/ayam-pop-bukittinggi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu17.webp</image:loc>
+      <image:title>Ayam Pop Bukittinggi</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/goreng-ikan-bilih-balado</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu18.webp</image:loc>
+      <image:title>Goreng Ikan Bilih Balado</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/bareh-randang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu19.webp</image:loc>
+      <image:title>Bareh Randang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/sate-padang-pariaman</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu2.webp</image:loc>
+      <image:title>Sate Padang &amp; Pariaman</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-gajebo-sandung-lamur-asam-padeh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu20.webp</image:loc>
+      <image:title>Gulai Gajebo (Sandung Lamur Asam Padeh)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/sate-lokan-pesisir</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu21.webp</image:loc>
+      <image:title>Sate Lokan Pesisir</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/keripik-sanjai-sanjai-balado</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu22.webp</image:loc>
+      <image:title>Keripik Sanjai &amp; Sanjai Balado</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/kue-bika-koto-baru</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu23.webp</image:loc>
+      <image:title>Kue Bika Koto Baru</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/bubur-kampiun-bukittinggi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu24.webp</image:loc>
+      <image:title>Bubur Kampiun Bukittinggi</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-jariang-gulai-jengkol-khas-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu25.webp</image:loc>
+      <image:title>Gulai Jariang (Gulai Jengkol Khas Minang)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/lompong-sagu</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu26.webp</image:loc>
+      <image:title>Lompong Sagu</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/teh-talua-teh-telur-khas-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu3.webp</image:loc>
+      <image:title>Teh Talua (Teh Telur Khas Minang)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/lamang-tapai</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu4.webp</image:loc>
+      <image:title>Lamang Tapai</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/dendeng-balado-dendeng-batokok</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu5.webp</image:loc>
+      <image:title>Dendeng Balado &amp; Dendeng Batokok</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-itiak-lado-mudo</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu6.webp</image:loc>
+      <image:title>Gulai Itiak Lado Mudo</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/soto-padang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu7.webp</image:loc>
+      <image:title>Soto Padang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/ampiang-dadiah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu8.webp</image:loc>
+      <image:title>Ampiang Dadiah</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/nasi-kapau-gulai-tambusu</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu9.webp</image:loc>
+      <image:title>Nasi Kapau &amp; Gulai Tambusu</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/asam-padeh-daging-ikan-tongkol</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu27.webp</image:loc>
+      <image:title>Asam Padeh Daging &amp; Ikan Tongkol</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/samba-lado-tanak-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu28.webp</image:loc>
+      <image:title>Samba Lado Tanak Minang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-banak-gulai-otak-sapi-rempah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu29.webp</image:loc>
+      <image:title>Gulai Banak (Gulai Otak Sapi Rempah)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/rendang-lokan-pesisir-selatan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu30.webp</image:loc>
+      <image:title>Rendang Lokan Pesisir Selatan</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/teh-kawa-daun-tradisional</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu31.webp</image:loc>
+      <image:title>Teh Kawa Daun Tradisional</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/kipang-kacang-pariaman</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu32.webp</image:loc>
+      <image:title>Kipang Kacang Pariaman</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/dadiah-minangkabau-murni-yoghurt-susu-kerbau-tabung-bambu</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu33.webp</image:loc>
+      <image:title>Dadiah Minangkabau Murni (Yoghurt Susu Kerbau Tabung Bambu)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/gulai-kurma-daging-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu34.webp</image:loc>
+      <image:title>Gulai Kurma Daging Minang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/pangek-masin-ikan-mas-ranah-minang</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu35.webp</image:loc>
+      <image:title>Pangek Masin Ikan Mas Ranah Minang</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/kuliner/karupuak-sanjai-batokok-karupuak-kuah-sate</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/cu36.webp</image:loc>
+      <image:title>Karupuak Sanjai Batokok &amp; Karupuak Kuah Sate</image:title>
+    </image:image>
   </url>
 
   <!-- 26 Agenda Event Karisma Event Nusantara 2026 -->
   <url>
     <loc>https://malala.my.id/event/pacu-jawi-atraksi-balap-sapi-lumpur</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev1.webp</image:loc>
+      <image:title>Pacu Jawi (Atraksi Balap Sapi Lumpur)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-5-danau-solok-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev10.webp</image:loc>
+      <image:title>Festival 5 Danau Solok (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/sawahlunto-international-music-festival-simfes-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev11.webp</image:loc>
+      <image:title>Sawahlunto International Music Festival / SIMFes (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-pesona-mentawai-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev12.webp</image:loc>
+      <image:title>Festival Pesona Mentawai (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/alek-barajang-alek-bakajang-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev13.webp</image:loc>
+      <image:title>Alek Barajang / Alek Bakajang (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-langkisau-pesisir-selatan</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev14.webp</image:loc>
+      <image:title>Festival Langkisau Pesisir Selatan</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-tradisi-maapam-pasaman-rekor-muri</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev15.webp</image:loc>
+      <image:title>Festival Tradisi Maapam Pasaman (Rekor MURI)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/pasa-harau-art-culture-festival-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev16.webp</image:loc>
+      <image:title>Pasa Harau Art &amp; Culture Festival (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-muaro-padang-heritage-waterfront</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev17.webp</image:loc>
+      <image:title>Festival Muaro Padang (Heritage &amp; Waterfront)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-budaya-pamalayu-dharmasraya</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev18.webp</image:loc>
+      <image:title>Festival Budaya Pamalayu Dharmasraya</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/pacu-kudo-tradisional-equestrian-heritage</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev19.webp</image:loc>
+      <image:title>Pacu Kudo Tradisional (Equestrian Heritage)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/tour-de-singkarak-balap-sepeda-internasional</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev2.webp</image:loc>
+      <image:title>Tour de Singkarak (Balap Sepeda Internasional)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-pesona-danau-maninjau-kelok-44</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev20.webp</image:loc>
+      <image:title>Festival Pesona Danau Maninjau &amp; Kelok 44</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/pesona-budaya-hoyak-tabuik-piaman-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev3.webp</image:loc>
+      <image:title>Pesona Budaya Hoyak Tabuik Piaman (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-rang-solok-baralek-gadang-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev4.webp</image:loc>
+      <image:title>Festival Rang Solok Baralek Gadang (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/sawahlunto-international-songket-carnival-sissca-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev5.webp</image:loc>
+      <image:title>Sawahlunto International Songket Carnival / SISSCa (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/payakumbuh-botuang-festival</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev6.webp</image:loc>
+      <image:title>Payakumbuh Botuang Festival</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-pesona-minangkabau-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev7.webp</image:loc>
+      <image:title>Festival Pesona Minangkabau (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-siti-nurbaya-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev8.webp</image:loc>
+      <image:title>Festival Siti Nurbaya (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-rakik-rakik-danau-maninjau-ken</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev9.webp</image:loc>
+      <image:title>Festival Rakik-Rakik Danau Maninjau (KEN)</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/pacu-itiak-tradisional-payakumbuh-limapuluh-kota</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev21-pacu-itiak.webp</image:loc>
+      <image:title>Pacu Itiak Tradisional Payakumbuh &amp; Limapuluh Kota</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-danau-singkarak-seni-tradisi</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev22-danau-singkarak.webp</image:loc>
+      <image:title>Festival Danau Singkarak &amp; Seni Tradisi</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-serak-gulo-padang-heritage</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev23-serak-gulo.webp</image:loc>
+      <image:title>Festival Serak Gulo Padang Heritage</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-kuliner-minangkabau-marandang-akbar</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev24-marandang.webp</image:loc>
+      <image:title>Festival Kuliner Minangkabau Marandang Akbar</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-pesona-air-bangis-pasaman-barat</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev25-air-bangis.webp</image:loc>
+      <image:title>Festival Pesona Air Bangis Pasaman Barat</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://malala.my.id/event/festival-batang-arau-heritage-padang-waterfront</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://malala.my.id/images/catalog/ev26.webp</image:loc>
+      <image:title>Festival Batang Arau Heritage &amp; Padang Waterfront</image:title>
+    </image:image>
   </url>
 
   <!-- Liputan Berita Pariwisata Terkini & Hot Info -->
   <url>
     <loc>https://malala.my.id/berita/andre-rosiade-rp19-triliun-disiapkan-untuk-bangun-sumbar-tol-sicincin-bukittinggi-jadi-prioritas</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/andre-rosiade-rp19-triliun-disiapkan-untuk-bangun-sumbar-tol-sicincin-bukittinggi-jadi-prioritas</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/rsbg-2026-hidupkan-tradisi-minangkabau-dan-geliat-ekonomi-masuk-agenda-kharisma-event-nusantara</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/rsbg-2026-hidupkan-tradisi-minangkabau-dan-geliat-ekonomi-masuk-agenda-kharisma-event-nusantara</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/menpar-ajang-motogp-kembangkan-wisata-olahraga-dan-sport-tourism-nasional-secara-positif</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/menpar-ajang-motogp-kembangkan-wisata-olahraga-dan-sport-tourism-nasional-secara-positif</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/bupati-agam-targetkan-nagari-wisata-simarasok-raih-prestasi-tertinggi-desa-wisata-2026</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/bupati-agam-targetkan-nagari-wisata-simarasok-raih-prestasi-tertinggi-desa-wisata-2026</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/wahana-permainan-dan-fasilitas-baru-mulai-dibangun-di-objek-wisata-pantai-pariaman</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/wahana-permainan-dan-fasilitas-baru-mulai-dibangun-di-objek-wisata-pantai-pariaman</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/menikmati-keindahan-ngarai-sianok-terkini-susuri-kelok-44-hingga-danau-maninjau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/menikmati-keindahan-ngarai-sianok-terkini-susuri-kelok-44-hingga-danau-maninjau</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/kunjungan-wisatawan-mancanegara-ke-indonesia-tembus-1058-juta-sektor-pariwisata-terus-tumbuh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/kunjungan-wisatawan-mancanegara-ke-indonesia-tembus-1058-juta-sektor-pariwisata-terus-tumbuh</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/kemenpar-targetkan-sertifikasi-halal-produk-umkm-kuliner-di-1500-desa-wisata-indonesia</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/kemenpar-targetkan-sertifikasi-halal-produk-umkm-kuliner-di-1500-desa-wisata-indonesia</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://malala.my.id/berita/untuk-tarik-minat-wisatawan-nusantara-kemenpar-perkuat-penyelenggaraan-event-pariwisata-daerah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://malala.my.id/hotinfo/untuk-tarik-minat-wisatawan-nusantara-kemenpar-perkuat-penyelenggaraan-event-pariwisata-daerah</loc>
-    <lastmod>2026-10-25</lastmod>
+    <lastmod>2026-10-26</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.85</priority>
   </url>

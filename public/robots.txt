@@ -12,6 +12,7 @@ Allow: /sitemap
 Allow: /sitemap.xml
 Allow: /sitemap_index.xml
 Allow: /news-sitemap.xml
+Allow: /sitemap-news.xml
 Allow: /rss.xml
 Allow: /feed.xml
 Allow: /llms.txt
@@ -19,69 +20,85 @@ Allow: /llms-full.txt
 Allow: /.well-known/ai-catalog.json
 Allow: /ai-catalog.json
 Allow: /downloads/
+Disallow: /flipbook/
 
 # Standard Search Crawlers
 User-agent: Googlebot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Googlebot-News
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Googlebot-Image
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Slurp
 Allow: /
+Disallow: /flipbook/
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Baiduspider
 Allow: /
+Disallow: /flipbook/
 
 User-agent: YandexBot
 Allow: /
+Disallow: /flipbook/
 
 # Generative AI, LLM & AI-Search Crawlers (GEO Optimization)
 User-agent: GPTBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /flipbook/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /flipbook/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Applebot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Bytespider
 Allow: /
+Disallow: /flipbook/
 
 User-agent: meta-externalagent
 Allow: /
+Disallow: /flipbook/
 
 User-agent: cohere-ai
 Allow: /
+Disallow: /flipbook/
 
 Sitemap: https://malala.my.id/sitemap.xml
-Sitemap: https://malala.my.id/sitemap_index.xml
 Sitemap: https://malala.my.id/news-sitemap.xml
-Sitemap: https://malala.my.id/rss.xml
-Sitemap: https://malala.my.id/feed.xml
-# Agent Discovery & Catalog: https://malala.my.id/.well-known/ai-catalog.json

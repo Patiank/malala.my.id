@@ -98,10 +98,22 @@ function escapeXml(unsafe: string): string {
   });
 }
 
-function isValidHttpUrl(url?: string): boolean {
-  if (!url) return false;
+function resolveAbsoluteImageUrl(url?: string): string {
+  if (!url) return '';
   const trimmed = url.trim();
-  return (trimmed.startsWith('http://') || trimmed.startsWith('https://')) && !trimmed.startsWith('data:');
+  if (!trimmed || trimmed.startsWith('data:')) return '';
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('/')) {
+    return `https://malala.my.id${trimmed}`;
+  }
+  return `https://malala.my.id/${trimmed}`;
+}
+
+function isValidHttpUrl(url?: string): boolean {
+  const resolved = resolveAbsoluteImageUrl(url);
+  return resolved.startsWith('http://') || resolved.startsWith('https://');
 }
 
 function main() {
@@ -140,71 +152,96 @@ Allow: /berita/
 Allow: /hotinfo
 Allow: /hotinfo/
 Allow: /ads.txt
+Allow: /sitemap
 Allow: /sitemap.xml
 Allow: /news-sitemap.xml
+Allow: /sitemap-news.xml
 Allow: /rss.xml
+Allow: /feed.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /.well-known/ai-catalog.json
+Allow: /ai-catalog.json
 Allow: /downloads/
+Disallow: /flipbook/
 
 # Standard Search Crawlers
 User-agent: Googlebot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Googlebot-News
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Googlebot-Image
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Slurp
 Allow: /
+Disallow: /flipbook/
 
 User-agent: DuckDuckBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Baiduspider
 Allow: /
+Disallow: /flipbook/
 
 User-agent: YandexBot
 Allow: /
+Disallow: /flipbook/
 
 # Generative AI, LLM & AI-Search Crawlers (GEO Optimization)
 User-agent: GPTBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /flipbook/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /flipbook/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Applebot
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /flipbook/
 
 User-agent: Bytespider
 Allow: /
+Disallow: /flipbook/
 
 User-agent: meta-externalagent
 Allow: /
+Disallow: /flipbook/
 
 User-agent: cohere-ai
 Allow: /
+Disallow: /flipbook/
 
 Sitemap: https://malala.my.id/sitemap.xml
 Sitemap: https://malala.my.id/news-sitemap.xml
@@ -325,13 +362,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   // Append Destinations
   destinations.forEach((d) => {
     const slug = d.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const absImg = resolveAbsoluteImageUrl(d.imageUrl);
     sitemapXml += `  <url>
     <loc>https://malala.my.id/destinasi/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>${isValidHttpUrl(d.imageUrl) ? `
+    <priority>0.85</priority>${absImg ? `
     <image:image>
-      <image:loc>${escapeXml(d.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absImg)}</image:loc>
       <image:title>${escapeXml(d.title)}</image:title>
       <image:caption>${escapeXml(d.category)} - ${escapeXml(d.regency || 'Sumatera Barat')}</image:caption>
     </image:image>` : ''}
@@ -341,13 +379,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   // Append Culture
   cultureItems.forEach((c) => {
     const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const absImg = resolveAbsoluteImageUrl(c.imageUrl);
     sitemapXml += `  <url>
     <loc>https://malala.my.id/kebudayaan/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>${isValidHttpUrl(c.imageUrl) ? `
+    <priority>0.8</priority>${absImg ? `
     <image:image>
-      <image:loc>${escapeXml(c.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absImg)}</image:loc>
       <image:title>${escapeXml(c.title)}</image:title>
       <image:caption>${escapeXml(c.category)} - ${escapeXml(c.origin || 'Minangkabau')}</image:caption>
     </image:image>` : ''}
@@ -357,13 +396,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   // Append Culinary
   culinaryItems.forEach((cu) => {
     const slug = cu.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const absImg = resolveAbsoluteImageUrl(cu.imageUrl);
     sitemapXml += `  <url>
     <loc>https://malala.my.id/kuliner/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>${isValidHttpUrl(cu.imageUrl) ? `
+    <priority>0.8</priority>${absImg ? `
     <image:image>
-      <image:loc>${escapeXml(cu.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absImg)}</image:loc>
       <image:title>${escapeXml(cu.title)}</image:title>
       <image:caption>${escapeXml(cu.type)} - ${escapeXml(cu.origin || 'Sumatera Barat')}</image:caption>
     </image:image>` : ''}
@@ -373,13 +413,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   // Append Events
   eventItems.forEach((ev) => {
     const slug = ev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const absImg = resolveAbsoluteImageUrl(ev.imageUrl);
     sitemapXml += `  <url>
     <loc>https://malala.my.id/event/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.85</priority>${isValidHttpUrl(ev.imageUrl) ? `
+    <priority>0.85</priority>${absImg ? `
     <image:image>
-      <image:loc>${escapeXml(ev.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absImg)}</image:loc>
       <image:title>${escapeXml(ev.title)}</image:title>
       <image:caption>${escapeXml(ev.location)} (${escapeXml(ev.date)})</image:caption>
     </image:image>` : ''}
@@ -389,13 +430,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   // Append News Articles (Berita Terkini)
   hotInfoItems.forEach((n: any) => {
     const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const absImg = resolveAbsoluteImageUrl(n.imageUrl);
     sitemapXml += `  <url>
     <loc>https://malala.my.id/berita/${slug}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>${isValidHttpUrl(n.imageUrl) ? `
+    <priority>0.9</priority>${absImg ? `
     <image:image>
-      <image:loc>${escapeXml(n.imageUrl)}</image:loc>
+      <image:loc>${escapeXml(absImg)}</image:loc>
       <image:title>${escapeXml(n.title)}</image:title>
     </image:image>` : ''}
   </url>\n`;
@@ -403,10 +445,11 @@ Sitemap: https://malala.my.id/news-sitemap.xml
 
   sitemapXml += `</urlset>\n`;
   fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf-8');
-  console.log('✅ public/sitemap.xml berhasil dibuat (termasuk artikel berita).');
+  fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapXml, 'utf-8');
+  console.log('✅ public/sitemap.xml & public/sitemap_index.xml berhasil dibuat (termasuk artikel berita).');
 
   // ==========================================
-  // 2B. GENERATE public/news-sitemap.xml (Google News Protocol)
+  // 2B. GENERATE public/news-sitemap.xml & sitemap-news.xml (Google News Protocol)
   // ==========================================
   let newsSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -428,12 +471,14 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   });
   newsSitemapXml += `</urlset>\n`;
   fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsSitemapXml, 'utf-8');
-  console.log('✅ public/news-sitemap.xml berhasil dibuat.');
+  fs.writeFileSync(path.join(publicDir, 'sitemap-news.xml'), newsSitemapXml, 'utf-8');
+  console.log('✅ public/news-sitemap.xml & public/sitemap-news.xml berhasil dibuat.');
 
   // ==========================================
-  // 2C. GENERATE public/rss.xml (RSS 2.0 Feed)
+  // 2C. GENERATE public/rss.xml & public/feed.xml (RSS 2.0 Feed)
   // ==========================================
-  let rssXml = `<?xml version="1.0" encoding="UTF-8" ?>
+  const buildFeed = (selfFile: 'rss.xml' | 'feed.xml') => {
+    let xmlFeed = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>MALALA News — Berita &amp; Info Pariwisata Terkini Sumatera Barat</title>
@@ -441,13 +486,13 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   <description>Liputan berita terpercaya seputar perkembangan destinasi, agenda festival, akses jalan raya, dan regulasi pariwisata di Sumatera Barat &amp; Nasional.</description>
   <language>id-ID</language>
   <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="https://malala.my.id/rss.xml" rel="self" type="application/rss+xml" />
+  <atom:link href="https://malala.my.id/${selfFile}" rel="self" type="application/rss+xml" />
 `;
-  hotInfoItems.forEach((n: any) => {
-    const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    const url = `https://malala.my.id/berita/${slug}`;
-    const snippet = (n.description || '').substring(0, 300) + '...';
-    rssXml += `  <item>
+    hotInfoItems.forEach((n: any) => {
+      const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const url = `https://malala.my.id/berita/${slug}`;
+      const snippet = (n.description || '').substring(0, 300) + '...';
+      xmlFeed += `  <item>
     <title>${escapeXml(n.title)}</title>
     <link>${url}</link>
     <guid isPermaLink="true">${url}</guid>
@@ -455,10 +500,13 @@ Sitemap: https://malala.my.id/news-sitemap.xml
     <category>${escapeXml(n.category || 'Pariwisata')}</category>
     <pubDate>${new Date().toUTCString()}</pubDate>
   </item>\n`;
-  });
-  rssXml += `</channel>\n</rss>\n`;
-  fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
-  console.log('✅ public/rss.xml berhasil dibuat.');
+    });
+    xmlFeed += `</channel>\n</rss>\n`;
+    return xmlFeed;
+  };
+  fs.writeFileSync(path.join(publicDir, 'rss.xml'), buildFeed('rss.xml'), 'utf-8');
+  fs.writeFileSync(path.join(publicDir, 'feed.xml'), buildFeed('feed.xml'), 'utf-8');
+  console.log('✅ public/rss.xml & public/feed.xml berhasil dibuat.');
 
   // ==========================================
   // 3. GENERATE public/llms.txt (GEO Summary Standard)

@@ -13,7 +13,8 @@
       "event_calendar_printable*.html",
       "ebooklet_pages_jpg/**",
       "offline_templates/**",
-      "downloads/**"
+      "downloads/**",
+      "**/flipbook/**/files/basic-html/**"
     ],
     "headers": [
       {
@@ -83,6 +84,15 @@
         ]
       },
       {
+        "source": "/flipbook/**",
+        "headers": [
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
+          }
+        ]
+      },
+      {
         "source": "/flipbook/**/files/@(page|thumb|preview)/**",
         "headers": [
           {
@@ -97,6 +107,10 @@
           {
             "key": "Cache-Control",
             "value": "no-cache, must-revalidate"
+          },
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow"
           }
         ]
       },
@@ -119,7 +133,7 @@
         ]
       },
       {
-        "source": "/@(sitemap*.xml|rss.xml|feed.xml|news-sitemap.xml)",
+        "source": "/**/*.xml",
         "headers": [
           {
             "key": "Content-Type",
