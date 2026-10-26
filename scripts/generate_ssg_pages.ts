@@ -1344,22 +1344,41 @@ function generateSitemaps(
 
   const today = new Date().toISOString().split('T')[0];
 
-  // 1. Build comprehensive sitemap.xml (100% valid XML with absolute URLs only)
+  // 1. Build comprehensive sitemap.xml (100% valid XML with absolute URLs only, no comments or unused namespaces)
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
-  xml += `        xmlns:xhtml="http://www.w3.org/1999/xhtml"\n`;
   xml += `        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n`;
 
-  // Homepage
-  xml += `  <!-- Homepage -->\n`;
-  xml += `  <url>\n`;
-  xml += `    <loc>https://malala.my.id/</loc>\n`;
-  xml += `    <lastmod>${today}</lastmod>\n`;
-  xml += `    <changefreq>daily</changefreq>\n`;
-  xml += `    <priority>1.0</priority>\n`;
-  xml += `  </url>\n\n`;
+  // Also build sitemap-main.xml (pure standard sitemap 0.9 without any extension namespaces)
+  let pureXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  pureXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-  // Discovery Categories & Hubs (excluding /flipbook/* which is Disallowed & noindex)
+  const addUrlEntry = (locUrl: string, freq: string, priority: string, imgUrl?: string, imgTitle?: string) => {
+    xml += `  <url>\n`;
+    xml += `    <loc>${locUrl}</loc>\n`;
+    xml += `    <lastmod>${today}</lastmod>\n`;
+    xml += `    <changefreq>${freq}</changefreq>\n`;
+    xml += `    <priority>${priority}</priority>\n`;
+    if (imgUrl && imgTitle) {
+      xml += `    <image:image>\n`;
+      xml += `      <image:loc>${escapeXml(imgUrl)}</image:loc>\n`;
+      xml += `      <image:title>${escapeXml(imgTitle)}</image:title>\n`;
+      xml += `    </image:image>\n`;
+    }
+    xml += `  </url>\n`;
+
+    pureXml += `  <url>\n`;
+    pureXml += `    <loc>${locUrl}</loc>\n`;
+    pureXml += `    <lastmod>${today}</lastmod>\n`;
+    pureXml += `    <changefreq>${freq}</changefreq>\n`;
+    pureXml += `    <priority>${priority}</priority>\n`;
+    pureXml += `  </url>\n`;
+  };
+
+  // Homepage
+  addUrlEntry('https://malala.my.id/', 'daily', '1.0');
+
+  // Discovery Categories & Hubs (only real indexable HTML pages)
   const mainHubs = [
     { path: 'destinasi', freq: 'weekly', priority: '0.9' },
     { path: 'kebudayaan', freq: 'weekly', priority: '0.9' },
@@ -1373,106 +1392,43 @@ function generateSitemaps(
     { path: 'rencana-liburan', freq: 'weekly', priority: '0.85' },
     { path: 'tanya-mala', freq: 'weekly', priority: '0.85' },
     { path: 'sitemap', freq: 'daily', priority: '0.9' },
-    { path: 'downloads/malala-panduan-wisata-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
-    { path: 'downloads/kalender-event-sumbar-2026.pdf', freq: 'weekly', priority: '0.8' },
-    { path: 'llms.txt', freq: 'weekly', priority: '0.7' },
-    { path: 'llms-full.txt', freq: 'weekly', priority: '0.7' },
   ];
 
-  xml += `  <!-- Main Discovery Categories & Hubs -->\n`;
   for (const hub of mainHubs) {
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/${hub.path}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>${hub.freq}</changefreq>\n`;
-    xml += `    <priority>${hub.priority}</priority>\n`;
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/${hub.path}`, hub.freq, hub.priority);
   }
-  xml += `\n`;
 
   // 50+ Destinations
-  xml += `  <!-- 50+ Destinasi Wisata Unggulan -->\n`;
   for (const d of destinations) {
     const slug = slugify(d.title);
     if (!slug) continue;
     const absImageUrl = resolveAbsoluteImageUrl(d.imageUrl, '');
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/destinasi/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.85</priority>\n`;
-    if (absImageUrl) {
-      xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeXml(d.title)}</image:title>\n`;
-      xml += `    </image:image>\n`;
-    }
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/destinasi/${slug}`, 'weekly', '0.85', absImageUrl, d.title);
   }
-  xml += `\n`;
 
   // 30 Culture Items
-  xml += `  <!-- 30 Warisan Seni & Budaya Minangkabau -->\n`;
   for (const c of cultureItems) {
     const slug = slugify(c.title);
     if (!slug) continue;
     const absImageUrl = resolveAbsoluteImageUrl(c.imageUrl, '');
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/kebudayaan/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.8</priority>\n`;
-    if (absImageUrl) {
-      xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeXml(c.title)}</image:title>\n`;
-      xml += `    </image:image>\n`;
-    }
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/kebudayaan/${slug}`, 'monthly', '0.8', absImageUrl, c.title);
   }
-  xml += `\n`;
 
   // 36 Culinary Items
-  xml += `  <!-- 36 Kuliner Otentik Legendaris -->\n`;
   for (const c of culinaryItems) {
     const slug = slugify(c.title);
     if (!slug) continue;
     const absImageUrl = resolveAbsoluteImageUrl(c.imageUrl, '');
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/kuliner/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.8</priority>\n`;
-    if (absImageUrl) {
-      xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeXml(c.title)}</image:title>\n`;
-      xml += `    </image:image>\n`;
-    }
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/kuliner/${slug}`, 'monthly', '0.8', absImageUrl, c.title);
   }
-  xml += `\n`;
 
   // 26 Event Items
-  xml += `  <!-- 26 Agenda Event Karisma Event Nusantara 2026 -->\n`;
   for (const e of eventItems) {
     const slug = slugify(e.title);
     if (!slug) continue;
     const absImageUrl = resolveAbsoluteImageUrl(e.imageUrl, '');
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/event/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.85</priority>\n`;
-    if (absImageUrl) {
-      xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeXml(e.title)}</image:title>\n`;
-      xml += `    </image:image>\n`;
-    }
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/event/${slug}`, 'weekly', '0.85', absImageUrl, e.title);
   }
-  xml += `\n`;
 
   // Ensure non-empty news items for sitemap and news-sitemap
   const validHotInfoItems = (hotInfoItems && hotInfoItems.length > 0)
@@ -1487,32 +1443,29 @@ function generateSitemaps(
         }]);
 
   // News Articles (/berita & /hotinfo)
-  xml += `  <!-- Liputan Berita Pariwisata Terkini & Hot Info -->\n`;
   for (const n of validHotInfoItems) {
     const slug = slugify(n.title);
     if (!slug) continue;
     const absImageUrl = resolveAbsoluteImageUrl(n.imageUrl, '');
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>daily</changefreq>\n`;
-    xml += `    <priority>0.9</priority>\n`;
-    if (absImageUrl) {
-      xml += `    <image:image>\n`;
-      xml += `      <image:loc>${escapeXml(absImageUrl)}</image:loc>\n`;
-      xml += `      <image:title>${escapeXml(n.title)}</image:title>\n`;
-      xml += `    </image:image>\n`;
-    }
-    xml += `  </url>\n`;
-    xml += `  <url>\n`;
-    xml += `    <loc>https://malala.my.id/hotinfo/${slug}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>daily</changefreq>\n`;
-    xml += `    <priority>0.85</priority>\n`;
-    xml += `  </url>\n`;
+    addUrlEntry(`https://malala.my.id/berita/${slug}`, 'daily', '0.9', absImageUrl, n.title);
+    addUrlEntry(`https://malala.my.id/hotinfo/${slug}`, 'daily', '0.85');
   }
 
   xml += `</urlset>\n`;
+  pureXml += `</urlset>\n`;
+
+  // Build valid <sitemapindex> for sitemap_index.xml
+  let sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  sitemapIndexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  sitemapIndexXml += `  <sitemap>\n`;
+  sitemapIndexXml += `    <loc>https://malala.my.id/sitemap-main.xml</loc>\n`;
+  sitemapIndexXml += `    <lastmod>${today}</lastmod>\n`;
+  sitemapIndexXml += `  </sitemap>\n`;
+  sitemapIndexXml += `  <sitemap>\n`;
+  sitemapIndexXml += `    <loc>https://malala.my.id/sitemap-news.xml</loc>\n`;
+  sitemapIndexXml += `    <lastmod>${today}</lastmod>\n`;
+  sitemapIndexXml += `  </sitemap>\n`;
+  sitemapIndexXml += `</sitemapindex>\n`;
 
   // 2. Build news-sitemap.xml & sitemap-news.xml (Google News Schema - guaranteed non-empty <urlset>)
   const nowIsoW3c = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
@@ -1589,7 +1542,8 @@ function generateSitemaps(
   const publicDir = path.join(rootDir, 'public');
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml, 'utf-8');
-    fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap-main.xml'), pureXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapIndexXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'sitemap-news.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
@@ -1598,7 +1552,8 @@ function generateSitemaps(
 
   if (fs.existsSync(distDir)) {
     fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf-8');
-    fs.writeFileSync(path.join(distDir, 'sitemap_index.xml'), xml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap-main.xml'), pureXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap_index.xml'), sitemapIndexXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'sitemap-news.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'rss.xml'), rssXml, 'utf-8');
