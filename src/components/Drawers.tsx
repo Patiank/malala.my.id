@@ -533,19 +533,21 @@ export const Drawers: React.FC<DrawersProps> = ({
   // Deep-linking and URL synchronization for Submodals
   useEffect(() => {
     if (selectedDestination) {
-      const ratingSummary = getDestinationRatingSummary(selectedDestination.id, selectedDestination.title);
+      const absImg = selectedDestination.imageUrl
+        ? (selectedDestination.imageUrl.startsWith('http') ? selectedDestination.imageUrl : `https://malala.my.id${selectedDestination.imageUrl.startsWith('/') ? '' : '/'}${selectedDestination.imageUrl}`)
+        : "https://malala.my.id/og-image.jpg";
       pushRoute(getItemDeepLink('destinasi', selectedDestination), { malalaLayer: 'submodal', category: 'destinasi', id: selectedDestination.id });
       applyPageSeo({
         title: `${lang === 'en' && selectedDestination.titleEn ? selectedDestination.titleEn : selectedDestination.title} - Destinasi Wisata Sumatera Barat | Malala`,
         description: lang === 'en' && selectedDestination.descriptionEn ? selectedDestination.descriptionEn : selectedDestination.description,
         url: `https://malala.my.id${getItemDeepLink('destinasi', selectedDestination)}`,
-        imageUrl: selectedDestination.imageUrl,
+        imageUrl: absImg,
         jsonLd: {
           "@context": "https://schema.org",
           "@type": "TouristDestination",
           "name": selectedDestination.title,
           "description": selectedDestination.description,
-          "image": [selectedDestination.imageUrl || "https://malala.my.id/og-image.jpg"],
+          "image": [absImg],
           "address": {
             "@type": "PostalAddress",
             "addressRegion": selectedDestination.regency || "Sumatera Barat",
@@ -555,30 +557,7 @@ export const Drawers: React.FC<DrawersProps> = ({
             "@type": "GeoCoordinates",
             "latitude": selectedDestination.lat,
             "longitude": selectedDestination.lng
-          } : undefined,
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": ratingSummary.rating.toFixed(1),
-            "bestRating": "5",
-            "worstRating": "1",
-            "ratingCount": ratingSummary.reviewCount,
-            "reviewCount": ratingSummary.reviewCount
-          },
-          "review": ratingSummary.reviews.slice(0, 3).map(r => ({
-            "@type": "Review",
-            "author": {
-              "@type": "Person",
-              "name": r.author
-            },
-            "datePublished": r.date,
-            "reviewBody": r.comment,
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": r.rating,
-              "bestRating": "5",
-              "worstRating": "1"
-            }
-          }))
+          } : undefined
         }
       });
     }
@@ -610,28 +589,55 @@ export const Drawers: React.FC<DrawersProps> = ({
 
   useEffect(() => {
     if (selectedEvent) {
+      const eventUrl = `https://malala.my.id${getItemDeepLink('event', selectedEvent)}`;
+      const absEventImg = selectedEvent.imageUrl
+        ? (selectedEvent.imageUrl.startsWith('http') ? selectedEvent.imageUrl : `https://malala.my.id${selectedEvent.imageUrl.startsWith('/') ? '' : '/'}${selectedEvent.imageUrl}`)
+        : "https://malala.my.id/og-image.jpg";
       pushRoute(getItemDeepLink('event', selectedEvent), { malalaLayer: 'submodal', category: 'event', id: selectedEvent.id });
       applyPageSeo({
         title: `${lang === 'en' && selectedEvent.titleEn ? selectedEvent.titleEn : selectedEvent.title} - Kalender Event Pariwisata Sumbar 2026 | Malala`,
         description: lang === 'en' && selectedEvent.descriptionEn ? selectedEvent.descriptionEn : selectedEvent.description,
-        url: `https://malala.my.id${getItemDeepLink('event', selectedEvent)}`,
-        imageUrl: selectedEvent.imageUrl,
+        url: eventUrl,
+        imageUrl: absEventImg,
         jsonLd: {
           "@context": "https://schema.org",
           "@type": "Event",
           "name": selectedEvent.title,
           "description": selectedEvent.description,
-          "startDate": selectedEvent.date,
+          "startDate": "2026-06-01T08:00:00+07:00",
+          "endDate": "2026-12-31T21:00:00+07:00",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
           "location": {
             "@type": "Place",
             "name": selectedEvent.location || "Sumatera Barat",
             "address": {
               "@type": "PostalAddress",
+              "streetAddress": selectedEvent.location || "Pusat Kawasan Wisata Sumatera Barat",
+              "addressLocality": selectedEvent.location || "Padang",
               "addressRegion": "Sumatera Barat",
+              "postalCode": "25111",
               "addressCountry": "ID"
             }
           },
-          "image": [selectedEvent.imageUrl || "https://malala.my.id/og-image.jpg"]
+          "organizer": {
+            "@type": "Organization",
+            "name": "Dinas Pariwisata Sumatera Barat & MALALA",
+            "url": "https://malala.my.id"
+          },
+          "performer": {
+            "@type": "PerformingGroup",
+            "name": selectedEvent.title
+          },
+          "offers": {
+            "@type": "Offer",
+            "url": eventUrl,
+            "price": "0",
+            "priceCurrency": "IDR",
+            "availability": "https://schema.org/InStock",
+            "validFrom": "2026-01-01T00:00:00+07:00"
+          },
+          "image": [absEventImg]
         }
       });
     }

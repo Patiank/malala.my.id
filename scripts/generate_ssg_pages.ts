@@ -214,6 +214,9 @@ function generateHtmlPage(
   <meta name="twitter:image" content="${escapeHtml(ogImage)}" />
   `;
 
+  // Remove any pre-existing static JSON-LD blocks from base index.html template to prevent duplicate FAQPage/WebSite schemas
+  html = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, '');
+
   // Inject Schemas
   const scripts = options.jsonLdList
     .map(data => `<script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n</script>`)
@@ -356,7 +359,14 @@ export function generateSsg() {
         "description": "Daftar lengkap objek wisata alam, danau, geopark, dan bahari di Sumatera Barat.",
         "url": "https://malala.my.id/destinasi"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Destinasi Wisata", "item": "https://malala.my.id/destinasi" }
+        ]
+      }
     ],
     bodyContent: destinasiCatalogHtml
   });
@@ -404,7 +414,14 @@ export function generateSsg() {
         "description": "Ensiklopedia tradisi, upacara adat, seni pertunjukan, dan falsafah hidup Minangkabau.",
         "url": "https://malala.my.id/kebudayaan"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Warisan Budaya", "item": "https://malala.my.id/kebudayaan" }
+        ]
+      }
     ],
     bodyContent: kebudayaanCatalogHtml
   });
@@ -452,7 +469,14 @@ export function generateSsg() {
         "description": "Daftar kuliner pusaka dan hidangan legendaris dari seluruh pelosok Ranah Minang.",
         "url": "https://malala.my.id/kuliner"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Kuliner Khas Minang", "item": "https://malala.my.id/kuliner" }
+        ]
+      }
     ],
     bodyContent: kulinerCatalogHtml
   });
@@ -500,7 +524,14 @@ export function generateSsg() {
         "description": "Jadwal resmi perhelatan seni, parade budaya, dan festival pariwisata Sumatera Barat.",
         "url": "https://malala.my.id/event"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Kalender Event 2026", "item": "https://malala.my.id/event" }
+        ]
+      }
     ],
     bodyContent: eventCatalogHtml
   });
@@ -560,7 +591,14 @@ export function generateSsg() {
         "description": "Liputan berita terpercaya seputar aksesibilitas jalur transportasi, perhelatan Karisma Event Nusantara (KEN), kebijakan pariwisata nasional, dan panduan liburan di Ranah Minang.",
         "url": "https://malala.my.id/berita"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Berita Pariwisata", "item": "https://malala.my.id/berita" }
+        ]
+      }
     ],
     bodyContent: newsCatalogHtml
   });
@@ -619,7 +657,14 @@ export function generateSsg() {
           "description": pg.description,
           "url": `https://malala.my.id/${pg.route}`
         },
-        buildFaqJsonLd()
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+            { "@type": "ListItem", "position": 2, "name": pg.h1, "item": `https://malala.my.id/${pg.route}` }
+          ]
+        }
       ],
       bodyContent: `
         <div style="max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1e293b; line-height: 1.7;">
@@ -783,7 +828,14 @@ export function generateSsg() {
         "description": "Indeks lengkap seluruh tautan eksplorasi destinasi wisata, kebudayaan, kuliner, dan event di Sumatera Barat.",
         "url": "https://malala.my.id/sitemap"
       },
-      buildFaqJsonLd()
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Pariwisata Sumatera Barat", "item": "https://malala.my.id/" },
+          { "@type": "ListItem", "position": 2, "name": "Peta Situs", "item": "https://malala.my.id/sitemap" }
+        ]
+      }
     ],
     bodyContent: sitemapHtml
   });
@@ -947,9 +999,20 @@ export function generateSsg() {
       "headline": cult.title,
       "description": cult.description,
       "image": [resolveAbsoluteImageUrl(cult.imageUrl, "https://malala.my.id/favicon.png")],
+      "datePublished": "2026-01-01T08:00:00+07:00",
+      "dateModified": "2026-10-26T08:00:00+07:00",
       "author": {
         "@type": "Organization",
-        "name": "MALALA"
+        "name": "MALALA",
+        "url": "https://malala.my.id"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MALALA",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://malala.my.id/favicon.png"
+        }
       }
     };
 
@@ -1025,14 +1088,24 @@ export function generateSsg() {
 
     const culJsonLd = {
       "@context": "https://schema.org",
-      "@type": "Recipe",
-      "name": cul.title,
+      "@type": "Article",
+      "headline": `${cul.title} — Kuliner Autentik Khas Minangkabau`,
       "description": cul.description,
       "image": [resolveAbsoluteImageUrl(cul.imageUrl, "https://malala.my.id/favicon.png")],
-      "recipeCuisine": "Minangkabau / Padang",
+      "datePublished": "2026-01-01T08:00:00+07:00",
+      "dateModified": "2026-10-26T08:00:00+07:00",
       "author": {
         "@type": "Organization",
-        "name": "MALALA"
+        "name": "MALALA",
+        "url": "https://malala.my.id"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "MALALA",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://malala.my.id/favicon.png"
+        }
       }
     };
 
@@ -1112,15 +1185,38 @@ export function generateSsg() {
       "name": ev.title,
       "description": ev.description,
       "image": [resolveAbsoluteImageUrl(ev.imageUrl, "https://malala.my.id/favicon.png")],
-      "startDate": "2026-01-01",
+      "startDate": "2026-06-01T08:00:00+07:00",
+      "endDate": "2026-12-31T21:00:00+07:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
       "location": {
         "@type": "Place",
         "name": ev.location || "Sumatera Barat",
         "address": {
           "@type": "PostalAddress",
+          "streetAddress": ev.location || "Pusat Kawasan Wisata Sumatera Barat",
+          "addressLocality": ev.location || "Padang",
           "addressRegion": "Sumatera Barat",
+          "postalCode": "25111",
           "addressCountry": "ID"
         }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Dinas Pariwisata Sumatera Barat & MALALA",
+        "url": "https://malala.my.id"
+      },
+      "performer": {
+        "@type": "PerformingGroup",
+        "name": ev.title
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": canonicalUrl,
+        "price": "0",
+        "priceCurrency": "IDR",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2026-01-01T00:00:00+07:00"
       }
     };
 
