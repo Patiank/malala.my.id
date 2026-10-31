@@ -19,6 +19,38 @@ const db = getFirestore(app);
 const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+/**
+ * Timeout helper to prevent Firestore cloud operations from hanging on network lag or quota limits
+ */
+function withTimeout(promise, ms = 7000, operationName = 'Firestore Operation') {
+  let timer;
+  const timeoutPromise = new Promise((_, reject) => {
+    timer = setTimeout(() => {
+      reject(new Error(`${operationName} timed out after ${ms}ms`));
+    }, ms);
+  });
+  return Promise.race([promise, timeoutPromise]).finally(() => clearTimeout(timer));
+}
+
+function parseNewsTimestamp(dateStr = '', createdAt = '') {
+  if (createdAt) {
+    const t = new Date(createdAt).getTime();
+    if (!isNaN(t)) return t;
+  }
+  if (!dateStr) return 0;
+  const parts = dateStr.trim().split(/[\s,]+/);
+  if (parts.length >= 3) {
+    const day = parseInt(parts[0], 10);
+    const monthIdx = monthNamesId.findIndex(m => m.toLowerCase() === parts[1].toLowerCase());
+    const year = parseInt(parts[2], 10);
+    if (!isNaN(day) && monthIdx !== -1 && !isNaN(year)) {
+      return new Date(year, monthIdx, day).getTime();
+    }
+  }
+  const parsed = Date.parse(dateStr);
+  return isNaN(parsed) ? 0 : parsed;
+}
+
 function formatPublishDate(d = new Date()) {
   const day = d.getDate();
   const m = d.getMonth();
@@ -43,7 +75,6 @@ function cleanHtml(str = '') {
 
 function cleanTitle(rawTitle = '') {
   let t = cleanHtml(rawTitle);
-  // Remove trailing dots or cut words
   t = t.replace(/\.{2,}$/, '').trim();
   if (t.endsWith('Sumate')) {
     t = t.replace(/Sumate$/, 'Sumatera Barat');
@@ -54,7 +85,6 @@ function cleanTitle(rawTitle = '') {
 function isRelevantNews(title = '') {
   const t = title.toLowerCase();
   if (t.length < 22) return false;
-  // Filter out internal meetings / alumni / irrelevant noise
   if (t.includes('pelantikan') || t.includes('rapat perdana') || t.includes('ikba') || t.includes('kemenpar,')) {
     return false;
   }
@@ -178,6 +208,9 @@ async function fetchGoogleNewsRss(query) {
   }
 }
 
+/**
+ * Local-First Sync: Saves news to src/data/staticConfig.ts with 30-day retention policy
+ */
 function syncNewsToStaticConfigFile(newItems) {
   const filePath = path.resolve('src/data/staticConfig.ts');
   if (!fs.existsSync(filePath)) {
@@ -198,17 +231,29 @@ function syncNewsToStaticConfigFile(newItems) {
     const existingTitles = new Set(existingArray.map(it => (it.title || '').trim().toLowerCase()));
     const filteredNew = newItems.filter(it => !existingTitles.has((it.title || '').trim().toLowerCase()));
 
-    if (filteredNew.length === 0) {
-      console.log('   ℹ️ Berita yang sama sudah ada di staticConfig.ts (tidak ada duplikasi).');
-      return;
-    }
+    const combined = [...filteredNew, ...existingArray];
+    
+    // Sort strictly by publication timestamp descending
+    combined.sort((a, b) => {
+      const timeA = parseNewsTimestamp(a.date, a.createdAt);
+      const timeB = parseNewsTimestamp(b.date, b.createdAt);
+      return timeB - timeA;
+    });
 
-    // Keep the most recent 12 items, sorted by publication date
-    const merged = [...filteredNew, ...existingArray].slice(0, 12);
-    const newArrayString = JSON.stringify(merged, null, 2) + ';';
+    // Retention policy: Keep news within last 30 days, guarantee at least 10 items
+    const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+    const freshOnly = combined.filter(it => {
+      const ts = parseNewsTimestamp(it.date, it.createdAt);
+      return (now - ts) <= THIRTY_DAYS_MS;
+    });
+
+    const finalMerged = (freshOnly.length >= 10 ? freshOnly : combined).slice(0, 15);
+
+    const newArrayString = JSON.stringify(finalMerged, null, 2) + ';';
     const updatedContent = content.replace(regex, `export const HOT_INFO_ITEMS: HotInfoItem[] = ${newArrayString}`);
     fs.writeFileSync(filePath, updatedContent, 'utf-8');
-    console.log(`   ✅ src/data/staticConfig.ts berhasil diperbarui dengan ${filteredNew.length} berita baru!`);
+    console.log(`   ✅ src/data/staticConfig.ts berhasil diperbarui! (${finalMerged.length} berita aktif, ${filteredNew.length} berita baru dimasukkan)`);
   } catch (err) {
     console.warn('   ⚠️ Error parsing/writing staticConfig.ts:', err.message);
   }
@@ -444,31 +489,37 @@ Format JSON array murni tanpa markdown:
     }
   }
 
-  // Save new items to Firestore & staticConfig.ts
+  // 1. LOCAL-FIRST SYNC: Sinkronkan ke staticConfig.ts terlebih dahulu
   if (newItemsToStore.length > 0) {
-    console.log(`💾 Mengunggah ${newItemsToStore.length} berita baru ke Firestore 'hotinfo'...`);
-    const batch = writeBatch(db);
     for (const item of newItemsToStore) {
-      batch.set(doc(db, 'hotinfo', item.id), item, { merge: true });
-      console.log(`   ✓ [${item.date}] ${item.title}`);
-
       const slug = (item.title || '').toString().toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
       if (slug) {
         generatedNewsUrls.push(`https://malala.my.id/berita/${slug}`);
       }
     }
-    await batch.commit();
-    console.log("   ✅ Seluruh berita tersimpan di Firestore 'hotinfo'.");
-
-    // Sinkronkan juga ke staticConfig.ts agar SSG pre-render langsung mengenali berita baru
     syncNewsToStaticConfigFile(newItemsToStore);
+
+    // 2. FIRESTORE TIMEOUT GUARD: Simpan ke Firestore dengan proteksi timeout & kuota
+    try {
+      console.log(`💾 Mengunggah ${newItemsToStore.length} berita baru ke Firestore 'hotinfo' (Protected by Timeout Guard)...`);
+      const batch = writeBatch(db);
+      for (const item of newItemsToStore) {
+        batch.set(doc(db, 'hotinfo', item.id), item, { merge: true });
+        console.log(`   ✓ [${item.date}] ${item.title}`);
+      }
+      await withTimeout(batch.commit(), 8000, 'Firestore Batch Commit (hotinfo)');
+      console.log("   ✅ Seluruh berita tersimpan di Firestore 'hotinfo'.");
+    } catch (fsErr) {
+      console.warn("   ⚠️ [Firestore Timeout Guard] Penyimpanan ke Cloud Firestore dilewati:", fsErr.message);
+      console.log("   ℹ️ [Proteksi Sukses] Data lokal di staticConfig.ts tetap 100% aman dan SSG siap terbit!");
+    }
   }
 
   // ============================================================
-  // 2. AI EVENT SCANNER (KEN & CoE Sumbar)
+  // 2. AI EVENT SCANNER (KEN & CoE Sumbar) dengan Timeout Guard
   // ============================================================
   try {
-    const eventSnap = await getDocs(collection(db, 'events'));
+    const eventSnap = await withTimeout(getDocs(collection(db, 'events')), 6000, 'Fetch Events');
     const currentEvents = eventSnap.docs.map(d => ({ id: d.id, ...d.data() }));
     console.log(`📊 Database saat ini memiliki ${currentEvents.length} event.`);
 
@@ -508,14 +559,14 @@ Hasilkan JSON murni tanpa markdown:
           console.log(`📥 AI menemukan ${parsed.discoveredEvents.length} draf event baru! Menyimpan ke pending_events...`);
           for (const ev of parsed.discoveredEvents) {
             const evId = ev.id || `ev-ai-${Date.now()}`;
-            await setDoc(doc(db, 'pending_events', evId), {
+            await withTimeout(setDoc(doc(db, 'pending_events', evId), {
               ...ev,
               id: evId,
               status: 'pending',
               imageUrl: ev.imageUrl || getSmartImage(ev.title, 'event'),
               discoveredAt: new Date().toISOString(),
               sourceName: 'AI Autonomous Cloud Scanner (KEN / CoE Sumbar)'
-            }, { merge: true });
+            }, { merge: true }), 4000, 'Save Pending Event');
             console.log(`   ✓ Draf Event: ${ev.title}`);
           }
         }
@@ -525,11 +576,11 @@ Hasilkan JSON murni tanpa markdown:
           for (const upd of parsed.scheduleUpdates) {
             const target = currentEvents.find(e => e.id === upd.id);
             if (target && upd.newSchedule) {
-              await setDoc(doc(db, 'events', upd.id), {
+              await withTimeout(setDoc(doc(db, 'events', upd.id), {
                 ...target,
                 schedule: upd.newSchedule,
                 scheduleEn: upd.newScheduleEn || target.scheduleEn
-              }, { merge: true });
+              }, { merge: true }), 4000, 'Update Event Schedule');
               console.log(`   ✓ Jadwal Diperbarui: ${target.title} -> ${upd.newSchedule}`);
             }
           }
@@ -537,17 +588,21 @@ Hasilkan JSON murni tanpa markdown:
       }
     }
   } catch (eventErr) {
-    console.warn("⚠️ Event Scanner kendala:", eventErr.message);
+    console.warn("   ⚠️ [Event Scanner Guard] Operasi event dilewati:", eventErr.message);
   }
 
   // ============================================================
-  // 3. Catat timestamp sinkronisasi terakhir ke settings
+  // 3. Catat timestamp sinkronisasi terakhir ke settings (Guarded)
   // ============================================================
-  await setDoc(doc(db, 'settings', 'hero'), {
-    lastAutonomousSync: new Date().toISOString(),
-    isAutonomousSyncEnabled: true,
-    lastSyncCycleWib: '03:00 WIB'
-  }, { merge: true });
+  try {
+    await withTimeout(setDoc(doc(db, 'settings', 'hero'), {
+      lastAutonomousSync: new Date().toISOString(),
+      isAutonomousSyncEnabled: true,
+      lastSyncCycleWib: '03:00 WIB'
+    }, { merge: true }), 4000, 'Save Sync Settings');
+  } catch (settErr) {
+    console.warn("   ⚠️ [Settings Guard] Catat timestamp dilewati:", settErr.message);
+  }
 
   // ============================================================
   // 4. Autonomous IndexNow SEO Search Engine Ping (Bing & Google API)
@@ -561,7 +616,7 @@ Hasilkan JSON murni tanpa markdown:
       'https://malala.my.id/news-sitemap.xml',
       ...generatedNewsUrls
     ];
-    await fetch('https://api.indexnow.org/indexnow', {
+    await withTimeout(fetch('https://api.indexnow.org/indexnow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({
@@ -570,7 +625,7 @@ Hasilkan JSON murni tanpa markdown:
         keyLocation: 'https://malala.my.id/malala-sumbar-2026-seo-token.txt',
         urlList: pingUrls
       })
-    });
+    }), 6000, 'IndexNow SEO Ping');
     console.log(`   ✓ IndexNow SEO Ping terkirim untuk ${pingUrls.length} URL!`);
   } catch (e) {
     console.warn("   ⚠️ IndexNow SEO Ping notice:", e.message);

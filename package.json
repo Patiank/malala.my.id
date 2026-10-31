@@ -15,7 +15,8 @@
     "push:firebase": "npm run build && firebase deploy --only hosting",
     "deploy": "git add . && git commit -m \"Update Malala app\" && git push origin main && npm run build && firebase deploy --only hosting",
     "sync-to-github": "tsx scripts/sync_to_github.ts",
-    "sync:ebook": "tsx scripts/sync_release_pdfs.ts"
+    "sync:ebook": "tsx scripts/sync_release_pdfs.ts",
+    "cron:news": "node scripts/autonomous-daily-sync.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
