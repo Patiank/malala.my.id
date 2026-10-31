@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Share, MoreVertical } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Language } from '../lib/translations';
 
 interface PwaInstallPromptProps {
@@ -18,8 +18,6 @@ interface BeforeInstallPromptEvent extends Event {
 export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState<boolean>(false);
-  const [isIos, setIsIos] = useState<boolean>(false);
-  const [showManualGuide, setShowManualGuide] = useState<boolean>(false);
   const [isInstalled, setIsInstalled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -43,16 +41,7 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
       }
     }
 
-    // 3. Detect mobile device & iOS
-    const ua = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(ua);
-    const isMobileDevice = /android|iphone|ipad|ipod|mobile/.test(ua);
-
-    if (isIosDevice) {
-      setIsIos(true);
-    }
-
-    // 4. Android / Chromium: Listen for 'beforeinstallprompt'
+    // 3. Android / Chromium: Only show when the browser is 100% ready for 1-click native install
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -61,15 +50,7 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // 5. Show sleek toast 1.5s after opening on mobile devices
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    if (isMobileDevice && !isStandalone) {
-      timer = setTimeout(() => {
-        setShowPrompt(true);
-      }, 1500);
-    }
-
-    // 6. Listen for app installed event
+    // 4. Listen for app installed event
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowPrompt(false);
@@ -79,38 +60,36 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
     window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
-      if (timer) clearTimeout(timer);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      try {
-        await deferredPrompt.prompt();
-        const choiceResult = await deferredPrompt.userChoice;
-        if (choiceResult.outcome === 'accepted') {
-          setShowPrompt(false);
-          setIsInstalled(true);
-        }
-        setDeferredPrompt(null);
-      } catch (err) {
-        console.warn('[PWA] Install prompt error:', err);
+    if (!deferredPrompt) return;
+
+    try {
+      // Trigger native browser install dialog directly in 1 click
+      await deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult.outcome === 'accepted') {
+        setIsInstalled(true);
       }
-    } else {
-      // On iOS Safari or browsers where native prompt is manual, toggle compact 2-step guide
-      setShowManualGuide((prev) => !prev);
+    } catch (err) {
+      console.warn('[PWA] Install prompt error:', err);
+    } finally {
+      setShowPrompt(false);
+      setDeferredPrompt(null);
     }
   };
 
   const handleDismiss = () => {
     setShowPrompt(false);
-    setShowManualGuide(false);
+    setDeferredPrompt(null);
     localStorage.setItem('malala_pwa_dismissed_at', Date.now().toString());
   };
 
-  if (!showPrompt || isInstalled) return null;
+  if (!showPrompt || isInstalled || !deferredPrompt) return null;
 
   const isEn = lang === 'en';
 
@@ -120,7 +99,7 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
       className="fixed top-3 left-3 right-3 sm:left-auto sm:right-5 sm:w-[390px] z-[110] bg-white text-slate-900 rounded-[22px] px-3.5 py-2.5 shadow-[0_10px_32px_rgba(0,0,0,0.28)] border border-slate-200/90 animate-slide-up font-jakarta transition-all"
     >
       <div className="flex items-center justify-between gap-3">
-        {/* Left: Rounded Dark App Icon (matching native Chrome toast) */}
+        {/* Left: Rounded App Icon */}
         <div className="shrink-0">
           <img
             src="/pwa-192x192.png"
@@ -142,7 +121,7 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
           </p>
         </div>
 
-        {/* Right: Clean "Instal" Action + Subtle Close */}
+        {/* Right: Direct 1-Click "Instal" Action + Close */}
         <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={handleInstallClick}
@@ -160,35 +139,6 @@ export const PwaInstallPrompt: React.FC<PwaInstallPromptProps> = ({ lang = 'id' 
           </button>
         </div>
       </div>
-
-      {/* Compact Helper Guide (only shown when user taps "Instal" on iOS Safari or manual browsers) */}
-      {showManualGuide && (
-        <div className="mt-2.5 pt-2.5 border-t border-slate-200/80 text-[12px] text-slate-700 flex items-center gap-2 leading-snug">
-          {isIos ? (
-            <>
-              <Share className="w-4 h-4 text-[#1b5e7a] shrink-0" />
-              <span>
-                {isEn ? (
-                  <>Tap <strong className="text-slate-900">Share</strong> below, then select <strong className="text-slate-900">'Add to Home Screen' ➕</strong></>
-                ) : (
-                  <>Ketuk tombol <strong className="text-slate-900">Share ⎋</strong> di bawah, lalu pilih <strong className="text-slate-900">'Tambah ke Layar Utama' ➕</strong></>
-                )}
-              </span>
-            </>
-          ) : (
-            <>
-              <MoreVertical className="w-4 h-4 text-[#1b5e7a] shrink-0" />
-              <span>
-                {isEn ? (
-                  <>Tap browser menu <strong className="text-slate-900">(⋮)</strong> then select <strong className="text-slate-900">'Install app'</strong> or <strong className="text-slate-900">'Add to Home screen'</strong></>
-                ) : (
-                  <>Ketuk menu browser <strong className="text-slate-900">(⋮)</strong> di kanan atas, lalu pilih <strong className="text-slate-900">'Instal aplikasi'</strong> atau <strong className="text-slate-900">'Tambahkan ke Layar utama'</strong></>
-                )}
-              </span>
-            </>
-          )}
-        </div>
-      )}
     </aside>
   );
 };
