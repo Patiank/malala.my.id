@@ -290,3 +290,26 @@ export function getNewsDirectArticleUrl(item: any): string {
 
   return 'https://sumbar.antaranews.com/pariwisata';
 }
+
+/**
+ * Mengembalikan daftar berita yang seragam, terurut, dan terdeduplikasi.
+ * Memastikan urutan dan konten berita antara Running Text Ticker dan Slide Panel Drawer selalu 100% SAMA.
+ */
+export function getStandardizedNewsFeed(storeItems: any[] = [], staticItems: any[] = []): any[] {
+  // Selalu gabungkan berita statis terbaru hasil sinkronisasi harian dengan data store
+  const combined = [
+    ...(staticItems || []),
+    ...(storeItems || [])
+  ];
+
+  const deduped = deduplicateNewsItems(combined);
+
+  return deduped.sort((a: any, b: any) => {
+    const aHeadline = (a.isHeadline || a.tag === 'Berita Utama') ? 1 : 0;
+    const bHeadline = (b.isHeadline || b.tag === 'Berita Utama') ? 1 : 0;
+    if (aHeadline !== bHeadline) return bHeadline - aHeadline;
+    const timeA = parseNewsTimestamp(a.date, a.createdAt);
+    const timeB = parseNewsTimestamp(b.date, b.createdAt);
+    return timeB - timeA;
+  });
+}

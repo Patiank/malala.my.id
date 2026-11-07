@@ -17,7 +17,7 @@ import { useData } from './data/useData';
 import { Language } from './lib/translations';
 import { logTourismSignal } from './utils/telemetry';
 
-import { getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDisplayTitle } from './utils/newsUtils';
+import { getWibNewsCycleInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDisplayTitle, getStandardizedNewsFeed } from './utils/newsUtils';
 import { parseRoute, getDrawerPath, getItemDeepLink, pushRoute, applyPageSeo, findItemBySlugOrId } from './utils/urlRouter';
 
 export default function App() {
@@ -513,16 +513,9 @@ export default function App() {
         {/* Running News Ticker: Flex-1 and min-w-0 ensures proper width without squishing, clicking opens news modal */}
         <div className="flex-1 min-w-0 overflow-hidden whitespace-nowrap relative flex items-center h-6 md:h-7">
           {(() => {
-            const rawList: HotInfoItem[] = (dataStore.hotInfoItems && dataStore.hotInfoItems.length > 0)
-              ? dataStore.hotInfoItems
-              : HOT_INFO_ITEMS;
-            const rawFiltered = rawList.filter((news) => isWithinLast30Days(news.date || news.createdAt));
-            const validItems = deduplicateNewsItems<HotInfoItem>(rawFiltered)
-              .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
-            const displayItems: HotInfoItem[] = validItems.length > 0 
-              ? validItems 
-              : deduplicateNewsItems<HotInfoItem>(rawList)
-                  .sort((a, b) => parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt));
+            const activeNewsFeed = getStandardizedNewsFeed(dataStore.hotInfoItems, HOT_INFO_ITEMS);
+            const recentFiltered = activeNewsFeed.filter((news: HotInfoItem) => isWithinLast30Days(news.date || news.createdAt));
+            const displayItems: HotInfoItem[] = recentFiltered.length > 0 ? recentFiltered : activeNewsFeed;
             // Smooth, clearly visible gliding tempo: ~7 seconds per item, 35-55s total
             const marqueeDuration = Math.max(35, Math.min(55, displayItems.length * 7.5));
 
