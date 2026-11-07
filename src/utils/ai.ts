@@ -2401,21 +2401,21 @@ export function deduplicateNewsItems<T extends { title: string; titleEn?: string
       const wordsB = extractKeywords(existing.title);
       const commonWords = wordsA.filter(w => wordsB.some(wb => w === wb || (w.length >= 4 && (wb.startsWith(w) || w.startsWith(wb)))));
       
-      // Specifically catch repeated single distinctive proper nouns (like genpi, rangkul, kelok, etc.)
+      // Distinctive shared keywords check
       const isDistinctiveShared = commonWords.some(w => ['genpi', 'kelok', 'pagaruyung', 'mentawai', 'singkarak', 'harau', 'tabuik', 'songket', 'rendang', 'maninjau', 'mandeh', 'silek', 'geopark'].includes(w));
-      if (isDistinctiveShared) return true;
+      if (isDistinctiveShared && commonWords.length >= 3) return true;
 
-      // If 2 or more significant content words are shared
-      if (commonWords.length >= 2) return true;
+      // If 4 or more significant content words are shared
+      if (commonWords.length >= 4) return true;
 
-      // 3. Keyword similarity threshold (0.24 threshold catches syndicated variations)
+      // 3. Keyword similarity threshold (0.70 threshold catches near-identical syndicated variations)
       const simId = calculateTitleSimilarity(item.title, existing.title);
-      if (simId >= 0.24) return true;
+      if (simId >= 0.70) return true;
 
       // 4. English title check if available
       if (item.titleEn && existing.titleEn) {
         const simEn = calculateTitleSimilarity(item.titleEn, existing.titleEn);
-        if (simEn >= 0.24) return true;
+        if (simEn >= 0.70) return true;
       }
 
       return false;

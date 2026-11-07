@@ -248,7 +248,7 @@ function syncNewsToStaticConfigFile(newItems) {
       return (now - ts) <= THIRTY_DAYS_MS;
     });
 
-    const finalMerged = (freshOnly.length >= 10 ? freshOnly : combined).slice(0, 15);
+    const finalMerged = (freshOnly.length >= 10 ? freshOnly : combined).slice(0, 50);
 
     const newArrayString = JSON.stringify(finalMerged, null, 2) + ';';
     const updatedContent = content.replace(regex, `export const HOT_INFO_ITEMS: HotInfoItem[] = ${newArrayString}`);

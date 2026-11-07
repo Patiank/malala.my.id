@@ -3933,17 +3933,13 @@ export const Drawers: React.FC<DrawersProps> = ({
                     return timeB - timeA;
                   });
 
-                // Berita pariwisata 1 bulan terakhir (<= 30 hari)
-                const recentList = dedupedList.filter((item: any) => isWithinLast30Days(item.date || item.createdAt));
-                // Berita pariwisata lebih dari 1 bulan terakhir (> 30 hari)
-                const olderList = dedupedList.filter((item: any) => !isWithinLast30Days(item.date || item.createdAt));
-
-                // Berita yang ditampilkan: jika sedang mencari atau user klik arsip, tampilkan semua
+                // Tampilkan seluruh daftar berita aktif & arsip terkini
                 const isSearching = Boolean(hotInfoSearchQuery.trim());
-                const displayedList = (showAllNewsArchive || isSearching) ? dedupedList : recentList;
+                const displayedList = dedupedList;
+                const olderList = dedupedList.filter((item: any) => !isWithinLast30Days(item.date || item.createdAt));
                 const isEn = lang === 'en';
 
-                if (displayedList.length === 0 && olderList.length === 0) {
+                if (displayedList.length === 0) {
                   return (
                     <div className="col-span-full text-center py-12 text-gray-500 font-jakarta text-xs bg-gray-50 rounded-xl border border-dashed border-gray-200">
                       {isSearching

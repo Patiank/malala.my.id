@@ -170,24 +170,28 @@ const DEDUP_STOP_WORDS = new Set([
   'dibuka', 'buka', 'tinjau', 'kunjungi', 'kunjungan', 'soal', 'terkait', 'tentang', 'kata', 'ungkap',
   'siap', 'jadi', 'ada', 'menjadi', 'sebut', 'beberkan', 'hingga', 'juga', 'tak', 'tidak', 'lebih',
   'ajak', 'mengajak', 'dorong', 'mendorong', 'minta', 'meminta', 'dukung', 'mendukung',
+  'pariwisata', 'wisata', 'sumatera', 'barat', 'sumbar', 'indonesia', 'kemenpar', 'wisatawan', 'padang',
   'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'will'
 ]);
 
 function extractKeywords(title: string): string[] {
-  return title
+  return (title || '')
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
     .filter(word => word.length >= 3 && !DEDUP_STOP_WORDS.has(word));
 }
 
-export function deduplicateNewsItems<T extends { title: string; titleEn?: string }>(items: T[]): T[] {
+export function deduplicateNewsItems<T extends { title: string; titleEn?: string; id?: string; sourceUrl?: string }>(items: T[]): T[] {
   const uniqueItems: T[] = [];
 
   for (const item of items) {
     if (!item || !item.title) continue;
 
     const isDuplicate = uniqueItems.some((existing) => {
+      if (item.id && existing.id && item.id === existing.id) return true;
+      if (item.sourceUrl && existing.sourceUrl && item.sourceUrl === existing.sourceUrl) return true;
+
       const cleanA = item.title.trim().toLowerCase();
       const cleanB = existing.title.trim().toLowerCase();
 
@@ -198,9 +202,9 @@ export function deduplicateNewsItems<T extends { title: string; titleEn?: string
       const commonWords = wordsA.filter(w => wordsB.some(wb => w === wb || (w.length >= 4 && (wb.startsWith(w) || w.startsWith(wb)))));
       
       const isDistinctiveShared = commonWords.some(w => ['genpi', 'kelok', 'pagaruyung', 'mentawai', 'singkarak', 'harau', 'tabuik', 'songket', 'rendang', 'maninjau', 'mandeh', 'silek', 'geopark'].includes(w));
-      if (isDistinctiveShared) return true;
+      if (isDistinctiveShared && commonWords.length >= 3) return true;
 
-      if (commonWords.length >= 2) return true;
+      if (commonWords.length >= 4) return true;
 
       return false;
     });
