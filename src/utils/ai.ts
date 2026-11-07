@@ -2337,6 +2337,7 @@ const DEDUP_STOP_WORDS = new Set([
   'dibuka', 'buka', 'tinjau', 'kunjungi', 'kunjungan', 'soal', 'terkait', 'tentang', 'kata', 'ungkap',
   'siap', 'jadi', 'ada', 'menjadi', 'sebut', 'beberkan', 'hingga', 'juga', 'tak', 'tidak', 'lebih',
   'ajak', 'mengajak', 'dorong', 'mendorong', 'minta', 'meminta', 'dukung', 'mendukung',
+  'pariwisata', 'wisata', 'sumatera', 'barat', 'sumbar', 'indonesia', 'kemenpar', 'wisatawan', 'padang',
   'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'are', 'was', 'were', 'will'
 ]);
 
@@ -2368,11 +2369,6 @@ function calculateTitleSimilarity(titleA: string, titleB: string): number {
         }
       }
     }
-  }
-
-  // If 2 or more distinct keywords match, it is definitely about the same topic/event
-  if (matches >= 2) {
-    return 1.0;
   }
 
   // Sorensen-Dice coefficient

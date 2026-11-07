@@ -516,8 +516,9 @@ export default function App() {
             const activeNewsFeed = getStandardizedNewsFeed(dataStore.hotInfoItems, HOT_INFO_ITEMS);
             const recentFiltered = activeNewsFeed.filter((news: HotInfoItem) => isWithinLast30Days(news.date || news.createdAt));
             const displayItems: HotInfoItem[] = recentFiltered.length > 0 ? recentFiltered : activeNewsFeed;
-            // Smooth, clearly visible gliding tempo: ~7 seconds per item, 35-55s total
-            const marqueeDuration = Math.max(35, Math.min(55, displayItems.length * 7.5));
+            // Ticker: Kurasi 10 berita terhangat dengan tempo tenang & nyaman dibaca (~15 detik per berita)
+            const tickerItems = displayItems.slice(0, 10);
+            const marqueeDuration = Math.max(120, tickerItems.length * 15);
 
             return (
               <div 
@@ -527,7 +528,7 @@ export default function App() {
                   willChange: 'transform'
                 }}
               >
-                {[...displayItems, ...displayItems].map((news, idx) => {
+                {[...tickerItems, ...tickerItems].map((news, idx) => {
                   const isEn = lang === 'en';
                   const sourceBrand = news.sourceName || (isEn && news.categoryEn ? news.categoryEn : news.category) || 'Info Wisata';
                   const titleText = getNewsDisplayTitle(news, lang) || news.title || 'Update Info Wisata Terkini';

@@ -16,7 +16,7 @@ const loadFallbackContent = () => {
   return fallbackCatalogPromise;
 };
 
-const CATALOG_CACHE_KEY = 'malala_full_catalog_v2';
+const CATALOG_CACHE_KEY = 'malala_full_catalog_v3';
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes TTL with smart version check
 
 interface CatalogCachePayload {

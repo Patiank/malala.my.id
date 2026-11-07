@@ -14,11 +14,11 @@ import { getDestinationRatingSummary } from '../data/reviewsData';
 import { Language, translations } from '../lib/translations';
 import { DESTINATIONS, CULTURE_ITEMS, CULINARY_ITEMS, EVENTS_SCHEDULE } from '../data/content';
 import { HOT_INFO_ITEMS, DOWNLOAD_ITEMS, OFFICIAL_PDF_URLS } from '../data/staticConfig';
-import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, deduplicateNewsItems, parseNewsTimestamp, formatNewsTimeAgo, getNewsDirectArticleUrl, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
+import { fetchAiItinerary, fetchAiChat, fetchAiHotInfo, isWithinLast6Months, isWithinLast30Days, parseNewsTimestamp, formatNewsTimeAgo, getNewsDirectArticleUrl, isSumbarTopic, getNewsDisplayTitle, getNewsDisplayDescription } from '../utils/ai';
 import { CurrencyCode, CurrencyRate, DEFAULT_RATES, fetchLiveExchangeRates, formatToCurrency } from '../utils/currency';
 import { getSafeYoutubeUrl, getEventYoutubeUrl } from '../utils/youtube';
 import { parseRoute, getItemDeepLink, getDrawerPath, pushRoute, applyPageSeo, findItemBySlugOrId } from '../utils/urlRouter';
-import { getStandardizedNewsFeed } from '../utils/newsUtils';
+import { getStandardizedNewsFeed, deduplicateNewsItems } from '../utils/newsUtils';
 import { logTourismSignal } from '../utils/telemetry';
 import {
   IconRumahGadang,
@@ -1151,14 +1151,7 @@ export const Drawers: React.FC<DrawersProps> = ({
       });
     });
 
-    const rawNewsList = deduplicateNewsItems([
-      ...(dataStore?.hotInfoItems || []),
-      ...HOT_INFO_ITEMS
-    ]);
-
-    const newsList = [...rawNewsList].sort((a: any, b: any) => {
-      return parseNewsTimestamp(b.date, b.createdAt) - parseNewsTimestamp(a.date, a.createdAt);
-    });
+    const newsList = getStandardizedNewsFeed(dataStore?.hotInfoItems, HOT_INFO_ITEMS);
 
     newsList.forEach((h: HotInfoItem) => {
       items.push({
@@ -3923,7 +3916,7 @@ export const Drawers: React.FC<DrawersProps> = ({
                   return targetText.includes(q);
                 });
 
-                const dedupedList = deduplicateNewsItems(searchFiltered)
+                const dedupedList = [...searchFiltered]
                   .sort((a: any, b: any) => {
                     const aHeadline = (a.isHeadline || a.tag === 'Berita Utama') ? 1 : 0;
                     const bHeadline = (b.isHeadline || b.tag === 'Berita Utama') ? 1 : 0;
