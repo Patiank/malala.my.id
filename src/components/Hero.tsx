@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX, Play } from 'lucide-react';
+import { ArrowUpRight, Sparkles, Compass, Download, Map, X, Search, Calendar, MapPin, ChevronLeft, ChevronRight, Youtube, MessageCircle, Volume2, VolumeX, Play, Info } from 'lucide-react';
 import { CheckerboardGrid, WireframeGlobe, CornerBracket, PemprovSumbarLogo } from './CustomIcons';
 import ArrowFillButton from '@/components/ui/arrow-fill-button';
 
@@ -8,9 +8,12 @@ import { Language, translations } from '../lib/translations';
 import { HOT_INFO_ITEMS } from '../data/staticConfig';
 import { optimizeImageUrl } from '../utils/imageOptimizer';
 import { parseNewsTimestamp } from '../utils/newsUtils';
+import { getEventYoutubeUrl, getEventGoogleMapsUrl } from '../utils/youtube';
+import { getItemDeepLink, pushRoute } from '../utils/urlRouter';
 
 interface HeroProps {
   onOpenDrawer: (type: DrawerType) => void;
+  onSelectEvent?: (item: EventItem) => void;
   lang: Language;
   appSettings?: AppSettings;
   searchQuery?: string;
@@ -49,6 +52,7 @@ function getYoutubeEmbedUrl(url?: string, autoPlay: boolean = true, mute: boolea
 
 export const Hero: React.FC<HeroProps> = ({
   onOpenDrawer,
+  onSelectEvent,
   lang,
   appSettings,
   searchQuery = '',
@@ -69,6 +73,15 @@ export const Hero: React.FC<HeroProps> = ({
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [mobileSpotlightTab, setMobileSpotlightTab] = useState<'video' | 'event'>('video');
+
+  const handleViewEventDetail = (item: EventItem) => {
+    if (onSelectEvent) {
+      onSelectEvent(item);
+    } else {
+      pushRoute(getItemDeepLink('event', item), { malalaLayer: 'submodal', category: 'event', id: item.id });
+      onOpenDrawer('events');
+    }
+  };
 
   // Synchronize custom volume toggle button with native YouTube player volume changes
   useEffect(() => {
@@ -1207,25 +1220,39 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
-                    <button
-                      onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs"
-                    >
-                      <span>{isEn ? 'View Calendar' : 'Lihat Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-2.5 h-2.5" />
-                    </button>
+                  {/* Action Buttons: Maps, YouTube & Lihat Detail */}
+                  <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-100">
                     <a
-                      href={getGoogleCalUrl()}
+                      href={getEventGoogleMapsUrl(eventItem)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
-                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "View Event Location on Google Maps" : "Cari Lokasi Event di Google Maps"}
                     >
-                      <Calendar className="w-2.5 h-2.5 text-blue-600" />
-                      <span>+ Kalender</span>
+                      <MapPin className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">Maps</span>
                     </a>
+
+                    <a
+                      href={getEventYoutubeUrl(eventItem)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-red-600 hover:bg-red-700 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                    >
+                      <Youtube className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">YouTube</span>
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={() => handleViewEventDetail(eventItem)}
+                      className="bg-black hover:bg-amber-600 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "View Detail" : "Lihat Detail"}
+                    >
+                      <Info className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">{isEn ? "Detail" : "Lihat Detail"}</span>
+                    </button>
                   </div>
                 </div>
               );
@@ -1389,35 +1416,39 @@ export const Hero: React.FC<HeroProps> = ({
                     </div>
                   </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-1.5 pt-1 border-t border-gray-100">
-                    <button
-                      onClick={() => onOpenDrawer('events')}
-                      className="flex-1 bg-black hover:bg-amber-600 text-white py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs truncate"
-                    >
-                      <span className="truncate">{isEn ? 'CoE Schedule' : 'Jadwal CoE'}</span>
-                      <ArrowUpRight className="w-2.5 h-2.5 shrink-0" />
-                    </button>
-
-                    <button
-                      onClick={() => onOpenDrawer('itinerary')}
-                      className="bg-amber-500 hover:bg-amber-400 text-black py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shadow-xs shrink-0"
-                      title={isEn ? 'Plan with AI' : 'Susun Rencana AI'}
-                    >
-                      <Sparkles className="w-2.5 h-2.5 text-black" />
-                      <span>{isEn ? 'AI Plan' : 'AI Plan'}</span>
-                    </button>
-
+                  {/* Action Buttons: Maps, YouTube & Lihat Detail */}
+                  <div className="grid grid-cols-3 gap-1.5 pt-1.5 border-t border-gray-100">
                     <a
-                      href={getGoogleCalUrl()}
+                      href={getEventGoogleMapsUrl(eventItem)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 py-1 px-2 rounded-md text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer shrink-0"
-                      title={isEn ? 'Add to Google Calendar' : 'Simpan ke Google Calendar'}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "View Event Location on Google Maps" : "Cari Lokasi Event di Google Maps"}
                     >
-                      <Calendar className="w-2.5 h-2.5 text-blue-600" />
-                      <span>+ Kalender</span>
+                      <MapPin className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">Maps</span>
                     </a>
+
+                    <a
+                      href={getEventYoutubeUrl(eventItem)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-red-600 hover:bg-red-700 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "Watch Video on YouTube" : "Tonton Video di YouTube"}
+                    >
+                      <Youtube className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">YouTube</span>
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={() => handleViewEventDetail(eventItem)}
+                      className="bg-black hover:bg-amber-600 text-white py-1 px-1 rounded-md font-jakarta font-bold uppercase text-[9px] sm:text-[9.5px] transition-colors cursor-pointer flex justify-center items-center gap-1 shadow-xs text-center"
+                      title={isEn ? "View Detail" : "Lihat Detail"}
+                    >
+                      <Info className="w-2.5 h-2.5 shrink-0" />
+                      <span className="truncate">{isEn ? "Detail" : "Lihat Detail"}</span>
+                    </button>
                   </div>
                 </div>
               );

@@ -125,6 +125,22 @@ export function getEventYoutubeUrl(event?: { id?: string; title?: string; videoU
 }
 
 /**
+ * Menghasilkan link Google Maps yang akurat untuk item event.
+ */
+export function getEventGoogleMapsUrl(event?: { mapUrl?: string; title?: string; location?: string } | null): string {
+  if (!event) return 'https://www.google.com/maps/search/?api=1&query=Sumatera+Barat';
+  if (event.mapUrl && event.mapUrl.trim()) {
+    const trimmed = event.mapUrl.trim();
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmed)}`;
+  }
+  const cleanTitle = (event.title || '').replace(/\(.*?\)/g, '').trim();
+  const loc = (event.location || '').trim();
+  const query = encodeURIComponent(`${cleanTitle} ${loc} Sumatera Barat`.trim());
+  return `https://www.google.com/maps/search/?api=1&query=${query}`;
+}
+
+/**
  * Mengurai URL YouTube menjadi format embed (hanya untuk fitur preview video internal).
  * Tidak digunakan untuk tombol YouTube di katalog publik.
  */

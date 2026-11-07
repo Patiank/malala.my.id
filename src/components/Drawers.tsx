@@ -446,6 +446,8 @@ interface DrawersProps {
   searchQuery?: string;
   onSearchQueryChange?: (q: string) => void;
   onShowToast?: (msg: string) => void;
+  initialSelectedEvent?: EventItem | null;
+  onClearInitialSelectedEvent?: () => void;
 }
 
 export const Drawers: React.FC<DrawersProps> = ({
@@ -462,6 +464,8 @@ export const Drawers: React.FC<DrawersProps> = ({
   searchQuery = '',
   onSearchQueryChange,
   onShowToast,
+  initialSelectedEvent,
+  onClearInitialSelectedEvent,
 }) => {
   const {
     destinations, updateDestinations,
@@ -485,6 +489,12 @@ export const Drawers: React.FC<DrawersProps> = ({
   const [selectedCulinary, setSelectedCulinary] = useState<CulinaryItem | null>(null);
   const [selectedSouvenir, setSelectedSouvenir] = useState<SouvenirItem | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+
+  useEffect(() => {
+    if (initialSelectedEvent) {
+      setSelectedEvent(initialSelectedEvent);
+    }
+  }, [initialSelectedEvent]);
   const [isBookletModalOpen, setIsBookletModalOpen] = useState<boolean>(false);
   const [isFlipbookModalOpen, setIsFlipbookModalOpen] = useState<boolean>(false);
   const [isItineraryModalOpen, setIsItineraryModalOpen] = useState<boolean>(false);
@@ -669,6 +679,7 @@ export const Drawers: React.FC<DrawersProps> = ({
     setIsBookletModalOpen(false);
     setIsFlipbookModalOpen(false);
     setIsItineraryModalOpen(false);
+    onClearInitialSelectedEvent?.();
 
     if (activeDrawer) {
       pushRoute(getDrawerPath(activeDrawer), { malalaLayer: 'drawer', drawer: activeDrawer });
@@ -3969,25 +3980,58 @@ export const Drawers: React.FC<DrawersProps> = ({
                             className="border border-gray-200 rounded-lg overflow-hidden bg-white flex flex-col justify-between shadow-xs hover:border-black transition-all font-jakarta animate-content-stagger group"
                           >
                             <div>
-                              {/* News Card Banner Image: Hanya tampil jika memang diupload oleh pengguna */}
-                              {Boolean((item as any).isUserUploadedImage || (item.imageUrl && item.imageUrl.startsWith('data:image/'))) && item.imageUrl && (
-                                <div
-                                  onClick={() => onSelectNews?.(item)}
-                                  className="relative h-36 w-full overflow-hidden bg-gray-100 cursor-pointer"
-                                >
-                                  <img
-                                    src={item.imageUrl}
-                                    alt={getNewsDisplayTitle(item, lang)}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                    loading="lazy"
-                                    onError={(e: any) => { (e.target as HTMLElement).style.display = 'none'; }}
-                                  />
+                              {/* News Card Banner Image: Tampil Seragam dan Proporsional untuk Semua Berita */}
+                              <div
+                                onClick={() => onSelectNews?.(item)}
+                                className="relative h-36 w-full overflow-hidden bg-slate-900 cursor-pointer"
+                              >
+                                <img
+                                  src={item.imageUrl || "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80"}
+                                  alt={getNewsDisplayTitle(item, lang)}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  loading="lazy"
+                                  onError={(e: any) => {
+                                    e.target.src = "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80";
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+                                {/* Floating Badges over Image */}
+                                <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between gap-1.5 flex-wrap pointer-events-none">
+                                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider backdrop-blur-md shadow-sm ${
+                                    item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
+                                      ? 'bg-amber-500 text-black border border-amber-300'
+                                      : 'bg-red-600 text-white border border-red-400'
+                                  }`}>
+                                    {categoryDisplay}
+                                  </span>
+
+                                  <div className="flex items-center gap-1">
+                                    {(item.tag === 'Berita Utama' || item.isHeadline) && (
+                                      <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                                        <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                        <span>{isEn ? 'HEADLINE' : 'UTAMA'}</span>
+                                      </span>
+                                    )}
+                                    {(item.tag === 'Penting' || item.isUrgent) && (
+                                      <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                                        <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
+                                        <span>HOT</span>
+                                      </span>
+                                    )}
+                                    {isOlderThan1M && (
+                                      <span className="bg-black/70 text-white text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/20 shadow-sm backdrop-blur-xs">
+                                        <Archive className="w-2.5 h-2.5 text-neutral-300" />
+                                        <span>{isEn ? 'Archive' : 'Arsip'}</span>
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              )}
+                              </div>
 
                               {/* Card Content: Title, Publisher, Excerpt */}
                               <div className="p-3.5 space-y-2">
-                                {/* Publisher Brand Row (Favicon + Domain Name + Category + HOT + Archive Tag) */}
+                                {/* Publisher Brand Row (Favicon + Domain Name) */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                   <img
                                     src={mainFavicon}
@@ -3999,56 +4043,32 @@ export const Drawers: React.FC<DrawersProps> = ({
                                     {publisherDomain}
                                   </span>
                                   <span className="text-gray-300">•</span>
-                                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                                    item.tag === 'Sumbar' || item.category === 'Pariwisata Sumatera Barat'
-                                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                      : 'bg-red-50 text-red-800 border border-red-200'
-                                  }`}>
-                                    {categoryDisplay}
+                                  <span className="text-[10px] text-gray-400 font-jakarta font-semibold uppercase tracking-wider">
+                                    {timeAgoText}
                                   </span>
-                                  {(item.tag === 'Berita Utama' || item.isHeadline) && (
-                                    <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs uppercase tracking-wider">
-                                      <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
-                                      <span>{isEn ? 'HEADLINE' : 'BERITA UTAMA'}</span>
-                                    </span>
-                                  )}
-                                  {(item.tag === 'Penting' || item.isUrgent) && (
-                                    <span className="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-2xs">
-                                      <Flame className="w-2.5 h-2.5 text-yellow-300 fill-current" />
-                                      <span>HOT</span>
-                                    </span>
-                                  )}
-                                  {isOlderThan1M && (
-                                    <span className="bg-neutral-100 text-neutral-700 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-neutral-300 shadow-2xs">
-                                      <Archive className="w-2.5 h-2.5 text-neutral-500" />
-                                      <span>{isEn ? 'Archive' : 'Arsip (>1 Bln)'}</span>
-                                    </span>
-                                  )}
                                 </div>
 
-                                {/* Main Headline */}
+                                {/* Main Headline: Line-clamped to 2 lines with consistent min-height */}
                                 <h3
                                   onClick={() => onSelectNews?.(item)}
-                                  className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer"
+                                  className="font-orbitron font-bold text-black uppercase tracking-wide text-xs sm:text-sm leading-snug hover:text-blue-600 transition-colors cursor-pointer line-clamp-2 min-h-[2.5rem] flex items-center"
                                 >
                                   {getNewsDisplayTitle(item, lang)}
                                 </h3>
 
-                                {/* Excerpt: Narasi berita deskriptif dan komprehensif */}
-                                {displayDescription && (
-                                  <div
-                                    onClick={() => onSelectNews?.(item)}
-                                    className="cursor-pointer group/desc space-y-1.5"
-                                  >
-                                    <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-4">
-                                      {displayDescription}
-                                    </p>
-                                    <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-red-600 group-hover/desc:text-red-700 transition-colors">
-                                      <span>{isEn ? 'Read full overview & details' : 'Baca rangkuman & inti lengkap'}</span>
-                                      <span className="text-xs transition-transform group-hover/desc:translate-x-0.5">→</span>
-                                    </span>
-                                  </div>
-                                )}
+                                {/* Excerpt: Narasi berita seragam dengan line-clamp 3 */}
+                                <div
+                                  onClick={() => onSelectNews?.(item)}
+                                  className="cursor-pointer group/desc space-y-1.5"
+                                >
+                                  <p className="font-jakarta text-gray-600 text-[11px] leading-relaxed line-clamp-3 min-h-[3rem]">
+                                    {displayDescription || (isEn ? 'Click to read full details and updates on West Sumatra tourism.' : 'Klik untuk membaca ringkasan lengkap dan informasi pariwisata Sumatera Barat.')}
+                                  </p>
+                                  <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-red-600 group-hover/desc:text-red-700 transition-colors">
+                                    <span>{isEn ? 'Read full overview & details' : 'Baca rangkuman & inti lengkap'}</span>
+                                    <span className="text-xs transition-transform group-hover/desc:translate-x-0.5">→</span>
+                                  </span>
+                                </div>
 
                                 {/* Meta Details: Time & Location */}
                                 <div className="flex items-center gap-2 flex-wrap text-[10px] text-gray-400 font-jakarta font-semibold uppercase tracking-wider pt-0.5">

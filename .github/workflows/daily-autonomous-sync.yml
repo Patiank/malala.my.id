@@ -54,6 +54,7 @@ jobs:
             echo "Tidak ada perubahan data baru untuk di-commit."
           else
             git commit -m "chore(auto-sync): daily 03:00 WIB news & SEO sitemap update [skip ci]"
+            git pull --rebase -X theirs origin main || true
             git push origin main
           fi
         env:

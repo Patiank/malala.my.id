@@ -11,8 +11,7 @@ import { PwaInstallPrompt } from './components/PwaInstallPrompt';
 const Drawers = React.lazy(() => import('./components/Drawers').then(m => ({ default: m.Drawers })));
 const NewsModal = React.lazy(() => import('./components/NewsModal').then(m => ({ default: m.NewsModal })));
 const LegalModal = React.lazy(() => import('./components/LegalModal').then(m => ({ default: m.LegalModal })));
-import { DrawerType, ToastNotice } from './types';
-import { HotInfoItem } from './types';
+import { DrawerType, ToastNotice, HotInfoItem, EventItem } from './types';
 import { HOT_INFO_ITEMS } from './data/staticConfig';
 import { useData } from './data/useData';
 import { Language } from './lib/translations';
@@ -350,6 +349,8 @@ export default function App() {
     });
   }, [activeDrawer, selectedNews, lang]);
 
+  const [selectedEventForModal, setSelectedEventForModal] = useState<EventItem | null>(null);
+
   const handleOpenDrawer = useCallback((type: DrawerType) => {
     if (type) {
       pushRoute(getDrawerPath(type), { malalaLayer: 'drawer', drawer: type });
@@ -360,6 +361,13 @@ export default function App() {
   const handleCloseDrawer = useCallback(() => {
     pushRoute('/', { malalaLayer: 'root' });
     setActiveDrawer(null);
+    setSelectedEventForModal(null);
+  }, []);
+
+  const handleOpenEventDetail = useCallback((ev: EventItem) => {
+    pushRoute(getItemDeepLink('event', ev), { malalaLayer: 'submodal', category: 'event', id: ev.id });
+    setSelectedEventForModal(ev);
+    setActiveDrawer('events');
   }, []);
 
   const handleOpenNews = useCallback((news: HotInfoItem) => {
@@ -465,6 +473,7 @@ export default function App() {
       {/* Main Hero */}
       <Hero
         onOpenDrawer={handleOpenDrawer}
+        onSelectEvent={handleOpenEventDetail}
         lang={lang}
         appSettings={dataStore.appSettings}
         searchQuery={searchQuery}
@@ -584,6 +593,8 @@ export default function App() {
             searchQuery={searchQuery}
             onSearchQueryChange={setSearchQuery}
             onShowToast={showToast}
+            initialSelectedEvent={selectedEventForModal}
+            onClearInitialSelectedEvent={() => setSelectedEventForModal(null)}
           />
         </React.Suspense>
       )}
