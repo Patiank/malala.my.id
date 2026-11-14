@@ -101,4 +101,4 @@ Allow: /
 Disallow: /flipbook/
 
 Sitemap: https://malala.my.id/sitemap.xml
-Sitemap: https://malala.my.id/news-sitemap.xml
+Sitemap: https://malala.my.id/sitemap-news.xml

@@ -244,7 +244,7 @@ Allow: /
 Disallow: /flipbook/
 
 Sitemap: https://malala.my.id/sitemap.xml
-Sitemap: https://malala.my.id/news-sitemap.xml
+Sitemap: https://malala.my.id/sitemap-news.xml
 `;
 
   fs.writeFileSync(path.join(publicDir, 'robots.txt'), robotsTxt, 'utf-8');
@@ -444,19 +444,45 @@ Sitemap: https://malala.my.id/news-sitemap.xml
   });
 
   sitemapXml += `</urlset>\n`;
-  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml, 'utf-8');
-  fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapXml, 'utf-8');
-  console.log('✅ public/sitemap.xml & public/sitemap_index.xml berhasil dibuat (termasuk artikel berita).');
+
+  // Standard Google Architecture: sitemap.xml & sitemap_index.xml are Sitemap Indexes
+  let sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+  sitemapIndexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
+  sitemapIndexXml += `  <sitemap>\n`;
+  sitemapIndexXml += `    <loc>https://malala.my.id/sitemap-main.xml</loc>\n`;
+  sitemapIndexXml += `    <lastmod>${today}</lastmod>\n`;
+  sitemapIndexXml += `  </sitemap>\n`;
+  sitemapIndexXml += `  <sitemap>\n`;
+  sitemapIndexXml += `    <loc>https://malala.my.id/sitemap-news.xml</loc>\n`;
+  sitemapIndexXml += `    <lastmod>${today}</lastmod>\n`;
+  sitemapIndexXml += `  </sitemap>\n`;
+  sitemapIndexXml += `</sitemapindex>\n`;
+
+  fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapIndexXml, 'utf-8');
+  fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapIndexXml, 'utf-8');
+  fs.writeFileSync(path.join(publicDir, 'sitemap-main.xml'), sitemapXml, 'utf-8');
+  console.log('✅ public/sitemap.xml, public/sitemap_index.xml & public/sitemap-main.xml berhasil dibuat.');
 
   // ==========================================
   // 2B. GENERATE public/news-sitemap.xml & sitemap-news.xml (Google News Protocol)
   // ==========================================
+  const twoDaysAgoMs = Date.now() - (48 * 60 * 60 * 1000);
+  const recentNewsItems = hotInfoItems.filter((n: any) => {
+    const timeMs = n.createdAt ? new Date(n.createdAt).getTime() :
+                   (n.generatedAt ? new Date(n.generatedAt).getTime() : 0);
+    return timeMs >= twoDaysAgoMs;
+  });
+  const newsForSitemap = recentNewsItems.length > 0 ? recentNewsItems : hotInfoItems.slice(0, 7);
+
   let newsSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 `;
-  hotInfoItems.forEach((n: any) => {
+  newsForSitemap.forEach((n: any) => {
     const slug = n.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const pubDate = n.createdAt
+      ? new Date(n.createdAt).toISOString().replace(/\.\d{3}Z$/, 'Z')
+      : `${today}T06:00:00+07:00`;
     newsSitemapXml += `  <url>
     <loc>https://malala.my.id/berita/${slug}</loc>
     <news:news>
@@ -464,7 +490,7 @@ Sitemap: https://malala.my.id/news-sitemap.xml
         <news:name>MALALA Pariwisata Sumbar</news:name>
         <news:language>id</news:language>
       </news:publication>
-      <news:publication_date>${today}T06:00:00+07:00</news:publication_date>
+      <news:publication_date>${pubDate}</news:publication_date>
       <news:title>${escapeXml(n.title)}</news:title>
     </news:news>
   </url>\n`;

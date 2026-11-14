@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { HOT_INFO_FALLBACK } from '../src/utils/ai.js';
+import { HOT_INFO_ITEMS } from '../src/data/staticConfig';
 import { getDestinationRatingSummary } from '../src/data/reviewsData.js';
 
 function slugify(text: string): string {
@@ -272,9 +273,22 @@ export function generateSsg() {
   const cultureItems: any[] = backupData.cultureItems || [];
   const culinaryItems: any[] = backupData.culinaryItems || [];
   const eventItems: any[] = backupData.eventItems || [];
-  const hotInfoItems: any[] = (backupData.hotInfoItems && backupData.hotInfoItems.length > 0)
-    ? backupData.hotInfoItems
-    : (backupData.hotInfo && backupData.hotInfo.length > 0 ? backupData.hotInfo : HOT_INFO_FALLBACK);
+  const rawHotInfo = (HOT_INFO_ITEMS && HOT_INFO_ITEMS.length > 0)
+    ? HOT_INFO_ITEMS
+    : ((backupData.hotInfoItems && backupData.hotInfoItems.length > 0)
+      ? backupData.hotInfoItems
+      : (backupData.hotInfo && backupData.hotInfo.length > 0 ? backupData.hotInfo : HOT_INFO_FALLBACK));
+  const hotInfoItems: any[] = rawHotInfo;
+
+  if (fs.existsSync(backupJsonPath) && HOT_INFO_ITEMS && HOT_INFO_ITEMS.length > 0) {
+    try {
+      backupData.hotInfoItems = HOT_INFO_ITEMS;
+      backupData.hotInfo = HOT_INFO_ITEMS;
+      fs.writeFileSync(backupJsonPath, JSON.stringify(backupData, null, 2), 'utf-8');
+    } catch (e) {
+      // ignore
+    }
+  }
 
   console.log('📄 Mengoptimasi Homepage dengan FAQPage Schema & Organization JSON-LD...');
   const homeContent = `
@@ -734,9 +748,11 @@ export function generateSsg() {
           <li><a href="/flipbook/events/en" style="color: #38bdf8; text-decoration: none;">📅 Calendar of Events 2026 Flipbook (English)</a></li>
           <li><a href="/downloads/malala-panduan-wisata-sumbar-2026.pdf" style="color: #38bdf8; text-decoration: none;">📄 Unduh PDF Buku Panduan Wisata (149 Halaman)</a></li>
           <li><a href="/downloads/kalender-event-sumbar-2026.pdf" style="color: #38bdf8; text-decoration: none;">📄 Unduh PDF Kalender Event KEN 2026</a></li>
-          <li><a href="/sitemap.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap XML Utama (sitemap.xml)</a></li>
-          <li><a href="/sitemap_index.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap Index XML Alias (sitemap_index.xml)</a></li>
-          <li><a href="/news-sitemap.xml" style="color: #38bdf8; text-decoration: none;">📰 Google News Sitemap XML (news-sitemap.xml)</a></li>
+          <li><a href="/sitemap.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap Index XML Utama (sitemap.xml)</a></li>
+          <li><a href="/sitemap-main.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap Direktori Halaman (sitemap-main.xml)</a></li>
+          <li><a href="/sitemap-news.xml" style="color: #38bdf8; text-decoration: none;">📰 Google News Sitemap XML (sitemap-news.xml)</a></li>
+          <li><a href="/sitemap_index.xml" style="color: #38bdf8; text-decoration: none;">🗺️ Sitemap Index Alias (sitemap_index.xml)</a></li>
+          <li><a href="/news-sitemap.xml" style="color: #38bdf8; text-decoration: none;">📰 Google News Alias (news-sitemap.xml)</a></li>
           <li><a href="/rss.xml" style="color: #38bdf8; text-decoration: none;">📡 RSS 2.0 Feed (rss.xml)</a></li>
           <li><a href="/feed.xml" style="color: #38bdf8; text-decoration: none;">📡 RSS Feed Alias (feed.xml)</a></li>
           <li><a href="/llms.txt" style="color: #38bdf8; text-decoration: none;">🤖 Indeks AI &amp; LLM (llms.txt)</a></li>
@@ -1563,17 +1579,30 @@ function generateSitemaps(
   sitemapIndexXml += `  </sitemap>\n`;
   sitemapIndexXml += `</sitemapindex>\n`;
 
-  // 2. Build news-sitemap.xml & sitemap-news.xml (Google News Schema - guaranteed non-empty <urlset>)
+  // 2. Build news-sitemap.xml & sitemap-news.xml (Google News Schema - strictly within 48-hour rule)
   const nowIsoW3c = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+  const twoDaysAgoMs = Date.now() - (48 * 60 * 60 * 1000);
+  const recentNewsItems = validHotInfoItems.filter((n: any) => {
+    const timeMs = n.createdAt ? new Date(n.createdAt).getTime() :
+                   (n.generatedAt ? new Date(n.generatedAt).getTime() : 0);
+    return timeMs >= twoDaysAgoMs;
+  });
+
+  // Use strictly <= 48-hour items; if none match, fallback to the latest 7 items
+  const newsForSitemap = recentNewsItems.length > 0 ? recentNewsItems : validHotInfoItems.slice(0, 7);
+
   let newsXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   newsXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
   newsXml += `        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
 
   let newsUrlCount = 0;
-  for (const n of validHotInfoItems) {
+  for (const n of newsForSitemap) {
     const slug = slugify(n.title);
     if (!slug) continue;
     const newsLang = (n.lang && n.lang.toLowerCase().startsWith('en')) ? 'en' : 'id';
+    const pubDate = n.createdAt
+      ? new Date(n.createdAt).toISOString().replace(/\.\d{3}Z$/, 'Z')
+      : (n.generatedAt ? new Date(n.generatedAt).toISOString().replace(/\.\d{3}Z$/, 'Z') : nowIsoW3c);
     newsXml += `  <url>\n`;
     newsXml += `    <loc>https://malala.my.id/berita/${slug}</loc>\n`;
     newsXml += `    <news:news>\n`;
@@ -1581,7 +1610,7 @@ function generateSitemaps(
     newsXml += `        <news:name>MALALA Pariwisata Sumbar</news:name>\n`;
     newsXml += `        <news:language>${newsLang}</news:language>\n`;
     newsXml += `      </news:publication>\n`;
-    newsXml += `      <news:publication_date>${nowIsoW3c}</news:publication_date>\n`;
+    newsXml += `      <news:publication_date>${pubDate}</news:publication_date>\n`;
     newsXml += `      <news:title>${escapeXml(n.title)}</news:title>\n`;
     newsXml += `    </news:news>\n`;
     newsXml += `  </url>\n`;
@@ -1635,23 +1664,25 @@ function generateSitemaps(
   const feedXml = buildFeedXml('feed.xml');
 
   // 4. Write all XML sitemaps and feeds to public/ and dist/
+  // Standard Google Architecture: sitemap.xml & sitemap_index.xml are Sitemap Indexes
+  // sitemap-main.xml is the clean standard web sitemap, sitemap-news.xml is Google News sitemap
   const publicDir = path.join(rootDir, 'public');
   if (fs.existsSync(publicDir)) {
-    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), xml, 'utf-8');
-    fs.writeFileSync(path.join(publicDir, 'sitemap-main.xml'), pureXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapIndexXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'sitemap_index.xml'), sitemapIndexXml, 'utf-8');
-    fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'sitemap-main.xml'), pureXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'sitemap-news.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(publicDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'rss.xml'), rssXml, 'utf-8');
     fs.writeFileSync(path.join(publicDir, 'feed.xml'), feedXml, 'utf-8');
   }
 
   if (fs.existsSync(distDir)) {
-    fs.writeFileSync(path.join(distDir, 'sitemap.xml'), xml, 'utf-8');
-    fs.writeFileSync(path.join(distDir, 'sitemap-main.xml'), pureXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapIndexXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'sitemap_index.xml'), sitemapIndexXml, 'utf-8');
-    fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'sitemap-main.xml'), pureXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'sitemap-news.xml'), newsXml, 'utf-8');
+    fs.writeFileSync(path.join(distDir, 'news-sitemap.xml'), newsXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'rss.xml'), rssXml, 'utf-8');
     fs.writeFileSync(path.join(distDir, 'feed.xml'), feedXml, 'utf-8');
   }
