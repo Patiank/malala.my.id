@@ -304,3 +304,19 @@ body {
   animation: slideUpSmooth 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
 }
+
+/* PC Homepage Event Spotlight positioning (Raised 3cm up to prevent crowding with Tanya Uni Mala chatbot bubble) */
+@media (min-width: 1024px) {
+  .hero-spotlight-pc {
+    transform: translateY(-3cm) !important;
+  }
+  .hero-spotlight-pc-dual {
+    transform: translateY(calc(-3cm - 0.75rem)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-spotlight-pc-dual {
+    transform: translateY(calc(-3cm - 1rem)) !important;
+  }
+}
