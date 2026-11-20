@@ -1,30 +1,29 @@
-# MALALA — Official West Sumatra Tourism, Cultural Heritage & Authentic Culinary Portal
-> Portal resmi eksplorasi pariwisata, warisan budaya Minangkabau, kuliner otentik, kalender festival Karisma Event Nusantara (KEN) 2026, dan asisten cerdas wisata Sumatera Barat. Dipersembahkan oleh MINANGKAOS.
+# MALALA: Panduan Wisata, Warisan Budaya & Kuliner Otentik Sumatera Barat
+> Portal kurasi direktori pariwisata, warisan budaya Minangkabau, kuliner khas, kalender festival Karisma Event Nusantara (KEN) 2026, dan panduan rute perjalanan Sumatera Barat. Dipersembahkan oleh MINANGKAOS.
 
 Website: https://malala.my.id
 Bahasa: Bahasa Indonesia & English
 Wilayah: Provinsi Sumatera Barat (19 Kabupaten & Kota di Ranah Minang)
 
-## Ringkasan Portal (Overview)
-MALALA adalah platform digital pariwisata Sumatera Barat terlengkap yang mengintegrasikan:
-1. **38 Destinasi Wisata Unggulan**: Dari Geopark Lembah Harau, Danau Singkarak & Danau Maninjau, Jam Gadang Bukittinggi, Kawasan Mandeh, Kepulauan Mentawai, hingga situs cagar budaya purba Candi Padang Roco dan Warisan Dunia UNESCO Sawahlunto.
-2. **22 Warisan Adat & Budaya Minangkabau**: Filosofi 'Adat Basandi Syarak, Syarak Basandi Kitabullah', sistem kekerabatan Matrilineal terbesar di dunia, arsitektur Rumah Gadang bergonjong, tradisi makan Bajamba, Randai, Tari Piring di atas pecahan kaca, hingga tradisi rahasia Marosok.
-3. **26 Kuliner Otentik Ranah Minang**: Rendang daging sapi lambat masak (Warisan UNESCO & Makanan Terenak di Dunia), Nasi Kapau & Gulai Tambusu, Sate Padang & Pariaman, Soto Padang kuah bening rempah, Lamang Tapai, Ampiang Dadiah (yoghurt susu kerbau fermentasi bambu), Palai Rinuak Danau Maninjau, Sala Lauak, dan Teh Talua.
+## Ringkasan Direktori
+MALALA menyajikan direktori pariwisata Sumatera Barat terstruktur:
+1. **38 Destinasi Wisata Pilihan**: Geopark Lembah Harau, Danau Singkarak & Danau Maninjau, Jam Gadang Bukittinggi, Kawasan Mandeh, Kepulauan Mentawai, hingga situs purbakala Candi Padang Roco dan Warisan Dunia UNESCO Sawahlunto.
+2. **22 Warisan Adat & Budaya Minangkabau**: Filosofi Adat Basandi Syarak, Syarak Basandi Kitabullah, sistem kekerabatan Matrilineal terbesar di dunia, arsitektur Rumah Gadang bergonjong, tradisi makan Bajamba, Randai, Tari Piring di atas pecahan kaca, hingga tradisi rahasia Marosok.
+3. **26 Kuliner Otentik Ranah Minang**: Rendang daging sapi lambat masak (Warisan UNESCO), Nasi Kapau & Gulai Tambusu, Sate Padang & Pariaman, Soto Padang kuah bening rempah, Lamang Tapai, Ampiang Dadiah (yoghurt susu kerbau fermentasi bambu), Palai Rinuak Danau Maninjau, Sala Lauak, dan Teh Talua.
 4. **20 Kalender Festival & Event (CoE 2026)**: Pacu Jawi Tanah Datar, Festival Tabuik Pariaman, Rang Solok Baralek Gadang, Sawahlunto International Songket Carnival, Payakumbuh Botuang Festival, Festival Pesona Minangkabau, dan Pacu Kuda Tradisional.
-5. **AI Travel Assistant 'Uni Mala'**: Asisten cerdas berbasis AI generatif yang mampu merancang itinerary liburan harian, rekomendasi kuliner halal, perkiraan estimasi anggaran, dan tips perjalanan ramah keluarga.
+5. **Panduan Perjalanan Uni Mala**: Asisten rekomendasi rute perjalanan harian, informasi kuliner halal, dan estimasi waktu tempuh antar-kabupaten.
 6. **E-Booklet & Panduan PDF Resmi**: Panduan lengkap pariwisata (113 halaman) dan Kalender Event 2026 (27 halaman) beresolusi tinggi siap cetak dan unduh gratis.
 
-## Akses Cepat (Key Endpoints)
-- [Beranda Utama](https://malala.my.id/): Portal eksplorasi pariwisata resmi Sumatera Barat
-- [Direktori 50 Destinasi Wisata](https://malala.my.id/destinasi): Direktori lengkap 50 destinasi alam, bahari, danau, dan sejarah
-- [Warisan 30 Adat & Budaya Minangkabau](https://malala.my.id/kebudayaan): 30 ensiklopedia budaya, kesenian, dan sistem matrilineal Minangkabau
-- [Eksplorasi 36 Kuliner Otentik](https://malala.my.id/kuliner): 36 ragam kuliner khas, resep legendaris, dan profil rasa
-- [Kalender 26 Event & Festival 2026](https://malala.my.id/event): 26 jadwal resmi Karisma Event Nusantara (KEN) & Calender of Events
-- [Peta Wisata Interaktif](https://malala.my.id/#peta-interaktif): Peta interaktif sebaran destinasi dan koordinat GPS di Ranah Minang
-- [AI Travel Itinerary Planner](https://malala.my.id/#ai-planner): Asisten cerdas Uni Mala untuk rekomendasi perjalanan personal
-- [Hot Info & Berita Terkini](https://malala.my.id/berita): Liputan berita pariwisata real-time, akses jalur transportasi, dan informasi festival
+## Akses Cepat
+- [Beranda Utama](https://malala.my.id/): Portal eksplorasi pariwisata Sumatera Barat
+- [Direktori Destinasi Wisata](https://malala.my.id/destinasi): Direktori destinasi alam, bahari, danau, dan sejarah
+- [Warisan Adat & Budaya Minangkabau](https://malala.my.id/kebudayaan): Ensiklopedia budaya, kesenian, dan sistem matrilineal Minangkabau
+- [Eksplorasi Kuliner Otentik](https://malala.my.id/kuliner): Ragam kuliner khas, warisan resep legendaris, dan profil rasa
+- [Kalender Event & Festival 2026](https://malala.my.id/event): Jadwal Karisma Event Nusantara (KEN) & Calender of Events
+- [Peta Wisata](https://malala.my.id/peta): Peta sebaran destinasi dan koordinat GPS di Ranah Minang
+- [Rencanakan Liburan](https://malala.my.id/formai): Rekomendasi perjalanan terstruktur di Sumatera Barat
+- [Berita & Hot Info](https://malala.my.id/berita): Liputan berita pariwisata dan informasi festival
 - [RSS Feed Berita](https://malala.my.id/rss.xml): Feed sindikasi berita pariwisata Sumatera Barat
 - [Google News Sitemap](https://malala.my.id/news-sitemap.xml): XML sitemap Google News
-- [Unduh E-Book Panduan Wisata PDF](https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf): E-Book panduan resmi pariwisata Sumatera Barat
-- [Unduh E-Book Kalender Event 2026 PDF](https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf): Booklet jadwal event dan festival pariwisata 2026
-- [Basis Pengetahuan Lengkap LLM](https://malala.my.id/llms-full.txt): Full text knowledge base ramah LLM & AI agent
+- [Unduh Panduan Wisata PDF](https://malala.my.id/downloads/malala-panduan-wisata-sumbar-2026.pdf): Buku panduan pariwisata Sumatera Barat
+- [Unduh Kalender Event 2026 PDF](https://malala.my.id/downloads/kalender-event-sumbar-2026.pdf): Booklet jadwal event dan festival 2026

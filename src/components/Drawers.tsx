@@ -4308,7 +4308,7 @@ export const Drawers: React.FC<DrawersProps> = ({
         {/* Footer info (Hidden for chat so chat box gets full height) */}
         {activeDrawer !== 'chat' && (
           <div className="p-4 border-t border-gray-200 bg-gray-50 text-center font-jakarta text-[10px] text-gray-500 uppercase tracking-widest shrink-0">
-            MALALA © 2026 — Presented by MINANGKAOS
+            MALALA © 2026: Dipersembahkan oleh MINANGKAOS
           </div>
         )}
       </div>

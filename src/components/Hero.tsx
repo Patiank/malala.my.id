@@ -66,6 +66,7 @@ export const Hero: React.FC<HeroProps> = ({
 }) => {
   const t = translations[lang];
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  const exploreDialogRef = useRef<HTMLDialogElement>(null);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
@@ -73,6 +74,16 @@ export const Hero: React.FC<HeroProps> = ({
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [mobileSpotlightTab, setMobileSpotlightTab] = useState<'video' | 'event'>('video');
+
+  useEffect(() => {
+    const dialog = exploreDialogRef.current;
+    if (!dialog) return;
+    if (isExploreModalOpen) {
+      if (!dialog.open) dialog.showModal();
+    } else {
+      if (dialog.open) dialog.close();
+    }
+  }, [isExploreModalOpen]);
 
   const handleViewEventDetail = (item: EventItem) => {
     if (onSelectEvent) {
@@ -668,10 +679,7 @@ export const Hero: React.FC<HeroProps> = ({
           gap: 'var(--section-gap)',
         }}
       >
-        {/* Global Semantic SEO H1 for bots & screen readers */}
-        <h1 className="sr-only">Pariwisata Sumatera Barat &amp; Pariwisata Sumbar 2026 — Discover West Sumatra Paradise</h1>
-
-        {/* Mobile-Only Action & Search Hub (Clean, Modern, Compact ala thailandjoy.asia) */}
+        {/* Mobile-Only Action & Search Hub (Clean, Modern, Compact) */}
         <div ref={mobileSearchContainerRef} className="block sm:hidden w-full max-w-lg mx-auto pt-0.5 pb-2 font-jakarta z-30 relative select-none">
           <div className="bg-white/92 backdrop-blur-md rounded-2xl p-2.5 shadow-xl border border-white/80 ring-1 ring-black/5">
             {/* Row 1: Compact Search Form with Dedicated Pill CARI Button */}
@@ -697,12 +705,6 @@ export const Hero: React.FC<HeroProps> = ({
                 onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => {
                   if (onSearchQueryChange) onSearchQueryChange(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (onOpenDrawer) onOpenDrawer('search');
-                  }
                 }}
                 placeholder={lang === 'en' ? "Cari wisata, kuliner, event..." : "Cari wisata, kuliner, event..."}
                 className="w-full py-1 px-1 bg-transparent text-xs text-gray-900 placeholder-gray-400 font-semibold focus:outline-none"
@@ -827,7 +829,7 @@ export const Hero: React.FC<HeroProps> = ({
             className="font-orbitron font-black uppercase tracking-[0.06em] leading-[1.04] select-none pt-1 transition-colors duration-300"
             style={{ ...heroTextStyle, fontSize: 'var(--headline)' }}
           >
-            <span className="sr-only">Pariwisata Sumatera Barat &amp; Pariwisata Sumbar 2026 — </span>
+            <span className="sr-only">Pariwisata Sumatera Barat: </span>
             <div>DISCOVER</div>
             <div className='text-red-600'>WEST SUMATRA</div>
             <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
@@ -918,12 +920,6 @@ export const Hero: React.FC<HeroProps> = ({
                   onFocus={() => setIsSearchFocused(true)}
                   onChange={(e) => {
                     if (onSearchQueryChange) onSearchQueryChange(e.target.value);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      if (onOpenDrawer) onOpenDrawer('search');
-                    }
                   }}
                   placeholder={
                     lang === 'en'
@@ -1541,171 +1537,188 @@ export const Hero: React.FC<HeroProps> = ({
 
       </main>
 
-      {/* Interactive Category Selector Modal (Opens upon clicking Mulai Jelajah) */}
-      {isExploreModalOpen && (
-        <div className="fixed inset-0 z-[120] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in font-jakarta">
-          <div className="bg-white w-full max-w-4xl rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Compass className="w-6 h-6 text-red-600 animate-spin-slow" />
-                  <h3 className="font-orbitron font-extrabold text-lg sm:text-xl text-black uppercase tracking-wider">
-                    {lang === 'en' ? 'Explore West Sumatra Categories' : 'Pilih Kategori Jelajah Wisata'}
-                  </h3>
+      {/* Interactive Category Selector Native Dialog */}
+      <dialog
+        ref={exploreDialogRef}
+        id="explore-modal"
+        aria-labelledby="explore-modal-title"
+        onClose={handleCloseExploreModal}
+        onClick={(e) => {
+          if (e.target === exploreDialogRef.current) {
+            handleCloseExploreModal();
+          }
+        }}
+        className="native-modal fixed inset-0 z-[120] p-4 m-auto font-jakarta"
+      >
+        <div className="bg-white w-full max-w-4xl rounded-2xl p-6 sm:p-8 shadow-2xl relative border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto">
+          {/* Modal Header */}
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <Compass className="w-6 h-6 text-red-600 animate-spin-slow" />
+                <h3 id="explore-modal-title" className="font-orbitron font-extrabold text-lg sm:text-xl text-black uppercase tracking-wider">
+                  {lang === 'en' ? 'Explore West Sumatra Categories' : 'Pilih Kategori Jelajah Wisata'}
+                </h3>
+              </div>
+              <p className="text-gray-500 text-xs mt-1">
+                {lang === 'en' 
+                  ? 'Select what you want to explore in Minangkabau Land' 
+                  : 'Silakan pilih kategori pariwisata Sumatera Barat yang ingin Anda jelajahi'}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleCloseExploreModal}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-black cursor-pointer"
+              aria-label="Tutup jendela kategori"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Grid 6 Categories as Semantic Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* 1. Destinasi */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('destinations'); }}
+              className="group text-left bg-gradient-to-br from-red-50 to-white border border-red-200 rounded-xl p-5 hover:shadow-lg hover:border-red-500 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  🏔️
                 </div>
-                <p className="text-gray-500 text-xs mt-1">
-                  {lang === 'en' 
-                    ? 'Select what you want to explore in Minangkabau Land' 
-                    : 'Silakan pilih kategori pariwisata Sumatera Barat yang ingin Anda jelajahi'}
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navDestinations}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Jelajahi danau, gunung, pantai bahari, desa wisata, dan pesona alam Sumbar.
                 </p>
               </div>
-
-              <button
-                onClick={handleCloseExploreModal}
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500 hover:text-black cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Grid 6 Categories */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* 1. Destinasi */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('destinations'); }}
-                className="group bg-gradient-to-br from-red-50 to-white border border-red-200 rounded-xl p-5 hover:shadow-lg hover:border-red-500 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    🏔️
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navDestinations}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Jelajahi danau, gunung, pantai bahari, desa wisata, dan pesona alam Sumbar.
-                  </p>
-                </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-red-600 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Destinasi</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-red-600 group-hover:translate-x-1 transition-transform">
+                <span>Jelajahi Wisata Alam</span>
+                <ArrowUpRight className="w-4 h-4" />
               </div>
+            </button>
 
-              {/* 2. Kebudayaan */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('culture'); }}
-                className="group bg-gradient-to-br from-purple-50 to-white border border-purple-200 rounded-xl p-5 hover:shadow-lg hover:border-purple-500 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    🏛️
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navCulture}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Seni tari, arsitektur Rumah Gadang, tradisi adat, dan filosofi Minangkabau.
-                  </p>
+            {/* 2. Kebudayaan */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('culture'); }}
+              className="group text-left bg-gradient-to-br from-purple-50 to-white border border-purple-200 rounded-xl p-5 hover:shadow-lg hover:border-purple-500 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-purple-500"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  🏛️
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-purple-600 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Kebudayaan</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navCulture}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Seni tari, arsitektur Rumah Gadang, tradisi adat, dan filosofi Minangkabau.
+                </p>
               </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-purple-600 group-hover:translate-x-1 transition-transform">
+                <span>Kenali Adat &amp; Seni</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </button>
 
-              {/* 3. Kuliner */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('culinary'); }}
-                className="group bg-gradient-to-br from-amber-50 to-white border border-amber-200 rounded-xl p-5 hover:shadow-lg hover:border-amber-500 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    🍲
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navCulinary}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Kelezatan Rendang warisan UNESCO, Sate Padang, Teh Talua, & kudapan khas.
-                  </p>
+            {/* 3. Kuliner */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('culinary'); }}
+              className="group text-left bg-gradient-to-br from-amber-50 to-white border border-amber-200 rounded-xl p-5 hover:shadow-lg hover:border-amber-500 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-amber-500"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  🍲
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Kuliner</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navCulinary}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Kelezatan Rendang warisan UNESCO, Sate Padang, Teh Talua, &amp; kudapan khas.
+                </p>
               </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:translate-x-1 transition-transform">
+                <span>Cicipi Ragam Kuliner</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </button>
 
-              {/* 4. Event */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('events'); }}
-                className="group bg-gradient-to-br from-blue-50 to-white border border-blue-200 rounded-xl p-5 hover:shadow-lg hover:border-blue-500 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    📅
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navEvents}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Jadwal festival budaya, Pacu Jawi, Tour de Singkarak, & event tahunan.
-                  </p>
+            {/* 4. Event */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('events'); }}
+              className="group text-left bg-gradient-to-br from-blue-50 to-white border border-blue-200 rounded-xl p-5 hover:shadow-lg hover:border-blue-500 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  📅
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Jadwal Event</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navEvents}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Jadwal festival budaya, Pacu Jawi, Tour de Singkarak, &amp; event tahunan.
+                </p>
               </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform">
+                <span>Pantau Kalender Event</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </button>
 
-              {/* 5. Unduhan */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('download'); }}
-                className="group bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 rounded-xl p-5 hover:shadow-lg hover:border-indigo-500 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    📥
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navDownloads}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Unduh media kit, leaflet wisata, dan E-Book panduan pariwisata PDF.
-                  </p>
+            {/* 5. Unduhan */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('download'); }}
+              className="group text-left bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 rounded-xl p-5 hover:shadow-lg hover:border-indigo-500 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  📥
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Unduhan PDF</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navDownloads}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Unduh media kit, leaflet wisata, dan E-Book panduan pariwisata PDF.
+                </p>
               </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition-transform">
+                <span>Unduh Media &amp; PDF</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </button>
 
-              {/* 6. Peta Interaktif */}
-              <div 
-                onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('map'); }}
-                className="group bg-gradient-to-br from-red-100 to-white border border-red-300 rounded-xl p-5 hover:shadow-lg hover:border-red-600 transition-all cursor-pointer flex flex-col justify-between"
-              >
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-lg bg-red-700 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    🗺️
-                  </div>
-                  <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
-                    {t.navMap}
-                  </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Tampilan peta interaktif Minangkabau dengan lokasi realtime titik wisata.
-                  </p>
+            {/* 6. Peta Interaktif */}
+            <button
+              type="button"
+              onClick={() => { setIsExploreModalOpen(false); onOpenDrawer('map'); }}
+              className="group text-left bg-gradient-to-br from-red-100 to-white border border-red-300 rounded-xl p-5 hover:shadow-lg hover:border-red-600 transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-red-600"
+            >
+              <div className="space-y-2">
+                <div className="w-10 h-10 rounded-lg bg-red-700 text-white flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                  🗺️
                 </div>
-                <div className="mt-4 flex items-center justify-between text-xs font-bold text-red-700 group-hover:translate-x-1 transition-transform">
-                  <span>Buka Peta Interaktif</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
+                <h4 className="font-orbitron font-bold text-sm text-black uppercase tracking-wider">
+                  {t.navMap}
+                </h4>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  Tampilan peta interaktif Minangkabau dengan lokasi realtime titik wisata.
+                </p>
               </div>
-            </div>
+              <div className="mt-4 flex items-center justify-between text-xs font-bold text-red-700 group-hover:translate-x-1 transition-transform">
+                <span>Buka Peta Wisata</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </button>
           </div>
         </div>
-      )}
+      </dialog>
     </>
   );
 };

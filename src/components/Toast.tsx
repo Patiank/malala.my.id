@@ -10,7 +10,12 @@ interface ToastProps {
 
 export const Toast: React.FC<ToastProps> = ({ toasts, onDismiss }) => {
   return (
-    <div className="fixed top-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm">
+    <div 
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      className="fixed top-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm"
+    >
       <AnimatePresence>
         {toasts.map((t) => (
           <ToastItem key={t.id} toast={t} onDismiss={onDismiss} />

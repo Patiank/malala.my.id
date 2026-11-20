@@ -86,7 +86,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
         </button>
       </div>
 
-      {/* Book Content Pages Container — Half Width (~460px) & Natural Auto Height */}
+      {/* Book Content Pages Container: Half Width (~460px) & Natural Auto Height */}
       <main className="w-full max-w-[460px] mx-auto px-3 pt-4 pb-16 space-y-4 print:space-y-0 print:max-w-full print:px-0 print:pt-0 print:pb-0">
         
         {/* Clean Chapter Selector at the top (5-grid, NO slider / scrollbar) */}
@@ -212,7 +212,7 @@ export const EBookletModal: React.FC<EBookletModalProps> = ({
                   <span>{location}</span>
                 </div>
 
-                {/* Full Description — Natural dynamic length */}
+                {/* Full Description: Natural dynamic length */}
                 <div className="font-jakarta text-xs text-gray-700 leading-relaxed pt-2 space-y-2">
                   {desc.split('\n\n').map((p, pIdx) => (
                     <p key={pIdx}>{p}</p>

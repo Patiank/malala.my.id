@@ -1053,8 +1053,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
             </button>
           ) : (
             <form onSubmit={handlePinSubmit} className="pt-2 border-t border-gray-100 space-y-2">
+              <label htmlFor="admin-emergency-pin" className="sr-only">Password Darurat Admin</label>
               <input
+                id="admin-emergency-pin"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 value={pinCode}
                 onChange={(e) => setPinCode(e.target.value)}
                 placeholder="Masukkan Password Darurat Admin..."
@@ -1664,7 +1668,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                           const hasVideo = Boolean(ev.videoUrl || ev.youtubeUrl);
                           return (
                             <option key={ev.id} value={ev.id}>
-                              {hasVideo ? '🎬 ' : '⚠️ (Tanpa Video) '} {ev.title} — [{ev.schedule}]
+                              {hasVideo ? '🎬 ' : '⚠️ (Tanpa Video) '} {ev.title}: [{ev.schedule}]
                             </option>
                           );
                         })}
@@ -2863,7 +2867,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
                     <div className="flex items-center justify-between">
                       <label className="block text-[11px] font-bold uppercase tracking-wider text-neutral-800 flex items-center gap-1.5">
                         <ImageIcon className="w-3.5 h-3.5 text-black" />
-                        {adminTab === 'hotinfo' ? 'Foto / Banner Berita (Opsional — Default Tanpa Gambar)' : 'Gambar Item Katalog (Wajib)'}
+                        {adminTab === 'hotinfo' ? 'Foto / Banner Berita (Opsional: Default Tanpa Gambar)' : 'Gambar Item Katalog (Wajib)'}
                       </label>
                       <span className="text-[10px] text-neutral-500 font-medium">
                         {adminTab === 'hotinfo' ? 'Kosongkan jika tidak butuh gambar' : 'Dukungan: Upload File (WebP Auto-Compress) & URL Langsung'}

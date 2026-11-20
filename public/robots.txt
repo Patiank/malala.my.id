@@ -1,104 +1,32 @@
-# Robots.txt for MALALA - West Sumatra Tourism Portal (https://malala.my.id)
-# Maximum Search Engine Optimization (SEO) & Generative Engine Optimization (GEO)
+# Robots.txt for MALALA (https://malala.my.id)
+# Panduan Wisata dan Kebudayaan Sumatera Barat
 
 User-agent: *
 Allow: /
-Allow: /berita
 Allow: /berita/
-Allow: /hotinfo
 Allow: /hotinfo/
-Allow: /ads.txt
-Allow: /sitemap
-Allow: /sitemap.xml
-Allow: /sitemap_index.xml
-Allow: /news-sitemap.xml
-Allow: /sitemap-news.xml
-Allow: /rss.xml
-Allow: /feed.xml
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /.well-known/ai-catalog.json
-Allow: /ai-catalog.json
-Allow: /downloads/
+Allow: /destinasi/
+Allow: /kebudayaan/
+Allow: /kuliner/
+Allow: /event/
+Allow: /oleh-oleh/
+Allow: /unduhan/
 Disallow: /flipbook/
+Disallow: /api/
 
-# Standard Search Crawlers
+# Googlebot & Search Engines
 User-agent: Googlebot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Googlebot-News
 Allow: /
 Disallow: /flipbook/
 
 User-agent: Googlebot-Image
 Allow: /
-Disallow: /flipbook/
+Allow: /images/
 
 User-agent: Bingbot
 Allow: /
 Disallow: /flipbook/
 
-User-agent: Slurp
-Allow: /
-Disallow: /flipbook/
-
-User-agent: DuckDuckBot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Baiduspider
-Allow: /
-Disallow: /flipbook/
-
-User-agent: YandexBot
-Allow: /
-Disallow: /flipbook/
-
-# Generative AI, LLM & AI-Search Crawlers (GEO Optimization)
-User-agent: GPTBot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: ChatGPT-User
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Google-Extended
-Allow: /
-Disallow: /flipbook/
-
-User-agent: ClaudeBot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: anthropic-ai
-Allow: /
-Disallow: /flipbook/
-
-User-agent: PerplexityBot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Applebot
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Applebot-Extended
-Allow: /
-Disallow: /flipbook/
-
-User-agent: Bytespider
-Allow: /
-Disallow: /flipbook/
-
-User-agent: meta-externalagent
-Allow: /
-Disallow: /flipbook/
-
-User-agent: cohere-ai
-Allow: /
-Disallow: /flipbook/
-
+# Sitemaps
 Sitemap: https://malala.my.id/sitemap.xml
 Sitemap: https://malala.my.id/sitemap-news.xml

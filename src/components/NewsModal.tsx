@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, MapPin, Share2, Flame, ExternalLink, BookOpen } from 'lucide-react';
 import { HotInfoItem } from '../types';
 import { Language } from '../lib/translations';
@@ -12,6 +12,21 @@ interface NewsModalProps {
 }
 
 export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || !item) return;
+    if (!dialog.open) {
+      dialog.showModal();
+    }
+    return () => {
+      if (dialog.open) {
+        dialog.close();
+      }
+    };
+  }, [item]);
+
   if (!item) return null;
 
   const isEn = lang === 'en';
@@ -49,14 +64,21 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-[150] bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fadeIn"
-      onClick={onClose}
+    <dialog 
+      ref={dialogRef}
+      id="news-modal"
+      aria-labelledby="news-modal-title"
+      onClose={onClose}
+      className="native-modal fixed inset-0 z-[150] p-0 sm:p-4 m-auto font-jakarta flex items-end sm:items-center justify-center"
+      onClick={(e) => {
+        if (e.target === dialogRef.current) {
+          onClose();
+        }
+      }}
     >
       <div 
         className="bg-white text-gray-900 max-w-lg w-full rounded-t-3xl sm:rounded-2xl overflow-hidden shadow-2xl border-t sm:border border-gray-200 animate-slide-up sm:animate-scale-up space-y-4 p-4 sm:p-6 relative max-h-[88vh] sm:max-h-[90vh] overflow-y-auto font-jakarta"
         style={{ paddingBottom: 'calc(1.25rem + env(safe-area-inset-bottom, 0px))' }}
-        onClick={(e) => e.stopPropagation()}
       >
         {/* Visual Grab Handle for Mobile Bottom Sheet */}
         <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto -mt-1 mb-2.5 sm:hidden shrink-0" />
@@ -109,6 +131,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
 
         {/* Modal Headline Title */}
         <h3 
+          id="news-modal-title"
           onClick={() => {
             if (hasExternalUrl && primaryUrl) {
               window.open(primaryUrl, '_blank', 'noopener,noreferrer');
@@ -216,7 +239,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ item, onClose, lang }) => 
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 };
 
