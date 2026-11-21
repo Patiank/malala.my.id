@@ -225,18 +225,18 @@ function generateHtmlPage(
 
   html = html.replace('</head>', `${ogTags}\n  ${scripts}\n</head>`);
 
-  // Inject Pre-rendered Semantic HTML inside <div id="root"> wrapped in <noscript>
-  // This guarantees 0 Cumulative Layout Shift (CLS = 0) for browser visitors while providing 100% SEO indexability for crawlers
+  // Inject Pre-rendered Semantic HTML directly inside <div id="root">
+  // Guarantees immediate FCP, full DOM indexing for crawlers, heading hierarchy, and zero layout shift
   if (options.bodyContent) {
     if (options.canonicalUrl.endsWith('/sitemap')) {
       html = html.replace(
         /<div id="root">[\s\S]*?<\/div>/i,
-        `<div id="root">\n  <noscript>\n${options.bodyContent}\n  </noscript>\n</div>\n<main id="static-sitemap-view" style="position: relative; z-index: 10; background: #070a12; min-height: 100vh;">\n${options.bodyContent}\n</main>`
+        `<div id="root">\n${options.bodyContent}\n</div>\n<main id="static-sitemap-view" style="position: relative; z-index: 10; background: #070a12; min-height: 100vh;">\n${options.bodyContent}\n</main>`
       );
     } else {
       html = html.replace(
         /<div id="root">[\s\S]*?<\/div>/i,
-        `<div id="root">\n  <noscript>\n${options.bodyContent}\n  </noscript>\n</div>`
+        `<div id="root">\n${options.bodyContent}\n</div>`
       );
     }
   }
@@ -294,8 +294,16 @@ export function generateSsg() {
   const homeContent = `
     <div style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #cbd5e1; line-height: 1.7; background: #070a12;">
       <header style="margin-bottom: 2.5rem; text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 2rem;">
-        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat &amp; Panduan Pariwisata Sumbar 2026 (MALALA)</h1>
+        <h1 style="font-size: 2.25rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.75rem;">Pariwisata Sumatera Barat 2026: Panduan Destinasi &amp; Budaya (MALALA)</h1>
         <p style="font-size: 1.15rem; color: #94a3b8; max-width: 820px; margin: 0 auto;">Portal resmi panduan pariwisata Sumatera Barat terlengkap: eksplorasi 50+ destinasi wisata alam dan geopark, 30+ warisan adat budaya Minangkabau, 36+ kuliner autentik legendaris, kalender pariwisata Sumbar &amp; Karisma Event Nusantara (KEN) 2026, serta asisten AI Uni Mala.</p>
+        <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.75rem;">
+          <span>Penulis: <strong rel="author">Tim Kurasi MALALA</strong></span> • 
+          <time datetime="2026-11-22">Pembaruan: 22 November 2026</time>
+        </div>
+        <div style="background: #0f172a; border-left: 4px solid #ef4444; padding: 1rem 1.25rem; margin-top: 1.5rem; text-align: left; border-radius: 0 0.5rem 0.5rem 0;">
+          <strong style="color: #f8fafc;">Ringkasan Jawaban Cepat (Direct Answer):</strong> 
+          <p style="color: #cbd5e1; margin: 0.35rem 0 0 0; font-size: 0.95rem; line-height: 1.6;">MALALA adalah portal informasi dan direktori resmi pariwisata Sumatera Barat 2026 yang mengkurasi 50 destinasi alam, danau, dan bahari di 19 kabupaten/kota, 30 tradisi budaya Minangkabau, 36 kuliner legendaris, serta 26 agenda festival Karisma Event Nusantara (KEN) dengan rekomendasi rute terintegrasi.</p>
+        </div>
         <nav style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <a href="/destinasi" style="color: #ef4444; font-weight: 600; text-decoration: none;">Jelajah 50+ Destinasi &rarr;</a>
           <a href="/kebudayaan" style="color: #ef4444; font-weight: 600; text-decoration: none;">Warisan Budaya Minang &rarr;</a>
@@ -318,8 +326,8 @@ export function generateSsg() {
   `;
 
   const optimizedHome = generateHtmlPage(baseTemplate, {
-    title: 'Pariwisata Sumatera Barat & Pariwisata Sumbar 2026: Panduan 50 Destinasi, Budaya & Kuliner | MALALA',
-    description: 'Portal resmi pariwisata Sumatera Barat & panduan pariwisata Sumbar 2026. Temukan 50+ destinasi hits, rute keliling Sumbar tanpa bolak-balik, 36 kuliner Minang terenak, jadwal Pacu Jawi & Tabuik KEN 2026, peta wisata gratis, dan asisten AI cerdas Uni Mala.',
+    title: 'Pariwisata Sumatera Barat 2026: Panduan 50 Destinasi & Budaya | MALALA',
+    description: 'Panduan resmi pariwisata Sumatera Barat 2026: 50+ destinasi hits, rute wisata, 36 kuliner Minang terenak, jadwal event KEN, dan asisten AI Uni Mala.',
     canonicalUrl: 'https://malala.my.id/',
     jsonLdList: [buildOrganizationJsonLd(), buildWebsiteJsonLd(), buildFaqJsonLd()],
     bodyContent: homeContent
@@ -362,8 +370,8 @@ export function generateSsg() {
   `;
 
   const destinasiPage = generateHtmlPage(baseTemplate, {
-    title: 'Destinasi Wisata Sumatera Barat: 50+ Rekomendasi Hits & Rute 2026 | MALALA',
-    description: 'Katalog resmi 50+ destinasi wisata terbaik di Sumatera Barat. Temukan rute Lembah Harau, Mandeh, Mentawai, Ngarai Sianok, Danau Singkarak, dan desa wisata Ranah Minang.',
+    title: 'Destinasi Wisata Sumbar 2026: 50+ Rekomendasi Hits | MALALA',
+    description: 'Katalog resmi 50+ destinasi wisata terbaik di Sumatera Barat 2026: rute Lembah Harau, Mandeh, Mentawai, Ngarai Sianok, Danau Singkarak, dan desa wisata.',
     canonicalUrl: 'https://malala.my.id/destinasi',
     jsonLdList: [
       {
@@ -417,8 +425,8 @@ export function generateSsg() {
   `;
 
   const kebudayaanPage = generateHtmlPage(baseTemplate, {
-    title: 'Warisan Budaya Minangkabau: 30+ Adat, Falsafah & Seni Tradisi | MALALA',
-    description: 'Pelajari filosofi adat basandi syarak, sistem kekerabatan matrilineal, arsitektur Rumah Gadang, seni Silek Minang, Tari Piring, dan Songket Pandai Sikek di Sumatera Barat.',
+    title: 'Warisan Budaya Minangkabau: 30+ Adat & Tradisi | MALALA',
+    description: 'Pelajari filosofi adat basandi syarak, sistem matrilineal, Rumah Gadang, seni Silek, Tari Piring, dan Songket Pandai Sikek di Sumatera Barat.',
     canonicalUrl: 'https://malala.my.id/kebudayaan',
     jsonLdList: [
       {
@@ -472,8 +480,8 @@ export function generateSsg() {
   `;
 
   const kulinerPage = generateHtmlPage(baseTemplate, {
-    title: 'Kuliner Khas Minangkabau: 36+ Makanan Khas Padang Terenak | MALALA',
-    description: 'Panduan wisata kuliner khas Padang Bukittinggi: Nasi Kapau asli, Rendang daging otentik, Sate Padang terenak, Gulai Itiak Lado Mudo, dan minuman segar Teh Talua.',
+    title: 'Kuliner Khas Minang: 36+ Makanan Padang Terenak | MALALA',
+    description: 'Panduan wisata kuliner khas Padang Bukittinggi: Nasi Kapau asli, Rendang otentik, Sate Padang, Gulai Itiak Lado Mudo, dan Teh Talua Minang.',
     canonicalUrl: 'https://malala.my.id/kuliner',
     jsonLdList: [
       {
@@ -527,8 +535,8 @@ export function generateSsg() {
   `;
 
   const eventPage = generateHtmlPage(baseTemplate, {
-    title: 'Kalender Event Sumbar 2026: 26+ Festival Karisma Event Nusantara | MALALA',
-    description: 'Cek jadwal resmi Pacu Jawi 2026 Tanah Datar, jadwal prosesi Festival Tabuik Pariaman, Tour de Singkarak, dan kalender festival budaya KEN Sumatera Barat 2026.',
+    title: 'Kalender Event Sumbar 2026: 26+ Festival KEN | MALALA',
+    description: 'Cek jadwal resmi Pacu Jawi 2026 Tanah Datar, jadwal prosesi Festival Tabuik Pariaman, Tour de Singkarak, dan kalender festival budaya KEN Sumbar 2026.',
     canonicalUrl: 'https://malala.my.id/event',
     jsonLdList: [
       {
@@ -594,8 +602,8 @@ export function generateSsg() {
   `;
 
   const newsPage = generateHtmlPage(baseTemplate, {
-    title: 'Berita Pariwisata Sumatera Barat Terkini: Info Rute, Event & Regulasi 2026 | MALALA',
-    description: 'Kumpulan berita pariwisata Sumatera Barat dan nasional terpercaya. Info status jalur tol Padang-Sicincin, Sitinjau Lauik, jadwal festival KEN, dan kebijakan ekowisata.',
+    title: 'Berita Pariwisata Sumatera Barat Terkini 2026 | MALALA',
+    description: 'Kumpulan berita pariwisata Sumatera Barat terpercaya: info status jalur tol Padang-Sicincin, Sitinjau Lauik, jadwal festival KEN, dan ekowisata.',
     canonicalUrl: 'https://malala.my.id/berita',
     jsonLdList: [
       {
@@ -863,8 +871,8 @@ export function generateSsg() {
     const slug = slugify(dest.title);
     if (!slug) return;
 
-    const pageTitle = `${dest.title} (${dest.regency || 'Sumatera Barat'}): Rute, Daya Tarik & Panduan 2026 | MALALA`;
-    const pageDesc = dest.description ? dest.description.substring(0, 160) + '...' : `Informasi lengkap mengenai ${dest.title} di ${dest.regency || 'Sumatera Barat'}.`;
+    const pageTitle = `${dest.title} (${dest.regency || 'Sumbar'}): Panduan Wisata 2026 | MALALA`;
+    const pageDesc = dest.description ? dest.description.substring(0, 155) + '...' : `Informasi lengkap mengenai ${dest.title} di ${dest.regency || 'Sumatera Barat'}.`;
     const canonicalUrl = `https://malala.my.id/destinasi/${slug}`;
 
     const ratingSummary = getDestinationRatingSummary(dest.id, dest.title);
@@ -916,6 +924,14 @@ export function generateSsg() {
             </div>
           </div>
           <p style="font-size: 1.1rem; color: #dc2626; font-weight: 600; margin: 0;">📍 ${escapeHtml(dest.regency || 'Sumatera Barat')} • <span style="color: #64748b;">Kategori: ${escapeHtml(dest.category || 'Wisata Alam')}</span></p>
+          <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.75rem;">
+            <span>Kurasi: <strong rel="author">Tim Wisata MALALA</strong></span> • 
+            <time datetime="2026-11-22">Pembaruan: 22 November 2026</time>
+          </div>
+          <div style="background: #f8fafc; border-left: 4px solid #dc2626; padding: 1rem 1.25rem; margin-top: 1.25rem; border-radius: 0 0.5rem 0.5rem 0;">
+            <strong style="color: #0f172a; font-size: 0.95rem;">Ringkasan Destinasi (Quick Overview):</strong>
+            <p style="color: #334155; margin: 0.35rem 0 0 0; font-size: 0.95rem; line-height: 1.6;">${escapeHtml((dest.description || '').substring(0, 240))}...</p>
+          </div>
         </header>
 
         ${dest.imageUrl ? `
@@ -1005,8 +1021,8 @@ export function generateSsg() {
     const slug = slugify(cult.title);
     if (!slug) return;
 
-    const pageTitle = `${cult.title} Minangkabau: Makna Filosofis, Sejarah & Tradisi Adat | MALALA`;
-    const pageDesc = cult.description ? cult.description.substring(0, 160) + '...' : `Kupas tuntas filosofi dan sejarah ${cult.title} khas Minangkabau.`;
+    const pageTitle = `${cult.title}: Tradisi & Makna Budaya Minangkabau | MALALA`;
+    const pageDesc = cult.description ? cult.description.substring(0, 155) + '...' : `Kupas tuntas filosofi dan sejarah ${cult.title} khas Minangkabau.`;
     const canonicalUrl = `https://malala.my.id/kebudayaan/${slug}`;
 
     const cultJsonLd = {
@@ -1053,8 +1069,16 @@ export function generateSsg() {
         </nav>
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
           <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem; line-height: 1.2;">${escapeHtml(cult.title)}</h1>
-          <p style="font-size: 1.1rem; color: #b45309; font-weight: 600;">🏛️ ${escapeHtml(cult.category || 'Warisan Budaya')} • <span style="color: #64748b;">Asal: ${escapeHtml(cult.origin || 'Minangkabau')}</span></p>
+          <p style="font-size: 1.1rem; color: #b45309; font-weight: 600; margin: 0;">🏛️ ${escapeHtml(cult.category || 'Warisan Budaya')} • <span style="color: #64748b;">Asal: ${escapeHtml(cult.origin || 'Minangkabau')}</span></p>
+          <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.75rem;">
+            <span>Kurasi: <strong rel="author">Tim Budaya MALALA</strong></span> • 
+            <time datetime="2026-11-22">Pembaruan: 22 November 2026</time>
+          </div>
           ${cult.philosophy ? `<p style="font-size: 1.1rem; color: #047857; font-style: italic; margin-top: 0.75rem; background: #ecfdf5; padding: 0.75rem 1rem; border-left: 4px solid #10b981; border-radius: 0.25rem;">"${escapeHtml(cult.philosophy)}"</p>` : ''}
+          <div style="background: #f8fafc; border-left: 4px solid #b45309; padding: 1rem 1.25rem; margin-top: 1.25rem; border-radius: 0 0.5rem 0.5rem 0;">
+            <strong style="color: #0f172a; font-size: 0.95rem;">Ringkasan Budaya (Quick Overview):</strong>
+            <p style="color: #334155; margin: 0.35rem 0 0 0; font-size: 0.95rem; line-height: 1.6;">${escapeHtml((cult.description || '').substring(0, 240))}...</p>
+          </div>
         </header>
 
         ${cult.imageUrl ? `
@@ -1098,8 +1122,8 @@ export function generateSsg() {
     const slug = slugify(cul.title);
     if (!slug) return;
 
-    const pageTitle = `${cul.title} Khas Minangkabau: Cita Rasa & Rekomendasi Kuliner Autentik | MALALA`;
-    const pageDesc = cul.description ? cul.description.substring(0, 160) + '...' : `Resep dan kelezatan autentik ${cul.title} khas Minang.`;
+    const pageTitle = `${cul.title}: Kuliner Khas Minangkabau Terenak | MALALA`;
+    const pageDesc = cul.description ? cul.description.substring(0, 155) + '...' : `Resep dan kelezatan autentik ${cul.title} khas Minang.`;
     const canonicalUrl = `https://malala.my.id/kuliner/${slug}`;
 
     const culJsonLd = {
@@ -1146,8 +1170,16 @@ export function generateSsg() {
         </nav>
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
           <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem; line-height: 1.2;">${escapeHtml(cul.title)}</h1>
-          <p style="font-size: 1.1rem; color: #ea580c; font-weight: 600;">🍲 ${escapeHtml(cul.type || 'Makanan Utama')} • <span style="color: #64748b;">Asal: ${escapeHtml(cul.origin || 'Sumatera Barat')}</span></p>
+          <p style="font-size: 1.1rem; color: #ea580c; font-weight: 600; margin: 0;">🍲 ${escapeHtml(cul.type || 'Makanan Utama')} • <span style="color: #64748b;">Asal: ${escapeHtml(cul.origin || 'Sumatera Barat')}</span></p>
+          <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.75rem;">
+            <span>Kurasi: <strong rel="author">Tim Kuliner MALALA</strong></span> • 
+            <time datetime="2026-11-22">Pembaruan: 22 November 2026</time>
+          </div>
           ${cul.flavorProfile ? `<p style="font-size: 1.05rem; color: #334155; margin-top: 0.5rem;"><strong>Cita Rasa Khas:</strong> ${escapeHtml(cul.flavorProfile)}</p>` : ''}
+          <div style="background: #f8fafc; border-left: 4px solid #ea580c; padding: 1rem 1.25rem; margin-top: 1.25rem; border-radius: 0 0.5rem 0.5rem 0;">
+            <strong style="color: #0f172a; font-size: 0.95rem;">Cita Rasa &amp; Keunikan (Quick Overview):</strong>
+            <p style="color: #334155; margin: 0.35rem 0 0 0; font-size: 0.95rem; line-height: 1.6;">${escapeHtml((cul.description || '').substring(0, 240))}...</p>
+          </div>
         </header>
 
         ${cul.imageUrl ? `
@@ -1191,8 +1223,8 @@ export function generateSsg() {
     const slug = slugify(ev.title);
     if (!slug) return;
 
-    const pageTitle = `Jadwal ${ev.title} 2026: Info Agenda, Rute & Lokasi Acara | MALALA`;
-    const pageDesc = ev.description ? ev.description.substring(0, 160) + '...' : `Jadwal dan rincian kemeriahan event ${ev.title} di ${ev.location || 'Sumatera Barat'}.`;
+    const pageTitle = `${ev.title} 2026: Jadwal & Info Lokasi Acara | MALALA`;
+    const pageDesc = ev.description ? ev.description.substring(0, 155) + '...' : `Jadwal dan rincian kemeriahan event ${ev.title} di ${ev.location || 'Sumatera Barat'}.`;
     const canonicalUrl = `https://malala.my.id/event/${slug}`;
 
     const evJsonLd = {
@@ -1257,8 +1289,16 @@ export function generateSsg() {
         </nav>
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem;">
           <h1 style="font-size: 2.5rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem; line-height: 1.2;">${escapeHtml(ev.title)}</h1>
-          <p style="font-size: 1.1rem; color: #0284c7; font-weight: 600;">🗓️ Jadwal: ${escapeHtml(ev.schedule || '2026')} • 📍 Lokasi: ${escapeHtml(ev.location || 'Sumatera Barat')}</p>
+          <p style="font-size: 1.1rem; color: #0284c7; font-weight: 600; margin: 0;">🗓️ Jadwal: ${escapeHtml(ev.schedule || '2026')} • 📍 Lokasi: ${escapeHtml(ev.location || 'Sumatera Barat')}</p>
+          <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.75rem;">
+            <span>Kurasi: <strong rel="author">Tim Event MALALA</strong></span> • 
+            <time datetime="2026-11-22">Pembaruan: 22 November 2026</time>
+          </div>
           ${ev.isKen ? `<span style="display: inline-block; background: #fef3c7; color: #b45309; font-size: 0.85rem; font-weight: 700; padding: 0.35rem 0.85rem; border-radius: 9999px; margin-top: 0.5rem;">🌟 Karisma Event Nusantara (KEN)</span>` : ''}
+          <div style="background: #f8fafc; border-left: 4px solid #0284c7; padding: 1rem 1.25rem; margin-top: 1.25rem; border-radius: 0 0.5rem 0.5rem 0;">
+            <strong style="color: #0f172a; font-size: 0.95rem;">Ringkasan Acara (Event Highlights):</strong>
+            <p style="color: #334155; margin: 0.35rem 0 0 0; font-size: 0.95rem; line-height: 1.6;">${escapeHtml((ev.description || '').substring(0, 240))}...</p>
+          </div>
         </header>
 
         ${ev.imageUrl ? `
@@ -1302,7 +1342,7 @@ export function generateSsg() {
     const slug = slugify(n.title);
     if (!slug) return;
 
-    const pageTitle = `${n.title} | Berita Pariwisata MALALA`;
+    const pageTitle = `${n.title} | Berita MALALA`;
     const paragraphs = (n.description || '').split('\n\n').filter(Boolean);
     const lead = paragraphs[0] || n.description || '';
     const pageDesc = (lead.substring(0, 155) + '...').replace(/\n/g, ' ');
