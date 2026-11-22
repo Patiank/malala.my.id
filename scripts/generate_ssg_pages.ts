@@ -226,17 +226,18 @@ function generateHtmlPage(
   html = html.replace('</head>', `${ogTags}\n  ${scripts}\n</head>`);
 
   // Inject Pre-rendered Semantic HTML directly inside <div id="root">
-  // Guarantees immediate FCP, full DOM indexing for crawlers, heading hierarchy, and zero layout shift
+  // Wrapped in #ssg-prerender for seamless JS hydration without FOUC, while retaining 100% SEO DOM indexing
   if (options.bodyContent) {
+    const ssgPrerender = `<div id="ssg-prerender">\n${options.bodyContent}\n</div>`;
     if (options.canonicalUrl.endsWith('/sitemap')) {
       html = html.replace(
         /<div id="root">[\s\S]*?<\/div>/i,
-        `<div id="root">\n${options.bodyContent}\n</div>\n<main id="static-sitemap-view" style="position: relative; z-index: 10; background: #070a12; min-height: 100vh;">\n${options.bodyContent}\n</main>`
+        `<div id="root">\n${ssgPrerender}\n</div>\n<main id="static-sitemap-view" style="position: relative; z-index: 10; background: #070a12; min-height: 100vh;">\n${options.bodyContent}\n</main>`
       );
     } else {
       html = html.replace(
         /<div id="root">[\s\S]*?<\/div>/i,
-        `<div id="root">\n${options.bodyContent}\n</div>`
+        `<div id="root">\n${ssgPrerender}\n</div>`
       );
     }
   }

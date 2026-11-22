@@ -2,6 +2,14 @@
 <html lang="id" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
+    <!-- Progressive Enhancement: Detect JS early to eliminate FOUC for pre-rendered content -->
+    <script>document.documentElement.classList.add('js');</script>
+    <style>
+      /* Smooth SPA Transition: Prevent Flash of Pre-rendered Content (FOUC) in JavaScript-enabled browsers while retaining 100% SEO DOM structure */
+      .js #ssg-prerender {
+        display: none !important;
+      }
+    </style>
     <!-- Favicon / Logo Situs -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
