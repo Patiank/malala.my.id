@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Destination, CultureItem, CulinaryItem, EventItem, PendingEventItem } from '../types';
-import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram, Image as ImageIcon, ImagePlus, Loader2, BookOpen, FileCheck } from 'lucide-react';
+import { Trash2, Plus, Edit3, Check, X, RefreshCw, Database, Search, Calendar, ChevronLeft, ChevronRight, Sparkles, GitBranch, Download, UploadCloud, Wand2, ExternalLink, Bot, CheckCircle2, AlertTriangle, ArrowRight, Share2, Copy, Send, MessageCircle, Instagram, Image as ImageIcon, ImagePlus, Loader2, BookOpen, FileCheck, ShieldCheck } from 'lucide-react';
 import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { generateCatalogItemWithAi, generateCatalogItemFallback, scanAutonomousEventsWithAI, AutonomousScanResult, generateSocialMediaDigest, SocialMediaDigest } from '../utils/ai';
@@ -322,7 +322,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     return defaultAdmins;
   });
   const [newAdminEmail, setNewAdminEmail] = useState<string>('');
-  const [inputEmail, setInputEmail] = useState<string>('');
 
   // Sync with Firestore appSettings when available
   useEffect(() => {
@@ -893,8 +892,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     return () => unsub();
   }, [allowedAdminEmails]);
 
+  const [isLoggingIn, setIsLoggingIn] = useState<boolean>(false);
+
   const handleGoogleLogin = async () => {
     try {
+      setIsLoggingIn(true);
       setLoginError(null);
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: 'select_account' });
@@ -906,7 +908,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
         } else {
           await signOut(auth);
           setIsAuthenticated(false);
-          setLoginError('Akses Ditolak: Email otorisasi tidak terdaftar sebagai Admin MALALA.');
+          setLoginError(`Akses Ditolak: Email '${result.user.email}' tidak terdaftar sebagai Admin MALALA.`);
         }
       }
     } catch (error: any) {
@@ -917,12 +919,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
       if (errCode === 'auth/popup-blocked' || errCode === 'auth/cancelled-popup-request') {
         setLoginError('⚠️ Pop-up diblokir oleh browser Anda! Silakan klik ikon blokir di bilah alamat browser (URL bar) dan pilih "Always allow popups".');
       } else if (errCode === 'auth/unauthorized-domain') {
-        setLoginError('⚠️ Domain localhost belum didaftarkan di Firebase Console Authorized Domains.');
+        setLoginError('⚠️ Domain belum didaftarkan di Firebase Console Authorized Domains. Silakan tambahkan malala.my.id di Authentication Settings Firebase.');
       } else if (errCode === 'auth/popup-closed-by-user') {
         setLoginError('⚠️ Jendela Google Sign-In ditutup sebelum selesai. Silakan coba lagi.');
       } else {
         setLoginError(`Gagal masuk Google (${errCode || 'Error'}): ${errMessage}`);
       }
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -935,143 +939,71 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ dataStore }) => {
     setIsAuthenticated(false);
   };
 
-  const [failedAttempts, setFailedAttempts] = useState<number>(0);
-  const [lockoutTime, setLockoutTime] = useState<number | null>(null);
-
-  const handleEmailLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (lockoutTime && Date.now() < lockoutTime) {
-      const remainingSec = Math.ceil((lockoutTime - Date.now()) / 1000);
-      setLoginError(`Akses terkunci sementara. Coba lagi dalam ${remainingSec} detik.`);
-      return;
-    }
-
-    let formatted = inputEmail.trim().toLowerCase();
-    if (!formatted) {
-      setLoginError('Silakan masukkan alamat email admin.');
-      return;
-    }
-    if (!formatted.includes('@')) {
-      formatted += '@gmail.com';
-    }
-
-    if (checkIsEmailAllowed(formatted)) {
-      setIsAuthenticated(true);
-      setLoginError(null);
-      setFailedAttempts(0);
-      setLockoutTime(null);
-    } else {
-      const nextFail = failedAttempts + 1;
-      setFailedAttempts(nextFail);
-      if (nextFail >= 5) {
-        setLockoutTime(Date.now() + 300000);
-        setLoginError('Terlalu banyak percobaan login gagal. Akses ditangguhkan selama 5 menit.');
-      } else {
-        setLoginError('Akses Ditolak: Email atau kredensial otorisasi tidak valid.');
-      }
-    }
-  };
-
-  const [showPinInput, setShowPinInput] = useState<boolean>(false);
-  const [pinCode, setPinCode] = useState<string>('');
-
-  const handlePinSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pinCode.trim() === '496501') {
-      setIsAuthenticated(true);
-      setLoginError(null);
-    } else {
-      setLoginError('Password Darurat Admin salah.');
-    }
-  };
-
   if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center justify-center h-full bg-white p-6 rounded-lg font-jakarta">
-        <div className="w-full max-w-sm border border-gray-200 rounded-xl p-6 shadow-md text-center bg-white space-y-4">
-          <div className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-100">
-            🛡️
+        <div className="w-full max-w-sm border border-gray-200 rounded-2xl p-7 shadow-lg text-center bg-white space-y-5">
+          <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-100 shadow-sm">
+            <ShieldCheck className="w-7 h-7 text-red-600" />
           </div>
+
           <div>
-            <h3 className="font-orbitron font-extrabold text-sm uppercase tracking-wider text-black">
-              Otentikasi Admin Terlindungi
+            <h3 className="font-orbitron font-extrabold text-base uppercase tracking-wider text-gray-900">
+              MALALA Admin Portal
             </h3>
-            <p className="text-[11px] text-gray-500 mt-1 leading-relaxed">
-              Silakan masukkan email otorisasi Admin terdaftar untuk melanjutkan.
+            <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">
+              Autentikasi resmi berbasis Google Firebase. Silakan masuk menggunakan Akun Google Admin terdaftar.
             </p>
           </div>
 
           {loginError && (
-            <div className="p-3 bg-red-50 text-red-700 text-[11px] font-bold rounded-lg border border-red-200 text-left leading-relaxed">
-              {loginError}
+            <div className="p-3.5 bg-red-50 text-red-700 text-xs font-semibold rounded-xl border border-red-200 text-left leading-relaxed flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+              <span>{loginError}</span>
             </div>
           )}
 
-          {/* Form Login Langsung Menggunakan Email */}
-          <form onSubmit={handleEmailLoginSubmit} className="space-y-2.5 text-left pt-1">
-            <label className="block text-[11px] font-bold text-gray-700 uppercase tracking-wider">
-              📧 Email Admin:
-            </label>
-            <input
-              type="email"
-              value={inputEmail}
-              onChange={(e) => setInputEmail(e.target.value)}
-              placeholder="Masukkan alamat email Admin..."
-              className="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-xs text-gray-900 font-semibold focus:outline-none focus:border-red-600 focus:bg-white transition-all"
-              autoFocus
-            />
-            <button 
-              type="submit" 
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-lg font-jakarta font-bold text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>🔑 Masuk Dengan Email</span>
-            </button>
-          </form>
-
-          <div className="flex items-center gap-2 my-2 text-gray-400 text-[10px] uppercase font-bold">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span>atau</span>
-            <div className="flex-1 h-px bg-gray-200" />
-          </div>
-
-          <button 
-            type="button" 
-            onClick={handleGoogleLogin}
-            className="w-full bg-black text-white py-2.5 px-4 rounded-lg font-jakarta font-bold text-xs uppercase tracking-wider hover:bg-gray-800 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <span>🔐 Masuk Dengan Akun Google</span>
-          </button>
-
-          {!showPinInput ? (
+          <div className="pt-2">
             <button
               type="button"
-              onClick={() => setShowPinInput(true)}
-              className="text-[10px] text-gray-400 hover:text-black transition-colors underline uppercase tracking-wider block mx-auto cursor-pointer pt-1"
+              onClick={handleGoogleLogin}
+              disabled={isLoggingIn}
+              className="w-full bg-gray-900 hover:bg-black text-white py-3 px-4 rounded-xl font-jakarta font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              Gunakan Password Darurat Admin
+              {isLoggingIn ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <span>Menghubungkan ke Google...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                    />
+                  </svg>
+                  <span>Masuk Dengan Akun Google</span>
+                </>
+              )}
             </button>
-          ) : (
-            <form onSubmit={handlePinSubmit} className="pt-2 border-t border-gray-100 space-y-2">
-              <label htmlFor="admin-emergency-pin" className="sr-only">Password Darurat Admin</label>
-              <input
-                id="admin-emergency-pin"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                value={pinCode}
-                onChange={(e) => setPinCode(e.target.value)}
-                placeholder="Masukkan Password Darurat Admin..."
-                className="w-full bg-gray-50 border border-gray-300 rounded p-2 text-xs text-center font-mono font-bold focus:outline-none focus:border-black"
-              />
-              <button
-                type="submit"
-                className="w-full bg-gray-900 text-white py-2 rounded text-xs font-bold uppercase tracking-wider hover:bg-black"
-              >
-                Masuk dengan Password Darurat
-              </button>
-            </form>
-          )}
+          </div>
+
+          <div className="pt-3 border-t border-gray-100 text-[11px] text-gray-400 leading-relaxed">
+            🛡️ Akses dibatasi ketat hanya untuk alamat email yang terdaftar pada whitelist Admin MALALA.
+          </div>
         </div>
       </div>
     );
